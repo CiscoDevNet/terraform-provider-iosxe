@@ -34,6 +34,7 @@ resource "iosxe_crypto_ipsec_transform_set" "example" {
 
 - `device` (String) A device name from the provider configuration.
 - `mode_tunnel` (Boolean) tunnel (datagram encapsulation) mode
+  - Default value: `false`
 
 ### Read-Only
 

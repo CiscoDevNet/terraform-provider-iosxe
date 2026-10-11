@@ -35,7 +35,7 @@ resource "iosxe_interface_stackwise_virtual" "example" {
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
-- `dual_active_detection` (Boolean)
+- `dual_active_detection` (Boolean) - Default value: `false`
 - `link` (Number) - Range: `1`-`2`
 
 ### Read-Only

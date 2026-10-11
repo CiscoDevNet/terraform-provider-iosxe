@@ -55,13 +55,20 @@ resource "iosxe_dhcp" "example" {
 - `ipv6_pools` (Attributes List) Configure IPv6 DHCP pool (see [below for nested schema](#nestedatt--ipv6_pools))
 - `pools` (Attributes List) Configure DHCP address pools (see [below for nested schema](#nestedatt--pools))
 - `relay_bootp_ignore` (Boolean) Configure this DHCP relay to ignore to BOOTP requests.
+  - Default value: `false`
 - `relay_information_option_default` (Boolean) Default option, no vpn
+  - Default value: `false`
 - `relay_information_option_vpn` (Boolean) Insert VPN sub-options and change the giaddr to the outgoing interface
+  - Default value: `false`
 - `relay_information_trust_all` (Boolean) Received DHCP packets may contain relay info option with zero giaddr
+  - Default value: `false`
 - `snooping` (Boolean) DHCP Snooping
-- `snooping_information_option` (Boolean)
+  - Default value: `false`
+- `snooping_information_option` (Boolean) - Default value: `true`
 - `snooping_information_option_allow_untrusted` (Boolean) DHCP Snooping information option allow-untrusted
+  - Default value: `false`
 - `snooping_information_option_format_remote_id_hostname` (Boolean) Use configured hostname for remote id
+  - Default value: `false`
 - `snooping_information_option_format_remote_id_string` (String) User defined string for remote id
 - `snooping_vlans` (Attributes List) DHCP Snooping vlan list. Use this for versions `17.14` and later. (see [below for nested schema](#nestedatt--snooping_vlans))
 - `snooping_vlans_legacy` (Attributes List) DHCP Snooping vlan list. Use this for versions before `17.14`. (see [below for nested schema](#nestedatt--snooping_vlans_legacy))
@@ -84,16 +91,20 @@ Optional:
 - `dns_servers` (List of String) DNS server addresses
 - `domain_names` (List of String) Domain names
 - `import_dns_server` (Boolean) Import DNS address from interface
+  - Default value: `false`
 - `import_domain_name` (Boolean) Import domain name from interface
+  - Default value: `false`
 - `information_refresh_days` (Number) Information refresh days
   - Range: `0`-`365`
 - `information_refresh_hours` (Number) Information refresh hours
   - Range: `0`-`23`
 - `information_refresh_infinite` (Boolean) Infinite information refresh
+  - Default value: `false`
 - `information_refresh_minutes` (Number) Information refresh minutes
   - Range: `0`-`59`
 - `link_addresses` (Attributes List) Link-address to match (see [below for nested schema](#nestedatt--ipv6_pools--link_addresses))
 - `option_include_all` (Boolean) Include all DHCPv6 configured options in REPLY
+  - Default value: `false`
 - `prefix_delegation_pool_name` (String) IPv6 prefix delegation pool name
 - `prefix_delegation_pool_preferred_lifetime` (String) Preferred lifetime in seconds or infinite
 - `prefix_delegation_pool_valid_lifetime` (String) Valid lifetime in seconds or infinite
@@ -188,6 +199,7 @@ Optional:
 - `lease_hours` (Number) Lease hours
   - Range: `0`-`23`
 - `lease_infinite` (Boolean) Infinite lease
+  - Default value: `false`
 - `lease_minutes` (Number) Lease minutes
   - Range: `0`-`59`
 - `network_mask` (String) Network mask
@@ -200,9 +212,11 @@ Optional:
 - `utilization_mark_high` (Number) High utilization mark percentage
   - Range: `1`-`100`
 - `utilization_mark_high_log` (Boolean) Log when high utilization is detected
+  - Default value: `false`
 - `utilization_mark_low` (Number) Low utilization mark percentage
   - Range: `1`-`100`
 - `utilization_mark_low_log` (Boolean) Log when low utilization is detected
+  - Default value: `false`
 - `vrf` (String) Associate this pool with a VRF
 
 <a id="nestedatt--pools--options"></a>

@@ -111,8 +111,6 @@ func (data CryptoIKEv2Policy) addToBodyXML(ctx context.Context, config CryptoIKE
 	if !data.MatchInboundOnly.IsNull() && !data.MatchInboundOnly.IsUnknown() {
 		if data.MatchInboundOnly.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/match/inbound-only", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/inbound-only")
 		}
 	}
 	if !data.MatchAddressLocalIp.IsNull() && !data.MatchAddressLocalIp.IsUnknown() {
@@ -128,8 +126,6 @@ func (data CryptoIKEv2Policy) addToBodyXML(ctx context.Context, config CryptoIKE
 	if !data.MatchFvrfAny.IsNull() && !data.MatchFvrfAny.IsUnknown() {
 		if data.MatchFvrfAny.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/match/fvrf/any", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/fvrf/any")
 		}
 	}
 	if len(data.Proposals) > 0 {

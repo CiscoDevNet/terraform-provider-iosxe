@@ -133,8 +133,6 @@ func (data Dot1x) addToBodyXML(ctx context.Context, config Dot1x, body netconf.B
 	if !data.AuthFailEapol.IsNull() && !data.AuthFailEapol.IsUnknown() {
 		if data.AuthFailEapol.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-dot1x:auth-fail/eapol", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-dot1x:auth-fail/eapol")
 		}
 	}
 	if len(data.Credentials) > 0 {
@@ -179,8 +177,6 @@ func (data Dot1x) addToBodyXML(ctx context.Context, config Dot1x, body netconf.B
 	if !data.CriticalEapolConfigBlock.IsNull() && !data.CriticalEapolConfigBlock.IsUnknown() {
 		if data.CriticalEapolConfigBlock.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-dot1x:critical/eapol-config/block", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-dot1x:critical/eapol-config/block")
 		}
 	}
 	if !data.CriticalRecoveryDelay.IsNull() && !data.CriticalRecoveryDelay.IsUnknown() {
@@ -192,50 +188,36 @@ func (data Dot1x) addToBodyXML(ctx context.Context, config Dot1x, body netconf.B
 	if !data.LoggingVerbose.IsNull() && !data.LoggingVerbose.IsUnknown() {
 		if data.LoggingVerbose.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-dot1x:logging/verbose", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-dot1x:logging/verbose")
 		}
 	}
 	if !data.SupplicantControlledTransient.IsNull() && !data.SupplicantControlledTransient.IsUnknown() {
 		if data.SupplicantControlledTransient.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-dot1x:supplicant/controlled/transient", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-dot1x:supplicant/controlled/transient")
 		}
 	}
 	if !data.SupplicantForceMulticast.IsNull() && !data.SupplicantForceMulticast.IsUnknown() {
 		if data.SupplicantForceMulticast.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-dot1x:supplicant/force-multicast", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-dot1x:supplicant/force-multicast")
 		}
 	}
 	if !data.SystemAuthControl.IsNull() && !data.SystemAuthControl.IsUnknown() {
 		if data.SystemAuthControl.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-dot1x:system-auth-control", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-dot1x:system-auth-control")
 		}
 	}
 	if !data.GuestVlanSupplicant.IsNull() && !data.GuestVlanSupplicant.IsUnknown() {
 		if data.GuestVlanSupplicant.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-dot1x:guest-vlan/supplicant", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-dot1x:guest-vlan/supplicant")
 		}
 	}
 	if !data.CriticalEapol.IsNull() && !data.CriticalEapol.IsUnknown() {
 		if data.CriticalEapol.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-dot1x:critical/eapol-config", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-dot1x:critical/eapol-config")
 		}
 	}
 	if !data.CriticalEapolBlock.IsNull() && !data.CriticalEapolBlock.IsUnknown() {
 		if data.CriticalEapolBlock.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-dot1x:critical/eapol-config/block", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-dot1x:critical/eapol-config/block")
 		}
 	}
 	return body

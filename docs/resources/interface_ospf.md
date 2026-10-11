@@ -64,7 +64,9 @@ resource "iosxe_interface_ospf" "example" {
 
 - `authentication_key_chain` (String)
 - `authentication_message_digest` (Boolean) Use message-digest authentication
+  - Default value: `false`
 - `authentication_null` (Boolean) Use no authentication
+  - Default value: `false`
 - `cost` (Number) Route cost of this interface
   - Range: `1`-`65535`
 - `dead_interval` (Number) Interval after which a neighbor is declared dead
@@ -76,11 +78,16 @@ resource "iosxe_interface_ospf" "example" {
   - Range: `1`-`65535`
 - `message_digest_keys` (Attributes List) Message digest authentication password (key) (see [below for nested schema](#nestedatt--message_digest_keys))
 - `mtu_ignore` (Boolean) Ignores the MTU in DBD packets
+  - Default value: `false`
 - `multi_area_ids` (Attributes List) Set the OSPF multi-area ID (see [below for nested schema](#nestedatt--multi_area_ids))
 - `network_type_broadcast` (Boolean) Specify OSPF broadcast multi-access network
+  - Default value: `false`
 - `network_type_non_broadcast` (Boolean) Specify OSPF NBMA network
+  - Default value: `false`
 - `network_type_point_to_multipoint` (Boolean) Specify OSPF point-to-multipoint network
+  - Default value: `false`
 - `network_type_point_to_point` (Boolean) Specify OSPF point-to-point network
+  - Default value: `false`
 - `priority` (Number) Router priority
   - Range: `0`-`255`
 - `process_ids` (Attributes List) (see [below for nested schema](#nestedatt--process_ids))

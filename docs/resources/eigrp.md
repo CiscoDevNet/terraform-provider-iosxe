@@ -47,6 +47,7 @@ resource "iosxe_eigrp" "example" {
 - `networks` (Attributes List) Enable routing on an IP network (see [below for nested schema](#nestedatt--networks))
 - `router_id` (String) Router ID for this EIGRP process
 - `shutdown` (Boolean) Shutdown address family
+  - Default value: `false`
 - `topology_base` (String) Base topology (always base)
   - Choices: `base`
   - Default value: `base`

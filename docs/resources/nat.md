@@ -77,6 +77,7 @@ Required:
 Optional:
 
 - `overload` (Boolean) Overload an address translation
+  - Default value: `false`
 
 
 
@@ -92,8 +93,11 @@ Optional:
 
 - `egress_interface_loopback` (String) Loopback interface
 - `extendable` (Boolean) Extend this translation when used
+  - Default value: `false`
 - `forced` (Boolean) Delete this entry and its children, even if in use
+  - Default value: `false`
 - `inside_static_overload` (Boolean) Overload an address translation
+  - Default value: `false`
 - `inside_static_pool` (String) Name pool of local addresses
 - `mapping_id` (Number) Associate a mapping id to this mapping
   - Range: `1`-`2147483647`
@@ -101,11 +105,14 @@ Optional:
 - `network` (String) Subnet translation
   - Choices: `network`
 - `no_alias` (Boolean) Do not create an alias for the global address
+  - Default value: `false`
 - `no_payload` (Boolean) No translation of embedded address/port in the payload
+  - Default value: `false`
 - `redundancy` (String) NAT redundancy operation
-- `reversible` (Boolean)
+- `reversible` (Boolean) - Default value: `false`
 - `route_map` (String) Specify route-map
 - `stateless` (Boolean) No flow entries (session) for mapping
+  - Default value: `false`
 
 
 <a id="nestedatt--outside_source_static_entries"></a>
@@ -119,11 +126,14 @@ Required:
 Optional:
 
 - `extendable` (Boolean) Extend this translation when used
+  - Default value: `false`
 - `mask` (String)
 - `match_in_vrf` (Boolean) Match incoming vrf
+  - Default value: `false`
 - `network` (String) Subnet translation
   - Choices: `network`
 - `no_payload` (Boolean) No translation of embedded address/port in the payload
+  - Default value: `false`
 - `outside_static_pool` (String) Name pool of local addresses
 - `redundancy` (String) NAT redundancy operation
 

@@ -109,8 +109,6 @@ func (data License) addToBodyXML(ctx context.Context, config License, body netco
 	if !data.BootLevelNetworkAdvantage.IsNull() && !data.BootLevelNetworkAdvantage.IsUnknown() {
 		if data.BootLevelNetworkAdvantage.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/boot/level/network-advantage", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/boot/level/network-advantage")
 		}
 	}
 	if !data.BootLevelNetworkAdvantageAddon.IsNull() && !data.BootLevelNetworkAdvantageAddon.IsUnknown() {
@@ -119,8 +117,6 @@ func (data License) addToBodyXML(ctx context.Context, config License, body netco
 	if !data.BootLevelNetworkEssentials.IsNull() && !data.BootLevelNetworkEssentials.IsUnknown() {
 		if data.BootLevelNetworkEssentials.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/boot/level/network-essentials", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/boot/level/network-essentials")
 		}
 	}
 	if !data.BootLevelNetworkEssentialsAddon.IsNull() && !data.BootLevelNetworkEssentialsAddon.IsUnknown() {
@@ -135,22 +131,16 @@ func (data License) addToBodyXML(ctx context.Context, config License, body netco
 	if !data.AcceptAgreement.IsNull() && !data.AcceptAgreement.IsUnknown() {
 		if data.AcceptAgreement.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/accept/agreement", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/accept/agreement")
 		}
 	}
 	if !data.AcceptEnd.IsNull() && !data.AcceptEnd.IsUnknown() {
 		if data.AcceptEnd.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/accept/end", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/accept/end")
 		}
 	}
 	if !data.AcceptUser.IsNull() && !data.AcceptUser.IsUnknown() {
 		if data.AcceptUser.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/accept/user", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/accept/user")
 		}
 	}
 	if !data.UdiPid.IsNull() && !data.UdiPid.IsUnknown() {

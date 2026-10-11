@@ -35,6 +35,7 @@ resource "iosxe_crypto_ikev2" "example" {
 - `dpd_query` (String) - Choices: `on-demand`, `periodic`
 - `dpd_retry_interval` (Number) - Range: `2`-`60`
 - `http_url_cert` (Boolean) Enable certificate lookup based on HTTP-based URL
+  - Default value: `true`
 - `nat_keepalive` (Number) Set NAT keepalive interval
   - Range: `5`-`3600`
 

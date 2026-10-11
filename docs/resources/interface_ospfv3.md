@@ -58,6 +58,7 @@ resource "iosxe_interface_ospfv3" "example" {
 ### Optional
 
 - `bfd` (Boolean) Enable BFD on this interface
+  - Default value: `false`
 - `cost` (Number) Static route cost value of the interface
   - Range: `1`-`65535`
 - `dead_interval` (Number) Interval after which a neighbor is declared dead
@@ -68,10 +69,15 @@ resource "iosxe_interface_ospfv3" "example" {
 - `hello_interval` (Number) Time between HELLO packets
   - Range: `1`-`65535`
 - `mtu_ignore` (Boolean) Ignores the MTU in DBD packets
+  - Default value: `false`
 - `network_type_broadcast` (Boolean) Specify OSPF broadcast multi-access network
+  - Default value: `false`
 - `network_type_non_broadcast` (Boolean) Specify OSPF NBMA network
+  - Default value: `false`
 - `network_type_point_to_multipoint` (Boolean) Specify OSPF point-to-multipoint network
+  - Default value: `false`
 - `network_type_point_to_point` (Boolean) Specify OSPF point-to-point network
+  - Default value: `false`
 - `priority` (Number) Router priority
   - Range: `0`-`255`
 - `process_ids` (Attributes List) (see [below for nested schema](#nestedatt--process_ids))

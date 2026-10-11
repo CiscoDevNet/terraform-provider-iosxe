@@ -120,8 +120,6 @@ func (data BGP) addToBodyXML(ctx context.Context, config BGP, body netconf.Body)
 	if !data.BgpGracefulRestart.IsNull() && !data.BgpGracefulRestart.IsUnknown() {
 		if data.BgpGracefulRestart.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/bgp/gr-options/graceful-restart", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/bgp/gr-options/graceful-restart")
 		}
 	}
 	if !data.BgpUpdateDelay.IsNull() && !data.BgpUpdateDelay.IsUnknown() {

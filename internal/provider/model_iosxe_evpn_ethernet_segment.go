@@ -117,15 +117,11 @@ func (data EVPNEthernetSegment) addToBodyXML(ctx context.Context, config EVPNEth
 	if !data.RedundancyAllActive.IsNull() && !data.RedundancyAllActive.IsUnknown() {
 		if data.RedundancyAllActive.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/redundancy/all-active", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/redundancy/all-active")
 		}
 	}
 	if !data.RedundancySingleActive.IsNull() && !data.RedundancySingleActive.IsUnknown() {
 		if data.RedundancySingleActive.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/redundancy/single-active", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/redundancy/single-active")
 		}
 	}
 	if len(data.IdentifierTypes) > 0 {

@@ -31,6 +31,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -108,12 +109,16 @@ func (r *BGPPeerSessionTemplateResource) Schema(ctx context.Context, req resourc
 				Optional:            true,
 			},
 			"disable_connected_check": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("one-hop away EBGP peer using loopback address").String,
+				MarkdownDescription: helpers.NewAttributeDescription("one-hop away EBGP peer using loopback address").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ebgp_multihop": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Allow EBGP neighbors not on directly connected networks. For single-hop ebgp peers, delete ebgp-multihop directly.").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Allow EBGP neighbors not on directly connected networks. For single-hop ebgp peers, delete ebgp-multihop directly.").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ebgp_multihop_max_hop": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(2, 255).String,
@@ -131,12 +136,16 @@ func (r *BGPPeerSessionTemplateResource) Schema(ctx context.Context, req resourc
 				Optional:            true,
 			},
 			"ao_include_tcp_options": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Include TCP options").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Include TCP options").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ao_accept_mismatch_connections": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("accept ao mismatch connections").String,
+				MarkdownDescription: helpers.NewAttributeDescription("accept ao mismatch connections").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"inherit_peer_session": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Inherit a peer-session template").String,

@@ -172,15 +172,11 @@ func (data InterfaceOSPF) addToBodyXML(ctx context.Context, config InterfaceOSPF
 	if !data.AuthenticationMessageDigest.IsNull() && !data.AuthenticationMessageDigest.IsUnknown() {
 		if data.AuthenticationMessageDigest.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/authentication/message-digest", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/authentication/message-digest")
 		}
 	}
 	if !data.AuthenticationNull.IsNull() && !data.AuthenticationNull.IsUnknown() {
 		if data.AuthenticationNull.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/authentication/null", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/authentication/null")
 		}
 	}
 	if !data.MtuIgnore.IsNull() && !data.MtuIgnore.IsUnknown() {
@@ -189,29 +185,21 @@ func (data InterfaceOSPF) addToBodyXML(ctx context.Context, config InterfaceOSPF
 	if !data.NetworkTypeBroadcast.IsNull() && !data.NetworkTypeBroadcast.IsUnknown() {
 		if data.NetworkTypeBroadcast.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/network/broadcast", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/network/broadcast")
 		}
 	}
 	if !data.NetworkTypeNonBroadcast.IsNull() && !data.NetworkTypeNonBroadcast.IsUnknown() {
 		if data.NetworkTypeNonBroadcast.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/network/non-broadcast", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/network/non-broadcast")
 		}
 	}
 	if !data.NetworkTypePointToMultipoint.IsNull() && !data.NetworkTypePointToMultipoint.IsUnknown() {
 		if data.NetworkTypePointToMultipoint.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/network/point-to-multipoint", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/network/point-to-multipoint")
 		}
 	}
 	if !data.NetworkTypePointToPoint.IsNull() && !data.NetworkTypePointToPoint.IsUnknown() {
 		if data.NetworkTypePointToPoint.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/network/point-to-point", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/network/point-to-point")
 		}
 	}
 	if !data.Priority.IsNull() && !data.Priority.IsUnknown() {

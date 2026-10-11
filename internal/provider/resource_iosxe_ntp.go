@@ -31,6 +31,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -86,12 +87,16 @@ func (r *NTPResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				},
 			},
 			"authenticate": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Authenticate time sources").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Authenticate time sources").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"logging": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable NTP message logging").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable NTP message logging").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"access_group_peer_acl": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
@@ -223,8 +228,10 @@ func (r *NTPResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				},
 			},
 			"master": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Act as NTP master clock").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Act as NTP master clock").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"master_stratum": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 15).String,
@@ -234,12 +241,16 @@ func (r *NTPResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				},
 			},
 			"passive": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("NTP passive mode").String,
+				MarkdownDescription: helpers.NewAttributeDescription("NTP passive mode").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"update_calendar": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Periodically update calendar with NTP time").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Periodically update calendar with NTP time").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"source_gigabit_ethernet": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("GigabitEthernet IEEE 802.3z").String,
@@ -303,8 +314,10 @@ func (r *NTPResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 							},
 						},
 						"prefer": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Prefer this peer when possible").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Prefer this peer when possible").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"version": schema.Int64Attribute{
 							MarkdownDescription: helpers.NewAttributeDescription("    Configure NTP version").AddIntegerRangeDescription(1, 4).String,
@@ -314,16 +327,22 @@ func (r *NTPResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 							},
 						},
 						"burst": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Send a burst when peer is reachable (Default)").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Send a burst when peer is reachable (Default)").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"iburst": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Send a burst when peer is unreachable (Default)").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Send a burst when peer is unreachable (Default)").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"periodic": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Check server availability periodically and switch to a new server if required").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Check server availability periodically and switch to a new server if required").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 					},
 				},
@@ -357,8 +376,10 @@ func (r *NTPResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 										},
 									},
 									"prefer": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Prefer this peer when possible").String,
+										MarkdownDescription: helpers.NewAttributeDescription("Prefer this peer when possible").AddDefaultValueDescription("false").String,
 										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(false),
 									},
 									"version": schema.Int64Attribute{
 										MarkdownDescription: helpers.NewAttributeDescription("    Configure NTP version").AddIntegerRangeDescription(1, 4).String,
@@ -368,16 +389,22 @@ func (r *NTPResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 										},
 									},
 									"burst": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Send a burst when peer is reachable (Default)").String,
+										MarkdownDescription: helpers.NewAttributeDescription("Send a burst when peer is reachable (Default)").AddDefaultValueDescription("false").String,
 										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(false),
 									},
 									"iburst": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Send a burst when peer is unreachable (Default)").String,
+										MarkdownDescription: helpers.NewAttributeDescription("Send a burst when peer is unreachable (Default)").AddDefaultValueDescription("false").String,
 										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(false),
 									},
 									"periodic": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Check server availability periodically and switch to a new server if required").String,
+										MarkdownDescription: helpers.NewAttributeDescription("Check server availability periodically and switch to a new server if required").AddDefaultValueDescription("false").String,
 										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(false),
 									},
 								},
 							},
@@ -406,8 +433,10 @@ func (r *NTPResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 							},
 						},
 						"prefer": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Prefer this peer when possible").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Prefer this peer when possible").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"version": schema.Int64Attribute{
 							MarkdownDescription: helpers.NewAttributeDescription("    Configure NTP version").AddIntegerRangeDescription(1, 4).String,
@@ -448,8 +477,10 @@ func (r *NTPResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 										},
 									},
 									"prefer": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Prefer this peer when possible").String,
+										MarkdownDescription: helpers.NewAttributeDescription("Prefer this peer when possible").AddDefaultValueDescription("false").String,
 										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(false),
 									},
 									"version": schema.Int64Attribute{
 										MarkdownDescription: helpers.NewAttributeDescription("    Configure NTP version").AddIntegerRangeDescription(1, 4).String,

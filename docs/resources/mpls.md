@@ -27,17 +27,29 @@ resource "iosxe_mpls" "example" {
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
 - `label_mode_all_vrfs_all_afs_per_ce` (Boolean) Per CE label
+  - Default value: `false`
 - `label_mode_all_vrfs_all_afs_per_prefix` (Boolean) Per prefix label (default)
+  - Default value: `false`
 - `label_mode_all_vrfs_all_afs_per_vrf` (Boolean) Per VRF label for entire VRF
+  - Default value: `false`
 - `label_mode_all_vrfs_all_afs_vrf_conn_aggr` (Boolean) Per VRF label for connected and BGP aggregates in VRF
+  - Default value: `false`
 - `label_mode_all_vrfs_bgp_vpnv4_per_ce` (Boolean) Per CE label
+  - Default value: `false`
 - `label_mode_all_vrfs_bgp_vpnv4_per_prefix` (Boolean) Per prefix label (default)
+  - Default value: `false`
 - `label_mode_all_vrfs_bgp_vpnv4_per_vrf` (Boolean) Per VRF label for entire VRF
+  - Default value: `false`
 - `label_mode_all_vrfs_bgp_vpnv4_vrf_conn_aggr` (Boolean) Per VRF label for connected and BGP aggregates in VRF
+  - Default value: `false`
 - `label_mode_all_vrfs_bgp_vpnv6_per_ce` (Boolean) Per CE label
+  - Default value: `false`
 - `label_mode_all_vrfs_bgp_vpnv6_per_prefix` (Boolean) Per prefix label (default)
+  - Default value: `false`
 - `label_mode_all_vrfs_bgp_vpnv6_per_vrf` (Boolean) Per VRF label for entire VRF
+  - Default value: `false`
 - `label_mode_all_vrfs_bgp_vpnv6_vrf_conn_aggr` (Boolean) Per VRF label for connected and BGP aggregates in VRF
+  - Default value: `false`
 - `label_protocol` (String) Set platform default label distribution protocol
   - Choices: `ldp`, `tdp`
 

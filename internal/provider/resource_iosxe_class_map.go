@@ -30,6 +30,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -95,8 +96,10 @@ func (r *ClassMapResource) Schema(ctx context.Context, req resource.SchemaReques
 				},
 			},
 			"subscriber": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Domain name of the class map").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Domain name of the class map").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"prematch": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Logical-AND/Logical-OR of all matching statements under this class map").AddStringEnumDescription("match-all", "match-any", "match-none").String,
@@ -106,20 +109,28 @@ func (r *ClassMapResource) Schema(ctx context.Context, req resource.SchemaReques
 				},
 			},
 			"match_authorization_status_authorized": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("authorized").String,
+				MarkdownDescription: helpers.NewAttributeDescription("authorized").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"match_result_type_aaa_timeout": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("aaa timeout type").String,
+				MarkdownDescription: helpers.NewAttributeDescription("aaa timeout type").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"match_result_type_success": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("success type").String,
+				MarkdownDescription: helpers.NewAttributeDescription("success type").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"match_authorization_status_unauthorized": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("unauthorized").String,
+				MarkdownDescription: helpers.NewAttributeDescription("unauthorized").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"match_activated_service_templates": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("match name of service template activated on session").String,
@@ -139,28 +150,40 @@ func (r *ClassMapResource) Schema(ctx context.Context, req resource.SchemaReques
 				Optional:            true,
 			},
 			"match_method_dot1x": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("dot1x").String,
+				MarkdownDescription: helpers.NewAttributeDescription("dot1x").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"match_result_type_method_dot1x_authoritative": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("failure type").String,
+				MarkdownDescription: helpers.NewAttributeDescription("failure type").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"match_result_type_method_dot1x_agent_not_found": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("agent not found type").String,
+				MarkdownDescription: helpers.NewAttributeDescription("agent not found type").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"match_result_type_method_dot1x_method_timeout": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("method timeout type").String,
+				MarkdownDescription: helpers.NewAttributeDescription("method timeout type").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"match_method_mab": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("mab").String,
+				MarkdownDescription: helpers.NewAttributeDescription("mab").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"match_result_type_method_mab_authoritative": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("failure type").String,
+				MarkdownDescription: helpers.NewAttributeDescription("failure type").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"match_dscp": schema.ListAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Match DSCP in IP(v4) and IPv6 packets").String,

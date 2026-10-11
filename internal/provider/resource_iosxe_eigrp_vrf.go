@@ -154,8 +154,10 @@ func (r *EIGRPVRFResource) Schema(ctx context.Context, req resource.SchemaReques
 				Default:             booldefault.StaticBool(false),
 			},
 			"shutdown": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Shutdown address family").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Shutdown address family").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 		},
 	}

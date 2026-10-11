@@ -77,8 +77,11 @@ resource "iosxe_interface_vlan" "example" {
 ### Optional
 
 - `autostate` (Boolean) Enable auto-state determination for VLAN
+  - Default value: `true`
 - `bfd_echo` (Boolean) Use echo adjunct as bfd detection mechanism
+  - Default value: `true`
 - `bfd_enable` (Boolean) Enable BFD under the interface
+  - Default value: `true`
 - `bfd_interval` (Number) - Range: `50`-`9999`
 - `bfd_interval_min_rx` (Number) Minimum receive interval capability
   - Range: `50`-`9999`
@@ -93,46 +96,66 @@ resource "iosxe_interface_vlan" "example" {
 - `helper_addresses` (Attributes List) Specify a destination address for UDP broadcasts (see [below for nested schema](#nestedatt--helper_addresses))
 - `ip_access_group_in` (String)
 - `ip_access_group_in_enable` (Boolean) inbound packets
+  - Default value: `false`
 - `ip_access_group_out` (String)
 - `ip_access_group_out_enable` (Boolean) outbound packets
+  - Default value: `false`
 - `ip_dhcp_relay_information_option_vpn_id` (Boolean) Enable vpn-id support on this interface
+  - Default value: `false`
 - `ip_dhcp_relay_source_interface` (String) Set source interface for relayed messages
 - `ip_igmp_version` (Number) IGMP version
   - Range: `1`-`3`
 - `ip_local_proxy_arp` (Boolean) Enable local-proxy ARP
+  - Default value: `false`
 - `ip_mtu` (Number) Set IP Maximum Transmission Unit
   - Range: `68`-`18000`
 - `ip_nat_inside` (Boolean) Inside interface for address translation
+  - Default value: `false`
 - `ip_nat_outside` (Boolean) Outside interface for address translation
+  - Default value: `false`
 - `ip_proxy_arp` (Boolean) Enable proxy ARP
+  - Default value: `true`
 - `ip_redirects` (Boolean) Enable sending ICMP Redirect messages
+  - Default value: `true`
 - `ip_router_isis` (String)
 - `ip_unreachables` (Boolean) Enable sending ICMP Unreachable messages
+  - Default value: `true`
 - `ip_verify_unicast_source_allow_default` (Boolean) Allow default route to match when checking source address
+  - Default value: `false`
 - `ip_verify_unicast_source_allow_self_ping` (Boolean) Allow router to ping itself (opens vulnerability in verification)
+  - Default value: `false`
 - `ip_verify_unicast_source_reachable_via` (String) Specify reachability check to apply to the source address
   - Choices: `any`, `rx`
 - `ipv4_address` (String) Ip address
 - `ipv4_address_dhcp` (Boolean) IP Address negotiated via DHCP
+  - Default value: `false`
 - `ipv4_address_mask` (String) Ip subnet mask
 - `ipv6_address_autoconfig_default` (Boolean) Insert default route
+  - Default value: `false`
 - `ipv6_address_dhcp` (Boolean) Obtain IPv6 address from DHCP server
+  - Default value: `false`
 - `ipv6_addresses` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_addresses))
 - `ipv6_dhcp_client_pd` (String) IPv6 DHCP client prefix-delegation name
 - `ipv6_dhcp_client_pd_rapid_commit` (Boolean) Enable Rapid-Commit for prefix-delegation
+  - Default value: `false`
 - `ipv6_dhcp_relay_destinations` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_dhcp_relay_destinations))
 - `ipv6_dhcp_relay_option_vpn` (Boolean) Insert VSS option in Relay-Forward Messages
+  - Default value: `false`
 - `ipv6_dhcp_relay_trust` (Boolean) Interface is trusted to process relay-replies
+  - Default value: `false`
 - `ipv6_dhcp_servers` (Attributes List) Act as an IPv6 DHCP server (see [below for nested schema](#nestedatt--ipv6_dhcp_servers))
 - `ipv6_enable` (Boolean) Enable IPv6 on interface
+  - Default value: `false`
 - `ipv6_link_local_addresses` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_link_local_addresses))
 - `ipv6_mtu` (Number) Set IPv6 Maximum Transmission Unit
   - Range: `1280`-`9976`
 - `ipv6_nd_ra_suppress_all` (Boolean) Suppress all IPv6 RA
+  - Default value: `false`
 - `load_interval` (Number) Specify interval for load calculation for an interface
   - Range: `30`-`600`
 - `mac_address` (String) Manually set interface MAC address
 - `shutdown` (Boolean) Shutdown the selected interface
+  - Default value: `false`
 - `unnumbered` (String) Enable IP processing without an explicit address
 - `vrf_forwarding` (String) Configure forwarding table
 - `zone_member_security` (String) Security zone
@@ -151,6 +174,7 @@ Required:
 Optional:
 
 - `global` (Boolean) Helper-address is global
+  - Default value: `false`
 - `vrf` (String) VRF name for helper-address (if different from interface VRF)
 
 
@@ -164,6 +188,7 @@ Required:
 Optional:
 
 - `eui_64` (Boolean) Use eui-64 interface identifier
+  - Default value: `false`
 
 
 <a id="nestedatt--ipv6_dhcp_relay_destinations"></a>
@@ -188,9 +213,11 @@ Required:
 Optional:
 
 - `allow_hint` (Boolean) Allow hint from client
+  - Default value: `false`
 - `preference` (Number) Server preference value
   - Range: `0`-`255`
 - `rapid_commit` (Boolean) Enable Rapid-Commit
+  - Default value: `false`
 
 
 <a id="nestedatt--ipv6_link_local_addresses"></a>
@@ -203,6 +230,7 @@ Required:
 Optional:
 
 - `link_local` (Boolean) Use link-local address
+  - Default value: `false`
 
 ## Import
 

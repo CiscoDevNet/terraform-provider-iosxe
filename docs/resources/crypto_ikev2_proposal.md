@@ -32,30 +32,55 @@ resource "iosxe_crypto_ikev2_proposal" "example" {
 
 - `device` (String) A device name from the provider configuration.
 - `encryption_aes_cbc_128` (Boolean) AES-CBC-128
+  - Default value: `false`
 - `encryption_aes_cbc_192` (Boolean) AES-CBC-192
+  - Default value: `false`
 - `encryption_aes_cbc_256` (Boolean) AES-CBC-256
+  - Default value: `false`
 - `encryption_aes_gcm_128` (Boolean) Combined-mode,128 bit key,16 byte ICV(Authentication Tag)
+  - Default value: `false`
 - `encryption_aes_gcm_256` (Boolean) Combined-mode,256 bit key,16 byte ICV(Authentication Tag)
+  - Default value: `false`
 - `encryption_en_3des` (Boolean) 3DES
+  - Default value: `false`
 - `group_fifteen` (Boolean) DH 3072 MODP
+  - Default value: `false`
 - `group_fourteen` (Boolean) DH 2048 MODP
+  - Default value: `false`
 - `group_nineteen` (Boolean) DH 256 ECP
+  - Default value: `false`
 - `group_one` (Boolean) DH 768 MODP
+  - Default value: `false`
 - `group_sixteen` (Boolean) DH 4096 MODP
+  - Default value: `false`
 - `group_twenty` (Boolean) DH 384 ECP
+  - Default value: `false`
 - `group_twenty_four` (Boolean) DH 2048 (256 subgroup) MODP
+  - Default value: `false`
 - `group_twenty_one` (Boolean) DH 521 ECP
+  - Default value: `false`
 - `group_two` (Boolean) DH 1024 MODP
+  - Default value: `false`
 - `integrity_md5` (Boolean) Message Digest 5
+  - Default value: `false`
 - `integrity_sha1` (Boolean) Secure Hash Standard
+  - Default value: `false`
 - `integrity_sha256` (Boolean) Secure Hash Standard 2 (256 bit)
+  - Default value: `false`
 - `integrity_sha384` (Boolean) Secure Hash Standard 2 (384 bit)
+  - Default value: `false`
 - `integrity_sha512` (Boolean) Secure Hash Standard 2 (512 bit)
+  - Default value: `false`
 - `prf_md5` (Boolean) Message Digest 5
+  - Default value: `false`
 - `prf_sha1` (Boolean) Secure Hash Standard
+  - Default value: `false`
 - `prf_sha256` (Boolean) Secure Hash Standard 2 (256 bit)
+  - Default value: `false`
 - `prf_sha384` (Boolean) Secure Hash Standard 2 (384 bit)
+  - Default value: `false`
 - `prf_sha512` (Boolean) Secure Hash Standard 2 (512 bit)
+  - Default value: `false`
 
 ### Read-Only
 

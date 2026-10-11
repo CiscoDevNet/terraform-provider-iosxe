@@ -32,6 +32,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -94,12 +95,16 @@ func (r *BGPResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				},
 			},
 			"default_ipv4_unicast": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Activate ipv4-unicast for a peer by default").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Activate ipv4-unicast for a peer by default").AddDefaultValueDescription("true").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
 			},
 			"log_neighbor_changes": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Log neighbor up/down and reset reason").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Log neighbor up/down and reset reason").AddDefaultValueDescription("true").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
 			},
 			"router_id_loopback": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Loopback interface").AddIntegerRangeDescription(0, 2147483647).String,
@@ -116,8 +121,10 @@ func (r *BGPResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				},
 			},
 			"bgp_graceful_restart": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Graceful restart capability parameters").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Graceful restart capability parameters").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"bgp_update_delay": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Set the max initial delay for sending update").AddIntegerRangeDescription(1, 3600).String,

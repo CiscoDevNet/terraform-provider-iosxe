@@ -186,15 +186,11 @@ func (data AAA) addToBodyXML(ctx context.Context, config AAA, body netconf.Body)
 	if !data.NewModel.IsNull() && !data.NewModel.IsUnknown() {
 		if data.NewModel.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-aaa:new-model", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-aaa:new-model")
 		}
 	}
 	if !data.ServerRadiusDynamicAuthor.IsNull() && !data.ServerRadiusDynamicAuthor.IsUnknown() {
 		if data.ServerRadiusDynamicAuthor.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-aaa:server/radius/dynamic-author", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-aaa:server/radius/dynamic-author")
 		}
 	}
 	if !data.SessionId.IsNull() && !data.SessionId.IsUnknown() {

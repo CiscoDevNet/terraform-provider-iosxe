@@ -130,8 +130,6 @@ func (data BGPBMPServer) addToBodyXML(ctx context.Context, config BGPBMPServer, 
 	if !data.Activate.IsNull() && !data.Activate.IsUnknown() {
 		if data.Activate.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/activate", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/activate")
 		}
 	}
 	if !data.Description.IsNull() && !data.Description.IsUnknown() {

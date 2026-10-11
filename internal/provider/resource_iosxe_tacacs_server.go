@@ -31,6 +31,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -93,16 +94,22 @@ func (r *TACACSServerResource) Schema(ctx context.Context, req resource.SchemaRe
 				},
 			},
 			"directed_request": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Allow user to specify tacacs server to use with `@server'").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Allow user to specify tacacs server to use with `@server'").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"directed_request_restricted": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("restrict queries to directed request servers only").String,
+				MarkdownDescription: helpers.NewAttributeDescription("restrict queries to directed request servers only").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"directed_request_no_truncate": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Do not truncate the @hostname from username.").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Do not truncate the @hostname from username.").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"encryption": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("0 - Specifies an UNENCRYPTED key will follow 6 - Specifies an ENCRYPTED key will follow 7 - Specifies HIDDEN key will follow").AddStringEnumDescription("0", "6", "7").String,
@@ -129,8 +136,10 @@ func (r *TACACSServerResource) Schema(ctx context.Context, req resource.SchemaRe
 				Optional:            true,
 			},
 			"attribute_allow_unknown": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Unknown Tacacs+ attributes").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Unknown Tacacs+ attributes").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 		},
 	}

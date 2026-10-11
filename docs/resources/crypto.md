@@ -25,6 +25,7 @@ resource "iosxe_crypto" "example" {
 
 - `device` (String) A device name from the provider configuration.
 - `engine_compliance_shield_disable` (Boolean) Allow weak crypto to be configured
+  - Default value: `false`
 
 ### Read-Only
 

@@ -32,6 +32,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -101,8 +102,10 @@ func (r *CTSResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				},
 			},
 			"sxp_enable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable CTS SXP support").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable CTS SXP support").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"sxp_default_password_type": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("0", "6", "7").String,
@@ -295,8 +298,10 @@ func (r *CTSResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				},
 			},
 			"role_based_enforcement": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable Role-based Access Control enforcement").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable Role-based Access Control enforcement").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"role_based_enforcement_logging_interval": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Configure sgacl logging interval").AddIntegerRangeDescription(5, 86400).String,

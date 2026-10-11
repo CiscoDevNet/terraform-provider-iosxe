@@ -175,15 +175,11 @@ func (data BGPAddressFamilyIPv6VRF) addToBodyXML(ctx context.Context, config BGP
 			if !item.Ipv6UnicastAdvertiseL2vpnEvpn.IsNull() && !item.Ipv6UnicastAdvertiseL2vpnEvpn.IsUnknown() {
 				if item.Ipv6UnicastAdvertiseL2vpnEvpn.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ipv6-unicast/advertise/l2vpn/evpn", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ipv6-unicast/advertise/l2vpn/evpn")
 				}
 			}
 			if !item.Ipv6UnicastRedistributeConnected.IsNull() && !item.Ipv6UnicastRedistributeConnected.IsUnknown() {
 				if item.Ipv6UnicastRedistributeConnected.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ipv6-unicast/redistribute-v6/connected", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ipv6-unicast/redistribute-v6/connected")
 				}
 			}
 			if !item.Ipv6UnicastRedistributeConnectedRouteMap.IsNull() && !item.Ipv6UnicastRedistributeConnectedRouteMap.IsUnknown() {
@@ -195,8 +191,6 @@ func (data BGPAddressFamilyIPv6VRF) addToBodyXML(ctx context.Context, config BGP
 			if !item.Ipv6UnicastRedistributeStatic.IsNull() && !item.Ipv6UnicastRedistributeStatic.IsUnknown() {
 				if item.Ipv6UnicastRedistributeStatic.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ipv6-unicast/redistribute-v6/static", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ipv6-unicast/redistribute-v6/static")
 				}
 			}
 			if !item.Ipv6UnicastRedistributeStaticRouteMap.IsNull() && !item.Ipv6UnicastRedistributeStaticRouteMap.IsUnknown() {
@@ -232,15 +226,11 @@ func (data BGPAddressFamilyIPv6VRF) addToBodyXML(ctx context.Context, config BGP
 					if !citem.Backdoor.IsNull() && !citem.Backdoor.IsUnknown() {
 						if citem.Backdoor.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "backdoor", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "backdoor")
 						}
 					}
 					if !citem.Evpn.IsNull() && !citem.Evpn.IsUnknown() {
 						if citem.Evpn.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "evpn", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "evpn")
 						}
 					}
 					cBody = helpers.SetRawFromXPath(cBody, "ipv6-unicast/network", ccBody.Res())

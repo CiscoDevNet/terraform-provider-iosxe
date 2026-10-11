@@ -36,14 +36,18 @@ resource "iosxe_bgp_peer_session_template" "example" {
 ### Optional
 
 - `ao_accept_mismatch_connections` (Boolean) accept ao mismatch connections
+  - Default value: `false`
 - `ao_include_tcp_options` (Boolean) Include TCP options
+  - Default value: `false`
 - `ao_keychain` (String) Key Chain Name
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `description` (String) Neighbor specific description
 - `device` (String) A device name from the provider configuration.
 - `disable_connected_check` (Boolean) one-hop away EBGP peer using loopback address
+  - Default value: `false`
 - `ebgp_multihop` (Boolean) Allow EBGP neighbors not on directly connected networks. For single-hop ebgp peers, delete ebgp-multihop directly.
+  - Default value: `false`
 - `ebgp_multihop_max_hop` (Number) - Range: `2`-`255`
 - `inherit_peer_session` (String) Inherit a peer-session template
 - `remote_as` (String) Specify a BGP neighbor remote-as

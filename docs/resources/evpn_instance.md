@@ -41,21 +41,30 @@ resource "iosxe_evpn_instance" "example" {
 
 - `device` (String) A device name from the provider configuration.
 - `vlan_based_auto_route_target` (Boolean) Automatically set a route-target
+  - Default value: `true`
 - `vlan_based_auto_route_target_legacy` (Boolean) Automatically set a route-target (OBSOLETE, use auto-route-target-boolean)
+  - Default value: `false`
 - `vlan_based_default_gateway_advertise` (String) Advertise Default Gateway MAC/IP routes
   - Choices: `disable`, `enable`
 - `vlan_based_encapsulation` (String) Data encapsulation method
   - Choices: `mpls`, `vxlan`
 - `vlan_based_ip_local_learning_disable` (Boolean) Disable IP local learning from dataplane
+  - Default value: `false`
 - `vlan_based_ip_local_learning_enable` (Boolean) Enable IP local learning from dataplane
+  - Default value: `false`
 - `vlan_based_multicast_advertise` (String) Advertise L2 multicast capability
   - Choices: `disable`, `enable`, `sync-only`
 - `vlan_based_rd` (String) ASN:nn or IP-address:nn
 - `vlan_based_re_originate_route_type5` (Boolean) Re-originate route-type 5
+  - Default value: `false`
 - `vlan_based_replication_type_ingress` (Boolean) Ingress replication
+  - Default value: `false`
 - `vlan_based_replication_type_mp2mp` (Boolean) mp2mp replication
+  - Default value: `false`
 - `vlan_based_replication_type_p2mp` (Boolean) p2mp replication
+  - Default value: `false`
 - `vlan_based_replication_type_static` (Boolean) Static replication
+  - Default value: `false`
 - `vlan_based_route_target_both_legacy` (String) ASN:nn or IP-address:nn
 - `vlan_based_route_target_export_legacy` (String) ASN:nn or IP-address:nn (Obsolete, use rt-value-entry)
 - `vlan_based_route_target_exports` (Attributes List) (see [below for nested schema](#nestedatt--vlan_based_route_target_exports))

@@ -245,8 +245,6 @@ func (data AAAAuthorization) addToBodyXML(ctx context.Context, config AAAAuthori
 			if !item.A1Local.IsNull() && !item.A1Local.IsUnknown() {
 				if item.A1Local.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "a1/local", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "a1/local")
 				}
 			}
 			if !item.A1Group.IsNull() && !item.A1Group.IsUnknown() {
@@ -255,29 +253,21 @@ func (data AAAAuthorization) addToBodyXML(ctx context.Context, config AAAAuthori
 			if !item.A1Radius.IsNull() && !item.A1Radius.IsUnknown() {
 				if item.A1Radius.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "a1/radius", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "a1/radius")
 				}
 			}
 			if !item.A1Tacacs.IsNull() && !item.A1Tacacs.IsUnknown() {
 				if item.A1Tacacs.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "a1/tacacs", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "a1/tacacs")
 				}
 			}
 			if !item.A1IfAuthenticated.IsNull() && !item.A1IfAuthenticated.IsUnknown() {
 				if item.A1IfAuthenticated.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "a1/if-authenticated", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "a1/if-authenticated")
 				}
 			}
 			if !item.A2Local.IsNull() && !item.A2Local.IsUnknown() {
 				if item.A2Local.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "a2/local", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "a2/local")
 				}
 			}
 			if !item.A2Group.IsNull() && !item.A2Group.IsUnknown() {
@@ -286,29 +276,21 @@ func (data AAAAuthorization) addToBodyXML(ctx context.Context, config AAAAuthori
 			if !item.A2Radius.IsNull() && !item.A2Radius.IsUnknown() {
 				if item.A2Radius.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "a2/radius", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "a2/radius")
 				}
 			}
 			if !item.A2Tacacs.IsNull() && !item.A2Tacacs.IsUnknown() {
 				if item.A2Tacacs.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "a2/tacacs", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "a2/tacacs")
 				}
 			}
 			if !item.A2IfAuthenticated.IsNull() && !item.A2IfAuthenticated.IsUnknown() {
 				if item.A2IfAuthenticated.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "a2/if-authenticated", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "a2/if-authenticated")
 				}
 			}
 			if !item.A3Local.IsNull() && !item.A3Local.IsUnknown() {
 				if item.A3Local.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "a3/local", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "a3/local")
 				}
 			}
 			if !item.A3Group.IsNull() && !item.A3Group.IsUnknown() {
@@ -317,29 +299,21 @@ func (data AAAAuthorization) addToBodyXML(ctx context.Context, config AAAAuthori
 			if !item.A3Radius.IsNull() && !item.A3Radius.IsUnknown() {
 				if item.A3Radius.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "a3/radius", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "a3/radius")
 				}
 			}
 			if !item.A3Tacacs.IsNull() && !item.A3Tacacs.IsUnknown() {
 				if item.A3Tacacs.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "a3/tacacs", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "a3/tacacs")
 				}
 			}
 			if !item.A3IfAuthenticated.IsNull() && !item.A3IfAuthenticated.IsUnknown() {
 				if item.A3IfAuthenticated.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "a3/if-authenticated", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "a3/if-authenticated")
 				}
 			}
 			if !item.A4Local.IsNull() && !item.A4Local.IsUnknown() {
 				if item.A4Local.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "a4/local", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "a4/local")
 				}
 			}
 			if !item.A4Group.IsNull() && !item.A4Group.IsUnknown() {
@@ -348,22 +322,16 @@ func (data AAAAuthorization) addToBodyXML(ctx context.Context, config AAAAuthori
 			if !item.A4Radius.IsNull() && !item.A4Radius.IsUnknown() {
 				if item.A4Radius.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "a4/radius", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "a4/radius")
 				}
 			}
 			if !item.A4Tacacs.IsNull() && !item.A4Tacacs.IsUnknown() {
 				if item.A4Tacacs.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "a4/tacacs", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "a4/tacacs")
 				}
 			}
 			if !item.A4IfAuthenticated.IsNull() && !item.A4IfAuthenticated.IsUnknown() {
 				if item.A4IfAuthenticated.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "a4/if-authenticated", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "a4/if-authenticated")
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/exec", cBody.Res())
@@ -378,8 +346,6 @@ func (data AAAAuthorization) addToBodyXML(ctx context.Context, config AAAAuthori
 			if !item.A1Local.IsNull() && !item.A1Local.IsUnknown() {
 				if item.A1Local.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "a1/local", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "a1/local")
 				}
 			}
 			if !item.A1Group.IsNull() && !item.A1Group.IsUnknown() {
@@ -388,8 +354,6 @@ func (data AAAAuthorization) addToBodyXML(ctx context.Context, config AAAAuthori
 			if !item.A2Local.IsNull() && !item.A2Local.IsUnknown() {
 				if item.A2Local.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "a2/local", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "a2/local")
 				}
 			}
 			if !item.A2Group.IsNull() && !item.A2Group.IsUnknown() {
@@ -398,8 +362,6 @@ func (data AAAAuthorization) addToBodyXML(ctx context.Context, config AAAAuthori
 			if !item.A3Local.IsNull() && !item.A3Local.IsUnknown() {
 				if item.A3Local.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "a3/local", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "a3/local")
 				}
 			}
 			if !item.A3Group.IsNull() && !item.A3Group.IsUnknown() {
@@ -408,8 +370,6 @@ func (data AAAAuthorization) addToBodyXML(ctx context.Context, config AAAAuthori
 			if !item.A4Local.IsNull() && !item.A4Local.IsUnknown() {
 				if item.A4Local.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "a4/local", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "a4/local")
 				}
 			}
 			if !item.A4Group.IsNull() && !item.A4Group.IsUnknown() {
@@ -433,36 +393,26 @@ func (data AAAAuthorization) addToBodyXML(ctx context.Context, config AAAAuthori
 			if !item.A1Local.IsNull() && !item.A1Local.IsUnknown() {
 				if item.A1Local.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "a1/local", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "a1/local")
 				}
 			}
 			if !item.A1IfAuthenticated.IsNull() && !item.A1IfAuthenticated.IsUnknown() {
 				if item.A1IfAuthenticated.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "a1/if-authenticated", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "a1/if-authenticated")
 				}
 			}
 			if !item.A1None.IsNull() && !item.A1None.IsUnknown() {
 				if item.A1None.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "a1/none", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "a1/none")
 				}
 			}
 			if !item.A1Radius.IsNull() && !item.A1Radius.IsUnknown() {
 				if item.A1Radius.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "a1/radius", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "a1/radius")
 				}
 			}
 			if !item.A1Tacacs.IsNull() && !item.A1Tacacs.IsUnknown() {
 				if item.A1Tacacs.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "a1/tacacs", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "a1/tacacs")
 				}
 			}
 			if !item.A2Group.IsNull() && !item.A2Group.IsUnknown() {
@@ -471,36 +421,26 @@ func (data AAAAuthorization) addToBodyXML(ctx context.Context, config AAAAuthori
 			if !item.A2Local.IsNull() && !item.A2Local.IsUnknown() {
 				if item.A2Local.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "a2/local", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "a2/local")
 				}
 			}
 			if !item.A2IfAuthenticated.IsNull() && !item.A2IfAuthenticated.IsUnknown() {
 				if item.A2IfAuthenticated.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "a2/if-authenticated", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "a2/if-authenticated")
 				}
 			}
 			if !item.A2None.IsNull() && !item.A2None.IsUnknown() {
 				if item.A2None.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "a2/none", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "a2/none")
 				}
 			}
 			if !item.A2Radius.IsNull() && !item.A2Radius.IsUnknown() {
 				if item.A2Radius.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "a2/radius", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "a2/radius")
 				}
 			}
 			if !item.A2Tacacs.IsNull() && !item.A2Tacacs.IsUnknown() {
 				if item.A2Tacacs.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "a2/tacacs", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "a2/tacacs")
 				}
 			}
 			if !item.A3Group.IsNull() && !item.A3Group.IsUnknown() {
@@ -509,36 +449,26 @@ func (data AAAAuthorization) addToBodyXML(ctx context.Context, config AAAAuthori
 			if !item.A3Local.IsNull() && !item.A3Local.IsUnknown() {
 				if item.A3Local.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "a3/local", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "a3/local")
 				}
 			}
 			if !item.A3IfAuthenticated.IsNull() && !item.A3IfAuthenticated.IsUnknown() {
 				if item.A3IfAuthenticated.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "a3/if-authenticated", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "a3/if-authenticated")
 				}
 			}
 			if !item.A3None.IsNull() && !item.A3None.IsUnknown() {
 				if item.A3None.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "a3/none", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "a3/none")
 				}
 			}
 			if !item.A3Radius.IsNull() && !item.A3Radius.IsUnknown() {
 				if item.A3Radius.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "a3/radius", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "a3/radius")
 				}
 			}
 			if !item.A3Tacacs.IsNull() && !item.A3Tacacs.IsUnknown() {
 				if item.A3Tacacs.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "a3/tacacs", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "a3/tacacs")
 				}
 			}
 			if !item.A4Group.IsNull() && !item.A4Group.IsUnknown() {
@@ -547,36 +477,26 @@ func (data AAAAuthorization) addToBodyXML(ctx context.Context, config AAAAuthori
 			if !item.A4Local.IsNull() && !item.A4Local.IsUnknown() {
 				if item.A4Local.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "a4/local", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "a4/local")
 				}
 			}
 			if !item.A4IfAuthenticated.IsNull() && !item.A4IfAuthenticated.IsUnknown() {
 				if item.A4IfAuthenticated.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "a4/if-authenticated", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "a4/if-authenticated")
 				}
 			}
 			if !item.A4None.IsNull() && !item.A4None.IsUnknown() {
 				if item.A4None.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "a4/none", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "a4/none")
 				}
 			}
 			if !item.A4Radius.IsNull() && !item.A4Radius.IsUnknown() {
 				if item.A4Radius.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "a4/radius", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "a4/radius")
 				}
 			}
 			if !item.A4Tacacs.IsNull() && !item.A4Tacacs.IsUnknown() {
 				if item.A4Tacacs.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "a4/tacacs", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "a4/tacacs")
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/commands", cBody.Res())
@@ -585,8 +505,6 @@ func (data AAAAuthorization) addToBodyXML(ctx context.Context, config AAAAuthori
 	if !data.ConfigCommands.IsNull() && !data.ConfigCommands.IsUnknown() {
 		if data.ConfigCommands.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/config-commands", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/config-commands")
 		}
 	}
 	if len(data.ConfigLists) > 0 {
@@ -604,15 +522,11 @@ func (data AAAAuthorization) addToBodyXML(ctx context.Context, config AAAAuthori
 			if !item.Group1Radius.IsNull() && !item.Group1Radius.IsUnknown() {
 				if item.Group1Radius.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "group1/radius", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "group1/radius")
 				}
 			}
 			if !item.Group1Tacacs.IsNull() && !item.Group1Tacacs.IsUnknown() {
 				if item.Group1Tacacs.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "group1/tacacs", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "group1/tacacs")
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/configuration/config-list", cBody.Res())
@@ -621,8 +535,6 @@ func (data AAAAuthorization) addToBodyXML(ctx context.Context, config AAAAuthori
 	if !data.Console.IsNull() && !data.Console.IsUnknown() {
 		if data.Console.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/console", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/console")
 		}
 	}
 	return body

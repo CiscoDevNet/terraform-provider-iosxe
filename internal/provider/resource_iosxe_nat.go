@@ -32,6 +32,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -105,8 +106,10 @@ func (r *NATResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 										Required:            true,
 									},
 									"overload": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Overload an address translation").String,
+										MarkdownDescription: helpers.NewAttributeDescription("Overload an address translation").AddDefaultValueDescription("false").String,
 										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(false),
 									},
 								},
 							},
@@ -145,24 +148,32 @@ func (r *NATResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 							Optional:            true,
 						},
 						"extendable": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Extend this translation when used").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Extend this translation when used").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"no_alias": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Do not create an alias for the global address").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Do not create an alias for the global address").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"no_payload": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("No translation of embedded address/port in the payload").String,
+							MarkdownDescription: helpers.NewAttributeDescription("No translation of embedded address/port in the payload").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"route_map": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Specify route-map").String,
 							Optional:            true,
 						},
 						"reversible": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							MarkdownDescription: helpers.NewAttributeDescription("").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"redundancy": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("NAT redundancy operation").String,
@@ -176,16 +187,22 @@ func (r *NATResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 							},
 						},
 						"stateless": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("No flow entries (session) for mapping").String,
+							MarkdownDescription: helpers.NewAttributeDescription("No flow entries (session) for mapping").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"forced": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Delete this entry and its children, even if in use").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Delete this entry and its children, even if in use").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"inside_static_overload": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Overload an address translation").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Overload an address translation").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"inside_static_pool": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Name pool of local addresses").String,
@@ -229,20 +246,26 @@ func (r *NATResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 							Optional:            true,
 						},
 						"extendable": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Extend this translation when used").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Extend this translation when used").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"no_payload": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("No translation of embedded address/port in the payload").String,
+							MarkdownDescription: helpers.NewAttributeDescription("No translation of embedded address/port in the payload").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"redundancy": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("NAT redundancy operation").String,
 							Optional:            true,
 						},
 						"match_in_vrf": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Match incoming vrf").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Match incoming vrf").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"outside_static_pool": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Name pool of local addresses").String,

@@ -105,30 +105,40 @@ resource "iosxe_template" "example" {
 ### Optional
 
 - `access_session_closed` (Boolean) Enable closed access on port (disabled by default, i.e. open access)
+  - Default value: `false`
 - `access_session_control_direction` (String) Set the control-direction on the interface
   - Choices: `both`, `in`
 - `access_session_host_mode` (String) Set the Host mode for authentication on this interface
   - Choices: `multi-auth`, `multi-domain`, `multi-host`, `single-host`
 - `access_session_interface_template_sticky` (Boolean) Interface templates set to sticky
+  - Default value: `false`
 - `access_session_interface_template_sticky_timer` (Number) Sticky timer value
   - Range: `1`-`65535`
 - `access_session_monitor` (Boolean) Apply template to monitor access sessions on the port
+  - Default value: `true`
 - `access_session_port_control` (String) Set the port-control value
   - Choices: `auto`, `force-authorized`, `force-unauthorized`
 - `authentication_periodic` (Boolean) Enable or Disable Reauthentication for this port
+  - Default value: `false`
 - `authentication_timer_reauthenticate_range` (Number) Enter a value between 1 and 1073741823
   - Range: `1`-`1073741823`
 - `authentication_timer_reauthenticate_server` (Boolean) Obtain re-authentication timeout value from the server
+  - Default value: `false`
 - `cts_manual` (Boolean) Supply local configuration for CTS parameters
+  - Default value: `false`
 - `cts_manual_policy_static_sgt` (Number) Source Security Group Tag to apply to untagged or non-trusted incoming traffic
   - Range: `2`-`65519`
 - `cts_manual_policy_static_trusted` (Boolean) Trust the Source Group Tags (SGT) that the peer uses for sending
+  - Default value: `false`
 - `cts_manual_propagate_sgt` (Boolean) CTS SGT Propagation configuration
+  - Default value: `true`
 - `cts_role_based_enforcement` (Boolean) Enable Role-based Access Control enforcement
+  - Default value: `false`
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
 - `device_tracking` (Boolean) Configure device-tracking on the interface
+  - Default value: `false`
 - `device_tracking_attach_policy` (Attributes List) policy name for device tracking (see [below for nested schema](#nestedatt--device_tracking_attach_policy))
 - `device_tracking_vlan_range` (String) VLAN IDs of the VLANs for which this policy applies
 - `dot1x_max_reauth_req` (Number) Max No. of Reauthentication Attempts
@@ -151,22 +161,33 @@ resource "iosxe_template" "example" {
 - `ip_dhcp_snooping_limit_rate` (Number) DHCP snooping rate limit
   - Range: `1`-`2048`
 - `ip_dhcp_snooping_trust` (Boolean) DHCP Snooping trust config
+  - Default value: `false`
 - `load_interval` (Number) Load interval delay in seconds
   - Range: `30`-`600`
 - `mab` (Boolean) MAC Authentication Bypass Interface Config Commands
+  - Default value: `false`
 - `mab_eap` (Boolean) Use EAP authentication for MAC Auth Bypass
+  - Default value: `false`
 - `service_policy_input` (String) policy-map name
 - `service_policy_output` (String) policy-map name
 - `service_policy_type_control_subscriber` (String) Apply a subscriber control policy to the interface
 - `source_template` (String) Get config from a template
 - `spanning_tree_bpduguard_enable` (Boolean) Enable BPDU guard for this interface
+  - Default value: `false`
 - `spanning_tree_portfast` (Boolean) Portfast options for the interface
+  - Default value: `false`
 - `spanning_tree_portfast_disable` (Boolean) Disable portfast for this interface
+  - Default value: `false`
 - `spanning_tree_portfast_edge` (Boolean) Enable portfast edge on the interface
+  - Default value: `false`
 - `spanning_tree_portfast_network` (Boolean) Enable portfast network on the interface
+  - Default value: `false`
 - `spanning_tree_service_policy` (Boolean) help
+  - Default value: `false`
 - `storm_control_action_shutdown` (Boolean) Shutdown this interface if a storm occurs
+  - Default value: `false`
 - `storm_control_action_trap` (Boolean) Send SNMP trap if a storm occurs
+  - Default value: `false`
 - `storm_control_broadcast_level_bps_threshold` (Number) Enter threshold
 - `storm_control_broadcast_level_pps_threshold` (String) Enter threshold
 - `storm_control_broadcast_level_threshold` (Number) Enter threshold
@@ -174,33 +195,49 @@ resource "iosxe_template" "example" {
 - `storm_control_multicast_level_pps_threshold` (String) Enter threshold
 - `storm_control_multicast_level_threshold` (Number) Enter threshold
 - `subscriber_aging_inactivity_timer_probe` (Boolean) ARP probe
+  - Default value: `false`
 - `subscriber_aging_inactivity_timer_value` (Number) Enter a value between 1 and 65535 in seconds
   - Range: `1`-`65535`
 - `subscriber_aging_probe` (Boolean) ARP probe
+  - Default value: `false`
 - `switchport_access_vlan` (Number) VLAN ID of the VLAN when this port is in access mode
   - Range: `1`-`4094`
 - `switchport_block_unicast` (Boolean) Block unknown unicast addresses
+  - Default value: `false`
 - `switchport_mode_access` (Boolean) Set trunking mode to ACCESS unconditionally
+  - Default value: `false`
 - `switchport_mode_trunk` (Boolean) Set trunking mode to TRUNK unconditionally
+  - Default value: `false`
 - `switchport_nonegotiate` (Boolean) Device will not engage in negotiation protocol on this interface
+  - Default value: `false`
 - `switchport_port_security` (Boolean) Security related command
+  - Default value: `false`
 - `switchport_port_security_aging_static` (Boolean) Enable aging for configured secure addresses
+  - Default value: `false`
 - `switchport_port_security_aging_time` (Number) Port-security aging time
   - Range: `1`-`1440`
 - `switchport_port_security_aging_type` (Boolean) Port-security aging type
+  - Default value: `false`
 - `switchport_port_security_aging_type_inactivity` (Boolean) Aging based on inactivity time period
+  - Default value: `false`
 - `switchport_port_security_maximum_range` (Attributes List) (see [below for nested schema](#nestedatt--switchport_port_security_maximum_range))
 - `switchport_port_security_violation_protect` (Boolean) Security violation protect mode
+  - Default value: `false`
 - `switchport_port_security_violation_restrict` (Boolean) Security violation restrict mode
+  - Default value: `false`
 - `switchport_port_security_violation_shutdown` (Boolean) Security violation shutdown mode
+  - Default value: `false`
 - `switchport_private_vlan_host_association_primary_range` (Number) Primary normal range VLAN ID of the private VLAN port association
   - Range: `2`-`1001`
 - `switchport_private_vlan_host_association_secondary_range` (Number) Secondary normal range VLAN ID of the private VLAN host port association
   - Range: `2`-`1001`
 - `switchport_trunk_allowed_vlans` (String) VLAN IDs of the allowed VLANs when this port is in trunking mode
 - `switchport_trunk_allowed_vlans_all` (Boolean) all VLANs
+  - Default value: `false`
 - `switchport_trunk_allowed_vlans_none` (Boolean) no VLANs
+  - Default value: `false`
 - `switchport_trunk_native_vlan_tag` (Boolean) Set native VLAN tagging state
+  - Default value: `true`
 - `switchport_trunk_native_vlan_vlan_id` (Number) VLAN ID of the native VLAN when this port is in trunking mode
   - Range: `1`-`4094`
 - `switchport_voice_vlan` (Number) Vlan for voice traffic
@@ -246,7 +283,9 @@ Required:
 Optional:
 
 - `vlan` (Boolean) Max secure addresses per vlan
+  - Default value: `false`
 - `vlan_access` (Boolean) access vlan
+  - Default value: `false`
 
 ## Import
 

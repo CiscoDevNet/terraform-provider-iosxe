@@ -266,11 +266,17 @@ func (data {{camelCase .Name}}) addToBodyXML(ctx context.Context, config {{camel
 		{{- else if eq .Type "Float64"}}
 		body = helpers.SetFromXPath(body, data.getXPath() + "/{{.XPath}}", strconv.FormatFloat(data.{{toGoName .TfName}}.ValueFloat64(), 'f', 1, 64))
 		{{- else if and (eq .Type "Bool") (ne .TypeYangBool "boolean")}}
+		{{- if eq .DefaultValue "false"}}
+		if data.{{toGoName .TfName}}.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath() + "/{{.XPath}}", "")
+		}
+		{{- else}}
 		if data.{{toGoName .TfName}}.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath() + "/{{.XPath}}", "")
 		} else {
 			body = helpers.RemoveFromXPath(body, data.getXPath() + "/{{.XPath}}")
 		}
+		{{- end}}
 		{{- else if and (eq .Type "Bool") (eq .TypeYangBool "boolean")}}
 		body = helpers.SetFromXPath(body, data.getXPath() + "/{{.XPath}}", data.{{toGoName .TfName}}.ValueBool())
 		{{- else if eq .Type "String"}}
@@ -320,11 +326,17 @@ func (data {{camelCase .Name}}) addToBodyXML(ctx context.Context, config {{camel
 				{{- else if eq .Type "Float64"}}
 				cBody = helpers.SetFromXPath(cBody, "{{.XPath}}", strconv.FormatFloat(item.{{toGoName .TfName}}.ValueFloat64(), 'f', 1, 64))
 				{{- else if and (eq .Type "Bool") (ne .TypeYangBool "boolean")}}
+				{{- if eq .DefaultValue "false"}}
+				if item.{{toGoName .TfName}}.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "{{.XPath}}", "")
+				}
+				{{- else}}
 				if item.{{toGoName .TfName}}.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "{{.XPath}}", "")
 				} else {
 					cBody = helpers.RemoveFromXPath(cBody, "{{.XPath}}")
 				}
+				{{- end}}
 				{{- else if and (eq .Type "Bool") (eq .TypeYangBool "boolean")}}
 				cBody = helpers.SetFromXPath(cBody, "{{.XPath}}", item.{{toGoName .TfName}}.ValueBool())
 				{{- else if eq .Type "String"}}
@@ -376,11 +388,17 @@ func (data {{camelCase .Name}}) addToBodyXML(ctx context.Context, config {{camel
 								{{- if eq .Type "Int64"}}
 								cccBody = helpers.SetFromXPath(cccBody, "{{.XPath}}", strconv.FormatInt(ccitem.{{toGoName .TfName}}.ValueInt64(), 10))
 								{{- else if and (eq .Type "Bool") (ne .TypeYangBool "boolean")}}
+								{{- if eq .DefaultValue "false"}}
+								if ccitem.{{toGoName .TfName}}.ValueBool() {
+									cccBody = helpers.SetFromXPath(cccBody, "{{.XPath}}", "")
+								}
+								{{- else}}
 								if ccitem.{{toGoName .TfName}}.ValueBool() {
 									cccBody = helpers.SetFromXPath(cccBody, "{{.XPath}}", "")
 								} else {
 									cccBody = helpers.RemoveFromXPath(cccBody, "{{.XPath}}")
 								}
+								{{- end}}
 								{{- else if and (eq .Type "Bool") (eq .TypeYangBool "boolean")}}
 								cccBody = helpers.SetFromXPath(cccBody, "{{.XPath}}", ccitem.{{toGoName .TfName}}.ValueBool())
 								{{- else if eq .Type "String"}}
@@ -404,11 +422,17 @@ func (data {{camelCase .Name}}) addToBodyXML(ctx context.Context, config {{camel
 						{{- else if eq .Type "Float64"}}
 						ccBody = helpers.SetFromXPath(ccBody, "{{.XPath}}", strconv.FormatFloat(citem.{{toGoName .TfName}}.ValueFloat64(), 'f', 1, 64))
 						{{- else if and (eq .Type "Bool") (ne .TypeYangBool "boolean")}}
+						{{- if eq .DefaultValue "false"}}
+						if citem.{{toGoName .TfName}}.ValueBool() {
+							ccBody = helpers.SetFromXPath(ccBody, "{{.XPath}}", "")
+						}
+						{{- else}}
 						if citem.{{toGoName .TfName}}.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "{{.XPath}}", "")
 						} else {
 							ccBody = helpers.RemoveFromXPath(ccBody, "{{.XPath}}")
 						}
+						{{- end}}
 						{{- else if and (eq .Type "Bool") (eq .TypeYangBool "boolean")}}
 						ccBody = helpers.SetFromXPath(ccBody, "{{.XPath}}", citem.{{toGoName .TfName}}.ValueBool())
 						{{- else if eq .Type "String"}}

@@ -88,8 +88,6 @@ func (data Crypto) addToBodyXML(ctx context.Context, config Crypto, body netconf
 	if !data.EngineComplianceShieldDisable.IsNull() && !data.EngineComplianceShieldDisable.IsUnknown() {
 		if data.EngineComplianceShieldDisable.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-crypto:engine/compliance/shield/disable", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-crypto:engine/compliance/shield/disable")
 		}
 	}
 	return body

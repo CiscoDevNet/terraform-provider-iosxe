@@ -197,8 +197,6 @@ func (data FlowExporter) addToBodyXML(ctx context.Context, config FlowExporter, 
 	if !data.OptionSamplerTable.IsNull() && !data.OptionSamplerTable.IsUnknown() {
 		if data.OptionSamplerTable.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/option/sampler-table", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/option/sampler-table")
 		}
 	}
 	if !data.OptionApplicationTableTimeout.IsNull() && !data.OptionApplicationTableTimeout.IsUnknown() {

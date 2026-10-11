@@ -31,6 +31,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -86,24 +87,34 @@ func (r *SpanningTreeResource) Schema(ctx context.Context, req resource.SchemaRe
 				},
 			},
 			"logging": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable Spanning tree logging").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable Spanning tree logging").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"loopguard_default": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable loopguard by default on all ports").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable loopguard by default on all ports").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"portfast_default": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable portfast by default on all access ports").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable portfast by default on all access ports").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"portfast_bpduguard_default": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable bpdu guard by default on all portfast edge ports").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable bpdu guard by default on all portfast edge ports").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"extend_system_id": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Extend system-id into priority portion of the bridge id (PVST & Rapid PVST only)").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Extend system-id into priority portion of the bridge id (PVST & Rapid PVST only)").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"mst_instances": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Map vlans to an MST instance").String,

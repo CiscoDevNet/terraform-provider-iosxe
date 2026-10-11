@@ -144,176 +144,126 @@ func (data CryptoIKEv2Proposal) addToBodyXML(ctx context.Context, config CryptoI
 	if !data.EncryptionEn3des.IsNull() && !data.EncryptionEn3des.IsUnknown() {
 		if data.EncryptionEn3des.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/encryption/en-3des", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/encryption/en-3des")
 		}
 	}
 	if !data.EncryptionAesCbc128.IsNull() && !data.EncryptionAesCbc128.IsUnknown() {
 		if data.EncryptionAesCbc128.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/encryption/aes-cbc-128", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/encryption/aes-cbc-128")
 		}
 	}
 	if !data.EncryptionAesCbc192.IsNull() && !data.EncryptionAesCbc192.IsUnknown() {
 		if data.EncryptionAesCbc192.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/encryption/aes-cbc-192", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/encryption/aes-cbc-192")
 		}
 	}
 	if !data.EncryptionAesCbc256.IsNull() && !data.EncryptionAesCbc256.IsUnknown() {
 		if data.EncryptionAesCbc256.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/encryption/aes-cbc-256", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/encryption/aes-cbc-256")
 		}
 	}
 	if !data.EncryptionAesGcm128.IsNull() && !data.EncryptionAesGcm128.IsUnknown() {
 		if data.EncryptionAesGcm128.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/encryption/aes-gcm-128", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/encryption/aes-gcm-128")
 		}
 	}
 	if !data.EncryptionAesGcm256.IsNull() && !data.EncryptionAesGcm256.IsUnknown() {
 		if data.EncryptionAesGcm256.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/encryption/aes-gcm-256", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/encryption/aes-gcm-256")
 		}
 	}
 	if !data.GroupOne.IsNull() && !data.GroupOne.IsUnknown() {
 		if data.GroupOne.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/group/one", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/group/one")
 		}
 	}
 	if !data.GroupTwo.IsNull() && !data.GroupTwo.IsUnknown() {
 		if data.GroupTwo.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/group/two", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/group/two")
 		}
 	}
 	if !data.GroupFourteen.IsNull() && !data.GroupFourteen.IsUnknown() {
 		if data.GroupFourteen.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/group/fourteen", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/group/fourteen")
 		}
 	}
 	if !data.GroupFifteen.IsNull() && !data.GroupFifteen.IsUnknown() {
 		if data.GroupFifteen.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/group/fifteen", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/group/fifteen")
 		}
 	}
 	if !data.GroupSixteen.IsNull() && !data.GroupSixteen.IsUnknown() {
 		if data.GroupSixteen.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/group/sixteen", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/group/sixteen")
 		}
 	}
 	if !data.GroupNineteen.IsNull() && !data.GroupNineteen.IsUnknown() {
 		if data.GroupNineteen.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/group/nineteen", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/group/nineteen")
 		}
 	}
 	if !data.GroupTwenty.IsNull() && !data.GroupTwenty.IsUnknown() {
 		if data.GroupTwenty.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/group/twenty", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/group/twenty")
 		}
 	}
 	if !data.GroupTwentyOne.IsNull() && !data.GroupTwentyOne.IsUnknown() {
 		if data.GroupTwentyOne.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/group/twenty-one", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/group/twenty-one")
 		}
 	}
 	if !data.GroupTwentyFour.IsNull() && !data.GroupTwentyFour.IsUnknown() {
 		if data.GroupTwentyFour.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/group/twenty-four", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/group/twenty-four")
 		}
 	}
 	if !data.IntegrityMd5.IsNull() && !data.IntegrityMd5.IsUnknown() {
 		if data.IntegrityMd5.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/integrity/md5", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/integrity/md5")
 		}
 	}
 	if !data.IntegritySha1.IsNull() && !data.IntegritySha1.IsUnknown() {
 		if data.IntegritySha1.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/integrity/sha1", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/integrity/sha1")
 		}
 	}
 	if !data.IntegritySha256.IsNull() && !data.IntegritySha256.IsUnknown() {
 		if data.IntegritySha256.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/integrity/sha256", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/integrity/sha256")
 		}
 	}
 	if !data.IntegritySha384.IsNull() && !data.IntegritySha384.IsUnknown() {
 		if data.IntegritySha384.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/integrity/sha384", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/integrity/sha384")
 		}
 	}
 	if !data.IntegritySha512.IsNull() && !data.IntegritySha512.IsUnknown() {
 		if data.IntegritySha512.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/integrity/sha512", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/integrity/sha512")
 		}
 	}
 	if !data.PrfMd5.IsNull() && !data.PrfMd5.IsUnknown() {
 		if data.PrfMd5.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/prf/md5", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/prf/md5")
 		}
 	}
 	if !data.PrfSha1.IsNull() && !data.PrfSha1.IsUnknown() {
 		if data.PrfSha1.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/prf/sha1", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/prf/sha1")
 		}
 	}
 	if !data.PrfSha256.IsNull() && !data.PrfSha256.IsUnknown() {
 		if data.PrfSha256.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/prf/sha256", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/prf/sha256")
 		}
 	}
 	if !data.PrfSha384.IsNull() && !data.PrfSha384.IsUnknown() {
 		if data.PrfSha384.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/prf/sha384", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/prf/sha384")
 		}
 	}
 	if !data.PrfSha512.IsNull() && !data.PrfSha512.IsUnknown() {
 		if data.PrfSha512.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/prf/sha512", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/prf/sha512")
 		}
 	}
 	return body

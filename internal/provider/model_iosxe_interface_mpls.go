@@ -98,8 +98,6 @@ func (data InterfaceMPLS) addToBodyXML(ctx context.Context, config InterfaceMPLS
 	if !data.Ip.IsNull() && !data.Ip.IsUnknown() {
 		if data.Ip.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-mpls:ip", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-mpls:ip")
 		}
 	}
 	if !data.Mtu.IsNull() && !data.Mtu.IsUnknown() {

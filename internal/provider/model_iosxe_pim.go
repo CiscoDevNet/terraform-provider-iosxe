@@ -210,8 +210,6 @@ func (data PIM) addToBodyXML(ctx context.Context, config PIM, body netconf.Body)
 	if !data.AutorpListener.IsNull() && !data.AutorpListener.IsUnknown() {
 		if data.AutorpListener.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:autorp-container/listener", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:autorp-container/listener")
 		}
 	}
 	if !data.BsrCandidateLoopback.IsNull() && !data.BsrCandidateLoopback.IsUnknown() {
@@ -235,8 +233,6 @@ func (data PIM) addToBodyXML(ctx context.Context, config PIM, body netconf.Body)
 	if !data.SsmDefault.IsNull() && !data.SsmDefault.IsUnknown() {
 		if data.SsmDefault.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:ssm/default", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:ssm/default")
 		}
 	}
 	if !data.RpAddress.IsNull() && !data.RpAddress.IsUnknown() {
@@ -245,15 +241,11 @@ func (data PIM) addToBodyXML(ctx context.Context, config PIM, body netconf.Body)
 	if !data.RpAddressOverride.IsNull() && !data.RpAddressOverride.IsUnknown() {
 		if data.RpAddressOverride.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:rp-address-conf/override", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:rp-address-conf/override")
 		}
 	}
 	if !data.RpAddressBidir.IsNull() && !data.RpAddressBidir.IsUnknown() {
 		if data.RpAddressBidir.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:rp-address-conf/bidir", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:rp-address-conf/bidir")
 		}
 	}
 	if len(data.RpAddresses) > 0 {
@@ -268,15 +260,11 @@ func (data PIM) addToBodyXML(ctx context.Context, config PIM, body netconf.Body)
 			if !item.Override.IsNull() && !item.Override.IsUnknown() {
 				if item.Override.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "override", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "override")
 				}
 			}
 			if !item.Bidir.IsNull() && !item.Bidir.IsUnknown() {
 				if item.Bidir.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "bidir", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "bidir")
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:rp-address-list", cBody.Res())
@@ -300,8 +288,6 @@ func (data PIM) addToBodyXML(ctx context.Context, config PIM, body netconf.Body)
 			if !item.Bidir.IsNull() && !item.Bidir.IsUnknown() {
 				if item.Bidir.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "bidir", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "bidir")
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:rp-candidate", cBody.Res())
@@ -319,8 +305,6 @@ func (data PIM) addToBodyXML(ctx context.Context, config PIM, body netconf.Body)
 			if !item.AutorpListener.IsNull() && !item.AutorpListener.IsUnknown() {
 				if item.AutorpListener.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "autorp-container/listener", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "autorp-container/listener")
 				}
 			}
 			if !item.BsrCandidateLoopback.IsNull() && !item.BsrCandidateLoopback.IsUnknown() {
@@ -344,8 +328,6 @@ func (data PIM) addToBodyXML(ctx context.Context, config PIM, body netconf.Body)
 			if !item.SsmDefault.IsNull() && !item.SsmDefault.IsUnknown() {
 				if item.SsmDefault.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ssm/default", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ssm/default")
 				}
 			}
 			if !item.RpAddress.IsNull() && !item.RpAddress.IsUnknown() {
@@ -354,22 +336,16 @@ func (data PIM) addToBodyXML(ctx context.Context, config PIM, body netconf.Body)
 			if !item.RpAddressOverride.IsNull() && !item.RpAddressOverride.IsUnknown() {
 				if item.RpAddressOverride.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "rp-address-conf/override", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "rp-address-conf/override")
 				}
 			}
 			if !item.RpAddressBidir.IsNull() && !item.RpAddressBidir.IsUnknown() {
 				if item.RpAddressBidir.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "rp-address-conf/bidir", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "rp-address-conf/bidir")
 				}
 			}
 			if !item.CacheRpfOif.IsNull() && !item.CacheRpfOif.IsUnknown() {
 				if item.CacheRpfOif.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "cache/rpf-oif", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "cache/rpf-oif")
 				}
 			}
 			if len(item.RpAddresses) > 0 {
@@ -384,15 +360,11 @@ func (data PIM) addToBodyXML(ctx context.Context, config PIM, body netconf.Body)
 					if !citem.Override.IsNull() && !citem.Override.IsUnknown() {
 						if citem.Override.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "override", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "override")
 						}
 					}
 					if !citem.Bidir.IsNull() && !citem.Bidir.IsUnknown() {
 						if citem.Bidir.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "bidir", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "bidir")
 						}
 					}
 					cBody = helpers.SetRawFromXPath(cBody, "rp-address-list", ccBody.Res())
@@ -416,8 +388,6 @@ func (data PIM) addToBodyXML(ctx context.Context, config PIM, body netconf.Body)
 					if !citem.Bidir.IsNull() && !citem.Bidir.IsUnknown() {
 						if citem.Bidir.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "bidir", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "bidir")
 						}
 					}
 					cBody = helpers.SetRawFromXPath(cBody, "rp-candidate", ccBody.Res())

@@ -30,6 +30,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -104,24 +105,34 @@ func (r *ISISResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				},
 			},
 			"metric_style_wide": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Use new style of TLVs to carry wider metric").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Use new style of TLVs to carry wider metric").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"metric_style_narrow": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Use old style of TLVs with narrow metric").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Use old style of TLVs with narrow metric").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"metric_style_transition": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Send and accept both styles of TLVs during transition").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Send and accept both styles of TLVs during transition").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"log_adjacency_changes": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Log changes in adjacency state").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Log changes in adjacency state").AddDefaultValueDescription("true").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
 			},
 			"log_adjacency_changes_all": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Log all adjacency changes including non-IIH events").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Log all adjacency changes including non-IIH events").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 		},
 	}

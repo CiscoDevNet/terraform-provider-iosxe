@@ -194,15 +194,11 @@ func (data KeyChain) addToBodyXML(ctx context.Context, config KeyChain, body net
 	if !data.Macsec.IsNull() && !data.Macsec.IsUnknown() {
 		if data.Macsec.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/macsec", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/macsec")
 		}
 	}
 	if !data.Tcp.IsNull() && !data.Tcp.IsUnknown() {
 		if data.Tcp.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/tcp", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/tcp")
 		}
 	}
 	if len(data.Keys) > 0 {
@@ -241,8 +237,6 @@ func (data KeyChain) addToBodyXML(ctx context.Context, config KeyChain, body net
 			if !item.AcceptLifetimeLocal.IsNull() && !item.AcceptLifetimeLocal.IsUnknown() {
 				if item.AcceptLifetimeLocal.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "accept-lifetime/lifetime-group-v1/local", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "accept-lifetime/lifetime-group-v1/local")
 				}
 			}
 			if !item.AcceptLifetimeStartTime.IsNull() && !item.AcceptLifetimeStartTime.IsUnknown() {
@@ -263,8 +257,6 @@ func (data KeyChain) addToBodyXML(ctx context.Context, config KeyChain, body net
 			if !item.AcceptLifetimeInfinite.IsNull() && !item.AcceptLifetimeInfinite.IsUnknown() {
 				if item.AcceptLifetimeInfinite.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "accept-lifetime/lifetime-group-v1/infinite", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "accept-lifetime/lifetime-group-v1/infinite")
 				}
 			}
 			if !item.AcceptLifetimeEndTime.IsNull() && !item.AcceptLifetimeEndTime.IsUnknown() {
@@ -282,8 +274,6 @@ func (data KeyChain) addToBodyXML(ctx context.Context, config KeyChain, body net
 			if !item.SendLifetimeLocal.IsNull() && !item.SendLifetimeLocal.IsUnknown() {
 				if item.SendLifetimeLocal.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "send-lifetime/lifetime-group-v1/local", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "send-lifetime/lifetime-group-v1/local")
 				}
 			}
 			if !item.SendLifetimeStartTime.IsNull() && !item.SendLifetimeStartTime.IsUnknown() {
@@ -304,8 +294,6 @@ func (data KeyChain) addToBodyXML(ctx context.Context, config KeyChain, body net
 			if !item.SendLifetimeInfinite.IsNull() && !item.SendLifetimeInfinite.IsUnknown() {
 				if item.SendLifetimeInfinite.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "send-lifetime/lifetime-group-v1/infinite", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "send-lifetime/lifetime-group-v1/infinite")
 				}
 			}
 			if !item.SendLifetimeEndTime.IsNull() && !item.SendLifetimeEndTime.IsUnknown() {
@@ -323,8 +311,6 @@ func (data KeyChain) addToBodyXML(ctx context.Context, config KeyChain, body net
 			if !item.MacsecLifetimeLocal.IsNull() && !item.MacsecLifetimeLocal.IsUnknown() {
 				if item.MacsecLifetimeLocal.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "macsec-lifetime/lifetime/lifetime-group-v1/local", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "macsec-lifetime/lifetime/lifetime-group-v1/local")
 				}
 			}
 			if !item.MacsecLifetimeStartTime.IsNull() && !item.MacsecLifetimeStartTime.IsUnknown() {
@@ -345,8 +331,6 @@ func (data KeyChain) addToBodyXML(ctx context.Context, config KeyChain, body net
 			if !item.MacsecLifetimeInfinite.IsNull() && !item.MacsecLifetimeInfinite.IsUnknown() {
 				if item.MacsecLifetimeInfinite.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "macsec-lifetime/lifetime/lifetime-group-v1/infinite", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "macsec-lifetime/lifetime/lifetime-group-v1/infinite")
 				}
 			}
 			if !item.MacsecLifetimeEndTime.IsNull() && !item.MacsecLifetimeEndTime.IsUnknown() {

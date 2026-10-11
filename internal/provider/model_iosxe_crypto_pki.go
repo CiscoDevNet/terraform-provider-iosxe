@@ -122,29 +122,21 @@ func (data CryptoPKI) addToBodyXML(ctx context.Context, config CryptoPKI, body n
 			if !item.EnrollmentPkcs12.IsNull() && !item.EnrollmentPkcs12.IsUnknown() {
 				if item.EnrollmentPkcs12.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "enrollment/enrollment-method/pkcs12", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "enrollment/enrollment-method/pkcs12")
 				}
 			}
 			if !item.EnrollmentSelfsigned.IsNull() && !item.EnrollmentSelfsigned.IsUnknown() {
 				if item.EnrollmentSelfsigned.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "enrollment/enrollment-method/selfsigned", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "enrollment/enrollment-method/selfsigned")
 				}
 			}
 			if !item.EnrollmentModeRa.IsNull() && !item.EnrollmentModeRa.IsUnknown() {
 				if item.EnrollmentModeRa.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "enrollment/mode/ra", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "enrollment/mode/ra")
 				}
 			}
 			if !item.EnrollmentTerminal.IsNull() && !item.EnrollmentTerminal.IsUnknown() {
 				if item.EnrollmentTerminal.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "enrollment/terminal", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "enrollment/terminal")
 				}
 			}
 			if !item.RevocationCheck.IsNull() && !item.RevocationCheck.IsUnknown() {

@@ -304,36 +304,26 @@ func (data DHCP) addToBodyXML(ctx context.Context, config DHCP, body netconf.Bod
 	if !data.RelayInformationTrustAll.IsNull() && !data.RelayInformationTrustAll.IsUnknown() {
 		if data.RelayInformationTrustAll.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/trust-all", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/trust-all")
 		}
 	}
 	if !data.RelayInformationOptionDefault.IsNull() && !data.RelayInformationOptionDefault.IsUnknown() {
 		if data.RelayInformationOptionDefault.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/option-default", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/option-default")
 		}
 	}
 	if !data.RelayInformationOptionVpn.IsNull() && !data.RelayInformationOptionVpn.IsUnknown() {
 		if data.RelayInformationOptionVpn.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn")
 		}
 	}
 	if !data.RelayBootpIgnore.IsNull() && !data.RelayBootpIgnore.IsUnknown() {
 		if data.RelayBootpIgnore.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/bootp/ignore", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/bootp/ignore")
 		}
 	}
 	if !data.Snooping.IsNull() && !data.Snooping.IsUnknown() {
 		if data.Snooping.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping")
 		}
 	}
 	if !data.SnoopingInformationOption.IsNull() && !data.SnoopingInformationOption.IsUnknown() {
@@ -342,8 +332,6 @@ func (data DHCP) addToBodyXML(ctx context.Context, config DHCP, body netconf.Bod
 	if !data.SnoopingInformationOptionAllowUntrusted.IsNull() && !data.SnoopingInformationOptionAllowUntrusted.IsUnknown() {
 		if data.SnoopingInformationOptionAllowUntrusted.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/allow-untrusted", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/allow-untrusted")
 		}
 	}
 	if !data.SnoopingInformationOptionFormatRemoteIdString.IsNull() && !data.SnoopingInformationOptionFormatRemoteIdString.IsUnknown() {
@@ -352,8 +340,6 @@ func (data DHCP) addToBodyXML(ctx context.Context, config DHCP, body netconf.Bod
 	if !data.SnoopingInformationOptionFormatRemoteIdHostname.IsNull() && !data.SnoopingInformationOptionFormatRemoteIdHostname.IsUnknown() {
 		if data.SnoopingInformationOptionFormatRemoteIdHostname.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/format/remote-id/hostname", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/format/remote-id/hostname")
 		}
 	}
 	if len(data.SnoopingVlansLegacy) > 0 {
@@ -456,8 +442,6 @@ func (data DHCP) addToBodyXML(ctx context.Context, config DHCP, body netconf.Bod
 			if !item.LeaseInfinite.IsNull() && !item.LeaseInfinite.IsUnknown() {
 				if item.LeaseInfinite.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "lease/infinite", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "lease/infinite")
 				}
 			}
 			if !item.UtilizationMarkHigh.IsNull() && !item.UtilizationMarkHigh.IsUnknown() {
@@ -466,8 +450,6 @@ func (data DHCP) addToBodyXML(ctx context.Context, config DHCP, body netconf.Bod
 			if !item.UtilizationMarkHighLog.IsNull() && !item.UtilizationMarkHighLog.IsUnknown() {
 				if item.UtilizationMarkHighLog.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "utilization/mark/high/log", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "utilization/mark/high/log")
 				}
 			}
 			if !item.UtilizationMarkLow.IsNull() && !item.UtilizationMarkLow.IsUnknown() {
@@ -476,8 +458,6 @@ func (data DHCP) addToBodyXML(ctx context.Context, config DHCP, body netconf.Bod
 			if !item.UtilizationMarkLowLog.IsNull() && !item.UtilizationMarkLowLog.IsUnknown() {
 				if item.UtilizationMarkLowLog.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "utilization/mark/low/log", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "utilization/mark/low/log")
 				}
 			}
 			if !item.SubnetPrefixLength.IsNull() && !item.SubnetPrefixLength.IsUnknown() {
@@ -598,8 +578,6 @@ func (data DHCP) addToBodyXML(ctx context.Context, config DHCP, body netconf.Bod
 			if !item.OptionIncludeAll.IsNull() && !item.OptionIncludeAll.IsUnknown() {
 				if item.OptionIncludeAll.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "option/include-all", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "option/include-all")
 				}
 			}
 			if len(item.VendorSpecifics) > 0 {
@@ -632,15 +610,11 @@ func (data DHCP) addToBodyXML(ctx context.Context, config DHCP, body netconf.Bod
 			if !item.ImportDnsServer.IsNull() && !item.ImportDnsServer.IsUnknown() {
 				if item.ImportDnsServer.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "import/dns-server", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "import/dns-server")
 				}
 			}
 			if !item.ImportDomainName.IsNull() && !item.ImportDomainName.IsUnknown() {
 				if item.ImportDomainName.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "import/domain-name", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "import/domain-name")
 				}
 			}
 			if !item.SntpAddresses.IsNull() && !item.SntpAddresses.IsUnknown() {
@@ -662,8 +636,6 @@ func (data DHCP) addToBodyXML(ctx context.Context, config DHCP, body netconf.Bod
 			if !item.InformationRefreshInfinite.IsNull() && !item.InformationRefreshInfinite.IsUnknown() {
 				if item.InformationRefreshInfinite.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "information/refresh/infinite", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "information/refresh/infinite")
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool", cBody.Res())

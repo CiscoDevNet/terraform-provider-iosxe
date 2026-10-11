@@ -117,16 +117,20 @@ func (r *BGPIPv4UnicastVRFNeighborResource) Schema(ctx context.Context, req reso
 				Optional:            true,
 			},
 			"shutdown": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Administratively shut down this neighbor").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Administratively shut down this neighbor").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"cluster_id": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
 			},
 			"log_neighbor_changes_disable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("disable").String,
+				MarkdownDescription: helpers.NewAttributeDescription("disable").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"password_type": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Encryption type (0 to disable encryption, 7 for proprietary)").AddIntegerRangeDescription(0, 7).String,
@@ -186,32 +190,44 @@ func (r *BGPIPv4UnicastVRFNeighborResource) Schema(ctx context.Context, req reso
 				Optional:            true,
 			},
 			"fall_over_bfd": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Use BFD to detect failure").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Use BFD to detect failure").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"fall_over_bfd_multi_hop": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Force BFD multi-hop to detect failure").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Force BFD multi-hop to detect failure").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"fall_over_bfd_single_hop": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Force BFD single-hop to detect failure").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Force BFD single-hop to detect failure").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"fall_over_bfd_check_control_plane_failure": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Retrieve control plane dependent failure info from BFD for BGP GR/NSR operation").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Retrieve control plane dependent failure info from BFD for BGP GR/NSR operation").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"fall_over_bfd_strict_mode": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable BFD strict-mode").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable BFD strict-mode").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"fall_over_maximum_metric_route_map": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
 			},
 			"disable_connected_check": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("one-hop away EBGP peer using loopback address").String,
+				MarkdownDescription: helpers.NewAttributeDescription("one-hop away EBGP peer using loopback address").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ttl_security_hops": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("IP hops").AddIntegerRangeDescription(1, 254).String,
@@ -225,16 +241,22 @@ func (r *BGPIPv4UnicastVRFNeighborResource) Schema(ctx context.Context, req reso
 				Optional:            true,
 			},
 			"local_as_no_prepend": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Do not prepend local-as to updates from ebgp peers").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Do not prepend local-as to updates from ebgp peers").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"local_as_replace_as": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Replace real AS with local AS in the EBGP updates").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Replace real AS with local AS in the EBGP updates").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"local_as_dual_as": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Accept either real AS or local AS from the ebgp peer").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Accept either real AS or local AS from the ebgp peer").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"update_source_interface_loopback": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Loopback interface").String,
@@ -254,8 +276,10 @@ func (r *BGPIPv4UnicastVRFNeighborResource) Schema(ctx context.Context, req reso
 				},
 			},
 			"route_reflector_client": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure a neighbor as Route Reflector client").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configure a neighbor as Route Reflector client").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"soft_reconfiguration": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Per neighbor soft reconfiguration").AddStringEnumDescription("inbound").String,
@@ -265,8 +289,10 @@ func (r *BGPIPv4UnicastVRFNeighborResource) Schema(ctx context.Context, req reso
 				},
 			},
 			"default_originate": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Originate default route to this neighbor").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Originate default route to this neighbor").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"default_originate_route_map": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Route-map to specify criteria to originate default").String,
@@ -292,8 +318,10 @@ func (r *BGPIPv4UnicastVRFNeighborResource) Schema(ctx context.Context, req reso
 				},
 			},
 			"ebgp_multihop": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Allow EBGP neighbors not on directly connected networks. For single-hop ebgp peers, delete ebgp-multihop directly.").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Allow EBGP neighbors not on directly connected networks. For single-hop ebgp peers, delete ebgp-multihop directly.").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ebgp_multihop_max_hop": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(2, 255).String,
@@ -303,16 +331,22 @@ func (r *BGPIPv4UnicastVRFNeighborResource) Schema(ctx context.Context, req reso
 				},
 			},
 			"ha_mode_graceful_restart": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("graceful-restart for this peer").String,
+				MarkdownDescription: helpers.NewAttributeDescription("graceful-restart for this peer").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"next_hop_self": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Disable the next hop calculation for this neighbor").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Disable the next hop calculation for this neighbor").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"next_hop_self_all": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable next-hop-self for both eBGP and iBGP received paths").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable next-hop-self for both eBGP and iBGP received paths").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"advertisement_interval": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Minimum interval between sending BGP routing updates").AddIntegerRangeDescription(0, 600).String,

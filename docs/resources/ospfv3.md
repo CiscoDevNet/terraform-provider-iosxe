@@ -37,13 +37,17 @@ resource "iosxe_ospfv3" "example" {
 - `auto_cost_reference_bandwidth` (Number) Use reference bandwidth method to assign OSPF cost
   - Range: `1`-`4294967`
 - `bfd_all_interfaces` (Boolean) Enable BFD on all interfaces
+  - Default value: `false`
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
 - `log_adjacency_changes` (Boolean) Log changes in adjacency state
+  - Default value: `false`
 - `log_adjacency_changes_detail` (Boolean) Log all state changes
+  - Default value: `false`
 - `router_id` (String) Configure router identifier. New router-id will take effect immediately (peers will reset)
 - `shutdown` (Boolean) Shutdown the OSPF protocol under the current instance
+  - Default value: `false`
 
 ### Read-Only
 

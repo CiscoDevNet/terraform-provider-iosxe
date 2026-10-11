@@ -102,8 +102,6 @@ func (data BGPAddressFamilyL2VPN) addToBodyXML(ctx context.Context, config BGPAd
 	if !data.RewriteEvpnRtAsn.IsNull() && !data.RewriteEvpnRtAsn.IsUnknown() {
 		if data.RewriteEvpnRtAsn.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/l2vpn-evpn/rewrite-evpn-rt-asn", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/l2vpn-evpn/rewrite-evpn-rt-asn")
 		}
 	}
 	if !data.BgpNexthopTriggerDelay.IsNull() && !data.BgpNexthopTriggerDelay.IsUnknown() {

@@ -93,8 +93,11 @@ resource "iosxe_ospf_vrf" "example" {
 - `auto_cost_reference_bandwidth` (Number) Use reference bandwidth method to assign OSPF cost
   - Range: `1`-`4294967`
 - `bfd_all_interfaces` (Boolean) Enable BFD on all interfaces
+  - Default value: `false`
 - `default_information_originate` (Boolean) Distribute a default route
+  - Default value: `false`
 - `default_information_originate_always` (Boolean) Always advertise default route
+  - Default value: `false`
 - `default_information_originate_metric` (Number) OSPF default metric
   - Range: `1`-`16777214`
 - `default_information_originate_metric_type` (Number) OSPF metric type for default routes
@@ -112,24 +115,35 @@ resource "iosxe_ospf_vrf" "example" {
 - `domain_tag` (Number) OSPF domain-tag
   - Range: `1`-`4294967295`
 - `log_adjacency_changes` (Boolean) Log changes in adjacency state
+  - Default value: `true`
 - `log_adjacency_changes_detail` (Boolean) Log all state changes
+  - Default value: `false`
 - `max_metric_router_lsa` (Boolean) Maximum metric in self-originated router-LSAs
+  - Default value: `false`
 - `max_metric_router_lsa_external_lsa_metric` (Number) - Range: `1`-`16777214`
 - `max_metric_router_lsa_include_stub` (Boolean) Set maximum metric for stub links in router-LSAs
+  - Default value: `false`
 - `max_metric_router_lsa_on_startup_time` (Number) - Range: `5`-`86400`
 - `max_metric_router_lsa_on_startup_wait_for_bgp` (Boolean) Let BGP decide when to originate router-LSA with normal metric
+  - Default value: `false`
 - `max_metric_router_lsa_summary_lsa_metric` (Number) - Range: `1`-`16777214`
 - `mpls_ldp_autoconfig` (Boolean) Configure LDP automatic configuration
+  - Default value: `false`
 - `mpls_ldp_sync` (Boolean) Configure LDP-IGP Synchronization
+  - Default value: `false`
 - `neighbor` (Attributes List) Specify a neighbor router (see [below for nested schema](#nestedatt--neighbor))
 - `network` (Attributes List) Enable routing on an IP network (see [below for nested schema](#nestedatt--network))
 - `nsf_cisco` (Boolean) Cisco Non-stop forwarding
+  - Default value: `false`
 - `nsf_cisco_enforce_global` (Boolean) For the whole OSPF process
+  - Default value: `false`
 - `nsf_ietf` (Boolean) IETF graceful restart
+  - Default value: `false`
 - `nsf_ietf_restart_interval` (Number) Graceful restart interval
   - Range: `1`-`1800`
 - `passive_interface` (List of String)
 - `passive_interface_default` (Boolean) Suppress routing updates on all interfaces
+  - Default value: `false`
 - `passive_interface_disable_five_gigabit_ethernets` (Attributes Set) FiveGigabitEthernet interfaces to exclude from passive-interface default. Requires IOS-XE >= 17.16.1. (see [below for nested schema](#nestedatt--passive_interface_disable_five_gigabit_ethernets))
 - `passive_interface_disable_forty_gigabit_ethernets` (Attributes Set) FortyGigabitEthernet interfaces to exclude from passive-interface default. Requires IOS-XE >= 17.16.1. (see [below for nested schema](#nestedatt--passive_interface_disable_forty_gigabit_ethernets))
 - `passive_interface_disable_four_hundred_gigabit_ethernets` (Attributes Set) FourHundredGigabitEthernet interfaces to exclude from passive-interface default. Requires IOS-XE >= 17.16.1. (see [below for nested schema](#nestedatt--passive_interface_disable_four_hundred_gigabit_ethernets))
@@ -151,8 +165,10 @@ resource "iosxe_ospf_vrf" "example" {
 - `redistribute_connected_metric_type` (String) OSPF/IS-IS exterior metric type for redistributed routes
   - Choices: `1`, `2`
 - `redistribute_connected_nssa_only` (Boolean) Limit redistributed routes to NSSA areas
+  - Default value: `false`
 - `redistribute_connected_route_map` (String) Route map reference
 - `redistribute_connected_subnets` (Boolean) Consider subnets for redistribution into OSPF (Will be removed in the future)
+  - Default value: `false`
 - `redistribute_connected_tag` (Number) Set tag for routes redistributed into OSPF
   - Range: `0`-`4294967295`
 - `redistribute_ospf` (Attributes List) Open Shortest Path First (OSPF) (see [below for nested schema](#nestedatt--redistribute_ospf))
@@ -161,12 +177,15 @@ resource "iosxe_ospf_vrf" "example" {
 - `redistribute_static_metric_type` (String) OSPF/IS-IS exterior metric type for redistributed routes
   - Choices: `1`, `2`
 - `redistribute_static_nssa_only` (Boolean) Limit redistributed routes to NSSA areas
+  - Default value: `false`
 - `redistribute_static_route_map` (String) Route map reference
 - `redistribute_static_subnets` (Boolean) Consider subnets for redistribution into OSPF (Will be removed in the future)
+  - Default value: `false`
 - `redistribute_static_tag` (Number) Set tag for routes redistributed into OSPF
   - Range: `0`-`4294967295`
 - `router_id` (String) Configure router identifier. New router-id will take effect immediately (peers will reset)
 - `shutdown` (Boolean) Shutdown the OSPF protocol under the current instance
+  - Default value: `false`
 - `summary_address` (Attributes List) Configure IP address summaries (see [below for nested schema](#nestedatt--summary_address))
 
 ### Read-Only
@@ -183,14 +202,19 @@ Required:
 Optional:
 
 - `authentication_message_digest` (Boolean) Use message-digest authentication
+  - Default value: `false`
 - `nssa` (Boolean) Specify a NSSA area
+  - Default value: `false`
 - `nssa_default_information_originate` (Boolean) Originate Type 7 default into NSSA area
+  - Default value: `false`
 - `nssa_default_information_originate_metric` (Number) OSPF default metric
   - Range: `0`-`16777214`
 - `nssa_default_information_originate_metric_type` (Number) OSPF metric type for default routes
   - Range: `1`-`2`
 - `nssa_no_redistribution` (Boolean) No redistribution into this NSSA area
+  - Default value: `false`
 - `nssa_no_summary` (Boolean) Do not send summary LSA into NSSA
+  - Default value: `false`
 
 
 <a id="nestedatt--distribute_list_in_access_lists"></a>
@@ -372,6 +396,7 @@ Optional:
 - `match_external_2` (String) Redistribute OSPF external routes
   - Choices: `1`, `2`
 - `match_internal` (Boolean) Redistribute OSPF internal routes
+  - Default value: `false`
 - `match_nssa_external_1` (String) Redistribute OSPF NSSA external routes
   - Choices: `1`, `2`
 - `match_nssa_external_2` (String) Redistribute OSPF NSSA external routes
@@ -381,8 +406,10 @@ Optional:
 - `metric_type` (String) OSPF/IS-IS exterior metric type for redistributed routes
   - Choices: `1`, `2`
 - `nssa_only` (Boolean) Limit redistributed routes to NSSA areas
+  - Default value: `false`
 - `route_map` (String) Route map reference
 - `subnets` (Boolean) Consider subnets for redistribution into OSPF (Will be removed in the future)
+  - Default value: `false`
 - `tag` (Number) Set tag for routes redistributed into OSPF
   - Range: `0`-`4294967295`
 

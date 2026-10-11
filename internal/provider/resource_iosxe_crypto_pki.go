@@ -30,6 +30,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -94,20 +95,28 @@ func (r *CryptoPKIResource) Schema(ctx context.Context, req resource.SchemaReque
 							Required:            true,
 						},
 						"enrollment_pkcs12": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Enroll via pkcs12").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Enroll via pkcs12").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"enrollment_selfsigned": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Generate a Self Signed Certificate").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Generate a Self Signed Certificate").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"enrollment_mode_ra": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Registration Authority mode").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Registration Authority mode").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"enrollment_terminal": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Enroll via the terminal (cut-and-paste)").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Enroll via the terminal (cut-and-paste)").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"revocation_check": schema.ListAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Revocation checking options").String,

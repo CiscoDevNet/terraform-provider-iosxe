@@ -110,50 +110,36 @@ func (data InterfacePIM) addToBodyXML(ctx context.Context, config InterfacePIM, 
 	if !data.Passive.IsNull() && !data.Passive.IsUnknown() {
 		if data.Passive.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:pim-mode-choice-cfg/passive", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:pim-mode-choice-cfg/passive")
 		}
 	}
 	if !data.DenseMode.IsNull() && !data.DenseMode.IsUnknown() {
 		if data.DenseMode.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:pim-mode-choice-cfg/dense-mode", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:pim-mode-choice-cfg/dense-mode")
 		}
 	}
 	if !data.SparseMode.IsNull() && !data.SparseMode.IsUnknown() {
 		if data.SparseMode.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:pim-mode-choice-cfg/sparse-mode", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:pim-mode-choice-cfg/sparse-mode")
 		}
 	}
 	if !data.SparseDenseMode.IsNull() && !data.SparseDenseMode.IsUnknown() {
 		if data.SparseDenseMode.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:pim-mode-choice-cfg/sparse-dense-mode", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:pim-mode-choice-cfg/sparse-dense-mode")
 		}
 	}
 	if !data.Bfd.IsNull() && !data.Bfd.IsUnknown() {
 		if data.Bfd.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:bfd", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:bfd")
 		}
 	}
 	if !data.Border.IsNull() && !data.Border.IsUnknown() {
 		if data.Border.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:border", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:border")
 		}
 	}
 	if !data.BsrBorder.IsNull() && !data.BsrBorder.IsUnknown() {
 		if data.BsrBorder.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:bsr-border", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:bsr-border")
 		}
 	}
 	if !data.DrPriority.IsNull() && !data.DrPriority.IsUnknown() {

@@ -28,6 +28,7 @@ resource "iosxe_platform" "example" {
 
 - `device` (String) A device name from the provider configuration.
 - `punt_keepalive_disable_kernel_core` (Boolean) Disable IOSXE kernel core generation for keepalive fault
+  - Default value: `true`
 - `punt_keepalive_settings_fatal_count` (Number) Set punt-inject keepalive fatal count
   - Range: `15`-`60`
 - `punt_keepalive_settings_transmit_interval` (Number) Set punt-inject keepalive transmit interval

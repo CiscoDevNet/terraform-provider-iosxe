@@ -138,8 +138,6 @@ func (data Clock) addToBodyXML(ctx context.Context, config Clock, body netconf.B
 	if !data.CalendarValid.IsNull() && !data.CalendarValid.IsUnknown() {
 		if data.CalendarValid.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/calendar-valid", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/calendar-valid")
 		}
 	}
 	if !data.SummerTimeZone.IsNull() && !data.SummerTimeZone.IsUnknown() {
@@ -148,8 +146,6 @@ func (data Clock) addToBodyXML(ctx context.Context, config Clock, body netconf.B
 	if !data.SummerTimeDate.IsNull() && !data.SummerTimeDate.IsUnknown() {
 		if data.SummerTimeDate.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/summer-time/date", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/summer-time/date")
 		}
 	}
 	if !data.SummerTimeDateStartDay.IsNull() && !data.SummerTimeDateStartDay.IsUnknown() {
@@ -182,8 +178,6 @@ func (data Clock) addToBodyXML(ctx context.Context, config Clock, body netconf.B
 	if !data.SummerTimeRecurring.IsNull() && !data.SummerTimeRecurring.IsUnknown() {
 		if data.SummerTimeRecurring.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/summer-time/recurring", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/summer-time/recurring")
 		}
 	}
 	if !data.SummerTimeRecurringStartWeek.IsNull() && !data.SummerTimeRecurringStartWeek.IsUnknown() {

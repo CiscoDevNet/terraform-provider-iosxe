@@ -60,6 +60,7 @@ Required:
 Optional:
 
 - `access_request_include` (Boolean) Include attribute
+  - Default value: `false`
 - `attribute_31_parameters` (Attributes List) (see [below for nested schema](#nestedatt--attributes--attribute_31_parameters))
 - `send_attributes` (List of String)
 
@@ -75,8 +76,8 @@ Optional:
 - `id_mac_format` (String) Specify format (default format ex: 0000.4096.3e4a) ietf - format ex: 00-00-40-96-3E-4A
   - Choices: `ietf`
 - `id_mac_lu_case` (String) - Choices: `lower-case`, `upper-case`
-- `id_send_mac_only` (Boolean)
-- `id_send_nas_port_detail` (Boolean)
+- `id_send_mac_only` (Boolean) - Default value: `false`
+- `id_send_nas_port_detail` (Boolean) - Default value: `false`
 
 ## Import
 

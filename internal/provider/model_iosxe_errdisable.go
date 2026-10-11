@@ -194,113 +194,81 @@ func (data Errdisable) addToBodyXML(ctx context.Context, config Errdisable, body
 	if !data.DetectCauseAll.IsNull() && !data.DetectCauseAll.IsUnknown() {
 		if data.DetectCauseAll.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/detect/cause/all", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/detect/cause/all")
 		}
 	}
 	if !data.DetectCauseArpInspection.IsNull() && !data.DetectCauseArpInspection.IsUnknown() {
 		if data.DetectCauseArpInspection.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/detect/cause/arp-inspection", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/detect/cause/arp-inspection")
 		}
 	}
 	if !data.DetectCauseBpduguard.IsNull() && !data.DetectCauseBpduguard.IsUnknown() {
 		if data.DetectCauseBpduguard.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/detect/cause/bpduguard", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/detect/cause/bpduguard")
 		}
 	}
 	if !data.DetectCauseDhcpRateLimit.IsNull() && !data.DetectCauseDhcpRateLimit.IsUnknown() {
 		if data.DetectCauseDhcpRateLimit.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/detect/cause/dhcp-rate-limit", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/detect/cause/dhcp-rate-limit")
 		}
 	}
 	if !data.DetectCauseDtpFlap.IsNull() && !data.DetectCauseDtpFlap.IsUnknown() {
 		if data.DetectCauseDtpFlap.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/detect/cause/dtp-flap", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/detect/cause/dtp-flap")
 		}
 	}
 	if !data.DetectCauseGbicInvalid.IsNull() && !data.DetectCauseGbicInvalid.IsUnknown() {
 		if data.DetectCauseGbicInvalid.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/detect/cause/gbic-invalid", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/detect/cause/gbic-invalid")
 		}
 	}
 	if !data.DetectCauseInlinePower.IsNull() && !data.DetectCauseInlinePower.IsUnknown() {
 		if data.DetectCauseInlinePower.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/detect/cause/inline-power", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/detect/cause/inline-power")
 		}
 	}
 	if !data.DetectCauseL2ptguard.IsNull() && !data.DetectCauseL2ptguard.IsUnknown() {
 		if data.DetectCauseL2ptguard.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/detect/cause/l2ptguard", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/detect/cause/l2ptguard")
 		}
 	}
 	if !data.DetectCauseLinkFlap.IsNull() && !data.DetectCauseLinkFlap.IsUnknown() {
 		if data.DetectCauseLinkFlap.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/detect/cause/link-flap", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/detect/cause/link-flap")
 		}
 	}
 	if !data.DetectCauseLoopback.IsNull() && !data.DetectCauseLoopback.IsUnknown() {
 		if data.DetectCauseLoopback.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/detect/cause/loopback", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/detect/cause/loopback")
 		}
 	}
 	if !data.DetectCauseMlacpMinlink.IsNull() && !data.DetectCauseMlacpMinlink.IsUnknown() {
 		if data.DetectCauseMlacpMinlink.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/detect/cause/mlacp-minlink", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/detect/cause/mlacp-minlink")
 		}
 	}
 	if !data.DetectCausePagpFlap.IsNull() && !data.DetectCausePagpFlap.IsUnknown() {
 		if data.DetectCausePagpFlap.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/detect/cause/pagp-flap", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/detect/cause/pagp-flap")
 		}
 	}
 	if !data.DetectCausePppoeIaRateLimit.IsNull() && !data.DetectCausePppoeIaRateLimit.IsUnknown() {
 		if data.DetectCausePppoeIaRateLimit.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/detect/cause/pppoe-ia-rate-limit", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/detect/cause/pppoe-ia-rate-limit")
 		}
 	}
 	if !data.DetectCauseSecurityViolationShutdownVlan.IsNull() && !data.DetectCauseSecurityViolationShutdownVlan.IsUnknown() {
 		if data.DetectCauseSecurityViolationShutdownVlan.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/detect/cause/security-violation/shutdown/vlan", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/detect/cause/security-violation/shutdown/vlan")
 		}
 	}
 	if !data.DetectCauseSfpConfigMismatch.IsNull() && !data.DetectCauseSfpConfigMismatch.IsUnknown() {
 		if data.DetectCauseSfpConfigMismatch.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/detect/cause/sfp-config-mismatch", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/detect/cause/sfp-config-mismatch")
 		}
 	}
 	if !data.DetectCauseSmallFrame.IsNull() && !data.DetectCauseSmallFrame.IsUnknown() {
 		if data.DetectCauseSmallFrame.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/detect/cause/small-frame", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/detect/cause/small-frame")
 		}
 	}
 	if !data.DetectCauseLoopdetect.IsNull() && !data.DetectCauseLoopdetect.IsUnknown() {
@@ -330,204 +298,146 @@ func (data Errdisable) addToBodyXML(ctx context.Context, config Errdisable, body
 	if !data.RecoveryCauseAll.IsNull() && !data.RecoveryCauseAll.IsUnknown() {
 		if data.RecoveryCauseAll.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/recovery/cause/all", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/recovery/cause/all")
 		}
 	}
 	if !data.RecoveryCauseArpInspection.IsNull() && !data.RecoveryCauseArpInspection.IsUnknown() {
 		if data.RecoveryCauseArpInspection.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/recovery/cause/arp-inspection", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/recovery/cause/arp-inspection")
 		}
 	}
 	if !data.RecoveryCauseBpduguard.IsNull() && !data.RecoveryCauseBpduguard.IsUnknown() {
 		if data.RecoveryCauseBpduguard.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/recovery/cause/bpduguard", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/recovery/cause/bpduguard")
 		}
 	}
 	if !data.RecoveryCauseChannelMisconfig.IsNull() && !data.RecoveryCauseChannelMisconfig.IsUnknown() {
 		if data.RecoveryCauseChannelMisconfig.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/recovery/cause/channel-misconfig", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/recovery/cause/channel-misconfig")
 		}
 	}
 	if !data.RecoveryCauseDhcpRateLimit.IsNull() && !data.RecoveryCauseDhcpRateLimit.IsUnknown() {
 		if data.RecoveryCauseDhcpRateLimit.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/recovery/cause/dhcp-rate-limit", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/recovery/cause/dhcp-rate-limit")
 		}
 	}
 	if !data.RecoveryCauseDtpFlap.IsNull() && !data.RecoveryCauseDtpFlap.IsUnknown() {
 		if data.RecoveryCauseDtpFlap.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/recovery/cause/dtp-flap", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/recovery/cause/dtp-flap")
 		}
 	}
 	if !data.RecoveryCauseGbicInvalid.IsNull() && !data.RecoveryCauseGbicInvalid.IsUnknown() {
 		if data.RecoveryCauseGbicInvalid.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/recovery/cause/gbic-invalid", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/recovery/cause/gbic-invalid")
 		}
 	}
 	if !data.RecoveryCauseInlinePower.IsNull() && !data.RecoveryCauseInlinePower.IsUnknown() {
 		if data.RecoveryCauseInlinePower.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/recovery/cause/inline-power", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/recovery/cause/inline-power")
 		}
 	}
 	if !data.RecoveryCauseL2ptguard.IsNull() && !data.RecoveryCauseL2ptguard.IsUnknown() {
 		if data.RecoveryCauseL2ptguard.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/recovery/cause/l2ptguard", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/recovery/cause/l2ptguard")
 		}
 	}
 	if !data.RecoveryCauseLinkFlap.IsNull() && !data.RecoveryCauseLinkFlap.IsUnknown() {
 		if data.RecoveryCauseLinkFlap.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/recovery/cause/link-flap", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/recovery/cause/link-flap")
 		}
 	}
 	if !data.RecoveryCauseLinkMonitorFailure.IsNull() && !data.RecoveryCauseLinkMonitorFailure.IsUnknown() {
 		if data.RecoveryCauseLinkMonitorFailure.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/recovery/cause/link-monitor-failure", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/recovery/cause/link-monitor-failure")
 		}
 	}
 	if !data.RecoveryCauseLoopback.IsNull() && !data.RecoveryCauseLoopback.IsUnknown() {
 		if data.RecoveryCauseLoopback.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/recovery/cause/loopback", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/recovery/cause/loopback")
 		}
 	}
 	if !data.RecoveryCauseMacLimit.IsNull() && !data.RecoveryCauseMacLimit.IsUnknown() {
 		if data.RecoveryCauseMacLimit.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/recovery/cause/mac-limit", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/recovery/cause/mac-limit")
 		}
 	}
 	if !data.RecoveryCauseMlacpMinlink.IsNull() && !data.RecoveryCauseMlacpMinlink.IsUnknown() {
 		if data.RecoveryCauseMlacpMinlink.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/recovery/cause/mlacp-minlink", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/recovery/cause/mlacp-minlink")
 		}
 	}
 	if !data.RecoveryCausePagpFlap.IsNull() && !data.RecoveryCausePagpFlap.IsUnknown() {
 		if data.RecoveryCausePagpFlap.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/recovery/cause/pagp-flap", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/recovery/cause/pagp-flap")
 		}
 	}
 	if !data.RecoveryCausePortModeFailure.IsNull() && !data.RecoveryCausePortModeFailure.IsUnknown() {
 		if data.RecoveryCausePortModeFailure.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/recovery/cause/port-mode-failure", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/recovery/cause/port-mode-failure")
 		}
 	}
 	if !data.RecoveryCausePppoeIaRateLimit.IsNull() && !data.RecoveryCausePppoeIaRateLimit.IsUnknown() {
 		if data.RecoveryCausePppoeIaRateLimit.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/recovery/cause/pppoe-ia-rate-limit", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/recovery/cause/pppoe-ia-rate-limit")
 		}
 	}
 	if !data.RecoveryCausePsp.IsNull() && !data.RecoveryCausePsp.IsUnknown() {
 		if data.RecoveryCausePsp.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/recovery/cause/psp", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/recovery/cause/psp")
 		}
 	}
 	if !data.RecoveryCausePsecureViolation.IsNull() && !data.RecoveryCausePsecureViolation.IsUnknown() {
 		if data.RecoveryCausePsecureViolation.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/recovery/cause/psecure-violation", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/recovery/cause/psecure-violation")
 		}
 	}
 	if !data.RecoveryCauseSecurityViolation.IsNull() && !data.RecoveryCauseSecurityViolation.IsUnknown() {
 		if data.RecoveryCauseSecurityViolation.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/recovery/cause/security-violation", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/recovery/cause/security-violation")
 		}
 	}
 	if !data.RecoveryCauseSfpConfigMismatch.IsNull() && !data.RecoveryCauseSfpConfigMismatch.IsUnknown() {
 		if data.RecoveryCauseSfpConfigMismatch.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/recovery/cause/sfp-config-mismatch", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/recovery/cause/sfp-config-mismatch")
 		}
 	}
 	if !data.RecoveryCauseSmallFrame.IsNull() && !data.RecoveryCauseSmallFrame.IsUnknown() {
 		if data.RecoveryCauseSmallFrame.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/recovery/cause/small-frame", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/recovery/cause/small-frame")
 		}
 	}
 	if !data.RecoveryCauseStormControl.IsNull() && !data.RecoveryCauseStormControl.IsUnknown() {
 		if data.RecoveryCauseStormControl.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/recovery/cause/storm-control", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/recovery/cause/storm-control")
 		}
 	}
 	if !data.RecoveryCauseUdld.IsNull() && !data.RecoveryCauseUdld.IsUnknown() {
 		if data.RecoveryCauseUdld.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/recovery/cause/udld", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/recovery/cause/udld")
 		}
 	}
 	if !data.RecoveryCauseUnicastFlood.IsNull() && !data.RecoveryCauseUnicastFlood.IsUnknown() {
 		if data.RecoveryCauseUnicastFlood.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/recovery/cause/unicast-flood", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/recovery/cause/unicast-flood")
 		}
 	}
 	if !data.RecoveryCauseVmps.IsNull() && !data.RecoveryCauseVmps.IsUnknown() {
 		if data.RecoveryCauseVmps.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/recovery/cause/vmps", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/recovery/cause/vmps")
 		}
 	}
 	if !data.RecoveryCauseLoopdetect.IsNull() && !data.RecoveryCauseLoopdetect.IsUnknown() {
 		if data.RecoveryCauseLoopdetect.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/recovery/cause/loopdetect", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/recovery/cause/loopdetect")
 		}
 	}
 	if !data.RecoveryCauseOamRemoteFailure.IsNull() && !data.RecoveryCauseOamRemoteFailure.IsUnknown() {
 		if data.RecoveryCauseOamRemoteFailure.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/recovery/cause/oam-remote-failure", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/recovery/cause/oam-remote-failure")
 		}
 	}
 	if !data.RecoveryCauseMrpMiscabling.IsNull() && !data.RecoveryCauseMrpMiscabling.IsUnknown() {
 		if data.RecoveryCauseMrpMiscabling.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/recovery/cause/mrp-miscabling", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/recovery/cause/mrp-miscabling")
 		}
 	}
 	return body

@@ -32,6 +32,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -87,12 +88,16 @@ func (r *KeyChainResource) Schema(ctx context.Context, req resource.SchemaReques
 				},
 			},
 			"macsec": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"tcp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"keys": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Configure a key").String,
@@ -146,8 +151,10 @@ func (r *KeyChainResource) Schema(ctx context.Context, req resource.SchemaReques
 							Optional:            true,
 						},
 						"accept_lifetime_local": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Specify time in local timezone").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Specify time in local timezone").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"accept_lifetime_start_time": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime start time").String,
@@ -185,8 +192,10 @@ func (r *KeyChainResource) Schema(ctx context.Context, req resource.SchemaReques
 							},
 						},
 						"accept_lifetime_infinite": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Infinite lifetime").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Infinite lifetime").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"accept_lifetime_end_time": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime end time").String,
@@ -217,8 +226,10 @@ func (r *KeyChainResource) Schema(ctx context.Context, req resource.SchemaReques
 							},
 						},
 						"send_lifetime_local": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Specify time in local timezone").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Specify time in local timezone").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"send_lifetime_start_time": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime start time").String,
@@ -256,8 +267,10 @@ func (r *KeyChainResource) Schema(ctx context.Context, req resource.SchemaReques
 							},
 						},
 						"send_lifetime_infinite": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Infinite lifetime").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Infinite lifetime").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"send_lifetime_end_time": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime end time").String,
@@ -288,8 +301,10 @@ func (r *KeyChainResource) Schema(ctx context.Context, req resource.SchemaReques
 							},
 						},
 						"macsec_lifetime_local": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Specify time in local timezone").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Specify time in local timezone").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"macsec_lifetime_start_time": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime start time").String,
@@ -327,8 +342,10 @@ func (r *KeyChainResource) Schema(ctx context.Context, req resource.SchemaReques
 							},
 						},
 						"macsec_lifetime_infinite": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Infinite lifetime").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Infinite lifetime").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"macsec_lifetime_end_time": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime end time").String,
@@ -373,12 +390,16 @@ func (r *KeyChainResource) Schema(ctx context.Context, req resource.SchemaReques
 							},
 						},
 						"include_tcp_options": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Include tcp options in HMAC calculation").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Include tcp options in HMAC calculation").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"accept_ao_mismatch": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Accept packets with HMAC mismatch").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Accept packets with HMAC mismatch").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 					},
 				},

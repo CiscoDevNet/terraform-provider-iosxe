@@ -32,6 +32,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -166,28 +167,40 @@ func (r *TemplateResource) Schema(ctx context.Context, req resource.SchemaReques
 				Optional:            true,
 			},
 			"switchport_mode_trunk": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set trunking mode to TRUNK unconditionally").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Set trunking mode to TRUNK unconditionally").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"switchport_mode_access": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set trunking mode to ACCESS unconditionally").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Set trunking mode to ACCESS unconditionally").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"switchport_nonegotiate": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Device will not engage in negotiation protocol on this interface").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Device will not engage in negotiation protocol on this interface").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"switchport_block_unicast": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Block unknown unicast addresses").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Block unknown unicast addresses").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"switchport_port_security": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Security related command").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Security related command").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"switchport_port_security_aging_static": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable aging for configured secure addresses").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable aging for configured secure addresses").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"switchport_port_security_aging_time": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Port-security aging time").AddIntegerRangeDescription(1, 1440).String,
@@ -197,12 +210,16 @@ func (r *TemplateResource) Schema(ctx context.Context, req resource.SchemaReques
 				},
 			},
 			"switchport_port_security_aging_type": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Port-security aging type").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Port-security aging type").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"switchport_port_security_aging_type_inactivity": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Aging based on inactivity time period").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Aging based on inactivity time period").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"switchport_port_security_maximum_range": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
@@ -217,27 +234,37 @@ func (r *TemplateResource) Schema(ctx context.Context, req resource.SchemaReques
 							},
 						},
 						"vlan": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Max secure addresses per vlan").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Max secure addresses per vlan").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"vlan_access": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("access vlan").String,
+							MarkdownDescription: helpers.NewAttributeDescription("access vlan").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 					},
 				},
 			},
 			"switchport_port_security_violation_protect": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Security violation protect mode").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Security violation protect mode").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"switchport_port_security_violation_restrict": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Security violation restrict mode").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Security violation restrict mode").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"switchport_port_security_violation_shutdown": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Security violation shutdown mode").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Security violation shutdown mode").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"switchport_access_vlan": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("VLAN ID of the VLAN when this port is in access mode").AddIntegerRangeDescription(1, 4094).String,
@@ -272,16 +299,22 @@ func (r *TemplateResource) Schema(ctx context.Context, req resource.SchemaReques
 				Optional:            true,
 			},
 			"switchport_trunk_allowed_vlans_none": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("no VLANs").String,
+				MarkdownDescription: helpers.NewAttributeDescription("no VLANs").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"switchport_trunk_allowed_vlans_all": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("all VLANs").String,
+				MarkdownDescription: helpers.NewAttributeDescription("all VLANs").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"switchport_trunk_native_vlan_tag": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set native VLAN tagging state").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Set native VLAN tagging state").AddDefaultValueDescription("true").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
 			},
 			"switchport_trunk_native_vlan_vlan_id": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("VLAN ID of the native VLAN when this port is in trunking mode").AddIntegerRangeDescription(1, 4094).String,
@@ -291,20 +324,28 @@ func (r *TemplateResource) Schema(ctx context.Context, req resource.SchemaReques
 				},
 			},
 			"mab": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("MAC Authentication Bypass Interface Config Commands").String,
+				MarkdownDescription: helpers.NewAttributeDescription("MAC Authentication Bypass Interface Config Commands").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"mab_eap": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Use EAP authentication for MAC Auth Bypass").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Use EAP authentication for MAC Auth Bypass").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"access_session_closed": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable closed access on port (disabled by default, i.e. open access)").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable closed access on port (disabled by default, i.e. open access)").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"access_session_monitor": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Apply template to monitor access sessions on the port").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Apply template to monitor access sessions on the port").AddDefaultValueDescription("true").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
 			},
 			"access_session_port_control": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Set the port-control value").AddStringEnumDescription("auto", "force-authorized", "force-unauthorized").String,
@@ -328,8 +369,10 @@ func (r *TemplateResource) Schema(ctx context.Context, req resource.SchemaReques
 				},
 			},
 			"access_session_interface_template_sticky": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Interface templates set to sticky").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Interface templates set to sticky").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"access_session_interface_template_sticky_timer": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Sticky timer value").AddIntegerRangeDescription(1, 65535).String,
@@ -339,12 +382,16 @@ func (r *TemplateResource) Schema(ctx context.Context, req resource.SchemaReques
 				},
 			},
 			"authentication_periodic": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable or Disable Reauthentication for this port").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable or Disable Reauthentication for this port").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"authentication_timer_reauthenticate_server": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Obtain re-authentication timeout value from the server").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Obtain re-authentication timeout value from the server").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"authentication_timer_reauthenticate_range": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Enter a value between 1 and 1073741823").AddIntegerRangeDescription(1, 1073741823).String,
@@ -354,28 +401,40 @@ func (r *TemplateResource) Schema(ctx context.Context, req resource.SchemaReques
 				},
 			},
 			"spanning_tree_bpduguard_enable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable BPDU guard for this interface").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable BPDU guard for this interface").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"spanning_tree_service_policy": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("help").String,
+				MarkdownDescription: helpers.NewAttributeDescription("help").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"spanning_tree_portfast": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Portfast options for the interface").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Portfast options for the interface").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"spanning_tree_portfast_disable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Disable portfast for this interface").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Disable portfast for this interface").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"spanning_tree_portfast_edge": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable portfast edge on the interface").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable portfast edge on the interface").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"spanning_tree_portfast_network": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable portfast network on the interface").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable portfast network on the interface").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"storm_control_broadcast_level_pps_threshold": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Enter threshold").String,
@@ -414,12 +473,16 @@ func (r *TemplateResource) Schema(ctx context.Context, req resource.SchemaReques
 				},
 			},
 			"storm_control_action_shutdown": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Shutdown this interface if a storm occurs").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Shutdown this interface if a storm occurs").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"storm_control_action_trap": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Send SNMP trap if a storm occurs").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Send SNMP trap if a storm occurs").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"load_interval": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Load interval delay in seconds").AddIntegerRangeDescription(30, 600).String,
@@ -436,8 +499,10 @@ func (r *TemplateResource) Schema(ctx context.Context, req resource.SchemaReques
 				},
 			},
 			"ip_dhcp_snooping_trust": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("DHCP Snooping trust config").String,
+				MarkdownDescription: helpers.NewAttributeDescription("DHCP Snooping trust config").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ip_access_group": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Access control list for IP packets").String,
@@ -466,16 +531,22 @@ func (r *TemplateResource) Schema(ctx context.Context, req resource.SchemaReques
 				},
 			},
 			"subscriber_aging_inactivity_timer_probe": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("ARP probe").String,
+				MarkdownDescription: helpers.NewAttributeDescription("ARP probe").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"subscriber_aging_probe": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("ARP probe").String,
+				MarkdownDescription: helpers.NewAttributeDescription("ARP probe").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"device_tracking": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure device-tracking on the interface").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configure device-tracking on the interface").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"device_tracking_attach_policy": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("policy name for device tracking").String,
@@ -498,8 +569,10 @@ func (r *TemplateResource) Schema(ctx context.Context, req resource.SchemaReques
 				Optional:            true,
 			},
 			"cts_manual": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Supply local configuration for CTS parameters").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Supply local configuration for CTS parameters").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"cts_manual_policy_static_sgt": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Source Security Group Tag to apply to untagged or non-trusted incoming traffic").AddIntegerRangeDescription(2, 65519).String,
@@ -509,16 +582,22 @@ func (r *TemplateResource) Schema(ctx context.Context, req resource.SchemaReques
 				},
 			},
 			"cts_manual_policy_static_trusted": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Trust the Source Group Tags (SGT) that the peer uses for sending").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Trust the Source Group Tags (SGT) that the peer uses for sending").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"cts_manual_propagate_sgt": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("CTS SGT Propagation configuration").String,
+				MarkdownDescription: helpers.NewAttributeDescription("CTS SGT Propagation configuration").AddDefaultValueDescription("true").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
 			},
 			"cts_role_based_enforcement": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable Role-based Access Control enforcement").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable Role-based Access Control enforcement").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 		},
 	}

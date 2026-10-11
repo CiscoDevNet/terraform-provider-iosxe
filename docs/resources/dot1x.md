@@ -41,20 +41,29 @@ resource "iosxe_dot1x" "example" {
 ### Optional
 
 - `auth_fail_eapol` (Boolean) Send EAPOL-Success on successful auth-fail Authorization
+  - Default value: `false`
 - `credentials` (Attributes List) Configure 802.1X credentials profiles (see [below for nested schema](#nestedatt--credentials))
 - `critical_eapol` (Boolean) Send EAPOL-Success on successful Critical Authentication
+  - Default value: `false`
 - `critical_eapol_block` (Boolean) Block all EAPoL transaction on Critical Authentication
+  - Default value: `false`
 - `critical_eapol_config_block` (Boolean) Block all EAPoL transaction on Critical Authentication
+  - Default value: `false`
 - `critical_recovery_delay` (Number) Set 802.1x Critical Authentication Recovery Delay period
   - Range: `1`-`10000`
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
 - `guest_vlan_supplicant` (Boolean) Allow 802.1x capable supplicants to enter Guest Vlan
+  - Default value: `false`
 - `logging_verbose` (Boolean) Show verbose messages in system logs
+  - Default value: `false`
 - `supplicant_controlled_transient` (Boolean) Controlled access is only applied during authentication
+  - Default value: `false`
 - `supplicant_force_multicast` (Boolean) Force 802.1X supplicant to send multicast packets
+  - Default value: `false`
 - `system_auth_control` (Boolean) Enable or Disable SysAuthControl
+  - Default value: `false`
 - `test_timeout` (Number) Timeout for device EAPOL capabilities test in seconds
   - Range: `1`-`65535`
 

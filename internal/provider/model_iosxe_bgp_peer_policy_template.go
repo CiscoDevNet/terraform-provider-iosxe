@@ -117,8 +117,6 @@ func (data BGPPeerPolicyTemplate) addToBodyXML(ctx context.Context, config BGPPe
 	if !data.RouteReflectorClient.IsNull() && !data.RouteReflectorClient.IsUnknown() {
 		if data.RouteReflectorClient.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/route-reflector-client", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/route-reflector-client")
 		}
 	}
 	if !data.SendCommunity.IsNull() && !data.SendCommunity.IsUnknown() {
@@ -142,8 +140,6 @@ func (data BGPPeerPolicyTemplate) addToBodyXML(ctx context.Context, config BGPPe
 	if !data.AsOverrideSplitHorizon.IsNull() && !data.AsOverrideSplitHorizon.IsUnknown() {
 		if data.AsOverrideSplitHorizon.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/as-override/split-horizon", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/as-override/split-horizon")
 		}
 	}
 	return body

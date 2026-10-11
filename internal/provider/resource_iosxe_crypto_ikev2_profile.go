@@ -32,6 +32,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -98,12 +99,16 @@ func (r *CryptoIKEv2ProfileResource) Schema(ctx context.Context, req resource.Sc
 				Optional:            true,
 			},
 			"authentication_remote_pre_share": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Pre-Shared Key").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Pre-Shared Key").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"authentication_local_pre_share": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Pre-Shared Key").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Pre-Shared Key").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"identity_local_address": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("address").String,
@@ -114,8 +119,10 @@ func (r *CryptoIKEv2ProfileResource) Schema(ctx context.Context, req resource.Sc
 				Optional:            true,
 			},
 			"match_inbound_only": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Match the profile for incoming connections only").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Match the profile for incoming connections only").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"match_address_local_ip": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
@@ -126,8 +133,10 @@ func (r *CryptoIKEv2ProfileResource) Schema(ctx context.Context, req resource.Sc
 				Optional:            true,
 			},
 			"match_fvrf_any": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Any fvrf").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Any fvrf").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"match_identity_remote_ipv4_addresses": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
@@ -217,8 +226,10 @@ func (r *CryptoIKEv2ProfileResource) Schema(ctx context.Context, req resource.Sc
 				},
 			},
 			"config_exchange_request": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("enable config-exchange request").String,
+				MarkdownDescription: helpers.NewAttributeDescription("enable config-exchange request").AddDefaultValueDescription("true").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
 			},
 		},
 	}

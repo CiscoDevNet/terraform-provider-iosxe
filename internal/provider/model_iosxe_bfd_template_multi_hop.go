@@ -135,8 +135,6 @@ func (data BFDTemplateMultiHop) addToBodyXML(ctx context.Context, config BFDTemp
 	if !data.Echo.IsNull() && !data.Echo.IsUnknown() {
 		if data.Echo.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/echo", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/echo")
 		}
 	}
 	if !data.IntervalMillisecondsBoth.IsNull() && !data.IntervalMillisecondsBoth.IsUnknown() {
@@ -154,8 +152,6 @@ func (data BFDTemplateMultiHop) addToBodyXML(ctx context.Context, config BFDTemp
 	if !data.IntervalMicroseconds.IsNull() && !data.IntervalMicroseconds.IsUnknown() {
 		if data.IntervalMicroseconds.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/interval-multihop-v2/ms-unit/microseconds", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/interval-multihop-v2/ms-unit/microseconds")
 		}
 	}
 	if !data.IntervalMicrosecondsBoth.IsNull() && !data.IntervalMicrosecondsBoth.IsUnknown() {
@@ -200,8 +196,6 @@ func (data BFDTemplateMultiHop) addToBodyXML(ctx context.Context, config BFDTemp
 	if !data.DampeningDownMonitoring.IsNull() && !data.DampeningDownMonitoring.IsUnknown() {
 		if data.DampeningDownMonitoring.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/dampening/down-monitoring", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/dampening/down-monitoring")
 		}
 	}
 	return body

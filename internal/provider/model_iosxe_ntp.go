@@ -257,15 +257,11 @@ func (data NTP) addToBodyXML(ctx context.Context, config NTP, body netconf.Body)
 	if !data.Authenticate.IsNull() && !data.Authenticate.IsUnknown() {
 		if data.Authenticate.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-ntp:authenticate", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-ntp:authenticate")
 		}
 	}
 	if !data.Logging.IsNull() && !data.Logging.IsUnknown() {
 		if data.Logging.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-ntp:logging", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-ntp:logging")
 		}
 	}
 	if !data.AccessGroupPeerAcl.IsNull() && !data.AccessGroupPeerAcl.IsUnknown() {
@@ -348,8 +344,6 @@ func (data NTP) addToBodyXML(ctx context.Context, config NTP, body netconf.Body)
 	if !data.Master.IsNull() && !data.Master.IsUnknown() {
 		if data.Master.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-ntp:master", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-ntp:master")
 		}
 	}
 	if !data.MasterStratum.IsNull() && !data.MasterStratum.IsUnknown() {
@@ -358,15 +352,11 @@ func (data NTP) addToBodyXML(ctx context.Context, config NTP, body netconf.Body)
 	if !data.Passive.IsNull() && !data.Passive.IsUnknown() {
 		if data.Passive.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-ntp:passive", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-ntp:passive")
 		}
 	}
 	if !data.UpdateCalendar.IsNull() && !data.UpdateCalendar.IsUnknown() {
 		if data.UpdateCalendar.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-ntp:update-calendar", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-ntp:update-calendar")
 		}
 	}
 	if !data.SourceGigabitEthernet.IsNull() && !data.SourceGigabitEthernet.IsUnknown() {
@@ -408,8 +398,6 @@ func (data NTP) addToBodyXML(ctx context.Context, config NTP, body netconf.Body)
 			if !item.Prefer.IsNull() && !item.Prefer.IsUnknown() {
 				if item.Prefer.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "prefer", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "prefer")
 				}
 			}
 			if !item.Version.IsNull() && !item.Version.IsUnknown() {
@@ -418,22 +406,16 @@ func (data NTP) addToBodyXML(ctx context.Context, config NTP, body netconf.Body)
 			if !item.Burst.IsNull() && !item.Burst.IsUnknown() {
 				if item.Burst.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "burst-opt", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "burst-opt")
 				}
 			}
 			if !item.Iburst.IsNull() && !item.Iburst.IsUnknown() {
 				if item.Iburst.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "iburst-opt", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "iburst-opt")
 				}
 			}
 			if !item.Periodic.IsNull() && !item.Periodic.IsUnknown() {
 				if item.Periodic.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "periodic", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "periodic")
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-ntp:server/server-list", cBody.Res())
@@ -457,8 +439,6 @@ func (data NTP) addToBodyXML(ctx context.Context, config NTP, body netconf.Body)
 					if !citem.Prefer.IsNull() && !citem.Prefer.IsUnknown() {
 						if citem.Prefer.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "prefer", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "prefer")
 						}
 					}
 					if !citem.Version.IsNull() && !citem.Version.IsUnknown() {
@@ -467,22 +447,16 @@ func (data NTP) addToBodyXML(ctx context.Context, config NTP, body netconf.Body)
 					if !citem.Burst.IsNull() && !citem.Burst.IsUnknown() {
 						if citem.Burst.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "burst-opt", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "burst-opt")
 						}
 					}
 					if !citem.Iburst.IsNull() && !citem.Iburst.IsUnknown() {
 						if citem.Iburst.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "iburst-opt", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "iburst-opt")
 						}
 					}
 					if !citem.Periodic.IsNull() && !citem.Periodic.IsUnknown() {
 						if citem.Periodic.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "periodic", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "periodic")
 						}
 					}
 					cBody = helpers.SetRawFromXPath(cBody, "server-list", ccBody.Res())
@@ -506,8 +480,6 @@ func (data NTP) addToBodyXML(ctx context.Context, config NTP, body netconf.Body)
 			if !item.Prefer.IsNull() && !item.Prefer.IsUnknown() {
 				if item.Prefer.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "prefer", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "prefer")
 				}
 			}
 			if !item.Version.IsNull() && !item.Version.IsUnknown() {
@@ -534,8 +506,6 @@ func (data NTP) addToBodyXML(ctx context.Context, config NTP, body netconf.Body)
 					if !citem.Prefer.IsNull() && !citem.Prefer.IsUnknown() {
 						if citem.Prefer.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "prefer", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "prefer")
 						}
 					}
 					if !citem.Version.IsNull() && !citem.Version.IsUnknown() {

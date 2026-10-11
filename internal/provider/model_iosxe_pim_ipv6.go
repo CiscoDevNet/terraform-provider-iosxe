@@ -114,8 +114,6 @@ func (data PIMIPv6) addToBodyXML(ctx context.Context, config PIMIPv6, body netco
 	if !data.RpAddressBidir.IsNull() && !data.RpAddressBidir.IsUnknown() {
 		if data.RpAddressBidir.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:rp-address/bidir", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:rp-address/bidir")
 		}
 	}
 	if len(data.Vrfs) > 0 {
@@ -133,8 +131,6 @@ func (data PIMIPv6) addToBodyXML(ctx context.Context, config PIMIPv6, body netco
 			if !item.RpAddressBidir.IsNull() && !item.RpAddressBidir.IsUnknown() {
 				if item.RpAddressBidir.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "rp-address/bidir", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "rp-address/bidir")
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:vrf", cBody.Res())

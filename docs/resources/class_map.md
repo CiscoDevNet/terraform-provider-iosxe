@@ -54,7 +54,9 @@ resource "iosxe_class_map" "example" {
 - `match_access_group_name` (List of String) Named Access List
 - `match_activated_service_templates` (Attributes List) match name of service template activated on session (see [below for nested schema](#nestedatt--match_activated_service_templates))
 - `match_authorization_status_authorized` (Boolean) authorized
+  - Default value: `false`
 - `match_authorization_status_unauthorized` (Boolean) unauthorized
+  - Default value: `false`
 - `match_authorizing_method_priority_greater_than` (List of Number) greater than
 - `match_class_map` (List of String) Class map
 - `match_cos` (List of Number) IEEE 802.1Q/ISL class of service/user priority values
@@ -62,15 +64,24 @@ resource "iosxe_class_map" "example" {
 - `match_ip_dscp` (List of String) Match IP DSCP (DiffServ CodePoints)
 - `match_ip_precedence` (List of String) Match IP precedence
 - `match_method_dot1x` (Boolean) dot1x
+  - Default value: `false`
 - `match_method_mab` (Boolean) mab
+  - Default value: `false`
 - `match_protocol` (Attributes List) List of protocols to match (see [below for nested schema](#nestedatt--match_protocol))
 - `match_result_type_aaa_timeout` (Boolean) aaa timeout type
+  - Default value: `false`
 - `match_result_type_method_dot1x_agent_not_found` (Boolean) agent not found type
+  - Default value: `false`
 - `match_result_type_method_dot1x_authoritative` (Boolean) failure type
+  - Default value: `false`
 - `match_result_type_method_dot1x_method_timeout` (Boolean) method timeout type
+  - Default value: `false`
 - `match_result_type_method_mab_authoritative` (Boolean) failure type
+  - Default value: `false`
 - `match_result_type_success` (Boolean) success type
+  - Default value: `false`
 - `subscriber` (Boolean) Domain name of the class map
+  - Default value: `false`
 - `type` (String) type of the class-map
   - Choices: `access-control`, `appnav`, `control`, `inspect`, `multicast-flows`, `ngsw-qos`, `site-manager`, `stack`, `traffic`
 

@@ -867,99 +867,71 @@ func (data ObjectGroup) addToBodyXML(ctx context.Context, config ObjectGroup, bo
 			if !item.Ahp.IsNull() && !item.Ahp.IsUnknown() {
 				if item.Ahp.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ahp", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ahp")
 				}
 			}
 			if !item.Eigrp.IsNull() && !item.Eigrp.IsUnknown() {
 				if item.Eigrp.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "eigrp", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "eigrp")
 				}
 			}
 			if !item.Esp.IsNull() && !item.Esp.IsUnknown() {
 				if item.Esp.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "esp", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "esp")
 				}
 			}
 			if !item.Gre.IsNull() && !item.Gre.IsUnknown() {
 				if item.Gre.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "gre", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "gre")
 				}
 			}
 			if !item.Icmp.IsNull() && !item.Icmp.IsUnknown() {
 				if item.Icmp.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "icmp", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "icmp")
 				}
 			}
 			if !item.Igmp.IsNull() && !item.Igmp.IsUnknown() {
 				if item.Igmp.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "igmp", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "igmp")
 				}
 			}
 			if !item.Ip.IsNull() && !item.Ip.IsUnknown() {
 				if item.Ip.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ip", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ip")
 				}
 			}
 			if !item.Ipinip.IsNull() && !item.Ipinip.IsUnknown() {
 				if item.Ipinip.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ipinip", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ipinip")
 				}
 			}
 			if !item.Nos.IsNull() && !item.Nos.IsUnknown() {
 				if item.Nos.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "nos", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "nos")
 				}
 			}
 			if !item.Ospf.IsNull() && !item.Ospf.IsUnknown() {
 				if item.Ospf.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ospf", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ospf")
 				}
 			}
 			if !item.Pcp.IsNull() && !item.Pcp.IsUnknown() {
 				if item.Pcp.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "pcp", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "pcp")
 				}
 			}
 			if !item.Pim.IsNull() && !item.Pim.IsUnknown() {
 				if item.Pim.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "pim", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "pim")
 				}
 			}
 			if !item.Tcp.IsNull() && !item.Tcp.IsUnknown() {
 				if item.Tcp.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "tcp", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "tcp")
 				}
 			}
 			if !item.Udp.IsNull() && !item.Udp.IsUnknown() {
 				if item.Udp.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "udp", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "udp")
 				}
 			}
 			if !item.IcmpPortNumber.IsNull() && !item.IcmpPortNumber.IsUnknown() {
@@ -968,134 +940,96 @@ func (data ObjectGroup) addToBodyXML(ctx context.Context, config ObjectGroup, bo
 			if !item.IcmpAlternateAddress.IsNull() && !item.IcmpAlternateAddress.IsUnknown() {
 				if item.IcmpAlternateAddress.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "icmp-conf/icmp/alternate-address", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "icmp-conf/icmp/alternate-address")
 				}
 			}
 			if !item.IcmpConversionError.IsNull() && !item.IcmpConversionError.IsUnknown() {
 				if item.IcmpConversionError.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "icmp-conf/icmp/conversion-error", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "icmp-conf/icmp/conversion-error")
 				}
 			}
 			if !item.IcmpEcho.IsNull() && !item.IcmpEcho.IsUnknown() {
 				if item.IcmpEcho.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "icmp-conf/icmp/echo", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "icmp-conf/icmp/echo")
 				}
 			}
 			if !item.IcmpEchoReply.IsNull() && !item.IcmpEchoReply.IsUnknown() {
 				if item.IcmpEchoReply.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "icmp-conf/icmp/echo-reply", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "icmp-conf/icmp/echo-reply")
 				}
 			}
 			if !item.IcmpInformationReply.IsNull() && !item.IcmpInformationReply.IsUnknown() {
 				if item.IcmpInformationReply.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "icmp-conf/icmp/information-reply", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "icmp-conf/icmp/information-reply")
 				}
 			}
 			if !item.IcmpInformationRequest.IsNull() && !item.IcmpInformationRequest.IsUnknown() {
 				if item.IcmpInformationRequest.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "icmp-conf/icmp/information-request", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "icmp-conf/icmp/information-request")
 				}
 			}
 			if !item.IcmpMaskReply.IsNull() && !item.IcmpMaskReply.IsUnknown() {
 				if item.IcmpMaskReply.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "icmp-conf/icmp/mask-reply", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "icmp-conf/icmp/mask-reply")
 				}
 			}
 			if !item.IcmpMaskRequest.IsNull() && !item.IcmpMaskRequest.IsUnknown() {
 				if item.IcmpMaskRequest.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "icmp-conf/icmp/mask-request", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "icmp-conf/icmp/mask-request")
 				}
 			}
 			if !item.IcmpMobileRedirect.IsNull() && !item.IcmpMobileRedirect.IsUnknown() {
 				if item.IcmpMobileRedirect.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "icmp-conf/icmp/mobile-redirect", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "icmp-conf/icmp/mobile-redirect")
 				}
 			}
 			if !item.IcmpParameterProblem.IsNull() && !item.IcmpParameterProblem.IsUnknown() {
 				if item.IcmpParameterProblem.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "icmp-conf/icmp/parameter-problem", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "icmp-conf/icmp/parameter-problem")
 				}
 			}
 			if !item.IcmpRedirect.IsNull() && !item.IcmpRedirect.IsUnknown() {
 				if item.IcmpRedirect.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "icmp-conf/icmp/redirect", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "icmp-conf/icmp/redirect")
 				}
 			}
 			if !item.IcmpRouterAdvertisement.IsNull() && !item.IcmpRouterAdvertisement.IsUnknown() {
 				if item.IcmpRouterAdvertisement.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "icmp-conf/icmp/router-advertisement", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "icmp-conf/icmp/router-advertisement")
 				}
 			}
 			if !item.IcmpRouterSolicitation.IsNull() && !item.IcmpRouterSolicitation.IsUnknown() {
 				if item.IcmpRouterSolicitation.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "icmp-conf/icmp/router-solicitation", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "icmp-conf/icmp/router-solicitation")
 				}
 			}
 			if !item.IcmpSourceQuench.IsNull() && !item.IcmpSourceQuench.IsUnknown() {
 				if item.IcmpSourceQuench.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "icmp-conf/icmp/source-quench", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "icmp-conf/icmp/source-quench")
 				}
 			}
 			if !item.IcmpTimeExceeded.IsNull() && !item.IcmpTimeExceeded.IsUnknown() {
 				if item.IcmpTimeExceeded.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "icmp-conf/icmp/time-exceeded", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "icmp-conf/icmp/time-exceeded")
 				}
 			}
 			if !item.IcmpTimestampReply.IsNull() && !item.IcmpTimestampReply.IsUnknown() {
 				if item.IcmpTimestampReply.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "icmp-conf/icmp/timestamp-reply", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "icmp-conf/icmp/timestamp-reply")
 				}
 			}
 			if !item.IcmpTimestampRequest.IsNull() && !item.IcmpTimestampRequest.IsUnknown() {
 				if item.IcmpTimestampRequest.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "icmp-conf/icmp/timestamp-request", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "icmp-conf/icmp/timestamp-request")
 				}
 			}
 			if !item.IcmpTraceroute.IsNull() && !item.IcmpTraceroute.IsUnknown() {
 				if item.IcmpTraceroute.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "icmp-conf/icmp/traceroute", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "icmp-conf/icmp/traceroute")
 				}
 			}
 			if !item.IcmpUnreachable.IsNull() && !item.IcmpUnreachable.IsUnknown() {
 				if item.IcmpUnreachable.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "icmp-conf/icmp/unreachable", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "icmp-conf/icmp/unreachable")
 				}
 			}
 			if len(item.TcpDstPortListOp) > 0 {

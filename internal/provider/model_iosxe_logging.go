@@ -369,8 +369,6 @@ func (data Logging) addToBodyXML(ctx context.Context, config Logging, body netco
 	if !data.Trap.IsNull() && !data.Trap.IsUnknown() {
 		if data.Trap.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/trap", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/trap")
 		}
 	}
 	if !data.TrapSeverity.IsNull() && !data.TrapSeverity.IsUnknown() {
@@ -619,8 +617,6 @@ func (data Logging) addToBodyXML(ctx context.Context, config Logging, body netco
 	if !data.LoggingCount.IsNull() && !data.LoggingCount.IsUnknown() {
 		if data.LoggingCount.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/count", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/count")
 		}
 	}
 	if !data.PersistentUrl.IsNull() && !data.PersistentUrl.IsUnknown() {
@@ -641,22 +637,16 @@ func (data Logging) addToBodyXML(ctx context.Context, config Logging, body netco
 	if !data.PersistentImmediate.IsNull() && !data.PersistentImmediate.IsUnknown() {
 		if data.PersistentImmediate.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/persistent/immediate", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/persistent/immediate")
 		}
 	}
 	if !data.PersistentNotify.IsNull() && !data.PersistentNotify.IsUnknown() {
 		if data.PersistentNotify.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/persistent/notify", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/persistent/notify")
 		}
 	}
 	if !data.PersistentProtected.IsNull() && !data.PersistentProtected.IsUnknown() {
 		if data.PersistentProtected.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/persistent/protected", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/persistent/protected")
 		}
 	}
 	if !data.RateLimitAll.IsNull() && !data.RateLimitAll.IsUnknown() {

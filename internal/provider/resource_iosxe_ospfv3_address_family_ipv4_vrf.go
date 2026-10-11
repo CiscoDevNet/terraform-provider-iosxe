@@ -33,6 +33,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
@@ -106,8 +107,10 @@ func (r *OSPFv3AddressFamilyIPv4VRFResource) Schema(ctx context.Context, req res
 				},
 			},
 			"unicast": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"capability_vrf": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Enable specific OSPF feature").AddStringEnumDescription("vrf-lite").String,
@@ -117,16 +120,22 @@ func (r *OSPFv3AddressFamilyIPv4VRFResource) Schema(ctx context.Context, req res
 				},
 			},
 			"bfd_all_interfaces": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable BFD on all interfaces").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable BFD on all interfaces").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"default_information_originate": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Distribute a default route").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Distribute a default route").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"default_information_originate_always": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Always advertise default route").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Always advertise default route").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"default_information_originate_metric": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("OSPF default metric").AddIntegerRangeDescription(1, 16777214).String,
@@ -157,12 +166,16 @@ func (r *OSPFv3AddressFamilyIPv4VRFResource) Schema(ctx context.Context, req res
 				},
 			},
 			"log_adjacency_changes": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Log changes in adjacency state").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Log changes in adjacency state").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"log_adjacency_changes_detail": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Log all state changes").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Log all state changes").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"router_id": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Configure router identifier. New router-id will take effect immediately (peers will reset)").String,
@@ -172,8 +185,10 @@ func (r *OSPFv3AddressFamilyIPv4VRFResource) Schema(ctx context.Context, req res
 				},
 			},
 			"shutdown": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Shutdown the OSPF protocol under the current instance").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Shutdown the OSPF protocol under the current instance").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"auto_cost_reference_bandwidth": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Use reference bandwidth method to assign OSPF cost").AddIntegerRangeDescription(1, 4294967).String,
@@ -239,12 +254,16 @@ func (r *OSPFv3AddressFamilyIPv4VRFResource) Schema(ctx context.Context, req res
 				},
 			},
 			"max_metric_router_lsa_config": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Maximum metric in self-originated router-LSAs").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Maximum metric in self-originated router-LSAs").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"max_metric_router_lsa_config_stub_prefix_lsa": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set maximum metric for stub links in prefix LSAs").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Set maximum metric for stub links in prefix LSAs").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"max_metric_router_lsa_config_inter_area_lsas_metric": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Overriding metric in inter-area-LSAs (default 16711680)").AddIntegerRangeDescription(1, 16777215).String,
@@ -268,16 +287,22 @@ func (r *OSPFv3AddressFamilyIPv4VRFResource) Schema(ctx context.Context, req res
 				},
 			},
 			"max_metric_router_config_lsa_on_startup_wait_for_bgp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Let BGP decide when to originate router-LSA with normal metric").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Let BGP decide when to originate router-LSA with normal metric").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"redistribute_static": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Static routes").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Static routes").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"redistribute_connected": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Connected").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Connected").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"summary_prefix": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
@@ -304,12 +329,16 @@ func (r *OSPFv3AddressFamilyIPv4VRFResource) Schema(ctx context.Context, req res
 							Required:            true,
 						},
 						"nssa": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Specify a NSSA area").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Specify a NSSA area").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"nssa_default_information_originate": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Originate Type 7 default into NSSA area").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Originate Type 7 default into NSSA area").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"nssa_default_information_originate_metric": schema.Int64Attribute{
 							MarkdownDescription: helpers.NewAttributeDescription("OSPF default metric").AddIntegerRangeDescription(0, 16777214).String,
@@ -326,19 +355,25 @@ func (r *OSPFv3AddressFamilyIPv4VRFResource) Schema(ctx context.Context, req res
 							},
 						},
 						"nssa_no_summary": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Do not send summary LSA into NSSA").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Do not send summary LSA into NSSA").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"nssa_no_redistribution": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("No redistribution into this NSSA area").String,
+							MarkdownDescription: helpers.NewAttributeDescription("No redistribution into this NSSA area").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 					},
 				},
 			},
 			"passive_interface_default": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Suppress routing updates on all interfaces").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Suppress routing updates on all interfaces").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"passive_interface": schema.ListAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,

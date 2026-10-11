@@ -132,36 +132,26 @@ func (data CDP) addToBodyXML(ctx context.Context, config CDP, body netconf.Body)
 			if !item.VtpMgmtDomain.IsNull() && !item.VtpMgmtDomain.IsUnknown() {
 				if item.VtpMgmtDomain.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "vtp-mgmt-domain", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "vtp-mgmt-domain")
 				}
 			}
 			if !item.Cos.IsNull() && !item.Cos.IsUnknown() {
 				if item.Cos.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "cos", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "cos")
 				}
 			}
 			if !item.Duplex.IsNull() && !item.Duplex.IsUnknown() {
 				if item.Duplex.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "duplex", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "duplex")
 				}
 			}
 			if !item.Trust.IsNull() && !item.Trust.IsUnknown() {
 				if item.Trust.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "trust", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "trust")
 				}
 			}
 			if !item.Version.IsNull() && !item.Version.IsUnknown() {
 				if item.Version.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "version", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "version")
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-cdp:tlv-list", cBody.Res())

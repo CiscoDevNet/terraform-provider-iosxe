@@ -32,6 +32,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -87,12 +88,16 @@ func (r *PIMResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				},
 			},
 			"autorp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure AutoRP global operations").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configure AutoRP global operations").AddDefaultValueDescription("true").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
 			},
 			"autorp_listener": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Allow AutoRP packets across sparse mode interface").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Allow AutoRP packets across sparse mode interface").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"bsr_candidate_loopback": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Loopback interface").AddIntegerRangeDescription(0, 2147483647).String,
@@ -131,8 +136,10 @@ func (r *PIMResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				Optional:            true,
 			},
 			"ssm_default": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Use 232/8 group range for SSM").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Use 232/8 group range for SSM").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"rp_address": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("IP address of Rendezvous-point for group").String,
@@ -142,12 +149,16 @@ func (r *PIMResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				},
 			},
 			"rp_address_override": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Overrides dynamically learnt RP mappings").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Overrides dynamically learnt RP mappings").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"rp_address_bidir": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Group range treated in bidirectional shared-tree mode").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Group range treated in bidirectional shared-tree mode").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"rp_addresses": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("PIM RP-address (Rendezvous Point)").String,
@@ -166,12 +177,16 @@ func (r *PIMResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 							},
 						},
 						"override": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Overrides dynamically learnt RP mappings").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Overrides dynamically learnt RP mappings").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"bidir": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Group range treated in bidirectional shared-tree mode").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Group range treated in bidirectional shared-tree mode").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 					},
 				},
@@ -204,8 +219,10 @@ func (r *PIMResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 							},
 						},
 						"bidir": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Group range treated in bidirectional shared-tree mode").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Group range treated in bidirectional shared-tree mode").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 					},
 				},
@@ -220,12 +237,16 @@ func (r *PIMResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 							Required:            true,
 						},
 						"autorp": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Configure AutoRP global operations").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Configure AutoRP global operations").AddDefaultValueDescription("true").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(true),
 						},
 						"autorp_listener": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Allow AutoRP packets across sparse mode interface").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Allow AutoRP packets across sparse mode interface").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"bsr_candidate_loopback": schema.Int64Attribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Loopback interface").AddIntegerRangeDescription(0, 2147483647).String,
@@ -264,8 +285,10 @@ func (r *PIMResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 							Optional:            true,
 						},
 						"ssm_default": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Use 232/8 group range for SSM").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Use 232/8 group range for SSM").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"rp_address": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("IP address of Rendezvous-point for group").String,
@@ -275,16 +298,22 @@ func (r *PIMResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 							},
 						},
 						"rp_address_override": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Overrides dynamically learnt RP mappings").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Overrides dynamically learnt RP mappings").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"rp_address_bidir": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Group range treated in bidirectional shared-tree mode").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Group range treated in bidirectional shared-tree mode").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"cache_rpf_oif": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Cache outgoing interface RPF info").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Cache outgoing interface RPF info").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"rp_addresses": schema.ListNestedAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("PIM RP-address (Rendezvous Point)").String,
@@ -303,12 +332,16 @@ func (r *PIMResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 										},
 									},
 									"override": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Overrides dynamically learnt RP mappings").String,
+										MarkdownDescription: helpers.NewAttributeDescription("Overrides dynamically learnt RP mappings").AddDefaultValueDescription("false").String,
 										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(false),
 									},
 									"bidir": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Group range treated in bidirectional shared-tree mode").String,
+										MarkdownDescription: helpers.NewAttributeDescription("Group range treated in bidirectional shared-tree mode").AddDefaultValueDescription("false").String,
 										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(false),
 									},
 								},
 							},
@@ -341,8 +374,10 @@ func (r *PIMResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 										},
 									},
 									"bidir": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Group range treated in bidirectional shared-tree mode").String,
+										MarkdownDescription: helpers.NewAttributeDescription("Group range treated in bidirectional shared-tree mode").AddDefaultValueDescription("false").String,
 										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(false),
 									},
 								},
 							},

@@ -155,8 +155,6 @@ func (data BFDTemplateSingleHop) addToBodyXML(ctx context.Context, config BFDTem
 	if !data.Echo.IsNull() && !data.Echo.IsUnknown() {
 		if data.Echo.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/echo", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/echo")
 		}
 	}
 	if !data.DampeningHalfTime.IsNull() && !data.DampeningHalfTime.IsUnknown() {

@@ -37,7 +37,9 @@ resource "iosxe_vlan_configuration" "example" {
   - Range: `1`-`65535`
 - `evpn_instance_profile` (String) EVPN instance profile name. Use for IOS-XE >= 17.15.
 - `evpn_instance_profile_protected` (Boolean) Enable local peer to peer blocking for auto EVI with profile.
+  - Default value: `false`
 - `evpn_instance_protected` (Boolean) Enable local peer to peer blocking for EVI.
+  - Default value: `false`
 - `evpn_instance_vni` (Number) VNI for EVPN instance (current path). Use for IOS-XE >= 17.15.
   - Range: `4096`-`16777215`
 - `evpn_instance_vni_legacy` (Number) VNI for EVPN instance (deprecated path). Use for IOS-XE < 17.15.

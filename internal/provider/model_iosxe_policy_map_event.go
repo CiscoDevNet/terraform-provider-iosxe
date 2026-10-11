@@ -215,15 +215,11 @@ func (data PolicyMapEvent) addToBodyXML(ctx context.Context, config PolicyMapEve
 					if !citem.PauseReauthentication.IsNull() && !citem.PauseReauthentication.IsUnknown() {
 						if citem.PauseReauthentication.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "pause/reauthentication", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "pause/reauthentication")
 						}
 					}
 					if !citem.Authorize.IsNull() && !citem.Authorize.IsUnknown() {
 						if citem.Authorize.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "authorize", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "authorize")
 						}
 					}
 					if !citem.TerminateConfig.IsNull() && !citem.TerminateConfig.IsUnknown() {
@@ -241,8 +237,6 @@ func (data PolicyMapEvent) addToBodyXML(ctx context.Context, config PolicyMapEve
 					if !citem.ActivateServiceTemplateConfigReplaceAll.IsNull() && !citem.ActivateServiceTemplateConfigReplaceAll.IsUnknown() {
 						if citem.ActivateServiceTemplateConfigReplaceAll.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "activate/service-template-config/replace-all", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "activate/service-template-config/replace-all")
 						}
 					}
 					if !citem.ActivateInterfaceTemplate.IsNull() && !citem.ActivateInterfaceTemplate.IsUnknown() {
@@ -275,8 +269,6 @@ func (data PolicyMapEvent) addToBodyXML(ctx context.Context, config PolicyMapEve
 					if !citem.AuthenticateUsingAaaConfig.IsNull() && !citem.AuthenticateUsingAaaConfig.IsUnknown() {
 						if citem.AuthenticateUsingAaaConfig.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "authenticate/using/aaa-config", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "authenticate/using/aaa-config")
 						}
 					}
 					if !citem.AuthenticateUsingAuthcList.IsNull() && !citem.AuthenticateUsingAuthcList.IsUnknown() {
@@ -294,8 +286,6 @@ func (data PolicyMapEvent) addToBodyXML(ctx context.Context, config PolicyMapEve
 					if !citem.AuthenticateUsingBoth.IsNull() && !citem.AuthenticateUsingBoth.IsUnknown() {
 						if citem.AuthenticateUsingBoth.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "authenticate/using/both", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "authenticate/using/both")
 						}
 					}
 					if !citem.AuthenticateUsingParameterMap.IsNull() && !citem.AuthenticateUsingParameterMap.IsUnknown() {
@@ -304,50 +294,36 @@ func (data PolicyMapEvent) addToBodyXML(ctx context.Context, config PolicyMapEve
 					if !citem.Replace.IsNull() && !citem.Replace.IsUnknown() {
 						if citem.Replace.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "replace", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "replace")
 						}
 					}
 					if !citem.Restrict.IsNull() && !citem.Restrict.IsUnknown() {
 						if citem.Restrict.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "restrict", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "restrict")
 						}
 					}
 					if !citem.ClearSession.IsNull() && !citem.ClearSession.IsUnknown() {
 						if citem.ClearSession.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "clear-session", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "clear-session")
 						}
 					}
 					if !citem.ClearAuthenticatedDataHostsOnPort.IsNull() && !citem.ClearAuthenticatedDataHostsOnPort.IsUnknown() {
 						if citem.ClearAuthenticatedDataHostsOnPort.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "clear-authenticated-data-hosts-on-port", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "clear-authenticated-data-hosts-on-port")
 						}
 					}
 					if !citem.Protect.IsNull() && !citem.Protect.IsUnknown() {
 						if citem.Protect.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "protect", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "protect")
 						}
 					}
 					if !citem.ErrDisable.IsNull() && !citem.ErrDisable.IsUnknown() {
 						if citem.ErrDisable.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "err-disable", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "err-disable")
 						}
 					}
 					if !citem.ResumeReauthentication.IsNull() && !citem.ResumeReauthentication.IsUnknown() {
 						if citem.ResumeReauthentication.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "resume/reauthentication", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "resume/reauthentication")
 						}
 					}
 					if !citem.AuthenticationRestart.IsNull() && !citem.AuthenticationRestart.IsUnknown() {
@@ -359,15 +335,11 @@ func (data PolicyMapEvent) addToBodyXML(ctx context.Context, config PolicyMapEve
 					if !citem.Unauthorize.IsNull() && !citem.Unauthorize.IsUnknown() {
 						if citem.Unauthorize.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "unauthorize", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "unauthorize")
 						}
 					}
 					if !citem.Notify.IsNull() && !citem.Notify.IsUnknown() {
 						if citem.Notify.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "notify", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "notify")
 						}
 					}
 					if !citem.SetTimerName.IsNull() && !citem.SetTimerName.IsUnknown() {

@@ -130,8 +130,6 @@ func (data BGPIPv6UnicastNeighbor) addToBodyXML(ctx context.Context, config BGPI
 	if !data.RouteReflectorClient.IsNull() && !data.RouteReflectorClient.IsUnknown() {
 		if data.RouteReflectorClient.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/route-reflector-client", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/route-reflector-client")
 		}
 	}
 	if !data.SoftReconfiguration.IsNull() && !data.SoftReconfiguration.IsUnknown() {
@@ -140,8 +138,6 @@ func (data BGPIPv6UnicastNeighbor) addToBodyXML(ctx context.Context, config BGPI
 	if !data.DefaultOriginate.IsNull() && !data.DefaultOriginate.IsUnknown() {
 		if data.DefaultOriginate.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/default-originate", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/default-originate")
 		}
 	}
 	if !data.DefaultOriginateRouteMap.IsNull() && !data.DefaultOriginateRouteMap.IsUnknown() {

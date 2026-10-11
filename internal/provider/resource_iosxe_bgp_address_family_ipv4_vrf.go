@@ -32,6 +32,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -113,12 +114,16 @@ func (r *BGPAddressFamilyIPv4VRFResource) Schema(ctx context.Context, req resour
 							Required:            true,
 						},
 						"ipv4_unicast_advertise_l2vpn_evpn": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Advertise/export prefixes to l2vpn evpn table").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Advertise/export prefixes to l2vpn evpn table").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"ipv4_unicast_redistribute_connected": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Connected").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Connected").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"ipv4_unicast_redistribute_connected_route_map": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Route map reference").String,
@@ -165,15 +170,19 @@ func (r *BGPAddressFamilyIPv4VRFResource) Schema(ctx context.Context, req resour
 										},
 									},
 									"summary_only": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Filter more specific routes from updates").String,
+										MarkdownDescription: helpers.NewAttributeDescription("Filter more specific routes from updates").AddDefaultValueDescription("false").String,
 										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(false),
 									},
 								},
 							},
 						},
 						"ipv4_unicast_redistribute_static": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Static routes").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Static routes").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"ipv4_unicast_redistribute_static_route_map": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Route map reference").String,
@@ -210,12 +219,16 @@ func (r *BGPAddressFamilyIPv4VRFResource) Schema(ctx context.Context, req resour
 										Optional:            true,
 									},
 									"backdoor": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Specify a BGP backdoor route").String,
+										MarkdownDescription: helpers.NewAttributeDescription("Specify a BGP backdoor route").AddDefaultValueDescription("false").String,
 										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(false),
 									},
 									"evpn": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Advertise or export to EVPN address-family").String,
+										MarkdownDescription: helpers.NewAttributeDescription("Advertise or export to EVPN address-family").AddDefaultValueDescription("false").String,
 										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(false),
 									},
 								},
 							},
@@ -237,12 +250,16 @@ func (r *BGPAddressFamilyIPv4VRFResource) Schema(ctx context.Context, req resour
 										Optional:            true,
 									},
 									"backdoor": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Specify a BGP backdoor route").String,
+										MarkdownDescription: helpers.NewAttributeDescription("Specify a BGP backdoor route").AddDefaultValueDescription("false").String,
 										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(false),
 									},
 									"evpn": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Advertise or export to EVPN address-family").String,
+										MarkdownDescription: helpers.NewAttributeDescription("Advertise or export to EVPN address-family").AddDefaultValueDescription("false").String,
 										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(false),
 									},
 								},
 							},
@@ -316,8 +333,10 @@ func (r *BGPAddressFamilyIPv4VRFResource) Schema(ctx context.Context, req resour
 							},
 						},
 						"ipv4_unicast_import_path_selection_all": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Import all available paths").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Import all available paths").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 					},
 				},

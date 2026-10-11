@@ -186,8 +186,6 @@ func (data InterfaceVRRPV2) addToBodyXML(ctx context.Context, config InterfaceVR
 	if !data.Shutdown.IsNull() && !data.Shutdown.IsUnknown() {
 		if data.Shutdown.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/shutdown", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/shutdown")
 		}
 	}
 	return body

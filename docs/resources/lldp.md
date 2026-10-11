@@ -35,6 +35,7 @@ resource "iosxe_lldp" "example" {
 - `management_vlan` (Number) Custom Management VLAN
   - Range: `1`-`4095`
 - `run` (Boolean) Enable LLDP
+  - Default value: `false`
 - `system_names` (Attributes List) System name (see [below for nested schema](#nestedatt--system_names))
 - `timer` (Number) Rate at which LLDP packets are sent (in sec)
   - Range: `5`-`65534`

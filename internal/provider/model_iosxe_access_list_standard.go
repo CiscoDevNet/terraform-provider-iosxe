@@ -141,8 +141,6 @@ func (data AccessListStandard) addToBodyXML(ctx context.Context, config AccessLi
 			if !item.DenyAny.IsNull() && !item.DenyAny.IsUnknown() {
 				if item.DenyAny.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "deny/std-ace/any", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "deny/std-ace/any")
 				}
 			}
 			if !item.DenyHost.IsNull() && !item.DenyHost.IsUnknown() {
@@ -151,8 +149,6 @@ func (data AccessListStandard) addToBodyXML(ctx context.Context, config AccessLi
 			if !item.DenyLog.IsNull() && !item.DenyLog.IsUnknown() {
 				if item.DenyLog.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "deny/std-ace/log", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "deny/std-ace/log")
 				}
 			}
 			if !item.PermitPrefix.IsNull() && !item.PermitPrefix.IsUnknown() {
@@ -164,8 +160,6 @@ func (data AccessListStandard) addToBodyXML(ctx context.Context, config AccessLi
 			if !item.PermitAny.IsNull() && !item.PermitAny.IsUnknown() {
 				if item.PermitAny.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "permit/std-ace/any", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "permit/std-ace/any")
 				}
 			}
 			if !item.PermitHost.IsNull() && !item.PermitHost.IsUnknown() {
@@ -174,8 +168,6 @@ func (data AccessListStandard) addToBodyXML(ctx context.Context, config AccessLi
 			if !item.PermitLog.IsNull() && !item.PermitLog.IsUnknown() {
 				if item.PermitLog.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "permit/std-ace/log", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "permit/std-ace/log")
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/access-list-seq-rule", cBody.Res())

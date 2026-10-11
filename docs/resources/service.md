@@ -48,31 +48,56 @@ resource "iosxe_service" "example" {
 ### Optional
 
 - `call_home` (Boolean) Enable call-home service
+  - Default value: `false`
 - `compress_config` (Boolean) Compress the configuration file
+  - Default value: `false`
 - `device` (String) A device name from the provider configuration.
 - `dhcp` (Boolean) Enable DHCP server and relay agent
+  - Default value: `false`
 - `dhcp_config` (Boolean) Enable DHCP server and relay agent
+  - Default value: `true`
 - `pad` (Boolean) Enable PAD commands
+  - Default value: `false`
 - `password_encryption` (Boolean) Encrypt system passwords
+  - Default value: `false`
 - `password_recovery` (Boolean) Enable password recovery
+  - Default value: `false`
 - `sequence_numbers` (Boolean) Stamp logger messages with a sequence number
+  - Default value: `false`
 - `tcp_keepalives_in` (Boolean) Generate keepalives on idle incoming network connections
+  - Default value: `false`
 - `tcp_keepalives_out` (Boolean) Generate keepalives on idle outgoing network connections
+  - Default value: `false`
 - `timestamps` (Boolean) Timestamp debug/log messages
+  - Default value: `false`
 - `timestamps_debug` (Boolean) Timestamp debug messages
+  - Default value: `false`
 - `timestamps_debug_datetime` (Boolean) Timestamp with date and time
+  - Default value: `false`
 - `timestamps_debug_datetime_localtime` (Boolean) Use local time zone for timestamps
+  - Default value: `false`
 - `timestamps_debug_datetime_msec` (Boolean) Include milliseconds in timestamp
+  - Default value: `false`
 - `timestamps_debug_datetime_show_timezone` (Boolean) Add time zone information to timestamp
+  - Default value: `false`
 - `timestamps_debug_datetime_year` (Boolean) Include year in timestamp
+  - Default value: `false`
 - `timestamps_debug_uptime` (Boolean) Timestamp with system uptime
+  - Default value: `false`
 - `timestamps_log` (Boolean) Timestamp log messages
+  - Default value: `false`
 - `timestamps_log_datetime` (Boolean) Timestamp with date and time
+  - Default value: `false`
 - `timestamps_log_datetime_localtime` (Boolean) Use local time zone for timestamps
+  - Default value: `false`
 - `timestamps_log_datetime_msec` (Boolean) Include milliseconds in timestamp
+  - Default value: `false`
 - `timestamps_log_datetime_show_timezone` (Boolean) Add time zone information to timestamp
+  - Default value: `false`
 - `timestamps_log_datetime_year` (Boolean) Include year in timestamp
+  - Default value: `false`
 - `timestamps_log_uptime` (Boolean) Timestamp with system uptime
+  - Default value: `false`
 
 ### Read-Only
 

@@ -203,50 +203,36 @@ func (data AccessListRoleBased) addToBodyXML(ctx context.Context, config AccessL
 			if !item.Ack.IsNull() && !item.Ack.IsUnknown() {
 				if item.Ack.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/ack", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/ack")
 				}
 			}
 			if !item.Fin.IsNull() && !item.Fin.IsUnknown() {
 				if item.Fin.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/fin", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/fin")
 				}
 			}
 			if !item.Psh.IsNull() && !item.Psh.IsUnknown() {
 				if item.Psh.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/psh", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/psh")
 				}
 			}
 			if !item.Rst.IsNull() && !item.Rst.IsUnknown() {
 				if item.Rst.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/rst", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/rst")
 				}
 			}
 			if !item.Syn.IsNull() && !item.Syn.IsUnknown() {
 				if item.Syn.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/syn", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/syn")
 				}
 			}
 			if !item.Urg.IsNull() && !item.Urg.IsUnknown() {
 				if item.Urg.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/urg", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/urg")
 				}
 			}
 			if !item.Established.IsNull() && !item.Established.IsUnknown() {
 				if item.Established.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/established", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/established")
 				}
 			}
 			if !item.Dscp.IsNull() && !item.Dscp.IsUnknown() {
@@ -255,8 +241,6 @@ func (data AccessListRoleBased) addToBodyXML(ctx context.Context, config AccessL
 			if !item.Fragments.IsNull() && !item.Fragments.IsUnknown() {
 				if item.Fragments.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/fragments", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/fragments")
 				}
 			}
 			if !item.Option.IsNull() && !item.Option.IsUnknown() {
@@ -274,183 +258,131 @@ func (data AccessListRoleBased) addToBodyXML(ctx context.Context, config AccessL
 			if !item.Log.IsNull() && !item.Log.IsUnknown() {
 				if item.Log.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/log", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/log")
 				}
 			}
 			if !item.LogInput.IsNull() && !item.LogInput.IsUnknown() {
 				if item.LogInput.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/log-input", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/log-input")
 				}
 			}
 			if !item.MatchAllPlusack.IsNull() && !item.MatchAllPlusack.IsUnknown() {
 				if item.MatchAllPlusack.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-all/plusack", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-all/plusack")
 				}
 			}
 			if !item.MatchAllPlusfin.IsNull() && !item.MatchAllPlusfin.IsUnknown() {
 				if item.MatchAllPlusfin.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-all/plusfin", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-all/plusfin")
 				}
 			}
 			if !item.MatchAllPluspsh.IsNull() && !item.MatchAllPluspsh.IsUnknown() {
 				if item.MatchAllPluspsh.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-all/pluspsh", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-all/pluspsh")
 				}
 			}
 			if !item.MatchAllPlusrst.IsNull() && !item.MatchAllPlusrst.IsUnknown() {
 				if item.MatchAllPlusrst.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-all/plusrst", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-all/plusrst")
 				}
 			}
 			if !item.MatchAllPlussyn.IsNull() && !item.MatchAllPlussyn.IsUnknown() {
 				if item.MatchAllPlussyn.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-all/plussyn", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-all/plussyn")
 				}
 			}
 			if !item.MatchAllPlusurg.IsNull() && !item.MatchAllPlusurg.IsUnknown() {
 				if item.MatchAllPlusurg.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-all/plusurg", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-all/plusurg")
 				}
 			}
 			if !item.MatchAllMinusack.IsNull() && !item.MatchAllMinusack.IsUnknown() {
 				if item.MatchAllMinusack.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-all/minusack", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-all/minusack")
 				}
 			}
 			if !item.MatchAllMinusfin.IsNull() && !item.MatchAllMinusfin.IsUnknown() {
 				if item.MatchAllMinusfin.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-all/minusfin", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-all/minusfin")
 				}
 			}
 			if !item.MatchAllMinuspsh.IsNull() && !item.MatchAllMinuspsh.IsUnknown() {
 				if item.MatchAllMinuspsh.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-all/minuspsh", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-all/minuspsh")
 				}
 			}
 			if !item.MatchAllMinusrst.IsNull() && !item.MatchAllMinusrst.IsUnknown() {
 				if item.MatchAllMinusrst.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-all/minusrst", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-all/minusrst")
 				}
 			}
 			if !item.MatchAllMinussyn.IsNull() && !item.MatchAllMinussyn.IsUnknown() {
 				if item.MatchAllMinussyn.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-all/minussyn", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-all/minussyn")
 				}
 			}
 			if !item.MatchAllMinusurg.IsNull() && !item.MatchAllMinusurg.IsUnknown() {
 				if item.MatchAllMinusurg.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-all/minusurg", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-all/minusurg")
 				}
 			}
 			if !item.MatchAnyPlusack.IsNull() && !item.MatchAnyPlusack.IsUnknown() {
 				if item.MatchAnyPlusack.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-any/plusack", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-any/plusack")
 				}
 			}
 			if !item.MatchAnyPlusfin.IsNull() && !item.MatchAnyPlusfin.IsUnknown() {
 				if item.MatchAnyPlusfin.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-any/plusfin", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-any/plusfin")
 				}
 			}
 			if !item.MatchAnyPluspsh.IsNull() && !item.MatchAnyPluspsh.IsUnknown() {
 				if item.MatchAnyPluspsh.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-any/pluspsh", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-any/pluspsh")
 				}
 			}
 			if !item.MatchAnyPlusrst.IsNull() && !item.MatchAnyPlusrst.IsUnknown() {
 				if item.MatchAnyPlusrst.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-any/plusrst", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-any/plusrst")
 				}
 			}
 			if !item.MatchAnyPlussyn.IsNull() && !item.MatchAnyPlussyn.IsUnknown() {
 				if item.MatchAnyPlussyn.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-any/plussyn", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-any/plussyn")
 				}
 			}
 			if !item.MatchAnyPlusurg.IsNull() && !item.MatchAnyPlusurg.IsUnknown() {
 				if item.MatchAnyPlusurg.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-any/plusurg", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-any/plusurg")
 				}
 			}
 			if !item.MatchAnyMinusack.IsNull() && !item.MatchAnyMinusack.IsUnknown() {
 				if item.MatchAnyMinusack.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-any/minusack", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-any/minusack")
 				}
 			}
 			if !item.MatchAnyMinusfin.IsNull() && !item.MatchAnyMinusfin.IsUnknown() {
 				if item.MatchAnyMinusfin.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-any/minusfin", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-any/minusfin")
 				}
 			}
 			if !item.MatchAnyMinuspsh.IsNull() && !item.MatchAnyMinuspsh.IsUnknown() {
 				if item.MatchAnyMinuspsh.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-any/minuspsh", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-any/minuspsh")
 				}
 			}
 			if !item.MatchAnyMinusrst.IsNull() && !item.MatchAnyMinusrst.IsUnknown() {
 				if item.MatchAnyMinusrst.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-any/minusrst", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-any/minusrst")
 				}
 			}
 			if !item.MatchAnyMinussyn.IsNull() && !item.MatchAnyMinussyn.IsUnknown() {
 				if item.MatchAnyMinussyn.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-any/minussyn", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-any/minussyn")
 				}
 			}
 			if !item.MatchAnyMinusurg.IsNull() && !item.MatchAnyMinusurg.IsUnknown() {
 				if item.MatchAnyMinusurg.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-any/minusurg", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-any/minusurg")
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/access-list-seq-rule", cBody.Res())

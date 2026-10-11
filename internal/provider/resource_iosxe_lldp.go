@@ -31,6 +31,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -86,8 +87,10 @@ func (r *LLDPResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				},
 			},
 			"run": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable LLDP").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable LLDP").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"holdtime": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Specify the holdtime (in sec) to be sent in packets").AddIntegerRangeDescription(0, 65535).String,

@@ -102,8 +102,6 @@ func (data InterfaceStackwiseVirtual) addToBodyXML(ctx context.Context, config I
 	if !data.DualActiveDetection.IsNull() && !data.DualActiveDetection.IsUnknown() {
 		if data.DualActiveDetection.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/dual-active-detection", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/dual-active-detection")
 		}
 	}
 	return body

@@ -30,6 +30,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -85,8 +86,10 @@ func (r *LicenseResource) Schema(ctx context.Context, req resource.SchemaRequest
 				},
 			},
 			"boot_level_network_advantage": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("License Level Network-Advantage").String,
+				MarkdownDescription: helpers.NewAttributeDescription("License Level Network-Advantage").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"boot_level_network_advantage_addon": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("select add-on to include").AddStringEnumDescription("dna-advantage", "dna-essentials").String,
@@ -96,8 +99,10 @@ func (r *LicenseResource) Schema(ctx context.Context, req resource.SchemaRequest
 				},
 			},
 			"boot_level_network_essentials": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("License Level Network-Essentials").String,
+				MarkdownDescription: helpers.NewAttributeDescription("License Level Network-Essentials").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"boot_level_network_essentials_addon": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("select add-on to include").AddStringEnumDescription("dna-essentials").String,
@@ -118,16 +123,22 @@ func (r *LicenseResource) Schema(ctx context.Context, req resource.SchemaRequest
 				Optional:            true,
 			},
 			"accept_agreement": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"accept_end": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"accept_user": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"udi_pid": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,

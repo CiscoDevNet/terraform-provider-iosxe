@@ -97,8 +97,6 @@ func (data StackwiseVirtual) addToBodyXML(ctx context.Context, config StackwiseV
 	if !data.DualActiveDetectionPagp.IsNull() && !data.DualActiveDetectionPagp.IsUnknown() {
 		if data.DualActiveDetectionPagp.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-stackwise-virtual:dual-active/detection/pagp", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-stackwise-virtual:dual-active/detection/pagp")
 		}
 	}
 	if !data.DualActiveDetectionPagpTrustChannelGroup.IsNull() && !data.DualActiveDetectionPagpTrustChannelGroup.IsUnknown() {

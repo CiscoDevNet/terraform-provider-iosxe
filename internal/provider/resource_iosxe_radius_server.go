@@ -31,6 +31,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -88,8 +89,10 @@ func (r *RadiusServerResource) Schema(ctx context.Context, req resource.SchemaRe
 							Required:            true,
 						},
 						"access_request_include": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Include attribute").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Include attribute").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"attribute_31_parameters": schema.ListNestedAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
@@ -118,12 +121,16 @@ func (r *RadiusServerResource) Schema(ctx context.Context, req resource.SchemaRe
 										},
 									},
 									"id_send_nas_port_detail": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("").String,
+										MarkdownDescription: helpers.NewAttributeDescription("").AddDefaultValueDescription("false").String,
 										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(false),
 									},
 									"id_send_mac_only": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("").String,
+										MarkdownDescription: helpers.NewAttributeDescription("").AddDefaultValueDescription("false").String,
 										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(false),
 									},
 								},
 							},

@@ -155,22 +155,16 @@ func (data Radius) addToBodyXML(ctx context.Context, config Radius, body netconf
 	if !data.AutomateTesterIgnoreAcctPort.IsNull() && !data.AutomateTesterIgnoreAcctPort.IsUnknown() {
 		if data.AutomateTesterIgnoreAcctPort.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/automate-tester/ignore-acct-port", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/automate-tester/ignore-acct-port")
 		}
 	}
 	if !data.AutomateTesterIgnoreAuthPort.IsNull() && !data.AutomateTesterIgnoreAuthPort.IsUnknown() {
 		if data.AutomateTesterIgnoreAuthPort.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/automate-tester/ignore-auth-port", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/automate-tester/ignore-auth-port")
 		}
 	}
 	if !data.AutomateTesterProbeOnConfig.IsNull() && !data.AutomateTesterProbeOnConfig.IsUnknown() {
 		if data.AutomateTesterProbeOnConfig.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/automate-tester/probe-on-config", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/automate-tester/probe-on-config")
 		}
 	}
 	if !data.AutomateTesterIdleTime.IsNull() && !data.AutomateTesterIdleTime.IsUnknown() {

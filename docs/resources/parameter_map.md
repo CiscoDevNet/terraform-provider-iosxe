@@ -32,25 +32,27 @@ resource "iosxe_parameter_map" "example" {
 ### Optional
 
 - `alert` (Boolean) Turn on alert
-- `application_inspect_dns` (Boolean)
-- `application_inspect_exec` (Boolean)
-- `application_inspect_ftp` (Boolean)
-- `application_inspect_gtp` (Boolean)
-- `application_inspect_h323` (Boolean)
-- `application_inspect_http` (Boolean)
-- `application_inspect_imap` (Boolean)
-- `application_inspect_login` (Boolean)
-- `application_inspect_msrpc` (Boolean)
-- `application_inspect_netbios` (Boolean)
-- `application_inspect_pop3` (Boolean)
-- `application_inspect_rtsp` (Boolean)
-- `application_inspect_shell` (Boolean)
-- `application_inspect_sip` (Boolean)
-- `application_inspect_skinny` (Boolean)
-- `application_inspect_smtp` (Boolean)
-- `application_inspect_sunrpc` (Boolean)
-- `application_inspect_tftp` (Boolean)
+  - Default value: `false`
+- `application_inspect_dns` (Boolean) - Default value: `true`
+- `application_inspect_exec` (Boolean) - Default value: `true`
+- `application_inspect_ftp` (Boolean) - Default value: `true`
+- `application_inspect_gtp` (Boolean) - Default value: `true`
+- `application_inspect_h323` (Boolean) - Default value: `true`
+- `application_inspect_http` (Boolean) - Default value: `true`
+- `application_inspect_imap` (Boolean) - Default value: `true`
+- `application_inspect_login` (Boolean) - Default value: `true`
+- `application_inspect_msrpc` (Boolean) - Default value: `true`
+- `application_inspect_netbios` (Boolean) - Default value: `true`
+- `application_inspect_pop3` (Boolean) - Default value: `true`
+- `application_inspect_rtsp` (Boolean) - Default value: `true`
+- `application_inspect_shell` (Boolean) - Default value: `true`
+- `application_inspect_sip` (Boolean) - Default value: `true`
+- `application_inspect_skinny` (Boolean) - Default value: `true`
+- `application_inspect_smtp` (Boolean) - Default value: `true`
+- `application_inspect_sunrpc` (Boolean) - Default value: `true`
+- `application_inspect_tftp` (Boolean) - Default value: `true`
 - `audit_trail` (Boolean) Turn on audit trail
+  - Default value: `false`
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
@@ -60,8 +62,11 @@ resource "iosxe_parameter_map" "example" {
 - `icmp_idle_time_ageout` (Number) Specify aggressive age-out time for icmp
   - Range: `1`-`2147483`
 - `icmp_unreachable_allow` (Boolean) ICMP unreachable packets are allowed
+  - Default value: `false`
 - `log_dropped_packets` (Boolean) Log dropped packets
+  - Default value: `false`
 - `log_flow` (Boolean) Log flow info
+  - Default value: `false`
 - `max_incomplete_high` (Number) Specify high-watermark for clamping
   - Range: `1`-`2147483647`
 - `max_incomplete_low` (Number) Specify low-watermark for clamping
@@ -84,8 +89,11 @@ resource "iosxe_parameter_map" "example" {
 - `tcp_finwait_time_ageout` (Number) Specify aggressive age-out time for tcp
   - Range: `1`-`2147483`
 - `tcp_half_close_reset_off` (Boolean) Turn off tcp halfclose reset RST transmission
+  - Default value: `false`
 - `tcp_half_open_reset_off` (Boolean) Turn off tcp halfopen reset RST transmission
+  - Default value: `false`
 - `tcp_idle_reset_off` (Boolean) Turn off tcp idle reset RST transmission
+  - Default value: `false`
 - `tcp_idle_time` (Number) - Range: `1`-`2147483`
 - `tcp_idle_time_ageout` (Number) Specify aggressive age-out time for tcp
   - Range: `1`-`2147483`
@@ -96,13 +104,14 @@ resource "iosxe_parameter_map" "example" {
 - `tcp_synwait_time_ageout` (Number) Specify aggressive age-out time for syn wait-time
   - Range: `1`-`2147483`
 - `tcp_window_scale_enforcement_loose` (Boolean) Loose enforcement
+  - Default value: `false`
 - `udp_half_open_idle_time` (Number) - Range: `1`-`2147483`
 - `udp_half_open_idle_time_ageout` (Number) Specify aggressive age-out time for udp half open
   - Range: `1`-`2147483`
 - `udp_idle_time` (Number) - Range: `1`-`2147483`
 - `udp_idle_time_ageout` (Number) Specify aggressive age-out time for udp
   - Range: `1`-`2147483`
-- `zone_mismatch_drop` (Boolean)
+- `zone_mismatch_drop` (Boolean) - Default value: `false`
 
 ### Read-Only
 

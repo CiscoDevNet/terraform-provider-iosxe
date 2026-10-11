@@ -30,6 +30,7 @@ resource "iosxe_stackwise_virtual" "example" {
 - `device` (String) A device name from the provider configuration.
 - `domain` (Number) - Range: `1`-`255`
 - `dual_active_detection_pagp` (Boolean) Dual-active detection using PAgP
+  - Default value: `false`
 - `dual_active_detection_pagp_trust_channel_group` (Number) Percent range from 1 to 128.
   - Range: `1`-`128`
 

@@ -128,8 +128,6 @@ func (data BGPL2VPNEVPNNeighbor) addToBodyXML(ctx context.Context, config BGPL2V
 	if !data.RouteReflectorClient.IsNull() && !data.RouteReflectorClient.IsUnknown() {
 		if data.RouteReflectorClient.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/route-reflector-client", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/route-reflector-client")
 		}
 	}
 	if !data.SoftReconfiguration.IsNull() && !data.SoftReconfiguration.IsUnknown() {

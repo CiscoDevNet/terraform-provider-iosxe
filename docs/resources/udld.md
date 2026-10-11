@@ -27,10 +27,12 @@ resource "iosxe_udld" "example" {
 ### Optional
 
 - `aggressive` (Boolean) Enable UDLD protocol in aggressive mode on fiber ports exceptwhere locally configured
+  - Default value: `false`
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
 - `enable` (Boolean) Enable UDLD protocol on fiber ports except where locally configured
+  - Default value: `false`
 - `message_time` (Number) Set UDLD message time period
   - Range: `1`-`90`
 - `recovery_interval` (Number) timer-interval(sec)

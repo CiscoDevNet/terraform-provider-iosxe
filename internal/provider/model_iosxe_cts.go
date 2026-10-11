@@ -278,8 +278,6 @@ func (data CTS) addToBodyXML(ctx context.Context, config CTS, body netconf.Body)
 	if !data.RoleBasedEnforcement.IsNull() && !data.RoleBasedEnforcement.IsUnknown() {
 		if data.RoleBasedEnforcement.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-cts:role-based/enforcement-only/enforcement", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-cts:role-based/enforcement-only/enforcement")
 		}
 	}
 	if !data.RoleBasedEnforcementLoggingInterval.IsNull() && !data.RoleBasedEnforcementLoggingInterval.IsUnknown() {

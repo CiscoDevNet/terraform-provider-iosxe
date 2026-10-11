@@ -51,10 +51,12 @@ resource "iosxe_device_tracking" "example" {
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
 - `logging_theft` (Boolean) IP or MAC theft events
+  - Default value: `false`
 - `policies` (Attributes List) Configure a policy for feature device-tracking (see [below for nested schema](#nestedatt--policies))
 - `tracking_auto_source_fallback_ipv4` (String) IPv4 address
 - `tracking_auto_source_fallback_mask` (String) IP prefix mask
 - `tracking_auto_source_fallback_override` (Boolean) Do not select source address from device track table
+  - Default value: `false`
 - `tracking_retry_interval` (Number) Interval time  between two probing
   - Range: `1`-`3600`
 
@@ -72,20 +74,27 @@ Required:
 Optional:
 
 - `data_glean_log_only` (Boolean) only generate a syslog upon data packet notification
+  - Default value: `false`
 - `data_glean_recovery_dhcp` (Boolean) use DHCP as the recovery protocol
+  - Default value: `false`
 - `data_glean_recovery_ndp` (Boolean) use NDP as the recovery protocol
-- `destination_glean_log_only` (Boolean)
+  - Default value: `false`
+- `destination_glean_log_only` (Boolean) - Default value: `false`
 - `destination_glean_recovery_dhcp` (Boolean) use DHCP as the recovery protocol
+  - Default value: `false`
 - `device_role` (String) The role of the device attached to the port
   - Choices: `node`, `router`, `switch`
-- `device_role_node_legacy` (Boolean)
-- `device_role_router_legacy` (Boolean)
-- `device_role_switch_legacy` (Boolean)
+- `device_role_node_legacy` (Boolean) - Default value: `true`
+- `device_role_router_legacy` (Boolean) - Default value: `false`
+- `device_role_switch_legacy` (Boolean) - Default value: `false`
 - `limit_address_count` (Number) Configure maximum address per port
   - Range: `1`-`32000`
 - `medium_type_wireless` (Boolean) Force medium type to wireless
+  - Default value: `false`
 - `prefix_glean` (Boolean) Glean prefixes in RA and DHCP-PD traffic
+  - Default value: `false`
 - `prefix_glean_only` (Boolean) Glean only prefixes i.e. do not glean host addresses
+  - Default value: `false`
 - `protocol_arp` (Boolean) Glean addresses in ARP packets
   - Default value: `true`
 - `protocol_arp_prefix_list` (String) Name of the prefix-list to be matched
@@ -99,15 +108,21 @@ Optional:
   - Default value: `true`
 - `protocol_ndp_prefix_list` (String) Name of the prefix-list to be matched
 - `security_level_glean` (Boolean) glean addresses passively
+  - Default value: `false`
 - `security_level_guard` (Boolean) inspect and drop un-authorized messages (default)
+  - Default value: `false`
 - `security_level_inspect` (Boolean) glean and Validate message
+  - Default value: `false`
 - `tracking_disable` (Boolean) Tracking on or off
+  - Default value: `false`
 - `tracking_disable_stale_lifetime` (String) Default maximum time in STALE
-- `tracking_enable` (Boolean)
+- `tracking_enable` (Boolean) - Default value: `false`
 - `tracking_enable_reachable_lifetime_infinite` (Boolean) Keep in REACHABLE forever
+  - Default value: `false`
 - `tracking_enable_reachable_lifetime_seconds` (Number) Seconds
   - Range: `1`-`86400`
 - `trusted_port` (Boolean) setup trusted port
+  - Default value: `false`
 
 ## Import
 

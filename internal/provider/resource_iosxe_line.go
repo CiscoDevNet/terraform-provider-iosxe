@@ -32,6 +32,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -106,8 +107,10 @@ func (r *LineResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 							},
 						},
 						"login_local": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							MarkdownDescription: helpers.NewAttributeDescription("").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"login_authentication": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
@@ -163,16 +166,22 @@ func (r *LineResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 							Optional:            true,
 						},
 						"logging_synchronous": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Synchronized message output").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Synchronized message output").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"transport_output_all": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("All protocols").String,
+							MarkdownDescription: helpers.NewAttributeDescription("All protocols").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"transport_output_none": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Define no transport protocols for line").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Define no transport protocols for line").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"transport_output": schema.ListAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Define which protocols to use for outgoing connections").String,
@@ -218,8 +227,10 @@ func (r *LineResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 										Required:            true,
 									},
 									"vrf_also": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Same access list is applied for all VRFs").String,
+										MarkdownDescription: helpers.NewAttributeDescription("Same access list is applied for all VRFs").AddDefaultValueDescription("false").String,
 										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(false),
 									},
 								},
 							},
@@ -289,8 +300,10 @@ func (r *LineResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 							Optional:            true,
 						},
 						"authorization_exec_default": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Use the default authorization list").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Use the default authorization list").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"transport_input_all": schema.BoolAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("All protocols").String,
@@ -306,8 +319,10 @@ func (r *LineResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 							Optional:            true,
 						},
 						"monitor": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Copy debug output to the current terminal line").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Copy debug output to the current terminal line").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"session_timeout": schema.Int64Attribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(0, 35791).String,
@@ -324,16 +339,22 @@ func (r *LineResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 							},
 						},
 						"logging_synchronous": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Synchronized message output").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Synchronized message output").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"transport_output_all": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("All protocols").String,
+							MarkdownDescription: helpers.NewAttributeDescription("All protocols").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"transport_output_none": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Define no transport protocols for line").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Define no transport protocols for line").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"transport_output": schema.ListAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Define which protocols to use for outgoing connections").String,
@@ -360,8 +381,10 @@ func (r *LineResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 							Optional:            true,
 						},
 						"logging_synchronous": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Synchronized message output").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Synchronized message output").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"exec_timeout_minutes": schema.Int64Attribute{
 							MarkdownDescription: helpers.NewAttributeDescription("<0-35791>;;Timeout in minutes").AddIntegerRangeDescription(0, 35791).String,
@@ -378,8 +401,10 @@ func (r *LineResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 							},
 						},
 						"monitor": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Copy debug output to the current terminal line").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Copy debug output to the current terminal line").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"stopbits": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Set async line stop bits").AddStringEnumDescription("1", "1.5", "2").String,
@@ -420,8 +445,10 @@ func (r *LineResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 							Optional:            true,
 						},
 						"transport_output_none": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Define no transport protocols for line").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Define no transport protocols for line").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 					},
 				},

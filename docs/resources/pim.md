@@ -82,7 +82,9 @@ resource "iosxe_pim" "example" {
 ### Optional
 
 - `autorp` (Boolean) Configure AutoRP global operations
+  - Default value: `true`
 - `autorp_listener` (Boolean) Allow AutoRP packets across sparse mode interface
+  - Default value: `false`
 - `bsr_candidate_accept_rp_candidate` (String) BSR RP candidate filter
 - `bsr_candidate_loopback` (Number) Loopback interface
   - Range: `0`-`2147483647`
@@ -97,10 +99,13 @@ resource "iosxe_pim" "example" {
   - Range: `0`-`2147483647`
 - `rp_address` (String) IP address of Rendezvous-point for group
 - `rp_address_bidir` (Boolean) Group range treated in bidirectional shared-tree mode
+  - Default value: `false`
 - `rp_address_override` (Boolean) Overrides dynamically learnt RP mappings
+  - Default value: `false`
 - `rp_addresses` (Attributes List) PIM RP-address (Rendezvous Point) (see [below for nested schema](#nestedatt--rp_addresses))
 - `rp_candidates` (Attributes List) To be a PIM version 2 RP candidate (see [below for nested schema](#nestedatt--rp_candidates))
 - `ssm_default` (Boolean) Use 232/8 group range for SSM
+  - Default value: `false`
 - `ssm_range` (String) ACL for group range to be used for SSM
 - `vrfs` (Attributes List) Select VPN Routing/Forwarding instance (see [below for nested schema](#nestedatt--vrfs))
 
@@ -118,7 +123,9 @@ Required:
 Optional:
 
 - `bidir` (Boolean) Group range treated in bidirectional shared-tree mode
+  - Default value: `false`
 - `override` (Boolean) Overrides dynamically learnt RP mappings
+  - Default value: `false`
 - `rp_address` (String) IP address of Rendezvous-point for group
 
 
@@ -132,6 +139,7 @@ Required:
 Optional:
 
 - `bidir` (Boolean) Group range treated in bidirectional shared-tree mode
+  - Default value: `false`
 - `group_list` (String) IP Access list
 - `interval` (Number) RP candidate advertisement interval
   - Range: `1`-`16383`
@@ -149,7 +157,9 @@ Required:
 Optional:
 
 - `autorp` (Boolean) Configure AutoRP global operations
+  - Default value: `true`
 - `autorp_listener` (Boolean) Allow AutoRP packets across sparse mode interface
+  - Default value: `false`
 - `bsr_candidate_accept_rp_candidate` (String) BSR RP candidate filter
 - `bsr_candidate_loopback` (Number) Loopback interface
   - Range: `0`-`2147483647`
@@ -158,14 +168,18 @@ Optional:
 - `bsr_candidate_priority` (Number) Priority value for candidate bootstrap router
   - Range: `0`-`255`
 - `cache_rpf_oif` (Boolean) Cache outgoing interface RPF info
+  - Default value: `false`
 - `register_source_interface_loopback` (Number) Loopback interface
   - Range: `0`-`2147483647`
 - `rp_address` (String) IP address of Rendezvous-point for group
 - `rp_address_bidir` (Boolean) Group range treated in bidirectional shared-tree mode
+  - Default value: `false`
 - `rp_address_override` (Boolean) Overrides dynamically learnt RP mappings
+  - Default value: `false`
 - `rp_addresses` (Attributes List) PIM RP-address (Rendezvous Point) (see [below for nested schema](#nestedatt--vrfs--rp_addresses))
 - `rp_candidates` (Attributes List) To be a PIM version 2 RP candidate (see [below for nested schema](#nestedatt--vrfs--rp_candidates))
 - `ssm_default` (Boolean) Use 232/8 group range for SSM
+  - Default value: `false`
 - `ssm_range` (String) ACL for group range to be used for SSM
 
 <a id="nestedatt--vrfs--rp_addresses"></a>
@@ -178,7 +192,9 @@ Required:
 Optional:
 
 - `bidir` (Boolean) Group range treated in bidirectional shared-tree mode
+  - Default value: `false`
 - `override` (Boolean) Overrides dynamically learnt RP mappings
+  - Default value: `false`
 - `rp_address` (String) IP address of Rendezvous-point for group
 
 
@@ -192,6 +208,7 @@ Required:
 Optional:
 
 - `bidir` (Boolean) Group range treated in bidirectional shared-tree mode
+  - Default value: `false`
 - `group_list` (String) IP Access list
 - `interval` (Number) RP candidate advertisement interval
   - Range: `1`-`16383`

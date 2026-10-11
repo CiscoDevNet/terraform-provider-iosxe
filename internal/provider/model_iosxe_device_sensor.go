@@ -202,36 +202,26 @@ func (data DeviceSensor) addToBodyXML(ctx context.Context, config DeviceSensor, 
 			if !item.TlvNamePortId.IsNull() && !item.TlvNamePortId.IsUnknown() {
 				if item.TlvNamePortId.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "tlv/name/port-id", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "tlv/name/port-id")
 				}
 			}
 			if !item.TlvNamePortDescription.IsNull() && !item.TlvNamePortDescription.IsUnknown() {
 				if item.TlvNamePortDescription.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "tlv/name/port-description", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "tlv/name/port-description")
 				}
 			}
 			if !item.TlvNameSystemName.IsNull() && !item.TlvNameSystemName.IsUnknown() {
 				if item.TlvNameSystemName.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "tlv/name/system-name", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "tlv/name/system-name")
 				}
 			}
 			if !item.TlvNameSystemDescription.IsNull() && !item.TlvNameSystemDescription.IsUnknown() {
 				if item.TlvNameSystemDescription.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "tlv/name/system-description", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "tlv/name/system-description")
 				}
 			}
 			if !item.TlvNameSystemCapabilities.IsNull() && !item.TlvNameSystemCapabilities.IsUnknown() {
 				if item.TlvNameSystemCapabilities.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "tlv/name/system-capabilities", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "tlv/name/system-capabilities")
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/filter-list/lldp/list", cBody.Res())
@@ -246,50 +236,36 @@ func (data DeviceSensor) addToBodyXML(ctx context.Context, config DeviceSensor, 
 			if !item.OptionNameHostName.IsNull() && !item.OptionNameHostName.IsUnknown() {
 				if item.OptionNameHostName.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "option/name/host-name", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "option/name/host-name")
 				}
 			}
 			if !item.OptionNameDefaultIpTtl.IsNull() && !item.OptionNameDefaultIpTtl.IsUnknown() {
 				if item.OptionNameDefaultIpTtl.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "option/name/default-ip-ttl", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "option/name/default-ip-ttl")
 				}
 			}
 			if !item.OptionNameRequestedAddress.IsNull() && !item.OptionNameRequestedAddress.IsUnknown() {
 				if item.OptionNameRequestedAddress.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "option/name/requested-address", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "option/name/requested-address")
 				}
 			}
 			if !item.OptionNameParameterRequestList.IsNull() && !item.OptionNameParameterRequestList.IsUnknown() {
 				if item.OptionNameParameterRequestList.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "option/name/parameter-request-list", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "option/name/parameter-request-list")
 				}
 			}
 			if !item.OptionNameClassIdentifier.IsNull() && !item.OptionNameClassIdentifier.IsUnknown() {
 				if item.OptionNameClassIdentifier.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "option/name/class-identifier", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "option/name/class-identifier")
 				}
 			}
 			if !item.OptionNameClientIdentifier.IsNull() && !item.OptionNameClientIdentifier.IsUnknown() {
 				if item.OptionNameClientIdentifier.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "option/name/client-identifier", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "option/name/client-identifier")
 				}
 			}
 			if !item.OptionNameClientFqdn.IsNull() && !item.OptionNameClientFqdn.IsUnknown() {
 				if item.OptionNameClientFqdn.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "option/name/client-fqdn", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "option/name/client-fqdn")
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/filter-list/dhcp/list", cBody.Res())
@@ -304,36 +280,26 @@ func (data DeviceSensor) addToBodyXML(ctx context.Context, config DeviceSensor, 
 			if !item.TlvNameDeviceName.IsNull() && !item.TlvNameDeviceName.IsUnknown() {
 				if item.TlvNameDeviceName.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "tlv/name/device-name", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "tlv/name/device-name")
 				}
 			}
 			if !item.TlvNameAddressType.IsNull() && !item.TlvNameAddressType.IsUnknown() {
 				if item.TlvNameAddressType.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "tlv/name/address-type", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "tlv/name/address-type")
 				}
 			}
 			if !item.TlvNamePortIdType.IsNull() && !item.TlvNamePortIdType.IsUnknown() {
 				if item.TlvNamePortIdType.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "tlv/name/port-id-type", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "tlv/name/port-id-type")
 				}
 			}
 			if !item.TlvNameCapabilitiesType.IsNull() && !item.TlvNameCapabilitiesType.IsUnknown() {
 				if item.TlvNameCapabilitiesType.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "tlv/name/capabilities-type", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "tlv/name/capabilities-type")
 				}
 			}
 			if !item.TlvNamePlatformType.IsNull() && !item.TlvNamePlatformType.IsUnknown() {
 				if item.TlvNamePlatformType.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "tlv/name/platform-type", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "tlv/name/platform-type")
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/filter-list/cdp/list", cBody.Res())
@@ -396,8 +362,6 @@ func (data DeviceSensor) addToBodyXML(ctx context.Context, config DeviceSensor, 
 	if !data.NotifyAllChanges.IsNull() && !data.NotifyAllChanges.IsUnknown() {
 		if data.NotifyAllChanges.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/notify/all-changes", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/notify/all-changes")
 		}
 	}
 	return body

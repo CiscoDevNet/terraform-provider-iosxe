@@ -132,15 +132,11 @@ func (data InterfaceNVE) addToBodyXML(ctx context.Context, config InterfaceNVE, 
 	if !data.Shutdown.IsNull() && !data.Shutdown.IsUnknown() {
 		if data.Shutdown.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/shutdown", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/shutdown")
 		}
 	}
 	if !data.HostReachabilityProtocolBgp.IsNull() && !data.HostReachabilityProtocolBgp.IsUnknown() {
 		if data.HostReachabilityProtocolBgp.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/host-reachability/protocol/bgp", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/host-reachability/protocol/bgp")
 		}
 	}
 	if !data.SourceInterfaceLoopback.IsNull() && !data.SourceInterfaceLoopback.IsUnknown() {
@@ -170,15 +166,11 @@ func (data InterfaceNVE) addToBodyXML(ctx context.Context, config InterfaceNVE, 
 			if !item.IngressReplication.IsNull() && !item.IngressReplication.IsUnknown() {
 				if item.IngressReplication.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ir-cp-config/ingress-replication", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ir-cp-config/ingress-replication")
 				}
 			}
 			if !item.LocalRouting.IsNull() && !item.LocalRouting.IsUnknown() {
 				if item.LocalRouting.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ir-cp-config/local-routing", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ir-cp-config/local-routing")
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/member/vni", cBody.Res())

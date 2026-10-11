@@ -83,10 +83,12 @@ resource "iosxe_bgp_address_family_ipv4" "example" {
 - `ipv4_unicast_networks` (Attributes List) Specify a network to announce via BGP (see [below for nested schema](#nestedatt--ipv4_unicast_networks))
 - `ipv4_unicast_networks_mask` (Attributes List) Specify a network to announce via BGP (see [below for nested schema](#nestedatt--ipv4_unicast_networks_mask))
 - `ipv4_unicast_redistribute_connected` (Boolean) Connected
+  - Default value: `false`
 - `ipv4_unicast_redistribute_connected_metric` (Number) Metric for redistributed routes
   - Range: `0`-`4294967295`
 - `ipv4_unicast_redistribute_connected_route_map` (String) Route map reference
 - `ipv4_unicast_redistribute_static` (Boolean) Static routes
+  - Default value: `false`
 - `ipv4_unicast_redistribute_static_metric` (Number) Metric for redistributed routes
   - Range: `0`-`4294967295`
 - `ipv4_unicast_redistribute_static_route_map` (String) Route map reference
@@ -128,6 +130,7 @@ Required:
 Optional:
 
 - `backdoor` (Boolean) Specify a BGP backdoor route
+  - Default value: `false`
 - `route_map` (String) Route-map to modify the attributes
 
 
@@ -142,6 +145,7 @@ Required:
 Optional:
 
 - `backdoor` (Boolean) Specify a BGP backdoor route
+  - Default value: `false`
 - `route_map` (String) Route-map to modify the attributes
 
 ## Import

@@ -32,6 +32,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -109,8 +110,10 @@ func (r *BGPNeighborResource) Schema(ctx context.Context, req resource.SchemaReq
 				Optional:            true,
 			},
 			"shutdown": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Administratively shut down this neighbor").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Administratively shut down this neighbor").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"cluster_id": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
@@ -124,36 +127,50 @@ func (r *BGPNeighborResource) Schema(ctx context.Context, req resource.SchemaReq
 				},
 			},
 			"disable_connected_check": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("one-hop away EBGP peer using loopback address").String,
+				MarkdownDescription: helpers.NewAttributeDescription("one-hop away EBGP peer using loopback address").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"fall_over_default_enable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"fall_over_default_route_map": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
 			},
 			"fall_over_bfd": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Use BFD to detect failure").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Use BFD to detect failure").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"fall_over_bfd_multi_hop": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Force BFD multi-hop to detect failure").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Force BFD multi-hop to detect failure").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"fall_over_bfd_single_hop": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Force BFD single-hop to detect failure").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Force BFD single-hop to detect failure").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"fall_over_bfd_check_control_plane_failure": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Retrieve control plane dependent failure info from BFD for BGP GR/NSR operation").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Retrieve control plane dependent failure info from BFD for BGP GR/NSR operation").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"fall_over_bfd_strict_mode": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable BFD strict-mode").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable BFD strict-mode").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"fall_over_maximum_metric_route_map": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
@@ -164,20 +181,28 @@ func (r *BGPNeighborResource) Schema(ctx context.Context, req resource.SchemaReq
 				Optional:            true,
 			},
 			"local_as_no_prepend": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Do not prepend local-as to updates from ebgp peers").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Do not prepend local-as to updates from ebgp peers").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"local_as_replace_as": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Replace real AS with local AS in the EBGP updates").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Replace real AS with local AS in the EBGP updates").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"local_as_dual_as": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Accept either real AS or local AS from the ebgp peer").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Accept either real AS or local AS from the ebgp peer").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"log_neighbor_changes": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Log neighbor up/down and reset reason").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Log neighbor up/down and reset reason").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"password_type": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Encryption type (0 to disable encryption, 7 for proprietary)").AddIntegerRangeDescription(0, 7).String,
@@ -241,8 +266,10 @@ func (r *BGPNeighborResource) Schema(ctx context.Context, req resource.SchemaReq
 				Optional:            true,
 			},
 			"ebgp_multihop": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Allow EBGP neighbors not on directly connected networks. For single-hop ebgp peers, delete ebgp-multihop directly.").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Allow EBGP neighbors not on directly connected networks. For single-hop ebgp peers, delete ebgp-multihop directly.").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ebgp_multihop_max_hop": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(2, 255).String,
@@ -256,12 +283,16 @@ func (r *BGPNeighborResource) Schema(ctx context.Context, req resource.SchemaReq
 				Optional:            true,
 			},
 			"ao_include_tcp_options": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Include TCP options").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Include TCP options").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ao_accept_mismatch_connections": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("accept ao mismatch connections").String,
+				MarkdownDescription: helpers.NewAttributeDescription("accept ao mismatch connections").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"inherit_peer_session": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Inherit a peer-session template").String,

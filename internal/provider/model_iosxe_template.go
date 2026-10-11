@@ -309,43 +309,31 @@ func (data Template) addToBodyXML(ctx context.Context, config Template, body net
 	if !data.SwitchportModeTrunk.IsNull() && !data.SwitchportModeTrunk.IsUnknown() {
 		if data.SwitchportModeTrunk.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/switchport/mode/trunk", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/switchport/mode/trunk")
 		}
 	}
 	if !data.SwitchportModeAccess.IsNull() && !data.SwitchportModeAccess.IsUnknown() {
 		if data.SwitchportModeAccess.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/switchport/mode/access", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/switchport/mode/access")
 		}
 	}
 	if !data.SwitchportNonegotiate.IsNull() && !data.SwitchportNonegotiate.IsUnknown() {
 		if data.SwitchportNonegotiate.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/switchport/nonegotiate", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/switchport/nonegotiate")
 		}
 	}
 	if !data.SwitchportBlockUnicast.IsNull() && !data.SwitchportBlockUnicast.IsUnknown() {
 		if data.SwitchportBlockUnicast.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/switchport/block/unicast", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/switchport/block/unicast")
 		}
 	}
 	if !data.SwitchportPortSecurity.IsNull() && !data.SwitchportPortSecurity.IsUnknown() {
 		if data.SwitchportPortSecurity.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/switchport/port-security", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/switchport/port-security")
 		}
 	}
 	if !data.SwitchportPortSecurityAgingStatic.IsNull() && !data.SwitchportPortSecurityAgingStatic.IsUnknown() {
 		if data.SwitchportPortSecurityAgingStatic.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/switchport/port-security/aging/static", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/switchport/port-security/aging/static")
 		}
 	}
 	if !data.SwitchportPortSecurityAgingTime.IsNull() && !data.SwitchportPortSecurityAgingTime.IsUnknown() {
@@ -354,15 +342,11 @@ func (data Template) addToBodyXML(ctx context.Context, config Template, body net
 	if !data.SwitchportPortSecurityAgingType.IsNull() && !data.SwitchportPortSecurityAgingType.IsUnknown() {
 		if data.SwitchportPortSecurityAgingType.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/switchport/port-security/aging/type", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/switchport/port-security/aging/type")
 		}
 	}
 	if !data.SwitchportPortSecurityAgingTypeInactivity.IsNull() && !data.SwitchportPortSecurityAgingTypeInactivity.IsUnknown() {
 		if data.SwitchportPortSecurityAgingTypeInactivity.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/switchport/port-security/aging/type/inactivity", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/switchport/port-security/aging/type/inactivity")
 		}
 	}
 	if len(data.SwitchportPortSecurityMaximumRange) > 0 {
@@ -374,15 +358,11 @@ func (data Template) addToBodyXML(ctx context.Context, config Template, body net
 			if !item.Vlan.IsNull() && !item.Vlan.IsUnknown() {
 				if item.Vlan.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "vlan", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "vlan")
 				}
 			}
 			if !item.VlanAccess.IsNull() && !item.VlanAccess.IsUnknown() {
 				if item.VlanAccess.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "vlan/access", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "vlan/access")
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/switchport/port-security/maximum/range", cBody.Res())
@@ -391,22 +371,16 @@ func (data Template) addToBodyXML(ctx context.Context, config Template, body net
 	if !data.SwitchportPortSecurityViolationProtect.IsNull() && !data.SwitchportPortSecurityViolationProtect.IsUnknown() {
 		if data.SwitchportPortSecurityViolationProtect.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/switchport/port-security/violation/protect", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/switchport/port-security/violation/protect")
 		}
 	}
 	if !data.SwitchportPortSecurityViolationRestrict.IsNull() && !data.SwitchportPortSecurityViolationRestrict.IsUnknown() {
 		if data.SwitchportPortSecurityViolationRestrict.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/switchport/port-security/violation/restrict", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/switchport/port-security/violation/restrict")
 		}
 	}
 	if !data.SwitchportPortSecurityViolationShutdown.IsNull() && !data.SwitchportPortSecurityViolationShutdown.IsUnknown() {
 		if data.SwitchportPortSecurityViolationShutdown.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/switchport/port-security/violation/shutdown", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/switchport/port-security/violation/shutdown")
 		}
 	}
 	if !data.SwitchportAccessVlan.IsNull() && !data.SwitchportAccessVlan.IsUnknown() {
@@ -427,15 +401,11 @@ func (data Template) addToBodyXML(ctx context.Context, config Template, body net
 	if !data.SwitchportTrunkAllowedVlansNone.IsNull() && !data.SwitchportTrunkAllowedVlansNone.IsUnknown() {
 		if data.SwitchportTrunkAllowedVlansNone.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/switchport/trunk/allowed/vlan/none", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/switchport/trunk/allowed/vlan/none")
 		}
 	}
 	if !data.SwitchportTrunkAllowedVlansAll.IsNull() && !data.SwitchportTrunkAllowedVlansAll.IsUnknown() {
 		if data.SwitchportTrunkAllowedVlansAll.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/switchport/trunk/allowed/vlan/all", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/switchport/trunk/allowed/vlan/all")
 		}
 	}
 	if !data.SwitchportTrunkNativeVlanTag.IsNull() && !data.SwitchportTrunkNativeVlanTag.IsUnknown() {
@@ -447,22 +417,16 @@ func (data Template) addToBodyXML(ctx context.Context, config Template, body net
 	if !data.Mab.IsNull() && !data.Mab.IsUnknown() {
 		if data.Mab.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/mab", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/mab")
 		}
 	}
 	if !data.MabEap.IsNull() && !data.MabEap.IsUnknown() {
 		if data.MabEap.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/mab/eap", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/mab/eap")
 		}
 	}
 	if !data.AccessSessionClosed.IsNull() && !data.AccessSessionClosed.IsUnknown() {
 		if data.AccessSessionClosed.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/access-session/closed", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/access-session/closed")
 		}
 	}
 	if !data.AccessSessionMonitor.IsNull() && !data.AccessSessionMonitor.IsUnknown() {
@@ -480,8 +444,6 @@ func (data Template) addToBodyXML(ctx context.Context, config Template, body net
 	if !data.AccessSessionInterfaceTemplateSticky.IsNull() && !data.AccessSessionInterfaceTemplateSticky.IsUnknown() {
 		if data.AccessSessionInterfaceTemplateSticky.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/access-session/interface-template/sticky", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/access-session/interface-template/sticky")
 		}
 	}
 	if !data.AccessSessionInterfaceTemplateStickyTimer.IsNull() && !data.AccessSessionInterfaceTemplateStickyTimer.IsUnknown() {
@@ -490,15 +452,11 @@ func (data Template) addToBodyXML(ctx context.Context, config Template, body net
 	if !data.AuthenticationPeriodic.IsNull() && !data.AuthenticationPeriodic.IsUnknown() {
 		if data.AuthenticationPeriodic.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/authentication/periodic", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/authentication/periodic")
 		}
 	}
 	if !data.AuthenticationTimerReauthenticateServer.IsNull() && !data.AuthenticationTimerReauthenticateServer.IsUnknown() {
 		if data.AuthenticationTimerReauthenticateServer.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/authentication/timer/reauthenticate/server", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/authentication/timer/reauthenticate/server")
 		}
 	}
 	if !data.AuthenticationTimerReauthenticateRange.IsNull() && !data.AuthenticationTimerReauthenticateRange.IsUnknown() {
@@ -507,43 +465,31 @@ func (data Template) addToBodyXML(ctx context.Context, config Template, body net
 	if !data.SpanningTreeBpduguardEnable.IsNull() && !data.SpanningTreeBpduguardEnable.IsUnknown() {
 		if data.SpanningTreeBpduguardEnable.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/spanning-tree/bpduguard/enable", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/spanning-tree/bpduguard/enable")
 		}
 	}
 	if !data.SpanningTreeServicePolicy.IsNull() && !data.SpanningTreeServicePolicy.IsUnknown() {
 		if data.SpanningTreeServicePolicy.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/spanning-tree/service-policy", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/spanning-tree/service-policy")
 		}
 	}
 	if !data.SpanningTreePortfast.IsNull() && !data.SpanningTreePortfast.IsUnknown() {
 		if data.SpanningTreePortfast.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/spanning-tree/portfast", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/spanning-tree/portfast")
 		}
 	}
 	if !data.SpanningTreePortfastDisable.IsNull() && !data.SpanningTreePortfastDisable.IsUnknown() {
 		if data.SpanningTreePortfastDisable.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/spanning-tree/portfast/disable", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/spanning-tree/portfast/disable")
 		}
 	}
 	if !data.SpanningTreePortfastEdge.IsNull() && !data.SpanningTreePortfastEdge.IsUnknown() {
 		if data.SpanningTreePortfastEdge.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/spanning-tree/portfast/edge", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/spanning-tree/portfast/edge")
 		}
 	}
 	if !data.SpanningTreePortfastNetwork.IsNull() && !data.SpanningTreePortfastNetwork.IsUnknown() {
 		if data.SpanningTreePortfastNetwork.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/spanning-tree/portfast/network", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/spanning-tree/portfast/network")
 		}
 	}
 	if !data.StormControlBroadcastLevelPpsThreshold.IsNull() && !data.StormControlBroadcastLevelPpsThreshold.IsUnknown() {
@@ -567,15 +513,11 @@ func (data Template) addToBodyXML(ctx context.Context, config Template, body net
 	if !data.StormControlActionShutdown.IsNull() && !data.StormControlActionShutdown.IsUnknown() {
 		if data.StormControlActionShutdown.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/storm-control/action/shutdown", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/storm-control/action/shutdown")
 		}
 	}
 	if !data.StormControlActionTrap.IsNull() && !data.StormControlActionTrap.IsUnknown() {
 		if data.StormControlActionTrap.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/storm-control/action/trap", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/storm-control/action/trap")
 		}
 	}
 	if !data.LoadInterval.IsNull() && !data.LoadInterval.IsUnknown() {
@@ -587,8 +529,6 @@ func (data Template) addToBodyXML(ctx context.Context, config Template, body net
 	if !data.IpDhcpSnoopingTrust.IsNull() && !data.IpDhcpSnoopingTrust.IsUnknown() {
 		if data.IpDhcpSnoopingTrust.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/dhcp/snooping/trust", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/dhcp/snooping/trust")
 		}
 	}
 	if len(data.IpAccessGroup) > 0 {
@@ -609,22 +549,16 @@ func (data Template) addToBodyXML(ctx context.Context, config Template, body net
 	if !data.SubscriberAgingInactivityTimerProbe.IsNull() && !data.SubscriberAgingInactivityTimerProbe.IsUnknown() {
 		if data.SubscriberAgingInactivityTimerProbe.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/subscriber/aging/inactivity-timer/probe", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/subscriber/aging/inactivity-timer/probe")
 		}
 	}
 	if !data.SubscriberAgingProbe.IsNull() && !data.SubscriberAgingProbe.IsUnknown() {
 		if data.SubscriberAgingProbe.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/subscriber/aging/probe", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/subscriber/aging/probe")
 		}
 	}
 	if !data.DeviceTracking.IsNull() && !data.DeviceTracking.IsUnknown() {
 		if data.DeviceTracking.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/device-tracking", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/device-tracking")
 		}
 	}
 	if len(data.DeviceTrackingAttachPolicy) > 0 {
@@ -645,8 +579,6 @@ func (data Template) addToBodyXML(ctx context.Context, config Template, body net
 	if !data.CtsManual.IsNull() && !data.CtsManual.IsUnknown() {
 		if data.CtsManual.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/cts/manual", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/cts/manual")
 		}
 	}
 	if !data.CtsManualPolicyStaticSgt.IsNull() && !data.CtsManualPolicyStaticSgt.IsUnknown() {
@@ -655,8 +587,6 @@ func (data Template) addToBodyXML(ctx context.Context, config Template, body net
 	if !data.CtsManualPolicyStaticTrusted.IsNull() && !data.CtsManualPolicyStaticTrusted.IsUnknown() {
 		if data.CtsManualPolicyStaticTrusted.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/cts/manual/policy/static/trusted", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/cts/manual/policy/static/trusted")
 		}
 	}
 	if !data.CtsManualPropagateSgt.IsNull() && !data.CtsManualPropagateSgt.IsUnknown() {

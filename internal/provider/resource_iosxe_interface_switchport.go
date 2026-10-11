@@ -32,6 +32,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -107,32 +108,46 @@ func (r *InterfaceSwitchportResource) Schema(ctx context.Context, req resource.S
 				},
 			},
 			"mode_access": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set trunking mode to ACCESS unconditionally").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Set trunking mode to ACCESS unconditionally").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"mode_dot1q_tunnel": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("set trunking mode to TUNNEL unconditionally").String,
+				MarkdownDescription: helpers.NewAttributeDescription("set trunking mode to TUNNEL unconditionally").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"mode_private_vlan_trunk": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set the mode to private-vlan trunk").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Set the mode to private-vlan trunk").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"mode_private_vlan_host": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set the mode to private-vlan host").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Set the mode to private-vlan host").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"mode_private_vlan_promiscuous": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set the mode to private-vlan promiscuous").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Set the mode to private-vlan promiscuous").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"mode_trunk": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set trunking mode to TRUNK unconditionally").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Set trunking mode to TRUNK unconditionally").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"nonegotiate": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Device will not engage in negotiation protocol on this interface").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Device will not engage in negotiation protocol on this interface").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"access_vlan": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
@@ -151,12 +166,16 @@ func (r *InterfaceSwitchportResource) Schema(ctx context.Context, req resource.S
 				},
 			},
 			"trunk_allowed_vlans_none": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("no VLANs").String,
+				MarkdownDescription: helpers.NewAttributeDescription("no VLANs").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"trunk_allowed_vlans_all": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("all VLANs").String,
+				MarkdownDescription: helpers.NewAttributeDescription("all VLANs").AddDefaultValueDescription("true").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
 			},
 			"trunk_allowed_vlans_add": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
@@ -195,12 +214,16 @@ func (r *InterfaceSwitchportResource) Schema(ctx context.Context, req resource.S
 				Optional:            true,
 			},
 			"trunk_allowed_vlans_none_legacy": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("no VLANs").String,
+				MarkdownDescription: helpers.NewAttributeDescription("no VLANs").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"trunk_native_vlan_tag": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("").AddDefaultValueDescription("true").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
 			},
 			"trunk_native_vlan": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 4094).String,
@@ -210,8 +233,10 @@ func (r *InterfaceSwitchportResource) Schema(ctx context.Context, req resource.S
 				},
 			},
 			"host": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set port host").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Set port host").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 		},
 	}

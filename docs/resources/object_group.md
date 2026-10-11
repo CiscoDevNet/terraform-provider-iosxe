@@ -496,41 +496,73 @@ Required:
 Optional:
 
 - `ahp` (Boolean) Authentication Header Protocol
+  - Default value: `false`
 - `description` (String) Service object group description
 - `eigrp` (Boolean) Cisco's EIGRP routing protocol
+  - Default value: `false`
 - `esp` (Boolean) Encapsulation Security Payload
+  - Default value: `false`
 - `gre` (Boolean) Cisco's GRE tunneling
+  - Default value: `false`
 - `group_objects` (Attributes Set) List of nested IPv4 service object groups (see [below for nested schema](#nestedatt--service--group_objects))
 - `icmp` (Boolean) Internet Control Message Protocol
+  - Default value: `false`
 - `icmp_alternate_address` (Boolean) Alternate address
+  - Default value: `false`
 - `icmp_conversion_error` (Boolean) Datagram conversion
+  - Default value: `false`
 - `icmp_echo` (Boolean) Echo (ping)
+  - Default value: `false`
 - `icmp_echo_reply` (Boolean) Echo reply
+  - Default value: `false`
 - `icmp_information_reply` (Boolean) Information replies
+  - Default value: `false`
 - `icmp_information_request` (Boolean) Information requests
+  - Default value: `false`
 - `icmp_mask_reply` (Boolean) Mask replies
+  - Default value: `false`
 - `icmp_mask_request` (Boolean) Mask requests
+  - Default value: `false`
 - `icmp_mobile_redirect` (Boolean) Mobile host redirect
+  - Default value: `false`
 - `icmp_parameter_problem` (Boolean) All parameter problems
+  - Default value: `false`
 - `icmp_port_number` (Number) - Range: `0`-`255`
 - `icmp_redirect` (Boolean) All redirects
+  - Default value: `false`
 - `icmp_router_advertisement` (Boolean) Router discovery advertisements
+  - Default value: `false`
 - `icmp_router_solicitation` (Boolean) Router discovery solicitations
+  - Default value: `false`
 - `icmp_source_quench` (Boolean) Source quenches
+  - Default value: `false`
 - `icmp_time_exceeded` (Boolean) All time exceeded
+  - Default value: `false`
 - `icmp_timestamp_reply` (Boolean) Timestamp replies
+  - Default value: `false`
 - `icmp_timestamp_request` (Boolean) Timestamp requests
+  - Default value: `false`
 - `icmp_traceroute` (Boolean) Traceroute
+  - Default value: `false`
 - `icmp_unreachable` (Boolean) All unreachables
+  - Default value: `false`
 - `igmp` (Boolean) Internet Gateway Message Protocol
+  - Default value: `false`
 - `ip` (Boolean) Any Internet Protocol
+  - Default value: `false`
 - `ipinip` (Boolean) IP in IP tunneling
+  - Default value: `false`
 - `nos` (Boolean) KA9Q NOS compatible IP over IP tunneling
+  - Default value: `false`
 - `ospf` (Boolean) OSPF routing protocol
+  - Default value: `false`
 - `pcp` (Boolean) Payload Compression Protocol
+  - Default value: `false`
 - `pim` (Boolean) Protocol Independent Multicast
+  - Default value: `false`
 - `protocol_numbers` (Set of Number) An IP protocol number
 - `tcp` (Boolean) Transmission Control Protocol
+  - Default value: `false`
 - `tcp_dst_port_list` (Attributes Set) List of Destination TCP ports without port operator (see [below for nested schema](#nestedatt--service--tcp_dst_port_list))
 - `tcp_dst_port_list_op` (Attributes Set) List of Destination TCP ports with port operator (see [below for nested schema](#nestedatt--service--tcp_dst_port_list_op))
 - `tcp_dst_port_ranges` (Attributes Set) Match only packets in the range of port numbers (see [below for nested schema](#nestedatt--service--tcp_dst_port_ranges))
@@ -562,6 +594,7 @@ Optional:
 - `tcp_udp_src_range_dst_port_list_op` (Attributes Set) Source port number (see [below for nested schema](#nestedatt--service--tcp_udp_src_range_dst_port_list_op))
 - `tcp_udp_src_range_dst_range_port_list` (Attributes Set) Source port number (see [below for nested schema](#nestedatt--service--tcp_udp_src_range_dst_range_port_list))
 - `udp` (Boolean) User Datagram Protocol
+  - Default value: `false`
 - `udp_dst_port_list` (Attributes Set) List of Destination udp ports without port operator (see [below for nested schema](#nestedatt--service--udp_dst_port_list))
 - `udp_dst_port_list_op` (Attributes Set) List of Destination udp ports with port operator (see [below for nested schema](#nestedatt--service--udp_dst_port_list_op))
 - `udp_dst_port_ranges` (Attributes Set) Match only packets in the range of port numbers (see [below for nested schema](#nestedatt--service--udp_dst_port_ranges))

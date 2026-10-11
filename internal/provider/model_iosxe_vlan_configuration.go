@@ -131,8 +131,6 @@ func (data VLANConfiguration) addToBodyXML(ctx context.Context, config VLANConfi
 	if !data.EvpnInstanceProtected.IsNull() && !data.EvpnInstanceProtected.IsUnknown() {
 		if data.EvpnInstanceProtected.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/member/evi-member/evpn-instance/manual-evi-config/protected", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/member/evi-member/evpn-instance/manual-evi-config/protected")
 		}
 	}
 	if !data.EvpnInstanceProfile.IsNull() && !data.EvpnInstanceProfile.IsUnknown() {
@@ -141,8 +139,6 @@ func (data VLANConfiguration) addToBodyXML(ctx context.Context, config VLANConfi
 	if !data.EvpnInstanceProfileProtected.IsNull() && !data.EvpnInstanceProfileProtected.IsUnknown() {
 		if data.EvpnInstanceProfileProtected.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/member/evi-member/evpn-instance/auto-evi-config/protected", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/member/evi-member/evpn-instance/auto-evi-config/protected")
 		}
 	}
 	return body

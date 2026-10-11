@@ -171,8 +171,6 @@ func (data BGPAddressFamilyIPv4) addToBodyXML(ctx context.Context, config BGPAdd
 	if !data.Ipv4UnicastRedistributeConnected.IsNull() && !data.Ipv4UnicastRedistributeConnected.IsUnknown() {
 		if data.Ipv4UnicastRedistributeConnected.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ipv4-unicast/redistribute/connected", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ipv4-unicast/redistribute/connected")
 		}
 	}
 	if !data.Ipv4UnicastRedistributeConnectedRouteMap.IsNull() && !data.Ipv4UnicastRedistributeConnectedRouteMap.IsUnknown() {
@@ -184,8 +182,6 @@ func (data BGPAddressFamilyIPv4) addToBodyXML(ctx context.Context, config BGPAdd
 	if !data.Ipv4UnicastRedistributeStatic.IsNull() && !data.Ipv4UnicastRedistributeStatic.IsUnknown() {
 		if data.Ipv4UnicastRedistributeStatic.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ipv4-unicast/redistribute/static", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ipv4-unicast/redistribute/static")
 		}
 	}
 	if !data.Ipv4UnicastRedistributeStaticRouteMap.IsNull() && !data.Ipv4UnicastRedistributeStaticRouteMap.IsUnknown() {
@@ -221,8 +217,6 @@ func (data BGPAddressFamilyIPv4) addToBodyXML(ctx context.Context, config BGPAdd
 			if !item.Backdoor.IsNull() && !item.Backdoor.IsUnknown() {
 				if item.Backdoor.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "backdoor", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "backdoor")
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ipv4-unicast/network/with-mask", cBody.Res())
@@ -240,8 +234,6 @@ func (data BGPAddressFamilyIPv4) addToBodyXML(ctx context.Context, config BGPAdd
 			if !item.Backdoor.IsNull() && !item.Backdoor.IsUnknown() {
 				if item.Backdoor.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "backdoor", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "backdoor")
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ipv4-unicast/network/no-mask", cBody.Res())

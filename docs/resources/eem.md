@@ -65,6 +65,7 @@ resource "iosxe_eem" "example" {
 - `history_size_traps` (Number) Embedded Event Manager trap history table size
   - Range: `0`-`50`
 - `scheduler_applet_thread_class_default` (Boolean) default scheduler thread class
+  - Default value: `false`
 - `scheduler_applet_thread_class_number` (Number) Number of concurrent execution threads
   - Range: `1`-`65535`
 - `session_cli_username` (String) username
@@ -129,17 +130,23 @@ Optional:
 - `append_value` (String) Value of the variable of append conditional
 - `append_varname` (String) Name of the variable of append conditional
 - `break` (Boolean) break conditional
+  - Default value: `false`
 - `cli_command` (String) CLI command
 - `context_retrieve_key` (String) key name
 - `context_retrieve_variable` (String) variable name pattern
 - `context_save_key` (String) key name
 - `context_save_variable` (String) variable name pattern
 - `continue` (Boolean) continue conditional
+  - Default value: `false`
 - `counter_name` (String) Name of the counter
 - `counter_op_dec` (Boolean) Decrement the value of the counter by the given value
+  - Default value: `false`
 - `counter_op_inc` (Boolean) Increment the value of the counter by the given value
+  - Default value: `false`
 - `counter_op_nop` (Boolean) Read the value of the counter
+  - Default value: `false`
 - `counter_op_set` (Boolean) Set the value of the counter by the given value
+  - Default value: `false`
 - `counter_value` (Number) Value used to modify the counter
   - Range: `-2147483648`-`2147483647`
 - `decrement_value` (String) Value of the variable of decrement conditional
@@ -147,12 +154,15 @@ Optional:
 - `divide_operand1` (String) First operand of divide conditional
 - `divide_operand2` (String) Second operand of divide conditional
 - `else` (Boolean) else conditional
+  - Default value: `false`
 - `elseif_operand1` (String) First operand of else if conditional
 - `elseif_operand2` (String) Second operand of else if conditional
 - `elseif_operation` (String) Operation of else if conditional
   - Choices: `eq`, `ge`, `gt`, `le`, `lt`, `ne`
 - `end` (Boolean) end conditional block
+  - Default value: `false`
 - `exit` (Boolean) Exit from applet run
+  - Default value: `false`
 - `foreach_delimiter` (String) Delimiter string of for each conditional
 - `foreach_iterator` (String) String to iterate over
 - `foreach_loopvar` (String) Loop variable name of for each conditional
@@ -184,6 +194,7 @@ Optional:
 - `regexp_string_match3` (String) subsequent match variable
 - `regexp_string_pattern` (String) regular expression pattern
 - `reload` (Boolean) Reload system
+  - Default value: `false`
 - `set_value` (String) Value of the variable of set conditional
 - `set_varname` (String) Name of the variable of set conditional
 - `snmp_trap_intdata1` (Number) SNMP integer data1

@@ -144,36 +144,26 @@ func (data InterfaceOSPFv3) addToBodyXML(ctx context.Context, config InterfaceOS
 	if !data.NetworkTypeBroadcast.IsNull() && !data.NetworkTypeBroadcast.IsUnknown() {
 		if data.NetworkTypeBroadcast.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/network-type/broadcast", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/network-type/broadcast")
 		}
 	}
 	if !data.NetworkTypeNonBroadcast.IsNull() && !data.NetworkTypeNonBroadcast.IsUnknown() {
 		if data.NetworkTypeNonBroadcast.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/network-type/non-broadcast", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/network-type/non-broadcast")
 		}
 	}
 	if !data.NetworkTypePointToMultipoint.IsNull() && !data.NetworkTypePointToMultipoint.IsUnknown() {
 		if data.NetworkTypePointToMultipoint.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/network-type/point-to-multipoint", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/network-type/point-to-multipoint")
 		}
 	}
 	if !data.NetworkTypePointToPoint.IsNull() && !data.NetworkTypePointToPoint.IsUnknown() {
 		if data.NetworkTypePointToPoint.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/network-type/point-to-point", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/network-type/point-to-point")
 		}
 	}
 	if !data.Bfd.IsNull() && !data.Bfd.IsUnknown() {
 		if data.Bfd.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/bfd", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/bfd")
 		}
 	}
 	if !data.Cost.IsNull() && !data.Cost.IsUnknown() {
@@ -188,8 +178,6 @@ func (data InterfaceOSPFv3) addToBodyXML(ctx context.Context, config InterfaceOS
 	if !data.MtuIgnore.IsNull() && !data.MtuIgnore.IsUnknown() {
 		if data.MtuIgnore.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/mtu-ignore", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/mtu-ignore")
 		}
 	}
 	if !data.Priority.IsNull() && !data.Priority.IsUnknown() {

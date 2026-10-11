@@ -104,8 +104,6 @@ func (data Multicast) addToBodyXML(ctx context.Context, config Multicast, body n
 	if !data.Multipath.IsNull() && !data.Multipath.IsUnknown() {
 		if data.Multipath.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:multipath", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:multipath")
 		}
 	}
 	if !data.MultipathSGHash.IsNull() && !data.MultipathSGHash.IsUnknown() {
@@ -120,8 +118,6 @@ func (data Multicast) addToBodyXML(ctx context.Context, config Multicast, body n
 			if !item.Multipath.IsNull() && !item.Multipath.IsUnknown() {
 				if item.Multipath.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "multipath", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "multipath")
 				}
 			}
 			if !item.MultipathSGHash.IsNull() && !item.MultipathSGHash.IsUnknown() {

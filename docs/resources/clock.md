@@ -38,10 +38,12 @@ resource "iosxe_clock" "example" {
 ### Optional
 
 - `calendar_valid` (Boolean) Calendar time is authoritative
+  - Default value: `false`
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
 - `summer_time_date` (Boolean) Configure absolute summer time
+  - Default value: `false`
 - `summer_time_date_end_day` (Number) - Range: `1`-`31`
 - `summer_time_date_end_month` (String) - Choices: `Apr`, `Aug`, `Dec`, `Feb`, `Jan`, `Jul`, `Jun`, `Mar`, `May`, `Nov`, `Oct`, `Sep`
 - `summer_time_date_end_time` (String)
@@ -52,6 +54,7 @@ resource "iosxe_clock" "example" {
 - `summer_time_date_start_time` (String)
 - `summer_time_date_start_year` (Number) - Range: `1993`-`2035`
 - `summer_time_recurring` (Boolean) Configure recurring summer time
+  - Default value: `false`
 - `summer_time_recurring_end_month` (String) - Choices: `Apr`, `Aug`, `Dec`, `Feb`, `Jan`, `Jul`, `Jun`, `Mar`, `May`, `Nov`, `Oct`, `Sep`
 - `summer_time_recurring_end_time` (String)
 - `summer_time_recurring_end_week` (String)

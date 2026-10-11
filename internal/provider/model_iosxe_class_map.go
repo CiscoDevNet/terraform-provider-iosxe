@@ -160,8 +160,6 @@ func (data ClassMap) addToBodyXML(ctx context.Context, config ClassMap, body net
 	if !data.Subscriber.IsNull() && !data.Subscriber.IsUnknown() {
 		if data.Subscriber.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/subscriber", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/subscriber")
 		}
 	}
 	if !data.Prematch.IsNull() && !data.Prematch.IsUnknown() {
@@ -170,29 +168,21 @@ func (data ClassMap) addToBodyXML(ctx context.Context, config ClassMap, body net
 	if !data.MatchAuthorizationStatusAuthorized.IsNull() && !data.MatchAuthorizationStatusAuthorized.IsUnknown() {
 		if data.MatchAuthorizationStatusAuthorized.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/match/authorization-status/authorized", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/authorization-status/authorized")
 		}
 	}
 	if !data.MatchResultTypeAaaTimeout.IsNull() && !data.MatchResultTypeAaaTimeout.IsUnknown() {
 		if data.MatchResultTypeAaaTimeout.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/match/result-type/aaa-timeout", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/result-type/aaa-timeout")
 		}
 	}
 	if !data.MatchResultTypeSuccess.IsNull() && !data.MatchResultTypeSuccess.IsUnknown() {
 		if data.MatchResultTypeSuccess.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/match/result-type/success", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/result-type/success")
 		}
 	}
 	if !data.MatchAuthorizationStatusUnauthorized.IsNull() && !data.MatchAuthorizationStatusUnauthorized.IsUnknown() {
 		if data.MatchAuthorizationStatusUnauthorized.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/match/authorization-status/unauthorized", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/authorization-status/unauthorized")
 		}
 	}
 	if len(data.MatchActivatedServiceTemplates) > 0 {
@@ -214,43 +204,31 @@ func (data ClassMap) addToBodyXML(ctx context.Context, config ClassMap, body net
 	if !data.MatchMethodDot1x.IsNull() && !data.MatchMethodDot1x.IsUnknown() {
 		if data.MatchMethodDot1x.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/match/method/dot1x", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/method/dot1x")
 		}
 	}
 	if !data.MatchResultTypeMethodDot1xAuthoritative.IsNull() && !data.MatchResultTypeMethodDot1xAuthoritative.IsUnknown() {
 		if data.MatchResultTypeMethodDot1xAuthoritative.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/match/result-type/method/dot1x/authoritative", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/result-type/method/dot1x/authoritative")
 		}
 	}
 	if !data.MatchResultTypeMethodDot1xAgentNotFound.IsNull() && !data.MatchResultTypeMethodDot1xAgentNotFound.IsUnknown() {
 		if data.MatchResultTypeMethodDot1xAgentNotFound.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/match/result-type/method/dot1x/agent-not-found", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/result-type/method/dot1x/agent-not-found")
 		}
 	}
 	if !data.MatchResultTypeMethodDot1xMethodTimeout.IsNull() && !data.MatchResultTypeMethodDot1xMethodTimeout.IsUnknown() {
 		if data.MatchResultTypeMethodDot1xMethodTimeout.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/match/result-type/method/dot1x/method-timeout", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/result-type/method/dot1x/method-timeout")
 		}
 	}
 	if !data.MatchMethodMab.IsNull() && !data.MatchMethodMab.IsUnknown() {
 		if data.MatchMethodMab.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/match/method/mab", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/method/mab")
 		}
 	}
 	if !data.MatchResultTypeMethodMabAuthoritative.IsNull() && !data.MatchResultTypeMethodMabAuthoritative.IsUnknown() {
 		if data.MatchResultTypeMethodMabAuthoritative.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/match/result-type/method/mab/authoritative", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/result-type/method/mab/authoritative")
 		}
 	}
 	if !data.MatchDscp.IsNull() && !data.MatchDscp.IsUnknown() {

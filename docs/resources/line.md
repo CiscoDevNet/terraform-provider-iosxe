@@ -82,7 +82,9 @@ Optional:
 - `exec_timeout_seconds` (Number) <0-2147483>;;Timeout in seconds
   - Range: `0`-`2147483`
 - `logging_synchronous` (Boolean) Synchronized message output
+  - Default value: `false`
 - `monitor` (Boolean) Copy debug output to the current terminal line
+  - Default value: `false`
 - `password` (String, Sensitive)
 - `password_level` (Number) Set exec level password
   - Range: `0`-`255`
@@ -92,6 +94,7 @@ Optional:
 - `stopbits` (String) Set async line stop bits
   - Choices: `1`, `1.5`, `2`
 - `transport_output_none` (Boolean) Define no transport protocols for line
+  - Default value: `false`
 
 
 <a id="nestedatt--console"></a>
@@ -110,8 +113,9 @@ Optional:
 - `exec_timeout_seconds` (Number) <0-2147483>;;Timeout in seconds
   - Range: `0`-`2147483`
 - `logging_synchronous` (Boolean) Synchronized message output
+  - Default value: `false`
 - `login_authentication` (String)
-- `login_local` (Boolean)
+- `login_local` (Boolean) - Default value: `false`
 - `password` (String, Sensitive)
 - `password_level` (Number) Set exec level password
   - Range: `0`-`255`
@@ -123,7 +127,9 @@ Optional:
   - Choices: `1`, `1.5`, `2`
 - `transport_output` (List of String) Define which protocols to use for outgoing connections
 - `transport_output_all` (Boolean) All protocols
+  - Default value: `false`
 - `transport_output_none` (Boolean) Define no transport protocols for line
+  - Default value: `false`
 
 
 <a id="nestedatt--vty"></a>
@@ -139,6 +145,7 @@ Optional:
 - `access_classes` (Attributes List) Choose direction of the access list (see [below for nested schema](#nestedatt--vty--access_classes))
 - `authorization_exec` (String) Use an authorization list with this name
 - `authorization_exec_default` (Boolean) Use the default authorization list
+  - Default value: `false`
 - `escape_character` (String)
 - `exec_timeout_minutes` (Number) <0-35791>;;Timeout in minutes
   - Range: `0`-`35791`
@@ -147,8 +154,10 @@ Optional:
 - `last` (Number) Vty last line number
   - Range: `1`-`1869`
 - `logging_synchronous` (Boolean) Synchronized message output
+  - Default value: `false`
 - `login_authentication` (String) Authentication list
 - `monitor` (Boolean) Copy debug output to the current terminal line
+  - Default value: `false`
 - `password` (String, Sensitive)
 - `password_level` (Number) Set exec level password
   - Range: `0`-`255`
@@ -163,7 +172,9 @@ Optional:
 - `transport_input_none` (Boolean) Define no transport protocols for line
 - `transport_output` (List of String) Define which protocols to use for outgoing connections
 - `transport_output_all` (Boolean) All protocols
+  - Default value: `false`
 - `transport_output_none` (Boolean) Define no transport protocols for line
+  - Default value: `false`
 - `transport_preferred_protocol` (String) - Choices: `acercon`, `lat`, `mop`, `nasi`, `none`, `pad`, `rlogin`, `ssh`, `telnet`, `udptn`
 
 <a id="nestedatt--vty--access_classes"></a>
@@ -178,6 +189,7 @@ Required:
 Optional:
 
 - `vrf_also` (Boolean) Same access list is applied for all VRFs
+  - Default value: `false`
 
 ## Import
 

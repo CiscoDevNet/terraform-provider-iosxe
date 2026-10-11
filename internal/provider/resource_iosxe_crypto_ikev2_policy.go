@@ -29,6 +29,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -83,8 +84,10 @@ func (r *CryptoIKEv2PolicyResource) Schema(ctx context.Context, req resource.Sch
 				},
 			},
 			"match_inbound_only": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("inbound only for controller").String,
+				MarkdownDescription: helpers.NewAttributeDescription("inbound only for controller").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"match_address_local_ip": schema.ListAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Local address").String,
@@ -96,8 +99,10 @@ func (r *CryptoIKEv2PolicyResource) Schema(ctx context.Context, req resource.Sch
 				Optional:            true,
 			},
 			"match_fvrf_any": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Any fvrf").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Any fvrf").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"proposals": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Specify Proposal").String,

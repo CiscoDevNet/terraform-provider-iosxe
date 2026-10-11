@@ -193,8 +193,6 @@ func (data BGPIPv4UnicastVRFNeighbor) addToBodyXML(ctx context.Context, config B
 	if !data.Shutdown.IsNull() && !data.Shutdown.IsUnknown() {
 		if data.Shutdown.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/shutdown", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/shutdown")
 		}
 	}
 	if !data.ClusterId.IsNull() && !data.ClusterId.IsUnknown() {
@@ -203,8 +201,6 @@ func (data BGPIPv4UnicastVRFNeighbor) addToBodyXML(ctx context.Context, config B
 	if !data.LogNeighborChangesDisable.IsNull() && !data.LogNeighborChangesDisable.IsUnknown() {
 		if data.LogNeighborChangesDisable.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/log-neighbor-changes/disable", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/log-neighbor-changes/disable")
 		}
 	}
 	if !data.PasswordType.IsNull() && !data.PasswordType.IsUnknown() {
@@ -235,36 +231,26 @@ func (data BGPIPv4UnicastVRFNeighbor) addToBodyXML(ctx context.Context, config B
 	if !data.FallOverBfd.IsNull() && !data.FallOverBfd.IsUnknown() {
 		if data.FallOverBfd.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/fall-over/bfd", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/fall-over/bfd")
 		}
 	}
 	if !data.FallOverBfdMultiHop.IsNull() && !data.FallOverBfdMultiHop.IsUnknown() {
 		if data.FallOverBfdMultiHop.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/fall-over/bfd/multi-hop", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/fall-over/bfd/multi-hop")
 		}
 	}
 	if !data.FallOverBfdSingleHop.IsNull() && !data.FallOverBfdSingleHop.IsUnknown() {
 		if data.FallOverBfdSingleHop.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/fall-over/bfd/single-hop", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/fall-over/bfd/single-hop")
 		}
 	}
 	if !data.FallOverBfdCheckControlPlaneFailure.IsNull() && !data.FallOverBfdCheckControlPlaneFailure.IsUnknown() {
 		if data.FallOverBfdCheckControlPlaneFailure.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/fall-over/bfd/check-control-plane-failure", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/fall-over/bfd/check-control-plane-failure")
 		}
 	}
 	if !data.FallOverBfdStrictMode.IsNull() && !data.FallOverBfdStrictMode.IsUnknown() {
 		if data.FallOverBfdStrictMode.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/fall-over/bfd/strict-mode", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/fall-over/bfd/strict-mode")
 		}
 	}
 	if !data.FallOverMaximumMetricRouteMap.IsNull() && !data.FallOverMaximumMetricRouteMap.IsUnknown() {
@@ -273,8 +259,6 @@ func (data BGPIPv4UnicastVRFNeighbor) addToBodyXML(ctx context.Context, config B
 	if !data.DisableConnectedCheck.IsNull() && !data.DisableConnectedCheck.IsUnknown() {
 		if data.DisableConnectedCheck.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/disable-connected-check", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/disable-connected-check")
 		}
 	}
 	if !data.TtlSecurityHops.IsNull() && !data.TtlSecurityHops.IsUnknown() {
@@ -286,22 +270,16 @@ func (data BGPIPv4UnicastVRFNeighbor) addToBodyXML(ctx context.Context, config B
 	if !data.LocalAsNoPrepend.IsNull() && !data.LocalAsNoPrepend.IsUnknown() {
 		if data.LocalAsNoPrepend.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/local-as/no-prepend", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/local-as/no-prepend")
 		}
 	}
 	if !data.LocalAsReplaceAs.IsNull() && !data.LocalAsReplaceAs.IsUnknown() {
 		if data.LocalAsReplaceAs.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/local-as/replace-as", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/local-as/replace-as")
 		}
 	}
 	if !data.LocalAsDualAs.IsNull() && !data.LocalAsDualAs.IsUnknown() {
 		if data.LocalAsDualAs.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/local-as/dual-as", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/local-as/dual-as")
 		}
 	}
 	if !data.UpdateSourceInterfaceLoopback.IsNull() && !data.UpdateSourceInterfaceLoopback.IsUnknown() {
@@ -320,8 +298,6 @@ func (data BGPIPv4UnicastVRFNeighbor) addToBodyXML(ctx context.Context, config B
 	if !data.RouteReflectorClient.IsNull() && !data.RouteReflectorClient.IsUnknown() {
 		if data.RouteReflectorClient.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/route-reflector-client", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/route-reflector-client")
 		}
 	}
 	if !data.SoftReconfiguration.IsNull() && !data.SoftReconfiguration.IsUnknown() {
@@ -330,8 +306,6 @@ func (data BGPIPv4UnicastVRFNeighbor) addToBodyXML(ctx context.Context, config B
 	if !data.DefaultOriginate.IsNull() && !data.DefaultOriginate.IsUnknown() {
 		if data.DefaultOriginate.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/default-originate", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/default-originate")
 		}
 	}
 	if !data.DefaultOriginateRouteMap.IsNull() && !data.DefaultOriginateRouteMap.IsUnknown() {
@@ -352,8 +326,6 @@ func (data BGPIPv4UnicastVRFNeighbor) addToBodyXML(ctx context.Context, config B
 	if !data.EbgpMultihop.IsNull() && !data.EbgpMultihop.IsUnknown() {
 		if data.EbgpMultihop.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ebgp-multihop", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ebgp-multihop")
 		}
 	}
 	if !data.EbgpMultihopMaxHop.IsNull() && !data.EbgpMultihopMaxHop.IsUnknown() {
@@ -362,22 +334,16 @@ func (data BGPIPv4UnicastVRFNeighbor) addToBodyXML(ctx context.Context, config B
 	if !data.HaModeGracefulRestart.IsNull() && !data.HaModeGracefulRestart.IsUnknown() {
 		if data.HaModeGracefulRestart.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ha-mode/graceful-restart", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ha-mode/graceful-restart")
 		}
 	}
 	if !data.NextHopSelf.IsNull() && !data.NextHopSelf.IsUnknown() {
 		if data.NextHopSelf.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/next-hop-self", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/next-hop-self")
 		}
 	}
 	if !data.NextHopSelfAll.IsNull() && !data.NextHopSelfAll.IsUnknown() {
 		if data.NextHopSelfAll.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/next-hop-self/all", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/next-hop-self/all")
 		}
 	}
 	if !data.AdvertisementInterval.IsNull() && !data.AdvertisementInterval.IsUnknown() {

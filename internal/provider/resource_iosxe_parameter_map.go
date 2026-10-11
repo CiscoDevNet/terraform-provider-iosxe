@@ -31,6 +31,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -93,84 +94,124 @@ func (r *ParameterMapResource) Schema(ctx context.Context, req resource.SchemaRe
 				},
 			},
 			"alert": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Turn on alert").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Turn on alert").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"application_inspect_dns": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("").AddDefaultValueDescription("true").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
 			},
 			"application_inspect_exec": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("").AddDefaultValueDescription("true").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
 			},
 			"application_inspect_ftp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("").AddDefaultValueDescription("true").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
 			},
 			"application_inspect_gtp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("").AddDefaultValueDescription("true").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
 			},
 			"application_inspect_h323": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("").AddDefaultValueDescription("true").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
 			},
 			"application_inspect_http": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("").AddDefaultValueDescription("true").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
 			},
 			"application_inspect_imap": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("").AddDefaultValueDescription("true").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
 			},
 			"application_inspect_login": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("").AddDefaultValueDescription("true").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
 			},
 			"application_inspect_msrpc": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("").AddDefaultValueDescription("true").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
 			},
 			"application_inspect_netbios": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("").AddDefaultValueDescription("true").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
 			},
 			"application_inspect_pop3": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("").AddDefaultValueDescription("true").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
 			},
 			"application_inspect_rtsp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("").AddDefaultValueDescription("true").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
 			},
 			"application_inspect_shell": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("").AddDefaultValueDescription("true").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
 			},
 			"application_inspect_sip": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("").AddDefaultValueDescription("true").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
 			},
 			"application_inspect_skinny": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("").AddDefaultValueDescription("true").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
 			},
 			"application_inspect_smtp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("").AddDefaultValueDescription("true").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
 			},
 			"application_inspect_sunrpc": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("").AddDefaultValueDescription("true").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
 			},
 			"application_inspect_tftp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("").AddDefaultValueDescription("true").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
 			},
 			"audit_trail": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Turn on audit trail").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Turn on audit trail").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"dns_timeout": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Timeout in seconds").AddIntegerRangeDescription(1, 2147483).String,
@@ -194,16 +235,22 @@ func (r *ParameterMapResource) Schema(ctx context.Context, req resource.SchemaRe
 				},
 			},
 			"icmp_unreachable_allow": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("ICMP unreachable packets are allowed").String,
+				MarkdownDescription: helpers.NewAttributeDescription("ICMP unreachable packets are allowed").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"log_dropped_packets": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Log dropped packets").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Log dropped packets").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"log_flow": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Log flow info").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Log flow info").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"max_incomplete_high": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Specify high-watermark for clamping").AddIntegerRangeDescription(1, 2147483647).String,
@@ -290,16 +337,22 @@ func (r *ParameterMapResource) Schema(ctx context.Context, req resource.SchemaRe
 				},
 			},
 			"tcp_half_close_reset_off": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Turn off tcp halfclose reset RST transmission").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Turn off tcp halfclose reset RST transmission").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"tcp_half_open_reset_off": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Turn off tcp halfopen reset RST transmission").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Turn off tcp halfopen reset RST transmission").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"tcp_idle_reset_off": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Turn off tcp idle reset RST transmission").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Turn off tcp idle reset RST transmission").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"tcp_idle_time": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 2147483).String,
@@ -344,8 +397,10 @@ func (r *ParameterMapResource) Schema(ctx context.Context, req resource.SchemaRe
 				},
 			},
 			"tcp_window_scale_enforcement_loose": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Loose enforcement").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Loose enforcement").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"udp_half_open_idle_time": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 2147483).String,
@@ -376,8 +431,10 @@ func (r *ParameterMapResource) Schema(ctx context.Context, req resource.SchemaRe
 				},
 			},
 			"zone_mismatch_drop": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 		},
 	}

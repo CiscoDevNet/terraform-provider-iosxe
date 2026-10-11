@@ -31,6 +31,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -100,8 +101,10 @@ func (r *BGPPeerPolicyTemplateResource) Schema(ctx context.Context, req resource
 				},
 			},
 			"route_reflector_client": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure a neighbor as Route Reflector client").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configure a neighbor as Route Reflector client").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"send_community": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("both", "extended", "standard").String,
@@ -137,8 +140,10 @@ func (r *BGPPeerPolicyTemplateResource) Schema(ctx context.Context, req resource
 				},
 			},
 			"as_override_split_horizon": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 		},
 	}

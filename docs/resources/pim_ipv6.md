@@ -39,6 +39,7 @@ resource "iosxe_pim_ipv6" "example" {
 - `rp_address` (String)
 - `rp_address_access_list` (String)
 - `rp_address_bidir` (Boolean) Specify keyword bidir to configure a bidir RP
+  - Default value: `false`
 - `vrfs` (Attributes List) Select VPN Routing/Forwarding instance (see [below for nested schema](#nestedatt--vrfs))
 
 ### Read-Only
@@ -57,6 +58,7 @@ Optional:
 - `rp_address` (String)
 - `rp_address_access_list` (String)
 - `rp_address_bidir` (Boolean) Specify keyword bidir to configure a bidir RP
+  - Default value: `false`
 
 ## Import
 

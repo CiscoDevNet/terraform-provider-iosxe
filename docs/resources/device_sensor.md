@@ -78,6 +78,7 @@ resource "iosxe_device_sensor" "example" {
 - `filter_spec_lldp_excludes` (Attributes List) Protocol Filter Spec list (see [below for nested schema](#nestedatt--filter_spec_lldp_excludes))
 - `filter_spec_lldp_includes` (Attributes List) Protocol Filter Spec list (see [below for nested schema](#nestedatt--filter_spec_lldp_includes))
 - `notify_all_changes` (Boolean) Trigger identity update when TLVs are added/modified/removed
+  - Default value: `false`
 
 ### Read-Only
 
@@ -93,10 +94,15 @@ Required:
 Optional:
 
 - `tlv_name_address_type` (Boolean) Address Type
+  - Default value: `false`
 - `tlv_name_capabilities_type` (Boolean) Capabilities Type
+  - Default value: `false`
 - `tlv_name_device_name` (Boolean) Device Name
+  - Default value: `false`
 - `tlv_name_platform_type` (Boolean) Platform Type
+  - Default value: `false`
 - `tlv_name_port_id_type` (Boolean) Port Id type
+  - Default value: `false`
 
 
 <a id="nestedatt--filter_lists_dhcp"></a>
@@ -109,12 +115,19 @@ Required:
 Optional:
 
 - `option_name_class_identifier` (Boolean) Class Identifier
+  - Default value: `false`
 - `option_name_client_fqdn` (Boolean) Client FQDN
+  - Default value: `false`
 - `option_name_client_identifier` (Boolean) Client Identifier
+  - Default value: `false`
 - `option_name_default_ip_ttl` (Boolean) Default IP Time To Live
+  - Default value: `false`
 - `option_name_host_name` (Boolean) Host Name
+  - Default value: `false`
 - `option_name_parameter_request_list` (Boolean) Parameter List
+  - Default value: `false`
 - `option_name_requested_address` (Boolean) Address Request
+  - Default value: `false`
 
 
 <a id="nestedatt--filter_lists_lldp"></a>
@@ -127,10 +140,15 @@ Required:
 Optional:
 
 - `tlv_name_port_description` (Boolean) Port Description
+  - Default value: `false`
 - `tlv_name_port_id` (Boolean) Port Id
+  - Default value: `false`
 - `tlv_name_system_capabilities` (Boolean) System Capabilities
+  - Default value: `false`
 - `tlv_name_system_description` (Boolean) System Description
+  - Default value: `false`
 - `tlv_name_system_name` (Boolean) System Name
+  - Default value: `false`
 
 
 <a id="nestedatt--filter_spec_cdp_excludes"></a>

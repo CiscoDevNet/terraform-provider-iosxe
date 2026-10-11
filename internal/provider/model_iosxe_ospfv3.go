@@ -111,8 +111,6 @@ func (data OSPFv3) addToBodyXML(ctx context.Context, config OSPFv3, body netconf
 	if !data.BfdAllInterfaces.IsNull() && !data.BfdAllInterfaces.IsUnknown() {
 		if data.BfdAllInterfaces.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/bfd/all-interfaces", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/bfd/all-interfaces")
 		}
 	}
 	if !data.AutoCostReferenceBandwidth.IsNull() && !data.AutoCostReferenceBandwidth.IsUnknown() {
@@ -124,15 +122,11 @@ func (data OSPFv3) addToBodyXML(ctx context.Context, config OSPFv3, body netconf
 	if !data.LogAdjacencyChanges.IsNull() && !data.LogAdjacencyChanges.IsUnknown() {
 		if data.LogAdjacencyChanges.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/log-adjacency-changes", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/log-adjacency-changes")
 		}
 	}
 	if !data.LogAdjacencyChangesDetail.IsNull() && !data.LogAdjacencyChangesDetail.IsUnknown() {
 		if data.LogAdjacencyChangesDetail.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/log-adjacency-changes/detail", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/log-adjacency-changes/detail")
 		}
 	}
 	return body

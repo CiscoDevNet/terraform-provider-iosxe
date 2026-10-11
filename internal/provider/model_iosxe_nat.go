@@ -181,8 +181,6 @@ func (data NAT) addToBodyXML(ctx context.Context, config NAT, body netconf.Body)
 					if !citem.Overload.IsNull() && !citem.Overload.IsUnknown() {
 						if citem.Overload.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "overload-new", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "overload-new")
 						}
 					}
 					cBody = helpers.SetRawFromXPath(cBody, "interface", ccBody.Res())
@@ -209,22 +207,16 @@ func (data NAT) addToBodyXML(ctx context.Context, config NAT, body netconf.Body)
 			if !item.Extendable.IsNull() && !item.Extendable.IsUnknown() {
 				if item.Extendable.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "extendable", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "extendable")
 				}
 			}
 			if !item.NoAlias.IsNull() && !item.NoAlias.IsUnknown() {
 				if item.NoAlias.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "no-alias", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "no-alias")
 				}
 			}
 			if !item.NoPayload.IsNull() && !item.NoPayload.IsUnknown() {
 				if item.NoPayload.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "no-payload", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "no-payload")
 				}
 			}
 			if !item.RouteMap.IsNull() && !item.RouteMap.IsUnknown() {
@@ -233,8 +225,6 @@ func (data NAT) addToBodyXML(ctx context.Context, config NAT, body netconf.Body)
 			if !item.Reversible.IsNull() && !item.Reversible.IsUnknown() {
 				if item.Reversible.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "reversible", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "reversible")
 				}
 			}
 			if !item.Redundancy.IsNull() && !item.Redundancy.IsUnknown() {
@@ -246,22 +236,16 @@ func (data NAT) addToBodyXML(ctx context.Context, config NAT, body netconf.Body)
 			if !item.Stateless.IsNull() && !item.Stateless.IsUnknown() {
 				if item.Stateless.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "stateless", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "stateless")
 				}
 			}
 			if !item.Forced.IsNull() && !item.Forced.IsUnknown() {
 				if item.Forced.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "forced", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "forced")
 				}
 			}
 			if !item.InsideStaticOverload.IsNull() && !item.InsideStaticOverload.IsUnknown() {
 				if item.InsideStaticOverload.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "overload", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "overload")
 				}
 			}
 			if !item.InsideStaticPool.IsNull() && !item.InsideStaticPool.IsUnknown() {
@@ -291,15 +275,11 @@ func (data NAT) addToBodyXML(ctx context.Context, config NAT, body netconf.Body)
 			if !item.Extendable.IsNull() && !item.Extendable.IsUnknown() {
 				if item.Extendable.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "extendable", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "extendable")
 				}
 			}
 			if !item.NoPayload.IsNull() && !item.NoPayload.IsUnknown() {
 				if item.NoPayload.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "no-payload", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "no-payload")
 				}
 			}
 			if !item.Redundancy.IsNull() && !item.Redundancy.IsUnknown() {
@@ -308,8 +288,6 @@ func (data NAT) addToBodyXML(ctx context.Context, config NAT, body netconf.Body)
 			if !item.MatchInVrf.IsNull() && !item.MatchInVrf.IsUnknown() {
 				if item.MatchInVrf.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "match-in-vrf", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "match-in-vrf")
 				}
 			}
 			if !item.OutsideStaticPool.IsNull() && !item.OutsideStaticPool.IsUnknown() {

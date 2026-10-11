@@ -33,6 +33,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
@@ -92,20 +93,28 @@ func (r *EVPNInstanceResource) Schema(ctx context.Context, req resource.SchemaRe
 				},
 			},
 			"vlan_based_replication_type_ingress": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Ingress replication").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Ingress replication").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"vlan_based_replication_type_static": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Static replication").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Static replication").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"vlan_based_replication_type_p2mp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("p2mp replication").String,
+				MarkdownDescription: helpers.NewAttributeDescription("p2mp replication").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"vlan_based_replication_type_mp2mp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("mp2mp replication").String,
+				MarkdownDescription: helpers.NewAttributeDescription("mp2mp replication").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"vlan_based_encapsulation": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Data encapsulation method").AddStringEnumDescription("mpls", "vxlan").String,
@@ -115,12 +124,16 @@ func (r *EVPNInstanceResource) Schema(ctx context.Context, req resource.SchemaRe
 				},
 			},
 			"vlan_based_auto_route_target_legacy": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Automatically set a route-target (OBSOLETE, use auto-route-target-boolean)").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Automatically set a route-target (OBSOLETE, use auto-route-target-boolean)").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"vlan_based_auto_route_target": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Automatically set a route-target").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Automatically set a route-target").AddDefaultValueDescription("true").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
 			},
 			"vlan_based_rd": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("ASN:nn or IP-address:nn").String,
@@ -173,12 +186,16 @@ func (r *EVPNInstanceResource) Schema(ctx context.Context, req resource.SchemaRe
 				},
 			},
 			"vlan_based_ip_local_learning_disable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Disable IP local learning from dataplane").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Disable IP local learning from dataplane").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"vlan_based_ip_local_learning_enable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable IP local learning from dataplane").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable IP local learning from dataplane").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"vlan_based_default_gateway_advertise": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Advertise Default Gateway MAC/IP routes").AddStringEnumDescription("disable", "enable").String,
@@ -188,8 +205,10 @@ func (r *EVPNInstanceResource) Schema(ctx context.Context, req resource.SchemaRe
 				},
 			},
 			"vlan_based_re_originate_route_type5": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Re-originate route-type 5").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Re-originate route-type 5").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"vlan_based_multicast_advertise": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Advertise L2 multicast capability").AddStringEnumDescription("disable", "enable", "sync-only").String,

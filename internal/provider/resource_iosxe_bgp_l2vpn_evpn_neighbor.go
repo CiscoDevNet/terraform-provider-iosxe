@@ -113,8 +113,10 @@ func (r *BGPL2VPNEVPNNeighborResource) Schema(ctx context.Context, req resource.
 				},
 			},
 			"route_reflector_client": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure a neighbor as Route Reflector client").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configure a neighbor as Route Reflector client").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"soft_reconfiguration": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Per neighbor soft reconfiguration").AddStringEnumDescription("inbound").String,

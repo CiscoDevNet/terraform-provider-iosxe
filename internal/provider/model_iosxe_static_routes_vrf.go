@@ -160,8 +160,6 @@ func (data StaticRoutesVRF) addToBodyXML(ctx context.Context, config StaticRoute
 					if !citem.Global.IsNull() && !citem.Global.IsUnknown() {
 						if citem.Global.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "global", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "global")
 						}
 					}
 					if !citem.Name.IsNull() && !citem.Name.IsUnknown() {
@@ -170,8 +168,6 @@ func (data StaticRoutesVRF) addToBodyXML(ctx context.Context, config StaticRoute
 					if !citem.Permanent.IsNull() && !citem.Permanent.IsUnknown() {
 						if citem.Permanent.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "permanent", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "permanent")
 						}
 					}
 					if !citem.Tag.IsNull() && !citem.Tag.IsUnknown() {
@@ -201,8 +197,6 @@ func (data StaticRoutesVRF) addToBodyXML(ctx context.Context, config StaticRoute
 					if !citem.Permanent.IsNull() && !citem.Permanent.IsUnknown() {
 						if citem.Permanent.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "permanent", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "permanent")
 						}
 					}
 					cBody = helpers.SetRawFromXPath(cBody, "fwd-list-with-track", ccBody.Res())

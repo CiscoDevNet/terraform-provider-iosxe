@@ -43,6 +43,7 @@ resource "iosxe_policy_map" "example" {
 - `description` (String) Policy-Map description
 - `device` (String) A device name from the provider configuration.
 - `subscriber` (Boolean) Domain name of the policy map
+  - Default value: `false`
 - `type` (String) type of the policy-map
   - Choices: `access-control`, `appnav`, `control`, `epbr`, `inspect`, `ngsw-qos`, `packet-service`, `performance-monitor`, `queueing`, `service`, `service-chain`, `umbrella`
 
@@ -64,6 +65,7 @@ Optional:
   - Choices: `inspect`
 - `policy_action` (String) - Choices: `cxsc`, `drop`, `inspect`, `pass`
 - `policy_log` (Boolean) Send logging message for drop or pass
+  - Default value: `false`
 - `policy_parameter_map` (String)
 
 <a id="nestedatt--classes--actions"></a>
@@ -90,8 +92,11 @@ Optional:
 - `police_cir` (Number) Committed information rate
   - Range: `8000`-`100000000000`
 - `police_cir_conform_transmit` (Boolean) transmit packet
+  - Default value: `false`
 - `police_cir_exceed_drop` (Boolean) drop packet
+  - Default value: `false`
 - `police_cir_exceed_transmit` (Boolean) transmit packet
+  - Default value: `false`
 - `police_pir` (Number) Peak Information Rate
   - Range: `8000`-`64000000000`
 - `police_pir_be` (Number) Excess burst
@@ -102,8 +107,11 @@ Optional:
 - `police_target_bitrate_conform_burst_byte` (Number) Burst Byte
   - Range: `100`-`512000000`
 - `police_target_bitrate_conform_transmit` (Boolean) transmit packet
+  - Default value: `false`
 - `police_target_bitrate_exceed_drop` (Boolean) drop packet
+  - Default value: `false`
 - `police_target_bitrate_exceed_transmit` (Boolean) transmit packet
+  - Default value: `false`
 - `police_target_bitrate_excess_burst_byte` (Number) Burst Byte
   - Range: `100`-`512000000`
 - `priority_burst` (Number) - Range: `32`-`2000000`
@@ -124,6 +132,7 @@ Optional:
 - `shape_average_burst_size_sustained` (Number) sustained burst in milliseconds. Recommend not to configure it, the algorithm will find out the best value
   - Range: `10`-`2000`
 - `shape_average_ms` (Boolean) milliseconds
+  - Default value: `false`
 - `shape_average_percent` (Number) % of interface bandwidth for Committed information rate
   - Range: `0`-`100`
 

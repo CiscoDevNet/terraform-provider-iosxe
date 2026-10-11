@@ -124,15 +124,11 @@ func (data BGPPeerSessionTemplate) addToBodyXML(ctx context.Context, config BGPP
 	if !data.DisableConnectedCheck.IsNull() && !data.DisableConnectedCheck.IsUnknown() {
 		if data.DisableConnectedCheck.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/disable-connected-check", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/disable-connected-check")
 		}
 	}
 	if !data.EbgpMultihop.IsNull() && !data.EbgpMultihop.IsUnknown() {
 		if data.EbgpMultihop.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ebgp-multihop", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ebgp-multihop")
 		}
 	}
 	if !data.EbgpMultihopMaxHop.IsNull() && !data.EbgpMultihopMaxHop.IsUnknown() {
@@ -147,15 +143,11 @@ func (data BGPPeerSessionTemplate) addToBodyXML(ctx context.Context, config BGPP
 	if !data.AoIncludeTcpOptions.IsNull() && !data.AoIncludeTcpOptions.IsUnknown() {
 		if data.AoIncludeTcpOptions.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ao/include-tcp-options", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ao/include-tcp-options")
 		}
 	}
 	if !data.AoAcceptMismatchConnections.IsNull() && !data.AoAcceptMismatchConnections.IsUnknown() {
 		if data.AoAcceptMismatchConnections.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ao/accept-ao-mismatch-connections", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ao/accept-ao-mismatch-connections")
 		}
 	}
 	if !data.InheritPeerSession.IsNull() && !data.InheritPeerSession.IsUnknown() {

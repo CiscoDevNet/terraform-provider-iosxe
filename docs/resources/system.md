@@ -65,7 +65,9 @@ resource "iosxe_system" "example" {
 > **NOTE**: [Write-only arguments](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments) are supported in Terraform 1.11 and later.
 
 - `access_session_mac_move_deny` (Boolean) Deny MAC moves (clears existing session)
+  - Default value: `false`
 - `archive_log_config_logging_enable` (Boolean) Enable the config logger
+  - Default value: `false`
 - `archive_log_config_logging_size` (Number) Maximum number of logged commands that will be kept by the config log
   - Range: `1`-`1000`
 - `archive_maximum` (Number) maximum number of backup copies
@@ -74,18 +76,24 @@ resource "iosxe_system" "example" {
 - `archive_time_period` (Number) Period of time in minutes to automatically archive the running-config
   - Range: `1`-`525600`
 - `archive_write_memory` (Boolean) Enable automatic backup generation during write memory
+  - Default value: `false`
 - `authentication_mac_move_deny_uncontrolled` (Boolean) Deny MAC move to uncontrolled port
+  - Default value: `false`
 - `authentication_mac_move_permit` (Boolean) PERMIT MAC moves (clears existing session)
+  - Default value: `false`
 - `boot_system_bootfiles` (Attributes List) (see [below for nested schema](#nestedatt--boot_system_bootfiles))
 - `boot_system_flash_files` (Attributes List) (see [below for nested schema](#nestedatt--boot_system_flash_files))
 - `call_home_cisco_tac_1_destination_transport_method` (String) To specify transport method for this profile
   - Choices: `email`, `http`
 - `call_home_cisco_tac_1_profile_active` (Boolean) Activate the current profile
+  - Default value: `false`
 - `call_home_contact_email` (String) Use email address
 - `cisp_enable` (Boolean) Enable CISP
+  - Default value: `false`
 - `control_plane_service_policy_input` (String) Assign policy-map to the input of an interface
 - `device` (String) A device name from the provider configuration.
 - `device_classifier` (Boolean) Enable/Disable classification of attached devices
+  - Default value: `false`
 - `diagnostic_bootup_level` (String) Select diagnostic level
   - Choices: `complete`, `minimal`
 - `diagnostic_event_log_size` (Number) Configure event log size Number of entries <1-10000>
@@ -97,12 +105,14 @@ resource "iosxe_system" "example" {
 - `enable_secret_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
 - `enable_secret_wo_version` (Number) The write-only version of the attribute.
 - `epm_logging` (Boolean) Enable EPM logging
+  - Default value: `false`
 - `ethernet_cfm_alarm_config_delay` (Number) msec (default 2500 msec)
   - Range: `2500`-`10000`
 - `ethernet_cfm_alarm_config_reset` (Number) msec (default 10000 msec)
   - Range: `2500`-`10000`
 - `hostname` (String) Set system's network name
 - `igmp_snooping_querier` (Boolean) IGMP Snooping Querier disable/enable
+  - Default value: `false`
 - `igmp_snooping_querier_max_response_time` (Number) IGMP Snooping Querier maximum response time (sec)
   - Range: `1`-`25`
 - `igmp_snooping_querier_timer_expiry` (Number) IGMP Snooping Querier time out (sec)
@@ -110,15 +120,19 @@ resource "iosxe_system" "example" {
 - `igmp_snooping_querier_version` (Number) IGMP Snooping Querier version
   - Range: `1`-`3`
 - `ip_bgp_community_new_format` (Boolean) select aa:nn format for BGP community
-- `ip_cef_load_sharing_algorithm_include_ports_destination` (Boolean)
-- `ip_cef_load_sharing_algorithm_include_ports_source` (Boolean)
+  - Default value: `false`
+- `ip_cef_load_sharing_algorithm_include_ports_destination` (Boolean) - Default value: `false`
+- `ip_cef_load_sharing_algorithm_include_ports_source` (Boolean) - Default value: `false`
 - `ip_default_gateway` (String) Specify default gateway (if not routing IP)
 - `ip_domain_list_names` (List of String)
 - `ip_domain_list_vrf` (String)
 - `ip_domain_list_vrf_domain` (String)
 - `ip_domain_lookup` (Boolean) Enable IP Domain Name System hostname translation
+  - Default value: `true`
 - `ip_domain_lookup_nsap` (Boolean) Enable IP DNS queries for CLNS NSAP addresses
+  - Default value: `false`
 - `ip_domain_lookup_recursive` (Boolean) Enable IP DNS recursive lookup
+  - Default value: `false`
 - `ip_domain_lookup_source_interface_five_gigabit_ethernet` (String) Five GigabitEthernet
 - `ip_domain_lookup_source_interface_forty_gigabit_ethernet` (String) Forty GigabitEthernet
 - `ip_domain_lookup_source_interface_gigabit_ethernet` (String) GigabitEthernet IEEE 802.3z
@@ -133,34 +147,43 @@ resource "iosxe_system" "example" {
 - `ip_domain_lookup_vrfs` (Attributes List) Specify VRF (see [below for nested schema](#nestedatt--ip_domain_lookup_vrfs))
 - `ip_domain_name` (String) Define the default domain name
 - `ip_forward_protocol_nd` (Boolean) Sun's Network Disk protocol
+  - Default value: `true`
 - `ip_ftp_passive` (Boolean) Connect using passive mode
+  - Default value: `true`
 - `ip_hosts` (Attributes List) (see [below for nested schema](#nestedatt--ip_hosts))
 - `ip_hosts_vrf` (Attributes List) Specify VRF (see [below for nested schema](#nestedatt--ip_hosts_vrf))
 - `ip_http_access_class` (Number) Restrict http server access by access-class
   - Range: `1`-`99`
 - `ip_http_active_session_modules` (String) Set active session modules
 - `ip_http_authentication_aaa` (Boolean) Use AAA access control methods
+  - Default value: `false`
 - `ip_http_authentication_aaa_command_authorization` (Attributes List) Set method list for command authorization (see [below for nested schema](#nestedatt--ip_http_authentication_aaa_command_authorization))
 - `ip_http_authentication_aaa_exec_authorization` (String) Set method list for exec authorization
 - `ip_http_authentication_aaa_login_authentication` (String) Set method list for login authentication
 - `ip_http_authentication_local` (Boolean) Use local username and passwords
+  - Default value: `false`
 - `ip_http_client_secure_trustpoint` (String) Set http client certificate secure trustpoint
 - `ip_http_client_source_interface` (String) Specify interface for source address in all HTTP(S) client connections
 - `ip_http_max_connections` (Number) max http connections
   - Range: `1`-`50`
 - `ip_http_secure_active_session_modules` (String) Set secure active session modules
 - `ip_http_secure_server` (Boolean) Enable HTTP secure server
+  - Default value: `true`
 - `ip_http_secure_trustpoint` (String) Set http secure server certificate trustpoint
 - `ip_http_server` (Boolean) Enable http server
+  - Default value: `true`
 - `ip_http_tls_version` (String) Set TLS version for HTTP secure server
   - Choices: `TLSv1.0`, `TLSv1.1`, `TLSv1.2`, `TLSv1.3`
 - `ip_multicast_route_limit` (Number) Maximum number of multicast routes
   - Range: `1`-`2147483647`
 - `ip_multicast_routing` (Boolean) Enable IP multicast forwarding
+  - Default value: `false`
 - `ip_multicast_routing_distributed` (Boolean) Distributed multicast switching
+  - Default value: `false`
 - `ip_name_servers` (List of String) Domain server IPv4/IPv6 address (maximum of 6)
 - `ip_name_servers_vrf` (Attributes List) (see [below for nested schema](#nestedatt--ip_name_servers_vrf))
 - `ip_nbar_classification_dns_classify_by_domain` (Boolean) dns classification by domain
+  - Default value: `true`
 - `ip_radius_source_interface_five_gigabit_ethernet` (String) Five GigabitEthernet
 - `ip_radius_source_interface_forty_gigabit_ethernet` (String) Forty GigabitEthernet
 - `ip_radius_source_interface_gigabit_ethernet` (String) GigabitEthernet IEEE 802.3z
@@ -174,17 +197,22 @@ resource "iosxe_system" "example" {
   - Range: `0`-`65535`
 - `ip_radius_source_interface_vrf` (String) VPN Routing/Forwarding parameters
 - `ip_routing` (Boolean) Enable or disable IP routing
+  - Default value: `true`
 - `ip_routing_protocol_purge_interface` (Boolean) Perform IP routing protocol routes purge on link failures
+  - Default value: `true`
 - `ip_scp_server_enable` (Boolean) Enable server side of SCP
+  - Default value: `false`
 - `ip_sftp_password` (String, Sensitive)
 - `ip_sftp_password_encryption` (String) - Choices: `0`, `7`
 - `ip_sftp_password_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
 - `ip_sftp_password_wo_version` (Number) The write-only version of the attribute.
 - `ip_sftp_username` (String) Specify username for SFTP connections
 - `ip_source_route` (Boolean) Process packets with source routing header options
+  - Default value: `false`
 - `ip_ssh_authentication_retries` (Number) Specify number of authentication retries
   - Range: `0`-`5`
 - `ip_ssh_bulk_mode` (Boolean) Enable optimizations for bulk data transfer procedures
+  - Default value: `false`
 - `ip_ssh_bulk_mode_window_size` (Number) Window-size value
   - Range: `131072`-`1073741824`
 - `ip_ssh_source_interface_five_gigabit_ethernet` (String) Five GigabitEthernet
@@ -219,41 +247,55 @@ resource "iosxe_system" "example" {
 - `ip_tcp_mss` (Number) TCP initial maximum segment size
   - Range: `0`-`10000`
 - `ip_tcp_path_mtu_discovery` (Boolean) Enable path-MTU discovery on new TCP connections
+  - Default value: `false`
 - `ip_tcp_window_size` (Number) TCP window size. Note - IOS-XE 17.15.1 and later uses a default of 131072 when not specified. For consistent behavior across mixed-version environments, always specify this value explicitly.
   - Range: `0`-`1073741823`
-- `ipv6_cef_load_sharing_algorithm_include_ports_destination` (Boolean)
-- `ipv6_cef_load_sharing_algorithm_include_ports_source` (Boolean)
+- `ipv6_cef_load_sharing_algorithm_include_ports_destination` (Boolean) - Default value: `false`
+- `ipv6_cef_load_sharing_algorithm_include_ports_source` (Boolean) - Default value: `false`
 - `ipv6_multicast_routing` (Boolean) Enable IPV6 multicast forwarding
+  - Default value: `false`
 - `ipv6_unicast_routing` (Boolean) Enable unicast routing
+  - Default value: `false`
 - `login_delay` (Number) Set delay between successive fail login
   - Range: `1`-`10`
 - `login_on_failure` (Boolean) Set options for failed login attempt
+  - Default value: `false`
 - `login_on_failure_log` (Boolean) Generate syslogs on failure logins
+  - Default value: `false`
 - `login_on_success` (Boolean) Set options for successful login attempt
+  - Default value: `false`
 - `login_on_success_log` (Boolean) Generate syslogs on successful logins
+  - Default value: `false`
 - `mac_address_table_aging_time` (Number) Set MAC address table entry maximum age in seconds
 - `memory_free_low_watermark_processor` (Number) low water mark of memory in KB
   - Range: `1`-`3994575`
 - `mld_snooping` (Boolean) Global MLD Snooping enable for Catalyst Vlans
+  - Default value: `false`
 - `mld_snooping_querier` (Boolean) MLD querier disable/enable
+  - Default value: `false`
 - `mtu` (Number) - Range: `1500`-`9198`
 - `multicast_routing_switch` (Boolean) Enable IP multicast forwarding, some XE devices use this option instead of `multicast_routing`.
+  - Default value: `false`
 - `multicast_routing_vrfs` (Attributes List) Select VPN Routing/Forwarding instance (see [below for nested schema](#nestedatt--multicast_routing_vrfs))
 - `multilink_ppp_bundle_name` (String) Select method for naming multilink bundles
   - Choices: `authenticated`, `both`, `endpoint`, `rfc`
 - `pnp_profiles` (Attributes List) PNP profile (see [below for nested schema](#nestedatt--pnp_profiles))
 - `port_channel_load_balance` (String) - Choices: `dst-ip`, `dst-mac`, `dst-mixed-ip-port`, `dst-port`, `mpls`, `src-dst-ip`, `src-dst-mac`, `src-dst-mixed-ip-port`, `src-dst-port`, `src-ip`, `src-mac`, `src-mixed-ip-port`, `src-port`, `vlan-dst-ip`, `vlan-dst-mixed-ip-port`, `vlan-src-dst-ip`, `vlan-src-dst-mixed-ip-port`, `vlan-src-ip`, `vlan-src-mixed-ip-port`
 - `power_redundancy_mode_combined` (Boolean) Enable combined power redundancy mode
+  - Default value: `false`
 - `power_supply_autolc_priority` (List of Number) Priority (highest to lowest) of auto linecard shutdown
 - `power_supply_autolc_shutdown` (Boolean) Linecard auto shutdown control
+  - Default value: `false`
 - `redundancy` (Boolean) Enter redundancy mode
+  - Default value: `false`
 - `redundancy_mode` (String) redundancy mode for this chassis
   - Choices: `none`, `rpr`, `rpr-plus`, `sso`
 - `security_passwords_min_length` (Number) Minimum length of passwords
   - Range: `1`-`16`
-- `standby_redirects` (Boolean)
+- `standby_redirects` (Boolean) - Default value: `true`
 - `standby_redirects_enable_disable` (String) - Choices: `disable`, `enable`
 - `subscriber_templating` (Boolean) Configure subscriber templating
+  - Default value: `false`
 - `table_maps` (Attributes List) Configure Table Map (see [below for nested schema](#nestedatt--table_maps))
 - `tftp_source_interface_five_gigabit_ethernet` (String) Five GigabitEthernet
 - `tftp_source_interface_forty_gigabit_ethernet` (String) Forty GigabitEthernet
@@ -268,6 +310,7 @@ resource "iosxe_system" "example" {
   - Range: `0`-`65535`
 - `track_objects` (Attributes List) (see [below for nested schema](#nestedatt--track_objects))
 - `transceiver_type_all_monitoring` (Boolean) Enable/disable monitoring
+  - Default value: `false`
 - `version` (String) Version
 
 ### Read-Only
@@ -383,6 +426,7 @@ Required:
 Optional:
 
 - `distributed` (Boolean) Distributed multicast switching
+  - Default value: `false`
 
 
 <a id="nestedatt--pnp_profiles"></a>
@@ -436,6 +480,7 @@ Optional:
 - `ip_sla_number` (Number) Entry number
   - Range: `0`-`4294967295`
 - `ip_sla_reachability` (Boolean) Reachability
+  - Default value: `false`
 
 ## Import
 

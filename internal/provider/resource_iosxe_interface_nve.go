@@ -33,6 +33,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
@@ -107,12 +108,16 @@ func (r *InterfaceNVEResource) Schema(ctx context.Context, req resource.SchemaRe
 				},
 			},
 			"shutdown": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Shutdown the selected interface").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Shutdown the selected interface").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"host_reachability_protocol_bgp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"source_interface_loopback": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Loopback interface").AddIntegerRangeDescription(0, 2147483647).String,
@@ -154,12 +159,16 @@ func (r *InterfaceNVEResource) Schema(ctx context.Context, req resource.SchemaRe
 							},
 						},
 						"ingress_replication": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Ingress Replication control-plane (BGP) signaling").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Ingress Replication control-plane (BGP) signaling").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"local_routing": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Enable vxlan centralized gateway forwarding for routed traffic").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Enable vxlan centralized gateway forwarding for routed traffic").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 					},
 				},

@@ -31,6 +31,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -93,8 +94,10 @@ func (r *ARPResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				},
 			},
 			"proxy_disable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Disable proxy ARP on all interfaces").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Disable proxy ARP on all interfaces").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"entry_learn": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Maximum learn entry limit").AddIntegerRangeDescription(255, 512000).String,
@@ -122,8 +125,10 @@ func (r *ARPResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 										Required:            true,
 									},
 									"static": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Apply the ACL statically").String,
+										MarkdownDescription: helpers.NewAttributeDescription("Apply the ACL statically").AddDefaultValueDescription("false").String,
 										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(false),
 									},
 								},
 							},
@@ -132,20 +137,28 @@ func (r *ARPResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				},
 			},
 			"inspection_validate_src_mac": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Validate source MAC address").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Validate source MAC address").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"inspection_validate_dst_mac": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Validate destination MAC address").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Validate destination MAC address").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"inspection_validate_ip": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Validate IP addresses").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Validate IP addresses").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"inspection_validate_allow_zeros": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Allow 0.0.0.0 sender IP address").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Allow 0.0.0.0 sender IP address").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"inspection_log_buffer_entries": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Number of entries for log buffer").AddIntegerRangeDescription(0, 1024).String,

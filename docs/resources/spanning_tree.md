@@ -43,13 +43,18 @@ resource "iosxe_spanning_tree" "example" {
 - `device` (String) A device name from the provider configuration.
 - `disabled_vlans` (Attributes List) VLANs to explicitly disable from spanning-tree. Uses inverse logic - presence in config sends DELETE operation (no spanning-tree vlan X). Removing from config allows VLANs to revert to default STP behavior. (see [below for nested schema](#nestedatt--disabled_vlans))
 - `extend_system_id` (Boolean) Extend system-id into priority portion of the bridge id (PVST & Rapid PVST only)
+  - Default value: `false`
 - `logging` (Boolean) Enable Spanning tree logging
+  - Default value: `false`
 - `loopguard_default` (Boolean) Enable loopguard by default on all ports
+  - Default value: `false`
 - `mode` (String) Spanning tree operating mode
   - Choices: `mst`, `pvst`, `rapid-pvst`
 - `mst_instances` (Attributes List) Map vlans to an MST instance (see [below for nested schema](#nestedatt--mst_instances))
 - `portfast_bpduguard_default` (Boolean) Enable bpdu guard by default on all portfast edge ports
+  - Default value: `false`
 - `portfast_default` (Boolean) Enable portfast by default on all access ports
+  - Default value: `false`
 - `vlans` (Attributes List) VLAN Switch Spanning Tree (see [below for nested schema](#nestedatt--vlans))
 
 ### Read-Only

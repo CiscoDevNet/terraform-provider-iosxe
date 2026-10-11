@@ -31,6 +31,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -86,20 +87,28 @@ func (r *EVPNResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				},
 			},
 			"replication_type_ingress": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Ingress replication").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Ingress replication").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"replication_type_static": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Static replication").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Static replication").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"replication_type_p2mp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("p2mp replication").String,
+				MarkdownDescription: helpers.NewAttributeDescription("p2mp replication").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"replication_type_mp2mp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("mp2mp replication").String,
+				MarkdownDescription: helpers.NewAttributeDescription("mp2mp replication").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"mac_duplication_limit": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Number of MAC moves within specified time interval").AddIntegerRangeDescription(2, 1000).String,
@@ -137,28 +146,40 @@ func (r *EVPNResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				},
 			},
 			"default_gateway_advertise": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Advertise Default Gateway MAC/IP routes").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Advertise Default Gateway MAC/IP routes").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"logging_peer_state": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Peer state transition logging").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Peer state transition logging").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"route_target_auto_vni": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set vni-based route-target").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Set vni-based route-target").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"anycast_gateway_mac_auto": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable Auto Anycast Gateway MAC").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable Auto Anycast Gateway MAC").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"flooding_suppression_address_resolution_disable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Disable flooding suppression").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Disable flooding suppression").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"multicast_advertise": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable and advertise L2 multicast capability").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable and advertise L2 multicast capability").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"profiles": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,

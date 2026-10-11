@@ -49,9 +49,13 @@ Required:
 Optional:
 
 - `enrollment_mode_ra` (Boolean) Registration Authority mode
+  - Default value: `false`
 - `enrollment_pkcs12` (Boolean) Enroll via pkcs12
+  - Default value: `false`
 - `enrollment_selfsigned` (Boolean) Generate a Self Signed Certificate
+  - Default value: `false`
 - `enrollment_terminal` (Boolean) Enroll via the terminal (cut-and-paste)
+  - Default value: `false`
 - `hash` (String) Hash algorithm
   - Choices: `md5`, `sha1`, `sha256`, `sha384`, `sha512`
 - `revocation_check` (List of String) Revocation checking options

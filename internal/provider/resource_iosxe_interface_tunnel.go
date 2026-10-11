@@ -33,6 +33,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
@@ -107,28 +108,38 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 				},
 			},
 			"shutdown": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Shutdown the selected interface").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Shutdown the selected interface").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ip_proxy_arp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable proxy ARP").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable proxy ARP").AddDefaultValueDescription("true").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
 			},
 			"ip_redirects": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable sending ICMP Redirect messages").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable sending ICMP Redirect messages").AddDefaultValueDescription("true").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
 			},
 			"ip_unreachables": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable sending ICMP Unreachable messages").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable sending ICMP Unreachable messages").AddDefaultValueDescription("true").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
 			},
 			"vrf_forwarding": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Configure forwarding table").String,
 				Optional:            true,
 			},
 			"ipv6_enable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable IPv6 on interface").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable IPv6 on interface").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ipv6_mtu": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Set IPv6 Maximum Transmission Unit").AddIntegerRangeDescription(1280, 9976).String,
@@ -138,16 +149,22 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 				},
 			},
 			"ipv6_nd_ra_suppress_all": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Suppress all IPv6 RA").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Suppress all IPv6 RA").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ipv6_address_autoconfig_default": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Insert default route").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Insert default route").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ipv6_address_dhcp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Obtain IPv6 address from DHCP server").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Obtain IPv6 address from DHCP server").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ipv6_dhcp_servers": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Act as an IPv6 DHCP server").String,
@@ -159,12 +176,16 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 							Required:            true,
 						},
 						"allow_hint": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Allow hint from client").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Allow hint from client").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"rapid_commit": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Enable Rapid-Commit").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Enable Rapid-Commit").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"preference": schema.Int64Attribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Server preference value").AddIntegerRangeDescription(0, 255).String,
@@ -184,8 +205,10 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 				},
 			},
 			"ipv6_dhcp_client_pd_rapid_commit": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable Rapid-Commit for prefix-delegation").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable Rapid-Commit for prefix-delegation").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ipv6_dhcp_relay_destinations": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
@@ -209,12 +232,16 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 				},
 			},
 			"ipv6_dhcp_relay_trust": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Interface is trusted to process relay-replies").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Interface is trusted to process relay-replies").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ipv6_dhcp_relay_option_vpn": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Insert VSS option in Relay-Forward Messages").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Insert VSS option in Relay-Forward Messages").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ipv6_link_local_addresses": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
@@ -233,8 +260,10 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 							},
 						},
 						"link_local": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Use link-local address").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Use link-local address").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 					},
 				},
@@ -256,8 +285,10 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 							},
 						},
 						"eui_64": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Use eui-64 interface identifier").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Use eui-64 interface identifier").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 					},
 				},
@@ -310,8 +341,10 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 				},
 			},
 			"ipv4_address_dhcp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("IP Address negotiated via DHCP").String,
+				MarkdownDescription: helpers.NewAttributeDescription("IP Address negotiated via DHCP").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"unnumbered": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Enable IP processing without an explicit address").String,
@@ -329,16 +362,20 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 				Optional:            true,
 			},
 			"ip_access_group_in_enable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("inbound packets").String,
+				MarkdownDescription: helpers.NewAttributeDescription("inbound packets").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ip_access_group_in": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
 			},
 			"ip_access_group_out_enable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("outbound packets").String,
+				MarkdownDescription: helpers.NewAttributeDescription("outbound packets").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ip_access_group_out": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
@@ -357,8 +394,10 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 							},
 						},
 						"global": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Helper-address is global").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Helper-address is global").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"vrf": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("VRF name for helper-address (if different from interface VRF)").String,
@@ -368,16 +407,20 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 				},
 			},
 			"tunnel_mode_ipsec_ipv4": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("over IPv4").String,
+				MarkdownDescription: helpers.NewAttributeDescription("over IPv4").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"bfd_template": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("BFD template").String,
 				Optional:            true,
 			},
 			"bfd_enable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable BFD under the interface").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable BFD under the interface").AddDefaultValueDescription("true").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
 			},
 			"bfd_local_address": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("The Source IP address to be used for BFD sessions over this interface.").String,
@@ -405,8 +448,10 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 				},
 			},
 			"bfd_echo": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Use echo adjunct as bfd detection mechanism").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Use echo adjunct as bfd detection mechanism").AddDefaultValueDescription("true").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
 			},
 			"load_interval": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Specify interval for load calculation for an interface").AddIntegerRangeDescription(30, 600).String,
@@ -416,12 +461,16 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 				},
 			},
 			"snmp_trap_link_status": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Allow SNMP LINKUP and LINKDOWN traps").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Allow SNMP LINKUP and LINKDOWN traps").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"logging_event_link_status_enable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("UPDOWN and CHANGE messages").String,
+				MarkdownDescription: helpers.NewAttributeDescription("UPDOWN and CHANGE messages").AddDefaultValueDescription("true").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
 			},
 			"tunnel_vrf": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
@@ -446,12 +495,16 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 				},
 			},
 			"ip_nat_inside": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Inside interface for address translation").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Inside interface for address translation").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ip_nat_outside": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Outside interface for address translation").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Outside interface for address translation").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ip_flow_monitors": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Apply a Flow Monitor").String,
@@ -532,8 +585,10 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 				},
 			},
 			"tunnel_mode_gre_multipoint": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("mode Multipoint").String,
+				MarkdownDescription: helpers.NewAttributeDescription("mode Multipoint").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ip_nhrp_authentication": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("authentication string").String,
@@ -584,16 +639,22 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 				},
 			},
 			"ip_nhrp_redirect": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable NHRP redirect traffic indication").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable NHRP redirect traffic indication").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ip_nhrp_shortcut": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable shortcut switching").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable shortcut switching").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"mpls_nhrp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("MPLS NHRP commands").String,
+				MarkdownDescription: helpers.NewAttributeDescription("MPLS NHRP commands").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 		},
 	}

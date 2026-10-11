@@ -841,6 +841,13 @@ func parseAttribute(e *yang.Entry, attr *YamlConfigAttribute) {
 			attr.Mandatory = leaf.Mandatory.Value()
 		}
 	}
+	if attr.Type == "Bool" && attr.DefaultValue == "" && !attr.WriteOnly {
+		if len(leaf.Default) > 0 && leaf.Default[0] == "true" {
+			attr.DefaultValue = "true"
+		} else {
+			attr.DefaultValue = "false"
+		}
+	}
 }
 
 func augmentConfig(config *YamlConfig, yangModules *yang.Modules) {

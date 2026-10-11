@@ -30,6 +30,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -93,8 +94,10 @@ func (r *PIMIPv6Resource) Schema(ctx context.Context, req resource.SchemaRequest
 				Optional:            true,
 			},
 			"rp_address_bidir": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Specify keyword bidir to configure a bidir RP").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Specify keyword bidir to configure a bidir RP").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"vrfs": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Select VPN Routing/Forwarding instance").String,
@@ -114,8 +117,10 @@ func (r *PIMIPv6Resource) Schema(ctx context.Context, req resource.SchemaRequest
 							Optional:            true,
 						},
 						"rp_address_bidir": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Specify keyword bidir to configure a bidir RP").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Specify keyword bidir to configure a bidir RP").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 					},
 				},

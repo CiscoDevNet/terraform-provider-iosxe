@@ -195,8 +195,6 @@ func (data PolicyMap) addToBodyXML(ctx context.Context, config PolicyMap, body n
 	if !data.Subscriber.IsNull() && !data.Subscriber.IsUnknown() {
 		if data.Subscriber.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/subscriber", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/subscriber")
 		}
 	}
 	if !data.Description.IsNull() && !data.Description.IsUnknown() {
@@ -217,8 +215,6 @@ func (data PolicyMap) addToBodyXML(ctx context.Context, config PolicyMap, body n
 			if !item.PolicyLog.IsNull() && !item.PolicyLog.IsUnknown() {
 				if item.PolicyLog.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "policy/log", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "policy/log")
 				}
 			}
 			if !item.PolicyParameterMap.IsNull() && !item.PolicyParameterMap.IsUnknown() {
@@ -275,22 +271,16 @@ func (data PolicyMap) addToBodyXML(ctx context.Context, config PolicyMap, body n
 					if !citem.ShapeAverageMs.IsNull() && !citem.ShapeAverageMs.IsUnknown() {
 						if citem.ShapeAverageMs.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "shape/average/ms", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "shape/average/ms")
 						}
 					}
 					if !citem.PoliceTargetBitrateConformTransmit.IsNull() && !citem.PoliceTargetBitrateConformTransmit.IsUnknown() {
 						if citem.PoliceTargetBitrateConformTransmit.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "police-target-bitrate/police/actions/conform-transmit/conform-action/transmit", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "police-target-bitrate/police/actions/conform-transmit/conform-action/transmit")
 						}
 					}
 					if !citem.PoliceTargetBitrateExceedTransmit.IsNull() && !citem.PoliceTargetBitrateExceedTransmit.IsUnknown() {
 						if citem.PoliceTargetBitrateExceedTransmit.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "police-target-bitrate/police/actions/exceed-transmit/exceed-action/transmit", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "police-target-bitrate/police/actions/exceed-transmit/exceed-action/transmit")
 						}
 					}
 					if !citem.PoliceTargetBitrate.IsNull() && !citem.PoliceTargetBitrate.IsUnknown() {
@@ -305,8 +295,6 @@ func (data PolicyMap) addToBodyXML(ctx context.Context, config PolicyMap, body n
 					if !citem.PoliceTargetBitrateExceedDrop.IsNull() && !citem.PoliceTargetBitrateExceedDrop.IsUnknown() {
 						if citem.PoliceTargetBitrateExceedDrop.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "police-target-bitrate/police/actions/exceed-drop/exceed-action/drop", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "police-target-bitrate/police/actions/exceed-drop/exceed-action/drop")
 						}
 					}
 					if !citem.PoliceCir.IsNull() && !citem.PoliceCir.IsUnknown() {
@@ -327,22 +315,16 @@ func (data PolicyMap) addToBodyXML(ctx context.Context, config PolicyMap, body n
 					if !citem.PoliceCirConformTransmit.IsNull() && !citem.PoliceCirConformTransmit.IsUnknown() {
 						if citem.PoliceCirConformTransmit.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "police-policy-map/police/actions/conform-transmit/conform-action/transmit", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "police-policy-map/police/actions/conform-transmit/conform-action/transmit")
 						}
 					}
 					if !citem.PoliceCirExceedDrop.IsNull() && !citem.PoliceCirExceedDrop.IsUnknown() {
 						if citem.PoliceCirExceedDrop.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "police-policy-map/police/actions/exceed-drop/exceed-action/drop", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "police-policy-map/police/actions/exceed-drop/exceed-action/drop")
 						}
 					}
 					if !citem.PoliceCirExceedTransmit.IsNull() && !citem.PoliceCirExceedTransmit.IsUnknown() {
 						if citem.PoliceCirExceedTransmit.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "police-policy-map/police/actions/exceed-transmit/exceed-action/transmit", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "police-policy-map/police/actions/exceed-transmit/exceed-action/transmit")
 						}
 					}
 					if !citem.PoliceRatePercent.IsNull() && !citem.PoliceRatePercent.IsUnknown() {

@@ -153,8 +153,6 @@ func (data BGPAddressFamilyIPv6) addToBodyXML(ctx context.Context, config BGPAdd
 	if !data.Ipv6UnicastRedistributeConnected.IsNull() && !data.Ipv6UnicastRedistributeConnected.IsUnknown() {
 		if data.Ipv6UnicastRedistributeConnected.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ipv6-unicast/redistribute-v6/connected", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ipv6-unicast/redistribute-v6/connected")
 		}
 	}
 	if !data.Ipv6UnicastRedistributeConnectedRouteMap.IsNull() && !data.Ipv6UnicastRedistributeConnectedRouteMap.IsUnknown() {
@@ -166,8 +164,6 @@ func (data BGPAddressFamilyIPv6) addToBodyXML(ctx context.Context, config BGPAdd
 	if !data.Ipv6UnicastRedistributeStatic.IsNull() && !data.Ipv6UnicastRedistributeStatic.IsUnknown() {
 		if data.Ipv6UnicastRedistributeStatic.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ipv6-unicast/redistribute-v6/static", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ipv6-unicast/redistribute-v6/static")
 		}
 	}
 	if !data.Ipv6UnicastRedistributeStaticRouteMap.IsNull() && !data.Ipv6UnicastRedistributeStaticRouteMap.IsUnknown() {
@@ -197,8 +193,6 @@ func (data BGPAddressFamilyIPv6) addToBodyXML(ctx context.Context, config BGPAdd
 			if !item.Backdoor.IsNull() && !item.Backdoor.IsUnknown() {
 				if item.Backdoor.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "backdoor", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "backdoor")
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ipv6-unicast/network", cBody.Res())

@@ -128,8 +128,6 @@ func (data RadiusServer) addToBodyXML(ctx context.Context, config RadiusServer, 
 			if !item.AccessRequestInclude.IsNull() && !item.AccessRequestInclude.IsUnknown() {
 				if item.AccessRequestInclude.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "access-request/include", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "access-request/include")
 				}
 			}
 			if len(item.Attribute31Parameters) > 0 {
@@ -147,15 +145,11 @@ func (data RadiusServer) addToBodyXML(ctx context.Context, config RadiusServer, 
 					if !citem.IdSendNasPortDetail.IsNull() && !citem.IdSendNasPortDetail.IsUnknown() {
 						if citem.IdSendNasPortDetail.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "id-send/nas-port-detail", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "id-send/nas-port-detail")
 						}
 					}
 					if !citem.IdSendMacOnly.IsNull() && !citem.IdSendMacOnly.IsUnknown() {
 						if citem.IdSendMacOnly.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "id-send/mac-only", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "id-send/mac-only")
 						}
 					}
 					cBody = helpers.SetRawFromXPath(cBody, "attri31/attri31-list", ccBody.Res())

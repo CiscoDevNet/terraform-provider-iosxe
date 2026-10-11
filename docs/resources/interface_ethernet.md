@@ -111,52 +111,86 @@ resource "iosxe_interface_ethernet" "example" {
 - `authentication_event_fail_action_authorize_vlan` (Number) Configure Authentication Fail vlan
   - Range: `1`-`4094`
 - `authentication_event_fail_action_next_method` (Boolean) Move to next authentication method
+  - Default value: `false`
 - `authentication_event_linksec_fail_action_next_method` (Boolean) Move to next authentication method
+  - Default value: `false`
 - `authentication_event_no_response_action_authorize_vlan` (Number) Configure Guest vlan
   - Range: `1`-`4094`
 - `authentication_event_server_alive_action_reinitialize` (Boolean) Reinitialize all authorized clients
+  - Default value: `false`
 - `authentication_event_server_dead_action_authorize` (Boolean) Authorize the port
+  - Default value: `false`
 - `authentication_event_server_dead_action_authorize_vlan` (Number) Configure Critical Authorization VLAN
   - Range: `1`-`4094`
 - `authentication_event_server_dead_action_authorize_voice` (Boolean) Authorize the port for VOICE traffic
+  - Default value: `false`
 - `authentication_event_server_dead_action_reinitialize_vlan` (Number) Configure Critical Authorization VLAN
   - Range: `1`-`4094`
 - `authentication_host_mode` (String) Set the Host mode for authentication on this interface
   - Choices: `multi-auth`, `multi-domain`, `multi-host`, `single-host`
 - `authentication_order_dot1x` (Boolean) Authentication method dot1x allowed
+  - Default value: `false`
 - `authentication_order_dot1x_mab` (Boolean) Authentication method mab allowed
+  - Default value: `false`
 - `authentication_order_dot1x_webauth` (Boolean) Authentication method webauth allowed
+  - Default value: `false`
 - `authentication_order_mab` (Boolean) Authentication method mab allowed
+  - Default value: `false`
 - `authentication_order_mab_dot1x` (Boolean) Authentication method dot1x allowed
+  - Default value: `false`
 - `authentication_order_mab_webauth` (Boolean) Authentication method webauth allowed
+  - Default value: `false`
 - `authentication_order_webauth` (Boolean) Authentication method webauth allowed
+  - Default value: `false`
 - `authentication_periodic` (Boolean) Enable or Disable Reauthentication for this port
+  - Default value: `false`
 - `authentication_port_control` (String) set the port-control value
   - Choices: `auto`, `force-authorized`, `force-unauthorized`
 - `authentication_priority_dot1x` (Boolean) Authentication method dot1x allowed
+  - Default value: `false`
 - `authentication_priority_dot1x_mab` (Boolean) Authentication method mab allowed
+  - Default value: `false`
 - `authentication_priority_dot1x_webauth` (Boolean) Authentication method webauth allowed
+  - Default value: `false`
 - `authentication_priority_mab` (Boolean) Authentication method mab allowed
+  - Default value: `false`
 - `authentication_priority_mab_dot1x` (Boolean) Authentication method dot1x allowed
+  - Default value: `false`
 - `authentication_priority_mab_webauth` (Boolean) Authentication method webauth allowed
+  - Default value: `false`
 - `authentication_priority_webauth` (Boolean) Authentication method webauth allowed
+  - Default value: `false`
 - `authentication_timer_reauthenticate` (Number) Enter a value between 1 and 1073741823
   - Range: `1`-`1073741823`
 - `authentication_timer_reauthenticate_server` (Boolean) Obtain re-authentication timeout value from the server
+  - Default value: `false`
 - `auto_qos_classify` (Boolean) Configure classification for untrusted devices
+  - Default value: `false`
 - `auto_qos_classify_police` (Boolean) Configure QoS policing for untrusted devices
+  - Default value: `false`
 - `auto_qos_trust` (Boolean) Trust the DSCP/CoS marking
+  - Default value: `false`
 - `auto_qos_trust_cos` (Boolean) Trust the CoS marking
+  - Default value: `false`
 - `auto_qos_trust_dscp` (Boolean) Trust the DSCP marking
+  - Default value: `false`
 - `auto_qos_video_cts` (Boolean) Trust the QoS marking of the Cisco Telepresence System
+  - Default value: `false`
 - `auto_qos_video_ip_camera` (Boolean) Trust the QoS marking of the Ip Video Surveillance camera
+  - Default value: `false`
 - `auto_qos_video_media_player` (Boolean) Trust the Qos marking of the Cisco Media Player
+  - Default value: `false`
 - `auto_qos_voip_cisco_phone` (Boolean) Trust the QoS marking of Cisco IP Phone
+  - Default value: `false`
 - `auto_qos_voip_cisco_softphone` (Boolean) Trust the QoS marking of Cisco IP SoftPhone
+  - Default value: `false`
 - `auto_qos_voip_trust` (Boolean) Trust the DSCP/CoS marking
+  - Default value: `false`
 - `bandwidth` (Number) - Range: `1`-`200000000`
 - `bfd_echo` (Boolean) Use echo adjunct as bfd detection mechanism
+  - Default value: `true`
 - `bfd_enable` (Boolean) Enable BFD under the interface
+  - Default value: `true`
 - `bfd_interval` (Number) - Range: `50`-`9999`
 - `bfd_interval_min_rx` (Number) Minimum receive interval capability
   - Range: `50`-`9999`
@@ -165,19 +199,26 @@ resource "iosxe_interface_ethernet" "example" {
 - `bfd_local_address` (String) The Source IP address to be used for BFD sessions over this interface.
 - `bfd_template` (String) BFD template
 - `bpduguard_disable` (Boolean) Disable BPDU guard for this interface
+  - Default value: `false`
 - `bpduguard_enable` (Boolean) Enable BPDU guard for this interface
+  - Default value: `false`
 - `carrier_delay_msec` (Number) delay specified in milliseconds
   - Range: `0`-`1000`
 - `cdp_enable` (Boolean) Enable CDP on interface
+  - Default value: `true`
 - `cdp_tlv_app` (Boolean) Enable/Configure Application TLV
+  - Default value: `true`
 - `cdp_tlv_location` (Boolean) Exchange location information
+  - Default value: `true`
 - `cdp_tlv_server_location` (Boolean) Enable CDP location server on interface
+  - Default value: `true`
 - `channel_group_mode` (String) Etherchannel Mode of the interface
   - Choices: `active`, `auto`, `desirable`, `on`, `passive`
 - `channel_group_number` (Number) - Range: `1`-`512`
 - `description` (String) Interface specific description
 - `device` (String) A device name from the provider configuration.
 - `device_tracking` (Boolean) Configure device-tracking on the interface
+  - Default value: `false`
 - `device_tracking_attached_policies` (Attributes List) (see [below for nested schema](#nestedatt--device_tracking_attached_policies))
 - `dot1x_max_reauth_req` (Number) Max No. of Reauthentication Attempts
   - Range: `1`-`10`
@@ -207,80 +248,119 @@ resource "iosxe_interface_ethernet" "example" {
 - `hold_queues` (Attributes List) Set hold queue depth (see [below for nested schema](#nestedatt--hold_queues))
 - `ip_access_group_in` (String)
 - `ip_access_group_in_enable` (Boolean) inbound packets
+  - Default value: `false`
 - `ip_access_group_out` (String)
 - `ip_access_group_out_enable` (Boolean) outbound packets
+  - Default value: `false`
 - `ip_arp_inspection_limit_rate` (Number) Rate Limit
   - Range: `0`-`4294967295`
 - `ip_arp_inspection_trust` (Boolean) Configure Trust state
+  - Default value: `false`
 - `ip_dhcp_relay_information_option_vpn_id` (Boolean) Enable vpn-id support on this interface
+  - Default value: `false`
 - `ip_dhcp_relay_source_interface` (String) Set source interface for relayed messages
 - `ip_dhcp_snooping_trust` (Boolean) DHCP Snooping trust config
+  - Default value: `false`
 - `ip_flow_monitors` (Attributes List) Apply a Flow Monitor (see [below for nested schema](#nestedatt--ip_flow_monitors))
 - `ip_igmp_version` (Number) IGMP version
   - Range: `1`-`3`
 - `ip_nat_inside` (Boolean) Inside interface for address translation
+  - Default value: `false`
 - `ip_nat_outside` (Boolean) Outside interface for address translation
+  - Default value: `false`
 - `ip_nbar_protocol_discovery` (Boolean) Enable protocol discovery for both ipv4 and ipv6
+  - Default value: `false`
 - `ip_proxy_arp` (Boolean) Enable proxy ARP
+  - Default value: `true`
 - `ip_redirects` (Boolean) Enable sending ICMP Redirect messages
+  - Default value: `true`
 - `ip_router_isis` (String)
 - `ip_unreachables` (Boolean) Enable sending ICMP Unreachable messages
+  - Default value: `true`
 - `ip_verify_unicast_source_allow_default` (Boolean) Allow default route to match when checking source address
+  - Default value: `false`
 - `ip_verify_unicast_source_allow_self_ping` (Boolean) Allow router to ping itself (opens vulnerability in verification)
+  - Default value: `false`
 - `ip_verify_unicast_source_reachable_via` (String) Specify reachability check to apply to the source address
   - Choices: `any`, `rx`
 - `ipv4_address` (String) Ip address
 - `ipv4_address_dhcp` (Boolean) IP Address negotiated via DHCP
+  - Default value: `false`
 - `ipv4_address_mask` (String) Ip subnet mask
 - `ipv6_address_autoconfig_default` (Boolean) Insert default route
+  - Default value: `false`
 - `ipv6_address_dhcp` (Boolean) Obtain IPv6 address from DHCP server
+  - Default value: `false`
 - `ipv6_addresses` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_addresses))
 - `ipv6_dhcp_client_pd` (String) IPv6 DHCP client prefix-delegation name
 - `ipv6_dhcp_client_pd_rapid_commit` (Boolean) Enable Rapid-Commit for prefix-delegation
+  - Default value: `false`
 - `ipv6_dhcp_relay_destinations` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_dhcp_relay_destinations))
 - `ipv6_dhcp_relay_option_vpn` (Boolean) Insert VSS option in Relay-Forward Messages
+  - Default value: `false`
 - `ipv6_dhcp_relay_trust` (Boolean) Interface is trusted to process relay-replies
+  - Default value: `false`
 - `ipv6_dhcp_servers` (Attributes List) Act as an IPv6 DHCP server (see [below for nested schema](#nestedatt--ipv6_dhcp_servers))
 - `ipv6_enable` (Boolean) Enable IPv6 on interface
+  - Default value: `false`
 - `ipv6_flow_monitors` (Attributes List) Apply a Flow Monitor (see [below for nested schema](#nestedatt--ipv6_flow_monitors))
 - `ipv6_link_local_addresses` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_link_local_addresses))
 - `ipv6_mtu` (Number) Set IPv6 Maximum Transmission Unit
   - Range: `1280`-`9976`
 - `ipv6_nd_ra_suppress_all` (Boolean) Suppress all IPv6 RA
+  - Default value: `false`
 - `load_interval` (Number) Specify interval for load calculation for an interface
   - Range: `30`-`600`
 - `logging_event_link_status_enable` (Boolean) UPDOWN and CHANGE messages
+  - Default value: `true`
 - `mab` (Boolean) MAC Authentication Bypass Interface Config Commands
+  - Default value: `false`
 - `mab_eap` (Boolean) Use EAP authentication for MAC Auth Bypass
+  - Default value: `false`
 - `media_type` (String) Media type
   - Choices: `auto-select`, `rj45`, `sfp`
 - `mtu` (Number) Set the interface Maximum Transmission Unit (MTU)
   - Range: `64`-`18000`
 - `negotiation_auto` (Boolean) Enable link autonegotiation
+  - Default value: `false`
 - `service_instances` (Attributes List) Configure Ether Service Instance (see [below for nested schema](#nestedatt--service_instances))
 - `service_policy_input` (String) Assign policy-map to the input of an interface
 - `service_policy_output` (String) Assign policy-map to the output of an interface
 - `shutdown` (Boolean) Shutdown the selected interface
+  - Default value: `false`
 - `snmp_trap_link_status` (Boolean) Allow SNMP LINKUP and LINKDOWN traps
+  - Default value: `false`
 - `source_template` (Attributes List) (see [below for nested schema](#nestedatt--source_template))
 - `spanning_tree_guard` (String) Change an interface's spanning tree guard mode
   - Choices: `loop`, `none`, `root`
 - `spanning_tree_link_type` (String) Specify a link type for spanning tree tree protocol use
   - Choices: `point-to-point`, `shared`
 - `spanning_tree_portfast` (Boolean) (DEPRECATED) Spanning tree portfast options
+  - Default value: `false`
 - `spanning_tree_portfast_disable` (Boolean) (DEPRECATED) Disable portfast for this interface
+  - Default value: `false`
 - `spanning_tree_portfast_edge` (Boolean) (DEPRECATED) Enable portfast edge on the interface
+  - Default value: `false`
 - `spanning_tree_portfast_trunk` (Boolean) (DEPRECATED) Enable portfast on the interface even in trunk mode
+  - Default value: `false`
 - `speed_100` (Boolean) 100 Mbps operation
+  - Default value: `false`
 - `speed_1000` (Boolean) 1000 Mbps operation
+  - Default value: `false`
 - `speed_10000` (Boolean) 10000 Mbps operation
+  - Default value: `false`
 - `speed_100000` (Boolean) 100000 Mbps operation
+  - Default value: `false`
 - `speed_2500` (Boolean) 2500 Mbps operation
+  - Default value: `false`
 - `speed_25000` (Boolean) 25000 Mbps operation
+  - Default value: `false`
 - `speed_40000` (Boolean) 40000 Mbps operation
+  - Default value: `false`
 - `speed_5000` (Boolean) 5000 Mbps operation
-- `speed_nonegotiate` (Boolean)
-- `switchport` (Boolean)
+  - Default value: `false`
+- `speed_nonegotiate` (Boolean) - Default value: `false`
+- `switchport` (Boolean) - Default value: `false`
 - `trust_device` (String) trusted device class
   - Choices: `cisco-phone`, `cts`, `ip-camera`, `media-player`
 - `unnumbered` (String) Enable IP processing without an explicit address
@@ -318,6 +398,7 @@ Required:
 Optional:
 
 - `global` (Boolean) Helper-address is global
+  - Default value: `false`
 - `vrf` (String) VRF name for helper-address (if different from interface VRF)
 
 
@@ -352,6 +433,7 @@ Required:
 Optional:
 
 - `eui_64` (Boolean) Use eui-64 interface identifier
+  - Default value: `false`
 
 
 <a id="nestedatt--ipv6_dhcp_relay_destinations"></a>
@@ -376,9 +458,11 @@ Required:
 Optional:
 
 - `allow_hint` (Boolean) Allow hint from client
+  - Default value: `false`
 - `preference` (Number) Server preference value
   - Range: `0`-`255`
 - `rapid_commit` (Boolean) Enable Rapid-Commit
+  - Default value: `false`
 
 
 <a id="nestedatt--ipv6_flow_monitors"></a>
@@ -400,6 +484,7 @@ Required:
 Optional:
 
 - `link_local` (Boolean) Use link-local address
+  - Default value: `false`
 
 
 <a id="nestedatt--service_instances"></a>
@@ -412,7 +497,9 @@ Required:
 Optional:
 
 - `encapsulation_untagged` (Boolean) Untagged encapsulation
+  - Default value: `false`
 - `ethernet` (Boolean) Configure an Ethernet Instance
+  - Default value: `false`
 
 
 <a id="nestedatt--source_template"></a>
@@ -425,6 +512,7 @@ Required:
 Optional:
 
 - `merge` (Boolean) merge option of binding
+  - Default value: `false`
 
 ## Import
 

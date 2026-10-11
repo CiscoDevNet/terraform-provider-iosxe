@@ -32,6 +32,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -100,16 +101,22 @@ func (r *InterfacePIMIPv6Resource) Schema(ctx context.Context, req resource.Sche
 				},
 			},
 			"pim": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("PIM interface commands").String,
+				MarkdownDescription: helpers.NewAttributeDescription("PIM interface commands").AddDefaultValueDescription("true").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
 			},
 			"bfd": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure BFD").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configure BFD").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"bsr_border": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Border of PIM BSR domain").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Border of PIM BSR domain").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"dr_priority": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("PIM Hello DR priority").AddIntegerRangeDescription(0, 4294967295).String,

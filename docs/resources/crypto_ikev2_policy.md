@@ -39,7 +39,9 @@ resource "iosxe_crypto_ikev2_policy" "example" {
 - `match_address_local_ip` (List of String) Local address
 - `match_fvrf` (String)
 - `match_fvrf_any` (Boolean) Any fvrf
+  - Default value: `false`
 - `match_inbound_only` (Boolean) inbound only for controller
+  - Default value: `false`
 
 ### Read-Only
 

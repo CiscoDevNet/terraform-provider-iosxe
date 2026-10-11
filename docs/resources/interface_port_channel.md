@@ -83,18 +83,31 @@ resource "iosxe_interface_port_channel" "example" {
 - `arp_timeout` (Number) Set ARP cache timeout
   - Range: `0`-`2147483`
 - `auto_qos_classify` (Boolean) Configure classification for untrusted devices
+  - Default value: `false`
 - `auto_qos_classify_police` (Boolean) Configure QoS policing for untrusted devices
+  - Default value: `false`
 - `auto_qos_trust` (Boolean) Trust the DSCP/CoS marking
+  - Default value: `false`
 - `auto_qos_trust_cos` (Boolean) Trust the CoS marking
+  - Default value: `false`
 - `auto_qos_trust_dscp` (Boolean) Trust the DSCP marking
+  - Default value: `false`
 - `auto_qos_video_cts` (Boolean) Trust the QoS marking of the Cisco Telepresence System
+  - Default value: `false`
 - `auto_qos_video_ip_camera` (Boolean) Trust the QoS marking of the Ip Video Surveillance camera
+  - Default value: `false`
 - `auto_qos_video_media_player` (Boolean) Trust the Qos marking of the Cisco Media Player
+  - Default value: `false`
 - `auto_qos_voip_cisco_phone` (Boolean) Trust the QoS marking of Cisco IP Phone
+  - Default value: `false`
 - `auto_qos_voip_cisco_softphone` (Boolean) Trust the QoS marking of Cisco IP SoftPhone
+  - Default value: `false`
 - `auto_qos_voip_trust` (Boolean) Trust the DSCP/CoS marking
+  - Default value: `false`
 - `bfd_echo` (Boolean) Use echo adjunct as bfd detection mechanism
+  - Default value: `true`
 - `bfd_enable` (Boolean) Enable BFD under the interface
+  - Default value: `true`
 - `bfd_interval` (Number) - Range: `50`-`9999`
 - `bfd_interval_min_rx` (Number) Minimum receive interval capability
   - Range: `50`-`9999`
@@ -103,73 +116,103 @@ resource "iosxe_interface_port_channel" "example" {
 - `bfd_local_address` (String) The Source IP address to be used for BFD sessions over this interface.
 - `bfd_template` (String) BFD template
 - `bpduguard_disable` (Boolean) Disable BPDU guard for this interface
+  - Default value: `false`
 - `bpduguard_enable` (Boolean) Enable BPDU guard for this interface
+  - Default value: `false`
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `description` (String) Interface specific description
 - `device` (String) A device name from the provider configuration.
 - `device_tracking` (Boolean) Configure device-tracking on the interface
+  - Default value: `false`
 - `device_tracking_attached_policies` (Attributes List) (see [below for nested schema](#nestedatt--device_tracking_attached_policies))
 - `evpn_ethernet_segments` (Attributes List) Ethernet segment local discriminator value (see [below for nested schema](#nestedatt--evpn_ethernet_segments))
 - `evpn_ethernet_segments_legacy` (Attributes List) Ethernet segment local discriminator value, DEPRECATED (see [below for nested schema](#nestedatt--evpn_ethernet_segments_legacy))
 - `helper_addresses` (Attributes List) Specify a destination address for UDP broadcasts (see [below for nested schema](#nestedatt--helper_addresses))
 - `ip_access_group_in` (String)
 - `ip_access_group_in_enable` (Boolean) inbound packets
+  - Default value: `false`
 - `ip_access_group_out` (String)
 - `ip_access_group_out_enable` (Boolean) outbound packets
+  - Default value: `false`
 - `ip_arp_inspection_limit_rate` (Number) Rate Limit
   - Range: `0`-`4294967295`
 - `ip_arp_inspection_trust` (Boolean) Configure Trust state
+  - Default value: `false`
 - `ip_dhcp_relay_source_interface` (String) Set source interface for relayed messages
 - `ip_dhcp_snooping_trust` (Boolean) DHCP Snooping trust config
+  - Default value: `false`
 - `ip_flow_monitors` (Attributes List) Apply a Flow Monitor (see [below for nested schema](#nestedatt--ip_flow_monitors))
 - `ip_igmp_version` (Number) IGMP version
   - Range: `1`-`3`
 - `ip_nat_inside` (Boolean) Inside interface for address translation
+  - Default value: `false`
 - `ip_nat_outside` (Boolean) Outside interface for address translation
+  - Default value: `false`
 - `ip_proxy_arp` (Boolean) Enable proxy ARP
+  - Default value: `true`
 - `ip_redirects` (Boolean) Enable sending ICMP Redirect messages
+  - Default value: `true`
 - `ip_router_isis` (String)
 - `ip_unreachables` (Boolean) Enable sending ICMP Unreachable messages
+  - Default value: `true`
 - `ip_verify_unicast_source_allow_default` (Boolean) Allow default route to match when checking source address
+  - Default value: `false`
 - `ip_verify_unicast_source_allow_self_ping` (Boolean) Allow router to ping itself (opens vulnerability in verification)
+  - Default value: `false`
 - `ip_verify_unicast_source_reachable_via` (String) Specify reachability check to apply to the source address
   - Choices: `any`, `rx`
 - `ipv4_address` (String) Ip address
 - `ipv4_address_dhcp` (Boolean) IP Address negotiated via DHCP
+  - Default value: `false`
 - `ipv4_address_mask` (String) Ip subnet mask
 - `ipv6_address_autoconfig_default` (Boolean) Insert default route
+  - Default value: `false`
 - `ipv6_address_dhcp` (Boolean) Obtain IPv6 address from DHCP server
+  - Default value: `false`
 - `ipv6_addresses` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_addresses))
 - `ipv6_dhcp_client_pd` (String) IPv6 DHCP client prefix-delegation name
 - `ipv6_dhcp_client_pd_rapid_commit` (Boolean) Enable Rapid-Commit for prefix-delegation
+  - Default value: `false`
 - `ipv6_dhcp_relay_destinations` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_dhcp_relay_destinations))
 - `ipv6_dhcp_relay_option_vpn` (Boolean) Insert VSS option in Relay-Forward Messages
+  - Default value: `false`
 - `ipv6_dhcp_relay_trust` (Boolean) Interface is trusted to process relay-replies
+  - Default value: `false`
 - `ipv6_dhcp_servers` (Attributes List) Act as an IPv6 DHCP server (see [below for nested schema](#nestedatt--ipv6_dhcp_servers))
 - `ipv6_enable` (Boolean) Enable IPv6 on interface
+  - Default value: `false`
 - `ipv6_flow_monitors` (Attributes List) Apply a Flow Monitor (see [below for nested schema](#nestedatt--ipv6_flow_monitors))
 - `ipv6_link_local_addresses` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_link_local_addresses))
 - `ipv6_mtu` (Number) Set IPv6 Maximum Transmission Unit
   - Range: `1280`-`9976`
 - `ipv6_nd_ra_suppress_all` (Boolean) Suppress all IPv6 RA
+  - Default value: `false`
 - `load_interval` (Number) Specify interval for load calculation for an interface
   - Range: `30`-`600`
 - `logging_event_link_status_enable` (Boolean) UPDOWN and CHANGE messages
+  - Default value: `true`
 - `mtu` (Number) Set the interface Maximum Transmission Unit (MTU)
   - Range: `64`-`18000`
 - `negotiation_auto` (Boolean) Enable link autonegotiation
+  - Default value: `false`
 - `shutdown` (Boolean) Shutdown the selected interface
+  - Default value: `false`
 - `snmp_trap_link_status` (Boolean) Allow SNMP LINKUP and LINKDOWN traps
+  - Default value: `false`
 - `spanning_tree_guard` (String) Change an interface's spanning tree guard mode
   - Choices: `loop`, `none`, `root`
 - `spanning_tree_link_type` (String) Specify a link type for spanning tree tree protocol use
   - Choices: `point-to-point`, `shared`
 - `spanning_tree_portfast` (Boolean) (DEPRECATED) Spanning tree portfast options
+  - Default value: `false`
 - `spanning_tree_portfast_disable` (Boolean) (DEPRECATED) Disable portfast for this interface
+  - Default value: `false`
 - `spanning_tree_portfast_edge` (Boolean) (DEPRECATED) Enable portfast edge on the interface
+  - Default value: `false`
 - `spanning_tree_portfast_trunk` (Boolean) (DEPRECATED) Enable portfast on the interface even in trunk mode
-- `switchport` (Boolean)
+  - Default value: `false`
+- `switchport` (Boolean) - Default value: `false`
 - `trust_device` (String) trusted device class
   - Choices: `cisco-phone`, `cts`, `ip-camera`, `media-player`
 - `vrf_forwarding` (String) Configure forwarding table
@@ -215,6 +258,7 @@ Required:
 Optional:
 
 - `global` (Boolean) Helper-address is global
+  - Default value: `false`
 - `vrf` (String) VRF name for helper-address (if different from interface VRF)
 
 
@@ -237,6 +281,7 @@ Required:
 Optional:
 
 - `eui_64` (Boolean) Use eui-64 interface identifier
+  - Default value: `false`
 
 
 <a id="nestedatt--ipv6_dhcp_relay_destinations"></a>
@@ -261,9 +306,11 @@ Required:
 Optional:
 
 - `allow_hint` (Boolean) Allow hint from client
+  - Default value: `false`
 - `preference` (Number) Server preference value
   - Range: `0`-`255`
 - `rapid_commit` (Boolean) Enable Rapid-Commit
+  - Default value: `false`
 
 
 <a id="nestedatt--ipv6_flow_monitors"></a>
@@ -285,6 +332,7 @@ Required:
 Optional:
 
 - `link_local` (Boolean) Use link-local address
+  - Default value: `false`
 
 ## Import
 

@@ -32,6 +32,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
@@ -116,8 +117,10 @@ func (r *BGPBMPServerResource) Schema(ctx context.Context, req resource.SchemaRe
 				},
 			},
 			"activate": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Initiate connection to BMP server").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Initiate connection to BMP server").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"description": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Textual description of BMP server").String,

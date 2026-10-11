@@ -32,6 +32,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -147,16 +148,22 @@ func (r *RadiusResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				Optional:            true,
 			},
 			"automate_tester_ignore_acct_port": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Do not test accounting ports of the servers.").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Do not test accounting ports of the servers.").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"automate_tester_ignore_auth_port": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Do not test authentication port of the servers.").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Do not test authentication port of the servers.").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"automate_tester_probe_on_config": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Send a packet to verify the server status").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Send a packet to verify the server status").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"automate_tester_idle_time": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Minutes of idle-time after which server state should be verified.").AddIntegerRangeDescription(1, 35791).String,

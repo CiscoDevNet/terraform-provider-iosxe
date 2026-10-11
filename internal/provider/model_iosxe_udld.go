@@ -96,15 +96,11 @@ func (data UDLD) addToBodyXML(ctx context.Context, config UDLD, body netconf.Bod
 	if !data.Aggressive.IsNull() && !data.Aggressive.IsUnknown() {
 		if data.Aggressive.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-udld:aggressive", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-udld:aggressive")
 		}
 	}
 	if !data.Enable.IsNull() && !data.Enable.IsUnknown() {
 		if data.Enable.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-udld:enable", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-udld:enable")
 		}
 	}
 	if !data.MessageTime.IsNull() && !data.MessageTime.IsUnknown() {

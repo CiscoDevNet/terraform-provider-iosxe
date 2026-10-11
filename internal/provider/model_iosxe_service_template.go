@@ -170,8 +170,6 @@ func (data ServiceTemplate) addToBodyXML(ctx context.Context, config ServiceTemp
 	if !data.InactivityTimerProbe.IsNull() && !data.InactivityTimerProbe.IsUnknown() {
 		if data.InactivityTimerProbe.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/inactivity-timer/probe", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/inactivity-timer/probe")
 		}
 	}
 	if !data.Vlan.IsNull() && !data.Vlan.IsUnknown() {
@@ -180,8 +178,6 @@ func (data ServiceTemplate) addToBodyXML(ctx context.Context, config ServiceTemp
 	if !data.VoiceVlan.IsNull() && !data.VoiceVlan.IsUnknown() {
 		if data.VoiceVlan.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/voice/vlan", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/voice/vlan")
 		}
 	}
 	if !data.LinksecPolicy.IsNull() && !data.LinksecPolicy.IsUnknown() {

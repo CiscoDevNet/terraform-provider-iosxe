@@ -71,6 +71,7 @@ resource "iosxe_logging" "example" {
 - `buffered_size_legacy` (Number) DEPRECATED. Logging buffer size
   - Range: `4096`-`2147483647`
 - `console` (Boolean) Set console logging parameters
+  - Default value: `true`
 - `console_severity` (String)
 - `device` (String) A device name from the provider configuration.
 - `facility` (String) Facility parameter for syslog messages
@@ -91,6 +92,7 @@ resource "iosxe_logging" "example" {
 - `ipv6_vrf_hosts` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_vrf_hosts))
 - `ipv6_vrf_hosts_transport` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_vrf_hosts_transport))
 - `logging_count` (Boolean) Count every log message and timestamp last occurrence
+  - Default value: `false`
 - `monitor_severity` (String)
 - `origin_id_name` (String) Define a unique text string as ID
 - `origin_id_type` (String) Use origin hostname/ip/ipv6 as ID
@@ -100,8 +102,11 @@ resource "iosxe_logging" "example" {
 - `persistent_filesize` (Number) Set size of individual log files
   - Range: `8192`-`2147483647`
 - `persistent_immediate` (Boolean) Write log entry to storage immediately (no buffering).
+  - Default value: `false`
 - `persistent_notify` (Boolean) Notify when show logging [persistent] is activated.
+  - Default value: `false`
 - `persistent_protected` (Boolean) Eliminates manipulation on logging-persistent files
+  - Default value: `false`
 - `persistent_size` (Number) Set disk space for writing log messages
   - Range: `16384`-`2147483647`
 - `persistent_threshold` (Number) Setting threshold capacity. When setting circular logging is disabled
@@ -122,6 +127,7 @@ resource "iosxe_logging" "example" {
 - `source_interface` (String)
 - `source_interfaces_vrf` (Attributes List) Specify interface and vrf for source address in logging transactions (see [below for nested schema](#nestedatt--source_interfaces_vrf))
 - `trap` (Boolean) Set trap server logging level
+  - Default value: `false`
 - `trap_severity` (String)
 
 ### Read-Only

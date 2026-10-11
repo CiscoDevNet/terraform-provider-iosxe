@@ -172,8 +172,6 @@ func (data BGPNeighbor) addToBodyXML(ctx context.Context, config BGPNeighbor, bo
 	if !data.Shutdown.IsNull() && !data.Shutdown.IsUnknown() {
 		if data.Shutdown.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/shutdown", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/shutdown")
 		}
 	}
 	if !data.ClusterId.IsNull() && !data.ClusterId.IsUnknown() {
@@ -185,15 +183,11 @@ func (data BGPNeighbor) addToBodyXML(ctx context.Context, config BGPNeighbor, bo
 	if !data.DisableConnectedCheck.IsNull() && !data.DisableConnectedCheck.IsUnknown() {
 		if data.DisableConnectedCheck.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/disable-connected-check", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/disable-connected-check")
 		}
 	}
 	if !data.FallOverDefaultEnable.IsNull() && !data.FallOverDefaultEnable.IsUnknown() {
 		if data.FallOverDefaultEnable.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/fall-over/default/enable", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/fall-over/default/enable")
 		}
 	}
 	if !data.FallOverDefaultRouteMap.IsNull() && !data.FallOverDefaultRouteMap.IsUnknown() {
@@ -202,36 +196,26 @@ func (data BGPNeighbor) addToBodyXML(ctx context.Context, config BGPNeighbor, bo
 	if !data.FallOverBfd.IsNull() && !data.FallOverBfd.IsUnknown() {
 		if data.FallOverBfd.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/fall-over/bfd", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/fall-over/bfd")
 		}
 	}
 	if !data.FallOverBfdMultiHop.IsNull() && !data.FallOverBfdMultiHop.IsUnknown() {
 		if data.FallOverBfdMultiHop.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/fall-over/bfd/multi-hop", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/fall-over/bfd/multi-hop")
 		}
 	}
 	if !data.FallOverBfdSingleHop.IsNull() && !data.FallOverBfdSingleHop.IsUnknown() {
 		if data.FallOverBfdSingleHop.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/fall-over/bfd/single-hop", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/fall-over/bfd/single-hop")
 		}
 	}
 	if !data.FallOverBfdCheckControlPlaneFailure.IsNull() && !data.FallOverBfdCheckControlPlaneFailure.IsUnknown() {
 		if data.FallOverBfdCheckControlPlaneFailure.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/fall-over/bfd/check-control-plane-failure", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/fall-over/bfd/check-control-plane-failure")
 		}
 	}
 	if !data.FallOverBfdStrictMode.IsNull() && !data.FallOverBfdStrictMode.IsUnknown() {
 		if data.FallOverBfdStrictMode.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/fall-over/bfd/strict-mode", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/fall-over/bfd/strict-mode")
 		}
 	}
 	if !data.FallOverMaximumMetricRouteMap.IsNull() && !data.FallOverMaximumMetricRouteMap.IsUnknown() {
@@ -243,29 +227,21 @@ func (data BGPNeighbor) addToBodyXML(ctx context.Context, config BGPNeighbor, bo
 	if !data.LocalAsNoPrepend.IsNull() && !data.LocalAsNoPrepend.IsUnknown() {
 		if data.LocalAsNoPrepend.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/local-as/no-prepend", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/local-as/no-prepend")
 		}
 	}
 	if !data.LocalAsReplaceAs.IsNull() && !data.LocalAsReplaceAs.IsUnknown() {
 		if data.LocalAsReplaceAs.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/local-as/replace-as", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/local-as/replace-as")
 		}
 	}
 	if !data.LocalAsDualAs.IsNull() && !data.LocalAsDualAs.IsUnknown() {
 		if data.LocalAsDualAs.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/local-as/dual-as", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/local-as/dual-as")
 		}
 	}
 	if !data.LogNeighborChanges.IsNull() && !data.LogNeighborChanges.IsUnknown() {
 		if data.LogNeighborChanges.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/log-neighbor-changes", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/log-neighbor-changes")
 		}
 	}
 	if !data.PasswordType.IsNull() && !data.PasswordType.IsUnknown() {
@@ -299,8 +275,6 @@ func (data BGPNeighbor) addToBodyXML(ctx context.Context, config BGPNeighbor, bo
 	if !data.EbgpMultihop.IsNull() && !data.EbgpMultihop.IsUnknown() {
 		if data.EbgpMultihop.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ebgp-multihop", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ebgp-multihop")
 		}
 	}
 	if !data.EbgpMultihopMaxHop.IsNull() && !data.EbgpMultihopMaxHop.IsUnknown() {
@@ -312,15 +286,11 @@ func (data BGPNeighbor) addToBodyXML(ctx context.Context, config BGPNeighbor, bo
 	if !data.AoIncludeTcpOptions.IsNull() && !data.AoIncludeTcpOptions.IsUnknown() {
 		if data.AoIncludeTcpOptions.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ao/include-tcp-options", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ao/include-tcp-options")
 		}
 	}
 	if !data.AoAcceptMismatchConnections.IsNull() && !data.AoAcceptMismatchConnections.IsUnknown() {
 		if data.AoAcceptMismatchConnections.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ao/accept-ao-mismatch-connections", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ao/accept-ao-mismatch-connections")
 		}
 	}
 	if !data.InheritPeerSession.IsNull() && !data.InheritPeerSession.IsUnknown() {

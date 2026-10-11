@@ -191,8 +191,6 @@ func (data OSPFv3AddressFamilyIPv6VRF) addToBodyXML(ctx context.Context, config 
 	if !data.Unicast.IsNull() && !data.Unicast.IsUnknown() {
 		if data.Unicast.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/unicast", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/unicast")
 		}
 	}
 	if !data.CapabilityVrf.IsNull() && !data.CapabilityVrf.IsUnknown() {
@@ -201,22 +199,16 @@ func (data OSPFv3AddressFamilyIPv6VRF) addToBodyXML(ctx context.Context, config 
 	if !data.BfdAllInterfaces.IsNull() && !data.BfdAllInterfaces.IsUnknown() {
 		if data.BfdAllInterfaces.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/bfd/all-interfaces", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/bfd/all-interfaces")
 		}
 	}
 	if !data.DefaultInformationOriginate.IsNull() && !data.DefaultInformationOriginate.IsUnknown() {
 		if data.DefaultInformationOriginate.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/default-information/originate", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/default-information/originate")
 		}
 	}
 	if !data.DefaultInformationOriginateAlways.IsNull() && !data.DefaultInformationOriginateAlways.IsUnknown() {
 		if data.DefaultInformationOriginateAlways.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/default-information/originate/always", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/default-information/originate/always")
 		}
 	}
 	if !data.DefaultInformationOriginateMetric.IsNull() && !data.DefaultInformationOriginateMetric.IsUnknown() {
@@ -234,15 +226,11 @@ func (data OSPFv3AddressFamilyIPv6VRF) addToBodyXML(ctx context.Context, config 
 	if !data.LogAdjacencyChanges.IsNull() && !data.LogAdjacencyChanges.IsUnknown() {
 		if data.LogAdjacencyChanges.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/log-adjacency-changes", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/log-adjacency-changes")
 		}
 	}
 	if !data.LogAdjacencyChangesDetail.IsNull() && !data.LogAdjacencyChangesDetail.IsUnknown() {
 		if data.LogAdjacencyChangesDetail.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/log-adjacency-changes/detail", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/log-adjacency-changes/detail")
 		}
 	}
 	if !data.RouterId.IsNull() && !data.RouterId.IsUnknown() {
@@ -251,8 +239,6 @@ func (data OSPFv3AddressFamilyIPv6VRF) addToBodyXML(ctx context.Context, config 
 	if !data.Shutdown.IsNull() && !data.Shutdown.IsUnknown() {
 		if data.Shutdown.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/shutdown", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/shutdown")
 		}
 	}
 	if !data.AutoCostReferenceBandwidth.IsNull() && !data.AutoCostReferenceBandwidth.IsUnknown() {
@@ -285,15 +271,11 @@ func (data OSPFv3AddressFamilyIPv6VRF) addToBodyXML(ctx context.Context, config 
 	if !data.MaxMetricRouterLsaConfig.IsNull() && !data.MaxMetricRouterLsaConfig.IsUnknown() {
 		if data.MaxMetricRouterLsaConfig.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/max-metric/router-lsa-config", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/max-metric/router-lsa-config")
 		}
 	}
 	if !data.MaxMetricRouterLsaConfigStubPrefixLsa.IsNull() && !data.MaxMetricRouterLsaConfigStubPrefixLsa.IsUnknown() {
 		if data.MaxMetricRouterLsaConfigStubPrefixLsa.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/max-metric/router-lsa-config/stub-prefix-lsa", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/max-metric/router-lsa-config/stub-prefix-lsa")
 		}
 	}
 	if !data.MaxMetricRouterLsaConfigInterAreaLsasMetric.IsNull() && !data.MaxMetricRouterLsaConfigInterAreaLsasMetric.IsUnknown() {
@@ -308,22 +290,16 @@ func (data OSPFv3AddressFamilyIPv6VRF) addToBodyXML(ctx context.Context, config 
 	if !data.MaxMetricRouterConfigLsaOnStartupWaitForBgp.IsNull() && !data.MaxMetricRouterConfigLsaOnStartupWaitForBgp.IsUnknown() {
 		if data.MaxMetricRouterConfigLsaOnStartupWaitForBgp.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/max-metric/router-lsa-config/on-startup/wait-for-bgp", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/max-metric/router-lsa-config/on-startup/wait-for-bgp")
 		}
 	}
 	if !data.RedistributeStatic.IsNull() && !data.RedistributeStatic.IsUnknown() {
 		if data.RedistributeStatic.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/redistribute/static", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/redistribute/static")
 		}
 	}
 	if !data.RedistributeConnected.IsNull() && !data.RedistributeConnected.IsUnknown() {
 		if data.RedistributeConnected.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/redistribute/connected", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/redistribute/connected")
 		}
 	}
 	if len(data.SummaryPrefix) > 0 {
@@ -344,15 +320,11 @@ func (data OSPFv3AddressFamilyIPv6VRF) addToBodyXML(ctx context.Context, config 
 			if !item.Nssa.IsNull() && !item.Nssa.IsUnknown() {
 				if item.Nssa.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "nssa", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "nssa")
 				}
 			}
 			if !item.NssaDefaultInformationOriginate.IsNull() && !item.NssaDefaultInformationOriginate.IsUnknown() {
 				if item.NssaDefaultInformationOriginate.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "nssa/default-information-originate", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "nssa/default-information-originate")
 				}
 			}
 			if !item.NssaDefaultInformationOriginateMetric.IsNull() && !item.NssaDefaultInformationOriginateMetric.IsUnknown() {
@@ -364,15 +336,11 @@ func (data OSPFv3AddressFamilyIPv6VRF) addToBodyXML(ctx context.Context, config 
 			if !item.NssaNoSummary.IsNull() && !item.NssaNoSummary.IsUnknown() {
 				if item.NssaNoSummary.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "nssa/no-summary", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "nssa/no-summary")
 				}
 			}
 			if !item.NssaNoRedistribution.IsNull() && !item.NssaNoRedistribution.IsUnknown() {
 				if item.NssaNoRedistribution.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "nssa/no-redistribution", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "nssa/no-redistribution")
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/area-config", cBody.Res())
@@ -381,8 +349,6 @@ func (data OSPFv3AddressFamilyIPv6VRF) addToBodyXML(ctx context.Context, config 
 	if !data.PassiveInterfaceDefault.IsNull() && !data.PassiveInterfaceDefault.IsUnknown() {
 		if data.PassiveInterfaceDefault.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/passive-interface/default", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/passive-interface/default")
 		}
 	}
 	if !data.PassiveInterface.IsNull() && !data.PassiveInterface.IsUnknown() {

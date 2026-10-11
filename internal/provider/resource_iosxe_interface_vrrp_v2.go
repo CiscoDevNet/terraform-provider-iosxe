@@ -155,8 +155,10 @@ func (r *InterfaceVRRPV2Resource) Schema(ctx context.Context, req resource.Schem
 				},
 			},
 			"preempt": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable preemption of lower priority Master").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable preemption of lower priority Master").AddDefaultValueDescription("true").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
 			},
 			"preempt_delay_minimum": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Seconds to delay before preempting").AddIntegerRangeDescription(0, 3600).String,
@@ -206,8 +208,10 @@ func (r *InterfaceVRRPV2Resource) Schema(ctx context.Context, req resource.Schem
 				},
 			},
 			"shutdown": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Shutdown the VRRP group").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Shutdown the VRRP group").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 		},
 	}

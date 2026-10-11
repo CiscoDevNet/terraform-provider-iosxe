@@ -276,22 +276,16 @@ func (data AAAAccounting) addToBodyXML(ctx context.Context, config AAAAccounting
 			if !item.StartStopBroadcast.IsNull() && !item.StartStopBroadcast.IsUnknown() {
 				if item.StartStopBroadcast.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "start-stop/broadcast", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "start-stop/broadcast")
 				}
 			}
 			if !item.StartStopGroupBroadcast.IsNull() && !item.StartStopGroupBroadcast.IsUnknown() {
 				if item.StartStopGroupBroadcast.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "start-stop/group-config/broadcast", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "start-stop/group-config/broadcast")
 				}
 			}
 			if !item.StartStopGroupLogger.IsNull() && !item.StartStopGroupLogger.IsUnknown() {
 				if item.StartStopGroupLogger.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "start-stop/group-config/logger", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "start-stop/group-config/logger")
 				}
 			}
 			if !item.StartStopGroup1.IsNull() && !item.StartStopGroup1.IsUnknown() {
@@ -354,22 +348,16 @@ func (data AAAAccounting) addToBodyXML(ctx context.Context, config AAAAccounting
 			if !item.Broadcast.IsNull() && !item.Broadcast.IsUnknown() {
 				if item.Broadcast.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "commands-config/broadcast", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "commands-config/broadcast")
 				}
 			}
 			if !item.GroupBroadcast.IsNull() && !item.GroupBroadcast.IsUnknown() {
 				if item.GroupBroadcast.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "commands-config/group-config/broadcast", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "commands-config/group-config/broadcast")
 				}
 			}
 			if !item.GroupLogger.IsNull() && !item.GroupLogger.IsUnknown() {
 				if item.GroupLogger.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "commands-config/group-config/logger", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "commands-config/group-config/logger")
 				}
 			}
 			if !item.Group1Group.IsNull() && !item.Group1Group.IsUnknown() {
@@ -396,29 +384,21 @@ func (data AAAAccounting) addToBodyXML(ctx context.Context, config AAAAccounting
 			if !item.Default.IsNull() && !item.Default.IsUnknown() {
 				if item.Default.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "default", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "default")
 				}
 			}
 			if !item.None.IsNull() && !item.None.IsUnknown() {
 				if item.None.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "none", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "none")
 				}
 			}
 			if !item.StartStopBroadcast.IsNull() && !item.StartStopBroadcast.IsUnknown() {
 				if item.StartStopBroadcast.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "start-stop/broadcast", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "start-stop/broadcast")
 				}
 			}
 			if !item.StartStopLogger.IsNull() && !item.StartStopLogger.IsUnknown() {
 				if item.StartStopLogger.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "start-stop/logger", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "start-stop/logger")
 				}
 			}
 			if !item.StartStopGroup1.IsNull() && !item.StartStopGroup1.IsUnknown() {
@@ -436,15 +416,11 @@ func (data AAAAccounting) addToBodyXML(ctx context.Context, config AAAAccounting
 			if !item.StopOnlyBroadcast.IsNull() && !item.StopOnlyBroadcast.IsUnknown() {
 				if item.StopOnlyBroadcast.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "stop-only/broadcast", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "stop-only/broadcast")
 				}
 			}
 			if !item.StopOnlyLogger.IsNull() && !item.StopOnlyLogger.IsUnknown() {
 				if item.StopOnlyLogger.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "stop-only/logger", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "stop-only/logger")
 				}
 			}
 			if !item.StopOnlyGroup1.IsNull() && !item.StopOnlyGroup1.IsUnknown() {
@@ -471,22 +447,16 @@ func (data AAAAccounting) addToBodyXML(ctx context.Context, config AAAAccounting
 			if !item.None.IsNull() && !item.None.IsUnknown() {
 				if item.None.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "none", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "none")
 				}
 			}
 			if !item.StartStopBroadcast.IsNull() && !item.StartStopBroadcast.IsUnknown() {
 				if item.StartStopBroadcast.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "start-stop/broadcast", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "start-stop/broadcast")
 				}
 			}
 			if !item.StartStopLogger.IsNull() && !item.StartStopLogger.IsUnknown() {
 				if item.StartStopLogger.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "start-stop/logger", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "start-stop/logger")
 				}
 			}
 			if !item.StartStopGroup1.IsNull() && !item.StartStopGroup1.IsUnknown() {
@@ -504,15 +474,11 @@ func (data AAAAccounting) addToBodyXML(ctx context.Context, config AAAAccounting
 			if !item.StopOnlyBroadcast.IsNull() && !item.StopOnlyBroadcast.IsUnknown() {
 				if item.StopOnlyBroadcast.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "stop-only/broadcast", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "stop-only/broadcast")
 				}
 			}
 			if !item.StopOnlyLogger.IsNull() && !item.StopOnlyLogger.IsUnknown() {
 				if item.StopOnlyLogger.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "stop-only/logger", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "stop-only/logger")
 				}
 			}
 			if !item.StopOnlyGroup1.IsNull() && !item.StopOnlyGroup1.IsUnknown() {
@@ -545,22 +511,16 @@ func (data AAAAccounting) addToBodyXML(ctx context.Context, config AAAAccounting
 	if !data.Dot1xDefaultStartStopBroadcast.IsNull() && !data.Dot1xDefaultStartStopBroadcast.IsUnknown() {
 		if data.Dot1xDefaultStartStopBroadcast.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/dot1x/default/start-stop/broadcast", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/dot1x/default/start-stop/broadcast")
 		}
 	}
 	if !data.Dot1xDefaultStartStopGroupBroadcast.IsNull() && !data.Dot1xDefaultStartStopGroupBroadcast.IsUnknown() {
 		if data.Dot1xDefaultStartStopGroupBroadcast.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/dot1x/default/start-stop/group-config/broadcast", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/dot1x/default/start-stop/group-config/broadcast")
 		}
 	}
 	if !data.Dot1xDefaultStartStopGroupLogger.IsNull() && !data.Dot1xDefaultStartStopGroupLogger.IsUnknown() {
 		if data.Dot1xDefaultStartStopGroupLogger.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/dot1x/default/start-stop/group-config/logger", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/dot1x/default/start-stop/group-config/logger")
 		}
 	}
 	if len(data.Dot1x) > 0 {
@@ -584,22 +544,16 @@ func (data AAAAccounting) addToBodyXML(ctx context.Context, config AAAAccounting
 			if !item.StartStopBroadcast.IsNull() && !item.StartStopBroadcast.IsUnknown() {
 				if item.StartStopBroadcast.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "start-stop/broadcast", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "start-stop/broadcast")
 				}
 			}
 			if !item.StartStopGroupBroadcast.IsNull() && !item.StartStopGroupBroadcast.IsUnknown() {
 				if item.StartStopGroupBroadcast.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "start-stop/group-config/broadcast", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "start-stop/group-config/broadcast")
 				}
 			}
 			if !item.StartStopGroupLogger.IsNull() && !item.StartStopGroupLogger.IsUnknown() {
 				if item.StartStopGroupLogger.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "start-stop/group-config/logger", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "start-stop/group-config/logger")
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/dot1x/accounting-list", cBody.Res())

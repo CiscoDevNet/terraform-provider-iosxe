@@ -541,8 +541,6 @@ func (data System) addToBodyXML(ctx context.Context, config System, body netconf
 	if !data.IpBgpCommunityNewFormat.IsNull() && !data.IpBgpCommunityNewFormat.IsUnknown() {
 		if data.IpBgpCommunityNewFormat.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/bgp-community/new-format", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/bgp-community/new-format")
 		}
 	}
 	if !data.IpRouting.IsNull() && !data.IpRouting.IsUnknown() {
@@ -551,15 +549,11 @@ func (data System) addToBodyXML(ctx context.Context, config System, body netconf
 	if !data.Ipv6UnicastRouting.IsNull() && !data.Ipv6UnicastRouting.IsUnknown() {
 		if data.Ipv6UnicastRouting.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ipv6/unicast-routing", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ipv6/unicast-routing")
 		}
 	}
 	if !data.Ipv6MulticastRouting.IsNull() && !data.Ipv6MulticastRouting.IsUnknown() {
 		if data.Ipv6MulticastRouting.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ipv6/Cisco-IOS-XE-multicast:mcr-conf/multicast-routing", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ipv6/Cisco-IOS-XE-multicast:mcr-conf/multicast-routing")
 		}
 	}
 	if !data.Mtu.IsNull() && !data.Mtu.IsUnknown() {
@@ -580,50 +574,36 @@ func (data System) addToBodyXML(ctx context.Context, config System, body netconf
 	if !data.LoginOnFailure.IsNull() && !data.LoginOnFailure.IsUnknown() {
 		if data.LoginOnFailure.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/login/on-failure", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/login/on-failure")
 		}
 	}
 	if !data.LoginOnFailureLog.IsNull() && !data.LoginOnFailureLog.IsUnknown() {
 		if data.LoginOnFailureLog.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/login/on-failure/log", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/login/on-failure/log")
 		}
 	}
 	if !data.LoginOnSuccess.IsNull() && !data.LoginOnSuccess.IsUnknown() {
 		if data.LoginOnSuccess.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/login/on-success", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/login/on-success")
 		}
 	}
 	if !data.LoginOnSuccessLog.IsNull() && !data.LoginOnSuccessLog.IsUnknown() {
 		if data.LoginOnSuccessLog.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/login/on-success/log", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/login/on-success/log")
 		}
 	}
 	if !data.IpMulticastRouting.IsNull() && !data.IpMulticastRouting.IsUnknown() {
 		if data.IpMulticastRouting.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-multicast:multicast-routing", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-multicast:multicast-routing")
 		}
 	}
 	if !data.MulticastRoutingSwitch.IsNull() && !data.MulticastRoutingSwitch.IsUnknown() {
 		if data.MulticastRoutingSwitch.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-multicast:mcr-conf/multicast-routing", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-multicast:mcr-conf/multicast-routing")
 		}
 	}
 	if !data.IpMulticastRoutingDistributed.IsNull() && !data.IpMulticastRoutingDistributed.IsUnknown() {
 		if data.IpMulticastRoutingDistributed.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-multicast:multicast-routing/distributed", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-multicast:multicast-routing/distributed")
 		}
 	}
 	if len(data.MulticastRoutingVrfs) > 0 {
@@ -635,8 +615,6 @@ func (data System) addToBodyXML(ctx context.Context, config System, body netconf
 			if !item.Distributed.IsNull() && !item.Distributed.IsUnknown() {
 				if item.Distributed.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "distributed", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "distributed")
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-multicast:multicast-routing/vrf", cBody.Res())
@@ -648,8 +626,6 @@ func (data System) addToBodyXML(ctx context.Context, config System, body netconf
 	if !data.IpHttpAuthenticationAaa.IsNull() && !data.IpHttpAuthenticationAaa.IsUnknown() {
 		if data.IpHttpAuthenticationAaa.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-http:http/authentication/aaa", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-http:http/authentication/aaa")
 		}
 	}
 	if !data.IpHttpAuthenticationAaaExecAuthorization.IsNull() && !data.IpHttpAuthenticationAaaExecAuthorization.IsUnknown() {
@@ -673,8 +649,6 @@ func (data System) addToBodyXML(ctx context.Context, config System, body netconf
 	if !data.IpHttpAuthenticationLocal.IsNull() && !data.IpHttpAuthenticationLocal.IsUnknown() {
 		if data.IpHttpAuthenticationLocal.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-http:http/authentication/local", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-http:http/authentication/local")
 		}
 	}
 	if !data.IpHttpServer.IsNull() && !data.IpHttpServer.IsUnknown() {
@@ -730,15 +704,11 @@ func (data System) addToBodyXML(ctx context.Context, config System, body netconf
 	if !data.IpDomainLookupNsap.IsNull() && !data.IpDomainLookupNsap.IsUnknown() {
 		if data.IpDomainLookupNsap.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/domain/lookup-settings/lookup/nsap", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/domain/lookup-settings/lookup/nsap")
 		}
 	}
 	if !data.IpDomainLookupRecursive.IsNull() && !data.IpDomainLookupRecursive.IsUnknown() {
 		if data.IpDomainLookupRecursive.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/domain/lookup-settings/lookup/recursive", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/domain/lookup-settings/lookup/recursive")
 		}
 	}
 	if len(data.IpDomainLookupVrfs) > 0 {
@@ -807,22 +777,16 @@ func (data System) addToBodyXML(ctx context.Context, config System, body netconf
 	if !data.CispEnable.IsNull() && !data.CispEnable.IsUnknown() {
 		if data.CispEnable.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/cisp/enable", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/cisp/enable")
 		}
 	}
 	if !data.EpmLogging.IsNull() && !data.EpmLogging.IsUnknown() {
 		if data.EpmLogging.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/epm/logging", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/epm/logging")
 		}
 	}
 	if !data.AccessSessionMacMoveDeny.IsNull() && !data.AccessSessionMacMoveDeny.IsUnknown() {
 		if data.AccessSessionMacMoveDeny.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-sanet:access-session/mac-move/deny", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-sanet:access-session/mac-move/deny")
 		}
 	}
 	if !data.DiagnosticBootupLevel.IsNull() && !data.DiagnosticBootupLevel.IsUnknown() {
@@ -840,8 +804,6 @@ func (data System) addToBodyXML(ctx context.Context, config System, body netconf
 	if !data.ArchiveWriteMemory.IsNull() && !data.ArchiveWriteMemory.IsUnknown() {
 		if data.ArchiveWriteMemory.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/archive/write-memory", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/archive/write-memory")
 		}
 	}
 	if !data.ArchiveTimePeriod.IsNull() && !data.ArchiveTimePeriod.IsUnknown() {
@@ -850,8 +812,6 @@ func (data System) addToBodyXML(ctx context.Context, config System, body netconf
 	if !data.ArchiveLogConfigLoggingEnable.IsNull() && !data.ArchiveLogConfigLoggingEnable.IsUnknown() {
 		if data.ArchiveLogConfigLoggingEnable.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/archive/log/config/logging/enable", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/archive/log/config/logging/enable")
 		}
 	}
 	if !data.ArchiveLogConfigLoggingSize.IsNull() && !data.ArchiveLogConfigLoggingSize.IsUnknown() {
@@ -860,8 +820,6 @@ func (data System) addToBodyXML(ctx context.Context, config System, body netconf
 	if !data.Redundancy.IsNull() && !data.Redundancy.IsUnknown() {
 		if data.Redundancy.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/redundancy", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/redundancy")
 		}
 	}
 	if !data.RedundancyMode.IsNull() && !data.RedundancyMode.IsUnknown() {
@@ -870,8 +828,6 @@ func (data System) addToBodyXML(ctx context.Context, config System, body netconf
 	if !data.TransceiverTypeAllMonitoring.IsNull() && !data.TransceiverTypeAllMonitoring.IsUnknown() {
 		if data.TransceiverTypeAllMonitoring.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/transceivers/type/all/monitoring-enable/monitoring", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/transceivers/type/all/monitoring-enable/monitoring")
 		}
 	}
 	if !data.IpForwardProtocolNd.IsNull() && !data.IpForwardProtocolNd.IsUnknown() {
@@ -880,8 +836,6 @@ func (data System) addToBodyXML(ctx context.Context, config System, body netconf
 	if !data.IpScpServerEnable.IsNull() && !data.IpScpServerEnable.IsUnknown() {
 		if data.IpScpServerEnable.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/scp/server/enable", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/scp/server/enable")
 		}
 	}
 	if !data.IpSftpUsername.IsNull() && !data.IpSftpUsername.IsUnknown() {
@@ -939,8 +893,6 @@ func (data System) addToBodyXML(ctx context.Context, config System, body netconf
 	if !data.IpSshBulkMode.IsNull() && !data.IpSshBulkMode.IsUnknown() {
 		if data.IpSshBulkMode.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/ssh/bulk-mode", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/ssh/bulk-mode")
 		}
 	}
 	if !data.IpSshBulkModeWindowSize.IsNull() && !data.IpSshBulkModeWindowSize.IsUnknown() {
@@ -1102,8 +1054,6 @@ func (data System) addToBodyXML(ctx context.Context, config System, body netconf
 	if !data.SubscriberTemplating.IsNull() && !data.SubscriberTemplating.IsUnknown() {
 		if data.SubscriberTemplating.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/subscriber/templating", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/subscriber/templating")
 		}
 	}
 	if !data.CallHomeContactEmail.IsNull() && !data.CallHomeContactEmail.IsUnknown() {
@@ -1118,8 +1068,6 @@ func (data System) addToBodyXML(ctx context.Context, config System, body netconf
 	if !data.IpTcpPathMtuDiscovery.IsNull() && !data.IpTcpPathMtuDiscovery.IsUnknown() {
 		if data.IpTcpPathMtuDiscovery.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/tcp/path-mtu-discovery", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/tcp/path-mtu-discovery")
 		}
 	}
 	if !data.IpTcpMss.IsNull() && !data.IpTcpMss.IsUnknown() {
@@ -1176,8 +1124,6 @@ func (data System) addToBodyXML(ctx context.Context, config System, body netconf
 			if !item.IpSlaReachability.IsNull() && !item.IpSlaReachability.IsUnknown() {
 				if item.IpSlaReachability.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ip/sla/reachability", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ip/sla/reachability")
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/track/Cisco-IOS-XE-track:tracked-object-v2", cBody.Res())
@@ -1192,8 +1138,6 @@ func (data System) addToBodyXML(ctx context.Context, config System, body netconf
 	if !data.IgmpSnoopingQuerier.IsNull() && !data.IgmpSnoopingQuerier.IsUnknown() {
 		if data.IgmpSnoopingQuerier.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/snooping-entry/snooping/querier-conf/querier", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/snooping-entry/snooping/querier-conf/querier")
 		}
 	}
 	if !data.IgmpSnoopingQuerierVersion.IsNull() && !data.IgmpSnoopingQuerierVersion.IsUnknown() {
@@ -1239,29 +1183,21 @@ func (data System) addToBodyXML(ctx context.Context, config System, body netconf
 	if !data.IpCefLoadSharingAlgorithmIncludePortsSource.IsNull() && !data.IpCefLoadSharingAlgorithmIncludePortsSource.IsUnknown() {
 		if data.IpCefLoadSharingAlgorithmIncludePortsSource.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/cef-v2/Cisco-IOS-XE-cef:load-sharing-v2/algorithm-v2/include-ports-v2/source", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/cef-v2/Cisco-IOS-XE-cef:load-sharing-v2/algorithm-v2/include-ports-v2/source")
 		}
 	}
 	if !data.IpCefLoadSharingAlgorithmIncludePortsDestination.IsNull() && !data.IpCefLoadSharingAlgorithmIncludePortsDestination.IsUnknown() {
 		if data.IpCefLoadSharingAlgorithmIncludePortsDestination.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/cef-v2/Cisco-IOS-XE-cef:load-sharing-v2/algorithm-v2/include-ports-v2/destination", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/cef-v2/Cisco-IOS-XE-cef:load-sharing-v2/algorithm-v2/include-ports-v2/destination")
 		}
 	}
 	if !data.Ipv6CefLoadSharingAlgorithmIncludePortsSource.IsNull() && !data.Ipv6CefLoadSharingAlgorithmIncludePortsSource.IsUnknown() {
 		if data.Ipv6CefLoadSharingAlgorithmIncludePortsSource.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ipv6/cef-v2/Cisco-IOS-XE-cef:load-sharing-v2/algorithm-v2/include-ports-v2/source", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ipv6/cef-v2/Cisco-IOS-XE-cef:load-sharing-v2/algorithm-v2/include-ports-v2/source")
 		}
 	}
 	if !data.Ipv6CefLoadSharingAlgorithmIncludePortsDestination.IsNull() && !data.Ipv6CefLoadSharingAlgorithmIncludePortsDestination.IsUnknown() {
 		if data.Ipv6CefLoadSharingAlgorithmIncludePortsDestination.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ipv6/cef-v2/Cisco-IOS-XE-cef:load-sharing-v2/algorithm-v2/include-ports-v2/destination", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ipv6/cef-v2/Cisco-IOS-XE-cef:load-sharing-v2/algorithm-v2/include-ports-v2/destination")
 		}
 	}
 	if !data.PortChannelLoadBalance.IsNull() && !data.PortChannelLoadBalance.IsUnknown() {
@@ -1270,15 +1206,11 @@ func (data System) addToBodyXML(ctx context.Context, config System, body netconf
 	if !data.AuthenticationMacMovePermit.IsNull() && !data.AuthenticationMacMovePermit.IsUnknown() {
 		if data.AuthenticationMacMovePermit.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-sanet:authentication/mac-move/permit", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-sanet:authentication/mac-move/permit")
 		}
 	}
 	if !data.AuthenticationMacMoveDenyUncontrolled.IsNull() && !data.AuthenticationMacMoveDenyUncontrolled.IsUnknown() {
 		if data.AuthenticationMacMoveDenyUncontrolled.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-sanet:authentication/mac-move/deny-uncontrolled", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-sanet:authentication/mac-move/deny-uncontrolled")
 		}
 	}
 	if !data.IpDefaultGateway.IsNull() && !data.IpDefaultGateway.IsUnknown() {
@@ -1287,8 +1219,6 @@ func (data System) addToBodyXML(ctx context.Context, config System, body netconf
 	if !data.DeviceClassifier.IsNull() && !data.DeviceClassifier.IsUnknown() {
 		if data.DeviceClassifier.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-switch:device/classifier-enable/classifier", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-switch:device/classifier-enable/classifier")
 		}
 	}
 	if len(data.TableMaps) > 0 {
@@ -1318,15 +1248,11 @@ func (data System) addToBodyXML(ctx context.Context, config System, body netconf
 	if !data.MldSnooping.IsNull() && !data.MldSnooping.IsUnknown() {
 		if data.MldSnooping.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ipv6/Cisco-IOS-XE-mld:mld/snooping-conf/snooping", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ipv6/Cisco-IOS-XE-mld:mld/snooping-conf/snooping")
 		}
 	}
 	if !data.MldSnoopingQuerier.IsNull() && !data.MldSnoopingQuerier.IsUnknown() {
 		if data.MldSnoopingQuerier.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ipv6/Cisco-IOS-XE-mld:mld/snooping-container/snooping/querier-conf/querier", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ipv6/Cisco-IOS-XE-mld:mld/snooping-container/snooping/querier-conf/querier")
 		}
 	}
 	if !data.MacAddressTableAgingTime.IsNull() && !data.MacAddressTableAgingTime.IsUnknown() {
@@ -1335,15 +1261,11 @@ func (data System) addToBodyXML(ctx context.Context, config System, body netconf
 	if !data.PowerRedundancyModeCombined.IsNull() && !data.PowerRedundancyModeCombined.IsUnknown() {
 		if data.PowerRedundancyModeCombined.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-power:power/redundancy-mode-config/combined", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-power:power/redundancy-mode-config/combined")
 		}
 	}
 	if !data.PowerSupplyAutolcShutdown.IsNull() && !data.PowerSupplyAutolcShutdown.IsUnknown() {
 		if data.PowerSupplyAutolcShutdown.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-power:power/supply/autoLC/shutdown", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-power:power/supply/autoLC/shutdown")
 		}
 	}
 	if !data.PowerSupplyAutolcPriority.IsNull() && !data.PowerSupplyAutolcPriority.IsUnknown() {

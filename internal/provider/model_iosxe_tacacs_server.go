@@ -107,22 +107,16 @@ func (data TACACSServer) addToBodyXML(ctx context.Context, config TACACSServer, 
 	if !data.DirectedRequest.IsNull() && !data.DirectedRequest.IsUnknown() {
 		if data.DirectedRequest.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-aaa:directed-request", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-aaa:directed-request")
 		}
 	}
 	if !data.DirectedRequestRestricted.IsNull() && !data.DirectedRequestRestricted.IsUnknown() {
 		if data.DirectedRequestRestricted.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-aaa:directed-request/restricted", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-aaa:directed-request/restricted")
 		}
 	}
 	if !data.DirectedRequestNoTruncate.IsNull() && !data.DirectedRequestNoTruncate.IsUnknown() {
 		if data.DirectedRequestNoTruncate.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-aaa:directed-request/no-truncate", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-aaa:directed-request/no-truncate")
 		}
 	}
 	if !data.Encryption.IsNull() && !data.Encryption.IsUnknown() {
@@ -138,8 +132,6 @@ func (data TACACSServer) addToBodyXML(ctx context.Context, config TACACSServer, 
 	if !data.AttributeAllowUnknown.IsNull() && !data.AttributeAllowUnknown.IsUnknown() {
 		if data.AttributeAllowUnknown.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-aaa:attribute/allow/unknown", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-aaa:attribute/allow/unknown")
 		}
 	}
 	return body

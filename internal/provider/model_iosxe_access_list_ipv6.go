@@ -242,8 +242,6 @@ func (data AccessListIPv6) addToBodyXML(ctx context.Context, config AccessListIP
 			if !item.SourceAny.IsNull() && !item.SourceAny.IsUnknown() {
 				if item.SourceAny.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/any", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/any")
 				}
 			}
 			if !item.SourceHost.IsNull() && !item.SourceHost.IsUnknown() {
@@ -309,8 +307,6 @@ func (data AccessListIPv6) addToBodyXML(ctx context.Context, config AccessListIP
 			if !item.DestinationAny.IsNull() && !item.DestinationAny.IsUnknown() {
 				if item.DestinationAny.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/destination-any", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/destination-any")
 				}
 			}
 			if !item.DestinationHost.IsNull() && !item.DestinationHost.IsUnknown() {
@@ -385,50 +381,36 @@ func (data AccessListIPv6) addToBodyXML(ctx context.Context, config AccessListIP
 			if !item.Ack.IsNull() && !item.Ack.IsUnknown() {
 				if item.Ack.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/ack", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/ack")
 				}
 			}
 			if !item.Fin.IsNull() && !item.Fin.IsUnknown() {
 				if item.Fin.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/fin", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/fin")
 				}
 			}
 			if !item.Psh.IsNull() && !item.Psh.IsUnknown() {
 				if item.Psh.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/psh", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/psh")
 				}
 			}
 			if !item.Rst.IsNull() && !item.Rst.IsUnknown() {
 				if item.Rst.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/rst", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/rst")
 				}
 			}
 			if !item.Syn.IsNull() && !item.Syn.IsUnknown() {
 				if item.Syn.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/syn", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/syn")
 				}
 			}
 			if !item.Urg.IsNull() && !item.Urg.IsUnknown() {
 				if item.Urg.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/urg", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/urg")
 				}
 			}
 			if !item.Established.IsNull() && !item.Established.IsUnknown() {
 				if item.Established.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/established", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/established")
 				}
 			}
 			if !item.Dscp.IsNull() && !item.Dscp.IsUnknown() {
@@ -437,22 +419,16 @@ func (data AccessListIPv6) addToBodyXML(ctx context.Context, config AccessListIP
 			if !item.Fragments.IsNull() && !item.Fragments.IsUnknown() {
 				if item.Fragments.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/fragments", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/fragments")
 				}
 			}
 			if !item.Log.IsNull() && !item.Log.IsUnknown() {
 				if item.Log.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/log", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/log")
 				}
 			}
 			if !item.LogInput.IsNull() && !item.LogInput.IsUnknown() {
 				if item.LogInput.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/log-input", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/log-input")
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/access-list-seq-rule", cBody.Res())

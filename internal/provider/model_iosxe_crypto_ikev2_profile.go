@@ -156,15 +156,11 @@ func (data CryptoIKEv2Profile) addToBodyXML(ctx context.Context, config CryptoIK
 	if !data.AuthenticationRemotePreShare.IsNull() && !data.AuthenticationRemotePreShare.IsUnknown() {
 		if data.AuthenticationRemotePreShare.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/authentication/remote/pre-share", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/authentication/remote/pre-share")
 		}
 	}
 	if !data.AuthenticationLocalPreShare.IsNull() && !data.AuthenticationLocalPreShare.IsUnknown() {
 		if data.AuthenticationLocalPreShare.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/authentication/local/pre-share", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/authentication/local/pre-share")
 		}
 	}
 	if !data.IdentityLocalAddress.IsNull() && !data.IdentityLocalAddress.IsUnknown() {
@@ -176,8 +172,6 @@ func (data CryptoIKEv2Profile) addToBodyXML(ctx context.Context, config CryptoIK
 	if !data.MatchInboundOnly.IsNull() && !data.MatchInboundOnly.IsUnknown() {
 		if data.MatchInboundOnly.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/match/inbound-only", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/inbound-only")
 		}
 	}
 	if !data.MatchAddressLocalIp.IsNull() && !data.MatchAddressLocalIp.IsUnknown() {
@@ -189,8 +183,6 @@ func (data CryptoIKEv2Profile) addToBodyXML(ctx context.Context, config CryptoIK
 	if !data.MatchFvrfAny.IsNull() && !data.MatchFvrfAny.IsUnknown() {
 		if data.MatchFvrfAny.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/match/fvrf/any", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/fvrf/any")
 		}
 	}
 	if len(data.MatchIdentityRemoteIpv4Addresses) > 0 {

@@ -51,22 +51,38 @@ resource "iosxe_errdisable" "example" {
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `detect_cause_all` (Boolean) Enable error detection on all cases
+  - Default value: `false`
 - `detect_cause_arp_inspection` (Boolean) Enable error detection for arp inspection
+  - Default value: `false`
 - `detect_cause_bpduguard` (Boolean) Enable error detection on bpdu-guard
+  - Default value: `false`
 - `detect_cause_dhcp_rate_limit` (Boolean) Enable error detection on dhcp-rate-limit
+  - Default value: `false`
 - `detect_cause_dtp_flap` (Boolean) Enable error detection on dtp-flapping
+  - Default value: `false`
 - `detect_cause_gbic_invalid` (Boolean) Enable error detection on gbic-invalid
+  - Default value: `false`
 - `detect_cause_inline_power` (Boolean) Enable error detection for inline-power
+  - Default value: `false`
 - `detect_cause_l2ptguard` (Boolean) Enable timer to recover from l2protocol-tunnel error disable state
+  - Default value: `false`
 - `detect_cause_link_flap` (Boolean) Enable error detection on linkstate-flapping
+  - Default value: `false`
 - `detect_cause_loopback` (Boolean) Enable error detection on loopback
+  - Default value: `false`
 - `detect_cause_loopdetect` (Boolean) Enable error detection on loop detect
-- `detect_cause_mlacp_minlink` (Boolean)
+  - Default value: `true`
+- `detect_cause_mlacp_minlink` (Boolean) - Default value: `false`
 - `detect_cause_pagp_flap` (Boolean) Enable error detection on pagp-flapping
+  - Default value: `false`
 - `detect_cause_pppoe_ia_rate_limit` (Boolean) Enable error detection on PPPoE IA rate-limit
+  - Default value: `false`
 - `detect_cause_security_violation_shutdown_vlan` (Boolean) Shutdown vlan on 802.1x-guard violation
+  - Default value: `false`
 - `detect_cause_sfp_config_mismatch` (Boolean) Enable error detection on SFP config mismatch
+  - Default value: `false`
 - `detect_cause_small_frame` (Boolean) Enable error detection on small_frame
+  - Default value: `false`
 - `device` (String) A device name from the provider configuration.
 - `flap_setting_cause_dtp_flap_max_flaps` (Number) maximum flaps allowed before setting to errdisable
   - Range: `1`-`100`
@@ -81,34 +97,58 @@ resource "iosxe_errdisable" "example" {
 - `flap_setting_cause_pagp_flap_time` (Number) time period the flaps are counted
   - Range: `1`-`120`
 - `recovery_cause_all` (Boolean) Enable timer to recover from all error causes (DEPRECATED)
+  - Default value: `false`
 - `recovery_cause_arp_inspection` (Boolean) Enable timer to recover from arp inspection error disable state
+  - Default value: `false`
 - `recovery_cause_bpduguard` (Boolean) Enable timer to recover from BPDU Guard error
+  - Default value: `false`
 - `recovery_cause_channel_misconfig` (Boolean) (STP)  Enable timer to recover from channel misconfiguration error
+  - Default value: `false`
 - `recovery_cause_dhcp_rate_limit` (Boolean) Enable timer to recover from dhcp-rate-limit error
+  - Default value: `false`
 - `recovery_cause_dtp_flap` (Boolean) Enable timer to recover from dtp-flap error
+  - Default value: `false`
 - `recovery_cause_gbic_invalid` (Boolean) Enable timer to recover from invalid GBIC error
+  - Default value: `false`
 - `recovery_cause_inline_power` (Boolean) Enable timer to recover from inline-power error
+  - Default value: `false`
 - `recovery_cause_l2ptguard` (Boolean) Enable timer to recover from l2protocol-tunnel error disable state
+  - Default value: `false`
 - `recovery_cause_link_flap` (Boolean) Enable timer to recover from link-flap error
-- `recovery_cause_link_monitor_failure` (Boolean)
+  - Default value: `false`
+- `recovery_cause_link_monitor_failure` (Boolean) - Default value: `false`
 - `recovery_cause_loopback` (Boolean) Enable timer to recover from loopback error
+  - Default value: `false`
 - `recovery_cause_loopdetect` (Boolean) Enable timer to recover from loop detect error
+  - Default value: `false`
 - `recovery_cause_mac_limit` (Boolean) Enable timer to recover from mac limit disable state
-- `recovery_cause_mlacp_minlink` (Boolean)
+  - Default value: `false`
+- `recovery_cause_mlacp_minlink` (Boolean) - Default value: `false`
 - `recovery_cause_mrp_miscabling` (Boolean) Enable timer to recover from mrp miscabling disable state
-- `recovery_cause_oam_remote_failure` (Boolean)
+  - Default value: `false`
+- `recovery_cause_oam_remote_failure` (Boolean) - Default value: `false`
 - `recovery_cause_pagp_flap` (Boolean) Enable timer to recover from pagp-flap error
+  - Default value: `false`
 - `recovery_cause_port_mode_failure` (Boolean) Enable timer to recover from port mode change failure
+  - Default value: `false`
 - `recovery_cause_pppoe_ia_rate_limit` (Boolean) Enable timer to recover from PPPoE IA rate-limit error
+  - Default value: `false`
 - `recovery_cause_psecure_violation` (Boolean) Enable timer to recover from psecure violation error
-- `recovery_cause_psp` (Boolean)
+  - Default value: `false`
+- `recovery_cause_psp` (Boolean) - Default value: `false`
 - `recovery_cause_security_violation` (Boolean) Enable timer to recover from 802.1x violation error
+  - Default value: `false`
 - `recovery_cause_sfp_config_mismatch` (Boolean) Enable timer to recover from SFP config mismatch error
+  - Default value: `false`
 - `recovery_cause_small_frame` (Boolean) Enable timer to recover from small frame error
+  - Default value: `false`
 - `recovery_cause_storm_control` (Boolean) Enable timer to recover from storm-control error
+  - Default value: `false`
 - `recovery_cause_udld` (Boolean) Enable timer to recover from udld error
-- `recovery_cause_unicast_flood` (Boolean)
+  - Default value: `false`
+- `recovery_cause_unicast_flood` (Boolean) - Default value: `false`
 - `recovery_cause_vmps` (Boolean) Enable timer to recover from vmps shutdown error
+  - Default value: `false`
 - `recovery_interval` (Number) Error disable recovery timer value
   - Range: `30`-`86400`
 

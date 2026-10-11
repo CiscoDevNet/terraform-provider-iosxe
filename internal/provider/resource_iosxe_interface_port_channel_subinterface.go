@@ -32,6 +32,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -112,20 +113,28 @@ func (r *InterfacePortChannelSubinterfaceResource) Schema(ctx context.Context, r
 				},
 			},
 			"shutdown": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Shutdown the selected interface").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Shutdown the selected interface").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ip_proxy_arp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable proxy ARP").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable proxy ARP").AddDefaultValueDescription("true").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
 			},
 			"ip_redirects": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable sending ICMP Redirect messages").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable sending ICMP Redirect messages").AddDefaultValueDescription("true").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
 			},
 			"ip_unreachables": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable sending ICMP Unreachable messages").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable sending ICMP Unreachable messages").AddDefaultValueDescription("true").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
 			},
 			"vrf_forwarding": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Configure forwarding table").String,
@@ -146,8 +155,10 @@ func (r *InterfacePortChannelSubinterfaceResource) Schema(ctx context.Context, r
 				},
 			},
 			"ipv4_address_dhcp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("IP Address negotiated via DHCP").String,
+				MarkdownDescription: helpers.NewAttributeDescription("IP Address negotiated via DHCP").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ip_mtu": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Set IP Maximum Transmission Unit").AddIntegerRangeDescription(68, 18000).String,
@@ -157,64 +168,90 @@ func (r *InterfacePortChannelSubinterfaceResource) Schema(ctx context.Context, r
 				},
 			},
 			"ip_access_group_in_enable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("inbound packets").String,
+				MarkdownDescription: helpers.NewAttributeDescription("inbound packets").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ip_access_group_in": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
 			},
 			"ip_access_group_out_enable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("outbound packets").String,
+				MarkdownDescription: helpers.NewAttributeDescription("outbound packets").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ip_access_group_out": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
 			},
 			"auto_qos_classify": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure classification for untrusted devices").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configure classification for untrusted devices").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"auto_qos_classify_police": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure QoS policing for untrusted devices").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configure QoS policing for untrusted devices").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"auto_qos_trust": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Trust the DSCP/CoS marking").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Trust the DSCP/CoS marking").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"auto_qos_trust_cos": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Trust the CoS marking").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Trust the CoS marking").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"auto_qos_trust_dscp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Trust the DSCP marking").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Trust the DSCP marking").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"auto_qos_video_cts": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Trust the QoS marking of the Cisco Telepresence System").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Trust the QoS marking of the Cisco Telepresence System").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"auto_qos_video_ip_camera": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Trust the QoS marking of the Ip Video Surveillance camera").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Trust the QoS marking of the Ip Video Surveillance camera").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"auto_qos_video_media_player": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Trust the Qos marking of the Cisco Media Player").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Trust the Qos marking of the Cisco Media Player").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"auto_qos_voip_cisco_phone": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Trust the QoS marking of Cisco IP Phone").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Trust the QoS marking of Cisco IP Phone").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"auto_qos_voip_cisco_softphone": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Trust the QoS marking of Cisco IP SoftPhone").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Trust the QoS marking of Cisco IP SoftPhone").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"auto_qos_voip_trust": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Trust the DSCP/CoS marking").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Trust the DSCP/CoS marking").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"trust_device": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("trusted device class").AddStringEnumDescription("cisco-phone", "cts", "ip-camera", "media-player").String,
@@ -236,8 +273,10 @@ func (r *InterfacePortChannelSubinterfaceResource) Schema(ctx context.Context, r
 							},
 						},
 						"global": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Helper-address is global").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Helper-address is global").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"vrf": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("VRF name for helper-address (if different from interface VRF)").String,
@@ -251,8 +290,10 @@ func (r *InterfacePortChannelSubinterfaceResource) Schema(ctx context.Context, r
 				Optional:            true,
 			},
 			"bfd_enable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable BFD under the interface").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable BFD under the interface").AddDefaultValueDescription("true").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
 			},
 			"bfd_local_address": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("The Source IP address to be used for BFD sessions over this interface.").String,
@@ -280,12 +321,16 @@ func (r *InterfacePortChannelSubinterfaceResource) Schema(ctx context.Context, r
 				},
 			},
 			"bfd_echo": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Use echo adjunct as bfd detection mechanism").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Use echo adjunct as bfd detection mechanism").AddDefaultValueDescription("true").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
 			},
 			"ipv6_enable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable IPv6 on interface").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable IPv6 on interface").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ipv6_mtu": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Set IPv6 Maximum Transmission Unit").AddIntegerRangeDescription(1280, 9976).String,
@@ -295,16 +340,22 @@ func (r *InterfacePortChannelSubinterfaceResource) Schema(ctx context.Context, r
 				},
 			},
 			"ipv6_nd_ra_suppress_all": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Suppress all IPv6 RA").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Suppress all IPv6 RA").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ipv6_address_autoconfig_default": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Insert default route").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Insert default route").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ipv6_address_dhcp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Obtain IPv6 address from DHCP server").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Obtain IPv6 address from DHCP server").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ipv6_link_local_addresses": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
@@ -323,8 +374,10 @@ func (r *InterfacePortChannelSubinterfaceResource) Schema(ctx context.Context, r
 							},
 						},
 						"link_local": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Use link-local address").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Use link-local address").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 					},
 				},
@@ -346,8 +399,10 @@ func (r *InterfacePortChannelSubinterfaceResource) Schema(ctx context.Context, r
 							},
 						},
 						"eui_64": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Use eui-64 interface identifier").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Use eui-64 interface identifier").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 					},
 				},
@@ -379,8 +434,10 @@ func (r *InterfacePortChannelSubinterfaceResource) Schema(ctx context.Context, r
 				},
 			},
 			"ip_arp_inspection_trust": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure Trust state").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configure Trust state").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ip_arp_inspection_limit_rate": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Rate Limit").AddIntegerRangeDescription(0, 4294967295).String,
@@ -401,12 +458,16 @@ func (r *InterfacePortChannelSubinterfaceResource) Schema(ctx context.Context, r
 				Optional:            true,
 			},
 			"ip_nat_inside": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Inside interface for address translation").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Inside interface for address translation").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ip_nat_outside": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Outside interface for address translation").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Outside interface for address translation").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ip_flow_monitors": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Apply a Flow Monitor").String,

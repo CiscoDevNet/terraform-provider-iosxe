@@ -32,6 +32,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -87,16 +88,20 @@ func (r *ClockResource) Schema(ctx context.Context, req resource.SchemaRequest, 
 				},
 			},
 			"calendar_valid": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Calendar time is authoritative").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Calendar time is authoritative").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"summer_time_zone": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Name of time zone in summer").String,
 				Optional:            true,
 			},
 			"summer_time_date": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure absolute summer time").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configure absolute summer time").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"summer_time_date_start_day": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 31).String,
@@ -162,8 +167,10 @@ func (r *ClockResource) Schema(ctx context.Context, req resource.SchemaRequest, 
 				},
 			},
 			"summer_time_recurring": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure recurring summer time").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configure recurring summer time").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"summer_time_recurring_start_week": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,

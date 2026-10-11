@@ -106,8 +106,6 @@ func (data CryptoIPSecTransformSet) addToBodyXML(ctx context.Context, config Cry
 	if !data.ModeTunnel.IsNull() && !data.ModeTunnel.IsUnknown() {
 		if data.ModeTunnel.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/mode/tunnel-choice", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/mode/tunnel-choice")
 		}
 	}
 	return body

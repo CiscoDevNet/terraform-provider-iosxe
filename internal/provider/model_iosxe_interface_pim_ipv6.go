@@ -105,15 +105,11 @@ func (data InterfacePIMIPv6) addToBodyXML(ctx context.Context, config InterfaceP
 	if !data.Bfd.IsNull() && !data.Bfd.IsUnknown() {
 		if data.Bfd.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:pim-container/bfd", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:pim-container/bfd")
 		}
 	}
 	if !data.BsrBorder.IsNull() && !data.BsrBorder.IsUnknown() {
 		if data.BsrBorder.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:pim-container/bsr/border", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:pim-container/bsr/border")
 		}
 	}
 	if !data.DrPriority.IsNull() && !data.DrPriority.IsUnknown() {

@@ -82,7 +82,9 @@ resource "iosxe_interface_tunnel" "example" {
   - Range: `0`-`2147483`
 - `bandwidth` (Number) - Range: `1`-`200000000`
 - `bfd_echo` (Boolean) Use echo adjunct as bfd detection mechanism
+  - Default value: `true`
 - `bfd_enable` (Boolean) Enable BFD under the interface
+  - Default value: `true`
 - `bfd_interval` (Number) - Range: `50`-`9999`
 - `bfd_interval_min_rx` (Number) Minimum receive interval capability
   - Range: `50`-`9999`
@@ -99,8 +101,10 @@ resource "iosxe_interface_tunnel" "example" {
 - `helper_addresses` (Attributes List) Specify a destination address for UDP broadcasts (see [below for nested schema](#nestedatt--helper_addresses))
 - `ip_access_group_in` (String)
 - `ip_access_group_in_enable` (Boolean) inbound packets
+  - Default value: `false`
 - `ip_access_group_out` (String)
 - `ip_access_group_out_enable` (Boolean) outbound packets
+  - Default value: `false`
 - `ip_dhcp_relay_source_interface` (String) Set source interface for relayed messages
 - `ip_flow_monitors` (Attributes List) Apply a Flow Monitor (see [below for nested schema](#nestedatt--ip_flow_monitors))
 - `ip_igmp_version` (Number) IGMP version
@@ -108,46 +112,65 @@ resource "iosxe_interface_tunnel" "example" {
 - `ip_mtu` (Number) Set IP Maximum Transmission Unit
   - Range: `68`-`18000`
 - `ip_nat_inside` (Boolean) Inside interface for address translation
+  - Default value: `false`
 - `ip_nat_outside` (Boolean) Outside interface for address translation
+  - Default value: `false`
 - `ip_nhrp_authentication` (String) authentication string
 - `ip_nhrp_maps` (Attributes List) (see [below for nested schema](#nestedatt--ip_nhrp_maps))
 - `ip_nhrp_network_id` (Number) Network identifier
   - Range: `1`-`4294967295`
 - `ip_nhrp_nhs` (Attributes List) (see [below for nested schema](#nestedatt--ip_nhrp_nhs))
 - `ip_nhrp_redirect` (Boolean) Enable NHRP redirect traffic indication
+  - Default value: `false`
 - `ip_nhrp_shortcut` (Boolean) Enable shortcut switching
+  - Default value: `false`
 - `ip_proxy_arp` (Boolean) Enable proxy ARP
+  - Default value: `true`
 - `ip_redirects` (Boolean) Enable sending ICMP Redirect messages
+  - Default value: `true`
 - `ip_router_isis` (String)
 - `ip_tcp_adjust_mss` (Number) Adjust the mss of transit packets
   - Range: `500`-`1460`
 - `ip_unreachables` (Boolean) Enable sending ICMP Unreachable messages
+  - Default value: `true`
 - `ipv4_address` (String) Ip address
 - `ipv4_address_dhcp` (Boolean) IP Address negotiated via DHCP
+  - Default value: `false`
 - `ipv4_address_mask` (String) Ip subnet mask
 - `ipv6_address_autoconfig_default` (Boolean) Insert default route
+  - Default value: `false`
 - `ipv6_address_dhcp` (Boolean) Obtain IPv6 address from DHCP server
+  - Default value: `false`
 - `ipv6_addresses` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_addresses))
 - `ipv6_dhcp_client_pd` (String) IPv6 DHCP client prefix-delegation name
 - `ipv6_dhcp_client_pd_rapid_commit` (Boolean) Enable Rapid-Commit for prefix-delegation
+  - Default value: `false`
 - `ipv6_dhcp_relay_destinations` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_dhcp_relay_destinations))
 - `ipv6_dhcp_relay_option_vpn` (Boolean) Insert VSS option in Relay-Forward Messages
+  - Default value: `false`
 - `ipv6_dhcp_relay_trust` (Boolean) Interface is trusted to process relay-replies
+  - Default value: `false`
 - `ipv6_dhcp_servers` (Attributes List) Act as an IPv6 DHCP server (see [below for nested schema](#nestedatt--ipv6_dhcp_servers))
 - `ipv6_enable` (Boolean) Enable IPv6 on interface
+  - Default value: `false`
 - `ipv6_flow_monitors` (Attributes List) Apply a Flow Monitor (see [below for nested schema](#nestedatt--ipv6_flow_monitors))
 - `ipv6_link_local_addresses` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_link_local_addresses))
 - `ipv6_mtu` (Number) Set IPv6 Maximum Transmission Unit
   - Range: `1280`-`9976`
 - `ipv6_nd_ra_suppress_all` (Boolean) Suppress all IPv6 RA
+  - Default value: `false`
 - `load_interval` (Number) Specify interval for load calculation for an interface
   - Range: `30`-`600`
 - `logging_event_link_status_enable` (Boolean) UPDOWN and CHANGE messages
+  - Default value: `true`
 - `mpls_nhrp` (Boolean) MPLS NHRP commands
+  - Default value: `false`
 - `service_policy_input` (String) Assign policy-map to the input of an interface
 - `service_policy_output` (String) Assign policy-map to the output of an interface
 - `shutdown` (Boolean) Shutdown the selected interface
+  - Default value: `false`
 - `snmp_trap_link_status` (Boolean) Allow SNMP LINKUP and LINKDOWN traps
+  - Default value: `false`
 - `tunnel_bandwidth_receive` (Number) Receive bandwidth
   - Range: `1`-`10000000`
 - `tunnel_bandwidth_transmit` (Number) Transmit bandwidth
@@ -156,7 +179,9 @@ resource "iosxe_interface_tunnel" "example" {
 - `tunnel_key` (Number) security or selector key
   - Range: `0`-`4294967295`
 - `tunnel_mode_gre_multipoint` (Boolean) mode Multipoint
+  - Default value: `false`
 - `tunnel_mode_ipsec_ipv4` (Boolean) over IPv4
+  - Default value: `false`
 - `tunnel_protection_ipsec_profile` (String) IPSec policy profile
 - `tunnel_protection_ipsec_profile_legacy` (String) Obsolete, use the other option profile-option to set ipsec policy profile
 - `tunnel_source` (String) source of tunnel packets
@@ -179,6 +204,7 @@ Required:
 Optional:
 
 - `global` (Boolean) Helper-address is global
+  - Default value: `false`
 - `vrf` (String) VRF name for helper-address (if different from interface VRF)
 
 
@@ -221,6 +247,7 @@ Required:
 Optional:
 
 - `eui_64` (Boolean) Use eui-64 interface identifier
+  - Default value: `false`
 
 
 <a id="nestedatt--ipv6_dhcp_relay_destinations"></a>
@@ -245,9 +272,11 @@ Required:
 Optional:
 
 - `allow_hint` (Boolean) Allow hint from client
+  - Default value: `false`
 - `preference` (Number) Server preference value
   - Range: `0`-`255`
 - `rapid_commit` (Boolean) Enable Rapid-Commit
+  - Default value: `false`
 
 
 <a id="nestedatt--ipv6_flow_monitors"></a>
@@ -269,6 +298,7 @@ Required:
 Optional:
 
 - `link_local` (Boolean) Use link-local address
+  - Default value: `false`
 
 ## Import
 

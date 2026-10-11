@@ -47,45 +47,79 @@ Optional:
 - `ace_rule_action` (String) - Choices: `deny`, `permit`
 - `ace_rule_protocol` (String)
 - `ack` (Boolean) Match on the ACK bit
+  - Default value: `false`
 - `dscp` (String) Match packets with given dscp value
 - `established` (Boolean) Match established connections
+  - Default value: `false`
 - `fin` (Boolean) Match on the FIN bit
+  - Default value: `false`
 - `fragments` (Boolean) Check non-initial fragments
+  - Default value: `false`
 - `log` (Boolean) Log matches against this entry
+  - Default value: `false`
 - `log_input` (Boolean) Log matches against this entry, including input interface
+  - Default value: `false`
 - `match_all_minusack` (Boolean) Match on ACK not set
+  - Default value: `false`
 - `match_all_minusfin` (Boolean) Match on FIN not set
+  - Default value: `false`
 - `match_all_minuspsh` (Boolean) Match on PSH not set
+  - Default value: `false`
 - `match_all_minusrst` (Boolean) Match on RST not set
+  - Default value: `false`
 - `match_all_minussyn` (Boolean) Match on SYN not set
+  - Default value: `false`
 - `match_all_minusurg` (Boolean) Match on URG not set
+  - Default value: `false`
 - `match_all_plusack` (Boolean) Match on ACK set
+  - Default value: `false`
 - `match_all_plusfin` (Boolean) Match on FIN set
+  - Default value: `false`
 - `match_all_pluspsh` (Boolean) Match on PSH set
+  - Default value: `false`
 - `match_all_plusrst` (Boolean) Match on RST set
+  - Default value: `false`
 - `match_all_plussyn` (Boolean) Match on SYN set
+  - Default value: `false`
 - `match_all_plusurg` (Boolean) Match on URG set
+  - Default value: `false`
 - `match_any_minusack` (Boolean) Match on ACK not set
+  - Default value: `false`
 - `match_any_minusfin` (Boolean) Match on FIN not set
+  - Default value: `false`
 - `match_any_minuspsh` (Boolean) Match on PSH not set
+  - Default value: `false`
 - `match_any_minusrst` (Boolean) Match on RST not set
+  - Default value: `false`
 - `match_any_minussyn` (Boolean) Match on SYN not set
+  - Default value: `false`
 - `match_any_minusurg` (Boolean) Match on URG not set
+  - Default value: `false`
 - `match_any_plusack` (Boolean) Match on ACK set
+  - Default value: `false`
 - `match_any_plusfin` (Boolean) Match on FIN set
+  - Default value: `false`
 - `match_any_pluspsh` (Boolean) Match on PSH set
+  - Default value: `false`
 - `match_any_plusrst` (Boolean) Match on RST set
+  - Default value: `false`
 - `match_any_plussyn` (Boolean) Match on SYN set
+  - Default value: `false`
 - `match_any_plusurg` (Boolean) Match on URG set
+  - Default value: `false`
 - `option` (String) Match packets with given IP Options value
 - `precedence` (String) Match packets with given precedence value
 - `psh` (Boolean) Match on the PSH bit
+  - Default value: `false`
 - `remark` (String) Access list entry comment
 - `rst` (Boolean) Match on the RST bit
+  - Default value: `false`
 - `syn` (Boolean) Match on the SYN bit
+  - Default value: `false`
 - `time_range` (String) Specify a time-range
 - `tos` (String) Match packets with given TOS value
 - `urg` (Boolean) Match on the URG bit
+  - Default value: `false`
 
 ## Import
 

@@ -30,6 +30,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -94,24 +95,34 @@ func (r *DeviceSensorResource) Schema(ctx context.Context, req resource.SchemaRe
 							Required:            true,
 						},
 						"tlv_name_port_id": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Port Id").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Port Id").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"tlv_name_port_description": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Port Description").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Port Description").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"tlv_name_system_name": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("System Name").String,
+							MarkdownDescription: helpers.NewAttributeDescription("System Name").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"tlv_name_system_description": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("System Description").String,
+							MarkdownDescription: helpers.NewAttributeDescription("System Description").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"tlv_name_system_capabilities": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("System Capabilities").String,
+							MarkdownDescription: helpers.NewAttributeDescription("System Capabilities").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 					},
 				},
@@ -126,32 +137,46 @@ func (r *DeviceSensorResource) Schema(ctx context.Context, req resource.SchemaRe
 							Required:            true,
 						},
 						"option_name_host_name": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Host Name").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Host Name").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"option_name_default_ip_ttl": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Default IP Time To Live").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Default IP Time To Live").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"option_name_requested_address": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Address Request").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Address Request").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"option_name_parameter_request_list": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Parameter List").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Parameter List").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"option_name_class_identifier": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Class Identifier").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Class Identifier").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"option_name_client_identifier": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Client Identifier").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Client Identifier").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"option_name_client_fqdn": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Client FQDN").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Client FQDN").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 					},
 				},
@@ -166,24 +191,34 @@ func (r *DeviceSensorResource) Schema(ctx context.Context, req resource.SchemaRe
 							Required:            true,
 						},
 						"tlv_name_device_name": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Device Name").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Device Name").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"tlv_name_address_type": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Address Type").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Address Type").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"tlv_name_port_id_type": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Port Id type").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Port Id type").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"tlv_name_capabilities_type": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Capabilities Type").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Capabilities Type").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"tlv_name_platform_type": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Platform Type").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Platform Type").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 					},
 				},
@@ -261,8 +296,10 @@ func (r *DeviceSensorResource) Schema(ctx context.Context, req resource.SchemaRe
 				},
 			},
 			"notify_all_changes": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Trigger identity update when TLVs are added/modified/removed").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Trigger identity update when TLVs are added/modified/removed").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 		},
 	}

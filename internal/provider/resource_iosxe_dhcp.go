@@ -95,40 +95,56 @@ func (r *DHCPResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				},
 			},
 			"relay_information_trust_all": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Received DHCP packets may contain relay info option with zero giaddr").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Received DHCP packets may contain relay info option with zero giaddr").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"relay_information_option_default": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Default option, no vpn").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Default option, no vpn").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"relay_information_option_vpn": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Insert VPN sub-options and change the giaddr to the outgoing interface").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Insert VPN sub-options and change the giaddr to the outgoing interface").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"relay_bootp_ignore": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure this DHCP relay to ignore to BOOTP requests.").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configure this DHCP relay to ignore to BOOTP requests.").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"snooping": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("DHCP Snooping").String,
+				MarkdownDescription: helpers.NewAttributeDescription("DHCP Snooping").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"snooping_information_option": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("").AddDefaultValueDescription("true").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
 			},
 			"snooping_information_option_allow_untrusted": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("DHCP Snooping information option allow-untrusted").String,
+				MarkdownDescription: helpers.NewAttributeDescription("DHCP Snooping information option allow-untrusted").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"snooping_information_option_format_remote_id_string": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("User defined string for remote id").String,
 				Optional:            true,
 			},
 			"snooping_information_option_format_remote_id_hostname": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Use configured hostname for remote id").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Use configured hostname for remote id").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"snooping_vlans_legacy": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("DHCP Snooping vlan list. Use this for versions before `17.14`.").String,
@@ -278,8 +294,10 @@ func (r *DHCPResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 							},
 						},
 						"lease_infinite": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Infinite lease").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Infinite lease").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"utilization_mark_high": schema.Int64Attribute{
 							MarkdownDescription: helpers.NewAttributeDescription("High utilization mark percentage").AddIntegerRangeDescription(1, 100).String,
@@ -289,8 +307,10 @@ func (r *DHCPResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 							},
 						},
 						"utilization_mark_high_log": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Log when high utilization is detected").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Log when high utilization is detected").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"utilization_mark_low": schema.Int64Attribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Low utilization mark percentage").AddIntegerRangeDescription(1, 100).String,
@@ -300,8 +320,10 @@ func (r *DHCPResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 							},
 						},
 						"utilization_mark_low_log": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Log when low utilization is detected").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Log when low utilization is detected").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"subnet_prefix_length": schema.Int64Attribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Subnet prefix length").AddIntegerRangeDescription(1, 32).String,
@@ -477,8 +499,10 @@ func (r *DHCPResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 							Optional:            true,
 						},
 						"option_include_all": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Include all DHCPv6 configured options in REPLY").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Include all DHCPv6 configured options in REPLY").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"vendor_specifics": schema.ListNestedAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Vendor-specific options").String,
@@ -520,12 +544,16 @@ func (r *DHCPResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 							},
 						},
 						"import_dns_server": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Import DNS address from interface").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Import DNS address from interface").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"import_domain_name": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Import domain name from interface").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Import domain name from interface").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"sntp_addresses": schema.ListAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("SNTP server addresses").String,
@@ -554,8 +582,10 @@ func (r *DHCPResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 							},
 						},
 						"information_refresh_infinite": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Infinite information refresh").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Infinite information refresh").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 					},
 				},

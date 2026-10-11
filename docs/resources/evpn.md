@@ -37,27 +37,37 @@ resource "iosxe_evpn" "example" {
 ### Optional
 
 - `anycast_gateway_mac_auto` (Boolean) Enable Auto Anycast Gateway MAC
+  - Default value: `false`
 - `default_gateway_advertise` (Boolean) Advertise Default Gateway MAC/IP routes
+  - Default value: `false`
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
 - `flooding_suppression_address_resolution_disable` (Boolean) Disable flooding suppression
+  - Default value: `false`
 - `ip_duplication_limit` (Number) Number of IP moves within specified time interval
   - Range: `2`-`1000`
 - `ip_duplication_time` (Number) IP duplication timer
   - Range: `10`-`36000`
 - `logging_peer_state` (Boolean) Peer state transition logging
+  - Default value: `false`
 - `mac_duplication_limit` (Number) Number of MAC moves within specified time interval
   - Range: `2`-`1000`
 - `mac_duplication_time` (Number) MAC duplication timer
   - Range: `10`-`36000`
 - `multicast_advertise` (Boolean) Enable and advertise L2 multicast capability
+  - Default value: `false`
 - `profiles` (Attributes List) (see [below for nested schema](#nestedatt--profiles))
 - `replication_type_ingress` (Boolean) Ingress replication
+  - Default value: `false`
 - `replication_type_mp2mp` (Boolean) mp2mp replication
+  - Default value: `false`
 - `replication_type_p2mp` (Boolean) p2mp replication
+  - Default value: `false`
 - `replication_type_static` (Boolean) Static replication
+  - Default value: `false`
 - `route_target_auto_vni` (Boolean) Set vni-based route-target
+  - Default value: `false`
 - `router_id_loopback` (Number) Loopback interface
   - Range: `0`-`2147483647`
 

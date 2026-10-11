@@ -33,6 +33,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
@@ -99,16 +100,22 @@ func (r *OSPFResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				},
 			},
 			"bfd_all_interfaces": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable BFD on all interfaces").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable BFD on all interfaces").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"default_information_originate": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Distribute a default route").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Distribute a default route").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"default_information_originate_always": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Always advertise default route").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Always advertise default route").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"default_information_originate_metric": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("OSPF default metric").AddIntegerRangeDescription(1, 16777214).String,
@@ -150,12 +157,16 @@ func (r *OSPFResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				},
 			},
 			"mpls_ldp_autoconfig": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure LDP automatic configuration").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configure LDP automatic configuration").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"mpls_ldp_sync": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure LDP-IGP Synchronization").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configure LDP-IGP Synchronization").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"neighbors": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Specify a neighbor router").String,
@@ -227,8 +238,10 @@ func (r *OSPFResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				},
 			},
 			"shutdown": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Shutdown the OSPF protocol under the current instance").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Shutdown the OSPF protocol under the current instance").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"summary_addresses": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Configure IP address summaries").String,
@@ -262,16 +275,22 @@ func (r *OSPFResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 							Required:            true,
 						},
 						"authentication_message_digest": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Use message-digest authentication").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Use message-digest authentication").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"nssa": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Specify a NSSA area").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Specify a NSSA area").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"nssa_default_information_originate": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Originate Type 7 default into NSSA area").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Originate Type 7 default into NSSA area").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"nssa_default_information_originate_metric": schema.Int64Attribute{
 							MarkdownDescription: helpers.NewAttributeDescription("OSPF default metric").AddIntegerRangeDescription(0, 16777214).String,
@@ -288,12 +307,16 @@ func (r *OSPFResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 							},
 						},
 						"nssa_no_summary": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Do not send summary LSA into NSSA").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Do not send summary LSA into NSSA").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"nssa_no_redistribution": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("No redistribution into this NSSA area").String,
+							MarkdownDescription: helpers.NewAttributeDescription("No redistribution into this NSSA area").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 					},
 				},
@@ -306,8 +329,10 @@ func (r *OSPFResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				},
 			},
 			"passive_interface_default": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Suppress routing updates on all interfaces").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Suppress routing updates on all interfaces").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"passive_interface": schema.ListAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
@@ -315,24 +340,34 @@ func (r *OSPFResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				Optional:            true,
 			},
 			"log_adjacency_changes": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Log changes in adjacency state").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Log changes in adjacency state").AddDefaultValueDescription("true").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
 			},
 			"log_adjacency_changes_detail": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Log all state changes").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Log all state changes").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"nsf_cisco": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Cisco Non-stop forwarding").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Cisco Non-stop forwarding").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"nsf_cisco_enforce_global": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("For the whole OSPF process").String,
+				MarkdownDescription: helpers.NewAttributeDescription("For the whole OSPF process").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"nsf_ietf": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("IETF graceful restart").String,
+				MarkdownDescription: helpers.NewAttributeDescription("IETF graceful restart").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"nsf_ietf_restart_interval": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Graceful restart interval").AddIntegerRangeDescription(1, 1800).String,
@@ -342,8 +377,10 @@ func (r *OSPFResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				},
 			},
 			"max_metric_router_lsa": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Maximum metric in self-originated router-LSAs").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Maximum metric in self-originated router-LSAs").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"max_metric_router_lsa_summary_lsa_metric": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 16777214).String,
@@ -360,8 +397,10 @@ func (r *OSPFResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				},
 			},
 			"max_metric_router_lsa_include_stub": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set maximum metric for stub links in router-LSAs").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Set maximum metric for stub links in router-LSAs").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"max_metric_router_lsa_on_startup_time": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(5, 86400).String,
@@ -371,8 +410,10 @@ func (r *OSPFResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				},
 			},
 			"max_metric_router_lsa_on_startup_wait_for_bgp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Let BGP decide when to originate router-LSA with normal metric").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Let BGP decide when to originate router-LSA with normal metric").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"fast_reroute_per_prefix_enable_prefix_priority": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Priority of prefixes to be protected").AddStringEnumDescription("high", "low").String,
@@ -382,8 +423,10 @@ func (r *OSPFResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				},
 			},
 			"redistribute_static_subnets": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Consider subnets for redistribution into OSPF (Will be removed in the future)").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Consider subnets for redistribution into OSPF (Will be removed in the future)").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"redistribute_static_metric": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Metric for redistributed routes").AddIntegerRangeDescription(0, 16777214).String,
@@ -411,12 +454,16 @@ func (r *OSPFResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				},
 			},
 			"redistribute_static_nssa_only": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Limit redistributed routes to NSSA areas").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Limit redistributed routes to NSSA areas").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"redistribute_connected_subnets": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Consider subnets for redistribution into OSPF (Will be removed in the future)").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Consider subnets for redistribution into OSPF (Will be removed in the future)").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"redistribute_connected_metric": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Metric for redistributed routes").AddIntegerRangeDescription(0, 16777214).String,
@@ -444,8 +491,10 @@ func (r *OSPFResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				},
 			},
 			"redistribute_connected_nssa_only": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Limit redistributed routes to NSSA areas").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Limit redistributed routes to NSSA areas").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"redistribute_ospf": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Open Shortest Path First (OSPF)").String,
@@ -460,8 +509,10 @@ func (r *OSPFResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 							},
 						},
 						"match_internal": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Redistribute OSPF internal routes").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Redistribute OSPF internal routes").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"match_external_1": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Redistribute OSPF external routes").AddStringEnumDescription("1", "2").String,
@@ -506,8 +557,10 @@ func (r *OSPFResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 							},
 						},
 						"subnets": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Consider subnets for redistribution into OSPF (Will be removed in the future)").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Consider subnets for redistribution into OSPF (Will be removed in the future)").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"route_map": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Route map reference").String,
@@ -521,8 +574,10 @@ func (r *OSPFResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 							},
 						},
 						"nssa_only": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Limit redistributed routes to NSSA areas").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Limit redistributed routes to NSSA areas").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"vrf": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("VPN Routing/Forwarding Instance").String,

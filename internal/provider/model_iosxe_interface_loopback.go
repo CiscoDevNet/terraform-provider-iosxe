@@ -208,8 +208,6 @@ func (data InterfaceLoopback) addToBodyXML(ctx context.Context, config Interface
 	if !data.Shutdown.IsNull() && !data.Shutdown.IsUnknown() {
 		if data.Shutdown.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/shutdown", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/shutdown")
 		}
 	}
 	if !data.IpProxyArp.IsNull() && !data.IpProxyArp.IsUnknown() {
@@ -233,8 +231,6 @@ func (data InterfaceLoopback) addToBodyXML(ctx context.Context, config Interface
 	if !data.Ipv4AddressDhcp.IsNull() && !data.Ipv4AddressDhcp.IsUnknown() {
 		if data.Ipv4AddressDhcp.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/address/dhcp", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/address/dhcp")
 		}
 	}
 	if !data.IpMtu.IsNull() && !data.IpMtu.IsUnknown() {
@@ -243,8 +239,6 @@ func (data InterfaceLoopback) addToBodyXML(ctx context.Context, config Interface
 	if !data.IpAccessGroupInEnable.IsNull() && !data.IpAccessGroupInEnable.IsUnknown() {
 		if data.IpAccessGroupInEnable.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/access-group/in/acl/in", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/access-group/in/acl/in")
 		}
 	}
 	if !data.IpAccessGroupIn.IsNull() && !data.IpAccessGroupIn.IsUnknown() {
@@ -253,8 +247,6 @@ func (data InterfaceLoopback) addToBodyXML(ctx context.Context, config Interface
 	if !data.IpAccessGroupOutEnable.IsNull() && !data.IpAccessGroupOutEnable.IsUnknown() {
 		if data.IpAccessGroupOutEnable.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/access-group/out/acl/out", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/access-group/out/acl/out")
 		}
 	}
 	if !data.IpAccessGroupOut.IsNull() && !data.IpAccessGroupOut.IsUnknown() {
@@ -263,8 +255,6 @@ func (data InterfaceLoopback) addToBodyXML(ctx context.Context, config Interface
 	if !data.Ipv6Enable.IsNull() && !data.Ipv6Enable.IsUnknown() {
 		if data.Ipv6Enable.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ipv6/enable", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ipv6/enable")
 		}
 	}
 	if !data.Ipv6Mtu.IsNull() && !data.Ipv6Mtu.IsUnknown() {
@@ -273,22 +263,16 @@ func (data InterfaceLoopback) addToBodyXML(ctx context.Context, config Interface
 	if !data.Ipv6NdRaSuppressAll.IsNull() && !data.Ipv6NdRaSuppressAll.IsUnknown() {
 		if data.Ipv6NdRaSuppressAll.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ipv6/nd/Cisco-IOS-XE-nd:ra/suppress/all", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ipv6/nd/Cisco-IOS-XE-nd:ra/suppress/all")
 		}
 	}
 	if !data.Ipv6AddressAutoconfigDefault.IsNull() && !data.Ipv6AddressAutoconfigDefault.IsUnknown() {
 		if data.Ipv6AddressAutoconfigDefault.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ipv6/address/autoconfig/default", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ipv6/address/autoconfig/default")
 		}
 	}
 	if !data.Ipv6AddressDhcp.IsNull() && !data.Ipv6AddressDhcp.IsUnknown() {
 		if data.Ipv6AddressDhcp.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ipv6/address/dhcp", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ipv6/address/dhcp")
 		}
 	}
 	if len(data.Ipv6DhcpServers) > 0 {
@@ -300,15 +284,11 @@ func (data InterfaceLoopback) addToBodyXML(ctx context.Context, config Interface
 			if !item.AllowHint.IsNull() && !item.AllowHint.IsUnknown() {
 				if item.AllowHint.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "allow-hint", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "allow-hint")
 				}
 			}
 			if !item.RapidCommit.IsNull() && !item.RapidCommit.IsUnknown() {
 				if item.RapidCommit.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "rapid-commit", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "rapid-commit")
 				}
 			}
 			if !item.Preference.IsNull() && !item.Preference.IsUnknown() {
@@ -323,8 +303,6 @@ func (data InterfaceLoopback) addToBodyXML(ctx context.Context, config Interface
 	if !data.Ipv6DhcpClientPdRapidCommit.IsNull() && !data.Ipv6DhcpClientPdRapidCommit.IsUnknown() {
 		if data.Ipv6DhcpClientPdRapidCommit.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:client/pd/pd-prefix/rapid-commit", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:client/pd/pd-prefix/rapid-commit")
 		}
 	}
 	if len(data.Ipv6DhcpRelayDestinations) > 0 {
@@ -346,15 +324,11 @@ func (data InterfaceLoopback) addToBodyXML(ctx context.Context, config Interface
 	if !data.Ipv6DhcpRelayTrust.IsNull() && !data.Ipv6DhcpRelayTrust.IsUnknown() {
 		if data.Ipv6DhcpRelayTrust.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:relay/trust", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:relay/trust")
 		}
 	}
 	if !data.Ipv6DhcpRelayOptionVpn.IsNull() && !data.Ipv6DhcpRelayOptionVpn.IsUnknown() {
 		if data.Ipv6DhcpRelayOptionVpn.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:relay/option/vpn", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:relay/option/vpn")
 		}
 	}
 	if len(data.Ipv6LinkLocalAddresses) > 0 {
@@ -366,8 +340,6 @@ func (data InterfaceLoopback) addToBodyXML(ctx context.Context, config Interface
 			if !item.LinkLocal.IsNull() && !item.LinkLocal.IsUnknown() {
 				if item.LinkLocal.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "link-local", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "link-local")
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ipv6/address/link-local-address", cBody.Res())
@@ -382,8 +354,6 @@ func (data InterfaceLoopback) addToBodyXML(ctx context.Context, config Interface
 			if !item.Eui64.IsNull() && !item.Eui64.IsUnknown() {
 				if item.Eui64.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "eui-64", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "eui-64")
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ipv6/address/prefix-list", cBody.Res())
@@ -401,15 +371,11 @@ func (data InterfaceLoopback) addToBodyXML(ctx context.Context, config Interface
 	if !data.IpNatInside.IsNull() && !data.IpNatInside.IsUnknown() {
 		if data.IpNatInside.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/inside", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/inside")
 		}
 	}
 	if !data.IpNatOutside.IsNull() && !data.IpNatOutside.IsUnknown() {
 		if data.IpNatOutside.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/outside", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/outside")
 		}
 	}
 	if !data.IpVerifyUnicastSourceReachableVia.IsNull() && !data.IpVerifyUnicastSourceReachableVia.IsUnknown() {
@@ -418,15 +384,11 @@ func (data InterfaceLoopback) addToBodyXML(ctx context.Context, config Interface
 	if !data.IpVerifyUnicastSourceAllowSelfPing.IsNull() && !data.IpVerifyUnicastSourceAllowSelfPing.IsUnknown() {
 		if data.IpVerifyUnicastSourceAllowSelfPing.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/verify/unicast/source/allow-self-ping", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/verify/unicast/source/allow-self-ping")
 		}
 	}
 	if !data.IpVerifyUnicastSourceAllowDefault.IsNull() && !data.IpVerifyUnicastSourceAllowDefault.IsUnknown() {
 		if data.IpVerifyUnicastSourceAllowDefault.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/verify/unicast/source/allow-default", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/verify/unicast/source/allow-default")
 		}
 	}
 	if !data.ZoneMemberSecurity.IsNull() && !data.ZoneMemberSecurity.IsUnknown() {

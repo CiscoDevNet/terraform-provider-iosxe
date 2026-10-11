@@ -48,8 +48,11 @@ resource "iosxe_crypto_ikev2_profile" "example" {
 ### Optional
 
 - `authentication_local_pre_share` (Boolean) Pre-Shared Key
+  - Default value: `false`
 - `authentication_remote_pre_share` (Boolean) Pre-Shared Key
+  - Default value: `false`
 - `config_exchange_request` (Boolean) enable config-exchange request
+  - Default value: `true`
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `description` (String) Specify a description of this profile
@@ -69,10 +72,12 @@ resource "iosxe_crypto_ikev2_profile" "example" {
 - `match_address_local_ip` (String)
 - `match_fvrf` (String)
 - `match_fvrf_any` (Boolean) Any fvrf
+  - Default value: `false`
 - `match_identity_remote_ipv4_addresses` (Attributes List) (see [below for nested schema](#nestedatt--match_identity_remote_ipv4_addresses))
 - `match_identity_remote_ipv6_prefixes` (List of String)
 - `match_identity_remote_keys` (List of String) key-id opaque string
 - `match_inbound_only` (Boolean) Match the profile for incoming connections only
+  - Default value: `false`
 
 ### Read-Only
 

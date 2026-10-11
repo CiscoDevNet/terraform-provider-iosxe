@@ -173,190 +173,320 @@ resource "iosxe_snmp_server" "example" {
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
 - `enable_informs` (Boolean) Enable SNMP Informs
+  - Default value: `false`
 - `enable_logging_getop` (Boolean) Enable SNMP GET Operation logging
+  - Default value: `false`
 - `enable_logging_setop` (Boolean) Enable SNMP SET Operation logging
+  - Default value: `true`
 - `enable_traps` (Boolean) Enable SNMP Traps
+  - Default value: `false`
 - `enable_traps_aaa_server` (Boolean) Enable SNMP AAA Server traps
+  - Default value: `false`
 - `enable_traps_adslline` (Boolean) Enable ADSL Line-MIB traps
+  - Default value: `false`
 - `enable_traps_alarm_type` (String)
-- `enable_traps_auth_framework_sec_violation` (Boolean)
-- `enable_traps_bfd` (Boolean)
+- `enable_traps_auth_framework_sec_violation` (Boolean) - Default value: `false`
+- `enable_traps_bfd` (Boolean) - Default value: `false`
 - `enable_traps_bgp` (Boolean) Allow BGP state change traps (OBSOLETE)
+  - Default value: `false`
 - `enable_traps_bgp_cbgp2` (Boolean) Enable BGP MIBv2 traps
 - `enable_traps_bgp_cbgp2_state_changes` (List of String)
 - `enable_traps_bgp_cbgp2_threshold_prefix` (Boolean) CISCO specific trap for prefix threshold events
-- `enable_traps_bridge_newroot` (Boolean)
-- `enable_traps_bridge_topologychange` (Boolean)
+  - Default value: `false`
+- `enable_traps_bridge_newroot` (Boolean) - Default value: `false`
+- `enable_traps_bridge_topologychange` (Boolean) - Default value: `false`
 - `enable_traps_bulkstat_collection` (Boolean) Enable Data-Collection-MIB Collection notifications
+  - Default value: `false`
 - `enable_traps_bulkstat_transfer` (Boolean) Enable Data-Collection-MIB Transfer notifications
-- `enable_traps_call_home_message_send_fail` (Boolean)
-- `enable_traps_call_home_server_fail` (Boolean)
+  - Default value: `false`
+- `enable_traps_call_home_message_send_fail` (Boolean) - Default value: `false`
+- `enable_traps_call_home_server_fail` (Boolean) - Default value: `false`
 - `enable_traps_casa` (Boolean) Enable SNMP casa traps
+  - Default value: `false`
 - `enable_traps_cbgp2` (Boolean) Enable BGP MIBv2 traps (OBSOLETE - please use snmp configuration in Cisco-IOS-XE-bgp.yang)
-- `enable_traps_cef_inconsistency` (Boolean)
-- `enable_traps_cef_peer_fib_state_change` (Boolean)
-- `enable_traps_cef_peer_state_change` (Boolean)
-- `enable_traps_cef_resource_failure` (Boolean)
+  - Default value: `false`
+- `enable_traps_cef_inconsistency` (Boolean) - Default value: `false`
+- `enable_traps_cef_peer_fib_state_change` (Boolean) - Default value: `false`
+- `enable_traps_cef_peer_state_change` (Boolean) - Default value: `false`
+- `enable_traps_cef_resource_failure` (Boolean) - Default value: `false`
 - `enable_traps_cnpd` (Boolean) Enable NBAR Protocol Discovery traps
+  - Default value: `false`
 - `enable_traps_config` (Boolean) Enable SNMP config traps
+  - Default value: `false`
 - `enable_traps_config_copy` (Boolean) Enable SNMP config-copy traps
-- `enable_traps_config_ctid` (Boolean)
+  - Default value: `false`
+- `enable_traps_config_ctid` (Boolean) - Default value: `false`
 - `enable_traps_cpu_threshold` (Boolean) Allow CPU utilization threshold violation traps
+  - Default value: `false`
 - `enable_traps_dhcp` (Boolean) Enable SNMP dhcp traps
+  - Default value: `false`
 - `enable_traps_dial` (Boolean) Enable SNMP dial control traps
+  - Default value: `false`
 - `enable_traps_dlsw` (Boolean) Enable SNMP dlsw traps
+  - Default value: `false`
 - `enable_traps_ds1` (Boolean) Enable SNMP DS1 traps
+  - Default value: `false`
 - `enable_traps_dsp_card_status` (Boolean) Enable SNMP card status of dsp traps
-- `enable_traps_dsp_oper_state` (Boolean)
+  - Default value: `false`
+- `enable_traps_dsp_oper_state` (Boolean) - Default value: `false`
 - `enable_traps_eigrp` (Boolean) Enable SNMP EIGRP traps
-- `enable_traps_energywise` (Boolean)
+  - Default value: `false`
+- `enable_traps_energywise` (Boolean) - Default value: `false`
 - `enable_traps_entity` (Boolean) Enable SNMP entity traps
+  - Default value: `false`
 - `enable_traps_entity_diag_boot_up_fail` (Boolean) Enable SNMP ceDiagBootUpFailedNotif traps
+  - Default value: `false`
 - `enable_traps_entity_diag_hm_test_recover` (Boolean) Enable SNMP ceDiagHMTestRecoverNotif traps
+  - Default value: `false`
 - `enable_traps_entity_diag_hm_thresh_reached` (Boolean) Enable SNMP ceDiagHMThresholdReachedNotif traps
+  - Default value: `false`
 - `enable_traps_entity_diag_scheduled_test_fail` (Boolean) Enable SNMP ceDiagScheduledTestFailedNotif traps
+  - Default value: `false`
 - `enable_traps_entity_perf_throughput_notif` (Boolean) Enable ENTITY PERFORMANCE MIB throughput traps
+  - Default value: `false`
 - `enable_traps_entity_qfp_mem_res_thresh` (Boolean) Enable SNMP ENTITY-QFP MEM-RES-THRESH notifications
+  - Default value: `false`
 - `enable_traps_entity_qfp_throughput_notif` (Boolean) Enable SNMP ENTITY-QFP THROUGHPUT-NOTIF notifications
+  - Default value: `false`
 - `enable_traps_entity_sensor` (Boolean) Enable SNMP entity-sensor traps
+  - Default value: `false`
 - `enable_traps_entity_state` (Boolean) Allow SNMP entity-state traps
+  - Default value: `false`
 - `enable_traps_envmon` (Boolean) Enable SNMP environmental monitor traps
+  - Default value: `false`
 - `enable_traps_errdisable` (Boolean) Enable SNMP errdisable notifications
-- `enable_traps_ether_oam` (Boolean)
+  - Default value: `false`
+- `enable_traps_ether_oam` (Boolean) - Default value: `false`
 - `enable_traps_ethernet_cfm_alarm` (Boolean) Enable SNMP Ethernet CFM fault alarm trap
-- `enable_traps_ethernet_cfm_cc_config` (Boolean)
-- `enable_traps_ethernet_cfm_cc_cross_connect` (Boolean)
-- `enable_traps_ethernet_cfm_cc_loop` (Boolean)
-- `enable_traps_ethernet_cfm_cc_mep_down` (Boolean)
-- `enable_traps_ethernet_cfm_cc_mep_up` (Boolean)
-- `enable_traps_ethernet_cfm_crosscheck_mep_missing` (Boolean)
-- `enable_traps_ethernet_cfm_crosscheck_mep_unknown` (Boolean)
-- `enable_traps_ethernet_cfm_crosscheck_service_up` (Boolean)
+  - Default value: `false`
+- `enable_traps_ethernet_cfm_cc_config` (Boolean) - Default value: `false`
+- `enable_traps_ethernet_cfm_cc_cross_connect` (Boolean) - Default value: `false`
+- `enable_traps_ethernet_cfm_cc_loop` (Boolean) - Default value: `false`
+- `enable_traps_ethernet_cfm_cc_mep_down` (Boolean) - Default value: `false`
+- `enable_traps_ethernet_cfm_cc_mep_up` (Boolean) - Default value: `false`
+- `enable_traps_ethernet_cfm_crosscheck_mep_missing` (Boolean) - Default value: `false`
+- `enable_traps_ethernet_cfm_crosscheck_mep_unknown` (Boolean) - Default value: `false`
+- `enable_traps_ethernet_cfm_crosscheck_service_up` (Boolean) - Default value: `false`
 - `enable_traps_ethernet_evc_create` (Boolean) Enable SNMP Ethernet EVC create traps
+  - Default value: `false`
 - `enable_traps_ethernet_evc_delete` (Boolean) Enable SNMP Ethernet EVC delete traps
+  - Default value: `false`
 - `enable_traps_ethernet_evc_status` (Boolean) Enable SNMP Ethernet EVC status traps
+  - Default value: `false`
 - `enable_traps_event_manager` (Boolean) Enable SNMP Embedded Event Manager traps
+  - Default value: `false`
 - `enable_traps_fast_reroute_protected` (Boolean) Enable MPLS fast reroute protection traps
-- `enable_traps_firewall_serverstatus` (Boolean)
+  - Default value: `false`
+- `enable_traps_firewall_serverstatus` (Boolean) - Default value: `false`
 - `enable_traps_flash_insertion` (Boolean) Enable SNMP Flash Insertion notifications
+  - Default value: `false`
 - `enable_traps_flash_lowspace` (Boolean) Enable SNMP Flash Lowspace notifications
+  - Default value: `false`
 - `enable_traps_flash_removal` (Boolean) Enable SNMP Flash Removal notifications
+  - Default value: `false`
 - `enable_traps_flowmon` (Boolean) Enable SNMP flowmon notifications
+  - Default value: `false`
 - `enable_traps_frame_relay_config_bundle_mismatch` (Boolean) Enable MFR trap for inconsistent bundle event
-- `enable_traps_frame_relay_config_only` (Boolean)
-- `enable_traps_frame_relay_config_subif_configs` (Boolean)
+  - Default value: `false`
+- `enable_traps_frame_relay_config_only` (Boolean) - Default value: `false`
+- `enable_traps_frame_relay_config_subif_configs` (Boolean) - Default value: `false`
 - `enable_traps_frame_relay_multilink_bundle_mismatch` (Boolean) Enable MFR trap for inconsistent bundle event
+  - Default value: `false`
 - `enable_traps_frame_relay_subif_count` (Number) Maximum number of traps sent per interval
   - Range: `1`-`1000`
 - `enable_traps_frame_relay_subif_interval` (Number) Interval duration in which to limit the number of traps sent
   - Range: `1`-`3600`
 - `enable_traps_fru_ctrl` (Boolean) Enable SNMP entity FRU control traps
+  - Default value: `false`
 - `enable_traps_hsrp` (Boolean) Enable SNMP HSRP traps
+  - Default value: `false`
 - `enable_traps_ike_policy_add` (Boolean) Enable IKE Policy add trap
+  - Default value: `false`
 - `enable_traps_ike_policy_delete` (Boolean) Enable IKE Policy delete trap
+  - Default value: `false`
 - `enable_traps_ike_tunnel_start` (Boolean) Enable IKE Tunnel start trap
+  - Default value: `false`
 - `enable_traps_ike_tunnel_stop` (Boolean) Enable IKE Tunnel stop trap
+  - Default value: `false`
 - `enable_traps_ip_local_pool` (Boolean) Enable SNMP IP LOCAL POOL traps
+  - Default value: `false`
 - `enable_traps_ipmulticast` (Boolean) Enable SNMP ipmulticast traps
+  - Default value: `false`
 - `enable_traps_ipsec_cryptomap_add` (Boolean) Enable IPsec Cryptomap add trap
+  - Default value: `false`
 - `enable_traps_ipsec_cryptomap_attach` (Boolean) Enable IPsec Cryptomap Attach trap
+  - Default value: `false`
 - `enable_traps_ipsec_cryptomap_delete` (Boolean) Enable IPsec Cryptomap delete trap
+  - Default value: `false`
 - `enable_traps_ipsec_cryptomap_detach` (Boolean) Enable IPsec Cryptomap Detach trap
+  - Default value: `false`
 - `enable_traps_ipsec_too_many_sas` (Boolean) Enable IPsec Tunnel Start trap
+  - Default value: `false`
 - `enable_traps_ipsec_tunnel_start` (Boolean) Enable IPsec Tunnel Start trap
+  - Default value: `false`
 - `enable_traps_ipsec_tunnel_stop` (Boolean) Enable IPsec Tunnel Stop trap
+  - Default value: `false`
 - `enable_traps_ipsla` (Boolean) Enable IPSLA traps traps
+  - Default value: `false`
 - `enable_traps_isdn_call_information` (Boolean) Enable SNMP isdn call information traps
+  - Default value: `false`
 - `enable_traps_isdn_chan_not_avail` (Boolean) Enable SNMP isdn channel not avail traps
+  - Default value: `false`
 - `enable_traps_isdn_ietf` (Boolean) Enable SNMP isdn ietf traps
+  - Default value: `false`
 - `enable_traps_isdn_layer2` (Boolean) Enable SNMP isdn layer2 transition traps
+  - Default value: `false`
 - `enable_traps_isis` (Boolean) Enable ISIS traps traps
-- `enable_traps_l2tun_pseudowire_status` (Boolean)
+  - Default value: `false`
+- `enable_traps_l2tun_pseudowire_status` (Boolean) - Default value: `false`
 - `enable_traps_l2tun_session` (Boolean) Enable SNMP l2tun session traps
+  - Default value: `false`
 - `enable_traps_l2tun_tunnel` (Boolean) Enable SNMP l2tun tunnel traps
+  - Default value: `false`
 - `enable_traps_license` (Boolean) Enable license traps
+  - Default value: `false`
 - `enable_traps_lisp` (Boolean) Allow SNMP LISP MIB traps
+  - Default value: `false`
 - `enable_traps_local_auth` (Boolean) Enable SNMP local auth traps
+  - Default value: `false`
 - `enable_traps_mac_notification_change` (Boolean) Enable SNMP Change traps
+  - Default value: `false`
 - `enable_traps_mac_notification_move` (Boolean) Enable SNMP Move traps
+  - Default value: `false`
 - `enable_traps_mac_notification_threshold` (Boolean) Enable SNMP Threshold traps
+  - Default value: `false`
 - `enable_traps_memory_bufferpeak` (Boolean) Enable SNMP Memory Bufferpeak traps
+  - Default value: `false`
 - `enable_traps_mpls` (Boolean) Enable SNMP MPLS traps
+  - Default value: `false`
 - `enable_traps_mpls_ldp` (Boolean) Allow SNMP MPLS label distribution protocol traps
+  - Default value: `false`
 - `enable_traps_mpls_rfc` (Boolean) Enable SNMP MPLS RFC traps
+  - Default value: `false`
 - `enable_traps_mpls_rfc_ldp` (Boolean) Allow SNMP MPLS label distribution protocol RFC traps
+  - Default value: `false`
 - `enable_traps_mpls_traffic_eng` (Boolean) Allow SNMP MPLS traffic engineering traps
+  - Default value: `false`
 - `enable_traps_mpls_vpn` (Boolean) Allow SNMP MPLS Virtual Private Network traps
+  - Default value: `false`
 - `enable_traps_msdp` (Boolean) Enable SNMP MSDP traps
+  - Default value: `false`
 - `enable_traps_mvpn` (Boolean) Enable Multicast Virtual Private Networks traps
-- `enable_traps_nhrp_nhc` (Boolean)
-- `enable_traps_nhrp_nhp` (Boolean)
-- `enable_traps_nhrp_nhs` (Boolean)
-- `enable_traps_nhrp_quota_exceeded` (Boolean)
+  - Default value: `false`
+- `enable_traps_nhrp_nhc` (Boolean) - Default value: `false`
+- `enable_traps_nhrp_nhp` (Boolean) - Default value: `false`
+- `enable_traps_nhrp_nhs` (Boolean) - Default value: `false`
+- `enable_traps_nhrp_quota_exceeded` (Boolean) - Default value: `false`
 - `enable_traps_ospf_config_errors` (Boolean) Enable all traps of errors
+  - Default value: `false`
 - `enable_traps_ospf_config_lsa` (Boolean) Enable all traps of lsa
+  - Default value: `false`
 - `enable_traps_ospf_config_retransmit` (Boolean) Enable all traps of retransmit
+  - Default value: `false`
 - `enable_traps_ospf_config_state_change` (Boolean) Enable all traps of state-change
+  - Default value: `false`
 - `enable_traps_ospf_errors_enable` (Boolean) Enable all traps of errors
+  - Default value: `false`
 - `enable_traps_ospf_lsa_enable` (Boolean) Enable all traps of lsa
+  - Default value: `false`
 - `enable_traps_ospf_nssa_trans_change` (Boolean) Nssa translator state changes
+  - Default value: `false`
 - `enable_traps_ospf_retransmit_enable` (Boolean) Enable all traps of retransmit
+  - Default value: `false`
 - `enable_traps_ospf_shamlink_interface` (Boolean) Sham link interface state changes
+  - Default value: `false`
 - `enable_traps_ospf_shamlink_neighbor` (Boolean) Sham link neighbor state changes
+  - Default value: `false`
 - `enable_traps_ospfv3_config_errors` (Boolean) Enable all traps of errors
+  - Default value: `false`
 - `enable_traps_ospfv3_config_state_change` (Boolean) Enable all traps of state-change
+  - Default value: `false`
 - `enable_traps_ospfv3_errors` (Boolean) Error traps
+  - Default value: `false`
 - `enable_traps_ospfv3_state_change` (Boolean) State change traps
+  - Default value: `false`
 - `enable_traps_pfr` (Boolean) Allow SNMP PFR traps
+  - Default value: `false`
 - `enable_traps_pim_invalid_pim_message` (Boolean) Enable invalid pim message trap
+  - Default value: `false`
 - `enable_traps_pim_neighbor_change` (Boolean) Enable neighbor change trap
+  - Default value: `false`
 - `enable_traps_pim_rp_mapping_change` (Boolean) Enable rp mapping change trap
+  - Default value: `false`
 - `enable_traps_pimstdmib_interface_election` (Boolean) Enable interface-election traps
+  - Default value: `false`
 - `enable_traps_pimstdmib_invalid_join_prune` (Boolean) Enable invalid-join-prune traps
+  - Default value: `false`
 - `enable_traps_pimstdmib_invalid_register` (Boolean) Enable invalid-register traps
+  - Default value: `false`
 - `enable_traps_pimstdmib_neighbor_loss` (Boolean) Enable neighbor-loss traps
+  - Default value: `false`
 - `enable_traps_pimstdmib_rp_mapping_change` (Boolean) Enable invalid rp-mapping-change
+  - Default value: `false`
 - `enable_traps_pki` (Boolean) Enable SNMP PKI Traps
+  - Default value: `false`
 - `enable_traps_port_security` (Boolean) Enable SNMP port security traps
+  - Default value: `false`
 - `enable_traps_power_ethernet_group` (String) Enable SNMP inline power group based traps
 - `enable_traps_power_ethernet_police` (Boolean) Enable Policing Trap
+  - Default value: `false`
 - `enable_traps_pppoe` (Boolean) Enable SNMP pppoe traps
-- `enable_traps_pw_vc` (Boolean)
-- `enable_traps_rep` (Boolean)
-- `enable_traps_resource_policy` (Boolean)
+  - Default value: `false`
+- `enable_traps_pw_vc` (Boolean) - Default value: `false`
+- `enable_traps_rep` (Boolean) - Default value: `false`
+- `enable_traps_resource_policy` (Boolean) - Default value: `false`
 - `enable_traps_rf` (Boolean) Enable all SNMP traps defined in CISCO-RF-MIB
+  - Default value: `false`
 - `enable_traps_rsvp` (Boolean) Enable RSVP flow change traps
+  - Default value: `false`
 - `enable_traps_smart_license` (Boolean) Enable smart license traps
+  - Default value: `false`
 - `enable_traps_snmp_authentication` (Boolean) Enable authentication trap
+  - Default value: `false`
 - `enable_traps_snmp_coldstart` (Boolean) Enable coldStart trap
+  - Default value: `false`
 - `enable_traps_snmp_linkdown` (Boolean) Enable linkDown trap
+  - Default value: `false`
 - `enable_traps_snmp_linkup` (Boolean) Enable linkUp trap
+  - Default value: `false`
 - `enable_traps_snmp_warmstart` (Boolean) Enable warmStart trap
+  - Default value: `false`
 - `enable_traps_sonet` (Boolean) Enable SNMP SONET traps
+  - Default value: `false`
 - `enable_traps_srp` (Boolean) Enable SRP protocol traps
+  - Default value: `false`
 - `enable_traps_stackwise` (Boolean) Enable SNMP stackwise traps
-- `enable_traps_stpx_inconsistency` (Boolean)
-- `enable_traps_stpx_loop_inconsistency` (Boolean)
-- `enable_traps_stpx_root_inconsistency` (Boolean)
+  - Default value: `false`
+- `enable_traps_stpx_inconsistency` (Boolean) - Default value: `false`
+- `enable_traps_stpx_loop_inconsistency` (Boolean) - Default value: `false`
+- `enable_traps_stpx_root_inconsistency` (Boolean) - Default value: `false`
 - `enable_traps_syslog` (Boolean) Enable SNMP syslog traps
-- `enable_traps_transceiver_all` (Boolean)
+  - Default value: `false`
+- `enable_traps_transceiver_all` (Boolean) - Default value: `false`
 - `enable_traps_tty` (Boolean) Enable TCP connection traps
+  - Default value: `false`
 - `enable_traps_udld_link_fail_rpt` (Boolean) Enable SNMP cudldpFastHelloLinkFailRptNotification traps
+  - Default value: `false`
 - `enable_traps_udld_status_change` (Boolean) Enable SNMP cudldpFastHelloStatusChangeNotification traps
+  - Default value: `false`
 - `enable_traps_vdsl2line` (Boolean) Enable VDSL2 Line-MIB traps
-- `enable_traps_vlan_membership` (Boolean)
-- `enable_traps_vlancreate` (Boolean)
-- `enable_traps_vlandelete` (Boolean)
+  - Default value: `false`
+- `enable_traps_vlan_membership` (Boolean) - Default value: `false`
+- `enable_traps_vlancreate` (Boolean) - Default value: `false`
+- `enable_traps_vlandelete` (Boolean) - Default value: `false`
 - `enable_traps_voice` (Boolean) Enable SNMP voice traps
-- `enable_traps_vrfmib_vnet_trunk_down` (Boolean)
-- `enable_traps_vrfmib_vnet_trunk_up` (Boolean)
-- `enable_traps_vrfmib_vrf_down` (Boolean)
-- `enable_traps_vrfmib_vrf_up` (Boolean)
+  - Default value: `false`
+- `enable_traps_vrfmib_vnet_trunk_down` (Boolean) - Default value: `false`
+- `enable_traps_vrfmib_vnet_trunk_up` (Boolean) - Default value: `false`
+- `enable_traps_vrfmib_vrf_down` (Boolean) - Default value: `false`
+- `enable_traps_vrfmib_vrf_up` (Boolean) - Default value: `false`
 - `enable_traps_vrrp` (Boolean) Enable SNMP vrrp traps
-- `enable_traps_vtp` (Boolean)
+  - Default value: `false`
+- `enable_traps_vtp` (Boolean) - Default value: `false`
 - `groups` (Attributes List) Define a User Security Model group (see [below for nested schema](#nestedatt--groups))
 - `hosts` (Attributes List) Specify hosts keyed by (ip-address, community-or-user) (see [below for nested schema](#nestedatt--hosts))
 - `ifindex_persist` (Boolean) Persist interface indices
+  - Default value: `false`
 - `location` (String) Text for mib object sysLocation
 - `packetsize` (Number) Largest SNMP packet size
   - Range: `484`-`17892`
@@ -386,6 +516,7 @@ resource "iosxe_snmp_server" "example" {
 - `source_interface_traps_vlan` (Number) Iosxr Vlans
   - Range: `0`-`65535`
 - `system_shutdown` (Boolean) Enable use of the SNMP reload command
+  - Default value: `false`
 - `trap_source_forty_gigabit_ethernet` (String) Forty GigabitEthernet
 - `trap_source_gigabit_ethernet` (String) GigabitEthernet IEEE 802.3z
 - `trap_source_hundred_gig_e` (String) Hundred GigabitEthernet

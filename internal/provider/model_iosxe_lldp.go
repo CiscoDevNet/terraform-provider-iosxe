@@ -111,8 +111,6 @@ func (data LLDP) addToBodyXML(ctx context.Context, config LLDP, body netconf.Bod
 	if !data.Run.IsNull() && !data.Run.IsUnknown() {
 		if data.Run.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/run", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/run")
 		}
 	}
 	if !data.Holdtime.IsNull() && !data.Holdtime.IsUnknown() {

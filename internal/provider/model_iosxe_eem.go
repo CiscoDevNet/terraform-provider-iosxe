@@ -331,8 +331,6 @@ func (data EEM) addToBodyXML(ctx context.Context, config EEM, body netconf.Body)
 	if !data.SchedulerAppletThreadClassDefault.IsNull() && !data.SchedulerAppletThreadClassDefault.IsUnknown() {
 		if data.SchedulerAppletThreadClassDefault.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/scheduler/applet/thread/class/default", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/scheduler/applet/thread/class/default")
 		}
 	}
 	if !data.SchedulerAppletThreadClassNumber.IsNull() && !data.SchedulerAppletThreadClassNumber.IsUnknown() {
@@ -431,8 +429,6 @@ func (data EEM) addToBodyXML(ctx context.Context, config EEM, body netconf.Body)
 					if !citem.Else.IsNull() && !citem.Else.IsUnknown() {
 						if citem.Else.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "else", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "else")
 						}
 					}
 					if !citem.WhileOperand1.IsNull() && !citem.WhileOperand1.IsUnknown() {
@@ -447,15 +443,11 @@ func (data EEM) addToBodyXML(ctx context.Context, config EEM, body netconf.Body)
 					if !citem.Break.IsNull() && !citem.Break.IsUnknown() {
 						if citem.Break.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "break", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "break")
 						}
 					}
 					if !citem.Continue.IsNull() && !citem.Continue.IsUnknown() {
 						if citem.Continue.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "continue", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "continue")
 						}
 					}
 					if !citem.IncrementVarname.IsNull() && !citem.IncrementVarname.IsUnknown() {
@@ -503,22 +495,16 @@ func (data EEM) addToBodyXML(ctx context.Context, config EEM, body netconf.Body)
 					if !citem.End.IsNull() && !citem.End.IsUnknown() {
 						if citem.End.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "end", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "end")
 						}
 					}
 					if !citem.Exit.IsNull() && !citem.Exit.IsUnknown() {
 						if citem.Exit.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "exit", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "exit")
 						}
 					}
 					if !citem.Reload.IsNull() && !citem.Reload.IsUnknown() {
 						if citem.Reload.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "reload", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "reload")
 						}
 					}
 					if !citem.ContextRetrieveKey.IsNull() && !citem.ContextRetrieveKey.IsUnknown() {
@@ -563,29 +549,21 @@ func (data EEM) addToBodyXML(ctx context.Context, config EEM, body netconf.Body)
 					if !citem.CounterOpDec.IsNull() && !citem.CounterOpDec.IsUnknown() {
 						if citem.CounterOpDec.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "counter/op/dec", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "counter/op/dec")
 						}
 					}
 					if !citem.CounterOpInc.IsNull() && !citem.CounterOpInc.IsUnknown() {
 						if citem.CounterOpInc.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "counter/op/inc", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "counter/op/inc")
 						}
 					}
 					if !citem.CounterOpSet.IsNull() && !citem.CounterOpSet.IsUnknown() {
 						if citem.CounterOpSet.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "counter/op/set", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "counter/op/set")
 						}
 					}
 					if !citem.CounterOpNop.IsNull() && !citem.CounterOpNop.IsUnknown() {
 						if citem.CounterOpNop.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "counter/op/nop", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "counter/op/nop")
 						}
 					}
 					if !citem.SnmpTrapIntdata1.IsNull() && !citem.SnmpTrapIntdata1.IsUnknown() {

@@ -341,8 +341,6 @@ func (data RouteMap) addToBodyXML(ctx context.Context, config RouteMap, body net
 			if !item.Continue.IsNull() && !item.Continue.IsUnknown() {
 				if item.Continue.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "continue", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "continue")
 				}
 			}
 			if !item.ContinueSequenceNumber.IsNull() && !item.ContinueSequenceNumber.IsUnknown() {
@@ -398,57 +396,41 @@ func (data RouteMap) addToBodyXML(ctx context.Context, config RouteMap, body net
 			if !item.MatchRouteTypeExternal.IsNull() && !item.MatchRouteTypeExternal.IsUnknown() {
 				if item.MatchRouteTypeExternal.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "match/route-type/external", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "match/route-type/external")
 				}
 			}
 			if !item.MatchRouteTypeExternalType1.IsNull() && !item.MatchRouteTypeExternalType1.IsUnknown() {
 				if item.MatchRouteTypeExternalType1.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "match/route-type/external/type-1", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "match/route-type/external/type-1")
 				}
 			}
 			if !item.MatchRouteTypeExternalType2.IsNull() && !item.MatchRouteTypeExternalType2.IsUnknown() {
 				if item.MatchRouteTypeExternalType2.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "match/route-type/external/type-2", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "match/route-type/external/type-2")
 				}
 			}
 			if !item.MatchRouteTypeInternal.IsNull() && !item.MatchRouteTypeInternal.IsUnknown() {
 				if item.MatchRouteTypeInternal.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "match/route-type/internal", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "match/route-type/internal")
 				}
 			}
 			if !item.MatchRouteTypeLevel1.IsNull() && !item.MatchRouteTypeLevel1.IsUnknown() {
 				if item.MatchRouteTypeLevel1.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "match/route-type/level-1", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "match/route-type/level-1")
 				}
 			}
 			if !item.MatchRouteTypeLevel2.IsNull() && !item.MatchRouteTypeLevel2.IsUnknown() {
 				if item.MatchRouteTypeLevel2.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "match/route-type/level-2", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "match/route-type/level-2")
 				}
 			}
 			if !item.MatchRouteTypeLocalLegacy.IsNull() && !item.MatchRouteTypeLocalLegacy.IsUnknown() {
 				if item.MatchRouteTypeLocalLegacy.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "match/route-type/local", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "match/route-type/local")
 				}
 			}
 			if !item.MatchRouteTypeLocal.IsNull() && !item.MatchRouteTypeLocal.IsUnknown() {
 				if item.MatchRouteTypeLocal.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "match/Cisco-IOS-XE-bgp:bgp-route-map-match/route-type/local", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "match/Cisco-IOS-XE-bgp:bgp-route-map-match/route-type/local")
 				}
 			}
 			if !item.MatchSourceProtocolBgp.IsNull() && !item.MatchSourceProtocolBgp.IsUnknown() {
@@ -461,8 +443,6 @@ func (data RouteMap) addToBodyXML(ctx context.Context, config RouteMap, body net
 			if !item.MatchSourceProtocolConnected.IsNull() && !item.MatchSourceProtocolConnected.IsUnknown() {
 				if item.MatchSourceProtocolConnected.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "match/source-protocol/connected", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "match/source-protocol/connected")
 				}
 			}
 			if !item.MatchSourceProtocolEigrp.IsNull() && !item.MatchSourceProtocolEigrp.IsUnknown() {
@@ -475,15 +455,11 @@ func (data RouteMap) addToBodyXML(ctx context.Context, config RouteMap, body net
 			if !item.MatchSourceProtocolIsis.IsNull() && !item.MatchSourceProtocolIsis.IsUnknown() {
 				if item.MatchSourceProtocolIsis.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "match/source-protocol/isis", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "match/source-protocol/isis")
 				}
 			}
 			if !item.MatchSourceProtocolLisp.IsNull() && !item.MatchSourceProtocolLisp.IsUnknown() {
 				if item.MatchSourceProtocolLisp.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "match/source-protocol/lisp", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "match/source-protocol/lisp")
 				}
 			}
 			if !item.MatchSourceProtocolOspf.IsNull() && !item.MatchSourceProtocolOspf.IsUnknown() {
@@ -503,15 +479,11 @@ func (data RouteMap) addToBodyXML(ctx context.Context, config RouteMap, body net
 			if !item.MatchSourceProtocolRip.IsNull() && !item.MatchSourceProtocolRip.IsUnknown() {
 				if item.MatchSourceProtocolRip.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "match/source-protocol/rip", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "match/source-protocol/rip")
 				}
 			}
 			if !item.MatchSourceProtocolStatic.IsNull() && !item.MatchSourceProtocolStatic.IsUnknown() {
 				if item.MatchSourceProtocolStatic.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "match/source-protocol/static", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "match/source-protocol/static")
 				}
 			}
 			if !item.MatchTags.IsNull() && !item.MatchTags.IsUnknown() {
@@ -569,8 +541,6 @@ func (data RouteMap) addToBodyXML(ctx context.Context, config RouteMap, body net
 			if !item.MatchCommunityListExactMatch.IsNull() && !item.MatchCommunityListExactMatch.IsUnknown() {
 				if item.MatchCommunityListExactMatch.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "match/Cisco-IOS-XE-bgp:bgp-route-map-match/bgp-community/exact-match", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "match/Cisco-IOS-XE-bgp:bgp-route-map-match/bgp-community/exact-match")
 				}
 			}
 			if !item.MatchExtcommunityLists.IsNull() && !item.MatchExtcommunityLists.IsUnknown() {
@@ -597,8 +567,6 @@ func (data RouteMap) addToBodyXML(ctx context.Context, config RouteMap, body net
 			if !item.SetGlobal.IsNull() && !item.SetGlobal.IsUnknown() {
 				if item.SetGlobal.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "set/global", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "set/global")
 				}
 			}
 			if !item.SetInterfaces.IsNull() && !item.SetInterfaces.IsUnknown() {
@@ -642,15 +610,11 @@ func (data RouteMap) addToBodyXML(ctx context.Context, config RouteMap, body net
 			if !item.SetIpNextHopSelf.IsNull() && !item.SetIpNextHopSelf.IsUnknown() {
 				if item.SetIpNextHopSelf.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "set/ip/next-hop/self", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "set/ip/next-hop/self")
 				}
 			}
 			if !item.SetIpNextHopUnchanged.IsNull() && !item.SetIpNextHopUnchanged.IsUnknown() {
 				if item.SetIpNextHopUnchanged.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "set/ip/next-hop/unchanged", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "set/ip/next-hop/unchanged")
 				}
 			}
 			if !item.SetIpQosGroup.IsNull() && !item.SetIpQosGroup.IsUnknown() {
@@ -683,22 +647,16 @@ func (data RouteMap) addToBodyXML(ctx context.Context, config RouteMap, body net
 			if !item.SetLevel1.IsNull() && !item.SetLevel1.IsUnknown() {
 				if item.SetLevel1.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "set/level/level-1", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "set/level/level-1")
 				}
 			}
 			if !item.SetLevel12.IsNull() && !item.SetLevel12.IsUnknown() {
 				if item.SetLevel12.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "set/level/level-1-2", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "set/level/level-1-2")
 				}
 			}
 			if !item.SetLevel2.IsNull() && !item.SetLevel2.IsUnknown() {
 				if item.SetLevel2.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "set/level/level-2", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "set/level/level-2")
 				}
 			}
 			if !item.SetMetricChange.IsNull() && !item.SetMetricChange.IsUnknown() {
@@ -737,15 +695,11 @@ func (data RouteMap) addToBodyXML(ctx context.Context, config RouteMap, body net
 			if !item.SetAsPathTagLegacy.IsNull() && !item.SetAsPathTagLegacy.IsUnknown() {
 				if item.SetAsPathTagLegacy.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "set/as-path/tag", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "set/as-path/tag")
 				}
 			}
 			if !item.SetCommunityNoneLegacy.IsNull() && !item.SetCommunityNoneLegacy.IsUnknown() {
 				if item.SetCommunityNoneLegacy.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "set/community/none", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "set/community/none")
 				}
 			}
 			if !item.SetCommunitiesLegacy.IsNull() && !item.SetCommunitiesLegacy.IsUnknown() {
@@ -758,15 +712,11 @@ func (data RouteMap) addToBodyXML(ctx context.Context, config RouteMap, body net
 			if !item.SetCommunitiesAdditiveLegacy.IsNull() && !item.SetCommunitiesAdditiveLegacy.IsUnknown() {
 				if item.SetCommunitiesAdditiveLegacy.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "set/community/community-well-known/additive", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "set/community/community-well-known/additive")
 				}
 			}
 			if !item.SetCommunityListDeleteLegacy.IsNull() && !item.SetCommunityListDeleteLegacy.IsUnknown() {
 				if item.SetCommunityListDeleteLegacy.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "set/comm-list/delete", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "set/comm-list/delete")
 				}
 			}
 			if !item.SetCommunityListStandardLegacy.IsNull() && !item.SetCommunityListStandardLegacy.IsUnknown() {
@@ -806,15 +756,11 @@ func (data RouteMap) addToBodyXML(ctx context.Context, config RouteMap, body net
 			if !item.SetAsPathTag.IsNull() && !item.SetAsPathTag.IsUnknown() {
 				if item.SetAsPathTag.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "set/Cisco-IOS-XE-bgp:bgp-route-map-set/as-path/tag", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "set/Cisco-IOS-XE-bgp:bgp-route-map-set/as-path/tag")
 				}
 			}
 			if !item.SetAsPathReplaceAny.IsNull() && !item.SetAsPathReplaceAny.IsUnknown() {
 				if item.SetAsPathReplaceAny.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "set/Cisco-IOS-XE-bgp:bgp-route-map-set/as-path/replace/any", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "set/Cisco-IOS-XE-bgp:bgp-route-map-set/as-path/replace/any")
 				}
 			}
 			if len(item.SetAsPathReplaceAs) > 0 {
@@ -829,8 +775,6 @@ func (data RouteMap) addToBodyXML(ctx context.Context, config RouteMap, body net
 			if !item.SetCommunityNone.IsNull() && !item.SetCommunityNone.IsUnknown() {
 				if item.SetCommunityNone.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/none", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/none")
 				}
 			}
 			if !item.SetCommunities.IsNull() && !item.SetCommunities.IsUnknown() {
@@ -843,15 +787,11 @@ func (data RouteMap) addToBodyXML(ctx context.Context, config RouteMap, body net
 			if !item.SetCommunitiesAdditive.IsNull() && !item.SetCommunitiesAdditive.IsUnknown() {
 				if item.SetCommunitiesAdditive.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/community-well-known/additive", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/community-well-known/additive")
 				}
 			}
 			if !item.SetCommunityListDelete.IsNull() && !item.SetCommunityListDelete.IsUnknown() {
 				if item.SetCommunityListDelete.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "set/Cisco-IOS-XE-bgp:bgp-route-map-set/comm-list/delete", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "set/Cisco-IOS-XE-bgp:bgp-route-map-set/comm-list/delete")
 				}
 			}
 			if !item.SetCommunityListStandard.IsNull() && !item.SetCommunityListStandard.IsUnknown() {
@@ -879,8 +819,6 @@ func (data RouteMap) addToBodyXML(ctx context.Context, config RouteMap, body net
 			if !item.SetExtcomunityVpnDistinguisherAdditive.IsNull() && !item.SetExtcomunityVpnDistinguisherAdditive.IsUnknown() {
 				if item.SetExtcomunityVpnDistinguisherAdditive.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "set/Cisco-IOS-XE-bgp:bgp-route-map-set/extcommunity/vpn-distinguisher/asn-nn-additive", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "set/Cisco-IOS-XE-bgp:bgp-route-map-set/extcommunity/vpn-distinguisher/asn-nn-additive")
 				}
 			}
 			if !item.SetLocalPreference.IsNull() && !item.SetLocalPreference.IsUnknown() {

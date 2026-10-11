@@ -47,8 +47,11 @@ resource "iosxe_radius" "example" {
 - `automate_tester_idle_time` (Number) Minutes of idle-time after which server state should be verified.
   - Range: `1`-`35791`
 - `automate_tester_ignore_acct_port` (Boolean) Do not test accounting ports of the servers.
+  - Default value: `false`
 - `automate_tester_ignore_auth_port` (Boolean) Do not test authentication port of the servers.
+  - Default value: `false`
 - `automate_tester_probe_on_config` (Boolean) Send a packet to verify the server status
+  - Default value: `false`
 - `automate_tester_username` (String)
 - `device` (String) A device name from the provider configuration.
 - `ipv4_address` (String) IPv4 address or Hostname for radius server

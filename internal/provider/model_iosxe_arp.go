@@ -132,8 +132,6 @@ func (data ARP) addToBodyXML(ctx context.Context, config ARP, body netconf.Body)
 	if !data.ProxyDisable.IsNull() && !data.ProxyDisable.IsUnknown() {
 		if data.ProxyDisable.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/proxy/disable", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/proxy/disable")
 		}
 	}
 	if !data.EntryLearn.IsNull() && !data.EntryLearn.IsUnknown() {
@@ -154,8 +152,6 @@ func (data ARP) addToBodyXML(ctx context.Context, config ARP, body netconf.Body)
 					if !citem.Static.IsNull() && !citem.Static.IsUnknown() {
 						if citem.Static.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "static", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "static")
 						}
 					}
 					cBody = helpers.SetRawFromXPath(cBody, "vlan", ccBody.Res())
@@ -167,29 +163,21 @@ func (data ARP) addToBodyXML(ctx context.Context, config ARP, body netconf.Body)
 	if !data.InspectionValidateSrcMac.IsNull() && !data.InspectionValidateSrcMac.IsUnknown() {
 		if data.InspectionValidateSrcMac.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/inspection/validate/src-mac", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/inspection/validate/src-mac")
 		}
 	}
 	if !data.InspectionValidateDstMac.IsNull() && !data.InspectionValidateDstMac.IsUnknown() {
 		if data.InspectionValidateDstMac.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/inspection/validate/dst-mac", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/inspection/validate/dst-mac")
 		}
 	}
 	if !data.InspectionValidateIp.IsNull() && !data.InspectionValidateIp.IsUnknown() {
 		if data.InspectionValidateIp.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/inspection/validate/ip", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/inspection/validate/ip")
 		}
 	}
 	if !data.InspectionValidateAllowZeros.IsNull() && !data.InspectionValidateAllowZeros.IsUnknown() {
 		if data.InspectionValidateAllowZeros.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/inspection/validate/allow/zeros", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/inspection/validate/allow/zeros")
 		}
 	}
 	if !data.InspectionLogBufferEntries.IsNull() && !data.InspectionLogBufferEntries.IsUnknown() {

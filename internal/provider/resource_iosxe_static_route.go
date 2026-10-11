@@ -32,6 +32,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -116,16 +117,20 @@ func (r *StaticRouteResource) Schema(ctx context.Context, req resource.SchemaReq
 							},
 						},
 						"global": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Next hop address is global").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Next hop address is global").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"name": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Specify name of the next hop").String,
 							Optional:            true,
 						},
 						"permanent": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("permanent route").String,
+							MarkdownDescription: helpers.NewAttributeDescription("permanent route").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"tag": schema.Int64Attribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Set tag for this route").AddIntegerRangeDescription(1, 4294967295).String,
@@ -172,8 +177,10 @@ func (r *StaticRouteResource) Schema(ctx context.Context, req resource.SchemaReq
 							},
 						},
 						"permanent": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("permanent route").String,
+							MarkdownDescription: helpers.NewAttributeDescription("permanent route").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 					},
 				},

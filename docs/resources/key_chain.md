@@ -45,8 +45,8 @@ resource "iosxe_key_chain" "example" {
 
 - `device` (String) A device name from the provider configuration.
 - `keys` (Attributes List) Configure a key (see [below for nested schema](#nestedatt--keys))
-- `macsec` (Boolean)
-- `tcp` (Boolean)
+- `macsec` (Boolean) - Default value: `false`
+- `tcp` (Boolean) - Default value: `false`
 
 ### Read-Only
 
@@ -62,6 +62,7 @@ Required:
 Optional:
 
 - `accept_ao_mismatch` (Boolean) Accept packets with HMAC mismatch
+  - Default value: `false`
 - `accept_lifetime_duration` (Number) Key lifetime duration (in seconds)
   - Range: `1`-`2147483646`
 - `accept_lifetime_end_day` (Number) Key lifetime end day
@@ -72,7 +73,9 @@ Optional:
 - `accept_lifetime_end_year` (Number) Key lifetime end year
   - Range: `1993`-`2035`
 - `accept_lifetime_infinite` (Boolean) Infinite lifetime
+  - Default value: `false`
 - `accept_lifetime_local` (Boolean) Specify time in local timezone
+  - Default value: `false`
 - `accept_lifetime_start_day` (Number) Key lifetime start day
   - Range: `1`-`31`
 - `accept_lifetime_start_month` (String) Key lifetime start month
@@ -84,6 +87,7 @@ Optional:
 - `cryptographic_algorithm_macsec` (String) - Choices: `aes-128-cmac`, `aes-256-cmac`
 - `cryptographic_algorithm_tcp` (String) - Choices: `aes-128-cmac`, `hmac-sha-1`, `hmac-sha-256`
 - `include_tcp_options` (Boolean) Include tcp options in HMAC calculation
+  - Default value: `false`
 - `key_string_encryption` (String) Key encryption method
   - Choices: `0`, `6`, `7`
 - `key_string_key` (String, Sensitive)
@@ -99,7 +103,9 @@ Optional:
 - `macsec_lifetime_end_year` (Number) Key lifetime end year
   - Range: `1993`-`2035`
 - `macsec_lifetime_infinite` (Boolean) Infinite lifetime
+  - Default value: `false`
 - `macsec_lifetime_local` (Boolean) Specify time in local timezone
+  - Default value: `false`
 - `macsec_lifetime_start_day` (Number) Key lifetime start day
   - Range: `1`-`31`
 - `macsec_lifetime_start_month` (String) Key lifetime start month
@@ -121,7 +127,9 @@ Optional:
 - `send_lifetime_end_year` (Number) Key lifetime end year
   - Range: `1993`-`2035`
 - `send_lifetime_infinite` (Boolean) Infinite lifetime
+  - Default value: `false`
 - `send_lifetime_local` (Boolean) Specify time in local timezone
+  - Default value: `false`
 - `send_lifetime_start_day` (Number) Key lifetime start day
   - Range: `1`-`31`
 - `send_lifetime_start_month` (String) Key lifetime start month

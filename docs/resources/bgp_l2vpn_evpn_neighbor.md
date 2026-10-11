@@ -48,6 +48,7 @@ resource "iosxe_bgp_l2vpn_evpn_neighbor" "example" {
 - `inherit_peer_policy` (String) Inherit a peer-policy template
 - `route_maps` (Attributes List) Apply route map to neighbor (see [below for nested schema](#nestedatt--route_maps))
 - `route_reflector_client` (Boolean) Configure a neighbor as Route Reflector client
+  - Default value: `false`
 - `send_community` (String) - Choices: `both`, `extended`, `standard`
 - `soft_reconfiguration` (String) Per neighbor soft reconfiguration
   - Choices: `inbound`

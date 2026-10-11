@@ -202,8 +202,6 @@ func (data ParameterMap) addToBodyXML(ctx context.Context, config ParameterMap, 
 	if !data.Alert.IsNull() && !data.Alert.IsUnknown() {
 		if data.Alert.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/alert/on", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/alert/on")
 		}
 	}
 	if !data.ApplicationInspectDns.IsNull() && !data.ApplicationInspectDns.IsUnknown() {
@@ -263,8 +261,6 @@ func (data ParameterMap) addToBodyXML(ctx context.Context, config ParameterMap, 
 	if !data.AuditTrail.IsNull() && !data.AuditTrail.IsUnknown() {
 		if data.AuditTrail.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/audit-trail/on", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/audit-trail/on")
 		}
 	}
 	if !data.DnsTimeout.IsNull() && !data.DnsTimeout.IsUnknown() {
@@ -279,22 +275,16 @@ func (data ParameterMap) addToBodyXML(ctx context.Context, config ParameterMap, 
 	if !data.IcmpUnreachableAllow.IsNull() && !data.IcmpUnreachableAllow.IsUnknown() {
 		if data.IcmpUnreachableAllow.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/icmp-unreachable-allow", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/icmp-unreachable-allow")
 		}
 	}
 	if !data.LogDroppedPackets.IsNull() && !data.LogDroppedPackets.IsUnknown() {
 		if data.LogDroppedPackets.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/log/dropped-packets", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/log/dropped-packets")
 		}
 	}
 	if !data.LogFlow.IsNull() && !data.LogFlow.IsUnknown() {
 		if data.LogFlow.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/log/flow", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/log/flow")
 		}
 	}
 	if !data.MaxIncompleteHigh.IsNull() && !data.MaxIncompleteHigh.IsUnknown() {
@@ -336,22 +326,16 @@ func (data ParameterMap) addToBodyXML(ctx context.Context, config ParameterMap, 
 	if !data.TcpHalfCloseResetOff.IsNull() && !data.TcpHalfCloseResetOff.IsUnknown() {
 		if data.TcpHalfCloseResetOff.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/tcp/half-close/reset/off", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/tcp/half-close/reset/off")
 		}
 	}
 	if !data.TcpHalfOpenResetOff.IsNull() && !data.TcpHalfOpenResetOff.IsUnknown() {
 		if data.TcpHalfOpenResetOff.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/tcp/half-open/reset/off", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/tcp/half-open/reset/off")
 		}
 	}
 	if !data.TcpIdleResetOff.IsNull() && !data.TcpIdleResetOff.IsUnknown() {
 		if data.TcpIdleResetOff.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/tcp/idle/reset/off", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/tcp/idle/reset/off")
 		}
 	}
 	if !data.TcpIdleTime.IsNull() && !data.TcpIdleTime.IsUnknown() {
@@ -375,8 +359,6 @@ func (data ParameterMap) addToBodyXML(ctx context.Context, config ParameterMap, 
 	if !data.TcpWindowScaleEnforcementLoose.IsNull() && !data.TcpWindowScaleEnforcementLoose.IsUnknown() {
 		if data.TcpWindowScaleEnforcementLoose.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/tcp/window-scale-enforcement/loose", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/tcp/window-scale-enforcement/loose")
 		}
 	}
 	if !data.UdpHalfOpenIdleTime.IsNull() && !data.UdpHalfOpenIdleTime.IsUnknown() {
@@ -394,8 +376,6 @@ func (data ParameterMap) addToBodyXML(ctx context.Context, config ParameterMap, 
 	if !data.ZoneMismatchDrop.IsNull() && !data.ZoneMismatchDrop.IsUnknown() {
 		if data.ZoneMismatchDrop.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/zone-mismatch/drop", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/zone-mismatch/drop")
 		}
 	}
 	return body

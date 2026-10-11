@@ -32,6 +32,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -129,16 +130,20 @@ func (r *VLANConfigurationResource) Schema(ctx context.Context, req resource.Sch
 				},
 			},
 			"evpn_instance_protected": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable local peer to peer blocking for EVI.").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable local peer to peer blocking for EVI.").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"evpn_instance_profile": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("EVPN instance profile name. Use for IOS-XE >= 17.15.").String,
 				Optional:            true,
 			},
 			"evpn_instance_profile_protected": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable local peer to peer blocking for auto EVI with profile.").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable local peer to peer blocking for auto EVI with profile.").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 		},
 	}

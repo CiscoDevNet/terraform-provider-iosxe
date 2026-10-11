@@ -47,23 +47,34 @@ resource "iosxe_interface_switchport" "example" {
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
 - `host` (Boolean) Set port host
+  - Default value: `false`
 - `mode_access` (Boolean) Set trunking mode to ACCESS unconditionally
+  - Default value: `false`
 - `mode_dot1q_tunnel` (Boolean) set trunking mode to TUNNEL unconditionally
+  - Default value: `false`
 - `mode_private_vlan_host` (Boolean) Set the mode to private-vlan host
+  - Default value: `false`
 - `mode_private_vlan_promiscuous` (Boolean) Set the mode to private-vlan promiscuous
+  - Default value: `false`
 - `mode_private_vlan_trunk` (Boolean) Set the mode to private-vlan trunk
+  - Default value: `false`
 - `mode_trunk` (Boolean) Set trunking mode to TRUNK unconditionally
+  - Default value: `false`
 - `nonegotiate` (Boolean) Device will not engage in negotiation protocol on this interface
+  - Default value: `false`
 - `trunk_allowed_vlans` (String)
 - `trunk_allowed_vlans_add` (Attributes List) (see [below for nested schema](#nestedatt--trunk_allowed_vlans_add))
 - `trunk_allowed_vlans_all` (Boolean) all VLANs
+  - Default value: `true`
 - `trunk_allowed_vlans_except` (String) all VLANs except the following
 - `trunk_allowed_vlans_legacy` (String)
 - `trunk_allowed_vlans_none` (Boolean) no VLANs
+  - Default value: `false`
 - `trunk_allowed_vlans_none_legacy` (Boolean) no VLANs
+  - Default value: `false`
 - `trunk_allowed_vlans_remove` (String) VLAN IDs of disallowed VLANs when this port is in trunking mode
 - `trunk_native_vlan` (Number) - Range: `1`-`4094`
-- `trunk_native_vlan_tag` (Boolean)
+- `trunk_native_vlan_tag` (Boolean) - Default value: `true`
 - `voice_vlan` (String)
 
 ### Read-Only

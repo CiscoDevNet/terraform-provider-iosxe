@@ -146,29 +146,21 @@ func (data EVPNInstance) addToBodyXML(ctx context.Context, config EVPNInstance, 
 	if !data.VlanBasedReplicationTypeIngress.IsNull() && !data.VlanBasedReplicationTypeIngress.IsUnknown() {
 		if data.VlanBasedReplicationTypeIngress.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/vlan-based/replication-type/ingress", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/vlan-based/replication-type/ingress")
 		}
 	}
 	if !data.VlanBasedReplicationTypeStatic.IsNull() && !data.VlanBasedReplicationTypeStatic.IsUnknown() {
 		if data.VlanBasedReplicationTypeStatic.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/vlan-based/replication-type/static", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/vlan-based/replication-type/static")
 		}
 	}
 	if !data.VlanBasedReplicationTypeP2mp.IsNull() && !data.VlanBasedReplicationTypeP2mp.IsUnknown() {
 		if data.VlanBasedReplicationTypeP2mp.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/vlan-based/replication-type/p2mp", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/vlan-based/replication-type/p2mp")
 		}
 	}
 	if !data.VlanBasedReplicationTypeMp2mp.IsNull() && !data.VlanBasedReplicationTypeMp2mp.IsUnknown() {
 		if data.VlanBasedReplicationTypeMp2mp.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/vlan-based/replication-type/mp2mp", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/vlan-based/replication-type/mp2mp")
 		}
 	}
 	if !data.VlanBasedEncapsulation.IsNull() && !data.VlanBasedEncapsulation.IsUnknown() {
@@ -177,8 +169,6 @@ func (data EVPNInstance) addToBodyXML(ctx context.Context, config EVPNInstance, 
 	if !data.VlanBasedAutoRouteTargetLegacy.IsNull() && !data.VlanBasedAutoRouteTargetLegacy.IsUnknown() {
 		if data.VlanBasedAutoRouteTargetLegacy.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/vlan-based/auto-route-target_cont/auto-route-target", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/vlan-based/auto-route-target_cont/auto-route-target")
 		}
 	}
 	if !data.VlanBasedAutoRouteTarget.IsNull() && !data.VlanBasedAutoRouteTarget.IsUnknown() {
@@ -220,15 +210,11 @@ func (data EVPNInstance) addToBodyXML(ctx context.Context, config EVPNInstance, 
 	if !data.VlanBasedIpLocalLearningDisable.IsNull() && !data.VlanBasedIpLocalLearningDisable.IsUnknown() {
 		if data.VlanBasedIpLocalLearningDisable.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/vlan-based/ip/local-learning/disable", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/vlan-based/ip/local-learning/disable")
 		}
 	}
 	if !data.VlanBasedIpLocalLearningEnable.IsNull() && !data.VlanBasedIpLocalLearningEnable.IsUnknown() {
 		if data.VlanBasedIpLocalLearningEnable.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/vlan-based/ip/local-learning/enable", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/vlan-based/ip/local-learning/enable")
 		}
 	}
 	if !data.VlanBasedDefaultGatewayAdvertise.IsNull() && !data.VlanBasedDefaultGatewayAdvertise.IsUnknown() {
@@ -237,8 +223,6 @@ func (data EVPNInstance) addToBodyXML(ctx context.Context, config EVPNInstance, 
 	if !data.VlanBasedReOriginateRouteType5.IsNull() && !data.VlanBasedReOriginateRouteType5.IsUnknown() {
 		if data.VlanBasedReOriginateRouteType5.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/vlan-based/re-originate/route-type5", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/vlan-based/re-originate/route-type5")
 		}
 	}
 	if !data.VlanBasedMulticastAdvertise.IsNull() && !data.VlanBasedMulticastAdvertise.IsUnknown() {

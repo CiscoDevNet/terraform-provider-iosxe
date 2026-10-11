@@ -241,8 +241,6 @@ func (data Line) addToBodyXML(ctx context.Context, config Line, body netconf.Bod
 			if !item.LoginLocal.IsNull() && !item.LoginLocal.IsUnknown() {
 				if item.LoginLocal.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "login/local", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "login/local")
 				}
 			}
 			if !item.LoginAuthentication.IsNull() && !item.LoginAuthentication.IsUnknown() {
@@ -273,22 +271,16 @@ func (data Line) addToBodyXML(ctx context.Context, config Line, body netconf.Bod
 			if !item.LoggingSynchronous.IsNull() && !item.LoggingSynchronous.IsUnknown() {
 				if item.LoggingSynchronous.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "logging/synchronous", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "logging/synchronous")
 				}
 			}
 			if !item.TransportOutputAll.IsNull() && !item.TransportOutputAll.IsUnknown() {
 				if item.TransportOutputAll.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "transport/output/all", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "transport/output/all")
 				}
 			}
 			if !item.TransportOutputNone.IsNull() && !item.TransportOutputNone.IsUnknown() {
 				if item.TransportOutputNone.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "transport/output/none", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "transport/output/none")
 				}
 			}
 			if !item.TransportOutput.IsNull() && !item.TransportOutput.IsUnknown() {
@@ -330,8 +322,6 @@ func (data Line) addToBodyXML(ctx context.Context, config Line, body netconf.Bod
 					if !citem.VrfAlso.IsNull() && !citem.VrfAlso.IsUnknown() {
 						if citem.VrfAlso.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "vrf-also", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "vrf-also")
 						}
 					}
 					cBody = helpers.SetRawFromXPath(cBody, "access-class/acccess-list", ccBody.Res())
@@ -371,8 +361,6 @@ func (data Line) addToBodyXML(ctx context.Context, config Line, body netconf.Bod
 			if !item.AuthorizationExecDefault.IsNull() && !item.AuthorizationExecDefault.IsUnknown() {
 				if item.AuthorizationExecDefault.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "authorization/exec/default", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "authorization/exec/default")
 				}
 			}
 			if !item.TransportInputAll.IsNull() && !item.TransportInputAll.IsUnknown() {
@@ -399,8 +387,6 @@ func (data Line) addToBodyXML(ctx context.Context, config Line, body netconf.Bod
 			if !item.Monitor.IsNull() && !item.Monitor.IsUnknown() {
 				if item.Monitor.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "monitor", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "monitor")
 				}
 			}
 			if !item.SessionTimeout.IsNull() && !item.SessionTimeout.IsUnknown() {
@@ -412,22 +398,16 @@ func (data Line) addToBodyXML(ctx context.Context, config Line, body netconf.Bod
 			if !item.LoggingSynchronous.IsNull() && !item.LoggingSynchronous.IsUnknown() {
 				if item.LoggingSynchronous.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "logging/synchronous", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "logging/synchronous")
 				}
 			}
 			if !item.TransportOutputAll.IsNull() && !item.TransportOutputAll.IsUnknown() {
 				if item.TransportOutputAll.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "transport/output/all", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "transport/output/all")
 				}
 			}
 			if !item.TransportOutputNone.IsNull() && !item.TransportOutputNone.IsUnknown() {
 				if item.TransportOutputNone.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "transport/output/none", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "transport/output/none")
 				}
 			}
 			if !item.TransportOutput.IsNull() && !item.TransportOutput.IsUnknown() {
@@ -460,8 +440,6 @@ func (data Line) addToBodyXML(ctx context.Context, config Line, body netconf.Bod
 			if !item.LoggingSynchronous.IsNull() && !item.LoggingSynchronous.IsUnknown() {
 				if item.LoggingSynchronous.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "logging/synchronous", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "logging/synchronous")
 				}
 			}
 			if !item.ExecTimeoutMinutes.IsNull() && !item.ExecTimeoutMinutes.IsUnknown() {
@@ -473,8 +451,6 @@ func (data Line) addToBodyXML(ctx context.Context, config Line, body netconf.Bod
 			if !item.Monitor.IsNull() && !item.Monitor.IsUnknown() {
 				if item.Monitor.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "monitor", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "monitor")
 				}
 			}
 			if !item.Stopbits.IsNull() && !item.Stopbits.IsUnknown() {
@@ -496,8 +472,6 @@ func (data Line) addToBodyXML(ctx context.Context, config Line, body netconf.Bod
 			if !item.TransportOutputNone.IsNull() && !item.TransportOutputNone.IsUnknown() {
 				if item.TransportOutputNone.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "transport/output/none", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "transport/output/none")
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/aux", cBody.Res())

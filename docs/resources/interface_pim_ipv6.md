@@ -35,11 +35,14 @@ resource "iosxe_interface_pim_ipv6" "example" {
 ### Optional
 
 - `bfd` (Boolean) Configure BFD
+  - Default value: `false`
 - `bsr_border` (Boolean) Border of PIM BSR domain
+  - Default value: `false`
 - `device` (String) A device name from the provider configuration.
 - `dr_priority` (Number) PIM Hello DR priority
   - Range: `0`-`4294967295`
 - `pim` (Boolean) PIM interface commands
+  - Default value: `true`
 
 ### Read-Only
 

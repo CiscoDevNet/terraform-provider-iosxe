@@ -34,10 +34,15 @@ resource "iosxe_vlan" "example" {
 - `name` (String) Ascii name of the VLAN
 - `private_vlan_association` (String) Configure association between private VLANs
 - `private_vlan_community` (Boolean) Configure the VLAN as a community private VLAN
+  - Default value: `false`
 - `private_vlan_isolated` (Boolean) Configure the VLAN as an isolated private VLAN
+  - Default value: `false`
 - `private_vlan_primary` (Boolean) Configure the VLAN as a primary private VLAN
+  - Default value: `false`
 - `remote_span` (Boolean) Configure as Remote SPAN VLAN
+  - Default value: `false`
 - `shutdown` (Boolean) Shutdown VLAN switching
+  - Default value: `false`
 
 ### Read-Only
 

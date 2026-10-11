@@ -199,15 +199,11 @@ func (data BGPAddressFamilyIPv4VRF) addToBodyXML(ctx context.Context, config BGP
 			if !item.Ipv4UnicastAdvertiseL2vpnEvpn.IsNull() && !item.Ipv4UnicastAdvertiseL2vpnEvpn.IsUnknown() {
 				if item.Ipv4UnicastAdvertiseL2vpnEvpn.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ipv4-unicast/advertise/l2vpn/evpn", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ipv4-unicast/advertise/l2vpn/evpn")
 				}
 			}
 			if !item.Ipv4UnicastRedistributeConnected.IsNull() && !item.Ipv4UnicastRedistributeConnected.IsUnknown() {
 				if item.Ipv4UnicastRedistributeConnected.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ipv4-unicast/redistribute-vrf/connected", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ipv4-unicast/redistribute-vrf/connected")
 				}
 			}
 			if !item.Ipv4UnicastRedistributeConnectedRouteMap.IsNull() && !item.Ipv4UnicastRedistributeConnectedRouteMap.IsUnknown() {
@@ -234,8 +230,6 @@ func (data BGPAddressFamilyIPv4VRF) addToBodyXML(ctx context.Context, config BGP
 					if !citem.SummaryOnly.IsNull() && !citem.SummaryOnly.IsUnknown() {
 						if citem.SummaryOnly.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "summary-only", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "summary-only")
 						}
 					}
 					cBody = helpers.SetRawFromXPath(cBody, "ipv4-unicast/aggregate-address", ccBody.Res())
@@ -244,8 +238,6 @@ func (data BGPAddressFamilyIPv4VRF) addToBodyXML(ctx context.Context, config BGP
 			if !item.Ipv4UnicastRedistributeStatic.IsNull() && !item.Ipv4UnicastRedistributeStatic.IsUnknown() {
 				if item.Ipv4UnicastRedistributeStatic.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ipv4-unicast/redistribute-vrf/static", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ipv4-unicast/redistribute-vrf/static")
 				}
 			}
 			if !item.Ipv4UnicastRedistributeStaticRouteMap.IsNull() && !item.Ipv4UnicastRedistributeStaticRouteMap.IsUnknown() {
@@ -269,15 +261,11 @@ func (data BGPAddressFamilyIPv4VRF) addToBodyXML(ctx context.Context, config BGP
 					if !citem.Backdoor.IsNull() && !citem.Backdoor.IsUnknown() {
 						if citem.Backdoor.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "backdoor", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "backdoor")
 						}
 					}
 					if !citem.Evpn.IsNull() && !citem.Evpn.IsUnknown() {
 						if citem.Evpn.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "evpn", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "evpn")
 						}
 					}
 					cBody = helpers.SetRawFromXPath(cBody, "ipv4-unicast/network/with-mask", ccBody.Res())
@@ -295,15 +283,11 @@ func (data BGPAddressFamilyIPv4VRF) addToBodyXML(ctx context.Context, config BGP
 					if !citem.Backdoor.IsNull() && !citem.Backdoor.IsUnknown() {
 						if citem.Backdoor.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "backdoor", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "backdoor")
 						}
 					}
 					if !citem.Evpn.IsNull() && !citem.Evpn.IsUnknown() {
 						if citem.Evpn.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "evpn", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "evpn")
 						}
 					}
 					cBody = helpers.SetRawFromXPath(cBody, "ipv4-unicast/network/no-mask", ccBody.Res())
@@ -345,8 +329,6 @@ func (data BGPAddressFamilyIPv4VRF) addToBodyXML(ctx context.Context, config BGP
 			if !item.Ipv4UnicastImportPathSelectionAll.IsNull() && !item.Ipv4UnicastImportPathSelectionAll.IsUnknown() {
 				if item.Ipv4UnicastImportPathSelectionAll.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ipv4-unicast/import/path/selection/all", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ipv4-unicast/import/path/selection/all")
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/vrf", cBody.Res())

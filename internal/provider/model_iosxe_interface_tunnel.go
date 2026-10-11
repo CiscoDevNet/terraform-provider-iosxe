@@ -316,8 +316,6 @@ func (data InterfaceTunnel) addToBodyXML(ctx context.Context, config InterfaceTu
 	if !data.Shutdown.IsNull() && !data.Shutdown.IsUnknown() {
 		if data.Shutdown.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/shutdown", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/shutdown")
 		}
 	}
 	if !data.IpProxyArp.IsNull() && !data.IpProxyArp.IsUnknown() {
@@ -335,8 +333,6 @@ func (data InterfaceTunnel) addToBodyXML(ctx context.Context, config InterfaceTu
 	if !data.Ipv6Enable.IsNull() && !data.Ipv6Enable.IsUnknown() {
 		if data.Ipv6Enable.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ipv6/enable", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ipv6/enable")
 		}
 	}
 	if !data.Ipv6Mtu.IsNull() && !data.Ipv6Mtu.IsUnknown() {
@@ -345,22 +341,16 @@ func (data InterfaceTunnel) addToBodyXML(ctx context.Context, config InterfaceTu
 	if !data.Ipv6NdRaSuppressAll.IsNull() && !data.Ipv6NdRaSuppressAll.IsUnknown() {
 		if data.Ipv6NdRaSuppressAll.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ipv6/nd/Cisco-IOS-XE-nd:ra/suppress/all", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ipv6/nd/Cisco-IOS-XE-nd:ra/suppress/all")
 		}
 	}
 	if !data.Ipv6AddressAutoconfigDefault.IsNull() && !data.Ipv6AddressAutoconfigDefault.IsUnknown() {
 		if data.Ipv6AddressAutoconfigDefault.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ipv6/address/autoconfig/default", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ipv6/address/autoconfig/default")
 		}
 	}
 	if !data.Ipv6AddressDhcp.IsNull() && !data.Ipv6AddressDhcp.IsUnknown() {
 		if data.Ipv6AddressDhcp.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ipv6/address/dhcp", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ipv6/address/dhcp")
 		}
 	}
 	if len(data.Ipv6DhcpServers) > 0 {
@@ -372,15 +362,11 @@ func (data InterfaceTunnel) addToBodyXML(ctx context.Context, config InterfaceTu
 			if !item.AllowHint.IsNull() && !item.AllowHint.IsUnknown() {
 				if item.AllowHint.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "allow-hint", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "allow-hint")
 				}
 			}
 			if !item.RapidCommit.IsNull() && !item.RapidCommit.IsUnknown() {
 				if item.RapidCommit.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "rapid-commit", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "rapid-commit")
 				}
 			}
 			if !item.Preference.IsNull() && !item.Preference.IsUnknown() {
@@ -395,8 +381,6 @@ func (data InterfaceTunnel) addToBodyXML(ctx context.Context, config InterfaceTu
 	if !data.Ipv6DhcpClientPdRapidCommit.IsNull() && !data.Ipv6DhcpClientPdRapidCommit.IsUnknown() {
 		if data.Ipv6DhcpClientPdRapidCommit.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:client/pd/pd-prefix/rapid-commit", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:client/pd/pd-prefix/rapid-commit")
 		}
 	}
 	if len(data.Ipv6DhcpRelayDestinations) > 0 {
@@ -418,15 +402,11 @@ func (data InterfaceTunnel) addToBodyXML(ctx context.Context, config InterfaceTu
 	if !data.Ipv6DhcpRelayTrust.IsNull() && !data.Ipv6DhcpRelayTrust.IsUnknown() {
 		if data.Ipv6DhcpRelayTrust.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:relay/trust", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:relay/trust")
 		}
 	}
 	if !data.Ipv6DhcpRelayOptionVpn.IsNull() && !data.Ipv6DhcpRelayOptionVpn.IsUnknown() {
 		if data.Ipv6DhcpRelayOptionVpn.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:relay/option/vpn", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:relay/option/vpn")
 		}
 	}
 	if len(data.Ipv6LinkLocalAddresses) > 0 {
@@ -438,8 +418,6 @@ func (data InterfaceTunnel) addToBodyXML(ctx context.Context, config InterfaceTu
 			if !item.LinkLocal.IsNull() && !item.LinkLocal.IsUnknown() {
 				if item.LinkLocal.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "link-local", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "link-local")
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ipv6/address/link-local-address", cBody.Res())
@@ -454,8 +432,6 @@ func (data InterfaceTunnel) addToBodyXML(ctx context.Context, config InterfaceTu
 			if !item.Eui64.IsNull() && !item.Eui64.IsUnknown() {
 				if item.Eui64.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "eui-64", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "eui-64")
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ipv6/address/prefix-list", cBody.Res())
@@ -488,8 +464,6 @@ func (data InterfaceTunnel) addToBodyXML(ctx context.Context, config InterfaceTu
 	if !data.Ipv4AddressDhcp.IsNull() && !data.Ipv4AddressDhcp.IsUnknown() {
 		if data.Ipv4AddressDhcp.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/address/dhcp", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/address/dhcp")
 		}
 	}
 	if !data.Unnumbered.IsNull() && !data.Unnumbered.IsUnknown() {
@@ -504,8 +478,6 @@ func (data InterfaceTunnel) addToBodyXML(ctx context.Context, config InterfaceTu
 	if !data.IpAccessGroupInEnable.IsNull() && !data.IpAccessGroupInEnable.IsUnknown() {
 		if data.IpAccessGroupInEnable.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/access-group/in/acl/in", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/access-group/in/acl/in")
 		}
 	}
 	if !data.IpAccessGroupIn.IsNull() && !data.IpAccessGroupIn.IsUnknown() {
@@ -514,8 +486,6 @@ func (data InterfaceTunnel) addToBodyXML(ctx context.Context, config InterfaceTu
 	if !data.IpAccessGroupOutEnable.IsNull() && !data.IpAccessGroupOutEnable.IsUnknown() {
 		if data.IpAccessGroupOutEnable.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/access-group/out/acl/out", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/access-group/out/acl/out")
 		}
 	}
 	if !data.IpAccessGroupOut.IsNull() && !data.IpAccessGroupOut.IsUnknown() {
@@ -530,8 +500,6 @@ func (data InterfaceTunnel) addToBodyXML(ctx context.Context, config InterfaceTu
 			if !item.Global.IsNull() && !item.Global.IsUnknown() {
 				if item.Global.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "global", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "global")
 				}
 			}
 			if !item.Vrf.IsNull() && !item.Vrf.IsUnknown() {
@@ -543,8 +511,6 @@ func (data InterfaceTunnel) addToBodyXML(ctx context.Context, config InterfaceTu
 	if !data.TunnelModeIpsecIpv4.IsNull() && !data.TunnelModeIpsecIpv4.IsUnknown() {
 		if data.TunnelModeIpsecIpv4.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-tunnel:tunnel/mode/ipsec/ipv4", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-tunnel:tunnel/mode/ipsec/ipv4")
 		}
 	}
 	if !data.BfdTemplate.IsNull() && !data.BfdTemplate.IsUnknown() {
@@ -592,15 +558,11 @@ func (data InterfaceTunnel) addToBodyXML(ctx context.Context, config InterfaceTu
 	if !data.IpNatInside.IsNull() && !data.IpNatInside.IsUnknown() {
 		if data.IpNatInside.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/inside", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/inside")
 		}
 	}
 	if !data.IpNatOutside.IsNull() && !data.IpNatOutside.IsUnknown() {
 		if data.IpNatOutside.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/outside", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/outside")
 		}
 	}
 	if len(data.IpFlowMonitors) > 0 {
@@ -651,8 +613,6 @@ func (data InterfaceTunnel) addToBodyXML(ctx context.Context, config InterfaceTu
 	if !data.TunnelModeGreMultipoint.IsNull() && !data.TunnelModeGreMultipoint.IsUnknown() {
 		if data.TunnelModeGreMultipoint.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-tunnel:tunnel/mode/gre-config/multipoint", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-tunnel:tunnel/mode/gre-config/multipoint")
 		}
 	}
 	if !data.IpNhrpAuthentication.IsNull() && !data.IpNhrpAuthentication.IsUnknown() {
@@ -685,22 +645,16 @@ func (data InterfaceTunnel) addToBodyXML(ctx context.Context, config InterfaceTu
 	if !data.IpNhrpRedirect.IsNull() && !data.IpNhrpRedirect.IsUnknown() {
 		if data.IpNhrpRedirect.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/redirect", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/redirect")
 		}
 	}
 	if !data.IpNhrpShortcut.IsNull() && !data.IpNhrpShortcut.IsUnknown() {
 		if data.IpNhrpShortcut.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/shortcut", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/shortcut")
 		}
 	}
 	if !data.MplsNhrp.IsNull() && !data.MplsNhrp.IsUnknown() {
 		if data.MplsNhrp.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/mpls/Cisco-IOS-XE-mpls:nhrp", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/mpls/Cisco-IOS-XE-mpls:nhrp")
 		}
 	}
 	return body

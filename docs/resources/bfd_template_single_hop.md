@@ -50,6 +50,7 @@ resource "iosxe_bfd_template_single_hop" "example" {
   - Range: `1`-`18000`
 - `device` (String) A device name from the provider configuration.
 - `echo` (Boolean) Use echo adjunct as bfd detection mechanism
+  - Default value: `false`
 - `interval_microseconds_min_rx` (Number) Minimum receive interval capability
   - Range: `3300`-`9999000`
 - `interval_microseconds_min_tx` (Number) Minimum transmit interval capability

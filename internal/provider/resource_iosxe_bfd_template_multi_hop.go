@@ -30,6 +30,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -85,8 +86,10 @@ func (r *BFDTemplateMultiHopResource) Schema(ctx context.Context, req resource.S
 				},
 			},
 			"echo": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Use echo adjunct as bfd detection mechanism").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Use echo adjunct as bfd detection mechanism").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"interval_milliseconds_both": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Minimum transmit and receive interval capability").AddIntegerRangeDescription(4, 9999).String,
@@ -117,8 +120,10 @@ func (r *BFDTemplateMultiHopResource) Schema(ctx context.Context, req resource.S
 				},
 			},
 			"interval_microseconds": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Specify BFD timers in microseconds").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Specify BFD timers in microseconds").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"interval_microseconds_both": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Minimum transmit and receive interval capability").AddIntegerRangeDescription(3300, 9999000).String,
@@ -200,8 +205,10 @@ func (r *BFDTemplateMultiHopResource) Schema(ctx context.Context, req resource.S
 				},
 			},
 			"dampening_down_monitoring": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("down monitoring").String,
+				MarkdownDescription: helpers.NewAttributeDescription("down monitoring").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 		},
 	}

@@ -30,6 +30,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -143,8 +144,10 @@ func (r *BFDTemplateSingleHopResource) Schema(ctx context.Context, req resource.
 				},
 			},
 			"echo": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Use echo adjunct as bfd detection mechanism").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Use echo adjunct as bfd detection mechanism").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"dampening_half_time": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Half-life time for the penalty").AddIntegerRangeDescription(1, 30).String,
