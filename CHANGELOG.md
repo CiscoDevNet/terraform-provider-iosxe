@@ -1,5 +1,6 @@
 ## 1.1.1
 
+- Fix import of `iosxe_bgp_neighbor`, `iosxe_bgp_ipv6_unicast_neighbor`, and other BGP neighbor resources with IPv6 addresses by normalizing address case to match the device-stored form, preventing "Cannot import non-existent remote object" errors
 - Bump `go-netconf` dependency to v0.6.2, reverting a transitive `scrapligo` dependency bump to v1.4.1 that caused intermittent connection errors on the first operation of a new NETCONF session against some IOS-XE devices
 
 ## 1.1.0

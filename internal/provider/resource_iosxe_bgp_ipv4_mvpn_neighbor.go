@@ -97,6 +97,7 @@ func (r *BGPIPv4MVPNNeighborResource) Schema(ctx context.Context, req resource.S
 				Required:            true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
+					helpers.UseIPv6Normalization(),
 				},
 			},
 			"activate": schema.BoolAttribute{
@@ -380,7 +381,7 @@ func (r *BGPIPv4MVPNNeighborResource) ImportState(ctx context.Context, req resou
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("asn"), idParts[0])...)
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("ip"), idParts[1])...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("ip"), helpers.NormalizeIPv6Address(idParts[1]))...)
 	if len(idParts) == 3 {
 		resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("device"), idParts[len(idParts)-1])...)
 	}

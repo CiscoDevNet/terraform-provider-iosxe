@@ -12,6 +12,7 @@ attributes:
   - yang_name: id
     yang_scope: neighbor
     tf_name: ip
+    normalize_ipv6: true
     example: 172.16.255.4
     test_tags: [IOSXE1715]
   - yang_name: activate

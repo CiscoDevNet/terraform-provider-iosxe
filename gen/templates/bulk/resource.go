@@ -493,7 +493,7 @@ func (r *{{$bulk}}Resource) ImportState(ctx context.Context, req resource.Import
 	}
 
 	{{- range $index, $attr := (bulkParentAttributes .)}}
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("{{.TfName}}"), {{if eq .Type "Bool"}}helpers.Must(strconv.ParseBool(idParts[{{$index}}])){{else if eq .Type "Int64"}}helpers.Must(strconv.ParseInt(idParts[{{$index}}], 10, 64)){{else}}idParts[{{$index}}]{{end}})...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("{{.TfName}}"), {{if eq .Type "Bool"}}helpers.Must(strconv.ParseBool(idParts[{{$index}}])){{else if eq .Type "Int64"}}helpers.Must(strconv.ParseInt(idParts[{{$index}}], 10, 64)){{else if .NormalizeIPv6}}helpers.NormalizeIPv6Address(idParts[{{$index}}]){{else}}idParts[{{$index}}]{{end}})...)
 	{{- end}}
 	if len(idParts) == {{add (len (bulkParentAttributes .)) 1}} {
 		resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("device"), idParts[len(idParts)-1])...)

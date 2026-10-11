@@ -106,6 +106,7 @@ func (r *BGPIPv4UnicastVRFNeighborResource) Schema(ctx context.Context, req reso
 				Required:            true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
+					helpers.UseIPv6Normalization(),
 				},
 			},
 			"remote_as": schema.StringAttribute{
@@ -590,7 +591,7 @@ func (r *BGPIPv4UnicastVRFNeighborResource) ImportState(ctx context.Context, req
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("asn"), idParts[0])...)
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("vrf"), idParts[1])...)
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("ip"), idParts[2])...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("ip"), helpers.NormalizeIPv6Address(idParts[2]))...)
 	if len(idParts) == 4 {
 		resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("device"), idParts[len(idParts)-1])...)
 	}

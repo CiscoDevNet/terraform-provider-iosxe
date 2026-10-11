@@ -646,7 +646,7 @@ func (r *{{camelCase .Name}}Resource) ImportState(ctx context.Context, req resou
 	}
 
 	{{- range $index, $attr := (importAttributes .)}}
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("{{.TfName}}"), {{if eq .Type "Bool"}}helpers.Must(strconv.ParseBool(idParts[{{$index}}])){{else if eq .Type "Int64"}}helpers.Must(strconv.ParseInt(idParts[{{$index}}], 10, 64)){{else if eq .Type "Float64"}}helpers.Must(strconv.ParseFloat(idParts[{{$index}}])){{else}}idParts[{{$index}}]{{end}})...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("{{.TfName}}"), {{if eq .Type "Bool"}}helpers.Must(strconv.ParseBool(idParts[{{$index}}])){{else if eq .Type "Int64"}}helpers.Must(strconv.ParseInt(idParts[{{$index}}], 10, 64)){{else if eq .Type "Float64"}}helpers.Must(strconv.ParseFloat(idParts[{{$index}}])){{else if .NormalizeIPv6}}helpers.NormalizeIPv6Address(idParts[{{$index}}]){{else}}idParts[{{$index}}]{{end}})...)
 	{{- end}}
 	if len(idParts) == {{add (len (importAttributes .)) 1}} {
 		resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("device"), idParts[len(idParts)-1])...)
