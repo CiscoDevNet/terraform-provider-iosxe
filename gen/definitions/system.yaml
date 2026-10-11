@@ -371,6 +371,34 @@ attributes:
   - yang_name: ip/ssh/bulk-mode/window-size
     example: 262144
     exclude_test: true
+  - yang_name: ip/ssh/server/algorithm/encryption/encryption-choice/config-case/encrypt-options
+    xpath: ip/ssh/server/algorithm/encryption/encrypt-options
+    tf_name: ip_ssh_server_algorithm_encryption
+    type: StringList
+    description: SSH server encryption algorithms
+    example: aes128-ctr
+    test_tags: [IOSXE1716]
+  - yang_name: ip/ssh/server/algorithm/mac/mac-choice/config-case/mac-options
+    xpath: ip/ssh/server/algorithm/mac/mac-options
+    tf_name: ip_ssh_server_algorithm_mac
+    type: StringList
+    description: SSH server MAC algorithms
+    example: hmac-sha2-256
+    test_tags: [IOSXE1716]
+  - yang_name: ip/ssh/server/algorithm/kex/kex-choice/config-case/kex-options
+    xpath: ip/ssh/server/algorithm/kex/kex-options
+    tf_name: ip_ssh_server_algorithm_kex
+    type: StringList
+    description: SSH server key exchange algorithms
+    example: diffie-hellman-group14-sha256
+    test_tags: [IOSXE1716]
+  - yang_name: ip/ssh/server/algorithm/authentication/authentication-choice/config-case/authentication-options
+    xpath: ip/ssh/server/algorithm/authentication/authentication-options
+    tf_name: ip_ssh_server_algorithm_authentication
+    type: StringList
+    description: SSH server authentication algorithms
+    example: publickey
+    test_tags: [IOSXE1716]
   - yang_name: control-plane/Cisco-IOS-XE-policy:service-policy/input
     example: system-cpp-policy
     exclude_test: true

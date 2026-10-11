@@ -583,6 +583,26 @@ func (r *SystemResource) Schema(ctx context.Context, req resource.SchemaRequest,
 					int64validator.Between(131072, 1073741824),
 				},
 			},
+			"ip_ssh_server_algorithm_encryption": schema.ListAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("SSH server encryption algorithms").String,
+				ElementType:         types.StringType,
+				Optional:            true,
+			},
+			"ip_ssh_server_algorithm_mac": schema.ListAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("SSH server MAC algorithms").String,
+				ElementType:         types.StringType,
+				Optional:            true,
+			},
+			"ip_ssh_server_algorithm_kex": schema.ListAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("SSH server key exchange algorithms").String,
+				ElementType:         types.StringType,
+				Optional:            true,
+			},
+			"ip_ssh_server_algorithm_authentication": schema.ListAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("SSH server authentication algorithms").String,
+				ElementType:         types.StringType,
+				Optional:            true,
+			},
 			"control_plane_service_policy_input": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Assign policy-map to the input of an interface").String,
 				Optional:            true,

@@ -122,6 +122,10 @@ type System struct {
 	IpSshSourceInterfaceHundredGigabitEthernet             types.String                                        `tfsdk:"ip_ssh_source_interface_hundred_gigabit_ethernet"`
 	IpSshBulkMode                                          types.Bool                                          `tfsdk:"ip_ssh_bulk_mode"`
 	IpSshBulkModeWindowSize                                types.Int64                                         `tfsdk:"ip_ssh_bulk_mode_window_size"`
+	IpSshServerAlgorithmEncryption                         types.List                                          `tfsdk:"ip_ssh_server_algorithm_encryption"`
+	IpSshServerAlgorithmMac                                types.List                                          `tfsdk:"ip_ssh_server_algorithm_mac"`
+	IpSshServerAlgorithmKex                                types.List                                          `tfsdk:"ip_ssh_server_algorithm_kex"`
+	IpSshServerAlgorithmAuthentication                     types.List                                          `tfsdk:"ip_ssh_server_algorithm_authentication"`
 	ControlPlaneServicePolicyInput                         types.String                                        `tfsdk:"control_plane_service_policy_input"`
 	PnpProfiles                                            []SystemPnpProfiles                                 `tfsdk:"pnp_profiles"`
 	IpTacacsSourceInterfaceLoopback                        types.Int64                                         `tfsdk:"ip_tacacs_source_interface_loopback"`
@@ -352,6 +356,10 @@ type SystemData struct {
 	IpSshSourceInterfaceHundredGigabitEthernet             types.String                                            `tfsdk:"ip_ssh_source_interface_hundred_gigabit_ethernet"`
 	IpSshBulkMode                                          types.Bool                                              `tfsdk:"ip_ssh_bulk_mode"`
 	IpSshBulkModeWindowSize                                types.Int64                                             `tfsdk:"ip_ssh_bulk_mode_window_size"`
+	IpSshServerAlgorithmEncryption                         types.List                                              `tfsdk:"ip_ssh_server_algorithm_encryption"`
+	IpSshServerAlgorithmMac                                types.List                                              `tfsdk:"ip_ssh_server_algorithm_mac"`
+	IpSshServerAlgorithmKex                                types.List                                              `tfsdk:"ip_ssh_server_algorithm_kex"`
+	IpSshServerAlgorithmAuthentication                     types.List                                              `tfsdk:"ip_ssh_server_algorithm_authentication"`
 	ControlPlaneServicePolicyInput                         types.String                                            `tfsdk:"control_plane_service_policy_input"`
 	PnpProfiles                                            []SystemPnpProfilesData                                 `tfsdk:"pnp_profiles"`
 	IpTacacsSourceInterfaceLoopback                        types.Int64                                             `tfsdk:"ip_tacacs_source_interface_loopback"`
@@ -945,6 +953,34 @@ func (data System) addToBodyXML(ctx context.Context, config System, body netconf
 	}
 	if !data.IpSshBulkModeWindowSize.IsNull() && !data.IpSshBulkModeWindowSize.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/ssh/bulk-mode/window-size", strconv.FormatInt(data.IpSshBulkModeWindowSize.ValueInt64(), 10))
+	}
+	if !data.IpSshServerAlgorithmEncryption.IsNull() && !data.IpSshServerAlgorithmEncryption.IsUnknown() {
+		var values []string
+		data.IpSshServerAlgorithmEncryption.ElementsAs(ctx, &values, false)
+		for _, v := range values {
+			body = helpers.AppendFromXPath(body, data.getXPath()+"/ip/ssh/server/algorithm/encryption/encrypt-options", v)
+		}
+	}
+	if !data.IpSshServerAlgorithmMac.IsNull() && !data.IpSshServerAlgorithmMac.IsUnknown() {
+		var values []string
+		data.IpSshServerAlgorithmMac.ElementsAs(ctx, &values, false)
+		for _, v := range values {
+			body = helpers.AppendFromXPath(body, data.getXPath()+"/ip/ssh/server/algorithm/mac/mac-options", v)
+		}
+	}
+	if !data.IpSshServerAlgorithmKex.IsNull() && !data.IpSshServerAlgorithmKex.IsUnknown() {
+		var values []string
+		data.IpSshServerAlgorithmKex.ElementsAs(ctx, &values, false)
+		for _, v := range values {
+			body = helpers.AppendFromXPath(body, data.getXPath()+"/ip/ssh/server/algorithm/kex/kex-options", v)
+		}
+	}
+	if !data.IpSshServerAlgorithmAuthentication.IsNull() && !data.IpSshServerAlgorithmAuthentication.IsUnknown() {
+		var values []string
+		data.IpSshServerAlgorithmAuthentication.ElementsAs(ctx, &values, false)
+		for _, v := range values {
+			body = helpers.AppendFromXPath(body, data.getXPath()+"/ip/ssh/server/algorithm/authentication/authentication-options", v)
+		}
 	}
 	if !data.ControlPlaneServicePolicyInput.IsNull() && !data.ControlPlaneServicePolicyInput.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/control-plane/Cisco-IOS-XE-policy:service-policy/input", data.ControlPlaneServicePolicyInput.ValueString())
@@ -2019,6 +2055,26 @@ func (data *System) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.IpSshBulkModeWindowSize = types.Int64Value(value.Int())
 	} else {
 		data.IpSshBulkModeWindowSize = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/ssh/server/algorithm/encryption/encrypt-options"); value.Exists() && !data.IpSshServerAlgorithmEncryption.IsNull() {
+		data.IpSshServerAlgorithmEncryption = helpers.GetStringListXML(value.Array())
+	} else {
+		data.IpSshServerAlgorithmEncryption = types.ListNull(types.StringType)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/ssh/server/algorithm/mac/mac-options"); value.Exists() && !data.IpSshServerAlgorithmMac.IsNull() {
+		data.IpSshServerAlgorithmMac = helpers.GetStringListXML(value.Array())
+	} else {
+		data.IpSshServerAlgorithmMac = types.ListNull(types.StringType)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/ssh/server/algorithm/kex/kex-options"); value.Exists() && !data.IpSshServerAlgorithmKex.IsNull() {
+		data.IpSshServerAlgorithmKex = helpers.GetStringListXML(value.Array())
+	} else {
+		data.IpSshServerAlgorithmKex = types.ListNull(types.StringType)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/ssh/server/algorithm/authentication/authentication-options"); value.Exists() && !data.IpSshServerAlgorithmAuthentication.IsNull() {
+		data.IpSshServerAlgorithmAuthentication = helpers.GetStringListXML(value.Array())
+	} else {
+		data.IpSshServerAlgorithmAuthentication = types.ListNull(types.StringType)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/control-plane/Cisco-IOS-XE-policy:service-policy/input"); value.Exists() && !data.ControlPlaneServicePolicyInput.IsNull() {
 		data.ControlPlaneServicePolicyInput = types.StringValue(value.String())
@@ -3133,6 +3189,26 @@ func (data *System) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/ssh/bulk-mode/window-size"); value.Exists() {
 		data.IpSshBulkModeWindowSize = types.Int64Value(value.Int())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/ssh/server/algorithm/encryption/encrypt-options"); value.Exists() {
+		data.IpSshServerAlgorithmEncryption = helpers.GetStringListXML(value.Array())
+	} else {
+		data.IpSshServerAlgorithmEncryption = types.ListNull(types.StringType)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/ssh/server/algorithm/mac/mac-options"); value.Exists() {
+		data.IpSshServerAlgorithmMac = helpers.GetStringListXML(value.Array())
+	} else {
+		data.IpSshServerAlgorithmMac = types.ListNull(types.StringType)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/ssh/server/algorithm/kex/kex-options"); value.Exists() {
+		data.IpSshServerAlgorithmKex = helpers.GetStringListXML(value.Array())
+	} else {
+		data.IpSshServerAlgorithmKex = types.ListNull(types.StringType)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/ssh/server/algorithm/authentication/authentication-options"); value.Exists() {
+		data.IpSshServerAlgorithmAuthentication = helpers.GetStringListXML(value.Array())
+	} else {
+		data.IpSshServerAlgorithmAuthentication = types.ListNull(types.StringType)
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/control-plane/Cisco-IOS-XE-policy:service-policy/input"); value.Exists() {
 		data.ControlPlaneServicePolicyInput = types.StringValue(value.String())
 	}
@@ -3907,6 +3983,26 @@ func (data *SystemData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/ssh/bulk-mode/window-size"); value.Exists() {
 		data.IpSshBulkModeWindowSize = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/ssh/server/algorithm/encryption/encrypt-options"); value.Exists() {
+		data.IpSshServerAlgorithmEncryption = helpers.GetStringListXML(value.Array())
+	} else {
+		data.IpSshServerAlgorithmEncryption = types.ListNull(types.StringType)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/ssh/server/algorithm/mac/mac-options"); value.Exists() {
+		data.IpSshServerAlgorithmMac = helpers.GetStringListXML(value.Array())
+	} else {
+		data.IpSshServerAlgorithmMac = types.ListNull(types.StringType)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/ssh/server/algorithm/kex/kex-options"); value.Exists() {
+		data.IpSshServerAlgorithmKex = helpers.GetStringListXML(value.Array())
+	} else {
+		data.IpSshServerAlgorithmKex = types.ListNull(types.StringType)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/ssh/server/algorithm/authentication/authentication-options"); value.Exists() {
+		data.IpSshServerAlgorithmAuthentication = helpers.GetStringListXML(value.Array())
+	} else {
+		data.IpSshServerAlgorithmAuthentication = types.ListNull(types.StringType)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/control-plane/Cisco-IOS-XE-policy:service-policy/input"); value.Exists() {
 		data.ControlPlaneServicePolicyInput = types.StringValue(value.String())
@@ -4913,6 +5009,106 @@ func (data *System) addDeletedItemsXML(ctx context.Context, state System, body s
 	if !state.ControlPlaneServicePolicyInput.IsNull() && data.ControlPlaneServicePolicyInput.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/control-plane/Cisco-IOS-XE-policy:service-policy/input")
 	}
+	if !state.IpSshServerAlgorithmAuthentication.IsNull() {
+		if data.IpSshServerAlgorithmAuthentication.IsNull() {
+			var values []string
+			state.IpSshServerAlgorithmAuthentication.ElementsAs(ctx, &values, false)
+			for _, v := range values {
+				b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/ssh/server/algorithm/authentication/authentication-options[.=%v]", v))
+			}
+		} else {
+			var dataValues, stateValues []string
+			data.IpSshServerAlgorithmAuthentication.ElementsAs(ctx, &dataValues, false)
+			state.IpSshServerAlgorithmAuthentication.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/ssh/server/algorithm/authentication/authentication-options[.=%v]", v))
+				}
+			}
+		}
+	}
+	if !state.IpSshServerAlgorithmKex.IsNull() {
+		if data.IpSshServerAlgorithmKex.IsNull() {
+			var values []string
+			state.IpSshServerAlgorithmKex.ElementsAs(ctx, &values, false)
+			for _, v := range values {
+				b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/ssh/server/algorithm/kex/kex-options[.=%v]", v))
+			}
+		} else {
+			var dataValues, stateValues []string
+			data.IpSshServerAlgorithmKex.ElementsAs(ctx, &dataValues, false)
+			state.IpSshServerAlgorithmKex.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/ssh/server/algorithm/kex/kex-options[.=%v]", v))
+				}
+			}
+		}
+	}
+	if !state.IpSshServerAlgorithmMac.IsNull() {
+		if data.IpSshServerAlgorithmMac.IsNull() {
+			var values []string
+			state.IpSshServerAlgorithmMac.ElementsAs(ctx, &values, false)
+			for _, v := range values {
+				b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/ssh/server/algorithm/mac/mac-options[.=%v]", v))
+			}
+		} else {
+			var dataValues, stateValues []string
+			data.IpSshServerAlgorithmMac.ElementsAs(ctx, &dataValues, false)
+			state.IpSshServerAlgorithmMac.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/ssh/server/algorithm/mac/mac-options[.=%v]", v))
+				}
+			}
+		}
+	}
+	if !state.IpSshServerAlgorithmEncryption.IsNull() {
+		if data.IpSshServerAlgorithmEncryption.IsNull() {
+			var values []string
+			state.IpSshServerAlgorithmEncryption.ElementsAs(ctx, &values, false)
+			for _, v := range values {
+				b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/ssh/server/algorithm/encryption/encrypt-options[.=%v]", v))
+			}
+		} else {
+			var dataValues, stateValues []string
+			data.IpSshServerAlgorithmEncryption.ElementsAs(ctx, &dataValues, false)
+			state.IpSshServerAlgorithmEncryption.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/ssh/server/algorithm/encryption/encrypt-options[.=%v]", v))
+				}
+			}
+		}
+	}
 	if !state.IpSshBulkModeWindowSize.IsNull() && data.IpSshBulkModeWindowSize.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/ssh/bulk-mode/window-size")
 	}
@@ -5654,6 +5850,34 @@ func (data *System) addDeletePathsXML(ctx context.Context, body string) string {
 	}
 	if !data.ControlPlaneServicePolicyInput.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/control-plane/Cisco-IOS-XE-policy:service-policy/input")
+	}
+	if !data.IpSshServerAlgorithmAuthentication.IsNull() {
+		var values []string
+		data.IpSshServerAlgorithmAuthentication.ElementsAs(ctx, &values, false)
+		for _, v := range values {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/ip/ssh/server/algorithm/authentication/authentication-options[.=%v]", v))
+		}
+	}
+	if !data.IpSshServerAlgorithmKex.IsNull() {
+		var values []string
+		data.IpSshServerAlgorithmKex.ElementsAs(ctx, &values, false)
+		for _, v := range values {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/ip/ssh/server/algorithm/kex/kex-options[.=%v]", v))
+		}
+	}
+	if !data.IpSshServerAlgorithmMac.IsNull() {
+		var values []string
+		data.IpSshServerAlgorithmMac.ElementsAs(ctx, &values, false)
+		for _, v := range values {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/ip/ssh/server/algorithm/mac/mac-options[.=%v]", v))
+		}
+	}
+	if !data.IpSshServerAlgorithmEncryption.IsNull() {
+		var values []string
+		data.IpSshServerAlgorithmEncryption.ElementsAs(ctx, &values, false)
+		for _, v := range values {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/ip/ssh/server/algorithm/encryption/encrypt-options[.=%v]", v))
+		}
 	}
 	if !data.IpSshBulkModeWindowSize.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/ssh/bulk-mode/window-size")

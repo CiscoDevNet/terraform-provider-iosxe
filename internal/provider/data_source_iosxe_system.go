@@ -475,6 +475,26 @@ func (d *SystemDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 				MarkdownDescription: "Window-size value",
 				Computed:            true,
 			},
+			"ip_ssh_server_algorithm_encryption": schema.ListAttribute{
+				MarkdownDescription: "SSH server encryption algorithms",
+				ElementType:         types.StringType,
+				Computed:            true,
+			},
+			"ip_ssh_server_algorithm_mac": schema.ListAttribute{
+				MarkdownDescription: "SSH server MAC algorithms",
+				ElementType:         types.StringType,
+				Computed:            true,
+			},
+			"ip_ssh_server_algorithm_kex": schema.ListAttribute{
+				MarkdownDescription: "SSH server key exchange algorithms",
+				ElementType:         types.StringType,
+				Computed:            true,
+			},
+			"ip_ssh_server_algorithm_authentication": schema.ListAttribute{
+				MarkdownDescription: "SSH server authentication algorithms",
+				ElementType:         types.StringType,
+				Computed:            true,
+			},
 			"control_plane_service_policy_input": schema.StringAttribute{
 				MarkdownDescription: "Assign policy-map to the input of an interface",
 				Computed:            true,
