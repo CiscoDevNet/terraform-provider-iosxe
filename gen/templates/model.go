@@ -450,8 +450,34 @@ func (data {{camelCase .Name}}) addToBodyXML(ctx context.Context, config {{camel
 	return body
 }
 
-// End of section. //template:end toBodyXML
+{{- if hasMacroAttributes .Attributes}}
 
+func (data *{{camelCase .Name}}) toBodyXMLSkipMacro(ctx context.Context, config {{camelCase .Name}}, res xmldot.Result) string {
+	{{- range (xpathAttributes .Attributes)}}
+	{{- if .Macro}}
+	saved{{toGoName .TfName}} := data.{{toGoName .TfName}}
+	if !data.{{toGoName .TfName}}.IsNull() && data.{{toGoName .TfName}}.ValueBool() {
+		if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/{{.XPath}}"); value.Exists() {
+			tflog.Debug(ctx, fmt.Sprintf("%s: Skipping macro attribute {{.TfName}} — already present on device", data.getPath()))
+			data.{{toGoName .TfName}} = types.BoolNull()
+		}
+	}
+	{{- end}}
+	{{- end}}
+
+	body := data.toBodyXML(ctx, config)
+
+	{{- range (xpathAttributes .Attributes)}}
+	{{- if .Macro}}
+	data.{{toGoName .TfName}} = saved{{toGoName .TfName}}
+	{{- end}}
+	{{- end}}
+
+	return body
+}
+{{- end}}
+
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 

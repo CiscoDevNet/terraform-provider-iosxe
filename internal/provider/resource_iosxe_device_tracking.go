@@ -320,7 +320,6 @@ func (r *DeviceTrackingResource) Create(ctx context.Context, req resource.Create
 			defer device.NetconfOpMutex.Unlock()
 		}
 		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
-
 		body := plan.toBodyXML(ctx, config)
 
 		if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
@@ -446,7 +445,6 @@ func (r *DeviceTrackingResource) Update(ctx context.Context, req resource.Update
 			defer device.NetconfOpMutex.Unlock()
 		}
 		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
-
 		body := plan.toBodyXML(ctx, config)
 		body = plan.addDeletedItemsXML(ctx, state, body)
 

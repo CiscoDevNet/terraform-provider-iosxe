@@ -479,8 +479,16 @@ func (r *InterfacePortChannelSubinterfaceResource) Create(ctx context.Context, r
 			defer device.NetconfOpMutex.Unlock()
 		}
 		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
-
-		body := plan.toBodyXML(ctx, config)
+		// Pre-read device state so macro attributes already present can be skipped.
+		// CLI-macro commands (e.g. auto qos) are not idempotent — re-sending them
+		// triggers "already configured" errors on the device.
+		filter := helpers.GetXpathFilter(plan.getXPath())
+		macroState, err := device.NetconfClient.GetConfig(ctx, "running", filter)
+		if err != nil {
+			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to pre-read device state for macro check (%s), got error: %s", plan.getPath(), err))
+			return
+		}
+		body := plan.toBodyXMLSkipMacro(ctx, config, macroState.Res)
 
 		if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
 			resp.Diagnostics.AddError("Client Error", err.Error())
@@ -605,8 +613,13 @@ func (r *InterfacePortChannelSubinterfaceResource) Update(ctx context.Context, r
 			defer device.NetconfOpMutex.Unlock()
 		}
 		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
-
-		body := plan.toBodyXML(ctx, config)
+		filter := helpers.GetXpathFilter(plan.getXPath())
+		macroState, err := device.NetconfClient.GetConfig(ctx, "running", filter)
+		if err != nil {
+			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to pre-read device state for macro check (%s), got error: %s", plan.getPath(), err))
+			return
+		}
+		body := plan.toBodyXMLSkipMacro(ctx, config, macroState.Res)
 		body = plan.addDeletedItemsXML(ctx, state, body)
 
 		if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {

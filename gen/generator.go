@@ -194,6 +194,7 @@ type YamlConfigAttribute struct {
 	NoAugmentConfig    bool                  `yaml:"no_augment_config"`
 	DeleteParent       bool                  `yaml:"delete_parent"`
 	NoDelete           bool                  `yaml:"no_delete"`
+	Macro              bool                  `yaml:"macro"`
 	ReadFilter         string                `yaml:"read_filter"`
 	NormalizeIPv6      bool                  `yaml:"normalize_ipv6"`
 	TestTags           []string              `yaml:"test_tags"`
@@ -286,6 +287,15 @@ func HasId(attributes []YamlConfigAttribute) bool {
 func HasWriteOnlyId(attributes []YamlConfigAttribute) bool {
 	for _, attr := range attributes {
 		if attr.Id && attr.WriteOnly {
+			return true
+		}
+	}
+	return false
+}
+
+func HasMacroAttributes(attributes []YamlConfigAttribute) bool {
+	for _, attr := range attributes {
+		if attr.Macro {
 			return true
 		}
 	}
@@ -626,6 +636,7 @@ var functions = template.FuncMap{
 	"snakeCase":                SnakeCase,
 	"hasId":                    HasId,
 	"hasWriteOnlyId":           HasWriteOnlyId,
+	"hasMacroAttributes":       HasMacroAttributes,
 	"hasSensitiveAttr":         HasSensitiveAttr,
 	"add":                      Add,
 	"getImportExcludes":        GetImportExcludes,

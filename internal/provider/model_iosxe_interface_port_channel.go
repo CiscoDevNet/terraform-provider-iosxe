@@ -826,6 +826,101 @@ func (data InterfacePortChannel) addToBodyXML(ctx context.Context, config Interf
 	return body
 }
 
+func (data *InterfacePortChannel) toBodyXMLSkipMacro(ctx context.Context, config InterfacePortChannel, res xmldot.Result) string {
+	savedAutoQosClassify := data.AutoQosClassify
+	if !data.AutoQosClassify.IsNull() && data.AutoQosClassify.ValueBool() {
+		if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-switch:auto/qos/classify"); value.Exists() {
+			tflog.Debug(ctx, fmt.Sprintf("%s: Skipping macro attribute auto_qos_classify — already present on device", data.getPath()))
+			data.AutoQosClassify = types.BoolNull()
+		}
+	}
+	savedAutoQosClassifyPolice := data.AutoQosClassifyPolice
+	if !data.AutoQosClassifyPolice.IsNull() && data.AutoQosClassifyPolice.ValueBool() {
+		if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-switch:auto/qos/classify/police"); value.Exists() {
+			tflog.Debug(ctx, fmt.Sprintf("%s: Skipping macro attribute auto_qos_classify_police — already present on device", data.getPath()))
+			data.AutoQosClassifyPolice = types.BoolNull()
+		}
+	}
+	savedAutoQosTrust := data.AutoQosTrust
+	if !data.AutoQosTrust.IsNull() && data.AutoQosTrust.ValueBool() {
+		if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-switch:auto/qos/trust"); value.Exists() {
+			tflog.Debug(ctx, fmt.Sprintf("%s: Skipping macro attribute auto_qos_trust — already present on device", data.getPath()))
+			data.AutoQosTrust = types.BoolNull()
+		}
+	}
+	savedAutoQosTrustCos := data.AutoQosTrustCos
+	if !data.AutoQosTrustCos.IsNull() && data.AutoQosTrustCos.ValueBool() {
+		if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-switch:auto/qos/trust/cos"); value.Exists() {
+			tflog.Debug(ctx, fmt.Sprintf("%s: Skipping macro attribute auto_qos_trust_cos — already present on device", data.getPath()))
+			data.AutoQosTrustCos = types.BoolNull()
+		}
+	}
+	savedAutoQosTrustDscp := data.AutoQosTrustDscp
+	if !data.AutoQosTrustDscp.IsNull() && data.AutoQosTrustDscp.ValueBool() {
+		if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-switch:auto/qos/trust/dscp"); value.Exists() {
+			tflog.Debug(ctx, fmt.Sprintf("%s: Skipping macro attribute auto_qos_trust_dscp — already present on device", data.getPath()))
+			data.AutoQosTrustDscp = types.BoolNull()
+		}
+	}
+	savedAutoQosVideoCts := data.AutoQosVideoCts
+	if !data.AutoQosVideoCts.IsNull() && data.AutoQosVideoCts.ValueBool() {
+		if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-switch:auto/qos/video/cts"); value.Exists() {
+			tflog.Debug(ctx, fmt.Sprintf("%s: Skipping macro attribute auto_qos_video_cts — already present on device", data.getPath()))
+			data.AutoQosVideoCts = types.BoolNull()
+		}
+	}
+	savedAutoQosVideoIpCamera := data.AutoQosVideoIpCamera
+	if !data.AutoQosVideoIpCamera.IsNull() && data.AutoQosVideoIpCamera.ValueBool() {
+		if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-switch:auto/qos/video/ip-camera"); value.Exists() {
+			tflog.Debug(ctx, fmt.Sprintf("%s: Skipping macro attribute auto_qos_video_ip_camera — already present on device", data.getPath()))
+			data.AutoQosVideoIpCamera = types.BoolNull()
+		}
+	}
+	savedAutoQosVideoMediaPlayer := data.AutoQosVideoMediaPlayer
+	if !data.AutoQosVideoMediaPlayer.IsNull() && data.AutoQosVideoMediaPlayer.ValueBool() {
+		if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-switch:auto/qos/video/media-player"); value.Exists() {
+			tflog.Debug(ctx, fmt.Sprintf("%s: Skipping macro attribute auto_qos_video_media_player — already present on device", data.getPath()))
+			data.AutoQosVideoMediaPlayer = types.BoolNull()
+		}
+	}
+	savedAutoQosVoipCiscoPhone := data.AutoQosVoipCiscoPhone
+	if !data.AutoQosVoipCiscoPhone.IsNull() && data.AutoQosVoipCiscoPhone.ValueBool() {
+		if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-switch:auto/qos/voip/cisco-phone"); value.Exists() {
+			tflog.Debug(ctx, fmt.Sprintf("%s: Skipping macro attribute auto_qos_voip_cisco_phone — already present on device", data.getPath()))
+			data.AutoQosVoipCiscoPhone = types.BoolNull()
+		}
+	}
+	savedAutoQosVoipCiscoSoftphone := data.AutoQosVoipCiscoSoftphone
+	if !data.AutoQosVoipCiscoSoftphone.IsNull() && data.AutoQosVoipCiscoSoftphone.ValueBool() {
+		if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-switch:auto/qos/voip/cisco-softphone"); value.Exists() {
+			tflog.Debug(ctx, fmt.Sprintf("%s: Skipping macro attribute auto_qos_voip_cisco_softphone — already present on device", data.getPath()))
+			data.AutoQosVoipCiscoSoftphone = types.BoolNull()
+		}
+	}
+	savedAutoQosVoipTrust := data.AutoQosVoipTrust
+	if !data.AutoQosVoipTrust.IsNull() && data.AutoQosVoipTrust.ValueBool() {
+		if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-switch:auto/qos/voip/trust"); value.Exists() {
+			tflog.Debug(ctx, fmt.Sprintf("%s: Skipping macro attribute auto_qos_voip_trust — already present on device", data.getPath()))
+			data.AutoQosVoipTrust = types.BoolNull()
+		}
+	}
+
+	body := data.toBodyXML(ctx, config)
+	data.AutoQosClassify = savedAutoQosClassify
+	data.AutoQosClassifyPolice = savedAutoQosClassifyPolice
+	data.AutoQosTrust = savedAutoQosTrust
+	data.AutoQosTrustCos = savedAutoQosTrustCos
+	data.AutoQosTrustDscp = savedAutoQosTrustDscp
+	data.AutoQosVideoCts = savedAutoQosVideoCts
+	data.AutoQosVideoIpCamera = savedAutoQosVideoIpCamera
+	data.AutoQosVideoMediaPlayer = savedAutoQosVideoMediaPlayer
+	data.AutoQosVoipCiscoPhone = savedAutoQosVoipCiscoPhone
+	data.AutoQosVoipCiscoSoftphone = savedAutoQosVoipCiscoSoftphone
+	data.AutoQosVoipTrust = savedAutoQosVoipTrust
+
+	return body
+}
+
 // End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
@@ -3093,39 +3188,6 @@ func (data *InterfacePortChannel) addDeletedItemsXML(ctx context.Context, state 
 	if !state.TrustDevice.IsNull() && data.TrustDevice.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/trust/device")
 	}
-	if !state.AutoQosVoipTrust.IsNull() && data.AutoQosVoipTrust.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-switch:auto/qos/voip/trust")
-	}
-	if !state.AutoQosVoipCiscoSoftphone.IsNull() && data.AutoQosVoipCiscoSoftphone.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-switch:auto/qos/voip/cisco-softphone")
-	}
-	if !state.AutoQosVoipCiscoPhone.IsNull() && data.AutoQosVoipCiscoPhone.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-switch:auto/qos/voip/cisco-phone")
-	}
-	if !state.AutoQosVideoMediaPlayer.IsNull() && data.AutoQosVideoMediaPlayer.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-switch:auto/qos/video/media-player")
-	}
-	if !state.AutoQosVideoIpCamera.IsNull() && data.AutoQosVideoIpCamera.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-switch:auto/qos/video/ip-camera")
-	}
-	if !state.AutoQosVideoCts.IsNull() && data.AutoQosVideoCts.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-switch:auto/qos/video/cts")
-	}
-	if !state.AutoQosTrustDscp.IsNull() && data.AutoQosTrustDscp.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-switch:auto/qos/trust/dscp")
-	}
-	if !state.AutoQosTrustCos.IsNull() && data.AutoQosTrustCos.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-switch:auto/qos/trust/cos")
-	}
-	if !state.AutoQosTrust.IsNull() && data.AutoQosTrust.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-switch:auto/qos/trust")
-	}
-	if !state.AutoQosClassifyPolice.IsNull() && data.AutoQosClassifyPolice.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-switch:auto/qos/classify/police")
-	}
-	if !state.AutoQosClassify.IsNull() && data.AutoQosClassify.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-switch:auto/qos/classify")
-	}
 	if !state.SpanningTreeGuard.IsNull() && data.SpanningTreeGuard.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-spanning-tree:spanning-tree/guard")
 	}
@@ -3407,39 +3469,6 @@ func (data *InterfacePortChannel) addDeletePathsXML(ctx context.Context, body st
 	}
 	if !data.TrustDevice.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/trust/device")
-	}
-	if !data.AutoQosVoipTrust.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-switch:auto/qos/voip/trust")
-	}
-	if !data.AutoQosVoipCiscoSoftphone.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-switch:auto/qos/voip/cisco-softphone")
-	}
-	if !data.AutoQosVoipCiscoPhone.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-switch:auto/qos/voip/cisco-phone")
-	}
-	if !data.AutoQosVideoMediaPlayer.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-switch:auto/qos/video/media-player")
-	}
-	if !data.AutoQosVideoIpCamera.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-switch:auto/qos/video/ip-camera")
-	}
-	if !data.AutoQosVideoCts.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-switch:auto/qos/video/cts")
-	}
-	if !data.AutoQosTrustDscp.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-switch:auto/qos/trust/dscp")
-	}
-	if !data.AutoQosTrustCos.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-switch:auto/qos/trust/cos")
-	}
-	if !data.AutoQosTrust.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-switch:auto/qos/trust")
-	}
-	if !data.AutoQosClassifyPolice.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-switch:auto/qos/classify/police")
-	}
-	if !data.AutoQosClassify.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-switch:auto/qos/classify")
 	}
 	if !data.SpanningTreeGuard.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:spanning-tree/guard")

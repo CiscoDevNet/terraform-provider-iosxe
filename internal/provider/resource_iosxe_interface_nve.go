@@ -212,7 +212,6 @@ func (r *InterfaceNVEResource) Create(ctx context.Context, req resource.CreateRe
 			defer device.NetconfOpMutex.Unlock()
 		}
 		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
-
 		body := plan.toBodyXML(ctx, config)
 
 		if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
@@ -338,7 +337,6 @@ func (r *InterfaceNVEResource) Update(ctx context.Context, req resource.UpdateRe
 			defer device.NetconfOpMutex.Unlock()
 		}
 		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
-
 		body := plan.toBodyXML(ctx, config)
 		body = plan.addDeletedItemsXML(ctx, state, body)
 
