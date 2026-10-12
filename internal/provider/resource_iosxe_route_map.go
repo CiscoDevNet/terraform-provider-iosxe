@@ -532,7 +532,7 @@ func (r *RouteMapResource) Schema(ctx context.Context, req resource.SchemaReques
 							Optional:            true,
 						},
 						"set_communities": schema.ListAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("BGP community value - can be a number (AA:NN format) or well-known value (internet, local-AS, no-advertise, no-export, gshut)").String,
+							MarkdownDescription: helpers.NewAttributeDescription("BGP community value - can be a number (AA:NN format) or well-known value (internet, local-AS, no-advertise, no-export, gshut). Requires IOS-XE 17.15 or later").String,
 							ElementType:         types.StringType,
 							Optional:            true,
 						},
