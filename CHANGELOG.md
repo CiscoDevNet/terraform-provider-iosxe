@@ -1,3 +1,7 @@
+## Unreleased
+
+- Add `re_originate_route_type5` attribute to `profiles` list in `iosxe_evpn` resource and data source for L2VPN EVPN profile `re-originate route-type5` configuration
+
 ## 1.1.1
 
 - Bump `go-netconf` dependency to v0.6.2, reverting a transitive `scrapligo` dependency bump to v1.4.1 that caused intermittent connection errors on the first operation of a new NETCONF session against some IOS-XE devices
