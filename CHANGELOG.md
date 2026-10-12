@@ -1,6 +1,6 @@
 ## Unreleased
 
-- Fix code generator not wiring `read_filter` into generated model code, causing `iosxe_route_map` `set_communities` to return raw decimal integers instead of normalized AA:NN community values on state refresh, resulting in perpetual plan drift
+- Fix `iosxe_route_map` `set_communities` returning decimal community values instead of `AA:NN` notation on read, causing perpetual plan drift. The normalization added in 1.0.0 was not applied due to a code generator regression
 - Add `re_originate_route_type5` attribute to `profiles` list in `iosxe_evpn` resource and data source for L2VPN EVPN profile `re-originate route-type5` configuration
 
 ## 1.1.1
