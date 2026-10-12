@@ -282,6 +282,16 @@ func HasId(attributes []YamlConfigAttribute) bool {
 	return false
 }
 
+// Templating helper function to return true if any id attribute is write-only
+func HasWriteOnlyId(attributes []YamlConfigAttribute) bool {
+	for _, attr := range attributes {
+		if attr.Id && attr.WriteOnly {
+			return true
+		}
+	}
+	return false
+}
+
 // Templating helper function to check if any attribute is sensitive (recursive)
 func HasSensitiveAttr(attributes []YamlConfigAttribute) bool {
 	for _, attr := range attributes {
@@ -615,6 +625,7 @@ var functions = template.FuncMap{
 	"camelCase":                CamelCase,
 	"snakeCase":                SnakeCase,
 	"hasId":                    HasId,
+	"hasWriteOnlyId":           HasWriteOnlyId,
 	"hasSensitiveAttr":         HasSensitiveAttr,
 	"add":                      Add,
 	"getImportExcludes":        GetImportExcludes,
