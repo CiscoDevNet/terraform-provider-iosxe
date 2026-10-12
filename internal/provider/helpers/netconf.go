@@ -698,6 +698,23 @@ func appendSiblingElement(body netconf.Body, parentPathSegments []string, remain
 		}
 	}
 
+	// A trailing segment may address a key element of the new sibling that has already been written
+	// from the predicate above, e.g. "/interface/GigabitEthernet[name='4']/name". Writing it a
+	// second time would leave a duplicate, empty key element behind, so the existing one is reused.
+	skipNestedKeyElement := false
+	if len(remainingSegments) == 2 {
+		nestedElementName, nestedKeys := parseXPathSegment(remainingSegments[1])
+		cleanNestedName := removeNamespacePrefix(nestedElementName)
+		if len(nestedKeys) == 0 {
+			for _, kv := range keys {
+				if kv.Key != "." && removeNamespacePrefix(kv.Key) == cleanNestedName {
+					skipNestedKeyElement = true
+					break
+				}
+			}
+		}
+	}
+
 	// Process any nested segments after the first one
 	nestedPathSegments := []string{cleanElementName}
 	if len(remainingSegments) > 1 {
@@ -706,6 +723,10 @@ func appendSiblingElement(body netconf.Body, parentPathSegments []string, remain
 			nestedElementName, nestedKeys := parseXPathSegment(nestedSegment)
 			cleanNestedName := removeNamespacePrefix(nestedElementName)
 			nestedPathSegments = append(nestedPathSegments, cleanNestedName)
+
+			if skipNestedKeyElement {
+				continue
+			}
 
 			// Start nested element
 			innerXML.WriteString(fmt.Sprintf("<%s>", cleanNestedName))
@@ -717,10 +738,12 @@ func appendSiblingElement(body netconf.Body, parentPathSegments []string, remain
 		}
 
 		// Close nested elements in reverse order (except the outermost which is closed separately)
-		for i := len(remainingSegments) - 1; i > 0; i-- {
-			nestedElementName, _ := parseXPathSegment(remainingSegments[i])
-			cleanNestedName := removeNamespacePrefix(nestedElementName)
-			innerXML.WriteString(fmt.Sprintf("</%s>", cleanNestedName))
+		if !skipNestedKeyElement {
+			for i := len(remainingSegments) - 1; i > 0; i-- {
+				nestedElementName, _ := parseXPathSegment(remainingSegments[i])
+				cleanNestedName := removeNamespacePrefix(nestedElementName)
+				innerXML.WriteString(fmt.Sprintf("</%s>", cleanNestedName))
+			}
 		}
 	}
 
@@ -1586,6 +1609,62 @@ func GetFromXPath(res xmldot.Result, xPath string) xmldot.Result {
 
 	// Single element or no element found
 	return current
+}
+
+// ListXPathKeys enumerates the list entries named elementName below parentXPath and returns their
+// key values, one []string per entry in document order, with the values ordered as in keyNames.
+//
+// It is used by bulk resources to discover which items exist on a device, for example when a
+// resource is imported and the full configuration below the parent container has to be read.
+// Entries that do not carry all requested keys are skipped, as they cannot be addressed.
+//
+// Example:
+//
+//	res:          <data><native><interface>
+//	                <GigabitEthernet><name>1</name></GigabitEthernet>
+//	                <GigabitEthernet><name>2</name></GigabitEthernet>
+//	                <Loopback><name>1</name></Loopback>
+//	              </interface></native></data>
+//	parentXPath:  "data/Cisco-IOS-XE-native:native/interface"
+//	elementName:  "GigabitEthernet"
+//	keyNames:     []string{"name"}
+//	Returns:      [][]string{{"1"}, {"2"}}
+func ListXPathKeys(res xmldot.Result, parentXPath, elementName string, keyNames []string) [][]string {
+	parent := GetFromXPath(res, parentXPath)
+	if !parent.Exists() {
+		return nil
+	}
+
+	name := removeNamespacePrefix(elementName)
+
+	// A single element is addressed directly, multiple siblings by numeric index. This mirrors how
+	// GetFromXPath walks repeated elements.
+	var entries []xmldot.Result
+	if count := parent.Get(name + ".#").Int(); count > 1 {
+		for i := 0; i < int(count); i++ {
+			entries = append(entries, parent.Get(fmt.Sprintf("%s.%d", name, i)))
+		}
+	} else if entry := parent.Get(name); entry.Exists() {
+		entries = append(entries, entry)
+	}
+
+	keys := make([][]string, 0, len(entries))
+	for _, entry := range entries {
+		values := make([]string, 0, len(keyNames))
+		complete := true
+		for _, keyName := range keyNames {
+			value := entry.Get(removeNamespacePrefix(keyName))
+			if !value.Exists() {
+				complete = false
+				break
+			}
+			values = append(values, value.String())
+		}
+		if complete {
+			keys = append(keys, values)
+		}
+	}
+	return keys
 }
 
 // IsListPath checks if an XPath represents a list item (ends with a predicate).
