@@ -1,3 +1,7 @@
+## Unreleased
+
+- Fix perpetual `terraform plan` drift on `iosxe_access_list_extended` port and DSCP attributes where IOS-XE returns symbolic names (e.g., `www`, `bgp`, `ef`, `af41`) via NETCONF get-config for values that were configured numerically (e.g., `80`, `179`, `46`, `34`). The provider now normalizes symbolic names back to numeric equivalents on read.
+
 ## 1.1.1
 
 - Bump `go-netconf` dependency to v0.6.2, reverting a transitive `scrapligo` dependency bump to v1.4.1 that caused intermittent connection errors on the first operation of a new NETCONF session against some IOS-XE devices
