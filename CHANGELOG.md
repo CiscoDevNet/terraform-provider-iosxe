@@ -1,5 +1,6 @@
 ## Unreleased
 
+- Add `authentication_local_rsa_sig`, `authentication_remote_rsa_sig`, `authentication_local_ecdsa_sig`, `authentication_remote_ecdsa_sig`, `pki_trustpoints`, and `match_certificate_maps` attributes to `iosxe_crypto_ikev2_profile` resource and data source for PKI certificate-based authentication support
 - Add `af_interfaces` attribute to `iosxe_eigrp` and `iosxe_eigrp_vrf` resources and data sources for EIGRP named mode per-interface address-family controls (`af-interface`), including `passive_interface` and `split_horizon`
 - Fix nil pointer dereference when invoking actions by setting `ActionData` in the provider `Configure` method
 - Fix `iosxe_route_map` `set_communities` returning decimal community values instead of `AA:NN` notation on read, causing perpetual plan drift. The normalization added in 1.0.0 was not applied due to a code generator regression
