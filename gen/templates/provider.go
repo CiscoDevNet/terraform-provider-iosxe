@@ -571,6 +571,7 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 
 	resp.DataSourceData = &data
 	resp.ResourceData = &data
+	resp.ActionData = &data
 }
 
 func (p *IosxeProvider) Resources(_ context.Context) []func() resource.Resource {
