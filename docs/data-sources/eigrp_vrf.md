@@ -33,6 +33,7 @@ data "iosxe_eigrp_vrf" "example" {
 
 ### Read-Only
 
+- `af_interfaces` (Attributes List) Enter Address Family interface configuration (see [below for nested schema](#nestedatt--af_interfaces))
 - `auto_summary` (Boolean) Enable automatic network number summarization
 - `autonomous_system` (Number) Autonomous system number
 - `id` (String) The path of the retrieved object.
@@ -42,6 +43,16 @@ data "iosxe_eigrp_vrf" "example" {
 - `stub_connected` (Boolean) Enable EIGRP stub routing and advertise connected routes (`eigrp stub connected`)
 - `stub_summary` (Boolean) Enable EIGRP stub routing and advertise summary routes (`eigrp stub summary`)
 - `topology_base` (String) Base topology (always base)
+
+<a id="nestedatt--af_interfaces"></a>
+### Nested Schema for `af_interfaces`
+
+Read-Only:
+
+- `interface` (String) Interface name or default for the default AF interface
+- `passive_interface` (Boolean) Suppress address updates on an interface
+- `split_horizon` (Boolean) Perform split horizon
+
 
 <a id="nestedatt--networks"></a>
 ### Nested Schema for `networks`
