@@ -8,6 +8,8 @@ resource "iosxe_eigrp" "example" {
       wildcard = "0.0.255.255"
     }
   ]
-  auto_summary = false
-  shutdown     = false
+  auto_summary   = false
+  stub_connected = true
+  stub_summary   = true
+  shutdown       = false
 }

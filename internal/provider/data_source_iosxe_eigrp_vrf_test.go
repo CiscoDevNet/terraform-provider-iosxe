@@ -37,6 +37,8 @@ func TestAccDataSourceIosxeEIGRPVRF(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eigrp_vrf.test", "networks.0.ip", "10.20.0.0"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eigrp_vrf.test", "networks.0.wildcard", "0.0.255.255"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eigrp_vrf.test", "auto_summary", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eigrp_vrf.test", "stub_connected", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eigrp_vrf.test", "stub_summary", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eigrp_vrf.test", "shutdown", "false"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -81,6 +83,8 @@ func testAccDataSourceIosxeEIGRPVRFConfig() string {
 	config += `		wildcard = "0.0.255.255"` + "\n"
 	config += `	}]` + "\n"
 	config += `	auto_summary = false` + "\n"
+	config += `	stub_connected = true` + "\n"
+	config += `	stub_summary = true` + "\n"
 	config += `	shutdown = false` + "\n"
 	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
