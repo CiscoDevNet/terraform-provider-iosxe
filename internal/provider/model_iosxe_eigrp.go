@@ -48,6 +48,8 @@ type EIGRP struct {
 	TopologyBase     types.String        `tfsdk:"topology_base"`
 	AutoSummary      types.Bool          `tfsdk:"auto_summary"`
 	AfInterfaces     []EIGRPAfInterfaces `tfsdk:"af_interfaces"`
+	StubConnected    types.Bool          `tfsdk:"stub_connected"`
+	StubSummary      types.Bool          `tfsdk:"stub_summary"`
 	Shutdown         types.Bool          `tfsdk:"shutdown"`
 }
 type EIGRPNetworks struct {
@@ -70,6 +72,8 @@ type EIGRPData struct {
 	TopologyBase     types.String            `tfsdk:"topology_base"`
 	AutoSummary      types.Bool              `tfsdk:"auto_summary"`
 	AfInterfaces     []EIGRPAfInterfacesData `tfsdk:"af_interfaces"`
+	StubConnected    types.Bool              `tfsdk:"stub_connected"`
+	StubSummary      types.Bool              `tfsdk:"stub_summary"`
 	Shutdown         types.Bool              `tfsdk:"shutdown"`
 }
 type EIGRPNetworksData struct {
@@ -160,6 +164,20 @@ func (data EIGRP) addToBodyXML(ctx context.Context, config EIGRP, body netconf.B
 				cBody = helpers.SetFromXPath(cBody, "split-horizon", item.SplitHorizon.ValueBool())
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/af-interface", cBody.Res())
+		}
+	}
+	if !data.StubConnected.IsNull() && !data.StubConnected.IsUnknown() {
+		if data.StubConnected.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/eigrp/stub/advertise/connected", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/eigrp/stub/advertise/connected")
+		}
+	}
+	if !data.StubSummary.IsNull() && !data.StubSummary.IsUnknown() {
+		if data.StubSummary.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/eigrp/stub/advertise/summary", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/eigrp/stub/advertise/summary")
 		}
 	}
 	if !data.Shutdown.IsNull() && !data.Shutdown.IsUnknown() {
@@ -272,6 +290,24 @@ func (data *EIGRP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 			data.AfInterfaces[i].SplitHorizon = types.BoolNull()
 		}
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/eigrp/stub/advertise/connected"); !data.StubConnected.IsNull() {
+		if value.Exists() {
+			data.StubConnected = types.BoolValue(true)
+		} else {
+			data.StubConnected = types.BoolValue(false)
+		}
+	} else {
+		data.StubConnected = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/eigrp/stub/advertise/summary"); !data.StubSummary.IsNull() {
+		if value.Exists() {
+			data.StubSummary = types.BoolValue(true)
+		} else {
+			data.StubSummary = types.BoolValue(false)
+		}
+	} else {
+		data.StubSummary = types.BoolNull()
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/shutdown"); !data.Shutdown.IsNull() {
 		if value.Exists() {
 			data.Shutdown = types.BoolValue(value.Bool())
@@ -335,6 +371,16 @@ func (data *EIGRP) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			return true
 		})
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/eigrp/stub/advertise/connected"); value.Exists() {
+		data.StubConnected = types.BoolValue(true)
+	} else {
+		data.StubConnected = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/eigrp/stub/advertise/summary"); value.Exists() {
+		data.StubSummary = types.BoolValue(true)
+	} else {
+		data.StubSummary = types.BoolValue(false)
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/shutdown"); value.Exists() {
 		data.Shutdown = types.BoolValue(value.Bool())
 	} else {
@@ -396,6 +442,16 @@ func (data *EIGRPData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			return true
 		})
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/eigrp/stub/advertise/connected"); value.Exists() {
+		data.StubConnected = types.BoolValue(true)
+	} else {
+		data.StubConnected = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/eigrp/stub/advertise/summary"); value.Exists() {
+		data.StubSummary = types.BoolValue(true)
+	} else {
+		data.StubSummary = types.BoolValue(false)
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/shutdown"); value.Exists() {
 		data.Shutdown = types.BoolValue(value.Bool())
 	} else {
@@ -411,6 +467,12 @@ func (data *EIGRP) addDeletedItemsXML(ctx context.Context, state EIGRP, body str
 	b := netconf.NewBody(body)
 	if !state.Shutdown.IsNull() && data.Shutdown.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/shutdown")
+	}
+	if !state.StubSummary.IsNull() && data.StubSummary.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/eigrp/stub/advertise/summary")
+	}
+	if !state.StubConnected.IsNull() && data.StubConnected.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/eigrp/stub/advertise/connected")
 	}
 	for i := range state.AfInterfaces {
 		stateKeys := [...]string{"interface"}
@@ -500,6 +562,12 @@ func (data *EIGRP) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
 	if !data.Shutdown.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/shutdown")
+	}
+	if !data.StubSummary.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/eigrp/stub/advertise/summary")
+	}
+	if !data.StubConnected.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/eigrp/stub/advertise/connected")
 	}
 	for i := range data.AfInterfaces {
 		keys := [...]string{"interface"}

@@ -40,6 +40,8 @@ func TestAccDataSourceIosxeEIGRPVRF(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eigrp_vrf.test", "af_interfaces.0.interface", "default"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eigrp_vrf.test", "af_interfaces.0.passive_interface", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eigrp_vrf.test", "af_interfaces.0.split_horizon", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eigrp_vrf.test", "stub_connected", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eigrp_vrf.test", "stub_summary", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eigrp_vrf.test", "shutdown", "false"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -89,6 +91,8 @@ func testAccDataSourceIosxeEIGRPVRFConfig() string {
 	config += `		passive_interface = true` + "\n"
 	config += `		split_horizon = false` + "\n"
 	config += `	}]` + "\n"
+	config += `	stub_connected = true` + "\n"
+	config += `	stub_summary = true` + "\n"
 	config += `	shutdown = false` + "\n"
 	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"

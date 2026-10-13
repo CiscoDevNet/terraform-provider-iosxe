@@ -79,8 +79,6 @@ type RouteMapEntries struct {
 	MatchTags                              types.List                          `tfsdk:"match_tags"`
 	MatchTrack                             types.Int64                         `tfsdk:"match_track"`
 	MatchAsPathsLegacy                     types.List                          `tfsdk:"match_as_paths_legacy"`
-	MatchCommunityListsLegacy              types.List                          `tfsdk:"match_community_lists_legacy"`
-	MatchExtcommunityListsLegacy           types.List                          `tfsdk:"match_extcommunity_lists_legacy"`
 	MatchLocalPreferencesLegacy            types.List                          `tfsdk:"match_local_preferences_legacy"`
 	MatchAsPaths                           types.List                          `tfsdk:"match_as_paths"`
 	MatchCommunityLists                    types.List                          `tfsdk:"match_community_lists"`
@@ -117,13 +115,6 @@ type RouteMapEntries struct {
 	SetAsPathPrependAsLegacy               types.String                        `tfsdk:"set_as_path_prepend_as_legacy"`
 	SetAsPathPrependLastAsLegacy           types.Int64                         `tfsdk:"set_as_path_prepend_last_as_legacy"`
 	SetAsPathTagLegacy                     types.Bool                          `tfsdk:"set_as_path_tag_legacy"`
-	SetCommunityNoneLegacy                 types.Bool                          `tfsdk:"set_community_none_legacy"`
-	SetCommunitiesLegacy                   types.List                          `tfsdk:"set_communities_legacy"`
-	SetCommunitiesAdditiveLegacy           types.Bool                          `tfsdk:"set_communities_additive_legacy"`
-	SetCommunityListDeleteLegacy           types.Bool                          `tfsdk:"set_community_list_delete_legacy"`
-	SetCommunityListStandardLegacy         types.Int64                         `tfsdk:"set_community_list_standard_legacy"`
-	SetCommunityListExpandedLegacy         types.Int64                         `tfsdk:"set_community_list_expanded_legacy"`
-	SetCommunityListNameLegacy             types.String                        `tfsdk:"set_community_list_name_legacy"`
 	SetExtcomunityRtLegacy                 types.List                          `tfsdk:"set_extcomunity_rt_legacy"`
 	SetExtcomunitySooLegacy                types.String                        `tfsdk:"set_extcomunity_soo_legacy"`
 	SetExtcomunityVpnDistinguisherLegacy   types.String                        `tfsdk:"set_extcomunity_vpn_distinguisher_legacy"`
@@ -197,8 +188,6 @@ type RouteMapEntriesData struct {
 	MatchTags                              types.List                              `tfsdk:"match_tags"`
 	MatchTrack                             types.Int64                             `tfsdk:"match_track"`
 	MatchAsPathsLegacy                     types.List                              `tfsdk:"match_as_paths_legacy"`
-	MatchCommunityListsLegacy              types.List                              `tfsdk:"match_community_lists_legacy"`
-	MatchExtcommunityListsLegacy           types.List                              `tfsdk:"match_extcommunity_lists_legacy"`
 	MatchLocalPreferencesLegacy            types.List                              `tfsdk:"match_local_preferences_legacy"`
 	MatchAsPaths                           types.List                              `tfsdk:"match_as_paths"`
 	MatchCommunityLists                    types.List                              `tfsdk:"match_community_lists"`
@@ -235,13 +224,6 @@ type RouteMapEntriesData struct {
 	SetAsPathPrependAsLegacy               types.String                            `tfsdk:"set_as_path_prepend_as_legacy"`
 	SetAsPathPrependLastAsLegacy           types.Int64                             `tfsdk:"set_as_path_prepend_last_as_legacy"`
 	SetAsPathTagLegacy                     types.Bool                              `tfsdk:"set_as_path_tag_legacy"`
-	SetCommunityNoneLegacy                 types.Bool                              `tfsdk:"set_community_none_legacy"`
-	SetCommunitiesLegacy                   types.List                              `tfsdk:"set_communities_legacy"`
-	SetCommunitiesAdditiveLegacy           types.Bool                              `tfsdk:"set_communities_additive_legacy"`
-	SetCommunityListDeleteLegacy           types.Bool                              `tfsdk:"set_community_list_delete_legacy"`
-	SetCommunityListStandardLegacy         types.Int64                             `tfsdk:"set_community_list_standard_legacy"`
-	SetCommunityListExpandedLegacy         types.Int64                             `tfsdk:"set_community_list_expanded_legacy"`
-	SetCommunityListNameLegacy             types.String                            `tfsdk:"set_community_list_name_legacy"`
 	SetExtcomunityRtLegacy                 types.List                              `tfsdk:"set_extcomunity_rt_legacy"`
 	SetExtcomunitySooLegacy                types.String                            `tfsdk:"set_extcomunity_soo_legacy"`
 	SetExtcomunityVpnDistinguisherLegacy   types.String                            `tfsdk:"set_extcomunity_vpn_distinguisher_legacy"`
@@ -531,20 +513,6 @@ func (data RouteMap) addToBodyXML(ctx context.Context, config RouteMap, body net
 					cBody = helpers.AppendFromXPath(cBody, "match/as-path/access-list", v)
 				}
 			}
-			if !item.MatchCommunityListsLegacy.IsNull() && !item.MatchCommunityListsLegacy.IsUnknown() {
-				var values []string
-				item.MatchCommunityListsLegacy.ElementsAs(ctx, &values, false)
-				for _, v := range values {
-					cBody = helpers.AppendFromXPath(cBody, "match/community/name", v)
-				}
-			}
-			if !item.MatchExtcommunityListsLegacy.IsNull() && !item.MatchExtcommunityListsLegacy.IsUnknown() {
-				var values []string
-				item.MatchExtcommunityListsLegacy.ElementsAs(ctx, &values, false)
-				for _, v := range values {
-					cBody = helpers.AppendFromXPath(cBody, "match/extcommunity/name", v)
-				}
-			}
 			if !item.MatchLocalPreferencesLegacy.IsNull() && !item.MatchLocalPreferencesLegacy.IsUnknown() {
 				var values []int
 				item.MatchLocalPreferencesLegacy.ElementsAs(ctx, &values, false)
@@ -741,43 +709,6 @@ func (data RouteMap) addToBodyXML(ctx context.Context, config RouteMap, body net
 					cBody = helpers.RemoveFromXPath(cBody, "set/as-path/tag")
 				}
 			}
-			if !item.SetCommunityNoneLegacy.IsNull() && !item.SetCommunityNoneLegacy.IsUnknown() {
-				if item.SetCommunityNoneLegacy.ValueBool() {
-					cBody = helpers.SetFromXPath(cBody, "set/community/none", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "set/community/none")
-				}
-			}
-			if !item.SetCommunitiesLegacy.IsNull() && !item.SetCommunitiesLegacy.IsUnknown() {
-				var values []string
-				item.SetCommunitiesLegacy.ElementsAs(ctx, &values, false)
-				for _, v := range values {
-					cBody = helpers.AppendFromXPath(cBody, "set/community/community-well-known/community-list", v)
-				}
-			}
-			if !item.SetCommunitiesAdditiveLegacy.IsNull() && !item.SetCommunitiesAdditiveLegacy.IsUnknown() {
-				if item.SetCommunitiesAdditiveLegacy.ValueBool() {
-					cBody = helpers.SetFromXPath(cBody, "set/community/community-well-known/additive", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "set/community/community-well-known/additive")
-				}
-			}
-			if !item.SetCommunityListDeleteLegacy.IsNull() && !item.SetCommunityListDeleteLegacy.IsUnknown() {
-				if item.SetCommunityListDeleteLegacy.ValueBool() {
-					cBody = helpers.SetFromXPath(cBody, "set/comm-list/delete", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "set/comm-list/delete")
-				}
-			}
-			if !item.SetCommunityListStandardLegacy.IsNull() && !item.SetCommunityListStandardLegacy.IsUnknown() {
-				cBody = helpers.SetFromXPath(cBody, "set/comm-list/comm-list-standard", strconv.FormatInt(item.SetCommunityListStandardLegacy.ValueInt64(), 10))
-			}
-			if !item.SetCommunityListExpandedLegacy.IsNull() && !item.SetCommunityListExpandedLegacy.IsUnknown() {
-				cBody = helpers.SetFromXPath(cBody, "set/Cisco-IOS-XE-bgp:bgp-route-map-set/comm-list/comm-list-expanded", strconv.FormatInt(item.SetCommunityListExpandedLegacy.ValueInt64(), 10))
-			}
-			if !item.SetCommunityListNameLegacy.IsNull() && !item.SetCommunityListNameLegacy.IsUnknown() {
-				cBody = helpers.SetFromXPath(cBody, "set/comm-list/comm-list-name", item.SetCommunityListNameLegacy.ValueString())
-			}
 			if !item.SetExtcomunityRtLegacy.IsNull() && !item.SetExtcomunityRtLegacy.IsUnknown() {
 				var values []string
 				item.SetExtcomunityRtLegacy.ElementsAs(ctx, &values, false)
@@ -837,7 +768,7 @@ func (data RouteMap) addToBodyXML(ctx context.Context, config RouteMap, body net
 				var values []string
 				item.SetCommunities.ElementsAs(ctx, &values, false)
 				for _, v := range values {
-					cBody = helpers.AppendFromXPath(cBody, "set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/community-well-known/community-list", v)
+					cBody = helpers.AppendFromXPath(cBody, "set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/community-well-known/community-list-v2", v)
 				}
 			}
 			if !item.SetCommunitiesAdditive.IsNull() && !item.SetCommunitiesAdditive.IsUnknown() {
@@ -1183,16 +1114,6 @@ func (data *RouteMap) updateFromBodyXML(ctx context.Context, res xmldot.Result) 
 		} else {
 			data.Entries[i].MatchAsPathsLegacy = types.ListNull(types.Int64Type)
 		}
-		if value := helpers.GetFromXPath(r, "match/community/name"); value.Exists() && !data.Entries[i].MatchCommunityListsLegacy.IsNull() {
-			data.Entries[i].MatchCommunityListsLegacy = helpers.GetStringListXML(value.Array())
-		} else {
-			data.Entries[i].MatchCommunityListsLegacy = types.ListNull(types.StringType)
-		}
-		if value := helpers.GetFromXPath(r, "match/extcommunity/name"); value.Exists() && !data.Entries[i].MatchExtcommunityListsLegacy.IsNull() {
-			data.Entries[i].MatchExtcommunityListsLegacy = helpers.GetStringListXML(value.Array())
-		} else {
-			data.Entries[i].MatchExtcommunityListsLegacy = types.ListNull(types.StringType)
-		}
 		if value := helpers.GetFromXPath(r, "match/local-preference/values"); value.Exists() && !data.Entries[i].MatchLocalPreferencesLegacy.IsNull() {
 			data.Entries[i].MatchLocalPreferencesLegacy = helpers.GetInt64ListXML(value.Array())
 		} else {
@@ -1405,53 +1326,6 @@ func (data *RouteMap) updateFromBodyXML(ctx context.Context, res xmldot.Result) 
 		} else {
 			data.Entries[i].SetAsPathTagLegacy = types.BoolNull()
 		}
-		if value := helpers.GetFromXPath(r, "set/community/none"); !data.Entries[i].SetCommunityNoneLegacy.IsNull() {
-			if value.Exists() {
-				data.Entries[i].SetCommunityNoneLegacy = types.BoolValue(true)
-			} else {
-				data.Entries[i].SetCommunityNoneLegacy = types.BoolValue(false)
-			}
-		} else {
-			data.Entries[i].SetCommunityNoneLegacy = types.BoolNull()
-		}
-		if value := helpers.GetFromXPath(r, "set/community/community-well-known/community-list"); value.Exists() && !data.Entries[i].SetCommunitiesLegacy.IsNull() {
-			data.Entries[i].SetCommunitiesLegacy = helpers.GetStringListXML(value.Array())
-		} else {
-			data.Entries[i].SetCommunitiesLegacy = types.ListNull(types.StringType)
-		}
-		if value := helpers.GetFromXPath(r, "set/community/community-well-known/additive"); !data.Entries[i].SetCommunitiesAdditiveLegacy.IsNull() {
-			if value.Exists() {
-				data.Entries[i].SetCommunitiesAdditiveLegacy = types.BoolValue(true)
-			} else {
-				data.Entries[i].SetCommunitiesAdditiveLegacy = types.BoolValue(false)
-			}
-		} else {
-			data.Entries[i].SetCommunitiesAdditiveLegacy = types.BoolNull()
-		}
-		if value := helpers.GetFromXPath(r, "set/comm-list/delete"); !data.Entries[i].SetCommunityListDeleteLegacy.IsNull() {
-			if value.Exists() {
-				data.Entries[i].SetCommunityListDeleteLegacy = types.BoolValue(true)
-			} else {
-				data.Entries[i].SetCommunityListDeleteLegacy = types.BoolValue(false)
-			}
-		} else {
-			data.Entries[i].SetCommunityListDeleteLegacy = types.BoolNull()
-		}
-		if value := helpers.GetFromXPath(r, "set/comm-list/comm-list-standard"); value.Exists() && !data.Entries[i].SetCommunityListStandardLegacy.IsNull() {
-			data.Entries[i].SetCommunityListStandardLegacy = types.Int64Value(value.Int())
-		} else {
-			data.Entries[i].SetCommunityListStandardLegacy = types.Int64Null()
-		}
-		if value := helpers.GetFromXPath(r, "set/Cisco-IOS-XE-bgp:bgp-route-map-set/comm-list/comm-list-expanded"); value.Exists() && !data.Entries[i].SetCommunityListExpandedLegacy.IsNull() {
-			data.Entries[i].SetCommunityListExpandedLegacy = types.Int64Value(value.Int())
-		} else {
-			data.Entries[i].SetCommunityListExpandedLegacy = types.Int64Null()
-		}
-		if value := helpers.GetFromXPath(r, "set/comm-list/comm-list-name"); value.Exists() && !data.Entries[i].SetCommunityListNameLegacy.IsNull() {
-			data.Entries[i].SetCommunityListNameLegacy = types.StringValue(value.String())
-		} else {
-			data.Entries[i].SetCommunityListNameLegacy = types.StringNull()
-		}
 		if value := helpers.GetFromXPath(r, "set/extcommunity/rt/asn-nn"); value.Exists() && !data.Entries[i].SetExtcomunityRtLegacy.IsNull() {
 			data.Entries[i].SetExtcomunityRtLegacy = helpers.GetStringListXML(value.Array())
 		} else {
@@ -1543,8 +1417,8 @@ func (data *RouteMap) updateFromBodyXML(ctx context.Context, res xmldot.Result) 
 		} else {
 			data.Entries[i].SetCommunityNone = types.BoolNull()
 		}
-		if value := helpers.GetFromXPath(r, "set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/community-well-known/community-list"); value.Exists() && !data.Entries[i].SetCommunities.IsNull() {
-			data.Entries[i].SetCommunities = helpers.GetStringListXML(value.Array())
+		if value := helpers.GetFromXPath(r, "set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/community-well-known/community-list-v2"); value.Exists() && !data.Entries[i].SetCommunities.IsNull() {
+			data.Entries[i].SetCommunities = helpers.GetNormalizedCommunityListXML(value.Array())
 		} else {
 			data.Entries[i].SetCommunities = types.ListNull(types.StringType)
 		}
@@ -1790,16 +1664,6 @@ func (data *RouteMap) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			} else {
 				item.MatchAsPathsLegacy = types.ListNull(types.Int64Type)
 			}
-			if cValue := helpers.GetFromXPath(v, "match/community/name"); cValue.Exists() {
-				item.MatchCommunityListsLegacy = helpers.GetStringListXML(cValue.Array())
-			} else {
-				item.MatchCommunityListsLegacy = types.ListNull(types.StringType)
-			}
-			if cValue := helpers.GetFromXPath(v, "match/extcommunity/name"); cValue.Exists() {
-				item.MatchExtcommunityListsLegacy = helpers.GetStringListXML(cValue.Array())
-			} else {
-				item.MatchExtcommunityListsLegacy = types.ListNull(types.StringType)
-			}
 			if cValue := helpers.GetFromXPath(v, "match/local-preference/values"); cValue.Exists() {
 				item.MatchLocalPreferencesLegacy = helpers.GetInt64ListXML(cValue.Array())
 			} else {
@@ -1952,35 +1816,6 @@ func (data *RouteMap) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			} else {
 				item.SetAsPathTagLegacy = types.BoolValue(false)
 			}
-			if cValue := helpers.GetFromXPath(v, "set/community/none"); cValue.Exists() {
-				item.SetCommunityNoneLegacy = types.BoolValue(true)
-			} else {
-				item.SetCommunityNoneLegacy = types.BoolValue(false)
-			}
-			if cValue := helpers.GetFromXPath(v, "set/community/community-well-known/community-list"); cValue.Exists() {
-				item.SetCommunitiesLegacy = helpers.GetStringListXML(cValue.Array())
-			} else {
-				item.SetCommunitiesLegacy = types.ListNull(types.StringType)
-			}
-			if cValue := helpers.GetFromXPath(v, "set/community/community-well-known/additive"); cValue.Exists() {
-				item.SetCommunitiesAdditiveLegacy = types.BoolValue(true)
-			} else {
-				item.SetCommunitiesAdditiveLegacy = types.BoolValue(false)
-			}
-			if cValue := helpers.GetFromXPath(v, "set/comm-list/delete"); cValue.Exists() {
-				item.SetCommunityListDeleteLegacy = types.BoolValue(true)
-			} else {
-				item.SetCommunityListDeleteLegacy = types.BoolValue(false)
-			}
-			if cValue := helpers.GetFromXPath(v, "set/comm-list/comm-list-standard"); cValue.Exists() {
-				item.SetCommunityListStandardLegacy = types.Int64Value(cValue.Int())
-			}
-			if cValue := helpers.GetFromXPath(v, "set/Cisco-IOS-XE-bgp:bgp-route-map-set/comm-list/comm-list-expanded"); cValue.Exists() {
-				item.SetCommunityListExpandedLegacy = types.Int64Value(cValue.Int())
-			}
-			if cValue := helpers.GetFromXPath(v, "set/comm-list/comm-list-name"); cValue.Exists() {
-				item.SetCommunityListNameLegacy = types.StringValue(cValue.String())
-			}
 			if cValue := helpers.GetFromXPath(v, "set/extcommunity/rt/asn-nn"); cValue.Exists() {
 				item.SetExtcomunityRtLegacy = helpers.GetStringListXML(cValue.Array())
 			} else {
@@ -2030,8 +1865,8 @@ func (data *RouteMap) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			} else {
 				item.SetCommunityNone = types.BoolValue(false)
 			}
-			if cValue := helpers.GetFromXPath(v, "set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/community-well-known/community-list"); cValue.Exists() {
-				item.SetCommunities = helpers.GetStringListXML(cValue.Array())
+			if cValue := helpers.GetFromXPath(v, "set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/community-well-known/community-list-v2"); cValue.Exists() {
+				item.SetCommunities = helpers.GetNormalizedCommunityListXML(cValue.Array())
 			} else {
 				item.SetCommunities = types.ListNull(types.StringType)
 			}
@@ -2254,16 +2089,6 @@ func (data *RouteMapData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			} else {
 				item.MatchAsPathsLegacy = types.ListNull(types.Int64Type)
 			}
-			if cValue := helpers.GetFromXPath(v, "match/community/name"); cValue.Exists() {
-				item.MatchCommunityListsLegacy = helpers.GetStringListXML(cValue.Array())
-			} else {
-				item.MatchCommunityListsLegacy = types.ListNull(types.StringType)
-			}
-			if cValue := helpers.GetFromXPath(v, "match/extcommunity/name"); cValue.Exists() {
-				item.MatchExtcommunityListsLegacy = helpers.GetStringListXML(cValue.Array())
-			} else {
-				item.MatchExtcommunityListsLegacy = types.ListNull(types.StringType)
-			}
 			if cValue := helpers.GetFromXPath(v, "match/local-preference/values"); cValue.Exists() {
 				item.MatchLocalPreferencesLegacy = helpers.GetInt64ListXML(cValue.Array())
 			} else {
@@ -2416,35 +2241,6 @@ func (data *RouteMapData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			} else {
 				item.SetAsPathTagLegacy = types.BoolValue(false)
 			}
-			if cValue := helpers.GetFromXPath(v, "set/community/none"); cValue.Exists() {
-				item.SetCommunityNoneLegacy = types.BoolValue(true)
-			} else {
-				item.SetCommunityNoneLegacy = types.BoolValue(false)
-			}
-			if cValue := helpers.GetFromXPath(v, "set/community/community-well-known/community-list"); cValue.Exists() {
-				item.SetCommunitiesLegacy = helpers.GetStringListXML(cValue.Array())
-			} else {
-				item.SetCommunitiesLegacy = types.ListNull(types.StringType)
-			}
-			if cValue := helpers.GetFromXPath(v, "set/community/community-well-known/additive"); cValue.Exists() {
-				item.SetCommunitiesAdditiveLegacy = types.BoolValue(true)
-			} else {
-				item.SetCommunitiesAdditiveLegacy = types.BoolValue(false)
-			}
-			if cValue := helpers.GetFromXPath(v, "set/comm-list/delete"); cValue.Exists() {
-				item.SetCommunityListDeleteLegacy = types.BoolValue(true)
-			} else {
-				item.SetCommunityListDeleteLegacy = types.BoolValue(false)
-			}
-			if cValue := helpers.GetFromXPath(v, "set/comm-list/comm-list-standard"); cValue.Exists() {
-				item.SetCommunityListStandardLegacy = types.Int64Value(cValue.Int())
-			}
-			if cValue := helpers.GetFromXPath(v, "set/Cisco-IOS-XE-bgp:bgp-route-map-set/comm-list/comm-list-expanded"); cValue.Exists() {
-				item.SetCommunityListExpandedLegacy = types.Int64Value(cValue.Int())
-			}
-			if cValue := helpers.GetFromXPath(v, "set/comm-list/comm-list-name"); cValue.Exists() {
-				item.SetCommunityListNameLegacy = types.StringValue(cValue.String())
-			}
 			if cValue := helpers.GetFromXPath(v, "set/extcommunity/rt/asn-nn"); cValue.Exists() {
 				item.SetExtcomunityRtLegacy = helpers.GetStringListXML(cValue.Array())
 			} else {
@@ -2494,8 +2290,8 @@ func (data *RouteMapData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			} else {
 				item.SetCommunityNone = types.BoolValue(false)
 			}
-			if cValue := helpers.GetFromXPath(v, "set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/community-well-known/community-list"); cValue.Exists() {
-				item.SetCommunities = helpers.GetStringListXML(cValue.Array())
+			if cValue := helpers.GetFromXPath(v, "set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/community-well-known/community-list-v2"); cValue.Exists() {
+				item.SetCommunities = helpers.GetNormalizedCommunityListXML(cValue.Array())
 			} else {
 				item.SetCommunities = types.ListNull(types.StringType)
 			}
@@ -2635,7 +2431,7 @@ func (data *RouteMap) addDeletedItemsXML(ctx context.Context, state RouteMap, bo
 						var values []string
 						state.Entries[i].SetCommunities.ElementsAs(ctx, &values, false)
 						for _, v := range values {
-							b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-route-map:route-map-without-order-seq%v/set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/community-well-known/community-list[.=%v]", predicates, v))
+							b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-route-map:route-map-without-order-seq%v/set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/community-well-known/community-list-v2[.=%v]", predicates, v))
 						}
 					} else {
 						var dataValues, stateValues []string
@@ -2650,7 +2446,7 @@ func (data *RouteMap) addDeletedItemsXML(ctx context.Context, state RouteMap, bo
 								}
 							}
 							if !found {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-route-map:route-map-without-order-seq%v/set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/community-well-known/community-list[.=%v]", predicates, v))
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-route-map:route-map-without-order-seq%v/set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/community-well-known/community-list-v2[.=%v]", predicates, v))
 							}
 						}
 					}
@@ -2736,49 +2532,6 @@ func (data *RouteMap) addDeletedItemsXML(ctx context.Context, state RouteMap, bo
 							}
 						}
 					}
-				}
-				if !state.Entries[i].SetCommunityListNameLegacy.IsNull() && data.Entries[j].SetCommunityListNameLegacy.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-route-map:route-map-without-order-seq%v/set/comm-list/comm-list-name", predicates))
-				}
-				if !state.Entries[i].SetCommunityListExpandedLegacy.IsNull() && data.Entries[j].SetCommunityListExpandedLegacy.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-route-map:route-map-without-order-seq%v/set/Cisco-IOS-XE-bgp:bgp-route-map-set/comm-list/comm-list-expanded", predicates))
-				}
-				if !state.Entries[i].SetCommunityListStandardLegacy.IsNull() && data.Entries[j].SetCommunityListStandardLegacy.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-route-map:route-map-without-order-seq%v/set/comm-list/comm-list-standard", predicates))
-				}
-				if !state.Entries[i].SetCommunityListDeleteLegacy.IsNull() && data.Entries[j].SetCommunityListDeleteLegacy.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-route-map:route-map-without-order-seq%v/set/comm-list/delete", predicates))
-				}
-				if !state.Entries[i].SetCommunitiesAdditiveLegacy.IsNull() && data.Entries[j].SetCommunitiesAdditiveLegacy.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-route-map:route-map-without-order-seq%v/set/community/community-well-known/additive", predicates))
-				}
-				if !state.Entries[i].SetCommunitiesLegacy.IsNull() {
-					if data.Entries[j].SetCommunitiesLegacy.IsNull() {
-						var values []string
-						state.Entries[i].SetCommunitiesLegacy.ElementsAs(ctx, &values, false)
-						for _, v := range values {
-							b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-route-map:route-map-without-order-seq%v/set/community/community-well-known/community-list[.=%v]", predicates, v))
-						}
-					} else {
-						var dataValues, stateValues []string
-						data.Entries[j].SetCommunitiesLegacy.ElementsAs(ctx, &dataValues, false)
-						state.Entries[i].SetCommunitiesLegacy.ElementsAs(ctx, &stateValues, false)
-						for _, v := range stateValues {
-							found := false
-							for _, vv := range dataValues {
-								if v == vv {
-									found = true
-									break
-								}
-							}
-							if !found {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-route-map:route-map-without-order-seq%v/set/community/community-well-known/community-list[.=%v]", predicates, v))
-							}
-						}
-					}
-				}
-				if !state.Entries[i].SetCommunityNoneLegacy.IsNull() && data.Entries[j].SetCommunityNoneLegacy.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-route-map:route-map-without-order-seq%v/set/community/none", predicates))
 				}
 				if !state.Entries[i].SetAsPathTagLegacy.IsNull() && data.Entries[j].SetAsPathTagLegacy.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-route-map:route-map-without-order-seq%v/set/as-path/tag", predicates))
@@ -3192,56 +2945,6 @@ func (data *RouteMap) addDeletedItemsXML(ctx context.Context, state RouteMap, bo
 							}
 							if !found {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-route-map:route-map-without-order-seq%v/match/local-preference/values[.=%v]", predicates, v))
-							}
-						}
-					}
-				}
-				if !state.Entries[i].MatchExtcommunityListsLegacy.IsNull() {
-					if data.Entries[j].MatchExtcommunityListsLegacy.IsNull() {
-						var values []string
-						state.Entries[i].MatchExtcommunityListsLegacy.ElementsAs(ctx, &values, false)
-						for _, v := range values {
-							b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-route-map:route-map-without-order-seq%v/match/extcommunity/name[.=%v]", predicates, v))
-						}
-					} else {
-						var dataValues, stateValues []string
-						data.Entries[j].MatchExtcommunityListsLegacy.ElementsAs(ctx, &dataValues, false)
-						state.Entries[i].MatchExtcommunityListsLegacy.ElementsAs(ctx, &stateValues, false)
-						for _, v := range stateValues {
-							found := false
-							for _, vv := range dataValues {
-								if v == vv {
-									found = true
-									break
-								}
-							}
-							if !found {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-route-map:route-map-without-order-seq%v/match/extcommunity/name[.=%v]", predicates, v))
-							}
-						}
-					}
-				}
-				if !state.Entries[i].MatchCommunityListsLegacy.IsNull() {
-					if data.Entries[j].MatchCommunityListsLegacy.IsNull() {
-						var values []string
-						state.Entries[i].MatchCommunityListsLegacy.ElementsAs(ctx, &values, false)
-						for _, v := range values {
-							b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-route-map:route-map-without-order-seq%v/match/community/name[.=%v]", predicates, v))
-						}
-					} else {
-						var dataValues, stateValues []string
-						data.Entries[j].MatchCommunityListsLegacy.ElementsAs(ctx, &dataValues, false)
-						state.Entries[i].MatchCommunityListsLegacy.ElementsAs(ctx, &stateValues, false)
-						for _, v := range stateValues {
-							found := false
-							for _, vv := range dataValues {
-								if v == vv {
-									found = true
-									break
-								}
-							}
-							if !found {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-route-map:route-map-without-order-seq%v/match/community/name[.=%v]", predicates, v))
 							}
 						}
 					}

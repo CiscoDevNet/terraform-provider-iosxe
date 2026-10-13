@@ -128,6 +128,14 @@ func (d *EIGRPVRFDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 					},
 				},
 			},
+			"stub_connected": schema.BoolAttribute{
+				MarkdownDescription: "Enable EIGRP stub routing and advertise connected routes (`eigrp stub connected`)",
+				Computed:            true,
+			},
+			"stub_summary": schema.BoolAttribute{
+				MarkdownDescription: "Enable EIGRP stub routing and advertise summary routes (`eigrp stub summary`)",
+				Computed:            true,
+			},
 			"shutdown": schema.BoolAttribute{
 				MarkdownDescription: "Shutdown address family",
 				Computed:            true,
