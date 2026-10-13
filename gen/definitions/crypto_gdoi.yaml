@@ -75,12 +75,16 @@ attributes:
     tf_name: server_local_rekey_lifetime_seconds
     description: Time-based rekey lifetime in seconds
     type: Int64
+    min_int: 300
+    max_int: 2592000
     example: 86400
     exclude_test: true
   - yang_name: server/local/rekey/retransmit/seconds
     tf_name: server_local_rekey_retransmit_seconds
     description: Rekey retransmit interval in seconds
     type: Int64
+    min_int: 10
+    max_int: 60
     example: 10
     exclude_test: true
   - yang_name: server/local/rekey/retransmit/number-periodic/number-case/number
@@ -134,6 +138,8 @@ attributes:
     tf_name: server_local_redundancy_protocol_pdu
     description: Maximum size of COOP messages
     type: Int64
+    min_int: 1
+    max_int: 65000
     example: 4000
     exclude_test: true
   - yang_name: server/local/redundancy/protocol/version
@@ -195,6 +201,8 @@ attributes:
         tf_name: replay_time_window_size
         description: Time based replay window size
         type: Int64
+        min_int: 1
+        max_int: 100
         example: 5
         exclude_test: true
       - yang_name: tag/cts/sgt
