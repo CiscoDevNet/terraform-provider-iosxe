@@ -25,8 +25,8 @@ resource "iosxe_fhrp" "example" {
 
 - `device` (String) A device name from the provider configuration.
 - `version_vrrp` (String) Configure Virtual Router Redundancy Protocol version
-  - Choices: `v2`, `v3`
-  - Default value: `v2`
+  - Choices: `v3`
+  - Default value: `v3`
 
 ### Read-Only
 
