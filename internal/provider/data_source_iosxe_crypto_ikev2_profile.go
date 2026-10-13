@@ -174,6 +174,43 @@ func (d *CryptoIKEv2ProfileDataSource) Schema(ctx context.Context, req datasourc
 					},
 				},
 			},
+			"authentication_local_ecdsa_sig": schema.BoolAttribute{
+				MarkdownDescription: "ECDSA Signature",
+				Computed:            true,
+			},
+			"authentication_local_rsa_sig": schema.BoolAttribute{
+				MarkdownDescription: "Rivest-Shamir-Adleman Signature",
+				Computed:            true,
+			},
+			"authentication_remote_ecdsa_sig": schema.BoolAttribute{
+				MarkdownDescription: "ECDSA Signature",
+				Computed:            true,
+			},
+			"authentication_remote_rsa_sig": schema.BoolAttribute{
+				MarkdownDescription: "Rivest-Shamir-Adleman Signature",
+				Computed:            true,
+			},
+			"match_certificate_maps": schema.ListAttribute{
+				MarkdownDescription: "Peer certificate attributes",
+				ElementType:         types.StringType,
+				Computed:            true,
+			},
+			"pki_trustpoints": schema.ListNestedAttribute{
+				MarkdownDescription: "PKI certificate authority trustpoints",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"uses": schema.StringAttribute{
+							MarkdownDescription: "Trustpoint usage: sign or verify",
+							Computed:            true,
+						},
+					},
+				},
+			},
 			"config_exchange_request": schema.BoolAttribute{
 				MarkdownDescription: "enable config-exchange request",
 				Computed:            true,
