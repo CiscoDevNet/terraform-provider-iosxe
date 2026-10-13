@@ -139,7 +139,7 @@ Read-Only:
 Read-Only:
 
 - `ipv4` (String) Protocol IP address of NHS
-- `nbma_ipv4` (String) IPv4 address
+- `nbma_ipv4` (String) NBMA address of the NHS
 
 
 <a id="nestedatt--ipv6_addresses"></a>

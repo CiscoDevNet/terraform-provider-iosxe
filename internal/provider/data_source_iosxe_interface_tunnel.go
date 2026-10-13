@@ -439,7 +439,7 @@ func (d *InterfaceTunnelDataSource) Schema(ctx context.Context, req datasource.S
 							Computed:            true,
 						},
 						"nbma_ipv4": schema.StringAttribute{
-							MarkdownDescription: "IPv4 address",
+							MarkdownDescription: "NBMA address of the NHS",
 							Computed:            true,
 						},
 					},
