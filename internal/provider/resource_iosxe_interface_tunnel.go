@@ -33,7 +33,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
@@ -570,10 +569,8 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 				},
 			},
 			"ip_nhrp_map_multicast_dynamic": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Dynamically learn destinations from client registrations on hub").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Dynamically learn destinations from client registrations on hub").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 			"ip_nhrp_map_multicast_nbma_ipv4": schema.ListAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Static NBMA addresses for multicast mapping.").String,
