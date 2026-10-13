@@ -60,12 +60,12 @@ attributes:
     xpath: eigrp/stub/advertise/connected
     tf_name: stub_connected
     example: true
-    description: Advertise connected routes
+    description: Enable EIGRP stub routing and advertise connected routes (`eigrp stub connected`)
   - yang_name: eigrp/stub/stub-type-choice/advertise/advertise/summary
     xpath: eigrp/stub/advertise/summary
     tf_name: stub_summary
     example: true
-    description: Advertise summary routes
+    description: Enable EIGRP stub routing and advertise summary routes (`eigrp stub summary`)
   - yang_name: shutdown
     example: false
     description: Shutdown address family
