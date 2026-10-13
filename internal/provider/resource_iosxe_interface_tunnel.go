@@ -569,7 +569,7 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 				},
 			},
 			"ip_nhrp_map_multicast_dynamic": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Dynamically learn destinations from client registrations on hub").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Dynamically learn destinations from client registrations on hub. Use this for versions `17.14` and later.").String,
 				Optional:            true,
 			},
 			"ip_nhrp_map_multicast_nbma_ipv4": schema.ListAttribute{

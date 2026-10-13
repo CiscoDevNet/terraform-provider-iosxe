@@ -446,7 +446,7 @@ func (d *InterfaceTunnelDataSource) Schema(ctx context.Context, req datasource.S
 				},
 			},
 			"ip_nhrp_map_multicast_dynamic": schema.BoolAttribute{
-				MarkdownDescription: "Dynamically learn destinations from client registrations on hub",
+				MarkdownDescription: "Dynamically learn destinations from client registrations on hub. Use this for versions `17.14` and later.",
 				Computed:            true,
 			},
 			"ip_nhrp_map_multicast_nbma_ipv4": schema.ListAttribute{

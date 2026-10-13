@@ -331,6 +331,7 @@ attributes:
         example: 203.0.113.1
   - yang_name: ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/map/multicast/dynamic_new
     tf_name: ip_nhrp_map_multicast_dynamic
+    description: Dynamically learn destinations from client registrations on hub. Use this for versions `17.14` and later.
     example: true
     test_tags: [C8000V]
     exclude_test: true
