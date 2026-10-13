@@ -153,6 +153,14 @@ func (r *EIGRPVRFResource) Schema(ctx context.Context, req resource.SchemaReques
 				Computed:            true,
 				Default:             booldefault.StaticBool(false),
 			},
+			"stub_connected": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable EIGRP stub routing and advertise connected routes (`eigrp stub connected`)").String,
+				Optional:            true,
+			},
+			"stub_summary": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable EIGRP stub routing and advertise summary routes (`eigrp stub summary`)").String,
+				Optional:            true,
+			},
 			"shutdown": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Shutdown address family").String,
 				Optional:            true,
