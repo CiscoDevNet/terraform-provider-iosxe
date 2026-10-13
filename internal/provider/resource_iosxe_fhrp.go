@@ -79,13 +79,13 @@ func (r *FHRPResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				},
 			},
 			"version_vrrp": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure Virtual Router Redundancy Protocol version").AddStringEnumDescription("v3").AddDefaultValueDescription("v3").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configure Virtual Router Redundancy Protocol version").AddStringEnumDescription("v2", "v3").AddDefaultValueDescription("v2").String,
 				Optional:            true,
 				Computed:            true,
 				Validators: []validator.String{
-					stringvalidator.OneOf("v3"),
+					stringvalidator.OneOf("v2", "v3"),
 				},
-				Default: stringdefault.StaticString("v3"),
+				Default: stringdefault.StaticString("v2"),
 			},
 		},
 	}

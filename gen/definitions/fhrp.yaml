@@ -9,6 +9,7 @@ attributes:
     description: Configure Virtual Router Redundancy Protocol version
     type: String
     enum_values:
+      - v2
       - v3
-    default_value: v3
+    default_value: v2
     example: v3
