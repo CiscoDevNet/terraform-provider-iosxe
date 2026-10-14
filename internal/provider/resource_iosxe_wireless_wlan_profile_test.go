@@ -50,7 +50,6 @@ func TestAccIosxeWirelessWLANProfile(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "security_wpa_wpa2_ciphers_aes", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "security_wpa_wpa3", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "security_wpa_psk_key_format", "key-ascii"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "security_wpa_psk_key_encryption", "clear"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "security_dot1x_authentication_list", ""))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "security_web_auth", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "security_web_auth_authentication_list", ""))

@@ -73,6 +73,7 @@ attributes:
     example: key-ascii
   - yang_name: psk-type
     tf_name: security_wpa_psk_key_encryption
+    write_only: true
     type: String
     enum_values:
       - clear

@@ -362,11 +362,6 @@ func (data *WirelessWLANProfile) updateFromBodyXML(ctx context.Context, res xmld
 	} else {
 		data.SecurityWpaPskKeyFormat = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/psk-type"); value.Exists() && !data.SecurityWpaPskKeyEncryption.IsNull() {
-		data.SecurityWpaPskKeyEncryption = types.StringValue(value.String())
-	} else {
-		data.SecurityWpaPskKeyEncryption = types.StringNull()
-	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication-list"); value.Exists() && !data.SecurityDot1xAuthenticationList.IsNull() {
 		data.SecurityDot1xAuthenticationList = types.StringValue(value.String())
 	} else {
