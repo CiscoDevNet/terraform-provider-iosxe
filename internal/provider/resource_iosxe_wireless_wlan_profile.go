@@ -92,7 +92,7 @@ func (r *WirelessWLANProfileResource) Schema(ctx context.Context, req resource.S
 			},
 			"wlan_id": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("wlan ID").AddIntegerRangeDescription(1, 4096).String,
-				Optional:            true,
+				Required:            true,
 				Validators: []validator.Int64{
 					int64validator.Between(1, 4096),
 				},

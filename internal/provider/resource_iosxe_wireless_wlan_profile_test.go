@@ -106,6 +106,7 @@ func iosxeWirelessWLANProfileImportStateIdFunc(resourceName string) resource.Imp
 func testAccIosxeWirelessWLANProfileConfig_minimum() string {
 	config := `resource "iosxe_wireless_wlan_profile" "test" {` + "\n"
 	config += `	profile_name = "S1-CORP-PSK"` + "\n"
+	config += `	wlan_id = 10` + "\n"
 	config += `}` + "\n"
 	return config
 }

@@ -50,6 +50,8 @@ resource "iosxe_wireless_wlan_profile" "example" {
 ### Required
 
 - `profile_name` (String) profile-name
+- `wlan_id` (Number) wlan ID
+  - Range: `1`-`4096`
 
 ### Optional
 
@@ -87,8 +89,6 @@ resource "iosxe_wireless_wlan_profile" "example" {
 - `security_wpa_wpa2_ciphers_gcmp256` (Boolean) WPA2/GCMP256 support
 - `security_wpa_wpa3` (Boolean) Configures WPA3 support
 - `ssid` (String) Represents the SSID assigned to this WLAN. The access points will broadcast this SSID on this WLAN. SSID is restricted to non control characters.
-- `wlan_id` (Number) wlan ID
-  - Range: `1`-`4096`
 - `wlan_status` (Boolean) Administrative Status of ESS(WLAN). By disabling an ESS the corresponding SSID is no longer broadcasted in AP beacons.
 - `wmm` (String) Configures WMM (WME)
   - Choices: `apf-vap-wme-disabled`, `apf-vap-wme-allowed`, `apf-vap-wme-required`

@@ -10,6 +10,7 @@ attributes:
     example: S1-CORP-PSK
   - yang_name: wlan-id
     tf_name: wlan_id
+    mandatory: true
     example: 10
   - yang_name: apf-vap-id-data/ssid
     tf_name: ssid
