@@ -18,6 +18,7 @@ description: |-
 - BREAKING CHANGE: Remove all community `_legacy` attributes (`set_communities_legacy`, `set_communities_additive_legacy`, `set_community_none_legacy`, `set_community_list_delete_legacy`, `set_community_list_standard_legacy`, `set_community_list_expanded_legacy`, `set_community_list_name_legacy`, `match_community_lists_legacy`, `match_extcommunity_lists_legacy`) from `iosxe_route_map` resource and data source. The gen-1 attributes used the `set/community/...` YANG path (obsolete since IOS-XE 17.15). The gen-2 `set_communities` and `set_communities_additive` attributes used the deprecated `community-list` YANG leaf, which cannot round-trip on 17.15 devices (writes to `community-list` but reads back under `community-list-v2`, causing perpetual drift). The `set_communities` attribute now targets the `community-list-v2` YANG leaf instead, so it requires IOS-XE 17.15 or later; attribute names are unchanged
 - Add `re_originate_route_type5` attribute to `profiles` list in `iosxe_evpn` resource and data source for L2VPN EVPN profile `re-originate route-type5` configuration
 - Add `stub_connected` and `stub_summary` attributes to `iosxe_eigrp` and `iosxe_eigrp_vrf` resources and data sources for EIGRP stub routing advertisement control (`eigrp stub connected summary`)
+- Fix BGP resources triggering spurious destroy-recreate on import when the device uses `bgp asnotation dot` (asdot ASN format). A new `normalize_asn` plan modifier normalizes asdot and asplain representations to the same value before comparison
 
 ## 1.1.1
 
