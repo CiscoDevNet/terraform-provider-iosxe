@@ -60,7 +60,6 @@ func TestAccDataSourceIosxeCryptoGDOI(t *testing.T) {
 
 func testAccDataSourceIosxeCryptoGDOIConfig() string {
 	config := `resource "iosxe_crypto_gdoi" "test" {` + "\n"
-	config += `	delete_mode = "attributes"` + "\n"
 	config += `	name = "GETVPN-GROUP"` + "\n"
 	config += `	identity_number = 100` + "\n"
 	config += `	server_local = true` + "\n"

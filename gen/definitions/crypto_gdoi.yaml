@@ -2,6 +2,7 @@
 name: Crypto GDOI
 path: /Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:gdoi/group[name=%v]
 doc_category: Crypto
+no_delete_attributes: true
 attributes:
   - yang_name: name
     description: GDOI group name

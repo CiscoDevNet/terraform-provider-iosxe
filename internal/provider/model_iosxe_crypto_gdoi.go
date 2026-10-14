@@ -40,7 +40,6 @@ import (
 type CryptoGDOI struct {
 	Device                                    types.String                   `tfsdk:"device"`
 	Id                                        types.String                   `tfsdk:"id"`
-	DeleteMode                                types.String                   `tfsdk:"delete_mode"`
 	Name                                      types.String                   `tfsdk:"name"`
 	IdentityNumber                            types.Int64                    `tfsdk:"identity_number"`
 	ServerLocal                               types.Bool                     `tfsdk:"server_local"`

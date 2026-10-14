@@ -61,8 +61,6 @@ resource "iosxe_crypto_gdoi" "example" {
 - `client_transform_sets` (List of String) Specify list of group client acceptable transform sets
 - `client_transport_encrypt_key` (String) Enforce group or pair-wise keying for transport encryption
   - Choices: `group-key`, `pair-wise-key`
-- `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
-  - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
 - `identity_number` (Number) Set the identity of the group as a number
   - Range: `0`-`9223372036854775807`
