@@ -77,6 +77,7 @@ type RouteMapEntries struct {
 	MatchSourceProtocolRip                 types.Bool                          `tfsdk:"match_source_protocol_rip"`
 	MatchSourceProtocolStatic              types.Bool                          `tfsdk:"match_source_protocol_static"`
 	MatchTags                              types.List                          `tfsdk:"match_tags"`
+	MatchTagsLegacy                        types.List                          `tfsdk:"match_tags_legacy"`
 	MatchTrack                             types.Int64                         `tfsdk:"match_track"`
 	MatchAsPathsLegacy                     types.List                          `tfsdk:"match_as_paths_legacy"`
 	MatchLocalPreferencesLegacy            types.List                          `tfsdk:"match_local_preferences_legacy"`
@@ -96,8 +97,10 @@ type RouteMapEntries struct {
 	SetIpNextHopSelf                       types.Bool                          `tfsdk:"set_ip_next_hop_self"`
 	SetIpNextHopUnchanged                  types.Bool                          `tfsdk:"set_ip_next_hop_unchanged"`
 	SetIpQosGroup                          types.Int64                         `tfsdk:"set_ip_qos_group"`
-	SetIpv6Address                         types.List                          `tfsdk:"set_ipv6_address"`
-	SetIpv6DefaultGlobalNextHop            types.String                        `tfsdk:"set_ipv6_default_global_next_hop"`
+	SetIpv6Address                         types.String                        `tfsdk:"set_ipv6_address"`
+	SetIpv6AddressLegacy                   types.List                          `tfsdk:"set_ipv6_address_legacy"`
+	SetIpv6DefaultGlobalNextHop            types.List                          `tfsdk:"set_ipv6_default_global_next_hop"`
+	SetIpv6DefaultGlobalNextHopLegacy      types.String                        `tfsdk:"set_ipv6_default_global_next_hop_legacy"`
 	SetIpv6DefaultNextHop                  types.List                          `tfsdk:"set_ipv6_default_next_hop"`
 	SetIpv6NextHop                         types.List                          `tfsdk:"set_ipv6_next_hop"`
 	SetLevel1                              types.Bool                          `tfsdk:"set_level_1"`
@@ -110,7 +113,8 @@ type RouteMapEntries struct {
 	SetMetricLoading                       types.Int64                         `tfsdk:"set_metric_loading"`
 	SetMetricMtu                           types.Int64                         `tfsdk:"set_metric_mtu"`
 	SetMetricType                          types.String                        `tfsdk:"set_metric_type"`
-	SetTag                                 types.Int64                         `tfsdk:"set_tag"`
+	SetTag                                 types.String                        `tfsdk:"set_tag"`
+	SetTagLegacy                           types.Int64                         `tfsdk:"set_tag_legacy"`
 	SetVrf                                 types.String                        `tfsdk:"set_vrf"`
 	SetAsPathPrependAsLegacy               types.String                        `tfsdk:"set_as_path_prepend_as_legacy"`
 	SetAsPathPrependLastAsLegacy           types.Int64                         `tfsdk:"set_as_path_prepend_last_as_legacy"`
@@ -186,6 +190,7 @@ type RouteMapEntriesData struct {
 	MatchSourceProtocolRip                 types.Bool                              `tfsdk:"match_source_protocol_rip"`
 	MatchSourceProtocolStatic              types.Bool                              `tfsdk:"match_source_protocol_static"`
 	MatchTags                              types.List                              `tfsdk:"match_tags"`
+	MatchTagsLegacy                        types.List                              `tfsdk:"match_tags_legacy"`
 	MatchTrack                             types.Int64                             `tfsdk:"match_track"`
 	MatchAsPathsLegacy                     types.List                              `tfsdk:"match_as_paths_legacy"`
 	MatchLocalPreferencesLegacy            types.List                              `tfsdk:"match_local_preferences_legacy"`
@@ -205,8 +210,10 @@ type RouteMapEntriesData struct {
 	SetIpNextHopSelf                       types.Bool                              `tfsdk:"set_ip_next_hop_self"`
 	SetIpNextHopUnchanged                  types.Bool                              `tfsdk:"set_ip_next_hop_unchanged"`
 	SetIpQosGroup                          types.Int64                             `tfsdk:"set_ip_qos_group"`
-	SetIpv6Address                         types.List                              `tfsdk:"set_ipv6_address"`
-	SetIpv6DefaultGlobalNextHop            types.String                            `tfsdk:"set_ipv6_default_global_next_hop"`
+	SetIpv6Address                         types.String                            `tfsdk:"set_ipv6_address"`
+	SetIpv6AddressLegacy                   types.List                              `tfsdk:"set_ipv6_address_legacy"`
+	SetIpv6DefaultGlobalNextHop            types.List                              `tfsdk:"set_ipv6_default_global_next_hop"`
+	SetIpv6DefaultGlobalNextHopLegacy      types.String                            `tfsdk:"set_ipv6_default_global_next_hop_legacy"`
 	SetIpv6DefaultNextHop                  types.List                              `tfsdk:"set_ipv6_default_next_hop"`
 	SetIpv6NextHop                         types.List                              `tfsdk:"set_ipv6_next_hop"`
 	SetLevel1                              types.Bool                              `tfsdk:"set_level_1"`
@@ -219,7 +226,8 @@ type RouteMapEntriesData struct {
 	SetMetricLoading                       types.Int64                             `tfsdk:"set_metric_loading"`
 	SetMetricMtu                           types.Int64                             `tfsdk:"set_metric_mtu"`
 	SetMetricType                          types.String                            `tfsdk:"set_metric_type"`
-	SetTag                                 types.Int64                             `tfsdk:"set_tag"`
+	SetTag                                 types.String                            `tfsdk:"set_tag"`
+	SetTagLegacy                           types.Int64                             `tfsdk:"set_tag_legacy"`
 	SetVrf                                 types.String                            `tfsdk:"set_vrf"`
 	SetAsPathPrependAsLegacy               types.String                            `tfsdk:"set_as_path_prepend_as_legacy"`
 	SetAsPathPrependLastAsLegacy           types.Int64                             `tfsdk:"set_as_path_prepend_last_as_legacy"`
@@ -497,8 +505,15 @@ func (data RouteMap) addToBodyXML(ctx context.Context, config RouteMap, body net
 				}
 			}
 			if !item.MatchTags.IsNull() && !item.MatchTags.IsUnknown() {
-				var values []int
+				var values []string
 				item.MatchTags.ElementsAs(ctx, &values, false)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "match/tag/tag-val", v)
+				}
+			}
+			if !item.MatchTagsLegacy.IsNull() && !item.MatchTagsLegacy.IsUnknown() {
+				var values []int
+				item.MatchTagsLegacy.ElementsAs(ctx, &values, false)
 				for _, v := range values {
 					cBody = helpers.AppendFromXPath(cBody, "match/tag/tag_value", v)
 				}
@@ -625,14 +640,24 @@ func (data RouteMap) addToBodyXML(ctx context.Context, config RouteMap, body net
 				cBody = helpers.SetFromXPath(cBody, "set/ip/qos-group/qos-id", strconv.FormatInt(item.SetIpQosGroup.ValueInt64(), 10))
 			}
 			if !item.SetIpv6Address.IsNull() && !item.SetIpv6Address.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "set/ipv6/address/plist", item.SetIpv6Address.ValueString())
+			}
+			if !item.SetIpv6AddressLegacy.IsNull() && !item.SetIpv6AddressLegacy.IsUnknown() {
 				var values []string
-				item.SetIpv6Address.ElementsAs(ctx, &values, false)
+				item.SetIpv6AddressLegacy.ElementsAs(ctx, &values, false)
 				for _, v := range values {
 					cBody = helpers.AppendFromXPath(cBody, "set/ipv6/address/prefix-list", v)
 				}
 			}
 			if !item.SetIpv6DefaultGlobalNextHop.IsNull() && !item.SetIpv6DefaultGlobalNextHop.IsUnknown() {
-				cBody = helpers.SetFromXPath(cBody, "set/ipv6/default/global/next-hop", item.SetIpv6DefaultGlobalNextHop.ValueString())
+				var values []string
+				item.SetIpv6DefaultGlobalNextHop.ElementsAs(ctx, &values, false)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "set/ipv6/default/global/next-hop-address", v)
+				}
+			}
+			if !item.SetIpv6DefaultGlobalNextHopLegacy.IsNull() && !item.SetIpv6DefaultGlobalNextHopLegacy.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "set/ipv6/default/global/next-hop", item.SetIpv6DefaultGlobalNextHopLegacy.ValueString())
 			}
 			if !item.SetIpv6DefaultNextHop.IsNull() && !item.SetIpv6DefaultNextHop.IsUnknown() {
 				var values []string
@@ -691,7 +716,10 @@ func (data RouteMap) addToBodyXML(ctx context.Context, config RouteMap, body net
 				cBody = helpers.SetFromXPath(cBody, "set/metric-type", item.SetMetricType.ValueString())
 			}
 			if !item.SetTag.IsNull() && !item.SetTag.IsUnknown() {
-				cBody = helpers.SetFromXPath(cBody, "set/tag/tag-val", strconv.FormatInt(item.SetTag.ValueInt64(), 10))
+				cBody = helpers.SetFromXPath(cBody, "set/tag-val", item.SetTag.ValueString())
+			}
+			if !item.SetTagLegacy.IsNull() && !item.SetTagLegacy.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "set/tag/tag-val", strconv.FormatInt(item.SetTagLegacy.ValueInt64(), 10))
 			}
 			if !item.SetVrf.IsNull() && !item.SetVrf.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "set/vrf", item.SetVrf.ValueString())
@@ -1099,10 +1127,15 @@ func (data *RouteMap) updateFromBodyXML(ctx context.Context, res xmldot.Result) 
 		} else {
 			data.Entries[i].MatchSourceProtocolStatic = types.BoolNull()
 		}
-		if value := helpers.GetFromXPath(r, "match/tag/tag_value"); value.Exists() && !data.Entries[i].MatchTags.IsNull() {
-			data.Entries[i].MatchTags = helpers.GetInt64ListXML(value.Array())
+		if value := helpers.GetFromXPath(r, "match/tag/tag-val"); value.Exists() && !data.Entries[i].MatchTags.IsNull() {
+			data.Entries[i].MatchTags = helpers.GetStringListXML(value.Array())
 		} else {
-			data.Entries[i].MatchTags = types.ListNull(types.Int64Type)
+			data.Entries[i].MatchTags = types.ListNull(types.StringType)
+		}
+		if value := helpers.GetFromXPath(r, "match/tag/tag_value"); value.Exists() && !data.Entries[i].MatchTagsLegacy.IsNull() {
+			data.Entries[i].MatchTagsLegacy = helpers.GetInt64ListXML(value.Array())
+		} else {
+			data.Entries[i].MatchTagsLegacy = types.ListNull(types.Int64Type)
 		}
 		if value := helpers.GetFromXPath(r, "match/track"); value.Exists() && !data.Entries[i].MatchTrack.IsNull() {
 			data.Entries[i].MatchTrack = types.Int64Value(value.Int())
@@ -1215,15 +1248,25 @@ func (data *RouteMap) updateFromBodyXML(ctx context.Context, res xmldot.Result) 
 		} else {
 			data.Entries[i].SetIpQosGroup = types.Int64Null()
 		}
-		if value := helpers.GetFromXPath(r, "set/ipv6/address/prefix-list"); value.Exists() && !data.Entries[i].SetIpv6Address.IsNull() {
-			data.Entries[i].SetIpv6Address = helpers.GetStringListXML(value.Array())
+		if value := helpers.GetFromXPath(r, "set/ipv6/address/plist"); value.Exists() && !data.Entries[i].SetIpv6Address.IsNull() {
+			data.Entries[i].SetIpv6Address = types.StringValue(value.String())
 		} else {
-			data.Entries[i].SetIpv6Address = types.ListNull(types.StringType)
+			data.Entries[i].SetIpv6Address = types.StringNull()
 		}
-		if value := helpers.GetFromXPath(r, "set/ipv6/default/global/next-hop"); value.Exists() && !data.Entries[i].SetIpv6DefaultGlobalNextHop.IsNull() {
-			data.Entries[i].SetIpv6DefaultGlobalNextHop = types.StringValue(value.String())
+		if value := helpers.GetFromXPath(r, "set/ipv6/address/prefix-list"); value.Exists() && !data.Entries[i].SetIpv6AddressLegacy.IsNull() {
+			data.Entries[i].SetIpv6AddressLegacy = helpers.GetStringListXML(value.Array())
 		} else {
-			data.Entries[i].SetIpv6DefaultGlobalNextHop = types.StringNull()
+			data.Entries[i].SetIpv6AddressLegacy = types.ListNull(types.StringType)
+		}
+		if value := helpers.GetFromXPath(r, "set/ipv6/default/global/next-hop-address"); value.Exists() && !data.Entries[i].SetIpv6DefaultGlobalNextHop.IsNull() {
+			data.Entries[i].SetIpv6DefaultGlobalNextHop = helpers.GetStringListXML(value.Array())
+		} else {
+			data.Entries[i].SetIpv6DefaultGlobalNextHop = types.ListNull(types.StringType)
+		}
+		if value := helpers.GetFromXPath(r, "set/ipv6/default/global/next-hop"); value.Exists() && !data.Entries[i].SetIpv6DefaultGlobalNextHopLegacy.IsNull() {
+			data.Entries[i].SetIpv6DefaultGlobalNextHopLegacy = types.StringValue(value.String())
+		} else {
+			data.Entries[i].SetIpv6DefaultGlobalNextHopLegacy = types.StringNull()
 		}
 		if value := helpers.GetFromXPath(r, "set/ipv6/default/next-hop/ipv6"); value.Exists() && !data.Entries[i].SetIpv6DefaultNextHop.IsNull() {
 			data.Entries[i].SetIpv6DefaultNextHop = helpers.GetStringListXML(value.Array())
@@ -1297,10 +1340,15 @@ func (data *RouteMap) updateFromBodyXML(ctx context.Context, res xmldot.Result) 
 		} else {
 			data.Entries[i].SetMetricType = types.StringNull()
 		}
-		if value := helpers.GetFromXPath(r, "set/tag/tag-val"); value.Exists() && !data.Entries[i].SetTag.IsNull() {
-			data.Entries[i].SetTag = types.Int64Value(value.Int())
+		if value := helpers.GetFromXPath(r, "set/tag-val"); value.Exists() && !data.Entries[i].SetTag.IsNull() {
+			data.Entries[i].SetTag = types.StringValue(value.String())
 		} else {
-			data.Entries[i].SetTag = types.Int64Null()
+			data.Entries[i].SetTag = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "set/tag/tag-val"); value.Exists() && !data.Entries[i].SetTagLegacy.IsNull() {
+			data.Entries[i].SetTagLegacy = types.Int64Value(value.Int())
+		} else {
+			data.Entries[i].SetTagLegacy = types.Int64Null()
 		}
 		if value := helpers.GetFromXPath(r, "set/vrf"); value.Exists() && !data.Entries[i].SetVrf.IsNull() {
 			data.Entries[i].SetVrf = types.StringValue(value.String())
@@ -1651,10 +1699,15 @@ func (data *RouteMap) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			} else {
 				item.MatchSourceProtocolStatic = types.BoolValue(false)
 			}
-			if cValue := helpers.GetFromXPath(v, "match/tag/tag_value"); cValue.Exists() {
-				item.MatchTags = helpers.GetInt64ListXML(cValue.Array())
+			if cValue := helpers.GetFromXPath(v, "match/tag/tag-val"); cValue.Exists() {
+				item.MatchTags = helpers.GetStringListXML(cValue.Array())
 			} else {
-				item.MatchTags = types.ListNull(types.Int64Type)
+				item.MatchTags = types.ListNull(types.StringType)
+			}
+			if cValue := helpers.GetFromXPath(v, "match/tag/tag_value"); cValue.Exists() {
+				item.MatchTagsLegacy = helpers.GetInt64ListXML(cValue.Array())
+			} else {
+				item.MatchTagsLegacy = types.ListNull(types.Int64Type)
 			}
 			if cValue := helpers.GetFromXPath(v, "match/track"); cValue.Exists() {
 				item.MatchTrack = types.Int64Value(cValue.Int())
@@ -1745,13 +1798,21 @@ func (data *RouteMap) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			if cValue := helpers.GetFromXPath(v, "set/ip/qos-group/qos-id"); cValue.Exists() {
 				item.SetIpQosGroup = types.Int64Value(cValue.Int())
 			}
+			if cValue := helpers.GetFromXPath(v, "set/ipv6/address/plist"); cValue.Exists() {
+				item.SetIpv6Address = types.StringValue(cValue.String())
+			}
 			if cValue := helpers.GetFromXPath(v, "set/ipv6/address/prefix-list"); cValue.Exists() {
-				item.SetIpv6Address = helpers.GetStringListXML(cValue.Array())
+				item.SetIpv6AddressLegacy = helpers.GetStringListXML(cValue.Array())
 			} else {
-				item.SetIpv6Address = types.ListNull(types.StringType)
+				item.SetIpv6AddressLegacy = types.ListNull(types.StringType)
+			}
+			if cValue := helpers.GetFromXPath(v, "set/ipv6/default/global/next-hop-address"); cValue.Exists() {
+				item.SetIpv6DefaultGlobalNextHop = helpers.GetStringListXML(cValue.Array())
+			} else {
+				item.SetIpv6DefaultGlobalNextHop = types.ListNull(types.StringType)
 			}
 			if cValue := helpers.GetFromXPath(v, "set/ipv6/default/global/next-hop"); cValue.Exists() {
-				item.SetIpv6DefaultGlobalNextHop = types.StringValue(cValue.String())
+				item.SetIpv6DefaultGlobalNextHopLegacy = types.StringValue(cValue.String())
 			}
 			if cValue := helpers.GetFromXPath(v, "set/ipv6/default/next-hop/ipv6"); cValue.Exists() {
 				item.SetIpv6DefaultNextHop = helpers.GetStringListXML(cValue.Array())
@@ -1799,8 +1860,11 @@ func (data *RouteMap) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			if cValue := helpers.GetFromXPath(v, "set/metric-type"); cValue.Exists() {
 				item.SetMetricType = types.StringValue(cValue.String())
 			}
+			if cValue := helpers.GetFromXPath(v, "set/tag-val"); cValue.Exists() {
+				item.SetTag = types.StringValue(cValue.String())
+			}
 			if cValue := helpers.GetFromXPath(v, "set/tag/tag-val"); cValue.Exists() {
-				item.SetTag = types.Int64Value(cValue.Int())
+				item.SetTagLegacy = types.Int64Value(cValue.Int())
 			}
 			if cValue := helpers.GetFromXPath(v, "set/vrf"); cValue.Exists() {
 				item.SetVrf = types.StringValue(cValue.String())
@@ -2076,10 +2140,15 @@ func (data *RouteMapData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			} else {
 				item.MatchSourceProtocolStatic = types.BoolValue(false)
 			}
-			if cValue := helpers.GetFromXPath(v, "match/tag/tag_value"); cValue.Exists() {
-				item.MatchTags = helpers.GetInt64ListXML(cValue.Array())
+			if cValue := helpers.GetFromXPath(v, "match/tag/tag-val"); cValue.Exists() {
+				item.MatchTags = helpers.GetStringListXML(cValue.Array())
 			} else {
-				item.MatchTags = types.ListNull(types.Int64Type)
+				item.MatchTags = types.ListNull(types.StringType)
+			}
+			if cValue := helpers.GetFromXPath(v, "match/tag/tag_value"); cValue.Exists() {
+				item.MatchTagsLegacy = helpers.GetInt64ListXML(cValue.Array())
+			} else {
+				item.MatchTagsLegacy = types.ListNull(types.Int64Type)
 			}
 			if cValue := helpers.GetFromXPath(v, "match/track"); cValue.Exists() {
 				item.MatchTrack = types.Int64Value(cValue.Int())
@@ -2170,13 +2239,21 @@ func (data *RouteMapData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			if cValue := helpers.GetFromXPath(v, "set/ip/qos-group/qos-id"); cValue.Exists() {
 				item.SetIpQosGroup = types.Int64Value(cValue.Int())
 			}
+			if cValue := helpers.GetFromXPath(v, "set/ipv6/address/plist"); cValue.Exists() {
+				item.SetIpv6Address = types.StringValue(cValue.String())
+			}
 			if cValue := helpers.GetFromXPath(v, "set/ipv6/address/prefix-list"); cValue.Exists() {
-				item.SetIpv6Address = helpers.GetStringListXML(cValue.Array())
+				item.SetIpv6AddressLegacy = helpers.GetStringListXML(cValue.Array())
 			} else {
-				item.SetIpv6Address = types.ListNull(types.StringType)
+				item.SetIpv6AddressLegacy = types.ListNull(types.StringType)
+			}
+			if cValue := helpers.GetFromXPath(v, "set/ipv6/default/global/next-hop-address"); cValue.Exists() {
+				item.SetIpv6DefaultGlobalNextHop = helpers.GetStringListXML(cValue.Array())
+			} else {
+				item.SetIpv6DefaultGlobalNextHop = types.ListNull(types.StringType)
 			}
 			if cValue := helpers.GetFromXPath(v, "set/ipv6/default/global/next-hop"); cValue.Exists() {
-				item.SetIpv6DefaultGlobalNextHop = types.StringValue(cValue.String())
+				item.SetIpv6DefaultGlobalNextHopLegacy = types.StringValue(cValue.String())
 			}
 			if cValue := helpers.GetFromXPath(v, "set/ipv6/default/next-hop/ipv6"); cValue.Exists() {
 				item.SetIpv6DefaultNextHop = helpers.GetStringListXML(cValue.Array())
@@ -2224,8 +2301,11 @@ func (data *RouteMapData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			if cValue := helpers.GetFromXPath(v, "set/metric-type"); cValue.Exists() {
 				item.SetMetricType = types.StringValue(cValue.String())
 			}
+			if cValue := helpers.GetFromXPath(v, "set/tag-val"); cValue.Exists() {
+				item.SetTag = types.StringValue(cValue.String())
+			}
 			if cValue := helpers.GetFromXPath(v, "set/tag/tag-val"); cValue.Exists() {
-				item.SetTag = types.Int64Value(cValue.Int())
+				item.SetTagLegacy = types.Int64Value(cValue.Int())
 			}
 			if cValue := helpers.GetFromXPath(v, "set/vrf"); cValue.Exists() {
 				item.SetVrf = types.StringValue(cValue.String())
@@ -2545,8 +2625,11 @@ func (data *RouteMap) addDeletedItemsXML(ctx context.Context, state RouteMap, bo
 				if !state.Entries[i].SetVrf.IsNull() && data.Entries[j].SetVrf.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-route-map:route-map-without-order-seq%v/set/vrf", predicates))
 				}
-				if !state.Entries[i].SetTag.IsNull() && data.Entries[j].SetTag.IsNull() {
+				if !state.Entries[i].SetTagLegacy.IsNull() && data.Entries[j].SetTagLegacy.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-route-map:route-map-without-order-seq%v/set/tag/tag-val", predicates))
+				}
+				if !state.Entries[i].SetTag.IsNull() && data.Entries[j].SetTag.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-route-map:route-map-without-order-seq%v/set/tag-val", predicates))
 				}
 				if !state.Entries[i].SetMetricType.IsNull() && data.Entries[j].SetMetricType.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-route-map:route-map-without-order-seq%v/set/metric-type", predicates))
@@ -2628,20 +2711,45 @@ func (data *RouteMap) addDeletedItemsXML(ctx context.Context, state RouteMap, bo
 						}
 					}
 				}
-				if !state.Entries[i].SetIpv6DefaultGlobalNextHop.IsNull() && data.Entries[j].SetIpv6DefaultGlobalNextHop.IsNull() {
+				if !state.Entries[i].SetIpv6DefaultGlobalNextHopLegacy.IsNull() && data.Entries[j].SetIpv6DefaultGlobalNextHopLegacy.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-route-map:route-map-without-order-seq%v/set/ipv6/default/global/next-hop", predicates))
 				}
-				if !state.Entries[i].SetIpv6Address.IsNull() {
-					if data.Entries[j].SetIpv6Address.IsNull() {
+				if !state.Entries[i].SetIpv6DefaultGlobalNextHop.IsNull() {
+					if data.Entries[j].SetIpv6DefaultGlobalNextHop.IsNull() {
 						var values []string
-						state.Entries[i].SetIpv6Address.ElementsAs(ctx, &values, false)
+						state.Entries[i].SetIpv6DefaultGlobalNextHop.ElementsAs(ctx, &values, false)
+						for _, v := range values {
+							b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-route-map:route-map-without-order-seq%v/set/ipv6/default/global/next-hop-address[.=%v]", predicates, v))
+						}
+					} else {
+						var dataValues, stateValues []string
+						data.Entries[j].SetIpv6DefaultGlobalNextHop.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].SetIpv6DefaultGlobalNextHop.ElementsAs(ctx, &stateValues, false)
+						for _, v := range stateValues {
+							found := false
+							for _, vv := range dataValues {
+								if v == vv {
+									found = true
+									break
+								}
+							}
+							if !found {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-route-map:route-map-without-order-seq%v/set/ipv6/default/global/next-hop-address[.=%v]", predicates, v))
+							}
+						}
+					}
+				}
+				if !state.Entries[i].SetIpv6AddressLegacy.IsNull() {
+					if data.Entries[j].SetIpv6AddressLegacy.IsNull() {
+						var values []string
+						state.Entries[i].SetIpv6AddressLegacy.ElementsAs(ctx, &values, false)
 						for _, v := range values {
 							b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-route-map:route-map-without-order-seq%v/set/ipv6/address/prefix-list[.=%v]", predicates, v))
 						}
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[j].SetIpv6Address.ElementsAs(ctx, &dataValues, false)
-						state.Entries[i].SetIpv6Address.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].SetIpv6AddressLegacy.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].SetIpv6AddressLegacy.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -2655,6 +2763,9 @@ func (data *RouteMap) addDeletedItemsXML(ctx context.Context, state RouteMap, bo
 							}
 						}
 					}
+				}
+				if !state.Entries[i].SetIpv6Address.IsNull() && data.Entries[j].SetIpv6Address.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-route-map:route-map-without-order-seq%v/set/ipv6/address/plist", predicates))
 				}
 				if !state.Entries[i].SetIpQosGroup.IsNull() && data.Entries[j].SetIpQosGroup.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-route-map:route-map-without-order-seq%v/set/ip/qos-group/qos-id", predicates))
@@ -2977,15 +3088,40 @@ func (data *RouteMap) addDeletedItemsXML(ctx context.Context, state RouteMap, bo
 				if !state.Entries[i].MatchTrack.IsNull() && data.Entries[j].MatchTrack.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-route-map:route-map-without-order-seq%v/match/track", predicates))
 				}
-				if !state.Entries[i].MatchTags.IsNull() {
-					if data.Entries[j].MatchTags.IsNull() {
+				if !state.Entries[i].MatchTagsLegacy.IsNull() {
+					if data.Entries[j].MatchTagsLegacy.IsNull() {
 						var values []string
-						state.Entries[i].MatchTags.ElementsAs(ctx, &values, false)
+						state.Entries[i].MatchTagsLegacy.ElementsAs(ctx, &values, false)
 						for _, v := range values {
 							b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-route-map:route-map-without-order-seq%v/match/tag/tag_value[.=%v]", predicates, v))
 						}
 					} else {
 						var dataValues, stateValues []int
+						data.Entries[j].MatchTagsLegacy.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].MatchTagsLegacy.ElementsAs(ctx, &stateValues, false)
+						for _, v := range stateValues {
+							found := false
+							for _, vv := range dataValues {
+								if v == vv {
+									found = true
+									break
+								}
+							}
+							if !found {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-route-map:route-map-without-order-seq%v/match/tag/tag_value[.=%v]", predicates, v))
+							}
+						}
+					}
+				}
+				if !state.Entries[i].MatchTags.IsNull() {
+					if data.Entries[j].MatchTags.IsNull() {
+						var values []string
+						state.Entries[i].MatchTags.ElementsAs(ctx, &values, false)
+						for _, v := range values {
+							b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-route-map:route-map-without-order-seq%v/match/tag/tag-val[.=%v]", predicates, v))
+						}
+					} else {
+						var dataValues, stateValues []string
 						data.Entries[j].MatchTags.ElementsAs(ctx, &dataValues, false)
 						state.Entries[i].MatchTags.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
@@ -2997,7 +3133,7 @@ func (data *RouteMap) addDeletedItemsXML(ctx context.Context, state RouteMap, bo
 								}
 							}
 							if !found {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-route-map:route-map-without-order-seq%v/match/tag/tag_value[.=%v]", predicates, v))
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-route-map:route-map-without-order-seq%v/match/tag/tag-val[.=%v]", predicates, v))
 							}
 						}
 					}

@@ -103,8 +103,13 @@ attributes:
         example: true
       - yang_name: match/source-protocol/static
         example: true
-      - yang_name: match/tag/tag_value
+      - yang_name: match/tag/tag-val
         tf_name: match_tags
+        example: 100
+      - yang_name: match/tag/tag_value
+        tf_name: match_tags_legacy
+        test_tags: [IOSXE1715]
+        allow_import_changes: true
         example: 100
       - yang_name: match/track
         example: 1
@@ -160,10 +165,21 @@ attributes:
       - yang_name: set/ip/qos-group/qos-id
         tf_name: set_ip_qos_group
         example: 1
-      - yang_name: set/ipv6/address/prefix-list
+      - yang_name: set/ipv6/address/plist
         tf_name: set_ipv6_address
         example: PFL2
+      - yang_name: set/ipv6/address/prefix-list
+        tf_name: set_ipv6_address_legacy
+        test_tags: [IOSXE1715]
+        allow_import_changes: true
+        example: PFL2
+      - yang_name: set/ipv6/default/global/next-hop-address
+        tf_name: set_ipv6_default_global_next_hop
+        example: 2001::1
       - yang_name: set/ipv6/default/global/next-hop
+        tf_name: set_ipv6_default_global_next_hop_legacy
+        test_tags: [IOSXE1715]
+        allow_import_changes: true
         example: 2001::1
       - yang_name: set/ipv6/default/next-hop/ipv6
         tf_name: set_ipv6_default_next_hop
@@ -209,8 +225,13 @@ attributes:
         example: 1500
       - yang_name: set/metric-type
         example: external
-      - yang_name: set/tag/tag-val
+      - yang_name: set/tag-val
         tf_name: set_tag
+        example: 100
+      - yang_name: set/tag/tag-val
+        tf_name: set_tag_legacy
+        test_tags: [IOSXE1715]
+        allow_import_changes: true
         example: 100
       - yang_name: set/vrf
         exclude_test: true

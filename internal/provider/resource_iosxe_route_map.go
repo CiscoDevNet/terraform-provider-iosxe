@@ -252,6 +252,11 @@ func (r *RouteMapResource) Schema(ctx context.Context, req resource.SchemaReques
 							Optional:            true,
 						},
 						"match_tags": schema.ListAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Tag value for destination routing protocol").String,
+							ElementType:         types.StringType,
+							Optional:            true,
+						},
+						"match_tags_legacy": schema.ListAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Tag value (DEPRECATED - please use tag-val)").String,
 							ElementType:         types.Int64Type,
 							Optional:            true,
@@ -350,12 +355,21 @@ func (r *RouteMapResource) Schema(ctx context.Context, req resource.SchemaReques
 								int64validator.Between(0, 99),
 							},
 						},
-						"set_ipv6_address": schema.ListAttribute{
+						"set_ipv6_address": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("IPv6 prefix-list").String,
+							Optional:            true,
+						},
+						"set_ipv6_address_legacy": schema.ListAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("IPv6 prefix-list").String,
 							ElementType:         types.StringType,
 							Optional:            true,
 						},
-						"set_ipv6_default_global_next_hop": schema.StringAttribute{
+						"set_ipv6_default_global_next_hop": schema.ListAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Default Next hop IPv6 address").String,
+							ElementType:         types.StringType,
+							Optional:            true,
+						},
+						"set_ipv6_default_global_next_hop_legacy": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Next hop along path").String,
 							Optional:            true,
 							Validators: []validator.String{
@@ -434,7 +448,11 @@ func (r *RouteMapResource) Schema(ctx context.Context, req resource.SchemaReques
 								stringvalidator.OneOf("external", "internal", "type-1", "type-2"),
 							},
 						},
-						"set_tag": schema.Int64Attribute{
+						"set_tag": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Tag value for destination routing protocol").String,
+							Optional:            true,
+						},
+						"set_tag_legacy": schema.Int64Attribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Tag value (DEPRECATED - please use tag-val)").AddIntegerRangeDescription(0, 4294967295).String,
 							Optional:            true,
 							Validators: []validator.Int64{

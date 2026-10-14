@@ -223,6 +223,11 @@ func (d *RouteMapDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 							Computed:            true,
 						},
 						"match_tags": schema.ListAttribute{
+							MarkdownDescription: "Tag value for destination routing protocol",
+							ElementType:         types.StringType,
+							Computed:            true,
+						},
+						"match_tags_legacy": schema.ListAttribute{
 							MarkdownDescription: "Tag value (DEPRECATED - please use tag-val)",
 							ElementType:         types.Int64Type,
 							Computed:            true,
@@ -315,12 +320,21 @@ func (d *RouteMapDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 							MarkdownDescription: "",
 							Computed:            true,
 						},
-						"set_ipv6_address": schema.ListAttribute{
+						"set_ipv6_address": schema.StringAttribute{
+							MarkdownDescription: "IPv6 prefix-list",
+							Computed:            true,
+						},
+						"set_ipv6_address_legacy": schema.ListAttribute{
 							MarkdownDescription: "IPv6 prefix-list",
 							ElementType:         types.StringType,
 							Computed:            true,
 						},
-						"set_ipv6_default_global_next_hop": schema.StringAttribute{
+						"set_ipv6_default_global_next_hop": schema.ListAttribute{
+							MarkdownDescription: "Default Next hop IPv6 address",
+							ElementType:         types.StringType,
+							Computed:            true,
+						},
+						"set_ipv6_default_global_next_hop_legacy": schema.StringAttribute{
 							MarkdownDescription: "Next hop along path",
 							Computed:            true,
 						},
@@ -374,7 +388,11 @@ func (d *RouteMapDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 							MarkdownDescription: "Type of metric for destination routing protocol",
 							Computed:            true,
 						},
-						"set_tag": schema.Int64Attribute{
+						"set_tag": schema.StringAttribute{
+							MarkdownDescription: "Tag value for destination routing protocol",
+							Computed:            true,
+						},
+						"set_tag_legacy": schema.Int64Attribute{
 							MarkdownDescription: "Tag value (DEPRECATED - please use tag-val)",
 							Computed:            true,
 						},

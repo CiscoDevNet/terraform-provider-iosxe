@@ -30,7 +30,7 @@ resource "iosxe_route_map" "example" {
       match_source_protocol_ospfv3           = ["10"]
       match_source_protocol_rip              = true
       match_source_protocol_static           = true
-      match_tags                             = [100]
+      match_tags                             = ["100"]
       match_track                            = 1
       match_as_paths                         = [10]
       match_community_lists                  = ["COMM1"]
@@ -45,8 +45,8 @@ resource "iosxe_route_map" "example" {
       set_ip_global_next_hop_address         = ["1.2.3.4"]
       set_ip_next_hop_address                = ["1.2.3.4"]
       set_ip_qos_group                       = 1
-      set_ipv6_address                       = ["PFL2"]
-      set_ipv6_default_global_next_hop       = "2001::1"
+      set_ipv6_address                       = "PFL2"
+      set_ipv6_default_global_next_hop       = ["2001::1"]
       set_ipv6_default_next_hop              = ["2001::1"]
       set_ipv6_next_hop                      = ["2001::1"]
       set_level_1                            = true
@@ -56,7 +56,7 @@ resource "iosxe_route_map" "example" {
       set_metric_loading                     = 10
       set_metric_mtu                         = 1500
       set_metric_type                        = "external"
-      set_tag                                = 100
+      set_tag                                = "100"
       set_as_path_prepend_as                 = "65001 65001"
       set_as_path_prepend_last_as            = 5
       set_communities                        = ["no-export"]
