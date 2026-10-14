@@ -32,12 +32,14 @@ import (
 
 func TestAccDataSourceIosxeCryptoMapGDOI(t *testing.T) {
 	var checks []resource.TestCheckFunc
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_map_gdoi.test", "gdoi", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_map_gdoi.test", "set_group", "GETVPN-GROUP"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccDataSourceIosxeCryptoMapGDOIConfig(),
+				Config: testAccDataSourceIosxeCryptoMapGDOIPrerequisitesConfig + testAccDataSourceIosxeCryptoMapGDOIConfig(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -47,13 +49,29 @@ func TestAccDataSourceIosxeCryptoMapGDOI(t *testing.T) {
 // End of section. //template:end testAccDataSource
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+const testAccDataSourceIosxeCryptoMapGDOIPrerequisitesConfig = `
+resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:gdoi/group[name=GETVPN-GROUP]"
+	attributes = {
+		"name" = "GETVPN-GROUP"
+		"identity/number" = "100"
+		"server/address/ipv4" = "198.51.100.1"
+	}
+}
+
+`
+
 // End of section. //template:end testPrerequisites
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSourceConfig
 
 func testAccDataSourceIosxeCryptoMapGDOIConfig() string {
 	config := `resource "iosxe_crypto_map_gdoi" "test" {` + "\n"
-	config += `	delete_mode = "attributes"` + "\n"
+	config += `	name = "GETVPN-MAP"` + "\n"
+	config += `	sequence_number = 10` + "\n"
+	config += `	gdoi = true` + "\n"
+	config += `	set_group = "GETVPN-GROUP"` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `

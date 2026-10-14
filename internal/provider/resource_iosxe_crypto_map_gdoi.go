@@ -28,7 +28,6 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
-	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -80,13 +79,6 @@ func (r *CryptoMapGDOIResource) Schema(ctx context.Context, req resource.SchemaR
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
-			"delete_mode": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.").AddStringEnumDescription("all", "attributes").String,
-				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.OneOf("all", "attributes"),
-				},
-			},
 			"name": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Crypto map name").String,
 				Required:            true,
@@ -106,7 +98,7 @@ func (r *CryptoMapGDOIResource) Schema(ctx context.Context, req resource.SchemaR
 			},
 			"gdoi": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Configure GDOI map type").String,
-				Optional:            true,
+				Required:            true,
 			},
 			"set_group": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Set the GDOI or GKM group for this crypto map").String,
@@ -326,11 +318,6 @@ func (r *CryptoMapGDOIResource) Delete(ctx context.Context, req resource.DeleteR
 
 	if device.Managed {
 		deleteMode := "all"
-		if state.DeleteMode.ValueString() == "all" {
-			deleteMode = "all"
-		} else if state.DeleteMode.ValueString() == "attributes" {
-			deleteMode = "attributes"
-		}
 
 		// NETCONF - Serialize write operations
 		locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, true)

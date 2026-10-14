@@ -26,16 +26,14 @@ resource "iosxe_crypto_map_gdoi" "example" {
 
 ### Required
 
+- `gdoi` (Boolean) Configure GDOI map type
 - `name` (String) Crypto map name
 - `sequence_number` (Number) Crypto map sequence number
   - Range: `1`-`65535`
 
 ### Optional
 
-- `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
-  - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
-- `gdoi` (Boolean) Configure GDOI map type
 - `set_group` (String) Set the GDOI or GKM group for this crypto map
 
 ### Read-Only

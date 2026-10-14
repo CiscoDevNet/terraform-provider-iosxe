@@ -1,10 +1,11 @@
 ---
 name: Crypto Map GDOI
 path: /Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:map/map-seq/map[name=%v][seq=%v]
-no_augment_config: true
+augment_path: /Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:map/name-ipv6/name-case/map-seq/map[name=%v][seq=%v]
 res_description: "This resource can manage the Crypto Map GDOI configuration."
 ds_description: "This data source can read the Crypto Map GDOI configuration."
 doc_category: Crypto
+no_delete_attributes: true
 attributes:
   - yang_name: name
     tf_name: name
@@ -20,8 +21,10 @@ attributes:
     min_int: 1
     max_int: 65535
     example: 10
-  - yang_name: gdoi
+  - yang_name: ipsec-isakmp-gdoi-ipsec-manual/gdoi/gdoi
+    xpath: gdoi
     tf_name: gdoi
+    mandatory: true
     description: Configure GDOI map type
     type: Bool
     example: true
@@ -30,3 +33,12 @@ attributes:
     description: Set the GDOI or GKM group for this crypto map
     type: String
     example: GETVPN-GROUP
+test_prerequisites:
+  - path: /Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:gdoi/group[name=GETVPN-GROUP]
+    attributes:
+      - name: name
+        value: GETVPN-GROUP
+      - name: identity/number
+        value: 100
+      - name: server/address/ipv4
+        value: 198.51.100.1

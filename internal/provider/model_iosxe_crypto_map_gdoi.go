@@ -24,6 +24,7 @@ import (
 	"context"
 	"fmt"
 	"net/url"
+	"strconv"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -38,7 +39,6 @@ import (
 type CryptoMapGDOI struct {
 	Device         types.String `tfsdk:"device"`
 	Id             types.String `tfsdk:"id"`
-	DeleteMode     types.String `tfsdk:"delete_mode"`
 	Name           types.String `tfsdk:"name"`
 	SequenceNumber types.Int64  `tfsdk:"sequence_number"`
 	Gdoi           types.Bool   `tfsdk:"gdoi"`
@@ -95,6 +95,22 @@ func (data CryptoMapGDOI) toBodyXML(ctx context.Context, config CryptoMapGDOI) s
 // addToBodyXML adds this object to an existing body instead of starting from an empty one. Bulk
 // resources use this to serialize all of their items into a single NETCONF payload.
 func (data CryptoMapGDOI) addToBodyXML(ctx context.Context, config CryptoMapGDOI, body netconf.Body) netconf.Body {
+	if !data.Name.IsNull() && !data.Name.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/name", data.Name.ValueString())
+	}
+	if !data.SequenceNumber.IsNull() && !data.SequenceNumber.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/seq", strconv.FormatInt(data.SequenceNumber.ValueInt64(), 10))
+	}
+	if !data.Gdoi.IsNull() && !data.Gdoi.IsUnknown() {
+		if data.Gdoi.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/gdoi", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/gdoi")
+		}
+	}
+	if !data.SetGroup.IsNull() && !data.SetGroup.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/set/group", data.SetGroup.ValueString())
+	}
 	return body
 }
 
@@ -103,6 +119,30 @@ func (data CryptoMapGDOI) addToBodyXML(ctx context.Context, config CryptoMapGDOI
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *CryptoMapGDOI) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/name"); value.Exists() && !data.Name.IsNull() {
+		data.Name = types.StringValue(value.String())
+	} else {
+		data.Name = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/seq"); value.Exists() && !data.SequenceNumber.IsNull() {
+		data.SequenceNumber = types.Int64Value(value.Int())
+	} else {
+		data.SequenceNumber = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/gdoi"); !data.Gdoi.IsNull() {
+		if value.Exists() {
+			data.Gdoi = types.BoolValue(true)
+		} else {
+			data.Gdoi = types.BoolValue(false)
+		}
+	} else {
+		data.Gdoi = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/set/group"); value.Exists() && !data.SetGroup.IsNull() {
+		data.SetGroup = types.StringValue(value.String())
+	} else {
+		data.SetGroup = types.StringNull()
+	}
 }
 
 // End of section. //template:end updateFromBodyXML
@@ -110,6 +150,14 @@ func (data *CryptoMapGDOI) updateFromBodyXML(ctx context.Context, res xmldot.Res
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *CryptoMapGDOI) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/gdoi"); value.Exists() {
+		data.Gdoi = types.BoolValue(true)
+	} else {
+		data.Gdoi = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/set/group"); value.Exists() {
+		data.SetGroup = types.StringValue(value.String())
+	}
 }
 
 // End of section. //template:end fromBodyXML
@@ -117,6 +165,14 @@ func (data *CryptoMapGDOI) fromBodyXML(ctx context.Context, res xmldot.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
 
 func (data *CryptoMapGDOIData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/gdoi"); value.Exists() {
+		data.Gdoi = types.BoolValue(true)
+	} else {
+		data.Gdoi = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/set/group"); value.Exists() {
+		data.SetGroup = types.StringValue(value.String())
+	}
 }
 
 // End of section. //template:end fromBodyDataXML
@@ -125,6 +181,12 @@ func (data *CryptoMapGDOIData) fromBodyXML(ctx context.Context, res xmldot.Resul
 
 func (data *CryptoMapGDOI) addDeletedItemsXML(ctx context.Context, state CryptoMapGDOI, body string) string {
 	b := netconf.NewBody(body)
+	if !state.SetGroup.IsNull() && data.SetGroup.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/set/group")
+	}
+	if !state.Gdoi.IsNull() && data.Gdoi.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/gdoi")
+	}
 
 	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
@@ -136,6 +198,12 @@ func (data *CryptoMapGDOI) addDeletedItemsXML(ctx context.Context, state CryptoM
 
 func (data *CryptoMapGDOI) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	if !data.SetGroup.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/set/group")
+	}
+	if !data.Gdoi.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/gdoi")
+	}
 
 	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()

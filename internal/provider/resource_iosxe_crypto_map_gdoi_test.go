@@ -34,15 +34,19 @@ import (
 
 func TestAccIosxeCryptoMapGDOI(t *testing.T) {
 	var checks []resource.TestCheckFunc
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_map_gdoi.test", "name", "GETVPN-MAP"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_map_gdoi.test", "sequence_number", "10"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_map_gdoi.test", "gdoi", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_map_gdoi.test", "set_group", "GETVPN-GROUP"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccIosxeCryptoMapGDOIConfig_minimum(),
+				Config: testAccIosxeCryptoMapGDOIPrerequisitesConfig + testAccIosxeCryptoMapGDOIConfig_minimum(),
 			},
 			{
-				Config: testAccIosxeCryptoMapGDOIConfig_all(),
+				Config: testAccIosxeCryptoMapGDOIPrerequisitesConfig + testAccIosxeCryptoMapGDOIConfig_all(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
@@ -74,6 +78,18 @@ func iosxeCryptoMapGDOIImportStateIdFunc(resourceName string) resource.ImportSta
 // End of section. //template:end importStateIdFunc
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+const testAccIosxeCryptoMapGDOIPrerequisitesConfig = `
+resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:gdoi/group[name=GETVPN-GROUP]"
+	attributes = {
+		"name" = "GETVPN-GROUP"
+		"identity/number" = "100"
+		"server/address/ipv4" = "198.51.100.1"
+	}
+}
+
+`
+
 // End of section. //template:end testPrerequisites
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
@@ -82,6 +98,8 @@ func testAccIosxeCryptoMapGDOIConfig_minimum() string {
 	config := `resource "iosxe_crypto_map_gdoi" "test" {` + "\n"
 	config += `	name = "GETVPN-MAP"` + "\n"
 	config += `	sequence_number = 10` + "\n"
+	config += `	gdoi = true` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -92,6 +110,11 @@ func testAccIosxeCryptoMapGDOIConfig_minimum() string {
 
 func testAccIosxeCryptoMapGDOIConfig_all() string {
 	config := `resource "iosxe_crypto_map_gdoi" "test" {` + "\n"
+	config += `	name = "GETVPN-MAP"` + "\n"
+	config += `	sequence_number = 10` + "\n"
+	config += `	gdoi = true` + "\n"
+	config += `	set_group = "GETVPN-GROUP"` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
