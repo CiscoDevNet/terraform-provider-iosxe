@@ -76,7 +76,8 @@ Read-Only:
 - `match_source_protocol_ospfv3` (List of String) OSPFv3
 - `match_source_protocol_rip` (Boolean) Routing Information Protocol (RIP)
 - `match_source_protocol_static` (Boolean) Static routes
-- `match_tags` (List of Number) Tag value (DEPRECATED - please use tag-val)
+- `match_tags` (List of String) Tag value for destination routing protocol
+- `match_tags_legacy` (List of Number) Tag value (DEPRECATED - please use tag-val)
 - `match_track` (Number) tracking object
 - `operation` (String) Route map permit/deny set operations
 - `seq` (Number)
@@ -113,8 +114,10 @@ Read-Only:
 - `set_ip_next_hop_self` (Boolean) Use self address (for BGP only)
 - `set_ip_next_hop_unchanged` (Boolean) Propagate next hop unchanged
 - `set_ip_qos_group` (Number)
-- `set_ipv6_address` (List of String) IPv6 prefix-list
-- `set_ipv6_default_global_next_hop` (String) Next hop along path
+- `set_ipv6_address` (String) IPv6 prefix-list
+- `set_ipv6_address_legacy` (List of String) IPv6 prefix-list
+- `set_ipv6_default_global_next_hop` (List of String) Default Next hop IPv6 address
+- `set_ipv6_default_global_next_hop_legacy` (String) Next hop along path
 - `set_ipv6_default_next_hop` (List of String) Default next hop IPv6 address
 - `set_ipv6_next_hop` (List of String) Next hop IPv6 address
 - `set_level_1` (Boolean) Import into a level-1 area
@@ -129,7 +132,8 @@ Read-Only:
 - `set_metric_reliability` (Number) EIGRP reliability metric where 255 is 100% reliable
 - `set_metric_type` (String) Type of metric for destination routing protocol
 - `set_metric_value` (Number) Metric value or Bandwidth in Kbits per second
-- `set_tag` (Number) Tag value (DEPRECATED - please use tag-val)
+- `set_tag` (String) Tag value for destination routing protocol
+- `set_tag_legacy` (Number) Tag value (DEPRECATED - please use tag-val)
 - `set_vrf` (String) VPN Routing/Forwarding instance name
 - `set_weight` (Number) BGP weight for routing table
 - `set_weight_legacy` (Number) BGP weight for routing table (OBSOLETE - please use route-map configuration in Cisco-IOS-XE-bgp.yang)

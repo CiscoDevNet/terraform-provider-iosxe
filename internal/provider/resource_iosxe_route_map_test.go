@@ -70,6 +70,9 @@ func TestAccIosxeRouteMap(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.match_source_protocol_rip", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.match_source_protocol_static", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.match_tags.0", "100"))
+	if os.Getenv("IOSXE1715") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.match_tags_legacy.0", "100"))
+	}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.match_track", "1"))
 	if os.Getenv("IOSXE1712") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.match_as_paths_legacy.0", "10"))
@@ -90,8 +93,14 @@ func TestAccIosxeRouteMap(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.set_ip_global_next_hop_address.0", "1.2.3.4"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.set_ip_next_hop_address.0", "1.2.3.4"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.set_ip_qos_group", "1"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.set_ipv6_address.0", "PFL2"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.set_ipv6_default_global_next_hop", "2001::1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.set_ipv6_address", "PFL2"))
+	if os.Getenv("IOSXE1715") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.set_ipv6_address_legacy.0", "PFL2"))
+	}
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.set_ipv6_default_global_next_hop.0", "2001::1"))
+	if os.Getenv("IOSXE1715") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.set_ipv6_default_global_next_hop_legacy", "2001::1"))
+	}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.set_ipv6_default_next_hop.0", "2001::1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.set_ipv6_next_hop.0", "2001::1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.set_level_1", "true"))
@@ -102,6 +111,9 @@ func TestAccIosxeRouteMap(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.set_metric_mtu", "1500"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.set_metric_type", "external"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.set_tag", "100"))
+	if os.Getenv("IOSXE1715") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.set_tag_legacy", "100"))
+	}
 	if os.Getenv("IOSXE1712") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.set_as_path_prepend_as_legacy", "65001 65001"))
 	}
@@ -153,7 +165,7 @@ func TestAccIosxeRouteMap(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeRouteMapImportStateIdFunc("iosxe_route_map.test"),
-				ImportStateVerifyIgnore: []string{"entries.0.description_legacy", "entries.0.match_route_type_local_legacy", "entries.0.match_route_type_local", "entries.0.match_community_list_exact_match", "entries.0.set_ip_next_hop_self", "entries.0.set_ip_next_hop_unchanged", "entries.0.set_level_1_2", "entries.0.set_level_2", "entries.0.set_as_path_tag_legacy", "entries.0.set_as_path_tag", "entries.0.set_as_path_replace_any", "entries.0.set_community_none", "entries.0.set_communities_additive", "entries.0.set_community_list_delete", "entries.0.set_extcomunity_vpn_distinguisher_additive"},
+				ImportStateVerifyIgnore: []string{"entries.0.description_legacy", "entries.0.match_route_type_local_legacy", "entries.0.match_route_type_local", "entries.0.match_tags_legacy", "entries.0.match_community_list_exact_match", "entries.0.set_ip_next_hop_self", "entries.0.set_ip_next_hop_unchanged", "entries.0.set_ipv6_address_legacy", "entries.0.set_ipv6_default_global_next_hop_legacy", "entries.0.set_level_1_2", "entries.0.set_level_2", "entries.0.set_tag_legacy", "entries.0.set_as_path_tag_legacy", "entries.0.set_as_path_tag", "entries.0.set_as_path_replace_any", "entries.0.set_community_none", "entries.0.set_communities_additive", "entries.0.set_community_list_delete", "entries.0.set_extcomunity_vpn_distinguisher_additive"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -241,7 +253,10 @@ func testAccIosxeRouteMapConfig_all() string {
 	config += `		match_source_protocol_ospfv3 = ["10"]` + "\n"
 	config += `		match_source_protocol_rip = true` + "\n"
 	config += `		match_source_protocol_static = true` + "\n"
-	config += `		match_tags = [100]` + "\n"
+	config += `		match_tags = ["100"]` + "\n"
+	if os.Getenv("IOSXE1715") != "" {
+		config += `		match_tags_legacy = [100]` + "\n"
+	}
 	config += `		match_track = 1` + "\n"
 	if os.Getenv("IOSXE1712") != "" {
 		config += `		match_as_paths_legacy = [10]` + "\n"
@@ -262,8 +277,14 @@ func testAccIosxeRouteMapConfig_all() string {
 	config += `		set_ip_global_next_hop_address = ["1.2.3.4"]` + "\n"
 	config += `		set_ip_next_hop_address = ["1.2.3.4"]` + "\n"
 	config += `		set_ip_qos_group = 1` + "\n"
-	config += `		set_ipv6_address = ["PFL2"]` + "\n"
-	config += `		set_ipv6_default_global_next_hop = "2001::1"` + "\n"
+	config += `		set_ipv6_address = "PFL2"` + "\n"
+	if os.Getenv("IOSXE1715") != "" {
+		config += `		set_ipv6_address_legacy = ["PFL2"]` + "\n"
+	}
+	config += `		set_ipv6_default_global_next_hop = ["2001::1"]` + "\n"
+	if os.Getenv("IOSXE1715") != "" {
+		config += `		set_ipv6_default_global_next_hop_legacy = "2001::1"` + "\n"
+	}
 	config += `		set_ipv6_default_next_hop = ["2001::1"]` + "\n"
 	config += `		set_ipv6_next_hop = ["2001::1"]` + "\n"
 	config += `		set_level_1 = true` + "\n"
@@ -273,7 +294,10 @@ func testAccIosxeRouteMapConfig_all() string {
 	config += `		set_metric_loading = 10` + "\n"
 	config += `		set_metric_mtu = 1500` + "\n"
 	config += `		set_metric_type = "external"` + "\n"
-	config += `		set_tag = 100` + "\n"
+	config += `		set_tag = "100"` + "\n"
+	if os.Getenv("IOSXE1715") != "" {
+		config += `		set_tag_legacy = 100` + "\n"
+	}
 	if os.Getenv("IOSXE1712") != "" {
 		config += `		set_as_path_prepend_as_legacy = "65001 65001"` + "\n"
 	}

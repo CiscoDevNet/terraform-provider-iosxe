@@ -45,7 +45,7 @@ resource "iosxe_route_map" "example" {
       match_source_protocol_ospfv3           = ["10"]
       match_source_protocol_rip              = true
       match_source_protocol_static           = true
-      match_tags                             = [100]
+      match_tags                             = ["100"]
       match_track                            = 1
       match_as_paths                         = [10]
       match_community_lists                  = ["COMM1"]
@@ -60,8 +60,8 @@ resource "iosxe_route_map" "example" {
       set_ip_global_next_hop_address         = ["1.2.3.4"]
       set_ip_next_hop_address                = ["1.2.3.4"]
       set_ip_qos_group                       = 1
-      set_ipv6_address                       = ["PFL2"]
-      set_ipv6_default_global_next_hop       = "2001::1"
+      set_ipv6_address                       = "PFL2"
+      set_ipv6_default_global_next_hop       = ["2001::1"]
       set_ipv6_default_next_hop              = ["2001::1"]
       set_ipv6_next_hop                      = ["2001::1"]
       set_level_1                            = true
@@ -71,7 +71,7 @@ resource "iosxe_route_map" "example" {
       set_metric_loading                     = 10
       set_metric_mtu                         = 1500
       set_metric_type                        = "external"
-      set_tag                                = 100
+      set_tag                                = "100"
       set_as_path_prepend_as                 = "65001 65001"
       set_as_path_prepend_last_as            = 5
       set_communities                        = ["no-export"]
@@ -148,7 +148,8 @@ Optional:
 - `match_source_protocol_ospfv3` (List of String) OSPFv3
 - `match_source_protocol_rip` (Boolean) Routing Information Protocol (RIP)
 - `match_source_protocol_static` (Boolean) Static routes
-- `match_tags` (List of Number) Tag value (DEPRECATED - please use tag-val)
+- `match_tags` (List of String) Tag value for destination routing protocol
+- `match_tags_legacy` (List of Number) Tag value (DEPRECATED - please use tag-val)
 - `match_track` (Number) tracking object
   - Range: `1`-`1000`
 - `operation` (String) Route map permit/deny set operations
@@ -186,8 +187,10 @@ Optional:
 - `set_ip_next_hop_self` (Boolean) Use self address (for BGP only)
 - `set_ip_next_hop_unchanged` (Boolean) Propagate next hop unchanged
 - `set_ip_qos_group` (Number) - Range: `0`-`99`
-- `set_ipv6_address` (List of String) IPv6 prefix-list
-- `set_ipv6_default_global_next_hop` (String) Next hop along path
+- `set_ipv6_address` (String) IPv6 prefix-list
+- `set_ipv6_address_legacy` (List of String) IPv6 prefix-list
+- `set_ipv6_default_global_next_hop` (List of String) Default Next hop IPv6 address
+- `set_ipv6_default_global_next_hop_legacy` (String) Next hop along path
 - `set_ipv6_default_next_hop` (List of String) Default next hop IPv6 address
 - `set_ipv6_next_hop` (List of String) Next hop IPv6 address
 - `set_level_1` (Boolean) Import into a level-1 area
@@ -209,7 +212,8 @@ Optional:
   - Choices: `external`, `internal`, `type-1`, `type-2`
 - `set_metric_value` (Number) Metric value or Bandwidth in Kbits per second
   - Range: `0`-`4294967295`
-- `set_tag` (Number) Tag value (DEPRECATED - please use tag-val)
+- `set_tag` (String) Tag value for destination routing protocol
+- `set_tag_legacy` (Number) Tag value (DEPRECATED - please use tag-val)
   - Range: `0`-`4294967295`
 - `set_vrf` (String) VPN Routing/Forwarding instance name
 - `set_weight` (Number) BGP weight for routing table

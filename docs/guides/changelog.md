@@ -9,6 +9,7 @@ description: |-
 
 ## Unreleased
 
+- BREAKING CHANGE: Fix `iosxe_route_map` NETCONF/RESTCONF `unknown-element` errors on IOS-XE 17.18+ by moving four attributes off YANG leaves that are obsolete in 17.18: `match_tags` (`match/tag/tag_value` → `match/tag/tag-val`, now a list of strings), `set_tag` (`set/tag/tag-val` → `set/tag-val`, now a string), `set_ipv6_address` (`set/ipv6/address/prefix-list` → `set/ipv6/address/plist`, now a single string), and `set_ipv6_default_global_next_hop` (`set/ipv6/default/global/next-hop` → `set/ipv6/default/global/next-hop-address`, now a list of strings). The previous YANG paths are preserved as `match_tags_legacy`, `set_tag_legacy`, `set_ipv6_address_legacy`, and `set_ipv6_default_global_next_hop_legacy` for IOS-XE 17.15 and earlier
 - Add `authentication_local_rsa_sig`, `authentication_remote_rsa_sig`, `authentication_local_ecdsa_sig`, `authentication_remote_ecdsa_sig`, `pki_trustpoints`, and `match_certificate_maps` attributes to `iosxe_crypto_ikev2_profile` resource and data source for PKI certificate-based authentication support
 - Add `af_interfaces` attribute to `iosxe_eigrp` and `iosxe_eigrp_vrf` resources and data sources for EIGRP named mode per-interface address-family controls (`af-interface`), including `passive_interface` and `split_horizon`
 - Fix nil pointer dereference when invoking actions by setting `ActionData` in the provider `Configure` method
