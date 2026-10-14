@@ -1,3 +1,19 @@
+## Unreleased
+
+- Add `iosxe_crypto_gdoi` resource and data source for GET VPN GDOI group configuration (`crypto gdoi group`), including key server (server local address, rekey, SA IPsec, redundancy, PFS, G-IKEv2) and group member (client protocol gdoi/gikev2, bypass-policy, PFS, fail-close revert, recovery-check interval, registration interface, rekey encryption/hash ciphers, transform-sets, transport-encrypt-key, status active-sa track)
+- Add `iosxe_crypto_map_gdoi` resource and data source for GET VPN crypto map GDOI binding (`crypto map <name> <seq> gdoi / set group <group>`)
+- Add `authentication_local_rsa_sig`, `authentication_remote_rsa_sig`, `authentication_local_ecdsa_sig`, `authentication_remote_ecdsa_sig`, `pki_trustpoints`, and `match_certificate_maps` attributes to `iosxe_crypto_ikev2_profile` resource and data source for PKI certificate-based authentication support
+- Add `af_interfaces` attribute to `iosxe_eigrp` and `iosxe_eigrp_vrf` resources and data sources for EIGRP named mode per-interface address-family controls (`af-interface`), including `passive_interface` and `split_horizon`
+- Fix nil pointer dereference when invoking actions by setting `ActionData` in the provider `Configure` method
+- Fix `iosxe_route_map` `set_communities` returning decimal community values instead of `AA:NN` notation on read, causing perpetual plan drift. The normalization added in 1.0.0 was not applied due to a code generator regression
+- BREAKING CHANGE: Remove all community `_legacy` attributes (`set_communities_legacy`, `set_communities_additive_legacy`, `set_community_none_legacy`, `set_community_list_delete_legacy`, `set_community_list_standard_legacy`, `set_community_list_expanded_legacy`, `set_community_list_name_legacy`, `match_community_lists_legacy`, `match_extcommunity_lists_legacy`) from `iosxe_route_map` resource and data source. The gen-1 attributes used the `set/community/...` YANG path (obsolete since IOS-XE 17.15). The gen-2 `set_communities` and `set_communities_additive` attributes used the deprecated `community-list` YANG leaf, which cannot round-trip on 17.15 devices (writes to `community-list` but reads back under `community-list-v2`, causing perpetual drift). The `set_communities` attribute now targets the `community-list-v2` YANG leaf instead, so it requires IOS-XE 17.15 or later; attribute names are unchanged
+- Add `re_originate_route_type5` attribute to `profiles` list in `iosxe_evpn` resource and data source for L2VPN EVPN profile `re-originate route-type5` configuration
+- Add `stub_connected` and `stub_summary` attributes to `iosxe_eigrp` and `iosxe_eigrp_vrf` resources and data sources for EIGRP stub routing advertisement control (`eigrp stub connected summary`)
+
+## 1.1.1
+
+- Bump `go-netconf` dependency to v0.6.2, reverting a transitive `scrapligo` dependency bump to v1.4.1 that caused intermittent connection errors on the first operation of a new NETCONF session against some IOS-XE devices
+
 ## 1.1.0
 
 - Add `iosxe_interface_ethernets` bulk resource, managing all ethernet interfaces of a device through an `items` map keyed by `<type>;<name>` (e.g. `"GigabitEthernet;3"`), requiring a single NETCONF read and write operation regardless of the number of interfaces. See the [bulk resources guide](https://registry.terraform.io/providers/CiscoDevNet/iosxe/latest/docs/guides/bulk_resources) for details.
