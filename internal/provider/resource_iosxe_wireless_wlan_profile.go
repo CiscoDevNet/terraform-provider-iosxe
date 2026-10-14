@@ -112,7 +112,7 @@ func (r *WirelessWLANProfileResource) Schema(ctx context.Context, req resource.S
 				MarkdownDescription: helpers.NewAttributeDescription("broadcast SSID on a WLAN").String,
 				Optional:            true,
 			},
-			"ccx_aironet_iesupport": schema.BoolAttribute{
+			"ccx_aironet_ie": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("This object indicates the support for the Cisco Compatible Extensions Aironet information element on this WLAN.").String,
 				Optional:            true,
 			},

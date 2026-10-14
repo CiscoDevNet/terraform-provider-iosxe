@@ -44,7 +44,7 @@ type WirelessWLANProfile struct {
 	Ssid                              types.String `tfsdk:"ssid"`
 	WlanStatus                        types.Bool   `tfsdk:"wlan_status"`
 	BroadcastSsid                     types.Bool   `tfsdk:"broadcast_ssid"`
-	CcxAironetIesupport               types.Bool   `tfsdk:"ccx_aironet_iesupport"`
+	CcxAironetIe                      types.Bool   `tfsdk:"ccx_aironet_ie"`
 	PeerBlocking                      types.String `tfsdk:"peer_blocking"`
 	SecurityWpaAkmDot1x               types.Bool   `tfsdk:"security_wpa_akm_dot1x"`
 	SecurityWpaAkmFtDot1x             types.Bool   `tfsdk:"security_wpa_akm_ft_dot1x"`
@@ -80,7 +80,7 @@ type WirelessWLANProfileData struct {
 	Ssid                              types.String `tfsdk:"ssid"`
 	WlanStatus                        types.Bool   `tfsdk:"wlan_status"`
 	BroadcastSsid                     types.Bool   `tfsdk:"broadcast_ssid"`
-	CcxAironetIesupport               types.Bool   `tfsdk:"ccx_aironet_iesupport"`
+	CcxAironetIe                      types.Bool   `tfsdk:"ccx_aironet_ie"`
 	PeerBlocking                      types.String `tfsdk:"peer_blocking"`
 	SecurityWpaAkmDot1x               types.Bool   `tfsdk:"security_wpa_akm_dot1x"`
 	SecurityWpaAkmFtDot1x             types.Bool   `tfsdk:"security_wpa_akm_ft_dot1x"`
@@ -162,8 +162,8 @@ func (data WirelessWLANProfile) addToBodyXML(ctx context.Context, config Wireles
 	if !data.BroadcastSsid.IsNull() && !data.BroadcastSsid.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/apf-vap-id-data/broadcast-ssid", data.BroadcastSsid.ValueBool())
 	}
-	if !data.CcxAironetIesupport.IsNull() && !data.CcxAironetIesupport.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/apf-vap-id-data/ccx-aironet-ie", data.CcxAironetIesupport.ValueBool())
+	if !data.CcxAironetIe.IsNull() && !data.CcxAironetIe.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/apf-vap-id-data/ccx-aironet-ie", data.CcxAironetIe.ValueBool())
 	}
 	if !data.PeerBlocking.IsNull() && !data.PeerBlocking.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/apf-vap-id-data/p2p-block-action", data.PeerBlocking.ValueString())
@@ -275,12 +275,12 @@ func (data *WirelessWLANProfile) updateFromBodyXML(ctx context.Context, res xmld
 	} else {
 		data.BroadcastSsid = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/apf-vap-id-data/ccx-aironet-ie"); !data.CcxAironetIesupport.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/apf-vap-id-data/ccx-aironet-ie"); !data.CcxAironetIe.IsNull() {
 		if value.Exists() {
-			data.CcxAironetIesupport = types.BoolValue(value.Bool())
+			data.CcxAironetIe = types.BoolValue(value.Bool())
 		}
 	} else {
-		data.CcxAironetIesupport = types.BoolNull()
+		data.CcxAironetIe = types.BoolNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/apf-vap-id-data/p2p-block-action"); value.Exists() && !data.PeerBlocking.IsNull() {
 		data.PeerBlocking = types.StringValue(value.String())
@@ -442,9 +442,9 @@ func (data *WirelessWLANProfile) fromBodyXML(ctx context.Context, res xmldot.Res
 		data.BroadcastSsid = types.BoolNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/apf-vap-id-data/ccx-aironet-ie"); value.Exists() {
-		data.CcxAironetIesupport = types.BoolValue(value.Bool())
+		data.CcxAironetIe = types.BoolValue(value.Bool())
 	} else {
-		data.CcxAironetIesupport = types.BoolNull()
+		data.CcxAironetIe = types.BoolNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/apf-vap-id-data/p2p-block-action"); value.Exists() {
 		data.PeerBlocking = types.StringValue(value.String())
@@ -565,9 +565,9 @@ func (data *WirelessWLANProfileData) fromBodyXML(ctx context.Context, res xmldot
 		data.BroadcastSsid = types.BoolNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/apf-vap-id-data/ccx-aironet-ie"); value.Exists() {
-		data.CcxAironetIesupport = types.BoolValue(value.Bool())
+		data.CcxAironetIe = types.BoolValue(value.Bool())
 	} else {
-		data.CcxAironetIesupport = types.BoolNull()
+		data.CcxAironetIe = types.BoolNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/apf-vap-id-data/p2p-block-action"); value.Exists() {
 		data.PeerBlocking = types.StringValue(value.String())
@@ -741,7 +741,7 @@ func (data *WirelessWLANProfile) addDeletedItemsXML(ctx context.Context, state W
 	if !state.PeerBlocking.IsNull() && data.PeerBlocking.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/apf-vap-id-data/p2p-block-action")
 	}
-	if !state.CcxAironetIesupport.IsNull() && data.CcxAironetIesupport.IsNull() {
+	if !state.CcxAironetIe.IsNull() && data.CcxAironetIe.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/apf-vap-id-data/ccx-aironet-ie")
 	}
 	if !state.BroadcastSsid.IsNull() && data.BroadcastSsid.IsNull() {
@@ -836,7 +836,7 @@ func (data *WirelessWLANProfile) addDeletePathsXML(ctx context.Context, body str
 	if !data.PeerBlocking.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/apf-vap-id-data/p2p-block-action")
 	}
-	if !data.CcxAironetIesupport.IsNull() {
+	if !data.CcxAironetIe.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/apf-vap-id-data/ccx-aironet-ie")
 	}
 	if !data.BroadcastSsid.IsNull() {

@@ -4,7 +4,7 @@ resource "iosxe_wireless_wlan_profile" "example" {
   ssid                                  = "S1-CORP-PSK"
   wlan_status                           = true
   broadcast_ssid                        = true
-  ccx_aironet_iesupport                 = false
+  ccx_aironet_ie                        = false
   peer_blocking                         = "p2p-blocking-action-drop"
   security_wpa_akm_dot1x                = false
   security_wpa_akm_ft_dot1x             = false

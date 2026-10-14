@@ -32,7 +32,7 @@ data "iosxe_wireless_wlan_profile" "example" {
 ### Read-Only
 
 - `broadcast_ssid` (Boolean) broadcast SSID on a WLAN
-- `ccx_aironet_iesupport` (Boolean) This object indicates the support for the Cisco Compatible Extensions Aironet information element on this WLAN.
+- `ccx_aironet_ie` (Boolean) This object indicates the support for the Cisco Compatible Extensions Aironet information element on this WLAN.
 - `id` (String) The path of the retrieved object.
 - `load_balance` (Boolean) Allow/Disallow Load Balance on a WLAN
 - `mac_filtering` (String) Set MAC filtering support on WLAN

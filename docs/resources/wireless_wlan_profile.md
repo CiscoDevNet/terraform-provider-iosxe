@@ -19,7 +19,7 @@ resource "iosxe_wireless_wlan_profile" "example" {
   ssid                                  = "S1-CORP-PSK"
   wlan_status                           = true
   broadcast_ssid                        = true
-  ccx_aironet_iesupport                 = false
+  ccx_aironet_ie                        = false
   peer_blocking                         = "p2p-blocking-action-drop"
   security_wpa_akm_dot1x                = false
   security_wpa_akm_ft_dot1x             = false
@@ -58,7 +58,7 @@ resource "iosxe_wireless_wlan_profile" "example" {
 > **NOTE**: [Write-only arguments](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments) are supported in Terraform 1.11 and later.
 
 - `broadcast_ssid` (Boolean) broadcast SSID on a WLAN
-- `ccx_aironet_iesupport` (Boolean) This object indicates the support for the Cisco Compatible Extensions Aironet information element on this WLAN.
+- `ccx_aironet_ie` (Boolean) This object indicates the support for the Cisco Compatible Extensions Aironet information element on this WLAN.
 - `device` (String) A device name from the provider configuration.
 - `load_balance` (Boolean) Allow/Disallow Load Balance on a WLAN
 - `mac_filtering` (String) Set MAC filtering support on WLAN

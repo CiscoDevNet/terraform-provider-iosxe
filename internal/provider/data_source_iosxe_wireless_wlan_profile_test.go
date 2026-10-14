@@ -36,7 +36,7 @@ func TestAccDataSourceIosxeWirelessWLANProfile(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_wlan_profile.test", "ssid", "S1-CORP-PSK"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_wlan_profile.test", "wlan_status", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_wlan_profile.test", "broadcast_ssid", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_wlan_profile.test", "ccx_aironet_iesupport", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_wlan_profile.test", "ccx_aironet_ie", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_wlan_profile.test", "peer_blocking", "p2p-blocking-action-drop"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_wlan_profile.test", "security_wpa_akm_dot1x", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_wlan_profile.test", "security_wpa_akm_ft_dot1x", "false"))
@@ -83,7 +83,7 @@ func testAccDataSourceIosxeWirelessWLANProfileConfig() string {
 	config += `	ssid = "S1-CORP-PSK"` + "\n"
 	config += `	wlan_status = true` + "\n"
 	config += `	broadcast_ssid = true` + "\n"
-	config += `	ccx_aironet_iesupport = false` + "\n"
+	config += `	ccx_aironet_ie = false` + "\n"
 	config += `	peer_blocking = "p2p-blocking-action-drop"` + "\n"
 	config += `	security_wpa_akm_dot1x = false` + "\n"
 	config += `	security_wpa_akm_ft_dot1x = false` + "\n"

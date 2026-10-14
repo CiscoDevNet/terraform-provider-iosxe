@@ -22,7 +22,7 @@ attributes:
     tf_name: broadcast_ssid
     example: true
   - yang_name: apf-vap-id-data/ccx-aironet-ie
-    tf_name: ccx_aironet_iesupport
+    tf_name: ccx_aironet_ie
     example: false
   - yang_name: apf-vap-id-data/p2p-block-action
     tf_name: peer_blocking
