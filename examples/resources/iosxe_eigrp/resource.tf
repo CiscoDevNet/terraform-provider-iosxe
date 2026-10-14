@@ -8,7 +8,14 @@ resource "iosxe_eigrp" "example" {
       wildcard = "0.0.255.255"
     }
   ]
-  auto_summary   = false
+  auto_summary = false
+  af_interfaces = [
+    {
+      interface         = "default"
+      passive_interface = true
+      split_horizon     = false
+    }
+  ]
   stub_connected = true
   stub_summary   = true
   shutdown       = false
