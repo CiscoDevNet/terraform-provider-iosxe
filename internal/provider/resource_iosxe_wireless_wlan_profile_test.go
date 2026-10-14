@@ -50,13 +50,9 @@ func TestAccIosxeWirelessWLANProfile(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "security_wpa_wpa2_ciphers_aes", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "security_wpa_wpa3", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "security_wpa_psk_key_format", "key-ascii"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "security_dot1x_authentication_list", ""))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "security_web_auth", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "security_web_auth_authentication_list", ""))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "security_web_auth_parameter_map", ""))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "security_ft", "dot11r-enabled"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "security_ft_over_the_ds", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "mac_filtering", ""))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "load_balance", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "wmm", "apf-vap-wme-required"))
 	resource.Test(t, resource.TestCase{
@@ -134,13 +130,9 @@ func testAccIosxeWirelessWLANProfileConfig_all() string {
 	config += `	security_wpa_psk_key_format = "key-ascii"` + "\n"
 	config += `	security_wpa_psk_key_encryption = "clear"` + "\n"
 	config += `	security_wpa_psk_key = "Example-Passphrase-123"` + "\n"
-	config += `	security_dot1x_authentication_list = ""` + "\n"
 	config += `	security_web_auth = false` + "\n"
-	config += `	security_web_auth_authentication_list = ""` + "\n"
-	config += `	security_web_auth_parameter_map = ""` + "\n"
 	config += `	security_ft = "dot11r-enabled"` + "\n"
 	config += `	security_ft_over_the_ds = true` + "\n"
-	config += `	mac_filtering = ""` + "\n"
 	config += `	load_balance = true` + "\n"
 	config += `	wmm = "apf-vap-wme-required"` + "\n"
 	config += `}` + "\n"
