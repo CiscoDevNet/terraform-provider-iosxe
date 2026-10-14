@@ -9,6 +9,8 @@ description: |-
 
 ## Unreleased
 
+- Add `iosxe_crypto_gdoi` resource and data source for GET VPN GDOI group configuration (`crypto gdoi group`), including key server (server local address, rekey, SA IPsec, redundancy, PFS, G-IKEv2) and group member (client protocol gdoi/gikev2, bypass-policy, PFS, fail-close revert, recovery-check interval, registration interface, rekey encryption/hash ciphers, transform-sets, transport-encrypt-key, status active-sa track)
+- Add `iosxe_crypto_map_gdoi` resource and data source for GET VPN crypto map GDOI binding (`crypto map <name> <seq> gdoi / set group <group>`)
 - Add `authentication_local_rsa_sig`, `authentication_remote_rsa_sig`, `authentication_local_ecdsa_sig`, `authentication_remote_ecdsa_sig`, `pki_trustpoints`, and `match_certificate_maps` attributes to `iosxe_crypto_ikev2_profile` resource and data source for PKI certificate-based authentication support
 - Add `af_interfaces` attribute to `iosxe_eigrp` and `iosxe_eigrp_vrf` resources and data sources for EIGRP named mode per-interface address-family controls (`af-interface`), including `passive_interface` and `split_horizon`
 - Fix nil pointer dereference when invoking actions by setting `ActionData` in the provider `Configure` method
