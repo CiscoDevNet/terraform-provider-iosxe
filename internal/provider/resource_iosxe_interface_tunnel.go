@@ -558,11 +558,19 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
 							},
 						},
-						"nbma_ipv4": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("NBMA address of the NHS").String,
+						"nbma_ipv4s": schema.ListNestedAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("NBMA addresses of the NHS").String,
 							Optional:            true,
-							Validators: []validator.String{
-								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"ipv4": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("IPv4 address").String,
+										Required:            true,
+										Validators: []validator.String{
+											stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+										},
+									},
+								},
 							},
 						},
 					},
