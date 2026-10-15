@@ -139,3 +139,9 @@ test_prerequisites:
         value: myCA
       - name: enrollment/enrollment-method/selfsigned
         value: ""
+  - path: /Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:pki/certificate/pki-map/map[tag=map1][sequence=1]
+    attributes:
+      - name: tag
+        value: map1
+      - name: sequence
+        value: 1
