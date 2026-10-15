@@ -1,0 +1,126 @@
+---
+name: Wireless WLAN Profile
+path: /Cisco-IOS-XE-wireless-wlan-cfg:wlan-cfg-data/wlan-cfg-entries/wlan-cfg-entry[profile-name=%s]
+no_delete_attributes: true
+doc_category: Wireless
+attributes:
+  - yang_name: profile-name
+    tf_name: profile_name
+    id: true
+    example: S1-CORP-PSK
+  - yang_name: wlan-id
+    tf_name: wlan_id
+    mandatory: true
+    example: 10
+  - yang_name: apf-vap-id-data/ssid
+    tf_name: ssid
+    example: S1-CORP-PSK
+  - yang_name: apf-vap-id-data/wlan-status
+    tf_name: wlan_status
+    example: true
+  - yang_name: apf-vap-id-data/broadcast-ssid
+    tf_name: broadcast_ssid
+    example: true
+  - yang_name: apf-vap-id-data/ccx-aironet-ie
+    tf_name: ccx_aironet_ie
+    example: false
+  - yang_name: apf-vap-id-data/p2p-block-action
+    tf_name: peer_blocking
+    type: String
+    enum_values:
+      - p2p-blocking-action-none
+      - p2p-blocking-action-drop
+      - p2p-blocking-action-fwdup
+    example: p2p-blocking-action-drop
+  - yang_name: auth-key-mgmt-dot1x
+    tf_name: security_wpa_akm_dot1x
+    example: false
+  - yang_name: auth-key-mgmt-ft-dot1x
+    tf_name: security_wpa_akm_ft_dot1x
+    example: false
+  - yang_name: auth-key-mgmt-psk
+    tf_name: security_wpa_akm_psk
+    example: true
+  - yang_name: auth-key-mgmt-ft-psk
+    tf_name: security_wpa_akm_ft_psk
+    example: true
+  - yang_name: auth-key-mgmt-sae
+    tf_name: security_wpa_akm_sae
+    example: false
+  - yang_name: auth-key-mgmt-ft-sae
+    tf_name: security_wpa_akm_ft_sae
+    example: false
+  - yang_name: wpa2-aes
+    tf_name: security_wpa_wpa2_ciphers_aes
+    example: true
+  - yang_name: rsn-cipher-suite-gcmp128
+    tf_name: security_wpa_wpa2_ciphers_gcmp128
+    example: false
+    exclude_test: true
+  - yang_name: rsn-cipher-suite-gcmp256
+    tf_name: security_wpa_wpa2_ciphers_gcmp256
+    example: false
+    exclude_test: true
+  - yang_name: wpa3-enabled
+    tf_name: security_wpa_wpa3
+    example: false
+  - yang_name: psk-key-type
+    tf_name: security_wpa_psk_key_format
+    type: String
+    enum_values:
+      - key-ascii
+      - key-hex
+    example: key-ascii
+  - yang_name: psk-type
+    tf_name: security_wpa_psk_key_encryption
+    write_only: true
+    type: String
+    enum_values:
+      - clear
+    example: clear
+  - yang_name: psk
+    tf_name: security_wpa_psk_key
+    write_only: true
+    sensitive: true
+    example: Example-Passphrase-123
+  - yang_name: authentication-list
+    tf_name: security_dot1x_authentication_list
+    exclude_test: true
+    example: ""
+  - yang_name: webauth-enabled
+    tf_name: security_web_auth
+    example: false
+  - yang_name: web-authc-list
+    tf_name: security_web_auth_authentication_list
+    exclude_test: true
+    example: ""
+  - yang_name: web-auth-parameter-map
+    tf_name: security_web_auth_parameter_map
+    exclude_test: true
+    example: ""
+  - yang_name: ft-mode
+    tf_name: security_ft
+    type: String
+    enum_values:
+      - dot11r-disabled
+      - dot11r-enabled
+      - dot11r-adaptive-enabled
+    example: dot11r-enabled
+  - yang_name: ft-over-ds
+    tf_name: security_ft_over_the_ds
+    example: true
+  - yang_name: mac-filtering-list
+    tf_name: mac_filtering
+    exclude_test: true
+    example: ""
+  - yang_name: load-balance
+    tf_name: load_balance
+    example: true
+  - yang_name: qos-wmm-status
+    tf_name: wmm
+    type: String
+    enum_values:
+      - apf-vap-wme-disabled
+      - apf-vap-wme-allowed
+      - apf-vap-wme-required
+    example: apf-vap-wme-required

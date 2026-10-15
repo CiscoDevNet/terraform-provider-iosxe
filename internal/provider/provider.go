@@ -569,6 +569,7 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 
 	resp.DataSourceData = &data
 	resp.ResourceData = &data
+	resp.ActionData = &data
 }
 
 func (p *IosxeProvider) Resources(_ context.Context) []func() resource.Resource {
@@ -616,6 +617,7 @@ func (p *IosxeProvider) Resources(_ context.Context) []func() resource.Resource 
 		NewCommunityListExpandedResource,
 		NewCommunityListStandardResource,
 		NewCryptoResource,
+		NewCryptoGDOIResource,
 		NewCryptoIKEv2Resource,
 		NewCryptoIKEv2KeyringResource,
 		NewCryptoIKEv2PolicyResource,
@@ -623,6 +625,7 @@ func (p *IosxeProvider) Resources(_ context.Context) []func() resource.Resource 
 		NewCryptoIKEv2ProposalResource,
 		NewCryptoIPSecProfileResource,
 		NewCryptoIPSecTransformSetResource,
+		NewCryptoMapGDOIResource,
 		NewCryptoPKIResource,
 		NewCTSResource,
 		NewDeviceSensorResource,
@@ -714,6 +717,7 @@ func (p *IosxeProvider) Resources(_ context.Context) []func() resource.Resource 
 		NewInterfaceVRRPV2Resource,
 		NewVTPResource,
 		NewWirelessRFProfileResource,
+		NewWirelessWLANProfileResource,
 		NewZonePairSecurityResource,
 		NewZoneSecurityResource,
 	}
@@ -761,6 +765,7 @@ func (p *IosxeProvider) DataSources(_ context.Context) []func() datasource.DataS
 		NewCommunityListExpandedDataSource,
 		NewCommunityListStandardDataSource,
 		NewCryptoDataSource,
+		NewCryptoGDOIDataSource,
 		NewCryptoIKEv2DataSource,
 		NewCryptoIKEv2KeyringDataSource,
 		NewCryptoIKEv2PolicyDataSource,
@@ -768,6 +773,7 @@ func (p *IosxeProvider) DataSources(_ context.Context) []func() datasource.DataS
 		NewCryptoIKEv2ProposalDataSource,
 		NewCryptoIPSecProfileDataSource,
 		NewCryptoIPSecTransformSetDataSource,
+		NewCryptoMapGDOIDataSource,
 		NewCryptoPKIDataSource,
 		NewCTSDataSource,
 		NewDeviceSensorDataSource,
@@ -858,6 +864,7 @@ func (p *IosxeProvider) DataSources(_ context.Context) []func() datasource.DataS
 		NewInterfaceVRRPV2DataSource,
 		NewVTPDataSource,
 		NewWirelessRFProfileDataSource,
+		NewWirelessWLANProfileDataSource,
 		NewZonePairSecurityDataSource,
 		NewZoneSecurityDataSource,
 	}

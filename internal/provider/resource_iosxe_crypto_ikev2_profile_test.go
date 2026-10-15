@@ -50,6 +50,11 @@ func TestAccIosxeCryptoIKEv2Profile(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_profile.test", "dpd_retry", "2"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_profile.test", "dpd_query", "periodic"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_profile.test", "lifetime", "28800"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_profile.test", "authentication_local_rsa_sig", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_profile.test", "authentication_remote_rsa_sig", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_profile.test", "match_certificate_maps.0", "map1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_profile.test", "pki_trustpoints.0.name", "myCA"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_profile.test", "pki_trustpoints.0.uses", "sign"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_profile.test", "config_exchange_request", "false"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -67,7 +72,7 @@ func TestAccIosxeCryptoIKEv2Profile(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeCryptoIKEv2ProfileImportStateIdFunc("iosxe_crypto_ikev2_profile.test"),
-				ImportStateVerifyIgnore: []string{"match_inbound_only"},
+				ImportStateVerifyIgnore: []string{"match_inbound_only", "authentication_local_ecdsa_sig", "authentication_remote_ecdsa_sig"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -107,6 +112,14 @@ resource "iosxe_yang" "PreReq1" {
 	}
 }
 
+resource "iosxe_yang" "PreReq2" {
+	path = "/Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:pki/trustpoint[id=myCA]"
+	attributes = {
+		"id" = "myCA"
+		"enrollment/enrollment-method/selfsigned" = ""
+	}
+}
+
 `
 
 // End of section. //template:end testPrerequisites
@@ -116,7 +129,7 @@ resource "iosxe_yang" "PreReq1" {
 func testAccIosxeCryptoIKEv2ProfileConfig_minimum() string {
 	config := `resource "iosxe_crypto_ikev2_profile" "test" {` + "\n"
 	config += `	name = "profile1"` + "\n"
-	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -145,8 +158,15 @@ func testAccIosxeCryptoIKEv2ProfileConfig_all() string {
 	config += `	dpd_retry = 2` + "\n"
 	config += `	dpd_query = "periodic"` + "\n"
 	config += `	lifetime = 28800` + "\n"
+	config += `	authentication_local_rsa_sig = true` + "\n"
+	config += `	authentication_remote_rsa_sig = true` + "\n"
+	config += `	match_certificate_maps = ["map1"]` + "\n"
+	config += `	pki_trustpoints = [{` + "\n"
+	config += `		name = "myCA"` + "\n"
+	config += `		uses = "sign"` + "\n"
+	config += `	}]` + "\n"
 	config += `	config_exchange_request = false` + "\n"
-	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

@@ -127,6 +127,7 @@ var models = []string{
 	"https://raw.githubusercontent.com/YangModels/yang/main/vendor/cisco/xe/17151/Cisco-IOS-XE-wireless-flex-cfg.yang",
 	"https://raw.githubusercontent.com/YangModels/yang/main/vendor/cisco/xe/17151/Cisco-IOS-XE-wireless-general-cfg.yang",
 	"https://raw.githubusercontent.com/YangModels/yang/main/vendor/cisco/xe/17151/Cisco-IOS-XE-wireless-mesh-cfg.yang",
+	"https://raw.githubusercontent.com/YangModels/yang/main/vendor/cisco/xe/17151/Cisco-IOS-XE-wireless-power-cfg.yang",
 	"https://raw.githubusercontent.com/YangModels/yang/main/vendor/cisco/xe/17151/Cisco-IOS-XE-wireless-rf-cfg.yang",
 	"https://raw.githubusercontent.com/YangModels/yang/main/vendor/cisco/xe/17151/Cisco-IOS-XE-wireless-site-cfg.yang",
 	"https://raw.githubusercontent.com/YangModels/yang/main/vendor/cisco/xe/17151/Cisco-IOS-XE-wireless-types.yang",
