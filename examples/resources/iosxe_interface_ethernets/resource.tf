@@ -76,7 +76,34 @@ resource "iosxe_interface_ethernets" "example" {
           queue_length = 50
         }
       ]
-      ip_igmp_version = 3
+      ip_igmp_version                                           = 3
+      access_session_monitor                                    = true
+      storm_control_broadcast_level_rising_threshold            = 10.5
+      storm_control_broadcast_level_falling_threshold           = 8.5
+      storm_control_broadcast_level_bps_rising_threshold        = "10k"
+      storm_control_broadcast_level_bps_falling_threshold       = "8k"
+      storm_control_broadcast_level_pps_rising_threshold        = "10k"
+      storm_control_broadcast_level_pps_falling_threshold       = "8k"
+      storm_control_multicast_level_rising_threshold            = 10.5
+      storm_control_multicast_level_falling_threshold           = 8.5
+      storm_control_multicast_level_bps_rising_threshold        = "10k"
+      storm_control_multicast_level_bps_falling_threshold       = "8k"
+      storm_control_multicast_level_pps_rising_threshold        = "10k"
+      storm_control_multicast_level_pps_falling_threshold       = "8k"
+      storm_control_unicast_level_rising_threshold              = 10.5
+      storm_control_unicast_level_falling_threshold             = 8.5
+      storm_control_unicast_level_bps_rising_threshold          = "10k"
+      storm_control_unicast_level_bps_falling_threshold         = "8k"
+      storm_control_unicast_level_pps_rising_threshold          = "10k"
+      storm_control_unicast_level_pps_falling_threshold         = "8k"
+      storm_control_unknown_unicast_level_rising_threshold      = 10.5
+      storm_control_unknown_unicast_level_falling_threshold     = 8.5
+      storm_control_unknown_unicast_level_bps_rising_threshold  = "10k"
+      storm_control_unknown_unicast_level_bps_falling_threshold = "8k"
+      storm_control_unknown_unicast_level_pps_rising_threshold  = "10k"
+      storm_control_unknown_unicast_level_pps_falling_threshold = "8k"
+      storm_control_action_shutdown                             = true
+      storm_control_action_trap                                 = true
     }
   }
 }

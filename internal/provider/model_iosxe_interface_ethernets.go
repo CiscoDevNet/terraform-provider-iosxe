@@ -191,6 +191,33 @@ type InterfaceEthernetsItems struct {
 	IpIgmpVersion                                       types.Int64                                       `tfsdk:"ip_igmp_version"`
 	IpRouterIsis                                        types.String                                      `tfsdk:"ip_router_isis"`
 	ZoneMemberSecurity                                  types.String                                      `tfsdk:"zone_member_security"`
+	AccessSessionMonitor                                types.Bool                                        `tfsdk:"access_session_monitor"`
+	StormControlBroadcastLevelRisingThreshold           types.Float64                                     `tfsdk:"storm_control_broadcast_level_rising_threshold"`
+	StormControlBroadcastLevelFallingThreshold          types.Float64                                     `tfsdk:"storm_control_broadcast_level_falling_threshold"`
+	StormControlBroadcastLevelBpsRisingThreshold        types.String                                      `tfsdk:"storm_control_broadcast_level_bps_rising_threshold"`
+	StormControlBroadcastLevelBpsFallingThreshold       types.String                                      `tfsdk:"storm_control_broadcast_level_bps_falling_threshold"`
+	StormControlBroadcastLevelPpsRisingThreshold        types.String                                      `tfsdk:"storm_control_broadcast_level_pps_rising_threshold"`
+	StormControlBroadcastLevelPpsFallingThreshold       types.String                                      `tfsdk:"storm_control_broadcast_level_pps_falling_threshold"`
+	StormControlMulticastLevelRisingThreshold           types.Float64                                     `tfsdk:"storm_control_multicast_level_rising_threshold"`
+	StormControlMulticastLevelFallingThreshold          types.Float64                                     `tfsdk:"storm_control_multicast_level_falling_threshold"`
+	StormControlMulticastLevelBpsRisingThreshold        types.String                                      `tfsdk:"storm_control_multicast_level_bps_rising_threshold"`
+	StormControlMulticastLevelBpsFallingThreshold       types.String                                      `tfsdk:"storm_control_multicast_level_bps_falling_threshold"`
+	StormControlMulticastLevelPpsRisingThreshold        types.String                                      `tfsdk:"storm_control_multicast_level_pps_rising_threshold"`
+	StormControlMulticastLevelPpsFallingThreshold       types.String                                      `tfsdk:"storm_control_multicast_level_pps_falling_threshold"`
+	StormControlUnicastLevelRisingThreshold             types.Float64                                     `tfsdk:"storm_control_unicast_level_rising_threshold"`
+	StormControlUnicastLevelFallingThreshold            types.Float64                                     `tfsdk:"storm_control_unicast_level_falling_threshold"`
+	StormControlUnicastLevelBpsRisingThreshold          types.String                                      `tfsdk:"storm_control_unicast_level_bps_rising_threshold"`
+	StormControlUnicastLevelBpsFallingThreshold         types.String                                      `tfsdk:"storm_control_unicast_level_bps_falling_threshold"`
+	StormControlUnicastLevelPpsRisingThreshold          types.String                                      `tfsdk:"storm_control_unicast_level_pps_rising_threshold"`
+	StormControlUnicastLevelPpsFallingThreshold         types.String                                      `tfsdk:"storm_control_unicast_level_pps_falling_threshold"`
+	StormControlUnknownUnicastLevelRisingThreshold      types.Float64                                     `tfsdk:"storm_control_unknown_unicast_level_rising_threshold"`
+	StormControlUnknownUnicastLevelFallingThreshold     types.Float64                                     `tfsdk:"storm_control_unknown_unicast_level_falling_threshold"`
+	StormControlUnknownUnicastLevelBpsRisingThreshold   types.String                                      `tfsdk:"storm_control_unknown_unicast_level_bps_rising_threshold"`
+	StormControlUnknownUnicastLevelBpsFallingThreshold  types.String                                      `tfsdk:"storm_control_unknown_unicast_level_bps_falling_threshold"`
+	StormControlUnknownUnicastLevelPpsRisingThreshold   types.String                                      `tfsdk:"storm_control_unknown_unicast_level_pps_rising_threshold"`
+	StormControlUnknownUnicastLevelPpsFallingThreshold  types.String                                      `tfsdk:"storm_control_unknown_unicast_level_pps_falling_threshold"`
+	StormControlActionShutdown                          types.Bool                                        `tfsdk:"storm_control_action_shutdown"`
+	StormControlActionTrap                              types.Bool                                        `tfsdk:"storm_control_action_trap"`
 }
 
 // End of section. //template:end types
@@ -382,6 +409,33 @@ func (data InterfaceEthernets) toSingle(key string, item InterfaceEthernetsItems
 	single.IpIgmpVersion = item.IpIgmpVersion
 	single.IpRouterIsis = item.IpRouterIsis
 	single.ZoneMemberSecurity = item.ZoneMemberSecurity
+	single.AccessSessionMonitor = item.AccessSessionMonitor
+	single.StormControlBroadcastLevelRisingThreshold = item.StormControlBroadcastLevelRisingThreshold
+	single.StormControlBroadcastLevelFallingThreshold = item.StormControlBroadcastLevelFallingThreshold
+	single.StormControlBroadcastLevelBpsRisingThreshold = item.StormControlBroadcastLevelBpsRisingThreshold
+	single.StormControlBroadcastLevelBpsFallingThreshold = item.StormControlBroadcastLevelBpsFallingThreshold
+	single.StormControlBroadcastLevelPpsRisingThreshold = item.StormControlBroadcastLevelPpsRisingThreshold
+	single.StormControlBroadcastLevelPpsFallingThreshold = item.StormControlBroadcastLevelPpsFallingThreshold
+	single.StormControlMulticastLevelRisingThreshold = item.StormControlMulticastLevelRisingThreshold
+	single.StormControlMulticastLevelFallingThreshold = item.StormControlMulticastLevelFallingThreshold
+	single.StormControlMulticastLevelBpsRisingThreshold = item.StormControlMulticastLevelBpsRisingThreshold
+	single.StormControlMulticastLevelBpsFallingThreshold = item.StormControlMulticastLevelBpsFallingThreshold
+	single.StormControlMulticastLevelPpsRisingThreshold = item.StormControlMulticastLevelPpsRisingThreshold
+	single.StormControlMulticastLevelPpsFallingThreshold = item.StormControlMulticastLevelPpsFallingThreshold
+	single.StormControlUnicastLevelRisingThreshold = item.StormControlUnicastLevelRisingThreshold
+	single.StormControlUnicastLevelFallingThreshold = item.StormControlUnicastLevelFallingThreshold
+	single.StormControlUnicastLevelBpsRisingThreshold = item.StormControlUnicastLevelBpsRisingThreshold
+	single.StormControlUnicastLevelBpsFallingThreshold = item.StormControlUnicastLevelBpsFallingThreshold
+	single.StormControlUnicastLevelPpsRisingThreshold = item.StormControlUnicastLevelPpsRisingThreshold
+	single.StormControlUnicastLevelPpsFallingThreshold = item.StormControlUnicastLevelPpsFallingThreshold
+	single.StormControlUnknownUnicastLevelRisingThreshold = item.StormControlUnknownUnicastLevelRisingThreshold
+	single.StormControlUnknownUnicastLevelFallingThreshold = item.StormControlUnknownUnicastLevelFallingThreshold
+	single.StormControlUnknownUnicastLevelBpsRisingThreshold = item.StormControlUnknownUnicastLevelBpsRisingThreshold
+	single.StormControlUnknownUnicastLevelBpsFallingThreshold = item.StormControlUnknownUnicastLevelBpsFallingThreshold
+	single.StormControlUnknownUnicastLevelPpsRisingThreshold = item.StormControlUnknownUnicastLevelPpsRisingThreshold
+	single.StormControlUnknownUnicastLevelPpsFallingThreshold = item.StormControlUnknownUnicastLevelPpsFallingThreshold
+	single.StormControlActionShutdown = item.StormControlActionShutdown
+	single.StormControlActionTrap = item.StormControlActionTrap
 	single.Id = types.StringValue(single.getPath())
 	return single
 }
@@ -535,6 +589,33 @@ func (data InterfaceEthernets) toItem(single InterfaceEthernet) InterfaceEtherne
 	item.IpIgmpVersion = single.IpIgmpVersion
 	item.IpRouterIsis = single.IpRouterIsis
 	item.ZoneMemberSecurity = single.ZoneMemberSecurity
+	item.AccessSessionMonitor = single.AccessSessionMonitor
+	item.StormControlBroadcastLevelRisingThreshold = single.StormControlBroadcastLevelRisingThreshold
+	item.StormControlBroadcastLevelFallingThreshold = single.StormControlBroadcastLevelFallingThreshold
+	item.StormControlBroadcastLevelBpsRisingThreshold = single.StormControlBroadcastLevelBpsRisingThreshold
+	item.StormControlBroadcastLevelBpsFallingThreshold = single.StormControlBroadcastLevelBpsFallingThreshold
+	item.StormControlBroadcastLevelPpsRisingThreshold = single.StormControlBroadcastLevelPpsRisingThreshold
+	item.StormControlBroadcastLevelPpsFallingThreshold = single.StormControlBroadcastLevelPpsFallingThreshold
+	item.StormControlMulticastLevelRisingThreshold = single.StormControlMulticastLevelRisingThreshold
+	item.StormControlMulticastLevelFallingThreshold = single.StormControlMulticastLevelFallingThreshold
+	item.StormControlMulticastLevelBpsRisingThreshold = single.StormControlMulticastLevelBpsRisingThreshold
+	item.StormControlMulticastLevelBpsFallingThreshold = single.StormControlMulticastLevelBpsFallingThreshold
+	item.StormControlMulticastLevelPpsRisingThreshold = single.StormControlMulticastLevelPpsRisingThreshold
+	item.StormControlMulticastLevelPpsFallingThreshold = single.StormControlMulticastLevelPpsFallingThreshold
+	item.StormControlUnicastLevelRisingThreshold = single.StormControlUnicastLevelRisingThreshold
+	item.StormControlUnicastLevelFallingThreshold = single.StormControlUnicastLevelFallingThreshold
+	item.StormControlUnicastLevelBpsRisingThreshold = single.StormControlUnicastLevelBpsRisingThreshold
+	item.StormControlUnicastLevelBpsFallingThreshold = single.StormControlUnicastLevelBpsFallingThreshold
+	item.StormControlUnicastLevelPpsRisingThreshold = single.StormControlUnicastLevelPpsRisingThreshold
+	item.StormControlUnicastLevelPpsFallingThreshold = single.StormControlUnicastLevelPpsFallingThreshold
+	item.StormControlUnknownUnicastLevelRisingThreshold = single.StormControlUnknownUnicastLevelRisingThreshold
+	item.StormControlUnknownUnicastLevelFallingThreshold = single.StormControlUnknownUnicastLevelFallingThreshold
+	item.StormControlUnknownUnicastLevelBpsRisingThreshold = single.StormControlUnknownUnicastLevelBpsRisingThreshold
+	item.StormControlUnknownUnicastLevelBpsFallingThreshold = single.StormControlUnknownUnicastLevelBpsFallingThreshold
+	item.StormControlUnknownUnicastLevelPpsRisingThreshold = single.StormControlUnknownUnicastLevelPpsRisingThreshold
+	item.StormControlUnknownUnicastLevelPpsFallingThreshold = single.StormControlUnknownUnicastLevelPpsFallingThreshold
+	item.StormControlActionShutdown = single.StormControlActionShutdown
+	item.StormControlActionTrap = single.StormControlActionTrap
 	return item
 }
 

@@ -188,6 +188,33 @@ type InterfaceEthernet struct {
 	IpIgmpVersion                                       types.Int64                                       `tfsdk:"ip_igmp_version"`
 	IpRouterIsis                                        types.String                                      `tfsdk:"ip_router_isis"`
 	ZoneMemberSecurity                                  types.String                                      `tfsdk:"zone_member_security"`
+	AccessSessionMonitor                                types.Bool                                        `tfsdk:"access_session_monitor"`
+	StormControlBroadcastLevelRisingThreshold           types.Float64                                     `tfsdk:"storm_control_broadcast_level_rising_threshold"`
+	StormControlBroadcastLevelFallingThreshold          types.Float64                                     `tfsdk:"storm_control_broadcast_level_falling_threshold"`
+	StormControlBroadcastLevelBpsRisingThreshold        types.String                                      `tfsdk:"storm_control_broadcast_level_bps_rising_threshold"`
+	StormControlBroadcastLevelBpsFallingThreshold       types.String                                      `tfsdk:"storm_control_broadcast_level_bps_falling_threshold"`
+	StormControlBroadcastLevelPpsRisingThreshold        types.String                                      `tfsdk:"storm_control_broadcast_level_pps_rising_threshold"`
+	StormControlBroadcastLevelPpsFallingThreshold       types.String                                      `tfsdk:"storm_control_broadcast_level_pps_falling_threshold"`
+	StormControlMulticastLevelRisingThreshold           types.Float64                                     `tfsdk:"storm_control_multicast_level_rising_threshold"`
+	StormControlMulticastLevelFallingThreshold          types.Float64                                     `tfsdk:"storm_control_multicast_level_falling_threshold"`
+	StormControlMulticastLevelBpsRisingThreshold        types.String                                      `tfsdk:"storm_control_multicast_level_bps_rising_threshold"`
+	StormControlMulticastLevelBpsFallingThreshold       types.String                                      `tfsdk:"storm_control_multicast_level_bps_falling_threshold"`
+	StormControlMulticastLevelPpsRisingThreshold        types.String                                      `tfsdk:"storm_control_multicast_level_pps_rising_threshold"`
+	StormControlMulticastLevelPpsFallingThreshold       types.String                                      `tfsdk:"storm_control_multicast_level_pps_falling_threshold"`
+	StormControlUnicastLevelRisingThreshold             types.Float64                                     `tfsdk:"storm_control_unicast_level_rising_threshold"`
+	StormControlUnicastLevelFallingThreshold            types.Float64                                     `tfsdk:"storm_control_unicast_level_falling_threshold"`
+	StormControlUnicastLevelBpsRisingThreshold          types.String                                      `tfsdk:"storm_control_unicast_level_bps_rising_threshold"`
+	StormControlUnicastLevelBpsFallingThreshold         types.String                                      `tfsdk:"storm_control_unicast_level_bps_falling_threshold"`
+	StormControlUnicastLevelPpsRisingThreshold          types.String                                      `tfsdk:"storm_control_unicast_level_pps_rising_threshold"`
+	StormControlUnicastLevelPpsFallingThreshold         types.String                                      `tfsdk:"storm_control_unicast_level_pps_falling_threshold"`
+	StormControlUnknownUnicastLevelRisingThreshold      types.Float64                                     `tfsdk:"storm_control_unknown_unicast_level_rising_threshold"`
+	StormControlUnknownUnicastLevelFallingThreshold     types.Float64                                     `tfsdk:"storm_control_unknown_unicast_level_falling_threshold"`
+	StormControlUnknownUnicastLevelBpsRisingThreshold   types.String                                      `tfsdk:"storm_control_unknown_unicast_level_bps_rising_threshold"`
+	StormControlUnknownUnicastLevelBpsFallingThreshold  types.String                                      `tfsdk:"storm_control_unknown_unicast_level_bps_falling_threshold"`
+	StormControlUnknownUnicastLevelPpsRisingThreshold   types.String                                      `tfsdk:"storm_control_unknown_unicast_level_pps_rising_threshold"`
+	StormControlUnknownUnicastLevelPpsFallingThreshold  types.String                                      `tfsdk:"storm_control_unknown_unicast_level_pps_falling_threshold"`
+	StormControlActionShutdown                          types.Bool                                        `tfsdk:"storm_control_action_shutdown"`
+	StormControlActionTrap                              types.Bool                                        `tfsdk:"storm_control_action_trap"`
 }
 type InterfaceEthernetHelperAddresses struct {
 	Address types.String `tfsdk:"address"`
@@ -391,6 +418,33 @@ type InterfaceEthernetData struct {
 	IpIgmpVersion                                       types.Int64                                           `tfsdk:"ip_igmp_version"`
 	IpRouterIsis                                        types.String                                          `tfsdk:"ip_router_isis"`
 	ZoneMemberSecurity                                  types.String                                          `tfsdk:"zone_member_security"`
+	AccessSessionMonitor                                types.Bool                                            `tfsdk:"access_session_monitor"`
+	StormControlBroadcastLevelRisingThreshold           types.Float64                                         `tfsdk:"storm_control_broadcast_level_rising_threshold"`
+	StormControlBroadcastLevelFallingThreshold          types.Float64                                         `tfsdk:"storm_control_broadcast_level_falling_threshold"`
+	StormControlBroadcastLevelBpsRisingThreshold        types.String                                          `tfsdk:"storm_control_broadcast_level_bps_rising_threshold"`
+	StormControlBroadcastLevelBpsFallingThreshold       types.String                                          `tfsdk:"storm_control_broadcast_level_bps_falling_threshold"`
+	StormControlBroadcastLevelPpsRisingThreshold        types.String                                          `tfsdk:"storm_control_broadcast_level_pps_rising_threshold"`
+	StormControlBroadcastLevelPpsFallingThreshold       types.String                                          `tfsdk:"storm_control_broadcast_level_pps_falling_threshold"`
+	StormControlMulticastLevelRisingThreshold           types.Float64                                         `tfsdk:"storm_control_multicast_level_rising_threshold"`
+	StormControlMulticastLevelFallingThreshold          types.Float64                                         `tfsdk:"storm_control_multicast_level_falling_threshold"`
+	StormControlMulticastLevelBpsRisingThreshold        types.String                                          `tfsdk:"storm_control_multicast_level_bps_rising_threshold"`
+	StormControlMulticastLevelBpsFallingThreshold       types.String                                          `tfsdk:"storm_control_multicast_level_bps_falling_threshold"`
+	StormControlMulticastLevelPpsRisingThreshold        types.String                                          `tfsdk:"storm_control_multicast_level_pps_rising_threshold"`
+	StormControlMulticastLevelPpsFallingThreshold       types.String                                          `tfsdk:"storm_control_multicast_level_pps_falling_threshold"`
+	StormControlUnicastLevelRisingThreshold             types.Float64                                         `tfsdk:"storm_control_unicast_level_rising_threshold"`
+	StormControlUnicastLevelFallingThreshold            types.Float64                                         `tfsdk:"storm_control_unicast_level_falling_threshold"`
+	StormControlUnicastLevelBpsRisingThreshold          types.String                                          `tfsdk:"storm_control_unicast_level_bps_rising_threshold"`
+	StormControlUnicastLevelBpsFallingThreshold         types.String                                          `tfsdk:"storm_control_unicast_level_bps_falling_threshold"`
+	StormControlUnicastLevelPpsRisingThreshold          types.String                                          `tfsdk:"storm_control_unicast_level_pps_rising_threshold"`
+	StormControlUnicastLevelPpsFallingThreshold         types.String                                          `tfsdk:"storm_control_unicast_level_pps_falling_threshold"`
+	StormControlUnknownUnicastLevelRisingThreshold      types.Float64                                         `tfsdk:"storm_control_unknown_unicast_level_rising_threshold"`
+	StormControlUnknownUnicastLevelFallingThreshold     types.Float64                                         `tfsdk:"storm_control_unknown_unicast_level_falling_threshold"`
+	StormControlUnknownUnicastLevelBpsRisingThreshold   types.String                                          `tfsdk:"storm_control_unknown_unicast_level_bps_rising_threshold"`
+	StormControlUnknownUnicastLevelBpsFallingThreshold  types.String                                          `tfsdk:"storm_control_unknown_unicast_level_bps_falling_threshold"`
+	StormControlUnknownUnicastLevelPpsRisingThreshold   types.String                                          `tfsdk:"storm_control_unknown_unicast_level_pps_rising_threshold"`
+	StormControlUnknownUnicastLevelPpsFallingThreshold  types.String                                          `tfsdk:"storm_control_unknown_unicast_level_pps_falling_threshold"`
+	StormControlActionShutdown                          types.Bool                                            `tfsdk:"storm_control_action_shutdown"`
+	StormControlActionTrap                              types.Bool                                            `tfsdk:"storm_control_action_trap"`
 }
 type InterfaceEthernetHelperAddressesData struct {
 	Address types.String `tfsdk:"address"`
@@ -1350,6 +1404,95 @@ func (data InterfaceEthernet) addToBodyXML(ctx context.Context, config Interface
 	}
 	if !data.ZoneMemberSecurity.IsNull() && !data.ZoneMemberSecurity.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security", data.ZoneMemberSecurity.ValueString())
+	}
+	if !data.AccessSessionMonitor.IsNull() && !data.AccessSessionMonitor.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/access-session/monitor", data.AccessSessionMonitor.ValueBool())
+	}
+	if !data.StormControlBroadcastLevelRisingThreshold.IsNull() && !data.StormControlBroadcastLevelRisingThreshold.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/storm-control/broadcast/level/threshold/rising-threshold", strconv.FormatFloat(data.StormControlBroadcastLevelRisingThreshold.ValueFloat64(), 'f', 1, 64))
+	}
+	if !data.StormControlBroadcastLevelFallingThreshold.IsNull() && !data.StormControlBroadcastLevelFallingThreshold.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/storm-control/broadcast/level/threshold/falling-threshold", strconv.FormatFloat(data.StormControlBroadcastLevelFallingThreshold.ValueFloat64(), 'f', 1, 64))
+	}
+	if !data.StormControlBroadcastLevelBpsRisingThreshold.IsNull() && !data.StormControlBroadcastLevelBpsRisingThreshold.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/storm-control/broadcast/level/bps/rising-threshold", data.StormControlBroadcastLevelBpsRisingThreshold.ValueString())
+	}
+	if !data.StormControlBroadcastLevelBpsFallingThreshold.IsNull() && !data.StormControlBroadcastLevelBpsFallingThreshold.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/storm-control/broadcast/level/bps/falling-threshold", data.StormControlBroadcastLevelBpsFallingThreshold.ValueString())
+	}
+	if !data.StormControlBroadcastLevelPpsRisingThreshold.IsNull() && !data.StormControlBroadcastLevelPpsRisingThreshold.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/storm-control/broadcast/level/pps/rising-threshold", data.StormControlBroadcastLevelPpsRisingThreshold.ValueString())
+	}
+	if !data.StormControlBroadcastLevelPpsFallingThreshold.IsNull() && !data.StormControlBroadcastLevelPpsFallingThreshold.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/storm-control/broadcast/level/pps/falling-threshold", data.StormControlBroadcastLevelPpsFallingThreshold.ValueString())
+	}
+	if !data.StormControlMulticastLevelRisingThreshold.IsNull() && !data.StormControlMulticastLevelRisingThreshold.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/storm-control/multicast/level/threshold/rising-threshold", strconv.FormatFloat(data.StormControlMulticastLevelRisingThreshold.ValueFloat64(), 'f', 1, 64))
+	}
+	if !data.StormControlMulticastLevelFallingThreshold.IsNull() && !data.StormControlMulticastLevelFallingThreshold.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/storm-control/multicast/level/threshold/falling-threshold", strconv.FormatFloat(data.StormControlMulticastLevelFallingThreshold.ValueFloat64(), 'f', 1, 64))
+	}
+	if !data.StormControlMulticastLevelBpsRisingThreshold.IsNull() && !data.StormControlMulticastLevelBpsRisingThreshold.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/storm-control/multicast/level/bps/rising-threshold", data.StormControlMulticastLevelBpsRisingThreshold.ValueString())
+	}
+	if !data.StormControlMulticastLevelBpsFallingThreshold.IsNull() && !data.StormControlMulticastLevelBpsFallingThreshold.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/storm-control/multicast/level/bps/falling-threshold", data.StormControlMulticastLevelBpsFallingThreshold.ValueString())
+	}
+	if !data.StormControlMulticastLevelPpsRisingThreshold.IsNull() && !data.StormControlMulticastLevelPpsRisingThreshold.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/storm-control/multicast/level/pps/rising-threshold", data.StormControlMulticastLevelPpsRisingThreshold.ValueString())
+	}
+	if !data.StormControlMulticastLevelPpsFallingThreshold.IsNull() && !data.StormControlMulticastLevelPpsFallingThreshold.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/storm-control/multicast/level/pps/falling-threshold", data.StormControlMulticastLevelPpsFallingThreshold.ValueString())
+	}
+	if !data.StormControlUnicastLevelRisingThreshold.IsNull() && !data.StormControlUnicastLevelRisingThreshold.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/storm-control/unicast/level/threshold/rising-threshold", strconv.FormatFloat(data.StormControlUnicastLevelRisingThreshold.ValueFloat64(), 'f', 1, 64))
+	}
+	if !data.StormControlUnicastLevelFallingThreshold.IsNull() && !data.StormControlUnicastLevelFallingThreshold.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/storm-control/unicast/level/threshold/falling-threshold", strconv.FormatFloat(data.StormControlUnicastLevelFallingThreshold.ValueFloat64(), 'f', 1, 64))
+	}
+	if !data.StormControlUnicastLevelBpsRisingThreshold.IsNull() && !data.StormControlUnicastLevelBpsRisingThreshold.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/storm-control/unicast/level/bps/rising-threshold", data.StormControlUnicastLevelBpsRisingThreshold.ValueString())
+	}
+	if !data.StormControlUnicastLevelBpsFallingThreshold.IsNull() && !data.StormControlUnicastLevelBpsFallingThreshold.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/storm-control/unicast/level/bps/falling-threshold", data.StormControlUnicastLevelBpsFallingThreshold.ValueString())
+	}
+	if !data.StormControlUnicastLevelPpsRisingThreshold.IsNull() && !data.StormControlUnicastLevelPpsRisingThreshold.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/storm-control/unicast/level/pps/rising-threshold", data.StormControlUnicastLevelPpsRisingThreshold.ValueString())
+	}
+	if !data.StormControlUnicastLevelPpsFallingThreshold.IsNull() && !data.StormControlUnicastLevelPpsFallingThreshold.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/storm-control/unicast/level/pps/falling-threshold", data.StormControlUnicastLevelPpsFallingThreshold.ValueString())
+	}
+	if !data.StormControlUnknownUnicastLevelRisingThreshold.IsNull() && !data.StormControlUnknownUnicastLevelRisingThreshold.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/storm-control/unknown-unicast/level/threshold/rising-threshold", strconv.FormatFloat(data.StormControlUnknownUnicastLevelRisingThreshold.ValueFloat64(), 'f', 1, 64))
+	}
+	if !data.StormControlUnknownUnicastLevelFallingThreshold.IsNull() && !data.StormControlUnknownUnicastLevelFallingThreshold.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/storm-control/unknown-unicast/level/threshold/falling-threshold", strconv.FormatFloat(data.StormControlUnknownUnicastLevelFallingThreshold.ValueFloat64(), 'f', 1, 64))
+	}
+	if !data.StormControlUnknownUnicastLevelBpsRisingThreshold.IsNull() && !data.StormControlUnknownUnicastLevelBpsRisingThreshold.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/storm-control/unknown-unicast/level/bps/rising-threshold", data.StormControlUnknownUnicastLevelBpsRisingThreshold.ValueString())
+	}
+	if !data.StormControlUnknownUnicastLevelBpsFallingThreshold.IsNull() && !data.StormControlUnknownUnicastLevelBpsFallingThreshold.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/storm-control/unknown-unicast/level/bps/falling-threshold", data.StormControlUnknownUnicastLevelBpsFallingThreshold.ValueString())
+	}
+	if !data.StormControlUnknownUnicastLevelPpsRisingThreshold.IsNull() && !data.StormControlUnknownUnicastLevelPpsRisingThreshold.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/storm-control/unknown-unicast/level/pps/rising-threshold", data.StormControlUnknownUnicastLevelPpsRisingThreshold.ValueString())
+	}
+	if !data.StormControlUnknownUnicastLevelPpsFallingThreshold.IsNull() && !data.StormControlUnknownUnicastLevelPpsFallingThreshold.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/storm-control/unknown-unicast/level/pps/falling-threshold", data.StormControlUnknownUnicastLevelPpsFallingThreshold.ValueString())
+	}
+	if !data.StormControlActionShutdown.IsNull() && !data.StormControlActionShutdown.IsUnknown() {
+		if data.StormControlActionShutdown.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/storm-control/action/shutdown", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/storm-control/action/shutdown")
+		}
+	}
+	if !data.StormControlActionTrap.IsNull() && !data.StormControlActionTrap.IsUnknown() {
+		if data.StormControlActionTrap.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/storm-control/action/trap", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/storm-control/action/trap")
+		}
 	}
 	return body
 }
@@ -2786,6 +2929,151 @@ func (data *InterfaceEthernet) updateFromBodyXML(ctx context.Context, res xmldot
 	} else {
 		data.ZoneMemberSecurity = types.StringNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/access-session/monitor"); !data.AccessSessionMonitor.IsNull() {
+		if value.Exists() {
+			data.AccessSessionMonitor = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.AccessSessionMonitor = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/broadcast/level/threshold/rising-threshold"); value.Exists() && !data.StormControlBroadcastLevelRisingThreshold.IsNull() {
+		data.StormControlBroadcastLevelRisingThreshold = types.Float64Value(value.Float())
+	} else {
+		data.StormControlBroadcastLevelRisingThreshold = types.Float64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/broadcast/level/threshold/falling-threshold"); value.Exists() && !data.StormControlBroadcastLevelFallingThreshold.IsNull() {
+		data.StormControlBroadcastLevelFallingThreshold = types.Float64Value(value.Float())
+	} else {
+		data.StormControlBroadcastLevelFallingThreshold = types.Float64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/broadcast/level/bps/rising-threshold"); value.Exists() && !data.StormControlBroadcastLevelBpsRisingThreshold.IsNull() {
+		data.StormControlBroadcastLevelBpsRisingThreshold = types.StringValue(value.String())
+	} else {
+		data.StormControlBroadcastLevelBpsRisingThreshold = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/broadcast/level/bps/falling-threshold"); value.Exists() && !data.StormControlBroadcastLevelBpsFallingThreshold.IsNull() {
+		data.StormControlBroadcastLevelBpsFallingThreshold = types.StringValue(value.String())
+	} else {
+		data.StormControlBroadcastLevelBpsFallingThreshold = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/broadcast/level/pps/rising-threshold"); value.Exists() && !data.StormControlBroadcastLevelPpsRisingThreshold.IsNull() {
+		data.StormControlBroadcastLevelPpsRisingThreshold = types.StringValue(value.String())
+	} else {
+		data.StormControlBroadcastLevelPpsRisingThreshold = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/broadcast/level/pps/falling-threshold"); value.Exists() && !data.StormControlBroadcastLevelPpsFallingThreshold.IsNull() {
+		data.StormControlBroadcastLevelPpsFallingThreshold = types.StringValue(value.String())
+	} else {
+		data.StormControlBroadcastLevelPpsFallingThreshold = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/multicast/level/threshold/rising-threshold"); value.Exists() && !data.StormControlMulticastLevelRisingThreshold.IsNull() {
+		data.StormControlMulticastLevelRisingThreshold = types.Float64Value(value.Float())
+	} else {
+		data.StormControlMulticastLevelRisingThreshold = types.Float64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/multicast/level/threshold/falling-threshold"); value.Exists() && !data.StormControlMulticastLevelFallingThreshold.IsNull() {
+		data.StormControlMulticastLevelFallingThreshold = types.Float64Value(value.Float())
+	} else {
+		data.StormControlMulticastLevelFallingThreshold = types.Float64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/multicast/level/bps/rising-threshold"); value.Exists() && !data.StormControlMulticastLevelBpsRisingThreshold.IsNull() {
+		data.StormControlMulticastLevelBpsRisingThreshold = types.StringValue(value.String())
+	} else {
+		data.StormControlMulticastLevelBpsRisingThreshold = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/multicast/level/bps/falling-threshold"); value.Exists() && !data.StormControlMulticastLevelBpsFallingThreshold.IsNull() {
+		data.StormControlMulticastLevelBpsFallingThreshold = types.StringValue(value.String())
+	} else {
+		data.StormControlMulticastLevelBpsFallingThreshold = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/multicast/level/pps/rising-threshold"); value.Exists() && !data.StormControlMulticastLevelPpsRisingThreshold.IsNull() {
+		data.StormControlMulticastLevelPpsRisingThreshold = types.StringValue(value.String())
+	} else {
+		data.StormControlMulticastLevelPpsRisingThreshold = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/multicast/level/pps/falling-threshold"); value.Exists() && !data.StormControlMulticastLevelPpsFallingThreshold.IsNull() {
+		data.StormControlMulticastLevelPpsFallingThreshold = types.StringValue(value.String())
+	} else {
+		data.StormControlMulticastLevelPpsFallingThreshold = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/unicast/level/threshold/rising-threshold"); value.Exists() && !data.StormControlUnicastLevelRisingThreshold.IsNull() {
+		data.StormControlUnicastLevelRisingThreshold = types.Float64Value(value.Float())
+	} else {
+		data.StormControlUnicastLevelRisingThreshold = types.Float64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/unicast/level/threshold/falling-threshold"); value.Exists() && !data.StormControlUnicastLevelFallingThreshold.IsNull() {
+		data.StormControlUnicastLevelFallingThreshold = types.Float64Value(value.Float())
+	} else {
+		data.StormControlUnicastLevelFallingThreshold = types.Float64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/unicast/level/bps/rising-threshold"); value.Exists() && !data.StormControlUnicastLevelBpsRisingThreshold.IsNull() {
+		data.StormControlUnicastLevelBpsRisingThreshold = types.StringValue(value.String())
+	} else {
+		data.StormControlUnicastLevelBpsRisingThreshold = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/unicast/level/bps/falling-threshold"); value.Exists() && !data.StormControlUnicastLevelBpsFallingThreshold.IsNull() {
+		data.StormControlUnicastLevelBpsFallingThreshold = types.StringValue(value.String())
+	} else {
+		data.StormControlUnicastLevelBpsFallingThreshold = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/unicast/level/pps/rising-threshold"); value.Exists() && !data.StormControlUnicastLevelPpsRisingThreshold.IsNull() {
+		data.StormControlUnicastLevelPpsRisingThreshold = types.StringValue(value.String())
+	} else {
+		data.StormControlUnicastLevelPpsRisingThreshold = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/unicast/level/pps/falling-threshold"); value.Exists() && !data.StormControlUnicastLevelPpsFallingThreshold.IsNull() {
+		data.StormControlUnicastLevelPpsFallingThreshold = types.StringValue(value.String())
+	} else {
+		data.StormControlUnicastLevelPpsFallingThreshold = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/unknown-unicast/level/threshold/rising-threshold"); value.Exists() && !data.StormControlUnknownUnicastLevelRisingThreshold.IsNull() {
+		data.StormControlUnknownUnicastLevelRisingThreshold = types.Float64Value(value.Float())
+	} else {
+		data.StormControlUnknownUnicastLevelRisingThreshold = types.Float64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/unknown-unicast/level/threshold/falling-threshold"); value.Exists() && !data.StormControlUnknownUnicastLevelFallingThreshold.IsNull() {
+		data.StormControlUnknownUnicastLevelFallingThreshold = types.Float64Value(value.Float())
+	} else {
+		data.StormControlUnknownUnicastLevelFallingThreshold = types.Float64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/unknown-unicast/level/bps/rising-threshold"); value.Exists() && !data.StormControlUnknownUnicastLevelBpsRisingThreshold.IsNull() {
+		data.StormControlUnknownUnicastLevelBpsRisingThreshold = types.StringValue(value.String())
+	} else {
+		data.StormControlUnknownUnicastLevelBpsRisingThreshold = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/unknown-unicast/level/bps/falling-threshold"); value.Exists() && !data.StormControlUnknownUnicastLevelBpsFallingThreshold.IsNull() {
+		data.StormControlUnknownUnicastLevelBpsFallingThreshold = types.StringValue(value.String())
+	} else {
+		data.StormControlUnknownUnicastLevelBpsFallingThreshold = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/unknown-unicast/level/pps/rising-threshold"); value.Exists() && !data.StormControlUnknownUnicastLevelPpsRisingThreshold.IsNull() {
+		data.StormControlUnknownUnicastLevelPpsRisingThreshold = types.StringValue(value.String())
+	} else {
+		data.StormControlUnknownUnicastLevelPpsRisingThreshold = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/unknown-unicast/level/pps/falling-threshold"); value.Exists() && !data.StormControlUnknownUnicastLevelPpsFallingThreshold.IsNull() {
+		data.StormControlUnknownUnicastLevelPpsFallingThreshold = types.StringValue(value.String())
+	} else {
+		data.StormControlUnknownUnicastLevelPpsFallingThreshold = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/action/shutdown"); !data.StormControlActionShutdown.IsNull() {
+		if value.Exists() {
+			data.StormControlActionShutdown = types.BoolValue(true)
+		} else {
+			data.StormControlActionShutdown = types.BoolValue(false)
+		}
+	} else {
+		data.StormControlActionShutdown = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/action/trap"); !data.StormControlActionTrap.IsNull() {
+		if value.Exists() {
+			data.StormControlActionTrap = types.BoolValue(true)
+		} else {
+			data.StormControlActionTrap = types.BoolValue(false)
+		}
+	} else {
+		data.StormControlActionTrap = types.BoolNull()
+	}
 }
 
 // End of section. //template:end updateFromBodyXML
@@ -3550,6 +3838,93 @@ func (data *InterfaceEthernet) fromBodyXML(ctx context.Context, res xmldot.Resul
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security"); value.Exists() {
 		data.ZoneMemberSecurity = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/access-session/monitor"); value.Exists() {
+		data.AccessSessionMonitor = types.BoolValue(value.Bool())
+	} else {
+		data.AccessSessionMonitor = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/broadcast/level/threshold/rising-threshold"); value.Exists() {
+		data.StormControlBroadcastLevelRisingThreshold = types.Float64Value(value.Float())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/broadcast/level/threshold/falling-threshold"); value.Exists() {
+		data.StormControlBroadcastLevelFallingThreshold = types.Float64Value(value.Float())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/broadcast/level/bps/rising-threshold"); value.Exists() {
+		data.StormControlBroadcastLevelBpsRisingThreshold = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/broadcast/level/bps/falling-threshold"); value.Exists() {
+		data.StormControlBroadcastLevelBpsFallingThreshold = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/broadcast/level/pps/rising-threshold"); value.Exists() {
+		data.StormControlBroadcastLevelPpsRisingThreshold = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/broadcast/level/pps/falling-threshold"); value.Exists() {
+		data.StormControlBroadcastLevelPpsFallingThreshold = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/multicast/level/threshold/rising-threshold"); value.Exists() {
+		data.StormControlMulticastLevelRisingThreshold = types.Float64Value(value.Float())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/multicast/level/threshold/falling-threshold"); value.Exists() {
+		data.StormControlMulticastLevelFallingThreshold = types.Float64Value(value.Float())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/multicast/level/bps/rising-threshold"); value.Exists() {
+		data.StormControlMulticastLevelBpsRisingThreshold = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/multicast/level/bps/falling-threshold"); value.Exists() {
+		data.StormControlMulticastLevelBpsFallingThreshold = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/multicast/level/pps/rising-threshold"); value.Exists() {
+		data.StormControlMulticastLevelPpsRisingThreshold = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/multicast/level/pps/falling-threshold"); value.Exists() {
+		data.StormControlMulticastLevelPpsFallingThreshold = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/unicast/level/threshold/rising-threshold"); value.Exists() {
+		data.StormControlUnicastLevelRisingThreshold = types.Float64Value(value.Float())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/unicast/level/threshold/falling-threshold"); value.Exists() {
+		data.StormControlUnicastLevelFallingThreshold = types.Float64Value(value.Float())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/unicast/level/bps/rising-threshold"); value.Exists() {
+		data.StormControlUnicastLevelBpsRisingThreshold = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/unicast/level/bps/falling-threshold"); value.Exists() {
+		data.StormControlUnicastLevelBpsFallingThreshold = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/unicast/level/pps/rising-threshold"); value.Exists() {
+		data.StormControlUnicastLevelPpsRisingThreshold = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/unicast/level/pps/falling-threshold"); value.Exists() {
+		data.StormControlUnicastLevelPpsFallingThreshold = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/unknown-unicast/level/threshold/rising-threshold"); value.Exists() {
+		data.StormControlUnknownUnicastLevelRisingThreshold = types.Float64Value(value.Float())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/unknown-unicast/level/threshold/falling-threshold"); value.Exists() {
+		data.StormControlUnknownUnicastLevelFallingThreshold = types.Float64Value(value.Float())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/unknown-unicast/level/bps/rising-threshold"); value.Exists() {
+		data.StormControlUnknownUnicastLevelBpsRisingThreshold = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/unknown-unicast/level/bps/falling-threshold"); value.Exists() {
+		data.StormControlUnknownUnicastLevelBpsFallingThreshold = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/unknown-unicast/level/pps/rising-threshold"); value.Exists() {
+		data.StormControlUnknownUnicastLevelPpsRisingThreshold = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/unknown-unicast/level/pps/falling-threshold"); value.Exists() {
+		data.StormControlUnknownUnicastLevelPpsFallingThreshold = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/action/shutdown"); value.Exists() {
+		data.StormControlActionShutdown = types.BoolValue(true)
+	} else {
+		data.StormControlActionShutdown = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/action/trap"); value.Exists() {
+		data.StormControlActionTrap = types.BoolValue(true)
+	} else {
+		data.StormControlActionTrap = types.BoolValue(false)
 	}
 }
 
@@ -4316,6 +4691,93 @@ func (data *InterfaceEthernetData) fromBodyXML(ctx context.Context, res xmldot.R
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security"); value.Exists() {
 		data.ZoneMemberSecurity = types.StringValue(value.String())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/access-session/monitor"); value.Exists() {
+		data.AccessSessionMonitor = types.BoolValue(value.Bool())
+	} else {
+		data.AccessSessionMonitor = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/broadcast/level/threshold/rising-threshold"); value.Exists() {
+		data.StormControlBroadcastLevelRisingThreshold = types.Float64Value(value.Float())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/broadcast/level/threshold/falling-threshold"); value.Exists() {
+		data.StormControlBroadcastLevelFallingThreshold = types.Float64Value(value.Float())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/broadcast/level/bps/rising-threshold"); value.Exists() {
+		data.StormControlBroadcastLevelBpsRisingThreshold = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/broadcast/level/bps/falling-threshold"); value.Exists() {
+		data.StormControlBroadcastLevelBpsFallingThreshold = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/broadcast/level/pps/rising-threshold"); value.Exists() {
+		data.StormControlBroadcastLevelPpsRisingThreshold = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/broadcast/level/pps/falling-threshold"); value.Exists() {
+		data.StormControlBroadcastLevelPpsFallingThreshold = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/multicast/level/threshold/rising-threshold"); value.Exists() {
+		data.StormControlMulticastLevelRisingThreshold = types.Float64Value(value.Float())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/multicast/level/threshold/falling-threshold"); value.Exists() {
+		data.StormControlMulticastLevelFallingThreshold = types.Float64Value(value.Float())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/multicast/level/bps/rising-threshold"); value.Exists() {
+		data.StormControlMulticastLevelBpsRisingThreshold = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/multicast/level/bps/falling-threshold"); value.Exists() {
+		data.StormControlMulticastLevelBpsFallingThreshold = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/multicast/level/pps/rising-threshold"); value.Exists() {
+		data.StormControlMulticastLevelPpsRisingThreshold = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/multicast/level/pps/falling-threshold"); value.Exists() {
+		data.StormControlMulticastLevelPpsFallingThreshold = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/unicast/level/threshold/rising-threshold"); value.Exists() {
+		data.StormControlUnicastLevelRisingThreshold = types.Float64Value(value.Float())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/unicast/level/threshold/falling-threshold"); value.Exists() {
+		data.StormControlUnicastLevelFallingThreshold = types.Float64Value(value.Float())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/unicast/level/bps/rising-threshold"); value.Exists() {
+		data.StormControlUnicastLevelBpsRisingThreshold = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/unicast/level/bps/falling-threshold"); value.Exists() {
+		data.StormControlUnicastLevelBpsFallingThreshold = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/unicast/level/pps/rising-threshold"); value.Exists() {
+		data.StormControlUnicastLevelPpsRisingThreshold = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/unicast/level/pps/falling-threshold"); value.Exists() {
+		data.StormControlUnicastLevelPpsFallingThreshold = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/unknown-unicast/level/threshold/rising-threshold"); value.Exists() {
+		data.StormControlUnknownUnicastLevelRisingThreshold = types.Float64Value(value.Float())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/unknown-unicast/level/threshold/falling-threshold"); value.Exists() {
+		data.StormControlUnknownUnicastLevelFallingThreshold = types.Float64Value(value.Float())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/unknown-unicast/level/bps/rising-threshold"); value.Exists() {
+		data.StormControlUnknownUnicastLevelBpsRisingThreshold = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/unknown-unicast/level/bps/falling-threshold"); value.Exists() {
+		data.StormControlUnknownUnicastLevelBpsFallingThreshold = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/unknown-unicast/level/pps/rising-threshold"); value.Exists() {
+		data.StormControlUnknownUnicastLevelPpsRisingThreshold = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/unknown-unicast/level/pps/falling-threshold"); value.Exists() {
+		data.StormControlUnknownUnicastLevelPpsFallingThreshold = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/action/shutdown"); value.Exists() {
+		data.StormControlActionShutdown = types.BoolValue(true)
+	} else {
+		data.StormControlActionShutdown = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/action/trap"); value.Exists() {
+		data.StormControlActionTrap = types.BoolValue(true)
+	} else {
+		data.StormControlActionTrap = types.BoolValue(false)
+	}
 }
 
 // End of section. //template:end fromBodyDataXML
@@ -4324,6 +4786,87 @@ func (data *InterfaceEthernetData) fromBodyXML(ctx context.Context, res xmldot.R
 
 func (data *InterfaceEthernet) addDeletedItemsXML(ctx context.Context, state InterfaceEthernet, body string) string {
 	b := netconf.NewBody(body)
+	if !state.StormControlActionTrap.IsNull() && data.StormControlActionTrap.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/storm-control/action/trap")
+	}
+	if !state.StormControlActionShutdown.IsNull() && data.StormControlActionShutdown.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/storm-control/action/shutdown")
+	}
+	if !state.StormControlUnknownUnicastLevelPpsFallingThreshold.IsNull() && data.StormControlUnknownUnicastLevelPpsFallingThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/storm-control/unknown-unicast/level/pps/falling-threshold")
+	}
+	if !state.StormControlUnknownUnicastLevelPpsRisingThreshold.IsNull() && data.StormControlUnknownUnicastLevelPpsRisingThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/storm-control/unknown-unicast/level/pps/rising-threshold")
+	}
+	if !state.StormControlUnknownUnicastLevelBpsFallingThreshold.IsNull() && data.StormControlUnknownUnicastLevelBpsFallingThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/storm-control/unknown-unicast/level/bps/falling-threshold")
+	}
+	if !state.StormControlUnknownUnicastLevelBpsRisingThreshold.IsNull() && data.StormControlUnknownUnicastLevelBpsRisingThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/storm-control/unknown-unicast/level/bps/rising-threshold")
+	}
+	if !state.StormControlUnknownUnicastLevelFallingThreshold.IsNull() && data.StormControlUnknownUnicastLevelFallingThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/storm-control/unknown-unicast/level/threshold/falling-threshold")
+	}
+	if !state.StormControlUnknownUnicastLevelRisingThreshold.IsNull() && data.StormControlUnknownUnicastLevelRisingThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/storm-control/unknown-unicast/level/threshold/rising-threshold")
+	}
+	if !state.StormControlUnicastLevelPpsFallingThreshold.IsNull() && data.StormControlUnicastLevelPpsFallingThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/storm-control/unicast/level/pps/falling-threshold")
+	}
+	if !state.StormControlUnicastLevelPpsRisingThreshold.IsNull() && data.StormControlUnicastLevelPpsRisingThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/storm-control/unicast/level/pps/rising-threshold")
+	}
+	if !state.StormControlUnicastLevelBpsFallingThreshold.IsNull() && data.StormControlUnicastLevelBpsFallingThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/storm-control/unicast/level/bps/falling-threshold")
+	}
+	if !state.StormControlUnicastLevelBpsRisingThreshold.IsNull() && data.StormControlUnicastLevelBpsRisingThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/storm-control/unicast/level/bps/rising-threshold")
+	}
+	if !state.StormControlUnicastLevelFallingThreshold.IsNull() && data.StormControlUnicastLevelFallingThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/storm-control/unicast/level/threshold/falling-threshold")
+	}
+	if !state.StormControlUnicastLevelRisingThreshold.IsNull() && data.StormControlUnicastLevelRisingThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/storm-control/unicast/level/threshold/rising-threshold")
+	}
+	if !state.StormControlMulticastLevelPpsFallingThreshold.IsNull() && data.StormControlMulticastLevelPpsFallingThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/storm-control/multicast/level/pps/falling-threshold")
+	}
+	if !state.StormControlMulticastLevelPpsRisingThreshold.IsNull() && data.StormControlMulticastLevelPpsRisingThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/storm-control/multicast/level/pps/rising-threshold")
+	}
+	if !state.StormControlMulticastLevelBpsFallingThreshold.IsNull() && data.StormControlMulticastLevelBpsFallingThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/storm-control/multicast/level/bps/falling-threshold")
+	}
+	if !state.StormControlMulticastLevelBpsRisingThreshold.IsNull() && data.StormControlMulticastLevelBpsRisingThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/storm-control/multicast/level/bps/rising-threshold")
+	}
+	if !state.StormControlMulticastLevelFallingThreshold.IsNull() && data.StormControlMulticastLevelFallingThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/storm-control/multicast/level/threshold/falling-threshold")
+	}
+	if !state.StormControlMulticastLevelRisingThreshold.IsNull() && data.StormControlMulticastLevelRisingThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/storm-control/multicast/level/threshold/rising-threshold")
+	}
+	if !state.StormControlBroadcastLevelPpsFallingThreshold.IsNull() && data.StormControlBroadcastLevelPpsFallingThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/storm-control/broadcast/level/pps/falling-threshold")
+	}
+	if !state.StormControlBroadcastLevelPpsRisingThreshold.IsNull() && data.StormControlBroadcastLevelPpsRisingThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/storm-control/broadcast/level/pps/rising-threshold")
+	}
+	if !state.StormControlBroadcastLevelBpsFallingThreshold.IsNull() && data.StormControlBroadcastLevelBpsFallingThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/storm-control/broadcast/level/bps/falling-threshold")
+	}
+	if !state.StormControlBroadcastLevelBpsRisingThreshold.IsNull() && data.StormControlBroadcastLevelBpsRisingThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/storm-control/broadcast/level/bps/rising-threshold")
+	}
+	if !state.StormControlBroadcastLevelFallingThreshold.IsNull() && data.StormControlBroadcastLevelFallingThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/storm-control/broadcast/level/threshold/falling-threshold")
+	}
+	if !state.StormControlBroadcastLevelRisingThreshold.IsNull() && data.StormControlBroadcastLevelRisingThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/storm-control/broadcast/level/threshold/rising-threshold")
+	}
+	if !state.AccessSessionMonitor.IsNull() && data.AccessSessionMonitor.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/access-session/monitor")
+	}
 	if !state.ZoneMemberSecurity.IsNull() && data.ZoneMemberSecurity.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security")
 	}
@@ -5167,6 +5710,87 @@ func (data *InterfaceEthernet) addDeletedItemsXML(ctx context.Context, state Int
 
 func (data *InterfaceEthernet) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	if !data.StormControlActionTrap.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/storm-control/action/trap")
+	}
+	if !data.StormControlActionShutdown.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/storm-control/action/shutdown")
+	}
+	if !data.StormControlUnknownUnicastLevelPpsFallingThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/storm-control/unknown-unicast/level/pps/falling-threshold")
+	}
+	if !data.StormControlUnknownUnicastLevelPpsRisingThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/storm-control/unknown-unicast/level/pps/rising-threshold")
+	}
+	if !data.StormControlUnknownUnicastLevelBpsFallingThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/storm-control/unknown-unicast/level/bps/falling-threshold")
+	}
+	if !data.StormControlUnknownUnicastLevelBpsRisingThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/storm-control/unknown-unicast/level/bps/rising-threshold")
+	}
+	if !data.StormControlUnknownUnicastLevelFallingThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/storm-control/unknown-unicast/level/threshold/falling-threshold")
+	}
+	if !data.StormControlUnknownUnicastLevelRisingThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/storm-control/unknown-unicast/level/threshold/rising-threshold")
+	}
+	if !data.StormControlUnicastLevelPpsFallingThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/storm-control/unicast/level/pps/falling-threshold")
+	}
+	if !data.StormControlUnicastLevelPpsRisingThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/storm-control/unicast/level/pps/rising-threshold")
+	}
+	if !data.StormControlUnicastLevelBpsFallingThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/storm-control/unicast/level/bps/falling-threshold")
+	}
+	if !data.StormControlUnicastLevelBpsRisingThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/storm-control/unicast/level/bps/rising-threshold")
+	}
+	if !data.StormControlUnicastLevelFallingThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/storm-control/unicast/level/threshold/falling-threshold")
+	}
+	if !data.StormControlUnicastLevelRisingThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/storm-control/unicast/level/threshold/rising-threshold")
+	}
+	if !data.StormControlMulticastLevelPpsFallingThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/storm-control/multicast/level/pps/falling-threshold")
+	}
+	if !data.StormControlMulticastLevelPpsRisingThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/storm-control/multicast/level/pps/rising-threshold")
+	}
+	if !data.StormControlMulticastLevelBpsFallingThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/storm-control/multicast/level/bps/falling-threshold")
+	}
+	if !data.StormControlMulticastLevelBpsRisingThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/storm-control/multicast/level/bps/rising-threshold")
+	}
+	if !data.StormControlMulticastLevelFallingThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/storm-control/multicast/level/threshold/falling-threshold")
+	}
+	if !data.StormControlMulticastLevelRisingThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/storm-control/multicast/level/threshold/rising-threshold")
+	}
+	if !data.StormControlBroadcastLevelPpsFallingThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/storm-control/broadcast/level/pps/falling-threshold")
+	}
+	if !data.StormControlBroadcastLevelPpsRisingThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/storm-control/broadcast/level/pps/rising-threshold")
+	}
+	if !data.StormControlBroadcastLevelBpsFallingThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/storm-control/broadcast/level/bps/falling-threshold")
+	}
+	if !data.StormControlBroadcastLevelBpsRisingThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/storm-control/broadcast/level/bps/rising-threshold")
+	}
+	if !data.StormControlBroadcastLevelFallingThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/storm-control/broadcast/level/threshold/falling-threshold")
+	}
+	if !data.StormControlBroadcastLevelRisingThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/storm-control/broadcast/level/threshold/rising-threshold")
+	}
+	if !data.AccessSessionMonitor.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/access-session/monitor")
+	}
 	if !data.ZoneMemberSecurity.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security")
 	}

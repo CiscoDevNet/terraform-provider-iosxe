@@ -986,6 +986,162 @@ func (r *InterfaceEthernetsResource) Schema(ctx context.Context, req resource.Sc
 							MarkdownDescription: helpers.NewAttributeDescription("Security zone").String,
 							Optional:            true,
 						},
+						"access_session_monitor": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Apply interface defined access-session monitor").String,
+							Optional:            true,
+						},
+						"storm_control_broadcast_level_rising_threshold": schema.Float64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Enter rising threshold").String,
+							Optional:            true,
+						},
+						"storm_control_broadcast_level_falling_threshold": schema.Float64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Enter falling threshold").String,
+							Optional:            true,
+						},
+						"storm_control_broadcast_level_bps_rising_threshold": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Enter rising threshold - <0.0 - 10000000000.0>[k|m|g]>").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`[0-9]+.?[0-9]*[k|m|g]?`), ""),
+							},
+						},
+						"storm_control_broadcast_level_bps_falling_threshold": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Enter falling threshold - <0.0 - 10000000000.0>[k|m|g]> ").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`[0-9]+.?[0-9]*[k|m|g]?`), ""),
+							},
+						},
+						"storm_control_broadcast_level_pps_rising_threshold": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Enter rising threshold - <0.0 - 10000000000.0>[k|m|g]").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`[0-9]+.?[0-9]*[k|m|g]?`), ""),
+							},
+						},
+						"storm_control_broadcast_level_pps_falling_threshold": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Enter falling threshold - <0.0 - 10000000000.0>[k|m|g] ").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`[0-9]+.?[0-9]*[k|m|g]?`), ""),
+							},
+						},
+						"storm_control_multicast_level_rising_threshold": schema.Float64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Enter rising threshold").String,
+							Optional:            true,
+						},
+						"storm_control_multicast_level_falling_threshold": schema.Float64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Enter falling threshold").String,
+							Optional:            true,
+						},
+						"storm_control_multicast_level_bps_rising_threshold": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Enter rising threshold - <0.0 - 10000000000.0>[k|m|g]>").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`[0-9]+.?[0-9]*[k|m|g]?`), ""),
+							},
+						},
+						"storm_control_multicast_level_bps_falling_threshold": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Enter falling threshold - <0.0 - 10000000000.0>[k|m|g]> ").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`[0-9]+.?[0-9]*[k|m|g]?`), ""),
+							},
+						},
+						"storm_control_multicast_level_pps_rising_threshold": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Enter rising threshold - <0.0 - 10000000000.0>[k|m|g]").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`[0-9]+.?[0-9]*[k|m|g]?`), ""),
+							},
+						},
+						"storm_control_multicast_level_pps_falling_threshold": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Enter falling threshold - <0.0 - 10000000000.0>[k|m|g] ").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`[0-9]+.?[0-9]*[k|m|g]?`), ""),
+							},
+						},
+						"storm_control_unicast_level_rising_threshold": schema.Float64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Enter rising threshold").String,
+							Optional:            true,
+						},
+						"storm_control_unicast_level_falling_threshold": schema.Float64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Enter falling threshold").String,
+							Optional:            true,
+						},
+						"storm_control_unicast_level_bps_rising_threshold": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Enter rising threshold - <0.0 - 10000000000.0>[k|m|g]>").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`[0-9]+.?[0-9]*[k|m|g]?`), ""),
+							},
+						},
+						"storm_control_unicast_level_bps_falling_threshold": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Enter falling threshold - <0.0 - 10000000000.0>[k|m|g]> ").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`[0-9]+.?[0-9]*[k|m|g]?`), ""),
+							},
+						},
+						"storm_control_unicast_level_pps_rising_threshold": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Enter rising threshold - <0.0 - 10000000000.0>[k|m|g]").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`[0-9]+.?[0-9]*[k|m|g]?`), ""),
+							},
+						},
+						"storm_control_unicast_level_pps_falling_threshold": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Enter falling threshold - <0.0 - 10000000000.0>[k|m|g] ").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`[0-9]+.?[0-9]*[k|m|g]?`), ""),
+							},
+						},
+						"storm_control_unknown_unicast_level_rising_threshold": schema.Float64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Enter rising threshold").String,
+							Optional:            true,
+						},
+						"storm_control_unknown_unicast_level_falling_threshold": schema.Float64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Enter falling threshold").String,
+							Optional:            true,
+						},
+						"storm_control_unknown_unicast_level_bps_rising_threshold": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Enter rising threshold - <0.0 - 10000000000.0>[k|m|g]>").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`[0-9]+.?[0-9]*[k|m|g]?`), ""),
+							},
+						},
+						"storm_control_unknown_unicast_level_bps_falling_threshold": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Enter falling threshold - <0.0 - 10000000000.0>[k|m|g]> ").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`[0-9]+.?[0-9]*[k|m|g]?`), ""),
+							},
+						},
+						"storm_control_unknown_unicast_level_pps_rising_threshold": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Enter rising threshold - <0.0 - 10000000000.0>[k|m|g]").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`[0-9]+.?[0-9]*[k|m|g]?`), ""),
+							},
+						},
+						"storm_control_unknown_unicast_level_pps_falling_threshold": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Enter falling threshold - <0.0 - 10000000000.0>[k|m|g] ").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`[0-9]+.?[0-9]*[k|m|g]?`), ""),
+							},
+						},
+						"storm_control_action_shutdown": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Shutdown this interface if a storm occurs").String,
+							Optional:            true,
+						},
+						"storm_control_action_trap": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Send SNMP trap if a storm occurs").String,
+							Optional:            true,
+						},
 					},
 				},
 			},
