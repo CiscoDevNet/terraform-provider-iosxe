@@ -2,7 +2,6 @@
 name: Wireless RF Profile
 path: /Cisco-IOS-XE-wireless-rf-cfg:rf-cfg-data/rf-profiles/rf-profile[name=%s]
 no_delete_attributes: true
-no_augment_config: true
 doc_category: Wireless
 attributes:
   - yang_name: name
@@ -102,7 +101,7 @@ attributes:
     tf_name: band_select_expire_suppression
     type: Int64
     example: 30
-  - yang_name: rf-dca-allowed-channels
+  - yang_name: rf-dca-allowed-channels/rf-dca-allowed-channel
     tf_name: dca_allowed_channels
     type: List
     attributes:

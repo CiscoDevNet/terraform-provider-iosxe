@@ -32,6 +32,39 @@ import (
 
 func TestAccDataSourceIosxeWirelessRFProfile(t *testing.T) {
 	var checks []resource.TestCheckFunc
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_rf_profile.test", "band", "dot11-5-ghz-band"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_rf_profile.test", "status", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_rf_profile.test", "description", "5GHz RF Profile"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_rf_profile.test", "data_rate_1m", "apf-tx-rate-basic"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_rf_profile.test", "data_rate_2m", "apf-tx-rate-basic"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_rf_profile.test", "data_rate_5_5m", "apf-tx-rate-basic"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_rf_profile.test", "data_rate_11m", "apf-tx-rate-basic"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_rf_profile.test", "data_rate_6m", "apf-tx-rate-basic"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_rf_profile.test", "data_rate_9m", "apf-tx-rate-supported"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_rf_profile.test", "data_rate_12m", "apf-tx-rate-basic"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_rf_profile.test", "data_rate_18m", "apf-tx-rate-supported"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_rf_profile.test", "data_rate_24m", "apf-tx-rate-basic"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_rf_profile.test", "data_rate_36m", "apf-tx-rate-supported"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_rf_profile.test", "data_rate_48m", "apf-tx-rate-supported"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_rf_profile.test", "data_rate_54m", "apf-tx-rate-supported"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_rf_profile.test", "band_select_client_rssi", "-70"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_rf_profile.test", "band_select_cycle_count", "3"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_rf_profile.test", "band_select_cycle_threshold", "300"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_rf_profile.test", "band_select_expire_dual_band", "80"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_rf_profile.test", "band_select_expire_suppression", "30"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_rf_profile.test", "dca_allowed_channels.0.channel", "36"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_rf_profile.test", "coverage_data_rssi_threshold", "-75"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_rf_profile.test", "coverage_voice_rssi_threshold", "-75"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_rf_profile.test", "coverage_level_global", "5"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_rf_profile.test", "load_balancing_window", "7"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_rf_profile.test", "load_balancing_denial", "5"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_rf_profile.test", "max_clients", "100"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_rf_profile.test", "tx_power_v1_threshold", "-65"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_rf_profile.test", "tx_power_max", "30"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_rf_profile.test", "tx_power_min", "7"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_rf_profile.test", "trap_threshold_clients", "20"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_rf_profile.test", "trap_threshold_interference", "15"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_rf_profile.test", "trap_threshold_noise", "-60"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -53,10 +86,47 @@ func TestAccDataSourceIosxeWirelessRFProfile(t *testing.T) {
 
 func testAccDataSourceIosxeWirelessRFProfileConfig() string {
 	config := `resource "iosxe_wireless_rf_profile" "test" {` + "\n"
+	config += `	name = "S2-RF-5GHz-Test"` + "\n"
+	config += `	band = "dot11-5-ghz-band"` + "\n"
+	config += `	status = true` + "\n"
+	config += `	description = "5GHz RF Profile"` + "\n"
+	config += `	data_rate_1m = "apf-tx-rate-basic"` + "\n"
+	config += `	data_rate_2m = "apf-tx-rate-basic"` + "\n"
+	config += `	data_rate_5_5m = "apf-tx-rate-basic"` + "\n"
+	config += `	data_rate_11m = "apf-tx-rate-basic"` + "\n"
+	config += `	data_rate_6m = "apf-tx-rate-basic"` + "\n"
+	config += `	data_rate_9m = "apf-tx-rate-supported"` + "\n"
+	config += `	data_rate_12m = "apf-tx-rate-basic"` + "\n"
+	config += `	data_rate_18m = "apf-tx-rate-supported"` + "\n"
+	config += `	data_rate_24m = "apf-tx-rate-basic"` + "\n"
+	config += `	data_rate_36m = "apf-tx-rate-supported"` + "\n"
+	config += `	data_rate_48m = "apf-tx-rate-supported"` + "\n"
+	config += `	data_rate_54m = "apf-tx-rate-supported"` + "\n"
+	config += `	band_select_client_rssi = -70` + "\n"
+	config += `	band_select_cycle_count = 3` + "\n"
+	config += `	band_select_cycle_threshold = 300` + "\n"
+	config += `	band_select_expire_dual_band = 80` + "\n"
+	config += `	band_select_expire_suppression = 30` + "\n"
+	config += `	dca_allowed_channels = [{` + "\n"
+	config += `		channel = 36` + "\n"
+	config += `	}]` + "\n"
+	config += `	coverage_data_rssi_threshold = -75` + "\n"
+	config += `	coverage_voice_rssi_threshold = -75` + "\n"
+	config += `	coverage_level_global = 5` + "\n"
+	config += `	load_balancing_window = 7` + "\n"
+	config += `	load_balancing_denial = 5` + "\n"
+	config += `	max_clients = 100` + "\n"
+	config += `	tx_power_v1_threshold = -65` + "\n"
+	config += `	tx_power_max = 30` + "\n"
+	config += `	tx_power_min = 7` + "\n"
+	config += `	trap_threshold_clients = 20` + "\n"
+	config += `	trap_threshold_interference = 15` + "\n"
+	config += `	trap_threshold_noise = -60` + "\n"
 	config += `}` + "\n"
 
 	config += `
 		data "iosxe_wireless_rf_profile" "test" {
+			name = "S2-RF-5GHz-Test"
 			depends_on = [iosxe_wireless_rf_profile.test]
 		}
 	`

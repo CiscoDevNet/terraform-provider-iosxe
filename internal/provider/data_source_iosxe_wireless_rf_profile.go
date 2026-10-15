@@ -57,7 +57,7 @@ func (d *WirelessRFProfileDataSource) Metadata(_ context.Context, req datasource
 func (d *WirelessRFProfileDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "",
+		MarkdownDescription: "This data source can read the Wireless RF Profile configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -69,147 +69,147 @@ func (d *WirelessRFProfileDataSource) Schema(ctx context.Context, req datasource
 				Computed:            true,
 			},
 			"name": schema.StringAttribute{
-				MarkdownDescription: "",
-				Computed:            true,
+				MarkdownDescription: "Configure the name of the Radio-Frequency(rf)-profile",
+				Required:            true,
 			},
 			"band": schema.StringAttribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Configure the radio type for this profile.",
 				Computed:            true,
 			},
 			"status": schema.BoolAttribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Configure the Radio-Frequency(rf)-profile operational state. The value false indicates that the Radio-Frequency(rf)-profile is inactive, the value of true indicate the Radio-Frequency(rf)-profile is active",
 				Computed:            true,
 			},
 			"description": schema.StringAttribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Configure the brief description of each Radio-Frequency(rf)-profile",
 				Computed:            true,
 			},
 			"data_rate_1m": schema.StringAttribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Configuration for 1 Mbps data rate. Possible values: apf-tx-rate-unsupported    ->  Mark this rate as unsupported apf-tx-rate-supported      ->  Mark this rate as supported apf-tx-rate-basic          ->  Mark this rate as basic apf-tx-rate-not-applicable ->  Mark this rate as not applicable",
 				Computed:            true,
 			},
 			"data_rate_2m": schema.StringAttribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Configuration for 2 Mbps data rate. Possible values: apf-tx-rate-unsupported    ->  Mark this rate as unsupported apf-tx-rate-supported      ->  Mark this rate as supported apf-tx-rate-basic          ->  Mark this rate as basic apf-tx-rate-not-applicable ->  Mark this rate as not applicable",
 				Computed:            true,
 			},
 			"data_rate_5_5m": schema.StringAttribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Configuration for 5.5 Mbps data rate. Possible values: apf-tx-rate-unsupported    ->  Mark this rate as unsupported apf-tx-rate-supported      ->  Mark this rate as supported apf-tx-rate-basic          ->  Mark this rate as basic apf-tx-rate-not-applicable ->  Mark this rate as not applicable",
 				Computed:            true,
 			},
 			"data_rate_11m": schema.StringAttribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Configuration for 11 Mbps data rate. Possible values: apf-tx-rate-unsupported    ->  Mark this rate as unsupported apf-tx-rate-supported      ->  Mark this rate as supported apf-tx-rate-basic          ->  Mark this rate as basic apf-tx-rate-not-applicable ->  Mark this rate as not applicable",
 				Computed:            true,
 			},
 			"data_rate_6m": schema.StringAttribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Configuration for 6 Mbps data rate. Possible values: apf-tx-rate-unsupported    ->  Mark this rate as unsupported apf-tx-rate-supported      ->  Mark this rate as supported apf-tx-rate-basic          ->  Mark this rate as basic apf-tx-rate-not-applicable ->  Mark this rate as not applicable",
 				Computed:            true,
 			},
 			"data_rate_9m": schema.StringAttribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Configuration for 9 Mbps data rate. Possible values: apf-tx-rate-unsupported    ->  Mark this rate as unsupported apf-tx-rate-supported      ->  Mark this rate as supported apf-tx-rate-basic          ->  Mark this rate as basic apf-tx-rate-not-applicable ->  Mark this rate as not applicable",
 				Computed:            true,
 			},
 			"data_rate_12m": schema.StringAttribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Configuration for 12 Mbps data rate. Possible values: apf-tx-rate-unsupported    ->  Mark this rate as unsupported apf-tx-rate-supported      ->  Mark this rate as supported apf-tx-rate-basic          ->  Mark this rate as basic apf-tx-rate-not-applicable ->  Mark this rate as not applicable",
 				Computed:            true,
 			},
 			"data_rate_18m": schema.StringAttribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Configuration for 18 Mbps data rate. Possible values: apf-tx-rate-unsupported    ->  Mark this rate as unsupported apf-tx-rate-supported      ->  Mark this rate as supported apf-tx-rate-basic          ->  Mark this rate as basic apf-tx-rate-not-applicable ->  Mark this rate as not applicable",
 				Computed:            true,
 			},
 			"data_rate_24m": schema.StringAttribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Configuration for 24 Mbps data rate. Possible values: apf-tx-rate-unsupported    ->  Mark this rate as unsupported apf-tx-rate-supported      ->  Mark this rate as supported apf-tx-rate-basic          ->  Mark this rate as basic apf-tx-rate-not-applicable ->  Mark this rate as not applicable",
 				Computed:            true,
 			},
 			"data_rate_36m": schema.StringAttribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Configuration for 36 Mbps data rate. Possible values: apf-tx-rate-unsupported    ->  Mark this rate as unsupported apf-tx-rate-supported      ->  Mark this rate as supported apf-tx-rate-basic          ->  Mark this rate as basic apf-tx-rate-not-applicable ->  Mark this rate as not applicable",
 				Computed:            true,
 			},
 			"data_rate_48m": schema.StringAttribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Configuration for 48 Mbps data rate. Possible values: apf-tx-rate-unsupported    ->  Mark this rate as unsupported apf-tx-rate-supported      ->  Mark this rate as supported apf-tx-rate-basic          ->  Mark this rate as basic apf-tx-rate-not-applicable ->  Mark this rate as not applicable",
 				Computed:            true,
 			},
 			"data_rate_54m": schema.StringAttribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Configuration for 54 Mbps data rate. Possible values: apf-tx-rate-unsupported    ->  Mark this rate as unsupported apf-tx-rate-supported      ->  Mark this rate as supported apf-tx-rate-basic          ->  Mark this rate as basic apf-tx-rate-not-applicable ->  Mark this rate as not applicable",
 				Computed:            true,
 			},
 			"band_select_client_rssi": schema.Int64Attribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Configure minimum mobile station Received Signal Strength Indicator(RSSI) threshold in dBm. Mobile stations having RSSI below this value will not be recorded in the suppressed table. This configuration filters out far away mobile stations with weaker signal strength. This will limit the number of mobile stations on the table to a reasonable amount.",
 				Computed:            true,
 			},
 			"band_select_cycle_count": schema.Int64Attribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Configure maximum number of cycles not responding.",
 				Computed:            true,
 			},
 			"band_select_cycle_threshold": schema.Int64Attribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Configure cycle threshold for band select in milliseconds.",
 				Computed:            true,
 			},
 			"band_select_expire_dual_band": schema.Int64Attribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Configure expire of dual band in secs.",
 				Computed:            true,
 			},
 			"band_select_expire_suppression": schema.Int64Attribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Configure expire of suppression in secs.",
 				Computed:            true,
 			},
 			"dca_allowed_channels": schema.ListNestedAttribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "List of configurations related to allowed Dynamic Channel Assignment (DCA) channels in a named Radio-Frequency(rf)-profile",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"channel": schema.Int64Attribute{
-							MarkdownDescription: "",
+							MarkdownDescription: "Configure the channel number in allowed channel list",
 							Computed:            true,
 						},
 					},
 				},
 			},
 			"coverage_data_rssi_threshold": schema.Int64Attribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Configure Received Signal Strength Indicator(RSSI) threshold value for data packets in dBm.",
 				Computed:            true,
 			},
 			"coverage_voice_rssi_threshold": schema.Int64Attribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Configure Received Signal Strength Indicator(RSSI) threshold value for voice packets in dBm.",
 				Computed:            true,
 			},
 			"coverage_level_global": schema.Int64Attribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Configure client minimum exception level.",
 				Computed:            true,
 			},
 			"load_balancing_window": schema.Int64Attribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Configure number of clients associated between Access-Point(AP)'s.",
 				Computed:            true,
 			},
 			"load_balancing_denial": schema.Int64Attribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Configure number of clients denial with respect to Access-Point(AP).",
 				Computed:            true,
 			},
 			"max_clients": schema.Int64Attribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Configure maximum number of radio clients per Access-Point(AP) in high density environment.",
 				Computed:            true,
 			},
 			"tx_power_v1_threshold": schema.Int64Attribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Configure the transmit power control version 1 threshold for the radio resource management algorithm in dBm.",
 				Computed:            true,
 			},
 			"tx_power_max": schema.Int64Attribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Upper limit of transmit power in dBm. For an 802.11 network, the system will only accept this configuration if the Transmit Power Control(TPC) is in Auto or Run Once mode",
 				Computed:            true,
 			},
 			"tx_power_min": schema.Int64Attribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Lower limit of transmit power in dBm. For an 802.11 network, the system will only accept this configuration if the Transmit Power Control(TPC) is in Auto or Run Once mode",
 				Computed:            true,
 			},
 			"trap_threshold_clients": schema.Int64Attribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Configure threshold number of clients per Access-Point(AP) radio to trigger a trap. The trap ciscoLwappApClientThresholdNotify will be triggered once the count of clients on the AP radio reaches this limit. A value of zero indicates that the trap is disabled.",
 				Computed:            true,
 			},
 			"trap_threshold_interference": schema.Int64Attribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Configure interference threshold in (%) traps are generated when interference exceeds this value .",
 				Computed:            true,
 			},
 			"trap_threshold_noise": schema.Int64Attribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Configure threshold number of noise threshold between -127 and 0 dBm.",
 				Computed:            true,
 			},
 		},

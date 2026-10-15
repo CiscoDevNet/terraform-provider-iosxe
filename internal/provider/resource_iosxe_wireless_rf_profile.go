@@ -23,9 +23,11 @@ package provider
 import (
 	"context"
 	"fmt"
+	"regexp"
 	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -63,7 +65,7 @@ func (r *WirelessRFProfileResource) Metadata(_ context.Context, req resource.Met
 func (r *WirelessRFProfileResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "",
+		MarkdownDescription: "This resource can manage the Wireless RF Profile configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -78,187 +80,247 @@ func (r *WirelessRFProfileResource) Schema(ctx context.Context, req resource.Sch
 				},
 			},
 			"name": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Optional:            true,
+				MarkdownDescription: helpers.NewAttributeDescription("Configure the name of the Radio-Frequency(rf)-profile").String,
+				Required:            true,
+				Validators: []validator.String{
+					stringvalidator.RegexMatches(regexp.MustCompile(`[!-~]([ -~]*[!-~])?`), ""),
+				},
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
 			},
 			"band": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("dot11-2-dot-4-ghz-band", "dot11-5-ghz-band", "dot11-6-ghz-band").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configure the radio type for this profile.").AddStringEnumDescription("dot11-2-dot-4-ghz-band", "dot11-5-ghz-band", "dot11-6-ghz-band").String,
 				Optional:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("dot11-2-dot-4-ghz-band", "dot11-5-ghz-band", "dot11-6-ghz-band"),
 				},
 			},
 			"status": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configure the Radio-Frequency(rf)-profile operational state. The value false indicates that the Radio-Frequency(rf)-profile is inactive, the value of true indicate the Radio-Frequency(rf)-profile is active").String,
 				Optional:            true,
 			},
 			"description": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configure the brief description of each Radio-Frequency(rf)-profile").String,
 				Optional:            true,
 			},
 			"data_rate_1m": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("apf-tx-rate-unsupported", "apf-tx-rate-supported", "apf-tx-rate-basic", "apf-tx-rate-not-applicable").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configuration for 1 Mbps data rate. Possible values: apf-tx-rate-unsupported    ->  Mark this rate as unsupported apf-tx-rate-supported      ->  Mark this rate as supported apf-tx-rate-basic          ->  Mark this rate as basic apf-tx-rate-not-applicable ->  Mark this rate as not applicable").AddStringEnumDescription("apf-tx-rate-unsupported", "apf-tx-rate-supported", "apf-tx-rate-basic", "apf-tx-rate-not-applicable").String,
 				Optional:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("apf-tx-rate-unsupported", "apf-tx-rate-supported", "apf-tx-rate-basic", "apf-tx-rate-not-applicable"),
 				},
 			},
 			"data_rate_2m": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("apf-tx-rate-unsupported", "apf-tx-rate-supported", "apf-tx-rate-basic", "apf-tx-rate-not-applicable").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configuration for 2 Mbps data rate. Possible values: apf-tx-rate-unsupported    ->  Mark this rate as unsupported apf-tx-rate-supported      ->  Mark this rate as supported apf-tx-rate-basic          ->  Mark this rate as basic apf-tx-rate-not-applicable ->  Mark this rate as not applicable").AddStringEnumDescription("apf-tx-rate-unsupported", "apf-tx-rate-supported", "apf-tx-rate-basic", "apf-tx-rate-not-applicable").String,
 				Optional:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("apf-tx-rate-unsupported", "apf-tx-rate-supported", "apf-tx-rate-basic", "apf-tx-rate-not-applicable"),
 				},
 			},
 			"data_rate_5_5m": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("apf-tx-rate-unsupported", "apf-tx-rate-supported", "apf-tx-rate-basic", "apf-tx-rate-not-applicable").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configuration for 5.5 Mbps data rate. Possible values: apf-tx-rate-unsupported    ->  Mark this rate as unsupported apf-tx-rate-supported      ->  Mark this rate as supported apf-tx-rate-basic          ->  Mark this rate as basic apf-tx-rate-not-applicable ->  Mark this rate as not applicable").AddStringEnumDescription("apf-tx-rate-unsupported", "apf-tx-rate-supported", "apf-tx-rate-basic", "apf-tx-rate-not-applicable").String,
 				Optional:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("apf-tx-rate-unsupported", "apf-tx-rate-supported", "apf-tx-rate-basic", "apf-tx-rate-not-applicable"),
 				},
 			},
 			"data_rate_11m": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("apf-tx-rate-unsupported", "apf-tx-rate-supported", "apf-tx-rate-basic", "apf-tx-rate-not-applicable").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configuration for 11 Mbps data rate. Possible values: apf-tx-rate-unsupported    ->  Mark this rate as unsupported apf-tx-rate-supported      ->  Mark this rate as supported apf-tx-rate-basic          ->  Mark this rate as basic apf-tx-rate-not-applicable ->  Mark this rate as not applicable").AddStringEnumDescription("apf-tx-rate-unsupported", "apf-tx-rate-supported", "apf-tx-rate-basic", "apf-tx-rate-not-applicable").String,
 				Optional:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("apf-tx-rate-unsupported", "apf-tx-rate-supported", "apf-tx-rate-basic", "apf-tx-rate-not-applicable"),
 				},
 			},
 			"data_rate_6m": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("apf-tx-rate-unsupported", "apf-tx-rate-supported", "apf-tx-rate-basic", "apf-tx-rate-not-applicable").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configuration for 6 Mbps data rate. Possible values: apf-tx-rate-unsupported    ->  Mark this rate as unsupported apf-tx-rate-supported      ->  Mark this rate as supported apf-tx-rate-basic          ->  Mark this rate as basic apf-tx-rate-not-applicable ->  Mark this rate as not applicable").AddStringEnumDescription("apf-tx-rate-unsupported", "apf-tx-rate-supported", "apf-tx-rate-basic", "apf-tx-rate-not-applicable").String,
 				Optional:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("apf-tx-rate-unsupported", "apf-tx-rate-supported", "apf-tx-rate-basic", "apf-tx-rate-not-applicable"),
 				},
 			},
 			"data_rate_9m": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("apf-tx-rate-unsupported", "apf-tx-rate-supported", "apf-tx-rate-basic", "apf-tx-rate-not-applicable").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configuration for 9 Mbps data rate. Possible values: apf-tx-rate-unsupported    ->  Mark this rate as unsupported apf-tx-rate-supported      ->  Mark this rate as supported apf-tx-rate-basic          ->  Mark this rate as basic apf-tx-rate-not-applicable ->  Mark this rate as not applicable").AddStringEnumDescription("apf-tx-rate-unsupported", "apf-tx-rate-supported", "apf-tx-rate-basic", "apf-tx-rate-not-applicable").String,
 				Optional:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("apf-tx-rate-unsupported", "apf-tx-rate-supported", "apf-tx-rate-basic", "apf-tx-rate-not-applicable"),
 				},
 			},
 			"data_rate_12m": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("apf-tx-rate-unsupported", "apf-tx-rate-supported", "apf-tx-rate-basic", "apf-tx-rate-not-applicable").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configuration for 12 Mbps data rate. Possible values: apf-tx-rate-unsupported    ->  Mark this rate as unsupported apf-tx-rate-supported      ->  Mark this rate as supported apf-tx-rate-basic          ->  Mark this rate as basic apf-tx-rate-not-applicable ->  Mark this rate as not applicable").AddStringEnumDescription("apf-tx-rate-unsupported", "apf-tx-rate-supported", "apf-tx-rate-basic", "apf-tx-rate-not-applicable").String,
 				Optional:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("apf-tx-rate-unsupported", "apf-tx-rate-supported", "apf-tx-rate-basic", "apf-tx-rate-not-applicable"),
 				},
 			},
 			"data_rate_18m": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("apf-tx-rate-unsupported", "apf-tx-rate-supported", "apf-tx-rate-basic", "apf-tx-rate-not-applicable").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configuration for 18 Mbps data rate. Possible values: apf-tx-rate-unsupported    ->  Mark this rate as unsupported apf-tx-rate-supported      ->  Mark this rate as supported apf-tx-rate-basic          ->  Mark this rate as basic apf-tx-rate-not-applicable ->  Mark this rate as not applicable").AddStringEnumDescription("apf-tx-rate-unsupported", "apf-tx-rate-supported", "apf-tx-rate-basic", "apf-tx-rate-not-applicable").String,
 				Optional:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("apf-tx-rate-unsupported", "apf-tx-rate-supported", "apf-tx-rate-basic", "apf-tx-rate-not-applicable"),
 				},
 			},
 			"data_rate_24m": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("apf-tx-rate-unsupported", "apf-tx-rate-supported", "apf-tx-rate-basic", "apf-tx-rate-not-applicable").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configuration for 24 Mbps data rate. Possible values: apf-tx-rate-unsupported    ->  Mark this rate as unsupported apf-tx-rate-supported      ->  Mark this rate as supported apf-tx-rate-basic          ->  Mark this rate as basic apf-tx-rate-not-applicable ->  Mark this rate as not applicable").AddStringEnumDescription("apf-tx-rate-unsupported", "apf-tx-rate-supported", "apf-tx-rate-basic", "apf-tx-rate-not-applicable").String,
 				Optional:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("apf-tx-rate-unsupported", "apf-tx-rate-supported", "apf-tx-rate-basic", "apf-tx-rate-not-applicable"),
 				},
 			},
 			"data_rate_36m": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("apf-tx-rate-unsupported", "apf-tx-rate-supported", "apf-tx-rate-basic", "apf-tx-rate-not-applicable").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configuration for 36 Mbps data rate. Possible values: apf-tx-rate-unsupported    ->  Mark this rate as unsupported apf-tx-rate-supported      ->  Mark this rate as supported apf-tx-rate-basic          ->  Mark this rate as basic apf-tx-rate-not-applicable ->  Mark this rate as not applicable").AddStringEnumDescription("apf-tx-rate-unsupported", "apf-tx-rate-supported", "apf-tx-rate-basic", "apf-tx-rate-not-applicable").String,
 				Optional:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("apf-tx-rate-unsupported", "apf-tx-rate-supported", "apf-tx-rate-basic", "apf-tx-rate-not-applicable"),
 				},
 			},
 			"data_rate_48m": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("apf-tx-rate-unsupported", "apf-tx-rate-supported", "apf-tx-rate-basic", "apf-tx-rate-not-applicable").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configuration for 48 Mbps data rate. Possible values: apf-tx-rate-unsupported    ->  Mark this rate as unsupported apf-tx-rate-supported      ->  Mark this rate as supported apf-tx-rate-basic          ->  Mark this rate as basic apf-tx-rate-not-applicable ->  Mark this rate as not applicable").AddStringEnumDescription("apf-tx-rate-unsupported", "apf-tx-rate-supported", "apf-tx-rate-basic", "apf-tx-rate-not-applicable").String,
 				Optional:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("apf-tx-rate-unsupported", "apf-tx-rate-supported", "apf-tx-rate-basic", "apf-tx-rate-not-applicable"),
 				},
 			},
 			"data_rate_54m": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("apf-tx-rate-unsupported", "apf-tx-rate-supported", "apf-tx-rate-basic", "apf-tx-rate-not-applicable").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configuration for 54 Mbps data rate. Possible values: apf-tx-rate-unsupported    ->  Mark this rate as unsupported apf-tx-rate-supported      ->  Mark this rate as supported apf-tx-rate-basic          ->  Mark this rate as basic apf-tx-rate-not-applicable ->  Mark this rate as not applicable").AddStringEnumDescription("apf-tx-rate-unsupported", "apf-tx-rate-supported", "apf-tx-rate-basic", "apf-tx-rate-not-applicable").String,
 				Optional:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("apf-tx-rate-unsupported", "apf-tx-rate-supported", "apf-tx-rate-basic", "apf-tx-rate-not-applicable"),
 				},
 			},
 			"band_select_client_rssi": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configure minimum mobile station Received Signal Strength Indicator(RSSI) threshold in dBm. Mobile stations having RSSI below this value will not be recorded in the suppressed table. This configuration filters out far away mobile stations with weaker signal strength. This will limit the number of mobile stations on the table to a reasonable amount.").AddIntegerRangeDescription(-90, 20).String,
 				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(-90, 20),
+				},
 			},
 			"band_select_cycle_count": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configure maximum number of cycles not responding.").AddIntegerRangeDescription(1, 10).String,
 				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 10),
+				},
 			},
 			"band_select_cycle_threshold": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configure cycle threshold for band select in milliseconds.").AddIntegerRangeDescription(1, 1000).String,
 				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 1000),
+				},
 			},
 			"band_select_expire_dual_band": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configure expire of dual band in secs.").AddIntegerRangeDescription(10, 300).String,
 				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(10, 300),
+				},
 			},
 			"band_select_expire_suppression": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configure expire of suppression in secs.").AddIntegerRangeDescription(10, 200).String,
 				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(10, 200),
+				},
 			},
 			"dca_allowed_channels": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("List of configurations related to allowed Dynamic Channel Assignment (DCA) channels in a named Radio-Frequency(rf)-profile").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"channel": schema.Int64Attribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Configure the channel number in allowed channel list").AddIntegerRangeDescription(0, 4294967295).String,
 							Required:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(0, 4294967295),
+							},
 						},
 					},
 				},
 			},
 			"coverage_data_rssi_threshold": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configure Received Signal Strength Indicator(RSSI) threshold value for data packets in dBm.").AddIntegerRangeDescription(-90, 60).String,
 				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(-90, 60),
+				},
 			},
 			"coverage_voice_rssi_threshold": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configure Received Signal Strength Indicator(RSSI) threshold value for voice packets in dBm.").AddIntegerRangeDescription(-90, 60).String,
 				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(-90, 60),
+				},
 			},
 			"coverage_level_global": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configure client minimum exception level.").AddIntegerRangeDescription(1, 200).String,
 				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 200),
+				},
 			},
 			"load_balancing_window": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configure number of clients associated between Access-Point(AP)'s.").AddIntegerRangeDescription(0, 20).String,
 				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 20),
+				},
 			},
 			"load_balancing_denial": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configure number of clients denial with respect to Access-Point(AP).").AddIntegerRangeDescription(1, 10).String,
 				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 10),
+				},
 			},
 			"max_clients": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configure maximum number of radio clients per Access-Point(AP) in high density environment.").AddIntegerRangeDescription(0, 500).String,
 				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 500),
+				},
 			},
 			"tx_power_v1_threshold": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configure the transmit power control version 1 threshold for the radio resource management algorithm in dBm.").AddIntegerRangeDescription(-80, 50).String,
 				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(-80, 50),
+				},
 			},
 			"tx_power_max": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Upper limit of transmit power in dBm. For an 802.11 network, the system will only accept this configuration if the Transmit Power Control(TPC) is in Auto or Run Once mode").AddIntegerRangeDescription(-10, 30).String,
 				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(-10, 30),
+				},
 			},
 			"tx_power_min": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Lower limit of transmit power in dBm. For an 802.11 network, the system will only accept this configuration if the Transmit Power Control(TPC) is in Auto or Run Once mode").AddIntegerRangeDescription(-10, 30).String,
 				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(-10, 30),
+				},
 			},
 			"trap_threshold_clients": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configure threshold number of clients per Access-Point(AP) radio to trigger a trap. The trap ciscoLwappApClientThresholdNotify will be triggered once the count of clients on the AP radio reaches this limit. A value of zero indicates that the trap is disabled.").AddIntegerRangeDescription(1, 200).String,
 				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 200),
+				},
 			},
 			"trap_threshold_interference": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configure interference threshold in (%) traps are generated when interference exceeds this value .").AddIntegerRangeDescription(0, 100).String,
 				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 100),
+				},
 			},
 			"trap_threshold_noise": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configure threshold number of noise threshold between -127 and 0 dBm.").AddIntegerRangeDescription(-127, 0).String,
 				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(-127, 0),
+				},
 			},
 		},
 	}
@@ -513,21 +575,27 @@ func (r *WirelessRFProfileResource) ImportState(ctx context.Context, req resourc
 	idParts := strings.Split(req.ID, ",")
 	idParts = helpers.RemoveEmptyStrings(idParts)
 
-	if len(idParts) != 0 && len(idParts) != 1 {
-		expectedIdentifier := "Expected import identifier with format: ''"
-		expectedIdentifier += " or '<device>'"
+	if len(idParts) != 1 && len(idParts) != 2 {
+		expectedIdentifier := "Expected import identifier with format: '<name>'"
+		expectedIdentifier += " or '<name>,<device>'"
 		resp.Diagnostics.AddError(
 			"Unexpected Import Identifier",
 			fmt.Sprintf("%s. Got: %q", expectedIdentifier, req.ID),
 		)
 		return
 	}
-	if len(idParts) == 1 {
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("name"), idParts[0])...)
+	if len(idParts) == 2 {
 		resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("device"), idParts[len(idParts)-1])...)
 	}
 
 	// construct path for 'id' attribute
 	var state WirelessRFProfile
+	diags := resp.State.Get(ctx, &state)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), state.getPath())...)
 
 	helpers.SetFlagImporting(ctx, true, resp.Private, &resp.Diagnostics)
