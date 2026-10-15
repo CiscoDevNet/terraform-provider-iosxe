@@ -2,6 +2,7 @@
 name: Wireless RF Profile
 path: /Cisco-IOS-XE-wireless-rf-cfg:rf-cfg-data/rf-profiles/rf-profile[name=%s]
 no_delete_attributes: true
+test_tags: [C9800]
 doc_category: Wireless
 attributes:
   - yang_name: name
