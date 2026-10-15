@@ -36,11 +36,13 @@ attribute:
   exclude_test: bool(required=False)  # Set to true if the attribute should be excluded from the test
   exclude_example: bool(required=False)  # Set to true if the attribute should be excluded from the example
   description: str(required=False)  # Description of the attribute
-  example: any(str(), int(), bool(), required=False)  # Example value for the attribute
+  example: any(str(), int(), num(), bool(), required=False)  # Example value for the attribute
   allow_import_changes: bool(required=False)  # Set to true if the attribute should be allowed to change during import
   enum_values: list(str(), required=False)  # List of possible enum values
   min_int: int(required=False)  # Minimum value for integer attributes
   max_int: int(required=False)  # Maximum value for integer attributes
+  min_float: num(required=False)  # Minimum value for float attributes
+  max_float: num(required=False)  # Maximum value for float attributes
   string_patterns: list(str(),required=False)  # List of string patterns
   string_min_length: int(required=False)  # Minimum length for string attributes
   string_max_length: int(required=False)  # Maximum length for string attributes
