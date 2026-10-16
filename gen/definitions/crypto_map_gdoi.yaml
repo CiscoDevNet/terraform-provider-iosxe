@@ -4,6 +4,7 @@ path: /Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:map/map-seq/map[nam
 augment_path: /Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:map/name-ipv6/name-case/map-seq/map[name=%v][seq=%v]
 res_description: "This resource can manage the Crypto Map GDOI configuration."
 ds_description: "This data source can read the Crypto Map GDOI configuration."
+test_tags: [C8000V]
 doc_category: Crypto
 no_delete_attributes: true
 attributes:

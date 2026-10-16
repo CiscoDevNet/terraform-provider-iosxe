@@ -1,6 +1,7 @@
 ---
 name: Crypto GDOI
 path: /Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:gdoi/group[name=%v]
+test_tags: [C8000V]
 doc_category: Crypto
 no_delete_attributes: true
 attributes:
