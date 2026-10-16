@@ -120,6 +120,14 @@ resource "iosxe_yang" "PreReq2" {
 	}
 }
 
+resource "iosxe_yang" "PreReq3" {
+	path = "/Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:pki/certificate/pki-map/map[tag=map1][sequence=1]"
+	attributes = {
+		"tag" = "map1"
+		"sequence" = "1"
+	}
+}
+
 `
 
 // End of section. //template:end testPrerequisites
@@ -129,7 +137,7 @@ resource "iosxe_yang" "PreReq2" {
 func testAccIosxeCryptoIKEv2ProfileConfig_minimum() string {
 	config := `resource "iosxe_crypto_ikev2_profile" "test" {` + "\n"
 	config += `	name = "profile1"` + "\n"
-	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, iosxe_yang.PreReq3, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -166,7 +174,7 @@ func testAccIosxeCryptoIKEv2ProfileConfig_all() string {
 	config += `		uses = "sign"` + "\n"
 	config += `	}]` + "\n"
 	config += `	config_exchange_request = false` + "\n"
-	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, iosxe_yang.PreReq3, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

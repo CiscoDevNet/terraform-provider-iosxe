@@ -93,6 +93,14 @@ resource "iosxe_yang" "PreReq2" {
 	}
 }
 
+resource "iosxe_yang" "PreReq3" {
+	path = "/Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:pki/certificate/pki-map/map[tag=map1][sequence=1]"
+	attributes = {
+		"tag" = "map1"
+		"sequence" = "1"
+	}
+}
+
 `
 
 // End of section. //template:end testPrerequisites
@@ -128,7 +136,7 @@ func testAccDataSourceIosxeCryptoIKEv2ProfileConfig() string {
 	config += `		uses = "sign"` + "\n"
 	config += `	}]` + "\n"
 	config += `	config_exchange_request = false` + "\n"
-	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, iosxe_yang.PreReq3, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `

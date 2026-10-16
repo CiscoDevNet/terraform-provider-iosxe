@@ -6,6 +6,7 @@ test_tags: [IOSXE1715]
 attributes:
   - yang_name: id
     tf_name: asn
+    normalize_asn: true
     example: 65000
     test_tags: [IOSXE1715]
   - yang_name: af-name

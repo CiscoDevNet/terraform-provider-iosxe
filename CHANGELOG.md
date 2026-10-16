@@ -1,6 +1,11 @@
 ## Unreleased
 
 - BREAKING CHANGE: Replace `ip_nhrp_maps.nbma_ipv4` with the nested list `ip_nhrp_maps.nbma_ipv4s` (keyed on `ipv4`, matching `ip_nhrp_nhs.nbma_ipv4s`) in `iosxe_interface_tunnel` resource and data source. In YANG, `map/dest-ipv4/nbma-ipv4` is a list keyed on `nbma-ipv4`; modelling it as a single value meant changing the NBMA address left the old entry on the device (causing perpetual plan drift) and removing it failed with `invalid-value`. `nbma_ipv4s` is required on each `ip_nhrp_maps` entry because IOS-XE rejects a map without an NBMA address. Existing configurations must change `nbma_ipv4 = "X"` to `nbma_ipv4s = [{ ipv4 = "X" }]`
+- Add wireless YANG model support (wlan, rf, site, flex, mesh, general, ap profiles)
+- Add `iosxe_wireless_wlan_profile` resource and data source for managing C9800 WLAN profiles
+- Add `iosxe_wireless_rf_profile` resource and data source
+- Add `iosxe_crypto_gdoi` resource and data source for GET VPN GDOI group configuration (`crypto gdoi group`), including key server (server local address, rekey, SA IPsec, redundancy, PFS, G-IKEv2) and group member (client protocol gdoi/gikev2, bypass-policy, PFS, fail-close revert, recovery-check interval, registration interface, rekey encryption/hash ciphers, transform-sets, transport-encrypt-key, status active-sa track)
+- Add `iosxe_crypto_map_gdoi` resource and data source for GET VPN crypto map GDOI binding (`crypto map <name> <seq> gdoi / set group <group>`)
 - Add `authentication_local_rsa_sig`, `authentication_remote_rsa_sig`, `authentication_local_ecdsa_sig`, `authentication_remote_ecdsa_sig`, `pki_trustpoints`, and `match_certificate_maps` attributes to `iosxe_crypto_ikev2_profile` resource and data source for PKI certificate-based authentication support
 - Add `af_interfaces` attribute to `iosxe_eigrp` and `iosxe_eigrp_vrf` resources and data sources for EIGRP named mode per-interface address-family controls (`af-interface`), including `passive_interface` and `split_horizon`
 - Fix nil pointer dereference when invoking actions by setting `ActionData` in the provider `Configure` method
@@ -8,6 +13,7 @@
 - BREAKING CHANGE: Remove all community `_legacy` attributes (`set_communities_legacy`, `set_communities_additive_legacy`, `set_community_none_legacy`, `set_community_list_delete_legacy`, `set_community_list_standard_legacy`, `set_community_list_expanded_legacy`, `set_community_list_name_legacy`, `match_community_lists_legacy`, `match_extcommunity_lists_legacy`) from `iosxe_route_map` resource and data source. The gen-1 attributes used the `set/community/...` YANG path (obsolete since IOS-XE 17.15). The gen-2 `set_communities` and `set_communities_additive` attributes used the deprecated `community-list` YANG leaf, which cannot round-trip on 17.15 devices (writes to `community-list` but reads back under `community-list-v2`, causing perpetual drift). The `set_communities` attribute now targets the `community-list-v2` YANG leaf instead, so it requires IOS-XE 17.15 or later; attribute names are unchanged
 - Add `re_originate_route_type5` attribute to `profiles` list in `iosxe_evpn` resource and data source for L2VPN EVPN profile `re-originate route-type5` configuration
 - Add `stub_connected` and `stub_summary` attributes to `iosxe_eigrp` and `iosxe_eigrp_vrf` resources and data sources for EIGRP stub routing advertisement control (`eigrp stub connected summary`)
+- Fix BGP resources triggering spurious destroy-recreate on import when the device uses `bgp asnotation dot` (asdot ASN format). A new `normalize_asn` plan modifier normalizes asdot and asplain representations to the same value before comparison
 
 ## 1.1.1
 
