@@ -37,15 +37,15 @@ func TestAccDataSourceIosxeWirelessSiteTag(t *testing.T) {
 	}
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_site_tag.test", "description", "My Site Tag"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_site_tag.test", "ap_join_profile", "default-ap-profile"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_site_tag.test", "flex_profile", "default-flex-profile"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_site_tag.test", "ap_join_profile", "S1-AP-JOIN"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_site_tag.test", "flex_profile", "S1-FLEX"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_site_tag.test", "local_site", "false"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccDataSourceIosxeWirelessSiteTagConfig(),
+				Config: testAccDataSourceIosxeWirelessSiteTagPrerequisitesConfig + testAccDataSourceIosxeWirelessSiteTagConfig(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -55,22 +55,40 @@ func TestAccDataSourceIosxeWirelessSiteTag(t *testing.T) {
 // End of section. //template:end testAccDataSource
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+const testAccDataSourceIosxeWirelessSiteTagPrerequisitesConfig = `
+resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-wireless-site-cfg:site-cfg-data/ap-cfg-profiles/ap-cfg-profile[profile-name=S1-AP-JOIN]"
+	attributes = {
+		"profile-name" = "S1-AP-JOIN"
+	}
+}
+
+resource "iosxe_yang" "PreReq1" {
+	path = "/Cisco-IOS-XE-wireless-flex-cfg:flex-cfg-data/flex-policy-entries/flex-policy-entry[policy-name=S1-FLEX]"
+	attributes = {
+		"policy-name" = "S1-FLEX"
+	}
+}
+
+`
+
 // End of section. //template:end testPrerequisites
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSourceConfig
 
 func testAccDataSourceIosxeWirelessSiteTagConfig() string {
 	config := `resource "iosxe_wireless_site_tag" "test" {` + "\n"
-	config += `	site_tag_name = "ST1"` + "\n"
+	config += `	site_tag_name = "S1-SITE-TAG"` + "\n"
 	config += `	description = "My Site Tag"` + "\n"
-	config += `	ap_join_profile = "default-ap-profile"` + "\n"
-	config += `	flex_profile = "default-flex-profile"` + "\n"
+	config += `	ap_join_profile = "S1-AP-JOIN"` + "\n"
+	config += `	flex_profile = "S1-FLEX"` + "\n"
 	config += `	local_site = false` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `
 		data "iosxe_wireless_site_tag" "test" {
-			site_tag_name = "ST1"
+			site_tag_name = "S1-SITE-TAG"
 			depends_on = [iosxe_wireless_site_tag.test]
 		}
 	`

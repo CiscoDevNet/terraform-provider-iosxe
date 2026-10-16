@@ -38,20 +38,20 @@ func TestAccIosxeWirelessSiteTag(t *testing.T) {
 		t.Skip("skipping test, set environment variable C9800")
 	}
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_site_tag.test", "site_tag_name", "ST1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_site_tag.test", "site_tag_name", "S1-SITE-TAG"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_site_tag.test", "description", "My Site Tag"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_site_tag.test", "ap_join_profile", "default-ap-profile"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_site_tag.test", "flex_profile", "default-flex-profile"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_site_tag.test", "ap_join_profile", "S1-AP-JOIN"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_site_tag.test", "flex_profile", "S1-FLEX"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_site_tag.test", "local_site", "false"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccIosxeWirelessSiteTagConfig_minimum(),
+				Config: testAccIosxeWirelessSiteTagPrerequisitesConfig + testAccIosxeWirelessSiteTagConfig_minimum(),
 			},
 			{
-				Config: testAccIosxeWirelessSiteTagConfig_all(),
+				Config: testAccIosxeWirelessSiteTagPrerequisitesConfig + testAccIosxeWirelessSiteTagConfig_all(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
@@ -82,13 +82,31 @@ func iosxeWirelessSiteTagImportStateIdFunc(resourceName string) resource.ImportS
 // End of section. //template:end importStateIdFunc
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+const testAccIosxeWirelessSiteTagPrerequisitesConfig = `
+resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-wireless-site-cfg:site-cfg-data/ap-cfg-profiles/ap-cfg-profile[profile-name=S1-AP-JOIN]"
+	attributes = {
+		"profile-name" = "S1-AP-JOIN"
+	}
+}
+
+resource "iosxe_yang" "PreReq1" {
+	path = "/Cisco-IOS-XE-wireless-flex-cfg:flex-cfg-data/flex-policy-entries/flex-policy-entry[policy-name=S1-FLEX]"
+	attributes = {
+		"policy-name" = "S1-FLEX"
+	}
+}
+
+`
+
 // End of section. //template:end testPrerequisites
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
 
 func testAccIosxeWirelessSiteTagConfig_minimum() string {
 	config := `resource "iosxe_wireless_site_tag" "test" {` + "\n"
-	config += `	site_tag_name = "ST1"` + "\n"
+	config += `	site_tag_name = "S1-SITE-TAG"` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -99,11 +117,12 @@ func testAccIosxeWirelessSiteTagConfig_minimum() string {
 
 func testAccIosxeWirelessSiteTagConfig_all() string {
 	config := `resource "iosxe_wireless_site_tag" "test" {` + "\n"
-	config += `	site_tag_name = "ST1"` + "\n"
+	config += `	site_tag_name = "S1-SITE-TAG"` + "\n"
 	config += `	description = "My Site Tag"` + "\n"
-	config += `	ap_join_profile = "default-ap-profile"` + "\n"
-	config += `	flex_profile = "default-flex-profile"` + "\n"
+	config += `	ap_join_profile = "S1-AP-JOIN"` + "\n"
+	config += `	flex_profile = "S1-FLEX"` + "\n"
 	config += `	local_site = false` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

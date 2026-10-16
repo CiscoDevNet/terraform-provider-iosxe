@@ -1,7 +1,7 @@
 resource "iosxe_wireless_site_tag" "example" {
-  site_tag_name   = "ST1"
+  site_tag_name   = "S1-SITE-TAG"
   description     = "My Site Tag"
-  ap_join_profile = "default-ap-profile"
-  flex_profile    = "default-flex-profile"
+  ap_join_profile = "S1-AP-JOIN"
+  flex_profile    = "S1-FLEX"
   local_site      = false
 }
