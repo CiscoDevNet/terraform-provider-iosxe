@@ -90,6 +90,7 @@ func (r *BGPIPv4MVPNNeighborResource) Schema(ctx context.Context, req resource.S
 				Required:            true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
+					helpers.UseAsnNormalization(),
 				},
 			},
 			"ip": schema.StringAttribute{
