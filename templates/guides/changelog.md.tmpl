@@ -9,6 +9,7 @@ description: |-
 
 ## Unreleased
 
+- Add `iosxe_wireless_system` resource and data source
 - Add wireless YANG model support (wlan, rf, site, flex, mesh, general, ap profiles)
 - Add `iosxe_wireless_wlan_profile` resource and data source for managing C9800 WLAN profiles
 - Add `iosxe_wireless_rf_profile` resource and data source
