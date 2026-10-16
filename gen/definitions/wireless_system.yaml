@@ -1,6 +1,7 @@
 ---
 name: Wireless System
 path: /Cisco-IOS-XE-wireless-general-cfg:general-cfg-data/sim-l3-interface-cache-data
+test_tags: [C9800]
 doc_category: Wireless
 attributes:
   - yang_name: interface-name
