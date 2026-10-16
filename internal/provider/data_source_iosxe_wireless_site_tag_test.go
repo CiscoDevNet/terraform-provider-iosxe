@@ -38,8 +38,8 @@ func TestAccDataSourceIosxeWirelessSiteTag(t *testing.T) {
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_site_tag.test", "description", "My Site Tag"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_site_tag.test", "ap_join_profile", "S1-AP-JOIN"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_site_tag.test", "flex_profile", "S1-FLEX"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_site_tag.test", "local_site", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_site_tag.test", "flex_profile", "S1-FLEX"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -81,8 +81,8 @@ func testAccDataSourceIosxeWirelessSiteTagConfig() string {
 	config += `	site_tag_name = "S1-SITE-TAG"` + "\n"
 	config += `	description = "My Site Tag"` + "\n"
 	config += `	ap_join_profile = "S1-AP-JOIN"` + "\n"
-	config += `	flex_profile = "S1-FLEX"` + "\n"
 	config += `	local_site = false` + "\n"
+	config += `	flex_profile = "S1-FLEX"` + "\n"
 	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 

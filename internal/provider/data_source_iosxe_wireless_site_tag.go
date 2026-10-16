@@ -80,12 +80,12 @@ func (d *WirelessSiteTagDataSource) Schema(ctx context.Context, req datasource.S
 				MarkdownDescription: "The Ap Join profile which is part of the Site tag",
 				Computed:            true,
 			},
-			"flex_profile": schema.StringAttribute{
-				MarkdownDescription: "The flex profile which is part of the Site tag",
-				Computed:            true,
-			},
 			"local_site": schema.BoolAttribute{
 				MarkdownDescription: "This parameter is set to enable local site",
+				Computed:            true,
+			},
+			"flex_profile": schema.StringAttribute{
+				MarkdownDescription: "The flex profile which is part of the Site tag",
 				Computed:            true,
 			},
 		},

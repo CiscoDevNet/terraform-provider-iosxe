@@ -96,12 +96,12 @@ func (r *WirelessSiteTagResource) Schema(ctx context.Context, req resource.Schem
 				MarkdownDescription: helpers.NewAttributeDescription("The Ap Join profile which is part of the Site tag").String,
 				Optional:            true,
 			},
-			"flex_profile": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("The flex profile which is part of the Site tag").String,
-				Optional:            true,
-			},
 			"local_site": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("This parameter is set to enable local site").String,
+				Optional:            true,
+			},
+			"flex_profile": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("The flex profile which is part of the Site tag").String,
 				Optional:            true,
 			},
 		},

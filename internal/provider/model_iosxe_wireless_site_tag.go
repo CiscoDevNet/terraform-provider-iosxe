@@ -41,8 +41,8 @@ type WirelessSiteTag struct {
 	SiteTagName   types.String `tfsdk:"site_tag_name"`
 	Description   types.String `tfsdk:"description"`
 	ApJoinProfile types.String `tfsdk:"ap_join_profile"`
-	FlexProfile   types.String `tfsdk:"flex_profile"`
 	LocalSite     types.Bool   `tfsdk:"local_site"`
+	FlexProfile   types.String `tfsdk:"flex_profile"`
 }
 
 type WirelessSiteTagData struct {
@@ -51,8 +51,8 @@ type WirelessSiteTagData struct {
 	SiteTagName   types.String `tfsdk:"site_tag_name"`
 	Description   types.String `tfsdk:"description"`
 	ApJoinProfile types.String `tfsdk:"ap_join_profile"`
-	FlexProfile   types.String `tfsdk:"flex_profile"`
 	LocalSite     types.Bool   `tfsdk:"local_site"`
+	FlexProfile   types.String `tfsdk:"flex_profile"`
 }
 
 // End of section. //template:end types
@@ -105,11 +105,11 @@ func (data WirelessSiteTag) addToBodyXML(ctx context.Context, config WirelessSit
 	if !data.ApJoinProfile.IsNull() && !data.ApJoinProfile.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/ap-join-profile", data.ApJoinProfile.ValueString())
 	}
-	if !data.FlexProfile.IsNull() && !data.FlexProfile.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/flex-profile", data.FlexProfile.ValueString())
-	}
 	if !data.LocalSite.IsNull() && !data.LocalSite.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/is-local-site", data.LocalSite.ValueBool())
+	}
+	if !data.FlexProfile.IsNull() && !data.FlexProfile.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/flex-profile", data.FlexProfile.ValueString())
 	}
 	return body
 }
@@ -134,17 +134,17 @@ func (data *WirelessSiteTag) updateFromBodyXML(ctx context.Context, res xmldot.R
 	} else {
 		data.ApJoinProfile = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/flex-profile"); value.Exists() && !data.FlexProfile.IsNull() {
-		data.FlexProfile = types.StringValue(value.String())
-	} else {
-		data.FlexProfile = types.StringNull()
-	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/is-local-site"); !data.LocalSite.IsNull() {
 		if value.Exists() {
 			data.LocalSite = types.BoolValue(value.Bool())
 		}
 	} else {
 		data.LocalSite = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/flex-profile"); value.Exists() && !data.FlexProfile.IsNull() {
+		data.FlexProfile = types.StringValue(value.String())
+	} else {
+		data.FlexProfile = types.StringNull()
 	}
 }
 
@@ -159,13 +159,13 @@ func (data *WirelessSiteTag) fromBodyXML(ctx context.Context, res xmldot.Result)
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ap-join-profile"); value.Exists() {
 		data.ApJoinProfile = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/flex-profile"); value.Exists() {
-		data.FlexProfile = types.StringValue(value.String())
-	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/is-local-site"); value.Exists() {
 		data.LocalSite = types.BoolValue(value.Bool())
 	} else {
 		data.LocalSite = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/flex-profile"); value.Exists() {
+		data.FlexProfile = types.StringValue(value.String())
 	}
 }
 
@@ -180,13 +180,13 @@ func (data *WirelessSiteTagData) fromBodyXML(ctx context.Context, res xmldot.Res
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ap-join-profile"); value.Exists() {
 		data.ApJoinProfile = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/flex-profile"); value.Exists() {
-		data.FlexProfile = types.StringValue(value.String())
-	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/is-local-site"); value.Exists() {
 		data.LocalSite = types.BoolValue(value.Bool())
 	} else {
 		data.LocalSite = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/flex-profile"); value.Exists() {
+		data.FlexProfile = types.StringValue(value.String())
 	}
 }
 
@@ -196,11 +196,11 @@ func (data *WirelessSiteTagData) fromBodyXML(ctx context.Context, res xmldot.Res
 
 func (data *WirelessSiteTag) addDeletedItemsXML(ctx context.Context, state WirelessSiteTag, body string) string {
 	b := netconf.NewBody(body)
-	if !state.LocalSite.IsNull() && data.LocalSite.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/is-local-site")
-	}
 	if !state.FlexProfile.IsNull() && data.FlexProfile.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/flex-profile")
+	}
+	if !state.LocalSite.IsNull() && data.LocalSite.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/is-local-site")
 	}
 	if !state.ApJoinProfile.IsNull() && data.ApJoinProfile.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ap-join-profile")
@@ -219,11 +219,11 @@ func (data *WirelessSiteTag) addDeletedItemsXML(ctx context.Context, state Wirel
 
 func (data *WirelessSiteTag) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
-	if !data.LocalSite.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/is-local-site")
-	}
 	if !data.FlexProfile.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/flex-profile")
+	}
+	if !data.LocalSite.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/is-local-site")
 	}
 	if !data.ApJoinProfile.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ap-join-profile")
