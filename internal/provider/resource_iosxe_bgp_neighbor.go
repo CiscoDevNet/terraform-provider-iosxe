@@ -91,6 +91,7 @@ func (r *BGPNeighborResource) Schema(ctx context.Context, req resource.SchemaReq
 				Required:            true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
+					helpers.UseAsnNormalization(),
 				},
 			},
 			"ip": schema.StringAttribute{
@@ -103,6 +104,9 @@ func (r *BGPNeighborResource) Schema(ctx context.Context, req resource.SchemaReq
 			"remote_as": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Specify a BGP peer-group remote-as").String,
 				Optional:            true,
+				PlanModifiers: []planmodifier.String{
+					helpers.UseAsnNormalization(),
+				},
 			},
 			"description": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Neighbor specific description").String,

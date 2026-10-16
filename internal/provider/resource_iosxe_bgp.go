@@ -91,6 +91,7 @@ func (r *BGPResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				Required:            true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
+					helpers.UseAsnNormalization(),
 				},
 			},
 			"default_ipv4_unicast": schema.BoolAttribute{
