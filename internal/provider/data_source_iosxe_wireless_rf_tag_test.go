@@ -37,15 +37,15 @@ func TestAccDataSourceIosxeWirelessRFTag(t *testing.T) {
 	}
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_rf_tag.test", "description", "Test RF Tag"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_rf_tag.test", "rf_policy_24ghz", "default_rf_24gh"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_rf_tag.test", "rf_policy_5ghz", "default_rf_5gh"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_rf_tag.test", "rf_policy_6ghz", "default-rf-profile-6ghz"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_rf_tag.test", "rf_policy_24ghz", "Typical_Client_Density_rf_24gh"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_rf_tag.test", "rf_policy_5ghz", "Typical_Client_Density_rf_5gh"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_rf_tag.test", "rf_policy_6ghz", "S1-RF-6GHZ"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccDataSourceIosxeWirelessRFTagConfig(),
+				Config: testAccDataSourceIosxeWirelessRFTagPrerequisitesConfig + testAccDataSourceIosxeWirelessRFTagConfig(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -55,6 +55,17 @@ func TestAccDataSourceIosxeWirelessRFTag(t *testing.T) {
 // End of section. //template:end testAccDataSource
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+const testAccDataSourceIosxeWirelessRFTagPrerequisitesConfig = `
+resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-wireless-rf-cfg:rf-cfg-data/rf-profiles/rf-profile[name=S1-RF-6GHZ]"
+	attributes = {
+		"name" = "S1-RF-6GHZ"
+		"band" = "dot11-6-ghz-band"
+	}
+}
+
+`
+
 // End of section. //template:end testPrerequisites
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSourceConfig
@@ -63,9 +74,10 @@ func testAccDataSourceIosxeWirelessRFTagConfig() string {
 	config := `resource "iosxe_wireless_rf_tag" "test" {` + "\n"
 	config += `	name = "S1-RF-Tag-Test"` + "\n"
 	config += `	description = "Test RF Tag"` + "\n"
-	config += `	rf_policy_24ghz = "default_rf_24gh"` + "\n"
-	config += `	rf_policy_5ghz = "default_rf_5gh"` + "\n"
-	config += `	rf_policy_6ghz = "default-rf-profile-6ghz"` + "\n"
+	config += `	rf_policy_24ghz = "Typical_Client_Density_rf_24gh"` + "\n"
+	config += `	rf_policy_5ghz = "Typical_Client_Density_rf_5gh"` + "\n"
+	config += `	rf_policy_6ghz = "S1-RF-6GHZ"` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `
