@@ -2,6 +2,7 @@
 name: Wireless Policy Profile
 path: /Cisco-IOS-XE-wireless-wlan-cfg:wlan-cfg-data/wlan-policies/wlan-policy[policy-profile-name=%s]
 no_delete_attributes: true
+test_tags: [C9800]
 doc_category: Wireless
 attributes:
   - yang_name: policy-profile-name

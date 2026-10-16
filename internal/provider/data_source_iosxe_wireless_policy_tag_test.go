@@ -21,6 +21,7 @@ package provider
 
 // Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
+	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -31,6 +32,9 @@ import (
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSource
 
 func TestAccDataSourceIosxeWirelessPolicyTag(t *testing.T) {
+	if os.Getenv("C9800") == "" {
+		t.Skip("skipping test, set environment variable C9800")
+	}
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_policy_tag.test", "description", "S2 Corporate campus policy tag"))
 	resource.Test(t, resource.TestCase{
