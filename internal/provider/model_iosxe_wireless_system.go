@@ -37,7 +37,6 @@ import (
 type WirelessSystem struct {
 	Device        types.String `tfsdk:"device"`
 	Id            types.String `tfsdk:"id"`
-	DeleteMode    types.String `tfsdk:"delete_mode"`
 	InterfaceName types.String `tfsdk:"interface_name"`
 }
 

@@ -68,7 +68,6 @@ resource "iosxe_yang" "PreReq0" {
 
 func testAccDataSourceIosxeWirelessSystemConfig() string {
 	config := `resource "iosxe_wireless_system" "test" {` + "\n"
-	config += `	delete_mode = "attributes"` + "\n"
 	config += `	interface_name = "Vlan10"` + "\n"
 	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
