@@ -1,1 +1,1 @@
-terraform import iosxe_wireless_rf_tag.example ""
+terraform import iosxe_wireless_rf_tag.example "<name>"

@@ -2,7 +2,7 @@
 name: Wireless RF Tag
 path: /Cisco-IOS-XE-wireless-rf-cfg:rf-cfg-data/rf-tags/rf-tag[tag-name=%s]
 no_delete_attributes: true
-no_augment_config: true
+test_tags: [C9800]
 doc_category: Wireless
 attributes:
   - yang_name: tag-name

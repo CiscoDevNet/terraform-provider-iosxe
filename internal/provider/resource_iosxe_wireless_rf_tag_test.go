@@ -22,6 +22,7 @@ package provider
 // Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"fmt"
+	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -33,7 +34,15 @@ import (
 // Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
 func TestAccIosxeWirelessRFTag(t *testing.T) {
+	if os.Getenv("C9800") == "" {
+		t.Skip("skipping test, set environment variable C9800")
+	}
 	var checks []resource.TestCheckFunc
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_rf_tag.test", "name", "S1-RF-Tag-Test"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_rf_tag.test", "description", "Test RF Tag"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_rf_tag.test", "rf_policy_24ghz", "default_rf_24gh"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_rf_tag.test", "rf_policy_5ghz", "default_rf_5gh"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_rf_tag.test", "rf_policy_6ghz", "default-rf-profile-6ghz"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -63,8 +72,10 @@ func TestAccIosxeWirelessRFTag(t *testing.T) {
 
 func iosxeWirelessRFTagImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
 	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Name := primary.Attributes["name"]
 
-		return fmt.Sprintf(""), nil
+		return fmt.Sprintf("%s", Name), nil
 	}
 }
 
@@ -77,6 +88,7 @@ func iosxeWirelessRFTagImportStateIdFunc(resourceName string) resource.ImportSta
 
 func testAccIosxeWirelessRFTagConfig_minimum() string {
 	config := `resource "iosxe_wireless_rf_tag" "test" {` + "\n"
+	config += `	name = "S1-RF-Tag-Test"` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -87,6 +99,11 @@ func testAccIosxeWirelessRFTagConfig_minimum() string {
 
 func testAccIosxeWirelessRFTagConfig_all() string {
 	config := `resource "iosxe_wireless_rf_tag" "test" {` + "\n"
+	config += `	name = "S1-RF-Tag-Test"` + "\n"
+	config += `	description = "Test RF Tag"` + "\n"
+	config += `	rf_policy_24ghz = "default_rf_24gh"` + "\n"
+	config += `	rf_policy_5ghz = "default_rf_5gh"` + "\n"
+	config += `	rf_policy_6ghz = "default-rf-profile-6ghz"` + "\n"
 	config += `}` + "\n"
 	return config
 }

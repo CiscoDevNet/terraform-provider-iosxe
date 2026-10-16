@@ -21,6 +21,7 @@ package provider
 
 // Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
+	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -31,7 +32,14 @@ import (
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSource
 
 func TestAccDataSourceIosxeWirelessRFTag(t *testing.T) {
+	if os.Getenv("C9800") == "" {
+		t.Skip("skipping test, set environment variable C9800")
+	}
 	var checks []resource.TestCheckFunc
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_rf_tag.test", "description", "Test RF Tag"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_rf_tag.test", "rf_policy_24ghz", "default_rf_24gh"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_rf_tag.test", "rf_policy_5ghz", "default_rf_5gh"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_rf_tag.test", "rf_policy_6ghz", "default-rf-profile-6ghz"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -53,10 +61,16 @@ func TestAccDataSourceIosxeWirelessRFTag(t *testing.T) {
 
 func testAccDataSourceIosxeWirelessRFTagConfig() string {
 	config := `resource "iosxe_wireless_rf_tag" "test" {` + "\n"
+	config += `	name = "S1-RF-Tag-Test"` + "\n"
+	config += `	description = "Test RF Tag"` + "\n"
+	config += `	rf_policy_24ghz = "default_rf_24gh"` + "\n"
+	config += `	rf_policy_5ghz = "default_rf_5gh"` + "\n"
+	config += `	rf_policy_6ghz = "default-rf-profile-6ghz"` + "\n"
 	config += `}` + "\n"
 
 	config += `
 		data "iosxe_wireless_rf_tag" "test" {
+			name = "S1-RF-Tag-Test"
 			depends_on = [iosxe_wireless_rf_tag.test]
 		}
 	`

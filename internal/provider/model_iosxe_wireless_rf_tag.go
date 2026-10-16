@@ -23,6 +23,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"net/url"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -59,21 +60,23 @@ type WirelessRFTagData struct {
 // Section below is generated&owned by "gen/generator.go". //template:begin getPath
 
 func (data WirelessRFTag) getPath() string {
-	return "Cisco-IOS-XE-wireless-rf-cfg:rf-cfg-data/rf-tags/rf-tag=%s"
+	return fmt.Sprintf("Cisco-IOS-XE-wireless-rf-cfg:rf-cfg-data/rf-tags/rf-tag=%s", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
 }
 
 func (data WirelessRFTagData) getPath() string {
-	return "Cisco-IOS-XE-wireless-rf-cfg:rf-cfg-data/rf-tags/rf-tag=%s"
+	return fmt.Sprintf("Cisco-IOS-XE-wireless-rf-cfg:rf-cfg-data/rf-tags/rf-tag=%s", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
 }
 
 // getXPath returns the XPath for NETCONF operations
 func (data WirelessRFTag) getXPath() string {
 	path := "/Cisco-IOS-XE-wireless-rf-cfg:rf-cfg-data/rf-tags/rf-tag[tag-name=%s]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()))
 	return path
 }
 
 func (data WirelessRFTagData) getXPath() string {
 	path := "/Cisco-IOS-XE-wireless-rf-cfg:rf-cfg-data/rf-tags/rf-tag[tag-name=%s]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()))
 	return path
 }
 
@@ -93,6 +96,21 @@ func (data WirelessRFTag) toBodyXML(ctx context.Context, config WirelessRFTag) s
 // addToBodyXML adds this object to an existing body instead of starting from an empty one. Bulk
 // resources use this to serialize all of their items into a single NETCONF payload.
 func (data WirelessRFTag) addToBodyXML(ctx context.Context, config WirelessRFTag, body netconf.Body) netconf.Body {
+	if !data.Name.IsNull() && !data.Name.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/tag-name", data.Name.ValueString())
+	}
+	if !data.Description.IsNull() && !data.Description.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/description", data.Description.ValueString())
+	}
+	if !data.RfPolicy24ghz.IsNull() && !data.RfPolicy24ghz.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/dot11b-rf-profile-name", data.RfPolicy24ghz.ValueString())
+	}
+	if !data.RfPolicy5ghz.IsNull() && !data.RfPolicy5ghz.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/dot11a-rf-profile-name", data.RfPolicy5ghz.ValueString())
+	}
+	if !data.RfPolicy6ghz.IsNull() && !data.RfPolicy6ghz.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/dot11-6ghz-rf-prof-name", data.RfPolicy6ghz.ValueString())
+	}
 	return body
 }
 
@@ -101,6 +119,31 @@ func (data WirelessRFTag) addToBodyXML(ctx context.Context, config WirelessRFTag
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *WirelessRFTag) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/tag-name"); value.Exists() && !data.Name.IsNull() {
+		data.Name = types.StringValue(value.String())
+	} else {
+		data.Name = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/description"); value.Exists() && !data.Description.IsNull() {
+		data.Description = types.StringValue(value.String())
+	} else {
+		data.Description = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot11b-rf-profile-name"); value.Exists() && !data.RfPolicy24ghz.IsNull() {
+		data.RfPolicy24ghz = types.StringValue(value.String())
+	} else {
+		data.RfPolicy24ghz = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot11a-rf-profile-name"); value.Exists() && !data.RfPolicy5ghz.IsNull() {
+		data.RfPolicy5ghz = types.StringValue(value.String())
+	} else {
+		data.RfPolicy5ghz = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot11-6ghz-rf-prof-name"); value.Exists() && !data.RfPolicy6ghz.IsNull() {
+		data.RfPolicy6ghz = types.StringValue(value.String())
+	} else {
+		data.RfPolicy6ghz = types.StringNull()
+	}
 }
 
 // End of section. //template:end updateFromBodyXML
@@ -108,6 +151,18 @@ func (data *WirelessRFTag) updateFromBodyXML(ctx context.Context, res xmldot.Res
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *WirelessRFTag) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/description"); value.Exists() {
+		data.Description = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot11b-rf-profile-name"); value.Exists() {
+		data.RfPolicy24ghz = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot11a-rf-profile-name"); value.Exists() {
+		data.RfPolicy5ghz = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot11-6ghz-rf-prof-name"); value.Exists() {
+		data.RfPolicy6ghz = types.StringValue(value.String())
+	}
 }
 
 // End of section. //template:end fromBodyXML
@@ -115,6 +170,18 @@ func (data *WirelessRFTag) fromBodyXML(ctx context.Context, res xmldot.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
 
 func (data *WirelessRFTagData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/description"); value.Exists() {
+		data.Description = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot11b-rf-profile-name"); value.Exists() {
+		data.RfPolicy24ghz = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot11a-rf-profile-name"); value.Exists() {
+		data.RfPolicy5ghz = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot11-6ghz-rf-prof-name"); value.Exists() {
+		data.RfPolicy6ghz = types.StringValue(value.String())
+	}
 }
 
 // End of section. //template:end fromBodyDataXML
@@ -123,6 +190,18 @@ func (data *WirelessRFTagData) fromBodyXML(ctx context.Context, res xmldot.Resul
 
 func (data *WirelessRFTag) addDeletedItemsXML(ctx context.Context, state WirelessRFTag, body string) string {
 	b := netconf.NewBody(body)
+	if !state.RfPolicy6ghz.IsNull() && data.RfPolicy6ghz.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot11-6ghz-rf-prof-name")
+	}
+	if !state.RfPolicy5ghz.IsNull() && data.RfPolicy5ghz.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot11a-rf-profile-name")
+	}
+	if !state.RfPolicy24ghz.IsNull() && data.RfPolicy24ghz.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot11b-rf-profile-name")
+	}
+	if !state.Description.IsNull() && data.Description.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/description")
+	}
 
 	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
@@ -134,6 +213,18 @@ func (data *WirelessRFTag) addDeletedItemsXML(ctx context.Context, state Wireles
 
 func (data *WirelessRFTag) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	if !data.RfPolicy6ghz.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dot11-6ghz-rf-prof-name")
+	}
+	if !data.RfPolicy5ghz.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dot11a-rf-profile-name")
+	}
+	if !data.RfPolicy24ghz.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dot11b-rf-profile-name")
+	}
+	if !data.Description.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/description")
+	}
 
 	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()

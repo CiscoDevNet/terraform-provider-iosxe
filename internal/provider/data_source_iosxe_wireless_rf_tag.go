@@ -57,7 +57,7 @@ func (d *WirelessRFTagDataSource) Metadata(_ context.Context, req datasource.Met
 func (d *WirelessRFTagDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "",
+		MarkdownDescription: "This data source can read the Wireless RF Tag configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -69,23 +69,23 @@ func (d *WirelessRFTagDataSource) Schema(ctx context.Context, req datasource.Sch
 				Computed:            true,
 			},
 			"name": schema.StringAttribute{
-				MarkdownDescription: "",
-				Computed:            true,
+				MarkdownDescription: "Configure the rf tag name",
+				Required:            true,
 			},
 			"description": schema.StringAttribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Configure the brief description about the rf tag.",
 				Computed:            true,
 			},
 			"rf_policy_24ghz": schema.StringAttribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Configure the 802.11b Radio-Frequency(rf)-profile that is associated with this rf tag",
 				Computed:            true,
 			},
 			"rf_policy_5ghz": schema.StringAttribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Configure the 802.11a Radio-Frequency(rf)-profile that is associated with this rf tag",
 				Computed:            true,
 			},
 			"rf_policy_6ghz": schema.StringAttribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "802.11 6GHz Radio-Frequency(rf)-profile that is associated with this RF tag",
 				Computed:            true,
 			},
 		},

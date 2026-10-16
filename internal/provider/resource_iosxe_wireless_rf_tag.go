@@ -23,14 +23,17 @@ package provider
 import (
 	"context"
 	"fmt"
+	"regexp"
 	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-netconf"
@@ -61,7 +64,7 @@ func (r *WirelessRFTagResource) Metadata(_ context.Context, req resource.Metadat
 func (r *WirelessRFTagResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "",
+		MarkdownDescription: "This resource can manage the Wireless RF Tag configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -76,23 +79,29 @@ func (r *WirelessRFTagResource) Schema(ctx context.Context, req resource.SchemaR
 				},
 			},
 			"name": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Optional:            true,
+				MarkdownDescription: helpers.NewAttributeDescription("Configure the rf tag name").String,
+				Required:            true,
+				Validators: []validator.String{
+					stringvalidator.RegexMatches(regexp.MustCompile(`[!-~]([ -~]*[!-~])?`), ""),
+				},
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
 			},
 			"description": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configure the brief description about the rf tag.").String,
 				Optional:            true,
 			},
 			"rf_policy_24ghz": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configure the 802.11b Radio-Frequency(rf)-profile that is associated with this rf tag").String,
 				Optional:            true,
 			},
 			"rf_policy_5ghz": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configure the 802.11a Radio-Frequency(rf)-profile that is associated with this rf tag").String,
 				Optional:            true,
 			},
 			"rf_policy_6ghz": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("802.11 6GHz Radio-Frequency(rf)-profile that is associated with this RF tag").String,
 				Optional:            true,
 			},
 		},
@@ -348,21 +357,27 @@ func (r *WirelessRFTagResource) ImportState(ctx context.Context, req resource.Im
 	idParts := strings.Split(req.ID, ",")
 	idParts = helpers.RemoveEmptyStrings(idParts)
 
-	if len(idParts) != 0 && len(idParts) != 1 {
-		expectedIdentifier := "Expected import identifier with format: ''"
-		expectedIdentifier += " or '<device>'"
+	if len(idParts) != 1 && len(idParts) != 2 {
+		expectedIdentifier := "Expected import identifier with format: '<name>'"
+		expectedIdentifier += " or '<name>,<device>'"
 		resp.Diagnostics.AddError(
 			"Unexpected Import Identifier",
 			fmt.Sprintf("%s. Got: %q", expectedIdentifier, req.ID),
 		)
 		return
 	}
-	if len(idParts) == 1 {
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("name"), idParts[0])...)
+	if len(idParts) == 2 {
 		resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("device"), idParts[len(idParts)-1])...)
 	}
 
 	// construct path for 'id' attribute
 	var state WirelessRFTag
+	diags := resp.State.Get(ctx, &state)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), state.getPath())...)
 
 	helpers.SetFlagImporting(ctx, true, resp.Private, &resp.Diagnostics)
