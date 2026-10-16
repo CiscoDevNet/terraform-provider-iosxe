@@ -90,6 +90,7 @@ func (r *BGPIPv6UnicastNeighborResource) Schema(ctx context.Context, req resourc
 				Required:            true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
+					helpers.UseAsnNormalization(),
 				},
 			},
 			"ip": schema.StringAttribute{

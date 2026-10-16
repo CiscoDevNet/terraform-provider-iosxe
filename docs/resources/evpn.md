@@ -78,6 +78,7 @@ Optional:
   - Range: `0`-`65535`
 - `l2vni_base` (Number) VxLAN Layer 2 VNI base
   - Range: `4096`-`16777215`
+- `re_originate_route_type5` (Boolean) Re-originate route-type 5
 
 ## Import
 
