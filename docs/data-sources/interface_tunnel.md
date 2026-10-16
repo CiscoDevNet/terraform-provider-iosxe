@@ -128,7 +128,15 @@ Read-Only:
 Read-Only:
 
 - `dest_ipv4` (String) IP address of destination
-- `nbma_ipv4` (String) IP NBMA address
+- `nbma_ipv4s` (Attributes List) NBMA addresses mapped to the destination. IOS-XE requires at least one; to remove the last NBMA address, remove the `ip_nhrp_maps` entry instead. (see [below for nested schema](#nestedatt--ip_nhrp_maps--nbma_ipv4s))
+
+<a id="nestedatt--ip_nhrp_maps--nbma_ipv4s"></a>
+### Nested Schema for `ip_nhrp_maps.nbma_ipv4s`
+
+Read-Only:
+
+- `ipv4` (String) IP NBMA address
+
 
 
 <a id="nestedatt--ip_nhrp_nhs"></a>

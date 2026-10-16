@@ -450,9 +450,17 @@ func (d *InterfaceTunnelDataSource) Schema(ctx context.Context, req datasource.S
 							MarkdownDescription: "IP address of destination",
 							Computed:            true,
 						},
-						"nbma_ipv4": schema.StringAttribute{
-							MarkdownDescription: "IP NBMA address",
+						"nbma_ipv4s": schema.ListNestedAttribute{
+							MarkdownDescription: "NBMA addresses mapped to the destination. IOS-XE requires at least one; to remove the last NBMA address, remove the `ip_nhrp_maps` entry instead.",
 							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"ipv4": schema.StringAttribute{
+										MarkdownDescription: "IP NBMA address",
+										Computed:            true,
+									},
+								},
+							},
 						},
 					},
 				},

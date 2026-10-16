@@ -336,9 +336,16 @@ attributes:
         tf_name: dest_ipv4
         id: true
         example: 10.0.0.1
-      - yang_name: nbma-ipv4/nbma-ipv4
-        tf_name: nbma_ipv4
-        example: 172.16.1.1
+      - yang_name: nbma-ipv4
+        tf_name: nbma_ipv4s
+        type: List
+        mandatory: true
+        description: NBMA addresses mapped to the destination. IOS-XE requires at least one; to remove the last NBMA address, remove the `ip_nhrp_maps` entry instead.
+        attributes:
+          - yang_name: nbma-ipv4
+            tf_name: ipv4
+            id: true
+            example: 172.16.1.1
   - yang_name: ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/redirect
     tf_name: ip_nhrp_redirect
     example: true
