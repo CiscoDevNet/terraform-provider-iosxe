@@ -156,13 +156,15 @@ func (data ServiceTemplate) addToBodyXML(ctx context.Context, config ServiceTemp
 		body = helpers.SetFromXPath(body, data.getXPath()+"/word", data.Name.ValueString())
 	}
 	if len(data.AccessGroups) > 0 {
+		AccessGroupsFragments := make([]string, 0, len(data.AccessGroups))
 		for _, item := range data.AccessGroups {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/access-group-config", cBody.Res())
+			AccessGroupsFragments = append(AccessGroupsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/access-group-config", AccessGroupsFragments)
 	}
 	if !data.InactivityTimer.IsNull() && !data.InactivityTimer.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/inactivity-timer/value", strconv.FormatInt(data.InactivityTimer.ValueInt64(), 10))
@@ -197,13 +199,15 @@ func (data ServiceTemplate) addToBodyXML(ctx context.Context, config ServiceTemp
 		body = helpers.SetFromXPath(body, data.getXPath()+"/description", data.Description.ValueString())
 	}
 	if len(data.InterfaceTemplates) > 0 {
+		InterfaceTemplatesFragments := make([]string, 0, len(data.InterfaceTemplates))
 		for _, item := range data.InterfaceTemplates {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/interface-template", cBody.Res())
+			InterfaceTemplatesFragments = append(InterfaceTemplatesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/interface-template", InterfaceTemplatesFragments)
 	}
 	if !data.TunnelCapwapName.IsNull() && !data.TunnelCapwapName.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/tunnel/type/capwap/name", data.TunnelCapwapName.ValueString())
@@ -236,13 +240,15 @@ func (data ServiceTemplate) addToBodyXML(ctx context.Context, config ServiceTemp
 		body = helpers.SetFromXPath(body, data.getXPath()+"/service-policy/qos/output", data.ServicePolicyQosOutput.ValueString())
 	}
 	if len(data.Tags) > 0 {
+		TagsFragments := make([]string, 0, len(data.Tags))
 		for _, item := range data.Tags {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/tag-config", cBody.Res())
+			TagsFragments = append(TagsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/tag-config", TagsFragments)
 	}
 	if !data.MdnsServicePolicy.IsNull() && !data.MdnsServicePolicy.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/mdns-service-policy", data.MdnsServicePolicy.ValueString())
@@ -260,29 +266,12 @@ func (data *ServiceTemplate) updateFromBodyXML(ctx context.Context, res xmldot.R
 	} else {
 		data.Name = types.StringNull()
 	}
+	AccessGroupsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	AccessGroupsKeys := [...]string{"name"}
+	AccessGroupsItems := helpers.CollectListItemsXML(AccessGroupsParentScope.Raw, "access-group-config", AccessGroupsKeys[:])
 	for i := range data.AccessGroups {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.AccessGroups[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/access-group-config").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		AccessGroupsKeyValues := [...]string{data.AccessGroups[i].Name.ValueString()}
+		r := AccessGroupsItems[helpers.CompositeKey(AccessGroupsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.AccessGroups[i].Name.IsNull() {
 			data.AccessGroups[i].Name = types.StringValue(value.String())
 		} else {
@@ -337,29 +326,12 @@ func (data *ServiceTemplate) updateFromBodyXML(ctx context.Context, res xmldot.R
 	} else {
 		data.Description = types.StringNull()
 	}
+	InterfaceTemplatesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	InterfaceTemplatesKeys := [...]string{"name"}
+	InterfaceTemplatesItems := helpers.CollectListItemsXML(InterfaceTemplatesParentScope.Raw, "interface-template", InterfaceTemplatesKeys[:])
 	for i := range data.InterfaceTemplates {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.InterfaceTemplates[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/interface-template").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		InterfaceTemplatesKeyValues := [...]string{data.InterfaceTemplates[i].Name.ValueString()}
+		r := InterfaceTemplatesItems[helpers.CompositeKey(InterfaceTemplatesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.InterfaceTemplates[i].Name.IsNull() {
 			data.InterfaceTemplates[i].Name = types.StringValue(value.String())
 		} else {
@@ -416,29 +388,12 @@ func (data *ServiceTemplate) updateFromBodyXML(ctx context.Context, res xmldot.R
 	} else {
 		data.ServicePolicyQosOutput = types.StringNull()
 	}
+	TagsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	TagsKeys := [...]string{"name"}
+	TagsItems := helpers.CollectListItemsXML(TagsParentScope.Raw, "tag-config", TagsKeys[:])
 	for i := range data.Tags {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.Tags[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/tag-config").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		TagsKeyValues := [...]string{data.Tags[i].Name.ValueString()}
+		r := TagsItems[helpers.CompositeKey(TagsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.Tags[i].Name.IsNull() {
 			data.Tags[i].Name = types.StringValue(value.String())
 		} else {
