@@ -90,6 +90,7 @@ func (r *BGPPeerPolicyTemplateResource) Schema(ctx context.Context, req resource
 				Required:            true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
+					helpers.UseAsnNormalization(),
 				},
 			},
 			"name": schema.StringAttribute{

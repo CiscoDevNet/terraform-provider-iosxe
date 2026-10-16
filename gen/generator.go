@@ -196,6 +196,7 @@ type YamlConfigAttribute struct {
 	NoDelete           bool                  `yaml:"no_delete"`
 	ReadFilter         string                `yaml:"read_filter"`
 	NormalizeIPv6      bool                  `yaml:"normalize_ipv6"`
+	NormalizeASN       bool                  `yaml:"normalize_asn"`
 	TestTags           []string              `yaml:"test_tags"`
 	Attributes         []YamlConfigAttribute `yaml:"attributes"`
 }
@@ -276,6 +277,16 @@ func SnakeCase(s string) string {
 func HasId(attributes []YamlConfigAttribute) bool {
 	for _, attr := range attributes {
 		if attr.Id || attr.Reference {
+			return true
+		}
+	}
+	return false
+}
+
+// Templating helper function to return true if any id attribute is write-only
+func HasWriteOnlyId(attributes []YamlConfigAttribute) bool {
+	for _, attr := range attributes {
+		if attr.Id && attr.WriteOnly {
 			return true
 		}
 	}
@@ -615,6 +626,7 @@ var functions = template.FuncMap{
 	"camelCase":                CamelCase,
 	"snakeCase":                SnakeCase,
 	"hasId":                    HasId,
+	"hasWriteOnlyId":           HasWriteOnlyId,
 	"hasSensitiveAttr":         HasSensitiveAttr,
 	"add":                      Add,
 	"getImportExcludes":        GetImportExcludes,
