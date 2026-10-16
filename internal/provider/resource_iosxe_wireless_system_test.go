@@ -38,15 +38,16 @@ func TestAccIosxeWirelessSystem(t *testing.T) {
 		t.Skip("skipping test, set environment variable C9800")
 	}
 	var checks []resource.TestCheckFunc
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_system.test", "interface_name", "Vlan10"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccIosxeWirelessSystemConfig_minimum(),
+				Config: testAccIosxeWirelessSystemPrerequisitesConfig + testAccIosxeWirelessSystemConfig_minimum(),
 			},
 			{
-				Config: testAccIosxeWirelessSystemConfig_all(),
+				Config: testAccIosxeWirelessSystemPrerequisitesConfig + testAccIosxeWirelessSystemConfig_all(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
@@ -75,12 +76,23 @@ func iosxeWirelessSystemImportStateIdFunc(resourceName string) resource.ImportSt
 // End of section. //template:end importStateIdFunc
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+const testAccIosxeWirelessSystemPrerequisitesConfig = `
+resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-native:native/interface/Vlan[name=10]"
+	attributes = {
+		"name" = "10"
+	}
+}
+
+`
+
 // End of section. //template:end testPrerequisites
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
 
 func testAccIosxeWirelessSystemConfig_minimum() string {
 	config := `resource "iosxe_wireless_system" "test" {` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -91,6 +103,8 @@ func testAccIosxeWirelessSystemConfig_minimum() string {
 
 func testAccIosxeWirelessSystemConfig_all() string {
 	config := `resource "iosxe_wireless_system" "test" {` + "\n"
+	config += `	interface_name = "Vlan10"` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

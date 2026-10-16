@@ -8,4 +8,9 @@ attributes:
     tf_name: interface_name
     type: String
     example: Vlan10
-    exclude_test: true
+
+test_prerequisites:
+  - path: /Cisco-IOS-XE-native:native/interface/Vlan[name=10]
+    attributes:
+      - name: name
+        value: 10

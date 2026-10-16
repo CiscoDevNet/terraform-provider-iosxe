@@ -14,6 +14,7 @@ This resource can manage the Wireless System configuration.
 
 ```terraform
 resource "iosxe_wireless_system" "example" {
+  interface_name = "Vlan10"
 }
 ```
 

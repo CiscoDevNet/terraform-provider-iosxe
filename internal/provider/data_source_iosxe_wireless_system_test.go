@@ -36,12 +36,13 @@ func TestAccDataSourceIosxeWirelessSystem(t *testing.T) {
 		t.Skip("skipping test, set environment variable C9800")
 	}
 	var checks []resource.TestCheckFunc
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_system.test", "interface_name", "Vlan10"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccDataSourceIosxeWirelessSystemConfig(),
+				Config: testAccDataSourceIosxeWirelessSystemPrerequisitesConfig + testAccDataSourceIosxeWirelessSystemConfig(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -51,6 +52,16 @@ func TestAccDataSourceIosxeWirelessSystem(t *testing.T) {
 // End of section. //template:end testAccDataSource
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+const testAccDataSourceIosxeWirelessSystemPrerequisitesConfig = `
+resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-native:native/interface/Vlan[name=10]"
+	attributes = {
+		"name" = "10"
+	}
+}
+
+`
+
 // End of section. //template:end testPrerequisites
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSourceConfig
@@ -58,6 +69,8 @@ func TestAccDataSourceIosxeWirelessSystem(t *testing.T) {
 func testAccDataSourceIosxeWirelessSystemConfig() string {
 	config := `resource "iosxe_wireless_system" "test" {` + "\n"
 	config += `	delete_mode = "attributes"` + "\n"
+	config += `	interface_name = "Vlan10"` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `
