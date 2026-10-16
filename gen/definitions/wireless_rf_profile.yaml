@@ -1,0 +1,160 @@
+---
+name: Wireless RF Profile
+path: /Cisco-IOS-XE-wireless-rf-cfg:rf-cfg-data/rf-profiles/rf-profile[name=%s]
+no_delete_attributes: true
+doc_category: Wireless
+attributes:
+  - yang_name: name
+    tf_name: name
+    example: S2-RF-5GHz-Test
+    type: String
+  - yang_name: band
+    tf_name: band
+    type: String
+    enum_values: [dot11-2-dot-4-ghz-band, dot11-5-ghz-band, dot11-6-ghz-band]
+    example: dot11-5-ghz-band
+  - yang_name: status
+    tf_name: status
+    type: Bool
+    example: true
+  - yang_name: description
+    tf_name: description
+    type: String
+    example: 5GHz RF Profile
+  - yang_name: data-rate-1m
+    tf_name: data_rate_1m
+    type: String
+    enum_values: [apf-tx-rate-unsupported, apf-tx-rate-supported, apf-tx-rate-basic, apf-tx-rate-not-applicable]
+    example: apf-tx-rate-basic
+  - yang_name: data-rate-2m
+    tf_name: data_rate_2m
+    type: String
+    enum_values: [apf-tx-rate-unsupported, apf-tx-rate-supported, apf-tx-rate-basic, apf-tx-rate-not-applicable]
+    example: apf-tx-rate-basic
+  - yang_name: data-rate-5-5m
+    tf_name: data_rate_5_5m
+    type: String
+    enum_values: [apf-tx-rate-unsupported, apf-tx-rate-supported, apf-tx-rate-basic, apf-tx-rate-not-applicable]
+    example: apf-tx-rate-basic
+  - yang_name: data-rate-11m
+    tf_name: data_rate_11m
+    type: String
+    enum_values: [apf-tx-rate-unsupported, apf-tx-rate-supported, apf-tx-rate-basic, apf-tx-rate-not-applicable]
+    example: apf-tx-rate-basic
+  - yang_name: data-rate-6m
+    tf_name: data_rate_6m
+    type: String
+    enum_values: [apf-tx-rate-unsupported, apf-tx-rate-supported, apf-tx-rate-basic, apf-tx-rate-not-applicable]
+    example: apf-tx-rate-basic
+  - yang_name: data-rate-9m
+    tf_name: data_rate_9m
+    type: String
+    enum_values: [apf-tx-rate-unsupported, apf-tx-rate-supported, apf-tx-rate-basic, apf-tx-rate-not-applicable]
+    example: apf-tx-rate-supported
+  - yang_name: data-rate-12m
+    tf_name: data_rate_12m
+    type: String
+    enum_values: [apf-tx-rate-unsupported, apf-tx-rate-supported, apf-tx-rate-basic, apf-tx-rate-not-applicable]
+    example: apf-tx-rate-basic
+  - yang_name: data-rate-18m
+    tf_name: data_rate_18m
+    type: String
+    enum_values: [apf-tx-rate-unsupported, apf-tx-rate-supported, apf-tx-rate-basic, apf-tx-rate-not-applicable]
+    example: apf-tx-rate-supported
+  - yang_name: data-rate-24m
+    tf_name: data_rate_24m
+    type: String
+    enum_values: [apf-tx-rate-unsupported, apf-tx-rate-supported, apf-tx-rate-basic, apf-tx-rate-not-applicable]
+    example: apf-tx-rate-basic
+  - yang_name: data-rate-36m
+    tf_name: data_rate_36m
+    type: String
+    enum_values: [apf-tx-rate-unsupported, apf-tx-rate-supported, apf-tx-rate-basic, apf-tx-rate-not-applicable]
+    example: apf-tx-rate-supported
+  - yang_name: data-rate-48m
+    tf_name: data_rate_48m
+    type: String
+    enum_values: [apf-tx-rate-unsupported, apf-tx-rate-supported, apf-tx-rate-basic, apf-tx-rate-not-applicable]
+    example: apf-tx-rate-supported
+  - yang_name: data-rate-54m
+    tf_name: data_rate_54m
+    type: String
+    enum_values: [apf-tx-rate-unsupported, apf-tx-rate-supported, apf-tx-rate-basic, apf-tx-rate-not-applicable]
+    example: apf-tx-rate-supported
+  - yang_name: band-select-client-rssi
+    tf_name: band_select_client_rssi
+    type: Int64
+    example: -70
+  - yang_name: band-select-cycle-count
+    tf_name: band_select_cycle_count
+    type: Int64
+    example: 3
+  - yang_name: band-select-cycle-threshold
+    tf_name: band_select_cycle_threshold
+    type: Int64
+    example: 300
+  - yang_name: band-select-age-out-dual-band
+    tf_name: band_select_expire_dual_band
+    type: Int64
+    example: 80
+  - yang_name: band-select-age-out-suppression
+    tf_name: band_select_expire_suppression
+    type: Int64
+    example: 30
+  - yang_name: rf-dca-allowed-channels/rf-dca-allowed-channel
+    tf_name: dca_allowed_channels
+    type: List
+    attributes:
+      - yang_name: channel
+        tf_name: channel
+        id: true
+        type: Int64
+        example: 36
+  - yang_name: coverage-data-packet-rssi-threshold
+    tf_name: coverage_data_rssi_threshold
+    type: Int64
+    example: -75
+  - yang_name: coverage-voice-packet-rssi-threshold
+    tf_name: coverage_voice_rssi_threshold
+    type: Int64
+    example: -75
+  - yang_name: min-num-clients
+    tf_name: coverage_level_global
+    type: Int64
+    example: 5
+  - yang_name: load-balancing-window
+    tf_name: load_balancing_window
+    type: Int64
+    example: 7
+  - yang_name: load-balancing-denial-count
+    tf_name: load_balancing_denial
+    type: Int64
+    example: 5
+  - yang_name: max-radio-clients
+    tf_name: max_clients
+    type: Int64
+    example: 100
+  - yang_name: tx-power-v1-threshold
+    tf_name: tx_power_v1_threshold
+    type: Int64
+    example: -65
+  - yang_name: tx-power-max
+    tf_name: tx_power_max
+    type: Int64
+    example: 30
+  - yang_name: tx-power-min
+    tf_name: tx_power_min
+    type: Int64
+    example: 7
+  - yang_name: trap-threshold-clients
+    tf_name: trap_threshold_clients
+    type: Int64
+    example: 20
+  - yang_name: trap-threshold-interference
+    tf_name: trap_threshold_interference
+    type: Int64
+    example: 15
+  - yang_name: trap-threshold-noise
+    tf_name: trap_threshold_noise
+    type: Int64
+    example: -60
