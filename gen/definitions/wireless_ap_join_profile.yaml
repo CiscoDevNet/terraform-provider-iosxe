@@ -30,6 +30,7 @@ attributes:
     example: CiscoPass123!
   - yang_name: user-mgmt/password-type
     tf_name: mgmtuser_password_type
+    write_only: true
     example: clear
   - yang_name: user-mgmt/secret
     tf_name: mgmtuser_secret
@@ -38,6 +39,7 @@ attributes:
     example: CiscoSecret123!
   - yang_name: user-mgmt/secret-type
     tf_name: mgmtuser_secret_type
+    write_only: true
     example: clear
   - yang_name: ntp-server-info/ntp-address
     tf_name: ntp_ip
@@ -121,6 +123,7 @@ attributes:
     example: Dot1xPass123!
   - yang_name: login-credentials/dot1x-password-type
     tf_name: dot1x_password_type
+    write_only: true
     example: clear
   - yang_name: hyperlocation/hyperlocation-enable
     tf_name: hyperlocation

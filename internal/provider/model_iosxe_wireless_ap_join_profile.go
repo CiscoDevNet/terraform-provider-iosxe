@@ -459,16 +459,6 @@ func (data *WirelessAPJoinProfile) updateFromBodyXML(ctx context.Context, res xm
 	} else {
 		data.MgmtuserUsername = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/user-mgmt/password-type"); value.Exists() && !data.MgmtuserPasswordType.IsNull() {
-		data.MgmtuserPasswordType = types.StringValue(value.String())
-	} else {
-		data.MgmtuserPasswordType = types.StringNull()
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/user-mgmt/secret-type"); value.Exists() && !data.MgmtuserSecretType.IsNull() {
-		data.MgmtuserSecretType = types.StringValue(value.String())
-	} else {
-		data.MgmtuserSecretType = types.StringNull()
-	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ntp-server-info/ntp-address"); value.Exists() && !data.NtpIp.IsNull() {
 		data.NtpIp = types.StringValue(value.String())
 	} else {
@@ -607,11 +597,6 @@ func (data *WirelessAPJoinProfile) updateFromBodyXML(ctx context.Context, res xm
 		data.Dot1xUsername = types.StringValue(value.String())
 	} else {
 		data.Dot1xUsername = types.StringNull()
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/login-credentials/dot1x-password-type"); value.Exists() && !data.Dot1xPasswordType.IsNull() {
-		data.Dot1xPasswordType = types.StringValue(value.String())
-	} else {
-		data.Dot1xPasswordType = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/hyperlocation/hyperlocation-enable"); !data.Hyperlocation.IsNull() {
 		if value.Exists() {
