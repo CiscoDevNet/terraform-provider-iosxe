@@ -2,6 +2,7 @@
 name: Wireless AP Join Profile
 path: /Cisco-IOS-XE-wireless-site-cfg:site-cfg-data/ap-cfg-profiles/ap-cfg-profile[profile-name=%s]
 no_delete_attributes: true
+test_tags: [C9800]
 doc_category: Wireless
 attributes:
   - yang_name: profile-name

@@ -22,6 +22,7 @@ package provider
 // Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"fmt"
+	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -33,6 +34,9 @@ import (
 // Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
 func TestAccIosxeWirelessAPJoinProfile(t *testing.T) {
+	if os.Getenv("C9800") == "" {
+		t.Skip("skipping test, set environment variable C9800")
+	}
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "name", "S3-AP-JOIN-1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "description", "S3 AP Join Profile Test"))
