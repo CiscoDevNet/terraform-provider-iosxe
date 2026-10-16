@@ -26,6 +26,7 @@ attributes:
   - yang_name: user-mgmt/password
     tf_name: mgmtuser_password
     write_only: true
+    sensitive: true
     example: CiscoPass123!
   - yang_name: user-mgmt/password-type
     tf_name: mgmtuser_password_type
@@ -33,6 +34,7 @@ attributes:
   - yang_name: user-mgmt/secret
     tf_name: mgmtuser_secret
     write_only: true
+    sensitive: true
     example: CiscoSecret123!
   - yang_name: user-mgmt/secret-type
     tf_name: mgmtuser_secret_type
@@ -115,6 +117,7 @@ attributes:
   - yang_name: login-credentials/dot1x-password
     tf_name: dot1x_password
     write_only: true
+    sensitive: true
     example: Dot1xPass123!
   - yang_name: login-credentials/dot1x-password-type
     tf_name: dot1x_password_type

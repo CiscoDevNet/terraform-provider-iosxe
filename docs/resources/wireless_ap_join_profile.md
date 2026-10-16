@@ -88,6 +88,8 @@ resource "iosxe_wireless_ap_join_profile" "example" {
 
 ### Optional
 
+> **NOTE**: [Write-only arguments](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments) are supported in Terraform 1.11 and later.
+
 - `apphost` (Boolean) Enable IOX application hosting
 - `association_limit` (Number) Maximum clients per AP configuration
   - Range: `0`-`1200`
@@ -124,21 +126,27 @@ resource "iosxe_wireless_ap_join_profile" "example" {
 - `device` (String) A device name from the provider configuration.
 - `dot1x_eap_type` (String) Dot1x EAP auth type
   - Choices: `dot1x-eap-fast`, `dot1x-eap-none`, `dot1x-eap-peap`, `dot1x-eap-tls`
-- `dot1x_password` (String) AP dot1x authentication password
+- `dot1x_password` (String, Sensitive) AP dot1x authentication password
 - `dot1x_password_type` (String) AP dot1x authentication password type
   - Choices: `aes`, `clear`, `clear-to-aes`, `clear-to-ike-aes`, `clear-to-md5`, `clear-to-sha`, `clear-to-type7`, `ike-aes`, `md5`, `sha`, `type7`
+- `dot1x_password_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
+- `dot1x_password_wo_version` (Number) The write-only version of the attribute.
 - `dot1x_username` (String) AP dot1x authentication username
 - `hyperlocation` (Boolean) enable hyperlocation
 - `ip_dhcp_fallback` (Boolean) Represents AP fallback to DHCP, if AP fails to join via static IP address
 - `lag` (Boolean) boolean to indicate whether ap lag enabled is used
 - `led` (Boolean) True if LED state is enabled otherwise disabled.
 - `mesh_profile` (String) Specifies the mesh profile name for the AP
-- `mgmtuser_password` (String) AP user management password. Following criteria should be met if wireless password policy is configured. - Default passwords (cisco, Cisco, C!sco, ci$co, ..) are not allowed. - Reverse default passwords are not allowed. - At least one lower case letter is mandatory. - At least one upper case letter is mandatory. - At least one digit is mandatory. - Special characters are allowed, but not mandatory. - More than two sequential chars or digits (e.g., abc, 123) are not allowed. - More than two repeated chars or digits (e.g., 111, aaa) are not allowed. - Minimum password length is 8. Restriction: AP management password of cleartext type must contain ASCII characters only. This rule is not implemented using constraints.
+- `mgmtuser_password` (String, Sensitive) AP user management password. Following criteria should be met if wireless password policy is configured. - Default passwords (cisco, Cisco, C!sco, ci$co, ..) are not allowed. - Reverse default passwords are not allowed. - At least one lower case letter is mandatory. - At least one upper case letter is mandatory. - At least one digit is mandatory. - Special characters are allowed, but not mandatory. - More than two sequential chars or digits (e.g., abc, 123) are not allowed. - More than two repeated chars or digits (e.g., 111, aaa) are not allowed. - Minimum password length is 8. Restriction: AP management password of cleartext type must contain ASCII characters only. This rule is not implemented using constraints.
 - `mgmtuser_password_type` (String) AP user management password type
   - Choices: `aes`, `clear`, `clear-to-aes`, `clear-to-ike-aes`, `clear-to-md5`, `clear-to-sha`, `clear-to-type7`, `ike-aes`, `md5`, `sha`, `type7`
-- `mgmtuser_secret` (String) AP user management secret
+- `mgmtuser_password_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
+- `mgmtuser_password_wo_version` (Number) The write-only version of the attribute.
+- `mgmtuser_secret` (String, Sensitive) AP user management secret
 - `mgmtuser_secret_type` (String) AP user management secret type
   - Choices: `aes`, `clear`, `clear-to-aes`, `clear-to-ike-aes`, `clear-to-md5`, `clear-to-sha`, `clear-to-type7`, `ike-aes`, `md5`, `sha`, `type7`
+- `mgmtuser_secret_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
+- `mgmtuser_secret_wo_version` (Number) The write-only version of the attribute.
 - `mgmtuser_username` (String) AP user management username
 - `ntp_ip` (String) NTP server IP address
 - `rogue_detection_enable` (Boolean) rogue AP detection

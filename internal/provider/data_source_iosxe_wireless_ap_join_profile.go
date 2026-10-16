@@ -95,6 +95,7 @@ func (d *WirelessAPJoinProfileDataSource) Schema(ctx context.Context, req dataso
 			"mgmtuser_password": schema.StringAttribute{
 				MarkdownDescription: "AP user management password. Following criteria should be met if wireless password policy is configured. - Default passwords (cisco, Cisco, C!sco, ci$co, ..) are not allowed. - Reverse default passwords are not allowed. - At least one lower case letter is mandatory. - At least one upper case letter is mandatory. - At least one digit is mandatory. - Special characters are allowed, but not mandatory. - More than two sequential chars or digits (e.g., abc, 123) are not allowed. - More than two repeated chars or digits (e.g., 111, aaa) are not allowed. - Minimum password length is 8. Restriction: AP management password of cleartext type must contain ASCII characters only. This rule is not implemented using constraints.",
 				Computed:            true,
+				Sensitive:           true,
 			},
 			"mgmtuser_password_type": schema.StringAttribute{
 				MarkdownDescription: "AP user management password type",
@@ -103,6 +104,7 @@ func (d *WirelessAPJoinProfileDataSource) Schema(ctx context.Context, req dataso
 			"mgmtuser_secret": schema.StringAttribute{
 				MarkdownDescription: "AP user management secret",
 				Computed:            true,
+				Sensitive:           true,
 			},
 			"mgmtuser_secret_type": schema.StringAttribute{
 				MarkdownDescription: "AP user management secret type",
@@ -211,6 +213,7 @@ func (d *WirelessAPJoinProfileDataSource) Schema(ctx context.Context, req dataso
 			"dot1x_password": schema.StringAttribute{
 				MarkdownDescription: "AP dot1x authentication password",
 				Computed:            true,
+				Sensitive:           true,
 			},
 			"dot1x_password_type": schema.StringAttribute{
 				MarkdownDescription: "AP dot1x authentication password type",

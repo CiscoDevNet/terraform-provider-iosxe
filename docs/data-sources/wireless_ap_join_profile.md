@@ -55,7 +55,7 @@ data "iosxe_wireless_ap_join_profile" "example" {
 - `country` (String) AP country code
 - `description` (String) Description for the ap configuration profile
 - `dot1x_eap_type` (String) Dot1x EAP auth type
-- `dot1x_password` (String) AP dot1x authentication password
+- `dot1x_password` (String, Sensitive) AP dot1x authentication password
 - `dot1x_password_type` (String) AP dot1x authentication password type
 - `dot1x_username` (String) AP dot1x authentication username
 - `hyperlocation` (Boolean) enable hyperlocation
@@ -64,9 +64,9 @@ data "iosxe_wireless_ap_join_profile" "example" {
 - `lag` (Boolean) boolean to indicate whether ap lag enabled is used
 - `led` (Boolean) True if LED state is enabled otherwise disabled.
 - `mesh_profile` (String) Specifies the mesh profile name for the AP
-- `mgmtuser_password` (String) AP user management password. Following criteria should be met if wireless password policy is configured. - Default passwords (cisco, Cisco, C!sco, ci$co, ..) are not allowed. - Reverse default passwords are not allowed. - At least one lower case letter is mandatory. - At least one upper case letter is mandatory. - At least one digit is mandatory. - Special characters are allowed, but not mandatory. - More than two sequential chars or digits (e.g., abc, 123) are not allowed. - More than two repeated chars or digits (e.g., 111, aaa) are not allowed. - Minimum password length is 8. Restriction: AP management password of cleartext type must contain ASCII characters only. This rule is not implemented using constraints.
+- `mgmtuser_password` (String, Sensitive) AP user management password. Following criteria should be met if wireless password policy is configured. - Default passwords (cisco, Cisco, C!sco, ci$co, ..) are not allowed. - Reverse default passwords are not allowed. - At least one lower case letter is mandatory. - At least one upper case letter is mandatory. - At least one digit is mandatory. - Special characters are allowed, but not mandatory. - More than two sequential chars or digits (e.g., abc, 123) are not allowed. - More than two repeated chars or digits (e.g., 111, aaa) are not allowed. - Minimum password length is 8. Restriction: AP management password of cleartext type must contain ASCII characters only. This rule is not implemented using constraints.
 - `mgmtuser_password_type` (String) AP user management password type
-- `mgmtuser_secret` (String) AP user management secret
+- `mgmtuser_secret` (String, Sensitive) AP user management secret
 - `mgmtuser_secret_type` (String) AP user management secret type
 - `mgmtuser_username` (String) AP user management username
 - `ntp_ip` (String) NTP server IP address

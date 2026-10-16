@@ -46,8 +46,12 @@ type WirelessAPJoinProfile struct {
 	Ssh                                             types.Bool   `tfsdk:"ssh"`
 	MgmtuserUsername                                types.String `tfsdk:"mgmtuser_username"`
 	MgmtuserPassword                                types.String `tfsdk:"mgmtuser_password"`
+	MgmtuserPasswordWO                              types.String `tfsdk:"mgmtuser_password_wo"`
+	MgmtuserPasswordWOVersion                       types.Int64  `tfsdk:"mgmtuser_password_wo_version"`
 	MgmtuserPasswordType                            types.String `tfsdk:"mgmtuser_password_type"`
 	MgmtuserSecret                                  types.String `tfsdk:"mgmtuser_secret"`
+	MgmtuserSecretWO                                types.String `tfsdk:"mgmtuser_secret_wo"`
+	MgmtuserSecretWOVersion                         types.Int64  `tfsdk:"mgmtuser_secret_wo_version"`
 	MgmtuserSecretType                              types.String `tfsdk:"mgmtuser_secret_type"`
 	NtpIp                                           types.String `tfsdk:"ntp_ip"`
 	SyslogHost                                      types.String `tfsdk:"syslog_host"`
@@ -75,6 +79,8 @@ type WirelessAPJoinProfile struct {
 	Dot1xEapType                                    types.String `tfsdk:"dot1x_eap_type"`
 	Dot1xUsername                                   types.String `tfsdk:"dot1x_username"`
 	Dot1xPassword                                   types.String `tfsdk:"dot1x_password"`
+	Dot1xPasswordWO                                 types.String `tfsdk:"dot1x_password_wo"`
+	Dot1xPasswordWOVersion                          types.Int64  `tfsdk:"dot1x_password_wo_version"`
 	Dot1xPasswordType                               types.String `tfsdk:"dot1x_password_type"`
 	Hyperlocation                                   types.Bool   `tfsdk:"hyperlocation"`
 	IpDhcpFallback                                  types.Bool   `tfsdk:"ip_dhcp_fallback"`
@@ -230,13 +236,21 @@ func (data WirelessAPJoinProfile) addToBodyXML(ctx context.Context, config Wirel
 		body = helpers.SetFromXPath(body, data.getXPath()+"/user-mgmt/username", data.MgmtuserUsername.ValueString())
 	}
 	if !data.MgmtuserPassword.IsNull() && !data.MgmtuserPassword.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/user-mgmt/password", data.MgmtuserPassword.ValueString())
+		if !config.MgmtuserPasswordWO.IsNull() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/user-mgmt/password", config.MgmtuserPasswordWO.ValueString())
+		} else {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/user-mgmt/password", data.MgmtuserPassword.ValueString())
+		}
 	}
 	if !data.MgmtuserPasswordType.IsNull() && !data.MgmtuserPasswordType.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/user-mgmt/password-type", data.MgmtuserPasswordType.ValueString())
 	}
 	if !data.MgmtuserSecret.IsNull() && !data.MgmtuserSecret.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/user-mgmt/secret", data.MgmtuserSecret.ValueString())
+		if !config.MgmtuserSecretWO.IsNull() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/user-mgmt/secret", config.MgmtuserSecretWO.ValueString())
+		} else {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/user-mgmt/secret", data.MgmtuserSecret.ValueString())
+		}
 	}
 	if !data.MgmtuserSecretType.IsNull() && !data.MgmtuserSecretType.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/user-mgmt/secret-type", data.MgmtuserSecretType.ValueString())
@@ -317,7 +331,11 @@ func (data WirelessAPJoinProfile) addToBodyXML(ctx context.Context, config Wirel
 		body = helpers.SetFromXPath(body, data.getXPath()+"/login-credentials/dot1x-username", data.Dot1xUsername.ValueString())
 	}
 	if !data.Dot1xPassword.IsNull() && !data.Dot1xPassword.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/login-credentials/dot1x-password", data.Dot1xPassword.ValueString())
+		if !config.Dot1xPasswordWO.IsNull() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/login-credentials/dot1x-password", config.Dot1xPasswordWO.ValueString())
+		} else {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/login-credentials/dot1x-password", data.Dot1xPassword.ValueString())
+		}
 	}
 	if !data.Dot1xPasswordType.IsNull() && !data.Dot1xPasswordType.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/login-credentials/dot1x-password-type", data.Dot1xPasswordType.ValueString())
