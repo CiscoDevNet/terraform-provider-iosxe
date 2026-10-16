@@ -20,9 +20,9 @@ resource "iosxe_wireless_ap_join_profile" "example" {
   country                                               = "us"
   ssh                                                   = true
   mgmtuser_username                                     = "apadmin"
-  mgmtuser_password                                     = "CiscoPass123!"
+  mgmtuser_password                                     = "Wl4nMgmtPw7x!"
   mgmtuser_password_type                                = "clear"
-  mgmtuser_secret                                       = "CiscoSecret123!"
+  mgmtuser_secret                                       = "Wl4nMgmtSc9q!"
   mgmtuser_secret_type                                  = "clear"
   ntp_ip                                                = "10.10.10.5"
   syslog_host                                           = "10.10.10.6"
@@ -49,7 +49,7 @@ resource "iosxe_wireless_ap_join_profile" "example" {
   cdp                                                   = true
   dot1x_eap_type                                        = "dot1x-eap-tls"
   dot1x_username                                        = "apuser"
-  dot1x_password                                        = "Dot1xPass123!"
+  dot1x_password                                        = "Dt1xPw8kzQ!"
   dot1x_password_type                                   = "clear"
   hyperlocation                                         = false
   ip_dhcp_fallback                                      = true
