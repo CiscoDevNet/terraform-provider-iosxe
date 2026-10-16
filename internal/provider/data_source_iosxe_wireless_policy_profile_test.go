@@ -45,15 +45,17 @@ func TestAccDataSourceIosxeWirelessPolicyProfile(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_policy_profile.test", "session_timeout", "3600"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_policy_profile.test", "idle_timeout", "600"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_policy_profile.test", "exclusionlist_timeout", "180"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_policy_profile.test", "static_ip_mobility", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_policy_profile.test", "dhcp_tlv_caching", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_policy_profile.test", "http_tlv_caching", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_policy_profile.test", "static_ip_mobility", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_policy_profile.test", "dhcp_tlv_caching", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_policy_profile.test", "http_tlv_caching", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_policy_profile.test", "ipv4_flow_monitors_input.0.name", "S2-AVC-MON-IN"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_policy_profile.test", "ipv4_flow_monitors_output.0.name", "S2-AVC-MON-OUT"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccDataSourceIosxeWirelessPolicyProfileConfig(),
+				Config: testAccDataSourceIosxeWirelessPolicyProfilePrerequisitesConfig + testAccDataSourceIosxeWirelessPolicyProfileConfig(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -63,6 +65,25 @@ func TestAccDataSourceIosxeWirelessPolicyProfile(t *testing.T) {
 // End of section. //template:end testAccDataSource
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+const testAccDataSourceIosxeWirelessPolicyProfilePrerequisitesConfig = `
+resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:monitor[name=S2-AVC-MON-IN]"
+	attributes = {
+		"name" = "S2-AVC-MON-IN"
+		"record/wireless/avc/basic" = ""
+	}
+}
+
+resource "iosxe_yang" "PreReq1" {
+	path = "/Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:monitor[name=S2-AVC-MON-OUT]"
+	attributes = {
+		"name" = "S2-AVC-MON-OUT"
+		"record/wireless/avc/basic" = ""
+	}
+}
+
+`
+
 // End of section. //template:end testPrerequisites
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSourceConfig
@@ -79,15 +100,16 @@ func testAccDataSourceIosxeWirelessPolicyProfileConfig() string {
 	config += `	session_timeout = 3600` + "\n"
 	config += `	idle_timeout = 600` + "\n"
 	config += `	exclusionlist_timeout = 180` + "\n"
-	config += `	static_ip_mobility = false` + "\n"
-	config += `	dhcp_tlv_caching = false` + "\n"
-	config += `	http_tlv_caching = false` + "\n"
+	config += `	static_ip_mobility = true` + "\n"
+	config += `	dhcp_tlv_caching = true` + "\n"
+	config += `	http_tlv_caching = true` + "\n"
 	config += `	ipv4_flow_monitors_input = [{` + "\n"
+	config += `		name = "S2-AVC-MON-IN"` + "\n"
 	config += `	}]` + "\n"
 	config += `	ipv4_flow_monitors_output = [{` + "\n"
+	config += `		name = "S2-AVC-MON-OUT"` + "\n"
 	config += `	}]` + "\n"
-	config += `	mobility_anchors = [{` + "\n"
-	config += `	}]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `

@@ -59,13 +59,13 @@ attributes:
     exclude_test: true
   - yang_name: static-ip-mobility/is-static-ip-mobility
     tf_name: static_ip_mobility
-    example: false
+    example: true
   - yang_name: wlan-local-profiling/dhcp-tlv-caching
     tf_name: dhcp_tlv_caching
-    example: false
+    example: true
   - yang_name: wlan-local-profiling/http-tlv-caching
     tf_name: http_tlv_caching
-    example: false
+    example: true
   - yang_name: avc-ipv4-fm-ingress-entries/avc-ipv4-fm-ingress-entry
     tf_name: ipv4_flow_monitors_input
     type: List
@@ -73,7 +73,6 @@ attributes:
       - yang_name: name
         id: true
         example: S2-AVC-MON-IN
-        exclude_test: true
   - yang_name: avc-ipv4-fm-egress-entries/avc-ipv4-fm-egress-entry
     tf_name: ipv4_flow_monitors_output
     type: List
@@ -81,10 +80,12 @@ attributes:
       - yang_name: name
         id: true
         example: S2-AVC-MON-OUT
-        exclude_test: true
   - yang_name: guest-mm-db-export-entries/guest-mm-db-export-entry
     tf_name: mobility_anchors
     type: List
+    # Excluded from tests: the controller rejects an anchor unless a mobility
+    # peer is configured, and the mobility YANG model is not loaded here.
+    exclude_test: true
     attributes:
       - yang_name: ip
         id: true
@@ -99,3 +100,17 @@ attributes:
           - export-anchor-tertiary
         example: export-anchor-primary
         exclude_test: true
+
+test_prerequisites:
+  - path: /Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:monitor[name=S2-AVC-MON-IN]
+    attributes:
+      - name: name
+        value: S2-AVC-MON-IN
+      - name: record/wireless/avc/basic
+        value: ""
+  - path: /Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:monitor[name=S2-AVC-MON-OUT]
+    attributes:
+      - name: name
+        value: S2-AVC-MON-OUT
+      - name: record/wireless/avc/basic
+        value: ""

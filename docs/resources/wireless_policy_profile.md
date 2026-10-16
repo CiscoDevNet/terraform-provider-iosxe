@@ -24,19 +24,17 @@ resource "iosxe_wireless_policy_profile" "example" {
   session_timeout       = 3600
   idle_timeout          = 600
   exclusionlist_timeout = 180
-  static_ip_mobility    = false
-  dhcp_tlv_caching      = false
-  http_tlv_caching      = false
+  static_ip_mobility    = true
+  dhcp_tlv_caching      = true
+  http_tlv_caching      = true
   ipv4_flow_monitors_input = [
     {
+      name = "S2-AVC-MON-IN"
     }
   ]
   ipv4_flow_monitors_output = [
     {
-    }
-  ]
-  mobility_anchors = [
-    {
+      name = "S2-AVC-MON-OUT"
     }
   ]
 }

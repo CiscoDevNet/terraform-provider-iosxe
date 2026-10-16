@@ -19,8 +19,20 @@ attributes:
         tf_name: wlan_profile_name
         id: true
         example: S2-WLAN-CORP
-        exclude_test: true
       - yang_name: policy-profile-name
         tf_name: policy_profile_name
         example: S2-PP-CORP
-        exclude_test: true
+
+test_prerequisites:
+  - path: /Cisco-IOS-XE-wireless-wlan-cfg:wlan-cfg-data/wlan-cfg-entries/wlan-cfg-entry[profile-name=S2-WLAN-CORP]
+    attributes:
+      - name: profile-name
+        value: S2-WLAN-CORP
+      - name: wlan-id
+        value: 201
+      - name: apf-vap-id-data/ssid
+        value: S2-WLAN-CORP
+  - path: /Cisco-IOS-XE-wireless-wlan-cfg:wlan-cfg-data/wlan-policies/wlan-policy[policy-profile-name=S2-PP-CORP]
+    attributes:
+      - name: policy-profile-name
+        value: S2-PP-CORP

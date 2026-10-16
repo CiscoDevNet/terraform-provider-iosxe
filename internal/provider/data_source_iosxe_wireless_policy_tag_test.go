@@ -37,12 +37,14 @@ func TestAccDataSourceIosxeWirelessPolicyTag(t *testing.T) {
 	}
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_policy_tag.test", "description", "S2 Corporate campus policy tag"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_policy_tag.test", "wlan_policies.0.wlan_profile_name", "S2-WLAN-CORP"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_policy_tag.test", "wlan_policies.0.policy_profile_name", "S2-PP-CORP"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccDataSourceIosxeWirelessPolicyTagConfig(),
+				Config: testAccDataSourceIosxeWirelessPolicyTagPrerequisitesConfig + testAccDataSourceIosxeWirelessPolicyTagConfig(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -52,6 +54,25 @@ func TestAccDataSourceIosxeWirelessPolicyTag(t *testing.T) {
 // End of section. //template:end testAccDataSource
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+const testAccDataSourceIosxeWirelessPolicyTagPrerequisitesConfig = `
+resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-wireless-wlan-cfg:wlan-cfg-data/wlan-cfg-entries/wlan-cfg-entry[profile-name=S2-WLAN-CORP]"
+	attributes = {
+		"profile-name" = "S2-WLAN-CORP"
+		"wlan-id" = "201"
+		"apf-vap-id-data/ssid" = "S2-WLAN-CORP"
+	}
+}
+
+resource "iosxe_yang" "PreReq1" {
+	path = "/Cisco-IOS-XE-wireless-wlan-cfg:wlan-cfg-data/wlan-policies/wlan-policy[policy-profile-name=S2-PP-CORP]"
+	attributes = {
+		"policy-profile-name" = "S2-PP-CORP"
+	}
+}
+
+`
+
 // End of section. //template:end testPrerequisites
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSourceConfig
@@ -61,7 +82,10 @@ func testAccDataSourceIosxeWirelessPolicyTagConfig() string {
 	config += `	tag_name = "S2-PT-CORP"` + "\n"
 	config += `	description = "S2 Corporate campus policy tag"` + "\n"
 	config += `	wlan_policies = [{` + "\n"
+	config += `		wlan_profile_name = "S2-WLAN-CORP"` + "\n"
+	config += `		policy_profile_name = "S2-PP-CORP"` + "\n"
 	config += `	}]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `
