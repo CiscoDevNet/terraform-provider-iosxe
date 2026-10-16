@@ -3,12 +3,12 @@
 page_title: "iosxe_wireless_site_tag Data Source - terraform-provider-iosxe"
 subcategory: "Wireless"
 description: |-
-  
+  This data source can read the Wireless Site Tag configuration.
 ---
 
 # iosxe_wireless_site_tag (Data Source)
 
-
+This data source can read the Wireless Site Tag configuration.
 
 ## Example Usage
 
@@ -23,7 +23,7 @@ data "iosxe_wireless_site_tag" "example" {
 
 ### Required
 
-- `site_tag_name` (String)
+- `site_tag_name` (String) Each entry represents a conceptual row in cLSiteTagConfigTable and corresponds to an Site Tag in a Elastic Wireless Controller.
 
 ### Optional
 
@@ -31,8 +31,8 @@ data "iosxe_wireless_site_tag" "example" {
 
 ### Read-Only
 
-- `ap_join_profile` (String)
-- `description` (String)
-- `flex_profile` (String)
+- `ap_join_profile` (String) The Ap Join profile which is part of the Site tag
+- `description` (String) Description of the Site Tag
+- `flex_profile` (String) The flex profile which is part of the Site tag
 - `id` (String) The path of the retrieved object.
-- `local_site` (Boolean)
+- `local_site` (Boolean) This parameter is set to enable local site

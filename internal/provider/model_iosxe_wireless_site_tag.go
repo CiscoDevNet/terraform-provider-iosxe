@@ -96,6 +96,21 @@ func (data WirelessSiteTag) toBodyXML(ctx context.Context, config WirelessSiteTa
 // addToBodyXML adds this object to an existing body instead of starting from an empty one. Bulk
 // resources use this to serialize all of their items into a single NETCONF payload.
 func (data WirelessSiteTag) addToBodyXML(ctx context.Context, config WirelessSiteTag, body netconf.Body) netconf.Body {
+	if !data.SiteTagName.IsNull() && !data.SiteTagName.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/site-tag-name", data.SiteTagName.ValueString())
+	}
+	if !data.Description.IsNull() && !data.Description.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/description", data.Description.ValueString())
+	}
+	if !data.ApJoinProfile.IsNull() && !data.ApJoinProfile.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/ap-join-profile", data.ApJoinProfile.ValueString())
+	}
+	if !data.FlexProfile.IsNull() && !data.FlexProfile.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/flex-profile", data.FlexProfile.ValueString())
+	}
+	if !data.LocalSite.IsNull() && !data.LocalSite.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/is-local-site", data.LocalSite.ValueBool())
+	}
 	return body
 }
 
@@ -104,6 +119,33 @@ func (data WirelessSiteTag) addToBodyXML(ctx context.Context, config WirelessSit
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *WirelessSiteTag) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/site-tag-name"); value.Exists() && !data.SiteTagName.IsNull() {
+		data.SiteTagName = types.StringValue(value.String())
+	} else {
+		data.SiteTagName = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/description"); value.Exists() && !data.Description.IsNull() {
+		data.Description = types.StringValue(value.String())
+	} else {
+		data.Description = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ap-join-profile"); value.Exists() && !data.ApJoinProfile.IsNull() {
+		data.ApJoinProfile = types.StringValue(value.String())
+	} else {
+		data.ApJoinProfile = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/flex-profile"); value.Exists() && !data.FlexProfile.IsNull() {
+		data.FlexProfile = types.StringValue(value.String())
+	} else {
+		data.FlexProfile = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/is-local-site"); !data.LocalSite.IsNull() {
+		if value.Exists() {
+			data.LocalSite = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.LocalSite = types.BoolNull()
+	}
 }
 
 // End of section. //template:end updateFromBodyXML
@@ -111,6 +153,20 @@ func (data *WirelessSiteTag) updateFromBodyXML(ctx context.Context, res xmldot.R
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *WirelessSiteTag) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/description"); value.Exists() {
+		data.Description = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ap-join-profile"); value.Exists() {
+		data.ApJoinProfile = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/flex-profile"); value.Exists() {
+		data.FlexProfile = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/is-local-site"); value.Exists() {
+		data.LocalSite = types.BoolValue(value.Bool())
+	} else {
+		data.LocalSite = types.BoolNull()
+	}
 }
 
 // End of section. //template:end fromBodyXML
@@ -118,6 +174,20 @@ func (data *WirelessSiteTag) fromBodyXML(ctx context.Context, res xmldot.Result)
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
 
 func (data *WirelessSiteTagData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/description"); value.Exists() {
+		data.Description = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ap-join-profile"); value.Exists() {
+		data.ApJoinProfile = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/flex-profile"); value.Exists() {
+		data.FlexProfile = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/is-local-site"); value.Exists() {
+		data.LocalSite = types.BoolValue(value.Bool())
+	} else {
+		data.LocalSite = types.BoolNull()
+	}
 }
 
 // End of section. //template:end fromBodyDataXML
@@ -126,6 +196,18 @@ func (data *WirelessSiteTagData) fromBodyXML(ctx context.Context, res xmldot.Res
 
 func (data *WirelessSiteTag) addDeletedItemsXML(ctx context.Context, state WirelessSiteTag, body string) string {
 	b := netconf.NewBody(body)
+	if !state.LocalSite.IsNull() && data.LocalSite.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/is-local-site")
+	}
+	if !state.FlexProfile.IsNull() && data.FlexProfile.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/flex-profile")
+	}
+	if !state.ApJoinProfile.IsNull() && data.ApJoinProfile.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ap-join-profile")
+	}
+	if !state.Description.IsNull() && data.Description.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/description")
+	}
 
 	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
@@ -137,6 +219,18 @@ func (data *WirelessSiteTag) addDeletedItemsXML(ctx context.Context, state Wirel
 
 func (data *WirelessSiteTag) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	if !data.LocalSite.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/is-local-site")
+	}
+	if !data.FlexProfile.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/flex-profile")
+	}
+	if !data.ApJoinProfile.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ap-join-profile")
+	}
+	if !data.Description.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/description")
+	}
 
 	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()

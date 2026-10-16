@@ -57,7 +57,7 @@ func (d *WirelessSiteTagDataSource) Metadata(_ context.Context, req datasource.M
 func (d *WirelessSiteTagDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "",
+		MarkdownDescription: "This data source can read the Wireless Site Tag configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -69,23 +69,23 @@ func (d *WirelessSiteTagDataSource) Schema(ctx context.Context, req datasource.S
 				Computed:            true,
 			},
 			"site_tag_name": schema.StringAttribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Each entry represents a conceptual row in cLSiteTagConfigTable and corresponds to an Site Tag in a Elastic Wireless Controller.",
 				Required:            true,
 			},
 			"description": schema.StringAttribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Description of the Site Tag",
 				Computed:            true,
 			},
 			"ap_join_profile": schema.StringAttribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "The Ap Join profile which is part of the Site tag",
 				Computed:            true,
 			},
 			"flex_profile": schema.StringAttribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "The flex profile which is part of the Site tag",
 				Computed:            true,
 			},
 			"local_site": schema.BoolAttribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "This parameter is set to enable local site",
 				Computed:            true,
 			},
 		},

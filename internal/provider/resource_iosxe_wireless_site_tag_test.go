@@ -22,6 +22,7 @@ package provider
 // Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"fmt"
+	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -33,7 +34,15 @@ import (
 // Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
 func TestAccIosxeWirelessSiteTag(t *testing.T) {
+	if os.Getenv("C9800") == "" {
+		t.Skip("skipping test, set environment variable C9800")
+	}
 	var checks []resource.TestCheckFunc
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_site_tag.test", "site_tag_name", "ST1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_site_tag.test", "description", "My Site Tag"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_site_tag.test", "ap_join_profile", "default-ap-profile"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_site_tag.test", "flex_profile", "default-flex-profile"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_site_tag.test", "local_site", "false"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -90,6 +99,11 @@ func testAccIosxeWirelessSiteTagConfig_minimum() string {
 
 func testAccIosxeWirelessSiteTagConfig_all() string {
 	config := `resource "iosxe_wireless_site_tag" "test" {` + "\n"
+	config += `	site_tag_name = "ST1"` + "\n"
+	config += `	description = "My Site Tag"` + "\n"
+	config += `	ap_join_profile = "default-ap-profile"` + "\n"
+	config += `	flex_profile = "default-flex-profile"` + "\n"
+	config += `	local_site = false` + "\n"
 	config += `}` + "\n"
 	return config
 }

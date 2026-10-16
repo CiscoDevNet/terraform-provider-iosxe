@@ -2,7 +2,7 @@
 name: Wireless Site Tag
 path: /Cisco-IOS-XE-wireless-site-cfg:site-cfg-data/site-tag-configs/site-tag-config[site-tag-name=%s]
 no_delete_attributes: true
-no_augment_config: true
+test_tags: [C9800]
 doc_category: Wireless
 attributes:
   - yang_name: site-tag-name
