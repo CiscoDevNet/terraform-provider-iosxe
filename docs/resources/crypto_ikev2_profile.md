@@ -27,14 +27,23 @@ resource "iosxe_crypto_ikev2_profile" "example" {
       mask    = "255.255.255.0"
     }
   ]
-  match_identity_remote_keys = ["key1"]
-  keyring_local              = "test"
-  ivrf                       = "VRF1"
-  dpd_interval               = 10
-  dpd_retry                  = 2
-  dpd_query                  = "periodic"
-  lifetime                   = 28800
-  config_exchange_request    = false
+  match_identity_remote_keys    = ["key1"]
+  keyring_local                 = "test"
+  ivrf                          = "VRF1"
+  dpd_interval                  = 10
+  dpd_retry                     = 2
+  dpd_query                     = "periodic"
+  lifetime                      = 28800
+  authentication_local_rsa_sig  = true
+  authentication_remote_rsa_sig = true
+  match_certificate_maps        = ["map1"]
+  pki_trustpoints = [
+    {
+      name = "myCA"
+      uses = "sign"
+    }
+  ]
+  config_exchange_request = false
 }
 ```
 
@@ -47,8 +56,12 @@ resource "iosxe_crypto_ikev2_profile" "example" {
 
 ### Optional
 
+- `authentication_local_ecdsa_sig` (Boolean) ECDSA Signature
 - `authentication_local_pre_share` (Boolean) Pre-Shared Key
+- `authentication_local_rsa_sig` (Boolean) Rivest-Shamir-Adleman Signature
+- `authentication_remote_ecdsa_sig` (Boolean) ECDSA Signature
 - `authentication_remote_pre_share` (Boolean) Pre-Shared Key
+- `authentication_remote_rsa_sig` (Boolean) Rivest-Shamir-Adleman Signature
 - `config_exchange_request` (Boolean) enable config-exchange request
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
@@ -67,12 +80,14 @@ resource "iosxe_crypto_ikev2_profile" "example" {
 - `match_address_local_interface_loopback_legacy` (Number) Loopback interface. Use this for IOS-XE versions before `17.18.1`.
   - Range: `0`-`2147483647`
 - `match_address_local_ip` (String)
+- `match_certificate_maps` (List of String) Peer certificate attributes
 - `match_fvrf` (String)
 - `match_fvrf_any` (Boolean) Any fvrf
 - `match_identity_remote_ipv4_addresses` (Attributes List) (see [below for nested schema](#nestedatt--match_identity_remote_ipv4_addresses))
 - `match_identity_remote_ipv6_prefixes` (List of String)
 - `match_identity_remote_keys` (List of String) key-id opaque string
 - `match_inbound_only` (Boolean) Match the profile for incoming connections only
+- `pki_trustpoints` (Attributes List) PKI certificate authority trustpoints (see [below for nested schema](#nestedatt--pki_trustpoints))
 
 ### Read-Only
 
@@ -96,6 +111,19 @@ Required:
 Optional:
 
 - `mask` (String)
+
+
+<a id="nestedatt--pki_trustpoints"></a>
+### Nested Schema for `pki_trustpoints`
+
+Required:
+
+- `name` (String)
+
+Optional:
+
+- `uses` (String) Trustpoint usage: sign or verify
+  - Choices: `sign`, `verify`
 
 ## Import
 
