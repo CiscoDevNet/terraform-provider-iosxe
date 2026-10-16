@@ -195,6 +195,7 @@ func (data PolicyMapEvent) addToBodyXML(ctx context.Context, config PolicyMapEve
 		body = helpers.SetFromXPath(body, data.getXPath()+"/match-type", data.MatchType.ValueString())
 	}
 	if len(data.ClassNumbers) > 0 {
+		ClassNumbersFragments := make([]string, 0, len(data.ClassNumbers))
 		for _, item := range data.ClassNumbers {
 			cBody := netconf.Body{}
 			if !item.Number.IsNull() && !item.Number.IsUnknown() {
@@ -207,6 +208,7 @@ func (data PolicyMapEvent) addToBodyXML(ctx context.Context, config PolicyMapEve
 				cBody = helpers.SetFromXPath(cBody, "execution-type", item.ExecutionType.ValueString())
 			}
 			if len(item.ActionNumbers) > 0 {
+				ActionNumbersFragments := make([]string, 0, len(item.ActionNumbers))
 				for _, citem := range item.ActionNumbers {
 					ccBody := netconf.Body{}
 					if !citem.Number.IsNull() && !citem.Number.IsUnknown() {
@@ -379,11 +381,13 @@ func (data PolicyMapEvent) addToBodyXML(ctx context.Context, config PolicyMapEve
 					if !citem.MapAttributeToServiceTable.IsNull() && !citem.MapAttributeToServiceTable.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "map/attribute-to-service/table", citem.MapAttributeToServiceTable.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "action-number", ccBody.Res())
+					ActionNumbersFragments = append(ActionNumbersFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "action-number", ActionNumbersFragments)
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/class-number", cBody.Res())
+			ClassNumbersFragments = append(ClassNumbersFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/class-number", ClassNumbersFragments)
 	}
 	return body
 }
@@ -403,29 +407,12 @@ func (data *PolicyMapEvent) updateFromBodyXML(ctx context.Context, res xmldot.Re
 	} else {
 		data.MatchType = types.StringNull()
 	}
+	ClassNumbersParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	ClassNumbersKeys := [...]string{"number"}
+	ClassNumbersItems := helpers.CollectListItemsXML(ClassNumbersParentScope.Raw, "class-number", ClassNumbersKeys[:])
 	for i := range data.ClassNumbers {
-		keys := [...]string{"number"}
-		keyValues := [...]string{strconv.FormatInt(data.ClassNumbers[i].Number.ValueInt64(), 10)}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/class-number").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		ClassNumbersKeyValues := [...]string{strconv.FormatInt(data.ClassNumbers[i].Number.ValueInt64(), 10)}
+		r := ClassNumbersItems[helpers.CompositeKey(ClassNumbersKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "number"); value.Exists() && !data.ClassNumbers[i].Number.IsNull() {
 			data.ClassNumbers[i].Number = types.Int64Value(value.Int())
 		} else {
@@ -441,29 +428,11 @@ func (data *PolicyMapEvent) updateFromBodyXML(ctx context.Context, res xmldot.Re
 		} else {
 			data.ClassNumbers[i].ExecutionType = types.StringNull()
 		}
+		ActionNumbersKeys := [...]string{"number"}
+		ActionNumbersItems := helpers.CollectListItemsXML(r.Raw, "action-number", ActionNumbersKeys[:])
 		for ci := range data.ClassNumbers[i].ActionNumbers {
-			keys := [...]string{"number"}
-			keyValues := [...]string{strconv.FormatInt(data.ClassNumbers[i].ActionNumbers[ci].Number.ValueInt64(), 10)}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "action-number").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			ActionNumbersKeyValues := [...]string{strconv.FormatInt(data.ClassNumbers[i].ActionNumbers[ci].Number.ValueInt64(), 10)}
+			cr := ActionNumbersItems[helpers.CompositeKey(ActionNumbersKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "number"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].Number.IsNull() {
 				data.ClassNumbers[i].ActionNumbers[ci].Number = types.Int64Value(value.Int())
 			} else {

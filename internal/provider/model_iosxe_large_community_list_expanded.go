@@ -103,6 +103,7 @@ func (data LargeCommunityListExpanded) addToBodyXML(ctx context.Context, config 
 		body = helpers.SetFromXPath(body, data.getXPath()+"/name", data.Name.ValueString())
 	}
 	if len(data.Entries) > 0 {
+		EntriesFragments := make([]string, 0, len(data.Entries))
 		for _, item := range data.Entries {
 			cBody := netconf.Body{}
 			if !item.Action.IsNull() && !item.Action.IsUnknown() {
@@ -111,8 +112,9 @@ func (data LargeCommunityListExpanded) addToBodyXML(ctx context.Context, config 
 			if !item.Regex.IsNull() && !item.Regex.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "string", item.Regex.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/extended-grouping/extended_grouping", cBody.Res())
+			EntriesFragments = append(EntriesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/extended-grouping/extended_grouping", EntriesFragments)
 	}
 	return body
 }
@@ -127,29 +129,12 @@ func (data *LargeCommunityListExpanded) updateFromBodyXML(ctx context.Context, r
 	} else {
 		data.Name = types.StringNull()
 	}
+	EntriesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	EntriesKeys := [...]string{"action", "string"}
+	EntriesItems := helpers.CollectListItemsXML(EntriesParentScope.Raw, "extended-grouping/extended_grouping", EntriesKeys[:])
 	for i := range data.Entries {
-		keys := [...]string{"action", "string"}
-		keyValues := [...]string{data.Entries[i].Action.ValueString(), data.Entries[i].Regex.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/extended-grouping/extended_grouping").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		EntriesKeyValues := [...]string{data.Entries[i].Action.ValueString(), data.Entries[i].Regex.ValueString()}
+		r := EntriesItems[helpers.CompositeKey(EntriesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "action"); value.Exists() && !data.Entries[i].Action.IsNull() {
 			data.Entries[i].Action = types.StringValue(value.String())
 		} else {

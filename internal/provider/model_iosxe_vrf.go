@@ -311,6 +311,7 @@ func (data VRF) addToBodyXML(ctx context.Context, config VRF, body netconf.Body)
 		body = helpers.SetFromXPath(body, data.getXPath()+"/vpn/id", data.VpnId.ValueString())
 	}
 	if len(data.RouteTargetImport) > 0 {
+		RouteTargetImportFragments := make([]string, 0, len(data.RouteTargetImport))
 		for _, item := range data.RouteTargetImport {
 			cBody := netconf.Body{}
 			if !item.Value.IsNull() && !item.Value.IsUnknown() {
@@ -323,10 +324,12 @@ func (data VRF) addToBodyXML(ctx context.Context, config VRF, body netconf.Body)
 					cBody = helpers.RemoveFromXPath(cBody, "stitching")
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/route-target/import", cBody.Res())
+			RouteTargetImportFragments = append(RouteTargetImportFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/route-target/import", RouteTargetImportFragments)
 	}
 	if len(data.RouteTargetExport) > 0 {
+		RouteTargetExportFragments := make([]string, 0, len(data.RouteTargetExport))
 		for _, item := range data.RouteTargetExport {
 			cBody := netconf.Body{}
 			if !item.Value.IsNull() && !item.Value.IsUnknown() {
@@ -339,19 +342,23 @@ func (data VRF) addToBodyXML(ctx context.Context, config VRF, body netconf.Body)
 					cBody = helpers.RemoveFromXPath(cBody, "stitching")
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/route-target/export", cBody.Res())
+			RouteTargetExportFragments = append(RouteTargetExportFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/route-target/export", RouteTargetExportFragments)
 	}
 	if len(data.Ipv4RouteTargetImport) > 0 {
+		Ipv4RouteTargetImportFragments := make([]string, 0, len(data.Ipv4RouteTargetImport))
 		for _, item := range data.Ipv4RouteTargetImport {
 			cBody := netconf.Body{}
 			if !item.Value.IsNull() && !item.Value.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "asn-ip", item.Value.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/address-family/ipv4/route-target/import-route-target/without-stitching", cBody.Res())
+			Ipv4RouteTargetImportFragments = append(Ipv4RouteTargetImportFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/address-family/ipv4/route-target/import-route-target/without-stitching", Ipv4RouteTargetImportFragments)
 	}
 	if len(data.Ipv4RouteTargetImportStitching) > 0 {
+		Ipv4RouteTargetImportStitchingFragments := make([]string, 0, len(data.Ipv4RouteTargetImportStitching))
 		for _, item := range data.Ipv4RouteTargetImportStitching {
 			cBody := netconf.Body{}
 			if !item.Value.IsNull() && !item.Value.IsUnknown() {
@@ -364,19 +371,23 @@ func (data VRF) addToBodyXML(ctx context.Context, config VRF, body netconf.Body)
 					cBody = helpers.RemoveFromXPath(cBody, "stitching")
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/address-family/ipv4/route-target/import-route-target/with-stitching", cBody.Res())
+			Ipv4RouteTargetImportStitchingFragments = append(Ipv4RouteTargetImportStitchingFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/address-family/ipv4/route-target/import-route-target/with-stitching", Ipv4RouteTargetImportStitchingFragments)
 	}
 	if len(data.Ipv4RouteTargetExport) > 0 {
+		Ipv4RouteTargetExportFragments := make([]string, 0, len(data.Ipv4RouteTargetExport))
 		for _, item := range data.Ipv4RouteTargetExport {
 			cBody := netconf.Body{}
 			if !item.Value.IsNull() && !item.Value.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "asn-ip", item.Value.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/address-family/ipv4/route-target/export-route-target/without-stitching", cBody.Res())
+			Ipv4RouteTargetExportFragments = append(Ipv4RouteTargetExportFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/address-family/ipv4/route-target/export-route-target/without-stitching", Ipv4RouteTargetExportFragments)
 	}
 	if len(data.Ipv4RouteTargetExportStitching) > 0 {
+		Ipv4RouteTargetExportStitchingFragments := make([]string, 0, len(data.Ipv4RouteTargetExportStitching))
 		for _, item := range data.Ipv4RouteTargetExportStitching {
 			cBody := netconf.Body{}
 			if !item.Value.IsNull() && !item.Value.IsUnknown() {
@@ -389,10 +400,12 @@ func (data VRF) addToBodyXML(ctx context.Context, config VRF, body netconf.Body)
 					cBody = helpers.RemoveFromXPath(cBody, "stitching")
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/address-family/ipv4/route-target/export-route-target/with-stitching", cBody.Res())
+			Ipv4RouteTargetExportStitchingFragments = append(Ipv4RouteTargetExportStitchingFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/address-family/ipv4/route-target/export-route-target/with-stitching", Ipv4RouteTargetExportStitchingFragments)
 	}
 	if len(data.Ipv4RouteReplicate) > 0 {
+		Ipv4RouteReplicateFragments := make([]string, 0, len(data.Ipv4RouteReplicate))
 		for _, item := range data.Ipv4RouteReplicate {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
@@ -408,8 +421,9 @@ func (data VRF) addToBodyXML(ctx context.Context, config VRF, body netconf.Body)
 			if !item.UnicastAllRouteMap.IsNull() && !item.UnicastAllRouteMap.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "unicast/source-proto-config/all/route-map", item.UnicastAllRouteMap.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/address-family/ipv4/route-replicate/from/vrf", cBody.Res())
+			Ipv4RouteReplicateFragments = append(Ipv4RouteReplicateFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/address-family/ipv4/route-replicate/from/vrf", Ipv4RouteReplicateFragments)
 	}
 	if !data.Ipv4ImportMap.IsNull() && !data.Ipv4ImportMap.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/address-family/ipv4/import/map", data.Ipv4ImportMap.ValueString())
@@ -418,15 +432,18 @@ func (data VRF) addToBodyXML(ctx context.Context, config VRF, body netconf.Body)
 		body = helpers.SetFromXPath(body, data.getXPath()+"/address-family/ipv4/export/map", data.Ipv4ExportMap.ValueString())
 	}
 	if len(data.Ipv6RouteTargetImport) > 0 {
+		Ipv6RouteTargetImportFragments := make([]string, 0, len(data.Ipv6RouteTargetImport))
 		for _, item := range data.Ipv6RouteTargetImport {
 			cBody := netconf.Body{}
 			if !item.Value.IsNull() && !item.Value.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "asn-ip", item.Value.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/address-family/ipv6/route-target/import-route-target/without-stitching", cBody.Res())
+			Ipv6RouteTargetImportFragments = append(Ipv6RouteTargetImportFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/address-family/ipv6/route-target/import-route-target/without-stitching", Ipv6RouteTargetImportFragments)
 	}
 	if len(data.Ipv6RouteTargetImportStitching) > 0 {
+		Ipv6RouteTargetImportStitchingFragments := make([]string, 0, len(data.Ipv6RouteTargetImportStitching))
 		for _, item := range data.Ipv6RouteTargetImportStitching {
 			cBody := netconf.Body{}
 			if !item.Value.IsNull() && !item.Value.IsUnknown() {
@@ -439,19 +456,23 @@ func (data VRF) addToBodyXML(ctx context.Context, config VRF, body netconf.Body)
 					cBody = helpers.RemoveFromXPath(cBody, "stitching")
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/address-family/ipv6/route-target/import-route-target/with-stitching", cBody.Res())
+			Ipv6RouteTargetImportStitchingFragments = append(Ipv6RouteTargetImportStitchingFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/address-family/ipv6/route-target/import-route-target/with-stitching", Ipv6RouteTargetImportStitchingFragments)
 	}
 	if len(data.Ipv6RouteTargetExport) > 0 {
+		Ipv6RouteTargetExportFragments := make([]string, 0, len(data.Ipv6RouteTargetExport))
 		for _, item := range data.Ipv6RouteTargetExport {
 			cBody := netconf.Body{}
 			if !item.Value.IsNull() && !item.Value.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "asn-ip", item.Value.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/address-family/ipv6/route-target/export-route-target/without-stitching", cBody.Res())
+			Ipv6RouteTargetExportFragments = append(Ipv6RouteTargetExportFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/address-family/ipv6/route-target/export-route-target/without-stitching", Ipv6RouteTargetExportFragments)
 	}
 	if len(data.Ipv6RouteTargetExportStitching) > 0 {
+		Ipv6RouteTargetExportStitchingFragments := make([]string, 0, len(data.Ipv6RouteTargetExportStitching))
 		for _, item := range data.Ipv6RouteTargetExportStitching {
 			cBody := netconf.Body{}
 			if !item.Value.IsNull() && !item.Value.IsUnknown() {
@@ -464,8 +485,9 @@ func (data VRF) addToBodyXML(ctx context.Context, config VRF, body netconf.Body)
 					cBody = helpers.RemoveFromXPath(cBody, "stitching")
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/address-family/ipv6/route-target/export-route-target/with-stitching", cBody.Res())
+			Ipv6RouteTargetExportStitchingFragments = append(Ipv6RouteTargetExportStitchingFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/address-family/ipv6/route-target/export-route-target/with-stitching", Ipv6RouteTargetExportStitchingFragments)
 	}
 	if !data.Ipv6ImportMap.IsNull() && !data.Ipv6ImportMap.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/address-family/ipv6/import/map", data.Ipv6ImportMap.ValueString())
@@ -474,12 +496,14 @@ func (data VRF) addToBodyXML(ctx context.Context, config VRF, body netconf.Body)
 		body = helpers.SetFromXPath(body, data.getXPath()+"/address-family/ipv6/export/map", data.Ipv6ExportMap.ValueString())
 	}
 	if len(data.Vnids) > 0 {
+		VnidsFragments := make([]string, 0, len(data.Vnids))
 		for _, item := range data.Vnids {
 			cBody := netconf.Body{}
 			if !item.Vnid.IsNull() && !item.Vnid.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "vnid-value", strconv.FormatInt(item.Vnid.ValueInt64(), 10))
 			}
 			if len(item.EvpnInstanceVnis) > 0 {
+				EvpnInstanceVnisFragments := make([]string, 0, len(item.EvpnInstanceVnis))
 				for _, citem := range item.EvpnInstanceVnis {
 					ccBody := netconf.Body{}
 					if !citem.Vni.IsNull() && !citem.Vni.IsUnknown() {
@@ -488,11 +512,13 @@ func (data VRF) addToBodyXML(ctx context.Context, config VRF, body netconf.Body)
 					if !citem.CoreVlan.IsNull() && !citem.CoreVlan.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "core-vlan", strconv.FormatInt(citem.CoreVlan.ValueInt64(), 10))
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "evpn-instance/vni/vni-num", ccBody.Res())
+					EvpnInstanceVnisFragments = append(EvpnInstanceVnisFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "evpn-instance/vni/vni-num", EvpnInstanceVnisFragments)
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/vnid", cBody.Res())
+			VnidsFragments = append(VnidsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/vnid", VnidsFragments)
 	}
 	if !data.Ipv4MdtDefaultAddress.IsNull() && !data.Ipv4MdtDefaultAddress.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/address-family/ipv4/mdt/default/address", data.Ipv4MdtDefaultAddress.ValueString())
@@ -540,6 +566,7 @@ func (data VRF) addToBodyXML(ctx context.Context, config VRF, body netconf.Body)
 		}
 	}
 	if len(data.Ipv4MdtDataMulticast) > 0 {
+		Ipv4MdtDataMulticastFragments := make([]string, 0, len(data.Ipv4MdtDataMulticast))
 		for _, item := range data.Ipv4MdtDataMulticast {
 			cBody := netconf.Body{}
 			if !item.Address.IsNull() && !item.Address.IsUnknown() {
@@ -551,8 +578,9 @@ func (data VRF) addToBodyXML(ctx context.Context, config VRF, body netconf.Body)
 			if !item.List.IsNull() && !item.List.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "list", item.List.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/address-family/ipv4/mdt/data/multicast", cBody.Res())
+			Ipv4MdtDataMulticastFragments = append(Ipv4MdtDataMulticastFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/address-family/ipv4/mdt/data/multicast", Ipv4MdtDataMulticastFragments)
 	}
 	if !data.Ipv4MdtDataThreshold.IsNull() && !data.Ipv4MdtDataThreshold.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/address-family/ipv4/mdt/data/threshold", strconv.FormatInt(data.Ipv4MdtDataThreshold.ValueInt64(), 10))
@@ -636,29 +664,12 @@ func (data *VRF) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.VpnId = types.StringNull()
 	}
+	RouteTargetImportParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	RouteTargetImportKeys := [...]string{"asn-ip"}
+	RouteTargetImportItems := helpers.CollectListItemsXML(RouteTargetImportParentScope.Raw, "route-target/import", RouteTargetImportKeys[:])
 	for i := range data.RouteTargetImport {
-		keys := [...]string{"asn-ip"}
-		keyValues := [...]string{data.RouteTargetImport[i].Value.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/route-target/import").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		RouteTargetImportKeyValues := [...]string{data.RouteTargetImport[i].Value.ValueString()}
+		r := RouteTargetImportItems[helpers.CompositeKey(RouteTargetImportKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "asn-ip"); value.Exists() && !data.RouteTargetImport[i].Value.IsNull() {
 			data.RouteTargetImport[i].Value = types.StringValue(value.String())
 		} else {
@@ -674,29 +685,12 @@ func (data *VRF) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 			data.RouteTargetImport[i].Stitching = types.BoolNull()
 		}
 	}
+	RouteTargetExportParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	RouteTargetExportKeys := [...]string{"asn-ip"}
+	RouteTargetExportItems := helpers.CollectListItemsXML(RouteTargetExportParentScope.Raw, "route-target/export", RouteTargetExportKeys[:])
 	for i := range data.RouteTargetExport {
-		keys := [...]string{"asn-ip"}
-		keyValues := [...]string{data.RouteTargetExport[i].Value.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/route-target/export").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		RouteTargetExportKeyValues := [...]string{data.RouteTargetExport[i].Value.ValueString()}
+		r := RouteTargetExportItems[helpers.CompositeKey(RouteTargetExportKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "asn-ip"); value.Exists() && !data.RouteTargetExport[i].Value.IsNull() {
 			data.RouteTargetExport[i].Value = types.StringValue(value.String())
 		} else {
@@ -712,58 +706,24 @@ func (data *VRF) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 			data.RouteTargetExport[i].Stitching = types.BoolNull()
 		}
 	}
+	Ipv4RouteTargetImportParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	Ipv4RouteTargetImportKeys := [...]string{"asn-ip"}
+	Ipv4RouteTargetImportItems := helpers.CollectListItemsXML(Ipv4RouteTargetImportParentScope.Raw, "address-family/ipv4/route-target/import-route-target/without-stitching", Ipv4RouteTargetImportKeys[:])
 	for i := range data.Ipv4RouteTargetImport {
-		keys := [...]string{"asn-ip"}
-		keyValues := [...]string{data.Ipv4RouteTargetImport[i].Value.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/route-target/import-route-target/without-stitching").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		Ipv4RouteTargetImportKeyValues := [...]string{data.Ipv4RouteTargetImport[i].Value.ValueString()}
+		r := Ipv4RouteTargetImportItems[helpers.CompositeKey(Ipv4RouteTargetImportKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "asn-ip"); value.Exists() && !data.Ipv4RouteTargetImport[i].Value.IsNull() {
 			data.Ipv4RouteTargetImport[i].Value = types.StringValue(value.String())
 		} else {
 			data.Ipv4RouteTargetImport[i].Value = types.StringNull()
 		}
 	}
+	Ipv4RouteTargetImportStitchingParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	Ipv4RouteTargetImportStitchingKeys := [...]string{"asn-ip"}
+	Ipv4RouteTargetImportStitchingItems := helpers.CollectListItemsXML(Ipv4RouteTargetImportStitchingParentScope.Raw, "address-family/ipv4/route-target/import-route-target/with-stitching", Ipv4RouteTargetImportStitchingKeys[:])
 	for i := range data.Ipv4RouteTargetImportStitching {
-		keys := [...]string{"asn-ip"}
-		keyValues := [...]string{data.Ipv4RouteTargetImportStitching[i].Value.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/route-target/import-route-target/with-stitching").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		Ipv4RouteTargetImportStitchingKeyValues := [...]string{data.Ipv4RouteTargetImportStitching[i].Value.ValueString()}
+		r := Ipv4RouteTargetImportStitchingItems[helpers.CompositeKey(Ipv4RouteTargetImportStitchingKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "asn-ip"); value.Exists() && !data.Ipv4RouteTargetImportStitching[i].Value.IsNull() {
 			data.Ipv4RouteTargetImportStitching[i].Value = types.StringValue(value.String())
 		} else {
@@ -779,58 +739,24 @@ func (data *VRF) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 			data.Ipv4RouteTargetImportStitching[i].Stitching = types.BoolNull()
 		}
 	}
+	Ipv4RouteTargetExportParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	Ipv4RouteTargetExportKeys := [...]string{"asn-ip"}
+	Ipv4RouteTargetExportItems := helpers.CollectListItemsXML(Ipv4RouteTargetExportParentScope.Raw, "address-family/ipv4/route-target/export-route-target/without-stitching", Ipv4RouteTargetExportKeys[:])
 	for i := range data.Ipv4RouteTargetExport {
-		keys := [...]string{"asn-ip"}
-		keyValues := [...]string{data.Ipv4RouteTargetExport[i].Value.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/route-target/export-route-target/without-stitching").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		Ipv4RouteTargetExportKeyValues := [...]string{data.Ipv4RouteTargetExport[i].Value.ValueString()}
+		r := Ipv4RouteTargetExportItems[helpers.CompositeKey(Ipv4RouteTargetExportKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "asn-ip"); value.Exists() && !data.Ipv4RouteTargetExport[i].Value.IsNull() {
 			data.Ipv4RouteTargetExport[i].Value = types.StringValue(value.String())
 		} else {
 			data.Ipv4RouteTargetExport[i].Value = types.StringNull()
 		}
 	}
+	Ipv4RouteTargetExportStitchingParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	Ipv4RouteTargetExportStitchingKeys := [...]string{"asn-ip"}
+	Ipv4RouteTargetExportStitchingItems := helpers.CollectListItemsXML(Ipv4RouteTargetExportStitchingParentScope.Raw, "address-family/ipv4/route-target/export-route-target/with-stitching", Ipv4RouteTargetExportStitchingKeys[:])
 	for i := range data.Ipv4RouteTargetExportStitching {
-		keys := [...]string{"asn-ip"}
-		keyValues := [...]string{data.Ipv4RouteTargetExportStitching[i].Value.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/route-target/export-route-target/with-stitching").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		Ipv4RouteTargetExportStitchingKeyValues := [...]string{data.Ipv4RouteTargetExportStitching[i].Value.ValueString()}
+		r := Ipv4RouteTargetExportStitchingItems[helpers.CompositeKey(Ipv4RouteTargetExportStitchingKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "asn-ip"); value.Exists() && !data.Ipv4RouteTargetExportStitching[i].Value.IsNull() {
 			data.Ipv4RouteTargetExportStitching[i].Value = types.StringValue(value.String())
 		} else {
@@ -846,29 +772,12 @@ func (data *VRF) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 			data.Ipv4RouteTargetExportStitching[i].Stitching = types.BoolNull()
 		}
 	}
+	Ipv4RouteReplicateParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	Ipv4RouteReplicateKeys := [...]string{"name"}
+	Ipv4RouteReplicateItems := helpers.CollectListItemsXML(Ipv4RouteReplicateParentScope.Raw, "address-family/ipv4/route-replicate/from/vrf", Ipv4RouteReplicateKeys[:])
 	for i := range data.Ipv4RouteReplicate {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.Ipv4RouteReplicate[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/route-replicate/from/vrf").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		Ipv4RouteReplicateKeyValues := [...]string{data.Ipv4RouteReplicate[i].Name.ValueString()}
+		r := Ipv4RouteReplicateItems[helpers.CompositeKey(Ipv4RouteReplicateKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.Ipv4RouteReplicate[i].Name.IsNull() {
 			data.Ipv4RouteReplicate[i].Name = types.StringValue(value.String())
 		} else {
@@ -899,58 +808,24 @@ func (data *VRF) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.Ipv4ExportMap = types.StringNull()
 	}
+	Ipv6RouteTargetImportParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	Ipv6RouteTargetImportKeys := [...]string{"asn-ip"}
+	Ipv6RouteTargetImportItems := helpers.CollectListItemsXML(Ipv6RouteTargetImportParentScope.Raw, "address-family/ipv6/route-target/import-route-target/without-stitching", Ipv6RouteTargetImportKeys[:])
 	for i := range data.Ipv6RouteTargetImport {
-		keys := [...]string{"asn-ip"}
-		keyValues := [...]string{data.Ipv6RouteTargetImport[i].Value.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv6/route-target/import-route-target/without-stitching").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		Ipv6RouteTargetImportKeyValues := [...]string{data.Ipv6RouteTargetImport[i].Value.ValueString()}
+		r := Ipv6RouteTargetImportItems[helpers.CompositeKey(Ipv6RouteTargetImportKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "asn-ip"); value.Exists() && !data.Ipv6RouteTargetImport[i].Value.IsNull() {
 			data.Ipv6RouteTargetImport[i].Value = types.StringValue(value.String())
 		} else {
 			data.Ipv6RouteTargetImport[i].Value = types.StringNull()
 		}
 	}
+	Ipv6RouteTargetImportStitchingParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	Ipv6RouteTargetImportStitchingKeys := [...]string{"asn-ip"}
+	Ipv6RouteTargetImportStitchingItems := helpers.CollectListItemsXML(Ipv6RouteTargetImportStitchingParentScope.Raw, "address-family/ipv6/route-target/import-route-target/with-stitching", Ipv6RouteTargetImportStitchingKeys[:])
 	for i := range data.Ipv6RouteTargetImportStitching {
-		keys := [...]string{"asn-ip"}
-		keyValues := [...]string{data.Ipv6RouteTargetImportStitching[i].Value.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv6/route-target/import-route-target/with-stitching").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		Ipv6RouteTargetImportStitchingKeyValues := [...]string{data.Ipv6RouteTargetImportStitching[i].Value.ValueString()}
+		r := Ipv6RouteTargetImportStitchingItems[helpers.CompositeKey(Ipv6RouteTargetImportStitchingKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "asn-ip"); value.Exists() && !data.Ipv6RouteTargetImportStitching[i].Value.IsNull() {
 			data.Ipv6RouteTargetImportStitching[i].Value = types.StringValue(value.String())
 		} else {
@@ -966,58 +841,24 @@ func (data *VRF) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 			data.Ipv6RouteTargetImportStitching[i].Stitching = types.BoolNull()
 		}
 	}
+	Ipv6RouteTargetExportParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	Ipv6RouteTargetExportKeys := [...]string{"asn-ip"}
+	Ipv6RouteTargetExportItems := helpers.CollectListItemsXML(Ipv6RouteTargetExportParentScope.Raw, "address-family/ipv6/route-target/export-route-target/without-stitching", Ipv6RouteTargetExportKeys[:])
 	for i := range data.Ipv6RouteTargetExport {
-		keys := [...]string{"asn-ip"}
-		keyValues := [...]string{data.Ipv6RouteTargetExport[i].Value.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv6/route-target/export-route-target/without-stitching").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		Ipv6RouteTargetExportKeyValues := [...]string{data.Ipv6RouteTargetExport[i].Value.ValueString()}
+		r := Ipv6RouteTargetExportItems[helpers.CompositeKey(Ipv6RouteTargetExportKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "asn-ip"); value.Exists() && !data.Ipv6RouteTargetExport[i].Value.IsNull() {
 			data.Ipv6RouteTargetExport[i].Value = types.StringValue(value.String())
 		} else {
 			data.Ipv6RouteTargetExport[i].Value = types.StringNull()
 		}
 	}
+	Ipv6RouteTargetExportStitchingParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	Ipv6RouteTargetExportStitchingKeys := [...]string{"asn-ip"}
+	Ipv6RouteTargetExportStitchingItems := helpers.CollectListItemsXML(Ipv6RouteTargetExportStitchingParentScope.Raw, "address-family/ipv6/route-target/export-route-target/with-stitching", Ipv6RouteTargetExportStitchingKeys[:])
 	for i := range data.Ipv6RouteTargetExportStitching {
-		keys := [...]string{"asn-ip"}
-		keyValues := [...]string{data.Ipv6RouteTargetExportStitching[i].Value.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv6/route-target/export-route-target/with-stitching").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		Ipv6RouteTargetExportStitchingKeyValues := [...]string{data.Ipv6RouteTargetExportStitching[i].Value.ValueString()}
+		r := Ipv6RouteTargetExportStitchingItems[helpers.CompositeKey(Ipv6RouteTargetExportStitchingKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "asn-ip"); value.Exists() && !data.Ipv6RouteTargetExportStitching[i].Value.IsNull() {
 			data.Ipv6RouteTargetExportStitching[i].Value = types.StringValue(value.String())
 		} else {
@@ -1043,57 +884,22 @@ func (data *VRF) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.Ipv6ExportMap = types.StringNull()
 	}
+	VnidsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	VnidsKeys := [...]string{"vnid-value"}
+	VnidsItems := helpers.CollectListItemsXML(VnidsParentScope.Raw, "vnid", VnidsKeys[:])
 	for i := range data.Vnids {
-		keys := [...]string{"vnid-value"}
-		keyValues := [...]string{strconv.FormatInt(data.Vnids[i].Vnid.ValueInt64(), 10)}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/vnid").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		VnidsKeyValues := [...]string{strconv.FormatInt(data.Vnids[i].Vnid.ValueInt64(), 10)}
+		r := VnidsItems[helpers.CompositeKey(VnidsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "vnid-value"); value.Exists() && !data.Vnids[i].Vnid.IsNull() {
 			data.Vnids[i].Vnid = types.Int64Value(value.Int())
 		} else {
 			data.Vnids[i].Vnid = types.Int64Null()
 		}
+		EvpnInstanceVnisKeys := [...]string{"vni-num"}
+		EvpnInstanceVnisItems := helpers.CollectListItemsXML(r.Raw, "evpn-instance/vni/vni-num", EvpnInstanceVnisKeys[:])
 		for ci := range data.Vnids[i].EvpnInstanceVnis {
-			keys := [...]string{"vni-num"}
-			keyValues := [...]string{strconv.FormatInt(data.Vnids[i].EvpnInstanceVnis[ci].Vni.ValueInt64(), 10)}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "evpn-instance/vni/vni-num").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			EvpnInstanceVnisKeyValues := [...]string{strconv.FormatInt(data.Vnids[i].EvpnInstanceVnis[ci].Vni.ValueInt64(), 10)}
+			cr := EvpnInstanceVnisItems[helpers.CompositeKey(EvpnInstanceVnisKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "vni-num"); value.Exists() && !data.Vnids[i].EvpnInstanceVnis[ci].Vni.IsNull() {
 				data.Vnids[i].EvpnInstanceVnis[ci].Vni = types.Int64Value(value.Int())
 			} else {
@@ -1165,29 +971,12 @@ func (data *VRF) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.Ipv4MdtOverlayUseBgpSptOnly = types.BoolNull()
 	}
+	Ipv4MdtDataMulticastParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	Ipv4MdtDataMulticastKeys := [...]string{"address", "wildcard"}
+	Ipv4MdtDataMulticastItems := helpers.CollectListItemsXML(Ipv4MdtDataMulticastParentScope.Raw, "address-family/ipv4/mdt/data/multicast", Ipv4MdtDataMulticastKeys[:])
 	for i := range data.Ipv4MdtDataMulticast {
-		keys := [...]string{"address", "wildcard"}
-		keyValues := [...]string{data.Ipv4MdtDataMulticast[i].Address.ValueString(), data.Ipv4MdtDataMulticast[i].Wildcard.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/mdt/data/multicast").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		Ipv4MdtDataMulticastKeyValues := [...]string{data.Ipv4MdtDataMulticast[i].Address.ValueString(), data.Ipv4MdtDataMulticast[i].Wildcard.ValueString()}
+		r := Ipv4MdtDataMulticastItems[helpers.CompositeKey(Ipv4MdtDataMulticastKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "address"); value.Exists() && !data.Ipv4MdtDataMulticast[i].Address.IsNull() {
 			data.Ipv4MdtDataMulticast[i].Address = types.StringValue(value.String())
 		} else {
