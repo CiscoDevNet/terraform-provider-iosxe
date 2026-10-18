@@ -1,0 +1,38 @@
+---
+name: Wireless Site Tag
+path: /Cisco-IOS-XE-wireless-site-cfg:site-cfg-data/site-tag-configs/site-tag-config[site-tag-name=%s]
+no_delete_attributes: true
+test_tags: [C9800]
+doc_category: Wireless
+attributes:
+  - yang_name: site-tag-name
+    tf_name: site_tag_name
+    type: String
+    id: true
+    example: S1-SITE-TAG
+  - yang_name: description
+    tf_name: description
+    type: String
+    example: My Site Tag
+  - yang_name: ap-join-profile
+    tf_name: ap_join_profile
+    type: String
+    example: S1-AP-JOIN
+  - yang_name: is-local-site
+    tf_name: local_site
+    type: Bool
+    example: false
+  - yang_name: flex-profile
+    tf_name: flex_profile
+    type: String
+    example: S1-FLEX
+
+test_prerequisites:
+  - path: /Cisco-IOS-XE-wireless-site-cfg:site-cfg-data/ap-cfg-profiles/ap-cfg-profile[profile-name=S1-AP-JOIN]
+    attributes:
+      - name: profile-name
+        value: S1-AP-JOIN
+  - path: /Cisco-IOS-XE-wireless-flex-cfg:flex-cfg-data/flex-policy-entries/flex-policy-entry[policy-name=S1-FLEX]
+    attributes:
+      - name: policy-name
+        value: S1-FLEX
