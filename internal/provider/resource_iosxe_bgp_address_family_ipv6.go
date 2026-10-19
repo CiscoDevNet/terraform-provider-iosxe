@@ -345,6 +345,27 @@ func (r *BGPAddressFamilyIPv6Resource) Read(ctx context.Context, req resource.Re
 			return
 		}
 
+		// IOS-XE keys the BGP process by the AS number in the notation `bgp asnotation dot` selects, so
+		// toggling it renames the list entry (1.1 <-> 65537). If the stored key is not found, retry with
+		// the other notation and keep that key, so the change is an update rather than a missing resource.
+		if helpers.IsGetConfigResponseEmpty(&res) {
+			if alt := helpers.AlternateASN(state.Asn.ValueString()); alt != state.Asn.ValueString() {
+				altState := state
+				altState.Asn = types.StringValue(alt)
+				altRes, err := device.NetconfClient.GetConfig(ctx, "running", helpers.GetXpathFilter(altState.getXPath()))
+				if err != nil {
+					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", altState.getPath(), err))
+					return
+				}
+				if !helpers.IsGetConfigResponseEmpty(&altRes) {
+					tflog.Debug(ctx, fmt.Sprintf("%s: Found under alternate AS notation %s", state.Id.ValueString(), alt))
+					state.Asn = altState.Asn
+					state.Id = types.StringValue(state.getPath())
+					res = altRes
+				}
+			}
+		}
+
 		if helpers.IsGetConfigResponseEmpty(&res) && helpers.IsListPath(state.getXPath()) {
 			tflog.Debug(ctx, fmt.Sprintf("%s: Resource does not exist", state.Id.ValueString()))
 			resp.State.RemoveResource(ctx)

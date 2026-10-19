@@ -283,6 +283,18 @@ func HasId(attributes []YamlConfigAttribute) bool {
 	return false
 }
 
+// Templating helper function to return the Go name of the reference/id attribute that holds a BGP AS
+// number (normalize_asn), or "" if there is none. IOS-XE keys the BGP process by the AS in whichever
+// notation is active, so reads retry with the other notation when the key is not found.
+func AsnKeyAttribute(attributes []YamlConfigAttribute) string {
+	for _, attr := range attributes {
+		if (attr.Id || attr.Reference) && attr.NormalizeASN {
+			return ToGoName(attr.TfName)
+		}
+	}
+	return ""
+}
+
 // Templating helper function to return true if any id attribute is write-only
 func HasWriteOnlyId(attributes []YamlConfigAttribute) bool {
 	for _, attr := range attributes {
@@ -626,6 +638,7 @@ var functions = template.FuncMap{
 	"camelCase":                CamelCase,
 	"snakeCase":                SnakeCase,
 	"hasId":                    HasId,
+	"asnKeyAttribute":          AsnKeyAttribute,
 	"hasWriteOnlyId":           HasWriteOnlyId,
 	"hasSensitiveAttr":         HasSensitiveAttr,
 	"add":                      Add,

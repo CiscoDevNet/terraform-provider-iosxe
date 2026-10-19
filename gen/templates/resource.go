@@ -496,6 +496,30 @@ func (r *{{camelCase .Name}}Resource) Read(ctx context.Context, req resource.Rea
 			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", state.getPath(), err))
 			return
 		}
+		{{- $asnKey := asnKeyAttribute .Attributes}}
+		{{- if $asnKey}}
+
+		// IOS-XE keys the BGP process by the AS number in the notation `bgp asnotation dot` selects, so
+		// toggling it renames the list entry (1.1 <-> 65537). If the stored key is not found, retry with
+		// the other notation and keep that key, so the change is an update rather than a missing resource.
+		if helpers.IsGetConfigResponseEmpty(&res) {
+			if alt := helpers.AlternateASN(state.{{$asnKey}}.ValueString()); alt != state.{{$asnKey}}.ValueString() {
+				altState := state
+				altState.{{$asnKey}} = types.StringValue(alt)
+				altRes, err := device.NetconfClient.GetConfig(ctx, "running", helpers.GetXpathFilter(altState.getXPath()))
+				if err != nil {
+					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", altState.getPath(), err))
+					return
+				}
+				if !helpers.IsGetConfigResponseEmpty(&altRes) {
+					tflog.Debug(ctx, fmt.Sprintf("%s: Found under alternate AS notation %s", state.Id.ValueString(), alt))
+					state.{{$asnKey}} = altState.{{$asnKey}}
+					state.Id = types.StringValue(state.getPath())
+					res = altRes
+				}
+			}
+		}
+		{{- end}}
 
 		if helpers.IsGetConfigResponseEmpty(&res) && helpers.IsListPath(state.getXPath()) {
 			tflog.Debug(ctx, fmt.Sprintf("%s: Resource does not exist", state.Id.ValueString()))
