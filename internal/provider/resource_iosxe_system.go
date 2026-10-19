@@ -936,7 +936,7 @@ func (r *SystemResource) Schema(ctx context.Context, req resource.SchemaRequest,
 							},
 						},
 						"interface_routing": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Track interface IPv6 routing capability").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Track interface IP or IPv6 routing capability. Only valid when `interface_protocol` is `ip` or `ipv6`.").String,
 							Optional:            true,
 						},
 					},

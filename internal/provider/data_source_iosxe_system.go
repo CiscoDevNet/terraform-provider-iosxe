@@ -768,7 +768,7 @@ func (d *SystemDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 							Computed:            true,
 						},
 						"interface_routing": schema.BoolAttribute{
-							MarkdownDescription: "Track interface IPv6 routing capability",
+							MarkdownDescription: "Track interface IP or IPv6 routing capability. Only valid when `interface_protocol` is `ip` or `ipv6`.",
 							Computed:            true,
 						},
 					},

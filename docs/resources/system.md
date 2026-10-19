@@ -436,7 +436,7 @@ Optional:
 - `interface_name` (String) Interface name to track
 - `interface_protocol` (String) Tracking protocol
   - Choices: `ip`, `ipv6`, `line-protocol`
-- `interface_routing` (Boolean) Track interface IPv6 routing capability
+- `interface_routing` (Boolean) Track interface IP or IPv6 routing capability. Only valid when `interface_protocol` is `ip` or `ipv6`.
 - `ip_sla_number` (Number) Entry number
   - Range: `0`-`4294967295`
 - `ip_sla_reachability` (Boolean) Reachability
