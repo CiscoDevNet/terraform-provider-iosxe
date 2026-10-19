@@ -103,6 +103,11 @@ import (
 		helpers.UseIPv6Normalization(),
 	},
 	{{- end}}
+	{{- if .NormalizeASN}}
+	PlanModifiers: []planmodifier.String{
+		helpers.UseAsnNormalization(),
+	},
+	{{- end}}
 	{{- if and (len .DefaultValue) (eq .Type "Int64")}}
 	Default:             int64default.StaticInt64({{.DefaultValue}}),
 	{{- else if and (len .DefaultValue) (eq .Type "Bool")}}

@@ -90,6 +90,7 @@ func (r *BGPL2VPNEVPNNeighborResource) Schema(ctx context.Context, req resource.
 				Required:            true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
+					helpers.UseAsnNormalization(),
 				},
 			},
 			"ip": schema.StringAttribute{
