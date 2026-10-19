@@ -23,6 +23,9 @@ attributes:
     tf_name: router_id_ip
     example: 172.16.255.1
     exclude_test: true
+  - yang_name: bgp/asnotation/dot
+    tf_name: asnotation_dot
+    example: true
   - yang_name: bgp/gr-options/graceful-restart
     tf_name: bgp_graceful_restart
     example: true
