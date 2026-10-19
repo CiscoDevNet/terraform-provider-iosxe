@@ -436,8 +436,21 @@ func (r *{{camelCase .Name}}Resource) Create(ctx context.Context, req resource.C
 			defer device.NetconfOpMutex.Unlock()
 		}
 		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+		{{- if asnKeyAttribute .Attributes}}
+
+		// Write under the key the device stores; state keeps the configured notation.
+		write, err := r.resolveAsnKey(ctx, device, plan)
+		if err != nil {
+			resp.Diagnostics.AddError("Client Error", err.Error())
+			return
+		}
+		writeConfig := config
+		writeConfig.{{asnKeyAttribute .Attributes}} = write.{{asnKeyAttribute .Attributes}}
+		body := write.toBodyXML(ctx, writeConfig)
+		{{- else}}
 
 		body := plan.toBodyXML(ctx, config)
+		{{- end}}
 
 		if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
 			resp.Diagnostics.AddError("Client Error", err.Error())
@@ -543,6 +556,39 @@ func (r *{{camelCase .Name}}Resource) Read(ctx context.Context, req resource.Rea
 	helpers.SetFlagImporting(ctx, false, resp.Private, &resp.Diagnostics)
 }
 
+{{- $asnKey := asnKeyAttribute .Attributes}}
+{{- if $asnKey}}
+
+// resolveAsnKey returns data with its AS key replaced by the notation the device stores, if the
+// process already exists under the other notation. IOS-XE keeps the key a BGP process was created
+// with, whatever `bgp asnotation dot` now displays, and treats a write under the other notation as a
+// second process ("too many /native/router/ios-bgp:bgp"). Returns data unchanged if neither exists.
+func (r *{{camelCase .Name}}Resource) resolveAsnKey(ctx context.Context, device *IosxeProviderDataDevice, data {{camelCase .Name}}) ({{camelCase .Name}}, error) {
+	res, err := device.NetconfClient.GetConfig(ctx, "running", helpers.GetXpathFilter(data.getXPath()))
+	if err != nil {
+		return data, fmt.Errorf("failed to retrieve object (%s), got error: %s", data.getPath(), err)
+	}
+	if !helpers.IsGetConfigResponseEmpty(&res) {
+		return data, nil
+	}
+	alt := helpers.AlternateASN(data.{{$asnKey}}.ValueString())
+	if alt == data.{{$asnKey}}.ValueString() {
+		return data, nil
+	}
+	altData := data
+	altData.{{$asnKey}} = types.StringValue(alt)
+	altRes, err := device.NetconfClient.GetConfig(ctx, "running", helpers.GetXpathFilter(altData.getXPath()))
+	if err != nil {
+		return data, fmt.Errorf("failed to retrieve object (%s), got error: %s", altData.getPath(), err)
+	}
+	if helpers.IsGetConfigResponseEmpty(&altRes) {
+		return data, nil
+	}
+	tflog.Debug(ctx, fmt.Sprintf("%s: Device stores the AS key as %s", data.getPath(), alt))
+	return altData, nil
+}
+{{- end}}
+
 // End of section. //template:end read
 
 // Section below is generated&owned by "gen/generator.go". //template:begin update
@@ -587,8 +633,23 @@ func (r *{{camelCase .Name}}Resource) Update(ctx context.Context, req resource.U
 		}
 		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
 
+		{{- if asnKeyAttribute .Attributes}}
+		// Write under the key the device stores; state keeps the configured notation.
+		write, err := r.resolveAsnKey(ctx, device, plan)
+		if err != nil {
+			resp.Diagnostics.AddError("Client Error", err.Error())
+			return
+		}
+		writeConfig, writeState := config, state
+		writeConfig.{{asnKeyAttribute .Attributes}} = write.{{asnKeyAttribute .Attributes}}
+		writeState.{{asnKeyAttribute .Attributes}} = write.{{asnKeyAttribute .Attributes}}
+		body := write.toBodyXML(ctx, writeConfig)
+		body = write.addDeletedItemsXML(ctx, writeState, body)
+		{{- else}}
+
 		body := plan.toBodyXML(ctx, config)
 		body = plan.addDeletedItemsXML(ctx, state, body)
+		{{- end}}
 
 		if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
 			resp.Diagnostics.AddError("Client Error", err.Error())
@@ -644,6 +705,15 @@ func (r *{{camelCase .Name}}Resource) Delete(ctx context.Context, req resource.D
 			defer device.NetconfOpMutex.Unlock()
 		}
 		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+
+		{{- if asnKeyAttribute .Attributes}}
+		resolved, err := r.resolveAsnKey(ctx, device, state)
+		if err != nil {
+			resp.Diagnostics.AddError("Client Error", err.Error())
+			return
+		}
+		state.{{asnKeyAttribute .Attributes}} = resolved.{{asnKeyAttribute .Attributes}}
+		{{- end}}
 
 		if deleteMode == "all" {
 			body := netconf.Body{}

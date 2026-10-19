@@ -200,7 +200,15 @@ func (r *BGPIPv6UnicastNeighborResource) Create(ctx context.Context, req resourc
 		}
 		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
 
-		body := plan.toBodyXML(ctx, config)
+		// Write under the key the device stores; state keeps the configured notation.
+		write, err := r.resolveAsnKey(ctx, device, plan)
+		if err != nil {
+			resp.Diagnostics.AddError("Client Error", err.Error())
+			return
+		}
+		writeConfig := config
+		writeConfig.Asn = write.Asn
+		body := write.toBodyXML(ctx, writeConfig)
 
 		if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
 			resp.Diagnostics.AddError("Client Error", err.Error())
@@ -303,6 +311,35 @@ func (r *BGPIPv6UnicastNeighborResource) Read(ctx context.Context, req resource.
 	helpers.SetFlagImporting(ctx, false, resp.Private, &resp.Diagnostics)
 }
 
+// resolveAsnKey returns data with its AS key replaced by the notation the device stores, if the
+// process already exists under the other notation. IOS-XE keeps the key a BGP process was created
+// with, whatever `bgp asnotation dot` now displays, and treats a write under the other notation as a
+// second process ("too many /native/router/ios-bgp:bgp"). Returns data unchanged if neither exists.
+func (r *BGPIPv6UnicastNeighborResource) resolveAsnKey(ctx context.Context, device *IosxeProviderDataDevice, data BGPIPv6UnicastNeighbor) (BGPIPv6UnicastNeighbor, error) {
+	res, err := device.NetconfClient.GetConfig(ctx, "running", helpers.GetXpathFilter(data.getXPath()))
+	if err != nil {
+		return data, fmt.Errorf("failed to retrieve object (%s), got error: %s", data.getPath(), err)
+	}
+	if !helpers.IsGetConfigResponseEmpty(&res) {
+		return data, nil
+	}
+	alt := helpers.AlternateASN(data.Asn.ValueString())
+	if alt == data.Asn.ValueString() {
+		return data, nil
+	}
+	altData := data
+	altData.Asn = types.StringValue(alt)
+	altRes, err := device.NetconfClient.GetConfig(ctx, "running", helpers.GetXpathFilter(altData.getXPath()))
+	if err != nil {
+		return data, fmt.Errorf("failed to retrieve object (%s), got error: %s", altData.getPath(), err)
+	}
+	if helpers.IsGetConfigResponseEmpty(&altRes) {
+		return data, nil
+	}
+	tflog.Debug(ctx, fmt.Sprintf("%s: Device stores the AS key as %s", data.getPath(), alt))
+	return altData, nil
+}
+
 // End of section. //template:end read
 
 // Section below is generated&owned by "gen/generator.go". //template:begin update
@@ -346,9 +383,17 @@ func (r *BGPIPv6UnicastNeighborResource) Update(ctx context.Context, req resourc
 			defer device.NetconfOpMutex.Unlock()
 		}
 		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
-
-		body := plan.toBodyXML(ctx, config)
-		body = plan.addDeletedItemsXML(ctx, state, body)
+		// Write under the key the device stores; state keeps the configured notation.
+		write, err := r.resolveAsnKey(ctx, device, plan)
+		if err != nil {
+			resp.Diagnostics.AddError("Client Error", err.Error())
+			return
+		}
+		writeConfig, writeState := config, state
+		writeConfig.Asn = write.Asn
+		writeState.Asn = write.Asn
+		body := write.toBodyXML(ctx, writeConfig)
+		body = write.addDeletedItemsXML(ctx, writeState, body)
 
 		if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
 			resp.Diagnostics.AddError("Client Error", err.Error())
@@ -398,6 +443,12 @@ func (r *BGPIPv6UnicastNeighborResource) Delete(ctx context.Context, req resourc
 			defer device.NetconfOpMutex.Unlock()
 		}
 		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+		resolved, err := r.resolveAsnKey(ctx, device, state)
+		if err != nil {
+			resp.Diagnostics.AddError("Client Error", err.Error())
+			return
+		}
+		state.Asn = resolved.Asn
 
 		if deleteMode == "all" {
 			body := netconf.Body{}
