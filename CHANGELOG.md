@@ -1,5 +1,6 @@
 ## Unreleased
 
+- Add `iosxe_wireless_rf_tag` resource and data source for C9800 RF tags mapping 2.4 GHz, 5 GHz, and 6 GHz RF profiles
 - Add `iosxe_wireless_site_tag` resource and data source
 - Add wireless YANG model support (wlan, rf, site, flex, mesh, general, ap profiles)
 - Add `iosxe_wireless_wlan_profile` resource and data source for managing C9800 WLAN profiles
