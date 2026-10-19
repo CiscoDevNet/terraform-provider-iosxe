@@ -1,5 +1,6 @@
 ## Unreleased
 
+- Add `asnotation_dot` attribute to `iosxe_bgp` resource and data source for `bgp asnotation dot` configuration, enabling asdot notation for 4-byte BGP AS numbers
 - Add `ip_nhrp_nhs.nbma_ipv4s`, `ip_nhrp_map_multicast_dynamic`, and `ip_nhrp_map_multicast_nbma_ipv4` attributes to `iosxe_interface_tunnel` resource and data source for NHRP NHS NBMA address and dynamic multicast map support
 - Add `iosxe_wireless_system` resource and data source
 - Add `iosxe_wireless_policy_profile` resource and data source for C9800 wireless policy profile configuration, including AAA override, NAC, session/idle timeouts, exclusion list timeout, VLAN assignment, ACLs, QoS service policies, static IP mobility, DHCP/HTTP TLV caching, AVC flow monitors, and mobility anchors
