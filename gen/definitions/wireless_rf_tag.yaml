@@ -1,0 +1,35 @@
+---
+name: Wireless RF Tag
+path: /Cisco-IOS-XE-wireless-rf-cfg:rf-cfg-data/rf-tags/rf-tag[tag-name=%s]
+no_delete_attributes: true
+test_tags: [C9800]
+doc_category: Wireless
+attributes:
+  - yang_name: tag-name
+    tf_name: name
+    example: S1-RF-Tag-Test
+    type: String
+  - yang_name: description
+    tf_name: description
+    type: String
+    example: Test RF Tag
+  - yang_name: dot11b-rf-profile-name
+    tf_name: rf_policy_24ghz
+    type: String
+    example: Typical_Client_Density_rf_24gh
+  - yang_name: dot11a-rf-profile-name
+    tf_name: rf_policy_5ghz
+    type: String
+    example: Typical_Client_Density_rf_5gh
+  - yang_name: dot11-6ghz-rf-prof-name
+    tf_name: rf_policy_6ghz
+    type: String
+    example: S1-RF-6GHZ
+
+test_prerequisites:
+  - path: /Cisco-IOS-XE-wireless-rf-cfg:rf-cfg-data/rf-profiles/rf-profile[name=S1-RF-6GHZ]
+    attributes:
+      - name: name
+        value: S1-RF-6GHZ
+      - name: band
+        value: dot11-6-ghz-band

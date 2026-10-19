@@ -38,36 +38,52 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin types
 type EIGRP struct {
-	Device           types.String    `tfsdk:"device"`
-	Id               types.String    `tfsdk:"id"`
-	DeleteMode       types.String    `tfsdk:"delete_mode"`
-	Name             types.String    `tfsdk:"name"`
-	AutonomousSystem types.Int64     `tfsdk:"autonomous_system"`
-	RouterId         types.String    `tfsdk:"router_id"`
-	Networks         []EIGRPNetworks `tfsdk:"networks"`
-	TopologyBase     types.String    `tfsdk:"topology_base"`
-	AutoSummary      types.Bool      `tfsdk:"auto_summary"`
-	Shutdown         types.Bool      `tfsdk:"shutdown"`
+	Device           types.String        `tfsdk:"device"`
+	Id               types.String        `tfsdk:"id"`
+	DeleteMode       types.String        `tfsdk:"delete_mode"`
+	Name             types.String        `tfsdk:"name"`
+	AutonomousSystem types.Int64         `tfsdk:"autonomous_system"`
+	RouterId         types.String        `tfsdk:"router_id"`
+	Networks         []EIGRPNetworks     `tfsdk:"networks"`
+	TopologyBase     types.String        `tfsdk:"topology_base"`
+	AutoSummary      types.Bool          `tfsdk:"auto_summary"`
+	AfInterfaces     []EIGRPAfInterfaces `tfsdk:"af_interfaces"`
+	StubConnected    types.Bool          `tfsdk:"stub_connected"`
+	StubSummary      types.Bool          `tfsdk:"stub_summary"`
+	Shutdown         types.Bool          `tfsdk:"shutdown"`
 }
 type EIGRPNetworks struct {
 	Ip       types.String `tfsdk:"ip"`
 	Wildcard types.String `tfsdk:"wildcard"`
 }
+type EIGRPAfInterfaces struct {
+	Interface        types.String `tfsdk:"interface"`
+	PassiveInterface types.Bool   `tfsdk:"passive_interface"`
+	SplitHorizon     types.Bool   `tfsdk:"split_horizon"`
+}
 
 type EIGRPData struct {
-	Device           types.String        `tfsdk:"device"`
-	Id               types.String        `tfsdk:"id"`
-	Name             types.String        `tfsdk:"name"`
-	AutonomousSystem types.Int64         `tfsdk:"autonomous_system"`
-	RouterId         types.String        `tfsdk:"router_id"`
-	Networks         []EIGRPNetworksData `tfsdk:"networks"`
-	TopologyBase     types.String        `tfsdk:"topology_base"`
-	AutoSummary      types.Bool          `tfsdk:"auto_summary"`
-	Shutdown         types.Bool          `tfsdk:"shutdown"`
+	Device           types.String            `tfsdk:"device"`
+	Id               types.String            `tfsdk:"id"`
+	Name             types.String            `tfsdk:"name"`
+	AutonomousSystem types.Int64             `tfsdk:"autonomous_system"`
+	RouterId         types.String            `tfsdk:"router_id"`
+	Networks         []EIGRPNetworksData     `tfsdk:"networks"`
+	TopologyBase     types.String            `tfsdk:"topology_base"`
+	AutoSummary      types.Bool              `tfsdk:"auto_summary"`
+	AfInterfaces     []EIGRPAfInterfacesData `tfsdk:"af_interfaces"`
+	StubConnected    types.Bool              `tfsdk:"stub_connected"`
+	StubSummary      types.Bool              `tfsdk:"stub_summary"`
+	Shutdown         types.Bool              `tfsdk:"shutdown"`
 }
 type EIGRPNetworksData struct {
 	Ip       types.String `tfsdk:"ip"`
 	Wildcard types.String `tfsdk:"wildcard"`
+}
+type EIGRPAfInterfacesData struct {
+	Interface        types.String `tfsdk:"interface"`
+	PassiveInterface types.Bool   `tfsdk:"passive_interface"`
+	SplitHorizon     types.Bool   `tfsdk:"split_horizon"`
 }
 
 // End of section. //template:end types
@@ -100,7 +116,17 @@ func (data EIGRPData) getXPath() string {
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
 func (data EIGRP) toBodyXML(ctx context.Context, config EIGRP) string {
-	body := netconf.Body{}
+	body := data.addToBodyXML(ctx, config, netconf.Body{})
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// addToBodyXML adds this object to an existing body instead of starting from an empty one. Bulk
+// resources use this to serialize all of their items into a single NETCONF payload.
+func (data EIGRP) addToBodyXML(ctx context.Context, config EIGRP, body netconf.Body) netconf.Body {
 	if !data.AutonomousSystem.IsNull() && !data.AutonomousSystem.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/autonomous-system", strconv.FormatInt(data.AutonomousSystem.ValueInt64(), 10))
 	}
@@ -125,14 +151,39 @@ func (data EIGRP) toBodyXML(ctx context.Context, config EIGRP) string {
 	if !data.AutoSummary.IsNull() && !data.AutoSummary.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/topology/topo-base/auto-summary", data.AutoSummary.ValueBool())
 	}
+	if len(data.AfInterfaces) > 0 {
+		for _, item := range data.AfInterfaces {
+			cBody := netconf.Body{}
+			if !item.Interface.IsNull() && !item.Interface.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "interface", item.Interface.ValueString())
+			}
+			if !item.PassiveInterface.IsNull() && !item.PassiveInterface.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "passive-interface", item.PassiveInterface.ValueBool())
+			}
+			if !item.SplitHorizon.IsNull() && !item.SplitHorizon.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "split-horizon", item.SplitHorizon.ValueBool())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/af-interface", cBody.Res())
+		}
+	}
+	if !data.StubConnected.IsNull() && !data.StubConnected.IsUnknown() {
+		if data.StubConnected.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/eigrp/stub/advertise/connected", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/eigrp/stub/advertise/connected")
+		}
+	}
+	if !data.StubSummary.IsNull() && !data.StubSummary.IsUnknown() {
+		if data.StubSummary.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/eigrp/stub/advertise/summary", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/eigrp/stub/advertise/summary")
+		}
+	}
 	if !data.Shutdown.IsNull() && !data.Shutdown.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/shutdown", data.Shutdown.ValueBool())
 	}
-	bodyString, err := body.String()
-	if err != nil {
-		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
-	}
-	return bodyString
+	return body
 }
 
 // End of section. //template:end toBodyXML
@@ -196,6 +247,67 @@ func (data *EIGRP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.AutoSummary = types.BoolNull()
 	}
+	for i := range data.AfInterfaces {
+		keys := [...]string{"interface"}
+		keyValues := [...]string{data.AfInterfaces[i].Interface.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/af-interface").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "interface"); value.Exists() && !data.AfInterfaces[i].Interface.IsNull() {
+			data.AfInterfaces[i].Interface = types.StringValue(value.String())
+		} else {
+			data.AfInterfaces[i].Interface = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "passive-interface"); !data.AfInterfaces[i].PassiveInterface.IsNull() {
+			if value.Exists() {
+				data.AfInterfaces[i].PassiveInterface = types.BoolValue(value.Bool())
+			}
+		} else {
+			data.AfInterfaces[i].PassiveInterface = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "split-horizon"); !data.AfInterfaces[i].SplitHorizon.IsNull() {
+			if value.Exists() {
+				data.AfInterfaces[i].SplitHorizon = types.BoolValue(value.Bool())
+			}
+		} else {
+			data.AfInterfaces[i].SplitHorizon = types.BoolNull()
+		}
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/eigrp/stub/advertise/connected"); !data.StubConnected.IsNull() {
+		if value.Exists() {
+			data.StubConnected = types.BoolValue(true)
+		} else {
+			data.StubConnected = types.BoolValue(false)
+		}
+	} else {
+		data.StubConnected = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/eigrp/stub/advertise/summary"); !data.StubSummary.IsNull() {
+		if value.Exists() {
+			data.StubSummary = types.BoolValue(true)
+		} else {
+			data.StubSummary = types.BoolValue(false)
+		}
+	} else {
+		data.StubSummary = types.BoolNull()
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/shutdown"); !data.Shutdown.IsNull() {
 		if value.Exists() {
 			data.Shutdown = types.BoolValue(value.Bool())
@@ -238,6 +350,37 @@ func (data *EIGRP) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.AutoSummary = types.BoolNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/af-interface"); value.Exists() {
+		data.AfInterfaces = make([]EIGRPAfInterfaces, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := EIGRPAfInterfaces{}
+			if cValue := helpers.GetFromXPath(v, "interface"); cValue.Exists() {
+				item.Interface = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "passive-interface"); cValue.Exists() {
+				item.PassiveInterface = types.BoolValue(cValue.Bool())
+			} else {
+				item.PassiveInterface = types.BoolNull()
+			}
+			if cValue := helpers.GetFromXPath(v, "split-horizon"); cValue.Exists() {
+				item.SplitHorizon = types.BoolValue(cValue.Bool())
+			} else {
+				item.SplitHorizon = types.BoolNull()
+			}
+			data.AfInterfaces = append(data.AfInterfaces, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/eigrp/stub/advertise/connected"); value.Exists() {
+		data.StubConnected = types.BoolValue(true)
+	} else {
+		data.StubConnected = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/eigrp/stub/advertise/summary"); value.Exists() {
+		data.StubSummary = types.BoolValue(true)
+	} else {
+		data.StubSummary = types.BoolValue(false)
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/shutdown"); value.Exists() {
 		data.Shutdown = types.BoolValue(value.Bool())
 	} else {
@@ -278,6 +421,37 @@ func (data *EIGRPData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.AutoSummary = types.BoolNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/af-interface"); value.Exists() {
+		data.AfInterfaces = make([]EIGRPAfInterfacesData, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := EIGRPAfInterfacesData{}
+			if cValue := helpers.GetFromXPath(v, "interface"); cValue.Exists() {
+				item.Interface = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "passive-interface"); cValue.Exists() {
+				item.PassiveInterface = types.BoolValue(cValue.Bool())
+			} else {
+				item.PassiveInterface = types.BoolNull()
+			}
+			if cValue := helpers.GetFromXPath(v, "split-horizon"); cValue.Exists() {
+				item.SplitHorizon = types.BoolValue(cValue.Bool())
+			} else {
+				item.SplitHorizon = types.BoolNull()
+			}
+			data.AfInterfaces = append(data.AfInterfaces, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/eigrp/stub/advertise/connected"); value.Exists() {
+		data.StubConnected = types.BoolValue(true)
+	} else {
+		data.StubConnected = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/eigrp/stub/advertise/summary"); value.Exists() {
+		data.StubSummary = types.BoolValue(true)
+	} else {
+		data.StubSummary = types.BoolValue(false)
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/shutdown"); value.Exists() {
 		data.Shutdown = types.BoolValue(value.Bool())
 	} else {
@@ -293,6 +467,48 @@ func (data *EIGRP) addDeletedItemsXML(ctx context.Context, state EIGRP, body str
 	b := netconf.NewBody(body)
 	if !state.Shutdown.IsNull() && data.Shutdown.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/shutdown")
+	}
+	if !state.StubSummary.IsNull() && data.StubSummary.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/eigrp/stub/advertise/summary")
+	}
+	if !state.StubConnected.IsNull() && data.StubConnected.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/eigrp/stub/advertise/connected")
+	}
+	for i := range state.AfInterfaces {
+		stateKeys := [...]string{"interface"}
+		stateKeyValues := [...]string{state.AfInterfaces[i].Interface.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.AfInterfaces[i].Interface.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.AfInterfaces {
+			found = true
+			if state.AfInterfaces[i].Interface.ValueString() != data.AfInterfaces[j].Interface.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.AfInterfaces[i].SplitHorizon.IsNull() && data.AfInterfaces[j].SplitHorizon.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/af-interface%v/split-horizon", predicates))
+				}
+				if !state.AfInterfaces[i].PassiveInterface.IsNull() && data.AfInterfaces[j].PassiveInterface.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/af-interface%v/passive-interface", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/af-interface%v", predicates))
+		}
 	}
 	for i := range state.Networks {
 		stateKeys := [...]string{"ipv4-address", "wildcard"}
@@ -346,6 +562,22 @@ func (data *EIGRP) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
 	if !data.Shutdown.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/shutdown")
+	}
+	if !data.StubSummary.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/eigrp/stub/advertise/summary")
+	}
+	if !data.StubConnected.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/eigrp/stub/advertise/connected")
+	}
+	for i := range data.AfInterfaces {
+		keys := [...]string{"interface"}
+		keyValues := [...]string{data.AfInterfaces[i].Interface.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/af-interface%v", predicates))
 	}
 	for i := range data.Networks {
 		keys := [...]string{"ipv4-address", "wildcard"}

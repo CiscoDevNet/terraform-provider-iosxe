@@ -97,7 +97,17 @@ func (data ISISData) getXPath() string {
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
 func (data ISIS) toBodyXML(ctx context.Context, config ISIS) string {
-	body := netconf.Body{}
+	body := data.addToBodyXML(ctx, config, netconf.Body{})
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// addToBodyXML adds this object to an existing body instead of starting from an empty one. Bulk
+// resources use this to serialize all of their items into a single NETCONF payload.
+func (data ISIS) addToBodyXML(ctx context.Context, config ISIS, body netconf.Body) netconf.Body {
 	if !data.AreaTag.IsNull() && !data.AreaTag.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/area-tag", data.AreaTag.ValueString())
 	}
@@ -141,11 +151,7 @@ func (data ISIS) toBodyXML(ctx context.Context, config ISIS) string {
 			body = helpers.RemoveFromXPath(body, data.getXPath()+"/log-adj-changes/all")
 		}
 	}
-	bodyString, err := body.String()
-	if err != nil {
-		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
-	}
-	return bodyString
+	return body
 }
 
 // End of section. //template:end toBodyXML

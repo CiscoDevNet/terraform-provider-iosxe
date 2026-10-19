@@ -672,6 +672,114 @@ func TestSetFromXPath_WithValue(t *testing.T) {
 	}
 }
 
+// TestListXPathKeys tests enumerating list entry keys below a parent path
+func TestListXPathKeys(t *testing.T) {
+	const interfaces = `<native><interface>
+		<GigabitEthernet><name>1</name><description>One</description></GigabitEthernet>
+		<GigabitEthernet><name>2</name></GigabitEthernet>
+		<TenGigabitEthernet><name>1/0/1</name></TenGigabitEthernet>
+		<Loopback><name>100</name></Loopback>
+	</interface></native>`
+
+	tests := []struct {
+		name        string
+		xml         string
+		parentXPath string
+		elementName string
+		keyNames    []string
+		expected    [][]string
+	}{
+		{
+			name:        "multiple entries",
+			xml:         interfaces,
+			parentXPath: "/native/interface",
+			elementName: "GigabitEthernet",
+			keyNames:    []string{"name"},
+			expected:    [][]string{{"1"}, {"2"}},
+		},
+		{
+			name:        "single entry",
+			xml:         interfaces,
+			parentXPath: "/native/interface",
+			elementName: "TenGigabitEthernet",
+			keyNames:    []string{"name"},
+			expected:    [][]string{{"1/0/1"}},
+		},
+		{
+			name:        "sibling element names are not mixed up",
+			xml:         interfaces,
+			parentXPath: "/native/interface",
+			elementName: "Loopback",
+			keyNames:    []string{"name"},
+			expected:    [][]string{{"100"}},
+		},
+		{
+			name:        "unknown element",
+			xml:         interfaces,
+			parentXPath: "/native/interface",
+			elementName: "FortyGigabitEthernet",
+			keyNames:    []string{"name"},
+			expected:    [][]string{},
+		},
+		{
+			name:        "unknown parent",
+			xml:         interfaces,
+			parentXPath: "/native/vlan",
+			elementName: "vlan-list",
+			keyNames:    []string{"id"},
+			expected:    nil,
+		},
+		{
+			name:        "element name carries a namespace prefix",
+			xml:         interfaces,
+			parentXPath: "/Cisco-IOS-XE-native:native/interface",
+			elementName: "Cisco-IOS-XE-native:GigabitEthernet",
+			keyNames:    []string{"Cisco-IOS-XE-native:name"},
+			expected:    [][]string{{"1"}, {"2"}},
+		},
+		{
+			name: "composite keys",
+			xml: `<native><vrf>
+				<address-family><type>ipv4</type><safi>unicast</safi></address-family>
+				<address-family><type>ipv6</type><safi>unicast</safi></address-family>
+			</vrf></native>`,
+			parentXPath: "/native/vrf",
+			elementName: "address-family",
+			keyNames:    []string{"type", "safi"},
+			expected:    [][]string{{"ipv4", "unicast"}, {"ipv6", "unicast"}},
+		},
+		{
+			name: "entries without the requested key are skipped",
+			xml: `<native><interface>
+				<GigabitEthernet><name>1</name></GigabitEthernet>
+				<GigabitEthernet><description>no key</description></GigabitEthernet>
+			</interface></native>`,
+			parentXPath: "/native/interface",
+			elementName: "GigabitEthernet",
+			keyNames:    []string{"name"},
+			expected:    [][]string{{"1"}},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			wrappedXML := "<root>" + tt.xml + "</root>"
+			res := xmldot.Get(wrappedXML, "root")
+
+			result := ListXPathKeys(res, tt.parentXPath, tt.elementName, tt.keyNames)
+
+			if len(result) != len(tt.expected) {
+				t.Fatalf("ListXPathKeys() = %v, want %v", result, tt.expected)
+			}
+			for i := range result {
+				if !reflect.DeepEqual(result[i], tt.expected[i]) {
+					t.Errorf("ListXPathKeys()[%d] = %v, want %v", i, result[i], tt.expected[i])
+				}
+			}
+		})
+	}
+}
+
 // TestGetFromXPath tests the GetFromXPath function with filter conversion
 func TestGetFromXPath(t *testing.T) {
 	tests := []struct {
@@ -1240,6 +1348,38 @@ func TestSetFromXPath_NoDuplicateElements(t *testing.T) {
 	}
 
 	t.Logf("✓ No duplicate elements, value correctly set to: %d", result.Int())
+}
+
+// TestSetFromXPath_SiblingKeyLeafNotDuplicated verifies that setting a list key leaf on a newly
+// appended sibling reuses the key element created from the predicate instead of appending a second,
+// empty one. Bulk resources hit this because they write several entries of the same list into one
+// body, each setting its own key leaf.
+func TestSetFromXPath_SiblingKeyLeafNotDuplicated(t *testing.T) {
+	body := netconf.Body{}
+	body = SetFromXPath(body, "/native/interface/GigabitEthernet[name='3']/name", "3")
+	body = SetFromXPath(body, "/native/interface/GigabitEthernet[name='3']/mtu", "1600")
+	body = SetFromXPath(body, "/native/interface/GigabitEthernet[name='4']/name", "4")
+	body = SetFromXPath(body, "/native/interface/GigabitEthernet[name='4']/mtu", "1500")
+
+	xml := body.Res()
+
+	if count := xmldot.Get(xml, "native.interface.GigabitEthernet.#").Int(); count != 2 {
+		t.Fatalf("Expected 2 GigabitEthernet elements, found %d. XML:\n%s", count, xml)
+	}
+	if count := strings.Count(xml, "<name>"); count != 2 {
+		t.Errorf("Expected exactly 2 <name> elements, found %d. XML:\n%s", count, xml)
+	}
+	if strings.Contains(xml, "<name></name>") {
+		t.Errorf("Found an empty <name> element. XML:\n%s", xml)
+	}
+
+	for i, want := range []struct{ name, mtu string }{{"3", "1600"}, {"4", "1500"}} {
+		gotName := xmldot.Get(xml, fmt.Sprintf("native.interface.GigabitEthernet.%d.name", i)).String()
+		gotMtu := xmldot.Get(xml, fmt.Sprintf("native.interface.GigabitEthernet.%d.mtu", i)).String()
+		if gotName != want.name || gotMtu != want.mtu {
+			t.Errorf("Element %d = (name=%q, mtu=%q), want (name=%q, mtu=%q). XML:\n%s", i, gotName, gotMtu, want.name, want.mtu, xml)
+		}
+	}
 }
 
 // TestSetFromXPath_BooleanEmptyValue tests that boolean true values (empty strings)

@@ -247,7 +247,17 @@ func (data {{camelCase .Name}}Data) getXPath() string {
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
 func (data {{camelCase .Name}}) toBodyXML(ctx context.Context, config {{camelCase .Name}}) string {
-	body := netconf.Body{}
+	body := data.addToBodyXML(ctx, config, netconf.Body{})
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// addToBodyXML adds this object to an existing body instead of starting from an empty one. Bulk
+// resources use this to serialize all of their items into a single NETCONF payload.
+func (data {{camelCase .Name}}) addToBodyXML(ctx context.Context, config {{camelCase .Name}}, body netconf.Body) netconf.Body {
 	{{- range (xpathAttributes .Attributes)}}
 	{{- if and (not .Reference) (ne .Type "List") (ne .Type "Set")}}
 	if !data.{{toGoName .TfName}}.IsNull() && !data.{{toGoName .TfName}}.IsUnknown() {
@@ -437,11 +447,7 @@ func (data {{camelCase .Name}}) toBodyXML(ctx context.Context, config {{camelCas
 	}
 	{{- end}}
 	{{- end}}
-	bodyString, err := body.String()
-	if err != nil {
-		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
-	}
-	return bodyString
+	return body
 }
 
 // End of section. //template:end toBodyXML
@@ -488,7 +494,7 @@ func (data *{{camelCase .Name}}) updateFromBodyXML(ctx context.Context, res xmld
 	}
 	{{- else if eq .Type "StringList"}}
 	if value := helpers.GetFromXPath(res, "data" + data.getXPath() + "/{{.XPath}}"); value.Exists() && !data.{{toGoName .TfName}}.IsNull() {
-		data.{{toGoName .TfName}} = helpers.GetStringListXML(value.Array())
+		data.{{toGoName .TfName}} = {{- if .ReadFilter}}helpers.{{.ReadFilter}}XML(value.Array()){{else}}helpers.GetStringListXML(value.Array()){{end}}
 	} else {
 		data.{{toGoName .TfName}} = types.ListNull(types.StringType)
 	}
@@ -512,6 +518,7 @@ func (data *{{camelCase .Name}}) updateFromBodyXML(ctx context.Context, res xmld
 	}
 	{{- else if or (eq .Type "List") (eq .Type "Set")}}
 	{{- $list := (toGoName .TfName)}}
+	{{- if not (hasWriteOnlyId .Attributes)}}
 	for i := range data.{{$list}} {
 		keys := [...]string{ {{range .Attributes}}{{if .Id}}"{{.XPath}}", {{end}}{{end}} }
 		keyValues := [...]string{ {{range .Attributes}}{{if .Id}}{{if eq .Type "Int64"}}strconv.FormatInt(data.{{$list}}[i].{{toGoName .TfName}}.ValueInt64(), 10), {{else if eq .Type "Bool"}}strconv.FormatBool(data.{{$list}}[i].{{toGoName .TfName}}.ValueBool()), {{else}}data.{{$list}}[i].{{toGoName .TfName}}.Value{{.Type}}(), {{end}}{{end}}{{end}} }
@@ -574,7 +581,7 @@ func (data *{{camelCase .Name}}) updateFromBodyXML(ctx context.Context, res xmld
 		}
 		{{- else if eq .Type "StringList"}}
 		if value := helpers.GetFromXPath(r, "{{.XPath}}"); value.Exists() && !data.{{$list}}[i].{{toGoName .TfName}}.IsNull() {
-			data.{{$list}}[i].{{toGoName .TfName}} = helpers.GetStringListXML(value.Array())
+			data.{{$list}}[i].{{toGoName .TfName}} = {{- if .ReadFilter}}helpers.{{.ReadFilter}}XML(value.Array()){{else}}helpers.GetStringListXML(value.Array()){{end}}
 		} else {
 			data.{{$list}}[i].{{toGoName .TfName}} = types.ListNull(types.StringType)
 		}
@@ -598,6 +605,7 @@ func (data *{{camelCase .Name}}) updateFromBodyXML(ctx context.Context, res xmld
 		}
 		{{- else if or (eq .Type "List") (eq .Type "Set")}}
 		{{- $clist := (toGoName .TfName)}}
+		{{- if not (hasWriteOnlyId .Attributes)}}
 		for ci := range data.{{$list}}[i].{{$clist}} {
 			keys := [...]string{ {{range .Attributes}}{{if .Id}}"{{.XPath}}", {{end}}{{end}} }
 			keyValues := [...]string{ {{range .Attributes}}{{if .Id}}{{if eq .Type "Int64"}}strconv.FormatInt(data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.ValueInt64(), 10), {{else if eq .Type "Bool"}}strconv.FormatBool(data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.ValueBool()), {{else}}data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.Value{{.Type}}(), {{end}}{{end}}{{end}} }
@@ -660,7 +668,7 @@ func (data *{{camelCase .Name}}) updateFromBodyXML(ctx context.Context, res xmld
 			}
 			{{- else if eq .Type "StringList"}}
 			if value := helpers.GetFromXPath(cr, "{{.XPath}}"); value.Exists() && !data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.IsNull() {
-				data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}} = helpers.GetStringListXML(value.Array())
+				data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}} = {{- if .ReadFilter}}helpers.{{.ReadFilter}}XML(value.Array()){{else}}helpers.GetStringListXML(value.Array()){{end}}
 			} else {
 				data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}} = types.ListNull(types.StringType)
 			}
@@ -689,7 +697,9 @@ func (data *{{camelCase .Name}}) updateFromBodyXML(ctx context.Context, res xmld
 		{{- end}}
 		{{- end}}
 		{{- end}}
+		{{- end}}
 	}
+	{{- end}}
 	{{- end}}
 	{{- end}}
 	{{- end}}
@@ -735,7 +745,7 @@ func (data *{{camelCase .Name}}) fromBodyXML(ctx context.Context, res xmldot.Res
 	}
 	{{- else if eq .Type "StringList"}}
 	if value := helpers.GetFromXPath(res, "data" + data.getXPath() + "/{{.XPath}}"); value.Exists() {
-		data.{{toGoName .TfName}} = helpers.GetStringListXML(value.Array())
+		data.{{toGoName .TfName}} = {{- if .ReadFilter}}helpers.{{.ReadFilter}}XML(value.Array()){{else}}helpers.GetStringListXML(value.Array()){{end}}
 	} else {
 		data.{{toGoName .TfName}} = types.ListNull(types.StringType)
 	}
@@ -791,7 +801,7 @@ func (data *{{camelCase .Name}}) fromBodyXML(ctx context.Context, res xmldot.Res
 			}
 			{{- else if eq .Type "StringList"}}
 			if cValue := helpers.GetFromXPath(v, "{{.XPath}}"); cValue.Exists() {
-				item.{{toGoName .TfName}} = helpers.GetStringListXML(cValue.Array())
+				item.{{toGoName .TfName}} = {{- if .ReadFilter}}helpers.{{.ReadFilter}}XML(cValue.Array()){{else}}helpers.GetStringListXML(cValue.Array()){{end}}
 			} else {
 				item.{{toGoName .TfName}} = types.ListNull(types.StringType)
 			}
@@ -847,7 +857,7 @@ func (data *{{camelCase .Name}}) fromBodyXML(ctx context.Context, res xmldot.Res
 					}
 					{{- else if eq .Type "StringList"}}
 					if ccValue := helpers.GetFromXPath(cv, "{{.XPath}}"); ccValue.Exists() {
-						cItem.{{toGoName .TfName}} = helpers.GetStringListXML(ccValue.Array())
+						cItem.{{toGoName .TfName}} = {{- if .ReadFilter}}helpers.{{.ReadFilter}}XML(ccValue.Array()){{else}}helpers.GetStringListXML(ccValue.Array()){{end}}
 					} else {
 						cItem.{{toGoName .TfName}} = types.ListNull(types.StringType)
 					}
@@ -926,7 +936,7 @@ func (data *{{camelCase .Name}}Data) fromBodyXML(ctx context.Context, res xmldot
 	}
 	{{- else if eq .Type "StringList"}}
 	if value := helpers.GetFromXPath(res, "data" + data.getXPath() + "/{{.XPath}}"); value.Exists() {
-		data.{{toGoName .TfName}} = helpers.GetStringListXML(value.Array())
+		data.{{toGoName .TfName}} = {{- if .ReadFilter}}helpers.{{.ReadFilter}}XML(value.Array()){{else}}helpers.GetStringListXML(value.Array()){{end}}
 	} else {
 		data.{{toGoName .TfName}} = types.ListNull(types.StringType)
 	}
@@ -982,7 +992,7 @@ func (data *{{camelCase .Name}}Data) fromBodyXML(ctx context.Context, res xmldot
 			}
 			{{- else if eq .Type "StringList"}}
 			if cValue := helpers.GetFromXPath(v, "{{.XPath}}"); cValue.Exists() {
-				item.{{toGoName .TfName}} = helpers.GetStringListXML(cValue.Array())
+				item.{{toGoName .TfName}} = {{- if .ReadFilter}}helpers.{{.ReadFilter}}XML(cValue.Array()){{else}}helpers.GetStringListXML(cValue.Array()){{end}}
 			} else {
 				item.{{toGoName .TfName}} = types.ListNull(types.StringType)
 			}
@@ -1038,7 +1048,7 @@ func (data *{{camelCase .Name}}Data) fromBodyXML(ctx context.Context, res xmldot
 					}
 					{{- else if eq .Type "StringList"}}
 					if ccValue := helpers.GetFromXPath(cv, "{{.XPath}}"); ccValue.Exists() {
-						cItem.{{toGoName .TfName}} = helpers.GetStringListXML(ccValue.Array())
+						cItem.{{toGoName .TfName}} = {{- if .ReadFilter}}helpers.{{.ReadFilter}}XML(ccValue.Array()){{else}}helpers.GetStringListXML(ccValue.Array()){{end}}
 					} else {
 						cItem.{{toGoName .TfName}} = types.ListNull(types.StringType)
 					}

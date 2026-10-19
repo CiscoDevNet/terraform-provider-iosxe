@@ -129,7 +129,17 @@ func (data EVPNInstanceData) getXPath() string {
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
 func (data EVPNInstance) toBodyXML(ctx context.Context, config EVPNInstance) string {
-	body := netconf.Body{}
+	body := data.addToBodyXML(ctx, config, netconf.Body{})
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// addToBodyXML adds this object to an existing body instead of starting from an empty one. Bulk
+// resources use this to serialize all of their items into a single NETCONF payload.
+func (data EVPNInstance) addToBodyXML(ctx context.Context, config EVPNInstance, body netconf.Body) netconf.Body {
 	if !data.EvpnInstanceNum.IsNull() && !data.EvpnInstanceNum.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/evpn-instance-num", strconv.FormatInt(data.EvpnInstanceNum.ValueInt64(), 10))
 	}
@@ -234,11 +244,7 @@ func (data EVPNInstance) toBodyXML(ctx context.Context, config EVPNInstance) str
 	if !data.VlanBasedMulticastAdvertise.IsNull() && !data.VlanBasedMulticastAdvertise.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/vlan-based/multicast/advertise", data.VlanBasedMulticastAdvertise.ValueString())
 	}
-	bodyString, err := body.String()
-	if err != nil {
-		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
-	}
-	return bodyString
+	return body
 }
 
 // End of section. //template:end toBodyXML

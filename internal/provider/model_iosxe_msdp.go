@@ -139,7 +139,17 @@ func (data MSDPData) getXPath() string {
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
 func (data MSDP) toBodyXML(ctx context.Context, config MSDP) string {
-	body := netconf.Body{}
+	body := data.addToBodyXML(ctx, config, netconf.Body{})
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// addToBodyXML adds this object to an existing body instead of starting from an empty one. Bulk
+// resources use this to serialize all of their items into a single NETCONF payload.
+func (data MSDP) addToBodyXML(ctx context.Context, config MSDP, body netconf.Body) netconf.Body {
 	if !data.OriginatorId.IsNull() && !data.OriginatorId.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/originator-id", data.OriginatorId.ValueString())
 	}
@@ -247,11 +257,7 @@ func (data MSDP) toBodyXML(ctx context.Context, config MSDP) string {
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/vrf", cBody.Res())
 		}
 	}
-	bodyString, err := body.String()
-	if err != nil {
-		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
-	}
-	return bodyString
+	return body
 }
 
 // End of section. //template:end toBodyXML

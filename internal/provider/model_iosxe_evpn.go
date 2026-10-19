@@ -58,9 +58,10 @@ type EVPN struct {
 	Profiles                                    []EVPNProfiles `tfsdk:"profiles"`
 }
 type EVPNProfiles struct {
-	Name      types.String `tfsdk:"name"`
-	EviBase   types.Int64  `tfsdk:"evi_base"`
-	L2vniBase types.Int64  `tfsdk:"l2vni_base"`
+	Name                  types.String `tfsdk:"name"`
+	EviBase               types.Int64  `tfsdk:"evi_base"`
+	L2vniBase             types.Int64  `tfsdk:"l2vni_base"`
+	ReOriginateRouteType5 types.Bool   `tfsdk:"re_originate_route_type5"`
 }
 
 type EVPNData struct {
@@ -84,9 +85,10 @@ type EVPNData struct {
 	Profiles                                    []EVPNProfilesData `tfsdk:"profiles"`
 }
 type EVPNProfilesData struct {
-	Name      types.String `tfsdk:"name"`
-	EviBase   types.Int64  `tfsdk:"evi_base"`
-	L2vniBase types.Int64  `tfsdk:"l2vni_base"`
+	Name                  types.String `tfsdk:"name"`
+	EviBase               types.Int64  `tfsdk:"evi_base"`
+	L2vniBase             types.Int64  `tfsdk:"l2vni_base"`
+	ReOriginateRouteType5 types.Bool   `tfsdk:"re_originate_route_type5"`
 }
 
 // End of section. //template:end types
@@ -117,7 +119,17 @@ func (data EVPNData) getXPath() string {
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
 func (data EVPN) toBodyXML(ctx context.Context, config EVPN) string {
-	body := netconf.Body{}
+	body := data.addToBodyXML(ctx, config, netconf.Body{})
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// addToBodyXML adds this object to an existing body instead of starting from an empty one. Bulk
+// resources use this to serialize all of their items into a single NETCONF payload.
+func (data EVPN) addToBodyXML(ctx context.Context, config EVPN, body netconf.Body) netconf.Body {
 	if !data.ReplicationTypeIngress.IsNull() && !data.ReplicationTypeIngress.IsUnknown() {
 		if data.ReplicationTypeIngress.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/evpn/replication-type/ingress", "")
@@ -215,14 +227,17 @@ func (data EVPN) toBodyXML(ctx context.Context, config EVPN) string {
 			if !item.L2vniBase.IsNull() && !item.L2vniBase.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "l2vni-base", strconv.FormatInt(item.L2vniBase.ValueInt64(), 10))
 			}
+			if !item.ReOriginateRouteType5.IsNull() && !item.ReOriginateRouteType5.IsUnknown() {
+				if item.ReOriginateRouteType5.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "re-originate/route-type5", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "re-originate/route-type5")
+				}
+			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/l2-profile/evpn/profile/profile-name-list", cBody.Res())
 		}
 	}
-	bodyString, err := body.String()
-	if err != nil {
-		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
-	}
-	return bodyString
+	return body
 }
 
 // End of section. //template:end toBodyXML
@@ -383,6 +398,15 @@ func (data *EVPN) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		} else {
 			data.Profiles[i].L2vniBase = types.Int64Null()
 		}
+		if value := helpers.GetFromXPath(r, "re-originate/route-type5"); !data.Profiles[i].ReOriginateRouteType5.IsNull() {
+			if value.Exists() {
+				data.Profiles[i].ReOriginateRouteType5 = types.BoolValue(true)
+			} else {
+				data.Profiles[i].ReOriginateRouteType5 = types.BoolValue(false)
+			}
+		} else {
+			data.Profiles[i].ReOriginateRouteType5 = types.BoolNull()
+		}
 	}
 }
 
@@ -468,6 +492,11 @@ func (data *EVPN) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			}
 			if cValue := helpers.GetFromXPath(v, "l2vni-base"); cValue.Exists() {
 				item.L2vniBase = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "re-originate/route-type5"); cValue.Exists() {
+				item.ReOriginateRouteType5 = types.BoolValue(true)
+			} else {
+				item.ReOriginateRouteType5 = types.BoolValue(false)
 			}
 			data.Profiles = append(data.Profiles, item)
 			return true
@@ -558,6 +587,11 @@ func (data *EVPNData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			if cValue := helpers.GetFromXPath(v, "l2vni-base"); cValue.Exists() {
 				item.L2vniBase = types.Int64Value(cValue.Int())
 			}
+			if cValue := helpers.GetFromXPath(v, "re-originate/route-type5"); cValue.Exists() {
+				item.ReOriginateRouteType5 = types.BoolValue(true)
+			} else {
+				item.ReOriginateRouteType5 = types.BoolValue(false)
+			}
 			data.Profiles = append(data.Profiles, item)
 			return true
 		})
@@ -593,6 +627,9 @@ func (data *EVPN) addDeletedItemsXML(ctx context.Context, state EVPN, body strin
 				found = false
 			}
 			if found {
+				if !state.Profiles[i].ReOriginateRouteType5.IsNull() && data.Profiles[j].ReOriginateRouteType5.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/l2-profile/evpn/profile/profile-name-list%v/re-originate/route-type5", predicates))
+				}
 				if !state.Profiles[i].L2vniBase.IsNull() && data.Profiles[j].L2vniBase.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/l2-profile/evpn/profile/profile-name-list%v/l2vni-base", predicates))
 				}

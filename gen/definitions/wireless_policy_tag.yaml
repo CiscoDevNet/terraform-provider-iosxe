@@ -1,0 +1,38 @@
+---
+name: Wireless Policy Tag
+path: /Cisco-IOS-XE-wireless-wlan-cfg:wlan-cfg-data/policy-list-entries/policy-list-entry[tag-name=%s]
+no_delete_attributes: true
+test_tags: [C9800]
+doc_category: Wireless
+attributes:
+  - yang_name: tag-name
+    tf_name: tag_name
+    id: true
+    example: S2-PT-CORP
+  - yang_name: description
+    example: S2 Corporate campus policy tag
+  - yang_name: wlan-policies/wlan-policy
+    tf_name: wlan_policies
+    type: List
+    attributes:
+      - yang_name: wlan-profile-name
+        tf_name: wlan_profile_name
+        id: true
+        example: S2-WLAN-CORP
+      - yang_name: policy-profile-name
+        tf_name: policy_profile_name
+        example: S2-PP-CORP
+
+test_prerequisites:
+  - path: /Cisco-IOS-XE-wireless-wlan-cfg:wlan-cfg-data/wlan-cfg-entries/wlan-cfg-entry[profile-name=S2-WLAN-CORP]
+    attributes:
+      - name: profile-name
+        value: S2-WLAN-CORP
+      - name: wlan-id
+        value: 201
+      - name: apf-vap-id-data/ssid
+        value: S2-WLAN-CORP
+  - path: /Cisco-IOS-XE-wireless-wlan-cfg:wlan-cfg-data/wlan-policies/wlan-policy[policy-profile-name=S2-PP-CORP]
+    attributes:
+      - name: policy-profile-name
+        value: S2-PP-CORP

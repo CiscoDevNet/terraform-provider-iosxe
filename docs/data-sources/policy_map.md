@@ -64,6 +64,7 @@ Read-Only:
 - `police_cir` (Number) Committed information rate
 - `police_cir_conform_transmit` (Boolean) transmit packet
 - `police_cir_exceed_drop` (Boolean) drop packet
+- `police_cir_exceed_transmit` (Boolean) transmit packet
 - `police_pir` (Number) Peak Information Rate
 - `police_pir_be` (Number) Excess burst
 - `police_rate_percent` (Number)
