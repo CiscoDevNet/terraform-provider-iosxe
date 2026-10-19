@@ -154,10 +154,10 @@ type InterfaceTunnelIpNhrpMaps struct {
 	DestIpv4  types.String                         `tfsdk:"dest_ipv4"`
 	NbmaIpv4s []InterfaceTunnelIpNhrpMapsNbmaIpv4s `tfsdk:"nbma_ipv4s"`
 }
-type InterfaceTunnelIpNhrpMapsNbmaIpv4s struct {
+type InterfaceTunnelIpNhrpNhsNbmaIpv4s struct {
 	Ipv4 types.String `tfsdk:"ipv4"`
 }
-type InterfaceTunnelIpNhrpNhsNbmaIpv4s struct {
+type InterfaceTunnelIpNhrpMapsNbmaIpv4s struct {
 	Ipv4 types.String `tfsdk:"ipv4"`
 }
 
@@ -277,10 +277,10 @@ type InterfaceTunnelIpNhrpMapsData struct {
 	DestIpv4  types.String                             `tfsdk:"dest_ipv4"`
 	NbmaIpv4s []InterfaceTunnelIpNhrpMapsNbmaIpv4sData `tfsdk:"nbma_ipv4s"`
 }
-type InterfaceTunnelIpNhrpMapsNbmaIpv4sData struct {
+type InterfaceTunnelIpNhrpNhsNbmaIpv4sData struct {
 	Ipv4 types.String `tfsdk:"ipv4"`
 }
-type InterfaceTunnelIpNhrpNhsNbmaIpv4sData struct {
+type InterfaceTunnelIpNhrpMapsNbmaIpv4sData struct {
 	Ipv4 types.String `tfsdk:"ipv4"`
 }
 
