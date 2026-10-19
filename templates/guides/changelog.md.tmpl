@@ -10,9 +10,16 @@ description: |-
 ## Unreleased
 
 - BREAKING CHANGE: Replace `ip_nhrp_maps.nbma_ipv4` with the nested list `ip_nhrp_maps.nbma_ipv4s` (keyed on `ipv4`, matching `ip_nhrp_nhs.nbma_ipv4s`) in `iosxe_interface_tunnel` resource and data source. In YANG, `map/dest-ipv4/nbma-ipv4` is a list keyed on `nbma-ipv4`; modelling it as a single value meant changing the NBMA address left the old entry on the device (causing perpetual plan drift) and removing it failed with `invalid-value`. `nbma_ipv4s` is required on each `ip_nhrp_maps` entry because IOS-XE rejects a map without an NBMA address. Existing configurations must change `nbma_ipv4 = "X"` to `nbma_ipv4s = [{ ipv4 = "X" }]`
+- Add `ip_nhrp_nhs.nbma_ipv4s`, `ip_nhrp_map_multicast_dynamic`, and `ip_nhrp_map_multicast_nbma_ipv4` attributes to `iosxe_interface_tunnel` resource and data source for NHRP NHS NBMA address and dynamic multicast map support
+- Add `iosxe_wireless_system` resource and data source
+- Add `iosxe_wireless_policy_profile` resource and data source for C9800 wireless policy profile configuration, including AAA override, NAC, session/idle timeouts, exclusion list timeout, VLAN assignment, ACLs, QoS service policies, static IP mobility, DHCP/HTTP TLV caching, AVC flow monitors, and mobility anchors
+- Add `iosxe_wireless_policy_tag` resource and data source for C9800 wireless policy tag configuration, mapping WLAN profiles to policy profiles
+- Add `iosxe_wireless_rf_tag` resource and data source for C9800 RF tags mapping 2.4 GHz, 5 GHz, and 6 GHz RF profiles
+- Add `iosxe_wireless_site_tag` resource and data source
 - Add wireless YANG model support (wlan, rf, site, flex, mesh, general, ap profiles)
 - Add `iosxe_wireless_wlan_profile` resource and data source for managing C9800 WLAN profiles
 - Add `iosxe_wireless_rf_profile` resource and data source
+- Add `iosxe_wireless_ap_join_profile` resource and data source for C9800 AP join profiles
 - Add `iosxe_crypto_gdoi` resource and data source for GET VPN GDOI group configuration (`crypto gdoi group`), including key server (server local address, rekey, SA IPsec, redundancy, PFS, G-IKEv2) and group member (client protocol gdoi/gikev2, bypass-policy, PFS, fail-close revert, recovery-check interval, registration interface, rekey encryption/hash ciphers, transform-sets, transport-encrypt-key, status active-sa track)
 - Add `iosxe_crypto_map_gdoi` resource and data source for GET VPN crypto map GDOI binding (`crypto map <name> <seq> gdoi / set group <group>`)
 - Add `authentication_local_rsa_sig`, `authentication_remote_rsa_sig`, `authentication_local_ecdsa_sig`, `authentication_remote_ecdsa_sig`, `pki_trustpoints`, and `match_certificate_maps` attributes to `iosxe_crypto_ikev2_profile` resource and data source for PKI certificate-based authentication support
