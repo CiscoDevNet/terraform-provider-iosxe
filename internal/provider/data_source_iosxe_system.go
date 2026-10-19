@@ -764,7 +764,7 @@ func (d *SystemDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 							Computed:            true,
 						},
 						"interface_protocol": schema.StringAttribute{
-							MarkdownDescription: "Tracking protocol",
+							MarkdownDescription: "Tracking protocol. `ip` and `ipv6` require `interface_routing = true`; IOS-XE rejects them on their own.",
 							Computed:            true,
 						},
 						"interface_routing": schema.BoolAttribute{

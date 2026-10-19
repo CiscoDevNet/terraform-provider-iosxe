@@ -929,7 +929,7 @@ func (r *SystemResource) Schema(ctx context.Context, req resource.SchemaRequest,
 							Optional:            true,
 						},
 						"interface_protocol": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Tracking protocol").AddStringEnumDescription("ip", "ipv6", "line-protocol").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Tracking protocol. `ip` and `ipv6` require `interface_routing = true`; IOS-XE rejects them on their own.").AddStringEnumDescription("ip", "ipv6", "line-protocol").String,
 							Optional:            true,
 							Validators: []validator.String{
 								stringvalidator.OneOf("ip", "ipv6", "line-protocol"),

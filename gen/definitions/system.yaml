@@ -652,7 +652,7 @@ attributes:
         example: GigabitEthernet1
       - yang_name: track-type/interface-case/interface/protocol
         xpath: interface/protocol
-        description: Tracking protocol
+        description: Tracking protocol. `ip` and `ipv6` require `interface_routing = true`; IOS-XE rejects them on their own.
         example: line-protocol
       - yang_name: track-type/interface-case/interface/routing
         xpath: interface/routing
