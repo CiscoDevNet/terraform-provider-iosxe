@@ -181,7 +181,7 @@ func (r *InterfaceHSRPResource) Schema(ctx context.Context, req resource.SchemaR
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"group_number": schema.Int64Attribute{
-							MarkdownDescription: helpers.NewAttributeDescription("HSRP group number").AddIntegerRangeDescription(0, 4095).String,
+							MarkdownDescription: helpers.NewAttributeDescription("HSRP group number. `0`-`255` with HSRP version 1, `0`-`4095` with version 2.").AddIntegerRangeDescription(0, 4095).String,
 							Required:            true,
 							Validators: []validator.Int64{
 								int64validator.Between(0, 4095),

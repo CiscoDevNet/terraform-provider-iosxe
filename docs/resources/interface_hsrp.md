@@ -99,7 +99,7 @@ resource "iosxe_interface_hsrp" "example" {
 
 Required:
 
-- `group_number` (Number) HSRP group number
+- `group_number` (Number) HSRP group number. `0`-`255` with HSRP version 1, `0`-`4095` with version 2.
   - Range: `0`-`4095`
 
 Optional:

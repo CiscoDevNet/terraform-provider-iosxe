@@ -122,7 +122,7 @@ func (d *InterfaceHSRPDataSource) Schema(ctx context.Context, req datasource.Sch
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"group_number": schema.Int64Attribute{
-							MarkdownDescription: "HSRP group number",
+							MarkdownDescription: "HSRP group number. `0`-`255` with HSRP version 1, `0`-`4095` with version 2.",
 							Computed:            true,
 						},
 						"authentication_word": schema.StringAttribute{

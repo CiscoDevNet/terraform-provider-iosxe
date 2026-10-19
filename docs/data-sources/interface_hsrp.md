@@ -54,7 +54,7 @@ Read-Only:
 - `authentication_text` (String, Sensitive) Plain text authentication string
 - `authentication_word` (String, Sensitive) Authentication word (plain text)
 - `follow` (String) Name of HSRP group to follow
-- `group_number` (Number) HSRP group number
+- `group_number` (Number) HSRP group number. `0`-`255` with HSRP version 1, `0`-`4095` with version 2.
 - `ip` (Boolean) Enable HSRP and set the virtual IP address
 - `ip_address` (String) Virtual IPv4 address
 - `ip_secondary_addresses` (Attributes List) Secondary virtual IPv4 addresses (see [below for nested schema](#nestedatt--standby_list--ip_secondary_addresses))

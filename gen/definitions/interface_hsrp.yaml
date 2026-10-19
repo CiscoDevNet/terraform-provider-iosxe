@@ -86,7 +86,7 @@ attributes:
       - yang_name: group-number
         tf_name: group_number
         id: true
-        description: HSRP group number
+        description: HSRP group number. `0`-`255` with HSRP version 1, `0`-`4095` with version 2.
         example: 10
       - yang_name: authentication/auth/word
         xpath: authentication/word
