@@ -24,6 +24,7 @@ import (
 	"context"
 	"fmt"
 	"regexp"
+	"slices"
 	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
@@ -64,7 +65,7 @@ func (r *WirelessSiteTagResource) Metadata(_ context.Context, req resource.Metad
 func (r *WirelessSiteTagResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This resource can manage the Wireless Site Tag configuration.",
+		MarkdownDescription: "This resource can manage the Wireless Site Tag configuration. The device's built-in `default-site-tag` cannot be deleted: destroying it only removes the attributes Terraform configured, which reverts them like the matching `no` commands (a description is cleared).",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -318,6 +319,11 @@ func (r *WirelessSiteTagResource) Delete(ctx context.Context, req resource.Delet
 
 	if device.Managed {
 		deleteMode := "all"
+		// Built-in objects cannot be deleted from the device; only remove the configured attributes.
+		builtin := slices.Contains([]string{"default-site-tag"}, state.SiteTagName.ValueString())
+		if builtin {
+			deleteMode = "attributes"
+		}
 
 		// NETCONF - Serialize write operations
 		locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, true)
@@ -336,6 +342,9 @@ func (r *WirelessSiteTagResource) Delete(ctx context.Context, req resource.Delet
 			}
 		} else {
 			body := state.addDeletePathsXML(ctx, "")
+			if builtin {
+				body = state.addBuiltinDeletePathsXML(ctx, "")
+			}
 
 			if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
 				resp.Diagnostics.AddError("Client Error", err.Error())

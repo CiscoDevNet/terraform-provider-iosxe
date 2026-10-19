@@ -1,5 +1,6 @@
 ## Unreleased
 
+- Fix `terraform destroy` failing on the C9800's built-in wireless objects (`default-site-tag`, `default-rf-tag`, `default-policy-profile`, `default-policy-tag`, `default-ap-profile`, `default-rf-profile-6ghz` and the six pre-configured `*_Client_Density_*` RF profiles), which the controller refuses to delete. Destroying one now removes only the attributes Terraform configured, the same as the matching `no` commands, and leaves the object in place; `status` and `band` on `default-rf-profile-6ghz` are left as-is so destroy never disables it, and the read-only pre-configured RF profiles are only removed from state. Add the `builtin_objects`, `builtin_readonly_objects` and `builtin_keep` definition options that implement this
 - Add `ip_nhrp_nhs.nbma_ipv4s`, `ip_nhrp_map_multicast_dynamic`, and `ip_nhrp_map_multicast_nbma_ipv4` attributes to `iosxe_interface_tunnel` resource and data source for NHRP NHS NBMA address and dynamic multicast map support
 - Add `iosxe_wireless_system` resource and data source
 - Add `iosxe_wireless_policy_profile` resource and data source for C9800 wireless policy profile configuration, including AAA override, NAC, session/idle timeouts, exclusion list timeout, VLAN assignment, ACLs, QoS service policies, static IP mobility, DHCP/HTTP TLV caching, AVC flow monitors, and mobility anchors
