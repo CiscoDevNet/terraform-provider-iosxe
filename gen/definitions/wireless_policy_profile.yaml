@@ -1,0 +1,116 @@
+---
+name: Wireless Policy Profile
+path: /Cisco-IOS-XE-wireless-wlan-cfg:wlan-cfg-data/wlan-policies/wlan-policy[policy-profile-name=%s]
+no_delete_attributes: true
+test_tags: [C9800]
+doc_category: Wireless
+attributes:
+  - yang_name: policy-profile-name
+    tf_name: policy_profile_name
+    id: true
+    example: S2-PP-CORP
+  - yang_name: description
+    example: S2 Corporate users
+  - yang_name: status
+    example: true
+  - yang_name: interface-name
+    tf_name: vlan
+    example: "100"
+  - yang_name: accounting-list
+    tf_name: accounting_list
+    example: ""
+    exclude_test: true
+  - yang_name: aaa-policy-params/aaa-override
+    tf_name: aaa_override
+    example: true
+  - yang_name: aaa-policy-params/nac
+    tf_name: nac
+    example: true
+  - yang_name: aaa-policy-params/nac-type
+    tf_name: nac_type
+    type: String
+    enum_values:
+      - nac-support-radius
+    example: nac-support-radius
+  - yang_name: wlan-timeout/session-timeout
+    tf_name: session_timeout
+    example: 3600
+  - yang_name: wlan-timeout/idle-timeout
+    tf_name: idle_timeout
+    example: 600
+  - yang_name: blacklist-params/blacklist-timeout
+    tf_name: exclusionlist_timeout
+    example: 180
+  - yang_name: wlan-acl/ipv4-acl
+    tf_name: ipv4_acl
+    example: ""
+    exclude_test: true
+  - yang_name: wlan-acl/ipv6-acl
+    tf_name: ipv6_acl
+    example: ""
+    exclude_test: true
+  - yang_name: per-ssid-qos/ingress-service-name
+    tf_name: service_policy_input
+    example: ""
+    exclude_test: true
+  - yang_name: per-ssid-qos/egress-service-name
+    tf_name: service_policy_output
+    example: ""
+    exclude_test: true
+  - yang_name: static-ip-mobility/is-static-ip-mobility
+    tf_name: static_ip_mobility
+    example: true
+  - yang_name: wlan-local-profiling/dhcp-tlv-caching
+    tf_name: dhcp_tlv_caching
+    example: true
+  - yang_name: wlan-local-profiling/http-tlv-caching
+    tf_name: http_tlv_caching
+    example: true
+  - yang_name: avc-ipv4-fm-ingress-entries/avc-ipv4-fm-ingress-entry
+    tf_name: ipv4_flow_monitors_input
+    type: List
+    attributes:
+      - yang_name: name
+        id: true
+        example: S2-AVC-MON-IN
+  - yang_name: avc-ipv4-fm-egress-entries/avc-ipv4-fm-egress-entry
+    tf_name: ipv4_flow_monitors_output
+    type: List
+    attributes:
+      - yang_name: name
+        id: true
+        example: S2-AVC-MON-OUT
+  - yang_name: guest-mm-db-export-entries/guest-mm-db-export-entry
+    tf_name: mobility_anchors
+    type: List
+    # Excluded from tests: the controller rejects an anchor unless a mobility
+    # peer is configured, and the mobility YANG model is not loaded here.
+    exclude_test: true
+    attributes:
+      - yang_name: ip
+        id: true
+        example: 192.0.2.10
+        exclude_test: true
+      - yang_name: anchor-priority
+        tf_name: priority
+        type: String
+        enum_values:
+          - export-anchor-primary
+          - export-anchor-secondary
+          - export-anchor-tertiary
+        example: export-anchor-primary
+        exclude_test: true
+
+test_prerequisites:
+  - path: /Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:monitor[name=S2-AVC-MON-IN]
+    attributes:
+      - name: name
+        value: S2-AVC-MON-IN
+      - name: record/wireless/avc/basic
+        value: ""
+  - path: /Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:monitor[name=S2-AVC-MON-OUT]
+    attributes:
+      - name: name
+        value: S2-AVC-MON-OUT
+      - name: record/wireless/avc/basic
+        value: ""
