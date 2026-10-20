@@ -24,6 +24,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"slices"
 
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -600,6 +601,15 @@ func (r *{{camelCase .Name}}Resource) Delete(ctx context.Context, req resource.D
 		return
 	}
 
+	{{- if len .BuiltinReadonlyObjects}}
+	// Read-only built-in objects can be neither deleted nor modified; only remove them from state.
+	if slices.Contains([]string{ {{range .BuiltinReadonlyObjects}}"{{.}}", {{end}} }, {{range .Attributes}}{{if .Id}}state.{{toGoName .TfName}}.ValueString(){{end}}{{end}}) {
+		tflog.Debug(ctx, fmt.Sprintf("%s: Read-only built-in object, removing from state only", state.Id.ValueString()))
+		resp.State.RemoveResource(ctx)
+		return
+	}
+	{{- end}}
+
 	if device.Managed {
 		{{- if or .DefaultDeleteAttributes .NoDelete}}
 		deleteMode := "attributes"
@@ -610,6 +620,13 @@ func (r *{{camelCase .Name}}Resource) Delete(ctx context.Context, req resource.D
 		if state.DeleteMode.ValueString() == "all" {
 			deleteMode = "all"
 		} else if state.DeleteMode.ValueString() == "attributes" {
+			deleteMode = "attributes"
+		}
+		{{- end}}
+		{{- if len .BuiltinObjects}}
+		// Built-in objects cannot be deleted from the device; only remove the configured attributes.
+		builtin := slices.Contains([]string{ {{range .BuiltinObjects}}"{{.}}", {{end}} }, {{range .Attributes}}{{if .Id}}state.{{toGoName .TfName}}.ValueString(){{end}}{{end}})
+		if builtin {
 			deleteMode = "attributes"
 		}
 		{{- end}}
@@ -631,6 +648,11 @@ func (r *{{camelCase .Name}}Resource) Delete(ctx context.Context, req resource.D
 			}
 		} else {
 			body := state.addDeletePathsXML(ctx, "")
+			{{- if len .BuiltinObjects}}
+			if builtin {
+				body = state.addBuiltinDeletePathsXML(ctx, "")
+			}
+			{{- end}}
 
 			if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
 				resp.Diagnostics.AddError("Client Error", err.Error())

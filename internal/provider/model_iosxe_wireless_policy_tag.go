@@ -292,4 +292,26 @@ func (data *WirelessPolicyTag) addDeletePathsXML(ctx context.Context, body strin
 	return b.Res()
 }
 
+// addBuiltinDeletePathsXML is addDeletePathsXML for the device's built-in objects, which cannot be
+// deleted: it skips attributes marked builtin_keep so destroying one never disables it.
+func (data *WirelessPolicyTag) addBuiltinDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	for i := range data.WlanPolicies {
+		keys := [...]string{"wlan-profile-name"}
+		keyValues := [...]string{data.WlanPolicies[i].WlanProfileName.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/wlan-policies/wlan-policy%v", predicates))
+	}
+	if !data.Description.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/description")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
 // End of section. //template:end addDeletePathsXML

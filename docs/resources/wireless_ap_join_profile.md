@@ -3,12 +3,12 @@
 page_title: "iosxe_wireless_ap_join_profile Resource - terraform-provider-iosxe"
 subcategory: "Wireless"
 description: |-
-  This resource can manage the Wireless AP Join Profile configuration.
+  This resource can manage the Wireless AP Join Profile configuration. The device's built-in default-ap-profile cannot be deleted: destroying it only removes the attributes Terraform configured, which reverts them like the matching no commands (a description is cleared).
 ---
 
 # iosxe_wireless_ap_join_profile (Resource)
 
-This resource can manage the Wireless AP Join Profile configuration.
+This resource can manage the Wireless AP Join Profile configuration. The device's built-in `default-ap-profile` cannot be deleted: destroying it only removes the attributes Terraform configured, which reverts them like the matching `no` commands (a description is cleared).
 
 ## Example Usage
 
