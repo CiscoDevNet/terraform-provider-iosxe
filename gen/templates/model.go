@@ -518,7 +518,7 @@ func (data *{{camelCase .Name}}) updateFromBodyXML(ctx context.Context, res xmld
 	}
 	{{- else if eq .Type "StringList"}}
 	if value := helpers.GetFromXPath(res, "data" + data.getXPath() + "/{{.XPath}}"); value.Exists() && !data.{{toGoName .TfName}}.IsNull() {
-		data.{{toGoName .TfName}} = helpers.GetStringListXML(value.Array())
+		data.{{toGoName .TfName}} = {{- if .ReadFilter}}helpers.{{.ReadFilter}}XML(value.Array()){{else}}helpers.GetStringListXML(value.Array()){{end}}
 	} else {
 		data.{{toGoName .TfName}} = types.ListNull(types.StringType)
 	}
@@ -605,7 +605,7 @@ func (data *{{camelCase .Name}}) updateFromBodyXML(ctx context.Context, res xmld
 		}
 		{{- else if eq .Type "StringList"}}
 		if value := helpers.GetFromXPath(r, "{{.XPath}}"); value.Exists() && !data.{{$list}}[i].{{toGoName .TfName}}.IsNull() {
-			data.{{$list}}[i].{{toGoName .TfName}} = helpers.GetStringListXML(value.Array())
+			data.{{$list}}[i].{{toGoName .TfName}} = {{- if .ReadFilter}}helpers.{{.ReadFilter}}XML(value.Array()){{else}}helpers.GetStringListXML(value.Array()){{end}}
 		} else {
 			data.{{$list}}[i].{{toGoName .TfName}} = types.ListNull(types.StringType)
 		}
@@ -692,7 +692,7 @@ func (data *{{camelCase .Name}}) updateFromBodyXML(ctx context.Context, res xmld
 			}
 			{{- else if eq .Type "StringList"}}
 			if value := helpers.GetFromXPath(cr, "{{.XPath}}"); value.Exists() && !data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.IsNull() {
-				data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}} = helpers.GetStringListXML(value.Array())
+				data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}} = {{- if .ReadFilter}}helpers.{{.ReadFilter}}XML(value.Array()){{else}}helpers.GetStringListXML(value.Array()){{end}}
 			} else {
 				data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}} = types.ListNull(types.StringType)
 			}
@@ -769,7 +769,7 @@ func (data *{{camelCase .Name}}) fromBodyXML(ctx context.Context, res xmldot.Res
 	}
 	{{- else if eq .Type "StringList"}}
 	if value := helpers.GetFromXPath(res, "data" + data.getXPath() + "/{{.XPath}}"); value.Exists() {
-		data.{{toGoName .TfName}} = helpers.GetStringListXML(value.Array())
+		data.{{toGoName .TfName}} = {{- if .ReadFilter}}helpers.{{.ReadFilter}}XML(value.Array()){{else}}helpers.GetStringListXML(value.Array()){{end}}
 	} else {
 		data.{{toGoName .TfName}} = types.ListNull(types.StringType)
 	}
@@ -825,7 +825,7 @@ func (data *{{camelCase .Name}}) fromBodyXML(ctx context.Context, res xmldot.Res
 			}
 			{{- else if eq .Type "StringList"}}
 			if cValue := helpers.GetFromXPath(v, "{{.XPath}}"); cValue.Exists() {
-				item.{{toGoName .TfName}} = helpers.GetStringListXML(cValue.Array())
+				item.{{toGoName .TfName}} = {{- if .ReadFilter}}helpers.{{.ReadFilter}}XML(cValue.Array()){{else}}helpers.GetStringListXML(cValue.Array()){{end}}
 			} else {
 				item.{{toGoName .TfName}} = types.ListNull(types.StringType)
 			}
@@ -881,7 +881,7 @@ func (data *{{camelCase .Name}}) fromBodyXML(ctx context.Context, res xmldot.Res
 					}
 					{{- else if eq .Type "StringList"}}
 					if ccValue := helpers.GetFromXPath(cv, "{{.XPath}}"); ccValue.Exists() {
-						cItem.{{toGoName .TfName}} = helpers.GetStringListXML(ccValue.Array())
+						cItem.{{toGoName .TfName}} = {{- if .ReadFilter}}helpers.{{.ReadFilter}}XML(ccValue.Array()){{else}}helpers.GetStringListXML(ccValue.Array()){{end}}
 					} else {
 						cItem.{{toGoName .TfName}} = types.ListNull(types.StringType)
 					}
@@ -960,7 +960,7 @@ func (data *{{camelCase .Name}}Data) fromBodyXML(ctx context.Context, res xmldot
 	}
 	{{- else if eq .Type "StringList"}}
 	if value := helpers.GetFromXPath(res, "data" + data.getXPath() + "/{{.XPath}}"); value.Exists() {
-		data.{{toGoName .TfName}} = helpers.GetStringListXML(value.Array())
+		data.{{toGoName .TfName}} = {{- if .ReadFilter}}helpers.{{.ReadFilter}}XML(value.Array()){{else}}helpers.GetStringListXML(value.Array()){{end}}
 	} else {
 		data.{{toGoName .TfName}} = types.ListNull(types.StringType)
 	}
@@ -1016,7 +1016,7 @@ func (data *{{camelCase .Name}}Data) fromBodyXML(ctx context.Context, res xmldot
 			}
 			{{- else if eq .Type "StringList"}}
 			if cValue := helpers.GetFromXPath(v, "{{.XPath}}"); cValue.Exists() {
-				item.{{toGoName .TfName}} = helpers.GetStringListXML(cValue.Array())
+				item.{{toGoName .TfName}} = {{- if .ReadFilter}}helpers.{{.ReadFilter}}XML(cValue.Array()){{else}}helpers.GetStringListXML(cValue.Array()){{end}}
 			} else {
 				item.{{toGoName .TfName}} = types.ListNull(types.StringType)
 			}
@@ -1072,7 +1072,7 @@ func (data *{{camelCase .Name}}Data) fromBodyXML(ctx context.Context, res xmldot
 					}
 					{{- else if eq .Type "StringList"}}
 					if ccValue := helpers.GetFromXPath(cv, "{{.XPath}}"); ccValue.Exists() {
-						cItem.{{toGoName .TfName}} = helpers.GetStringListXML(ccValue.Array())
+						cItem.{{toGoName .TfName}} = {{- if .ReadFilter}}helpers.{{.ReadFilter}}XML(ccValue.Array()){{else}}helpers.GetStringListXML(ccValue.Array()){{end}}
 					} else {
 						cItem.{{toGoName .TfName}} = types.ListNull(types.StringType)
 					}
@@ -1353,5 +1353,52 @@ func (data *{{camelCase .Name}}) addDeletePathsXML(ctx context.Context, body str
 	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
+
+{{- if len .BuiltinObjects}}
+
+// addBuiltinDeletePathsXML is addDeletePathsXML for the device's built-in objects, which cannot be
+// deleted: it skips attributes marked builtin_keep so destroying one never disables it.
+func (data *{{camelCase .Name}}) addBuiltinDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	{{- range (xpathAttributes (reverseAttributes .Attributes))}}
+	{{- if and (or (eq .Type "StringList") (eq .Type "StringSet")) (not .NoDelete) (not .BuiltinKeep)}}
+	if !data.{{toGoName .TfName}}.IsNull() {
+		var values []string
+		data.{{toGoName .TfName}}.ElementsAs(ctx, &values, false)
+		for _, v := range values {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/{{.XPath}}[.=%v]", v))
+		}
+	}
+	{{- else if and (or (eq .Type "Int64List") (eq .Type "Int64Set")) (not .NoDelete) (not .BuiltinKeep)}}
+	if !data.{{toGoName .TfName}}.IsNull() {
+		var values []int64
+		data.{{toGoName .TfName}}.ElementsAs(ctx, &values, false)
+		for _, v := range values {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/{{.XPath}}[.=%v]", v))
+		}
+	}
+	{{- else if and (not .Reference) (not .Id) (ne .Type "List") (ne .Type "Set") (not .NoDelete) (not .BuiltinKeep)}}
+	if !data.{{toGoName .TfName}}.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/{{getDeletePath .}}")
+	}
+	{{- else if and (or (eq .Type "List") (eq .Type "Set")) (not .NoDelete) (not .BuiltinKeep)}}
+	for i := range data.{{toGoName .TfName}} {
+		{{- $list := (toGoName .TfName)}}
+		keys := [...]string{ {{range .Attributes}}{{if .Id}}"{{.XPath}}", {{end}}{{end}} }
+		keyValues := [...]string{ {{range .Attributes}}{{if .Id}}{{if eq .Type "Int64"}}strconv.FormatInt(data.{{$list}}[i].{{toGoName .TfName}}.ValueInt64(), 10), {{else if eq .Type "Bool"}}strconv.FormatBool(data.{{$list}}[i].{{toGoName .TfName}}.ValueBool()), {{else}}data.{{$list}}[i].{{toGoName .TfName}}.Value{{.Type}}(), {{end}}{{end}}{{end}} }
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/{{getDeletePath .}}%v", predicates))
+	}
+	{{- end}}
+	{{- end}}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+{{- end}}
 
 // End of section. //template:end addDeletePathsXML

@@ -204,6 +204,12 @@ func (r *EVPNResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 								int64validator.Between(4096, 16777215),
 							},
 						},
+						"re_originate_route_type5": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Re-originate route-type 5").AddDefaultValueDescription("false").String,
+							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
+						},
 					},
 				},
 			},

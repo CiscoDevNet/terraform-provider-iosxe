@@ -92,6 +92,7 @@ func (r *BGPResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				Required:            true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
+					helpers.UseAsnNormalization(),
 				},
 			},
 			"default_ipv4_unicast": schema.BoolAttribute{
@@ -119,6 +120,12 @@ func (r *BGPResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				Validators: []validator.String{
 					stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
 				},
+			},
+			"asnotation_dot": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("AS dot notation").AddDefaultValueDescription("false").String,
+				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"bgp_graceful_restart": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Graceful restart capability parameters").AddDefaultValueDescription("false").String,

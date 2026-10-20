@@ -225,6 +225,54 @@ func (r *CryptoIKEv2ProfileResource) Schema(ctx context.Context, req resource.Sc
 					},
 				},
 			},
+			"authentication_local_ecdsa_sig": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("ECDSA Signature").AddDefaultValueDescription("false").String,
+				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
+			},
+			"authentication_local_rsa_sig": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Rivest-Shamir-Adleman Signature").AddDefaultValueDescription("false").String,
+				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
+			},
+			"authentication_remote_ecdsa_sig": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("ECDSA Signature").AddDefaultValueDescription("false").String,
+				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
+			},
+			"authentication_remote_rsa_sig": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Rivest-Shamir-Adleman Signature").AddDefaultValueDescription("false").String,
+				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
+			},
+			"match_certificate_maps": schema.ListAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Peer certificate attributes").String,
+				ElementType:         types.StringType,
+				Optional:            true,
+			},
+			"pki_trustpoints": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("PKI certificate authority trustpoints").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+						},
+						"uses": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Trustpoint usage: sign or verify").AddStringEnumDescription("sign", "verify").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("sign", "verify"),
+							},
+						},
+					},
+				},
+			},
 			"config_exchange_request": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("enable config-exchange request").AddDefaultValueDescription("true").String,
 				Optional:            true,

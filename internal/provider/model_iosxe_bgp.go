@@ -45,6 +45,7 @@ type BGP struct {
 	LogNeighborChanges types.Bool   `tfsdk:"log_neighbor_changes"`
 	RouterIdLoopback   types.Int64  `tfsdk:"router_id_loopback"`
 	RouterIdIp         types.String `tfsdk:"router_id_ip"`
+	AsnotationDot      types.Bool   `tfsdk:"asnotation_dot"`
 	BgpGracefulRestart types.Bool   `tfsdk:"bgp_graceful_restart"`
 	BgpUpdateDelay     types.Int64  `tfsdk:"bgp_update_delay"`
 }
@@ -57,6 +58,7 @@ type BGPData struct {
 	LogNeighborChanges types.Bool   `tfsdk:"log_neighbor_changes"`
 	RouterIdLoopback   types.Int64  `tfsdk:"router_id_loopback"`
 	RouterIdIp         types.String `tfsdk:"router_id_ip"`
+	AsnotationDot      types.Bool   `tfsdk:"asnotation_dot"`
 	BgpGracefulRestart types.Bool   `tfsdk:"bgp_graceful_restart"`
 	BgpUpdateDelay     types.Int64  `tfsdk:"bgp_update_delay"`
 }
@@ -117,6 +119,11 @@ func (data BGP) addToBodyXML(ctx context.Context, config BGP, body netconf.Body)
 	if !data.RouterIdIp.IsNull() && !data.RouterIdIp.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/bgp/router-id/ip-id", data.RouterIdIp.ValueString())
 	}
+	if !data.AsnotationDot.IsNull() && !data.AsnotationDot.IsUnknown() {
+		if data.AsnotationDot.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/bgp/asnotation/dot", "")
+		}
+	}
 	if !data.BgpGracefulRestart.IsNull() && !data.BgpGracefulRestart.IsUnknown() {
 		if data.BgpGracefulRestart.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/bgp/gr-options/graceful-restart", "")
@@ -162,6 +169,15 @@ func (data *BGP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.RouterIdIp = types.StringNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/bgp/asnotation/dot"); !data.AsnotationDot.IsNull() {
+		if value.Exists() {
+			data.AsnotationDot = types.BoolValue(true)
+		} else {
+			data.AsnotationDot = types.BoolValue(false)
+		}
+	} else {
+		data.AsnotationDot = types.BoolNull()
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/bgp/gr-options/graceful-restart"); !data.BgpGracefulRestart.IsNull() {
 		if value.Exists() {
 			data.BgpGracefulRestart = types.BoolValue(true)
@@ -199,6 +215,11 @@ func (data *BGP) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/bgp/router-id/ip-id"); value.Exists() {
 		data.RouterIdIp = types.StringValue(value.String())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/bgp/asnotation/dot"); value.Exists() {
+		data.AsnotationDot = types.BoolValue(true)
+	} else {
+		data.AsnotationDot = types.BoolValue(false)
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/bgp/gr-options/graceful-restart"); value.Exists() {
 		data.BgpGracefulRestart = types.BoolValue(true)
 	} else {
@@ -230,6 +251,11 @@ func (data *BGPData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/bgp/router-id/ip-id"); value.Exists() {
 		data.RouterIdIp = types.StringValue(value.String())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/bgp/asnotation/dot"); value.Exists() {
+		data.AsnotationDot = types.BoolValue(true)
+	} else {
+		data.AsnotationDot = types.BoolValue(false)
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/bgp/gr-options/graceful-restart"); value.Exists() {
 		data.BgpGracefulRestart = types.BoolValue(true)
 	} else {
@@ -251,6 +277,9 @@ func (data *BGP) addDeletedItemsXML(ctx context.Context, state BGP, body string)
 	}
 	if !state.BgpGracefulRestart.IsNull() && data.BgpGracefulRestart.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/bgp/gr-options/graceful-restart")
+	}
+	if !state.AsnotationDot.IsNull() && data.AsnotationDot.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/bgp/asnotation/dot")
 	}
 	if !state.RouterIdIp.IsNull() && data.RouterIdIp.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/bgp/router-id/ip-id")
@@ -280,6 +309,9 @@ func (data *BGP) addDeletePathsXML(ctx context.Context, body string) string {
 	}
 	if !data.BgpGracefulRestart.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/bgp/gr-options/graceful-restart")
+	}
+	if !data.AsnotationDot.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/bgp/asnotation/dot")
 	}
 	if !data.RouterIdIp.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/bgp/router-id/ip-id")

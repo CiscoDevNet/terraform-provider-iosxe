@@ -116,6 +116,8 @@ resource "iosxe_interface_tunnel" "example" {
 - `ip_nat_outside` (Boolean) Outside interface for address translation
   - Default value: `false`
 - `ip_nhrp_authentication` (String) authentication string
+- `ip_nhrp_map_multicast_dynamic` (Boolean) Dynamically learn destinations from client registrations on hub. Use this for versions `17.14` and later.
+- `ip_nhrp_map_multicast_nbma_ipv4` (List of String) Static NBMA addresses for multicast mapping.
 - `ip_nhrp_maps` (Attributes List) (see [below for nested schema](#nestedatt--ip_nhrp_maps))
 - `ip_nhrp_network_id` (Number) Network identifier
   - Range: `1`-`4294967295`
@@ -235,6 +237,18 @@ Optional:
 Required:
 
 - `ipv4` (String) Protocol IP address of NHS
+
+Optional:
+
+- `nbma_ipv4s` (Attributes List) NBMA addresses of the NHS (see [below for nested schema](#nestedatt--ip_nhrp_nhs--nbma_ipv4s))
+
+<a id="nestedatt--ip_nhrp_nhs--nbma_ipv4s"></a>
+### Nested Schema for `ip_nhrp_nhs.nbma_ipv4s`
+
+Required:
+
+- `ipv4` (String) IPv4 address
+
 
 
 <a id="nestedatt--ipv6_addresses"></a>
