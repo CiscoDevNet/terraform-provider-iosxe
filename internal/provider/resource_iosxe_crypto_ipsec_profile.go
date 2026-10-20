@@ -137,27 +137,6 @@ func (r *CryptoIPSecProfileResource) Configure(_ context.Context, req resource.C
 
 // End of section. //template:end model
 
-var _ resource.ResourceWithValidateConfig = &CryptoIPSecProfileResource{}
-
-// ValidateConfig prevents emitting both the presence-only `set pfs` command
-// and the mutually exclusive `set pfs <group>` form in one NETCONF edit.
-func (r *CryptoIPSecProfileResource) ValidateConfig(ctx context.Context, req resource.ValidateConfigRequest, resp *resource.ValidateConfigResponse) {
-	var config CryptoIPSecProfile
-	resp.Diagnostics.Append(req.Config.Get(ctx, &config)...)
-	if resp.Diagnostics.HasError() || config.SetPfs.IsUnknown() || config.SetPfsGroup.IsUnknown() {
-		return
-	}
-	if config.SetPfs.IsNull() || !config.SetPfs.ValueBool() || config.SetPfsGroup.IsNull() {
-		return
-	}
-
-	resp.Diagnostics.AddAttributeError(
-		path.Root("set_pfs"),
-		"Conflicting PFS settings",
-		"Configure either set_pfs or set_pfs_group, not both.",
-	)
-}
-
 // Section below is generated&owned by "gen/generator.go". //template:begin create
 
 func (r *CryptoIPSecProfileResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
