@@ -852,4 +852,94 @@ func (data *WirelessPolicyProfile) addDeletePathsXML(ctx context.Context, body s
 	return b.Res()
 }
 
+// addBuiltinDeletePathsXML is addDeletePathsXML for the device's built-in objects, which cannot be
+// deleted: it skips attributes marked builtin_keep so destroying one never disables it.
+func (data *WirelessPolicyProfile) addBuiltinDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	for i := range data.MobilityAnchors {
+		keys := [...]string{"ip"}
+		keyValues := [...]string{data.MobilityAnchors[i].Ip.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/guest-mm-db-export-entries/guest-mm-db-export-entry%v", predicates))
+	}
+	for i := range data.Ipv4FlowMonitorsOutput {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.Ipv4FlowMonitorsOutput[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/avc-ipv4-fm-egress-entries/avc-ipv4-fm-egress-entry%v", predicates))
+	}
+	for i := range data.Ipv4FlowMonitorsInput {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.Ipv4FlowMonitorsInput[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/avc-ipv4-fm-ingress-entries/avc-ipv4-fm-ingress-entry%v", predicates))
+	}
+	if !data.HttpTlvCaching.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/wlan-local-profiling/http-tlv-caching")
+	}
+	if !data.DhcpTlvCaching.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/wlan-local-profiling/dhcp-tlv-caching")
+	}
+	if !data.StaticIpMobility.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/static-ip-mobility/is-static-ip-mobility")
+	}
+	if !data.ServicePolicyOutput.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/per-ssid-qos/egress-service-name")
+	}
+	if !data.ServicePolicyInput.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/per-ssid-qos/ingress-service-name")
+	}
+	if !data.Ipv6Acl.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/wlan-acl/ipv6-acl")
+	}
+	if !data.Ipv4Acl.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/wlan-acl/ipv4-acl")
+	}
+	if !data.ExclusionlistTimeout.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/blacklist-params/blacklist-timeout")
+	}
+	if !data.IdleTimeout.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/wlan-timeout/idle-timeout")
+	}
+	if !data.SessionTimeout.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/wlan-timeout/session-timeout")
+	}
+	if !data.NacType.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/aaa-policy-params/nac-type")
+	}
+	if !data.Nac.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/aaa-policy-params/nac")
+	}
+	if !data.AaaOverride.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/aaa-policy-params/aaa-override")
+	}
+	if !data.AccountingList.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/accounting-list")
+	}
+	if !data.Vlan.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/interface-name")
+	}
+	if !data.Status.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/status")
+	}
+	if !data.Description.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/description")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
 // End of section. //template:end addDeletePathsXML

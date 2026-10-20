@@ -1593,4 +1593,196 @@ func (data *WirelessAPJoinProfile) addDeletePathsXML(ctx context.Context, body s
 	return b.Res()
 }
 
+// addBuiltinDeletePathsXML is addDeletePathsXML for the device's built-in objects, which cannot be
+// deleted: it skips attributes marked builtin_keep so destroying one never disables it.
+func (data *WirelessAPJoinProfile) addBuiltinDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	if !data.BleScan.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ble/scan-state")
+	}
+	if !data.TcpAdjustMssSize.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/tcp-mss/tcp-adjust-mss")
+	}
+	if !data.TcpAdjustMssEnable.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/tcp-mss/adjust-mss")
+	}
+	if !data.StatsTimer.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/stats-timer/stats-timer")
+	}
+	if !data.StatisticsApRadioMonitoringSamplingInterval.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/radio-stats-monitor/sample-intvl")
+	}
+	if !data.StatisticsApRadioMonitoringEnable.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/radio-stats-monitor/enable")
+	}
+	if !data.StatisticsTrafficDistributionInterval.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/traffic-distribution/interval")
+	}
+	if !data.StatisticsTrafficDistribution.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/traffic-distribution/status")
+	}
+	if !data.StatisticsApSystemMonitoringStatsInterval.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/stats-monitor/stats-intvl")
+	}
+	if !data.StatisticsApSystemMonitoringSamplingInterval.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/stats-monitor/sample-intvl")
+	}
+	if !data.StatisticsApSystemMonitoringMemThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/stats-monitor/mem-threshold")
+	}
+	if !data.StatisticsApSystemMonitoringCpuThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/stats-monitor/cpu-threshold")
+	}
+	if !data.StatisticsApSystemMonitoringAlarmRetransmitTime.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/stats-monitor/trap-retx-time")
+	}
+	if !data.StatisticsApSystemMonitoringAlarmHoldTime.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/stats-monitor/alarm-hold-time")
+	}
+	if !data.StatisticsApSystemMonitoringAlarmEnable.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/stats-monitor/alarms-enable")
+	}
+	if !data.StatisticsApSystemMonitoringEnable.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/stats-monitor/enable")
+	}
+	if !data.RogueDetectionReportInterval.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/rogue-detection/rogue-detection-monitor-mode-report-interval")
+	}
+	if !data.RogueDetectionMinTransientTime.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/rogue-detection/ap-rogue-detection-transient-interval")
+	}
+	if !data.RogueDetectionMinRssi.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/rogue-detection/ap-rogue-detection-min-rssi")
+	}
+	if !data.RogueDetectionEnable.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/rogue-detection/ap-rogue-detection")
+	}
+	if !data.MeshProfile.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/mesh/mesh-profile-name")
+	}
+	if !data.Led.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/led-state/led-state")
+	}
+	if !data.Lag.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/lag-info/ap-lag-enabled")
+	}
+	if !data.IpDhcpFallback.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dhcp-fallback/dhcp-fallback")
+	}
+	if !data.Hyperlocation.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/hyperlocation/hyperlocation-enable")
+	}
+	if !data.Dot1xPasswordType.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/login-credentials/dot1x-password-type")
+	}
+	if !data.Dot1xPassword.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/login-credentials/dot1x-password")
+	}
+	if !data.Dot1xUsername.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/login-credentials/dot1x-username")
+	}
+	if !data.Dot1xEapType.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dot1x-eap-type-info/dot1x-eap-type")
+	}
+	if !data.Cdp.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/cdp/cdp-enable")
+	}
+	if !data.CapwapDiscoveryPublic.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/public-ip-discovery")
+	}
+	if !data.CapwapDiscoveryPrivate.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/private-ip-discovery")
+	}
+	if !data.CapwapFallback.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/backup-controllers/fallback-enabled")
+	}
+	if !data.CapwapBackupSecondaryIp.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/backup-controllers/secondary-controller-ip")
+	}
+	if !data.CapwapBackupSecondaryName.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/backup-controllers/secondary-controller-name")
+	}
+	if !data.CapwapBackupPrimaryIp.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/backup-controllers/primary-controller-ip")
+	}
+	if !data.CapwapBackupPrimaryName.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/backup-controllers/primary-controller-name")
+	}
+	if !data.CapwapTimersPrimedJoinTimeout.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/capwap-timer/primed-join-timeout")
+	}
+	if !data.CapwapTimersPrimaryDiscoveryTimeout.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/capwap-timer/primary-discovery-timeout")
+	}
+	if !data.CapwapTimersHeartbeatTimeout.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/capwap-timer/heart-beat-timeout")
+	}
+	if !data.CapwapTimersFastHeartbeatTimeout.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/capwap-timer/fast-heart-beat-timeout")
+	}
+	if !data.CapwapTimersDiscoveryTimeout.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/capwap-timer/discovery-timeout")
+	}
+	if !data.CapwapRetransmitInterval.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/retransmit-timer/interval")
+	}
+	if !data.CapwapRetransmitCount.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/retransmit-timer/count")
+	}
+	if !data.AwipsForensic.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/awips-forensic-enabled")
+	}
+	if !data.Awips.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/awips-enabled")
+	}
+	if !data.AssociationLimit.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/client-limit/max-cfg-clients")
+	}
+	if !data.Apphost.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/apphost/enable")
+	}
+	if !data.SyslogLevel.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/syslog/log-level")
+	}
+	if !data.SyslogFacility.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/syslog/facility-value")
+	}
+	if !data.SyslogHost.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/syslog/host")
+	}
+	if !data.NtpIp.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ntp-server-info/ntp-address")
+	}
+	if !data.MgmtuserSecretType.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/user-mgmt/secret-type")
+	}
+	if !data.MgmtuserSecret.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/user-mgmt/secret")
+	}
+	if !data.MgmtuserPasswordType.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/user-mgmt/password-type")
+	}
+	if !data.MgmtuserPassword.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/user-mgmt/password")
+	}
+	if !data.MgmtuserUsername.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/user-mgmt/username")
+	}
+	if !data.Ssh.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/device-mgmt/ssh")
+	}
+	if !data.Country.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ap-country/country-code")
+	}
+	if !data.CapwapWindowSize.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/capwap-window/window-size")
+	}
+	if !data.Description.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/description")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
 // End of section. //template:end addDeletePathsXML

@@ -230,4 +230,25 @@ func (data *WirelessRFTag) addDeletePathsXML(ctx context.Context, body string) s
 	return b.Res()
 }
 
+// addBuiltinDeletePathsXML is addDeletePathsXML for the device's built-in objects, which cannot be
+// deleted: it skips attributes marked builtin_keep so destroying one never disables it.
+func (data *WirelessRFTag) addBuiltinDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	if !data.RfPolicy6ghz.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dot11-6ghz-rf-prof-name")
+	}
+	if !data.RfPolicy5ghz.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dot11a-rf-profile-name")
+	}
+	if !data.RfPolicy24ghz.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dot11b-rf-profile-name")
+	}
+	if !data.Description.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/description")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
 // End of section. //template:end addDeletePathsXML

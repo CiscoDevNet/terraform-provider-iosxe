@@ -3,12 +3,12 @@
 page_title: "iosxe_wireless_rf_profile Resource - terraform-provider-iosxe"
 subcategory: "Wireless"
 description: |-
-  This resource can manage the Wireless RF Profile configuration.
+  This resource can manage the Wireless RF Profile configuration. The device's built-in default-rf-profile-6ghz cannot be deleted: destroying it only removes the attributes Terraform configured, which reverts them like the matching no commands (a description is cleared). The pre-configured Low_Client_Density_rf_24gh, High_Client_Density_rf_24gh, Typical_Client_Density_rf_24gh, Low_Client_Density_rf_5gh, High_Client_Density_rf_5gh, Typical_Client_Density_rf_5gh cannot be modified or deleted: destroying one only removes it from state.
 ---
 
 # iosxe_wireless_rf_profile (Resource)
 
-This resource can manage the Wireless RF Profile configuration.
+This resource can manage the Wireless RF Profile configuration. The device's built-in `default-rf-profile-6ghz` cannot be deleted: destroying it only removes the attributes Terraform configured, which reverts them like the matching `no` commands (a description is cleared). The pre-configured `Low_Client_Density_rf_24gh`, `High_Client_Density_rf_24gh`, `Typical_Client_Density_rf_24gh`, `Low_Client_Density_rf_5gh`, `High_Client_Density_rf_5gh`, `Typical_Client_Density_rf_5gh` cannot be modified or deleted: destroying one only removes it from state.
 
 ## Example Usage
 
