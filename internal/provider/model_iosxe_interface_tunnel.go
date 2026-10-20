@@ -108,6 +108,8 @@ type InterfaceTunnel struct {
 	IpNhrpAuthentication               types.String                               `tfsdk:"ip_nhrp_authentication"`
 	IpNhrpNetworkId                    types.Int64                                `tfsdk:"ip_nhrp_network_id"`
 	IpNhrpNhs                          []InterfaceTunnelIpNhrpNhs                 `tfsdk:"ip_nhrp_nhs"`
+	IpNhrpMapMulticastDynamic          types.Bool                                 `tfsdk:"ip_nhrp_map_multicast_dynamic"`
+	IpNhrpMapMulticastNbmaIpv4         types.List                                 `tfsdk:"ip_nhrp_map_multicast_nbma_ipv4"`
 	IpNhrpMaps                         []InterfaceTunnelIpNhrpMaps                `tfsdk:"ip_nhrp_maps"`
 	IpNhrpRedirect                     types.Bool                                 `tfsdk:"ip_nhrp_redirect"`
 	IpNhrpShortcut                     types.Bool                                 `tfsdk:"ip_nhrp_shortcut"`
@@ -145,11 +147,15 @@ type InterfaceTunnelIpv6FlowMonitors struct {
 	Direction types.String `tfsdk:"direction"`
 }
 type InterfaceTunnelIpNhrpNhs struct {
-	Ipv4 types.String `tfsdk:"ipv4"`
+	Ipv4      types.String                        `tfsdk:"ipv4"`
+	NbmaIpv4s []InterfaceTunnelIpNhrpNhsNbmaIpv4s `tfsdk:"nbma_ipv4s"`
 }
 type InterfaceTunnelIpNhrpMaps struct {
 	DestIpv4 types.String `tfsdk:"dest_ipv4"`
 	NbmaIpv4 types.String `tfsdk:"nbma_ipv4"`
+}
+type InterfaceTunnelIpNhrpNhsNbmaIpv4s struct {
+	Ipv4 types.String `tfsdk:"ipv4"`
 }
 
 type InterfaceTunnelData struct {
@@ -222,6 +228,8 @@ type InterfaceTunnelData struct {
 	IpNhrpAuthentication               types.String                                   `tfsdk:"ip_nhrp_authentication"`
 	IpNhrpNetworkId                    types.Int64                                    `tfsdk:"ip_nhrp_network_id"`
 	IpNhrpNhs                          []InterfaceTunnelIpNhrpNhsData                 `tfsdk:"ip_nhrp_nhs"`
+	IpNhrpMapMulticastDynamic          types.Bool                                     `tfsdk:"ip_nhrp_map_multicast_dynamic"`
+	IpNhrpMapMulticastNbmaIpv4         types.List                                     `tfsdk:"ip_nhrp_map_multicast_nbma_ipv4"`
 	IpNhrpMaps                         []InterfaceTunnelIpNhrpMapsData                `tfsdk:"ip_nhrp_maps"`
 	IpNhrpRedirect                     types.Bool                                     `tfsdk:"ip_nhrp_redirect"`
 	IpNhrpShortcut                     types.Bool                                     `tfsdk:"ip_nhrp_shortcut"`
@@ -259,11 +267,15 @@ type InterfaceTunnelIpv6FlowMonitorsData struct {
 	Direction types.String `tfsdk:"direction"`
 }
 type InterfaceTunnelIpNhrpNhsData struct {
-	Ipv4 types.String `tfsdk:"ipv4"`
+	Ipv4      types.String                            `tfsdk:"ipv4"`
+	NbmaIpv4s []InterfaceTunnelIpNhrpNhsNbmaIpv4sData `tfsdk:"nbma_ipv4s"`
 }
 type InterfaceTunnelIpNhrpMapsData struct {
 	DestIpv4 types.String `tfsdk:"dest_ipv4"`
 	NbmaIpv4 types.String `tfsdk:"nbma_ipv4"`
+}
+type InterfaceTunnelIpNhrpNhsNbmaIpv4sData struct {
+	Ipv4 types.String `tfsdk:"ipv4"`
 }
 
 // End of section. //template:end types
@@ -682,9 +694,30 @@ func (data InterfaceTunnel) addToBodyXML(ctx context.Context, config InterfaceTu
 			if !item.Ipv4.IsNull() && !item.Ipv4.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "ipv4", item.Ipv4.ValueString())
 			}
+			if len(item.NbmaIpv4s) > 0 {
+				NbmaIpv4sFragments := make([]string, 0, len(item.NbmaIpv4s))
+				for _, citem := range item.NbmaIpv4s {
+					ccBody := netconf.Body{}
+					if !citem.Ipv4.IsNull() && !citem.Ipv4.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "ipv4", citem.Ipv4.ValueString())
+					}
+					NbmaIpv4sFragments = append(NbmaIpv4sFragments, ccBody.Res())
+				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "nbma/ipv4", NbmaIpv4sFragments)
+			}
 			IpNhrpNhsFragments = append(IpNhrpNhsFragments, cBody.Res())
 		}
 		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/nhs/ipv4", IpNhrpNhsFragments)
+	}
+	if !data.IpNhrpMapMulticastDynamic.IsNull() && !data.IpNhrpMapMulticastDynamic.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/map/multicast/dynamic_new", data.IpNhrpMapMulticastDynamic.ValueBool())
+	}
+	if !data.IpNhrpMapMulticastNbmaIpv4.IsNull() && !data.IpNhrpMapMulticastNbmaIpv4.IsUnknown() {
+		var values []string
+		data.IpNhrpMapMulticastNbmaIpv4.ElementsAs(ctx, &values, false)
+		for _, v := range values {
+			body = helpers.AppendFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/map/multicast/nbma_ipv4", v)
+		}
 	}
 	if len(data.IpNhrpMaps) > 0 {
 		IpNhrpMapsFragments := make([]string, 0, len(data.IpNhrpMaps))
@@ -1258,6 +1291,29 @@ func (data *InterfaceTunnel) updateFromBodyXML(ctx context.Context, res xmldot.R
 		} else {
 			data.IpNhrpNhs[i].Ipv4 = types.StringNull()
 		}
+		NbmaIpv4sKeys := [...]string{"ipv4"}
+		NbmaIpv4sItems := helpers.CollectListItemsXML(r.Raw, "nbma/ipv4", NbmaIpv4sKeys[:])
+		for ci := range data.IpNhrpNhs[i].NbmaIpv4s {
+			NbmaIpv4sKeyValues := [...]string{data.IpNhrpNhs[i].NbmaIpv4s[ci].Ipv4.ValueString()}
+			cr := NbmaIpv4sItems[helpers.CompositeKey(NbmaIpv4sKeyValues[:]...)]
+			if value := helpers.GetFromXPath(cr, "ipv4"); value.Exists() && !data.IpNhrpNhs[i].NbmaIpv4s[ci].Ipv4.IsNull() {
+				data.IpNhrpNhs[i].NbmaIpv4s[ci].Ipv4 = types.StringValue(value.String())
+			} else {
+				data.IpNhrpNhs[i].NbmaIpv4s[ci].Ipv4 = types.StringNull()
+			}
+		}
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/map/multicast/dynamic_new"); !data.IpNhrpMapMulticastDynamic.IsNull() {
+		if value.Exists() {
+			data.IpNhrpMapMulticastDynamic = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.IpNhrpMapMulticastDynamic = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/map/multicast/nbma_ipv4"); value.Exists() && !data.IpNhrpMapMulticastNbmaIpv4.IsNull() {
+		data.IpNhrpMapMulticastNbmaIpv4 = helpers.GetStringListXML(value.Array())
+	} else {
+		data.IpNhrpMapMulticastNbmaIpv4 = types.ListNull(types.StringType)
 	}
 	IpNhrpMapsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
 	IpNhrpMapsKeys := [...]string{"dest-ipv4"}
@@ -1654,9 +1710,30 @@ func (data *InterfaceTunnel) fromBodyXML(ctx context.Context, res xmldot.Result)
 			if cValue := helpers.GetFromXPath(v, "ipv4"); cValue.Exists() {
 				item.Ipv4 = types.StringValue(cValue.String())
 			}
+			if cValue := helpers.GetFromXPath(v, "nbma/ipv4"); cValue.Exists() {
+				item.NbmaIpv4s = make([]InterfaceTunnelIpNhrpNhsNbmaIpv4s, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := InterfaceTunnelIpNhrpNhsNbmaIpv4s{}
+					if ccValue := helpers.GetFromXPath(cv, "ipv4"); ccValue.Exists() {
+						cItem.Ipv4 = types.StringValue(ccValue.String())
+					}
+					item.NbmaIpv4s = append(item.NbmaIpv4s, cItem)
+					return true
+				})
+			}
 			data.IpNhrpNhs = append(data.IpNhrpNhs, item)
 			return true
 		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/map/multicast/dynamic_new"); value.Exists() {
+		data.IpNhrpMapMulticastDynamic = types.BoolValue(value.Bool())
+	} else {
+		data.IpNhrpMapMulticastDynamic = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/map/multicast/nbma_ipv4"); value.Exists() {
+		data.IpNhrpMapMulticastNbmaIpv4 = helpers.GetStringListXML(value.Array())
+	} else {
+		data.IpNhrpMapMulticastNbmaIpv4 = types.ListNull(types.StringType)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/map/dest-ipv4"); value.Exists() {
 		data.IpNhrpMaps = make([]InterfaceTunnelIpNhrpMaps, 0)
@@ -2038,9 +2115,30 @@ func (data *InterfaceTunnelData) fromBodyXML(ctx context.Context, res xmldot.Res
 			if cValue := helpers.GetFromXPath(v, "ipv4"); cValue.Exists() {
 				item.Ipv4 = types.StringValue(cValue.String())
 			}
+			if cValue := helpers.GetFromXPath(v, "nbma/ipv4"); cValue.Exists() {
+				item.NbmaIpv4s = make([]InterfaceTunnelIpNhrpNhsNbmaIpv4sData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := InterfaceTunnelIpNhrpNhsNbmaIpv4sData{}
+					if ccValue := helpers.GetFromXPath(cv, "ipv4"); ccValue.Exists() {
+						cItem.Ipv4 = types.StringValue(ccValue.String())
+					}
+					item.NbmaIpv4s = append(item.NbmaIpv4s, cItem)
+					return true
+				})
+			}
 			data.IpNhrpNhs = append(data.IpNhrpNhs, item)
 			return true
 		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/map/multicast/dynamic_new"); value.Exists() {
+		data.IpNhrpMapMulticastDynamic = types.BoolValue(value.Bool())
+	} else {
+		data.IpNhrpMapMulticastDynamic = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/map/multicast/nbma_ipv4"); value.Exists() {
+		data.IpNhrpMapMulticastNbmaIpv4 = helpers.GetStringListXML(value.Array())
+	} else {
+		data.IpNhrpMapMulticastNbmaIpv4 = types.ListNull(types.StringType)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/map/dest-ipv4"); value.Exists() {
 		data.IpNhrpMaps = make([]InterfaceTunnelIpNhrpMapsData, 0)
@@ -2121,6 +2219,34 @@ func (data *InterfaceTunnel) addDeletedItemsXML(ctx context.Context, state Inter
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/map/dest-ipv4%v", predicates))
 		}
 	}
+	if !state.IpNhrpMapMulticastNbmaIpv4.IsNull() {
+		if data.IpNhrpMapMulticastNbmaIpv4.IsNull() {
+			var values []string
+			state.IpNhrpMapMulticastNbmaIpv4.ElementsAs(ctx, &values, false)
+			for _, v := range values {
+				b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/map/multicast/nbma_ipv4[.=%v]", v))
+			}
+		} else {
+			var dataValues, stateValues []string
+			data.IpNhrpMapMulticastNbmaIpv4.ElementsAs(ctx, &dataValues, false)
+			state.IpNhrpMapMulticastNbmaIpv4.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/map/multicast/nbma_ipv4[.=%v]", v))
+				}
+			}
+		}
+	}
+	if !state.IpNhrpMapMulticastDynamic.IsNull() && data.IpNhrpMapMulticastDynamic.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/map/multicast/dynamic_new")
+	}
 	for i := range state.IpNhrpNhs {
 		stateKeys := [...]string{"ipv4"}
 		stateKeyValues := [...]string{state.IpNhrpNhs[i].Ipv4.ValueString()}
@@ -2144,6 +2270,36 @@ func (data *InterfaceTunnel) addDeletedItemsXML(ctx context.Context, state Inter
 				found = false
 			}
 			if found {
+				for ci := range state.IpNhrpNhs[i].NbmaIpv4s {
+					cstateKeys := [...]string{"ipv4"}
+					cstateKeyValues := [...]string{state.IpNhrpNhs[i].NbmaIpv4s[ci].Ipv4.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.IpNhrpNhs[i].NbmaIpv4s[ci].Ipv4.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.IpNhrpNhs[j].NbmaIpv4s {
+						found = true
+						if state.IpNhrpNhs[i].NbmaIpv4s[ci].Ipv4.ValueString() != data.IpNhrpNhs[j].NbmaIpv4s[cj].Ipv4.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/nhs/ipv4%v/nbma/ipv4%v", predicates, cpredicates))
+					}
+				}
 				break
 			}
 		}
@@ -2619,6 +2775,16 @@ func (data *InterfaceTunnel) addDeletePathsXML(ctx context.Context, body string)
 		}
 
 		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/map/dest-ipv4%v", predicates))
+	}
+	if !data.IpNhrpMapMulticastNbmaIpv4.IsNull() {
+		var values []string
+		data.IpNhrpMapMulticastNbmaIpv4.ElementsAs(ctx, &values, false)
+		for _, v := range values {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/map/multicast/nbma_ipv4[.=%v]", v))
+		}
+	}
+	if !data.IpNhrpMapMulticastDynamic.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/map/multicast/dynamic_new")
 	}
 	for i := range data.IpNhrpNhs {
 		keys := [...]string{"ipv4"}

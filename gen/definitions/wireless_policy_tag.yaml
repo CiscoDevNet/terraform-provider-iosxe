@@ -3,6 +3,8 @@ name: Wireless Policy Tag
 path: /Cisco-IOS-XE-wireless-wlan-cfg:wlan-cfg-data/policy-list-entries/policy-list-entry[tag-name=%s]
 no_delete_attributes: true
 test_tags: [C9800]
+builtin_objects:
+  - default-policy-tag
 doc_category: Wireless
 attributes:
   - yang_name: tag-name

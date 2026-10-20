@@ -947,4 +947,113 @@ func (data *WirelessRFProfile) addDeletePathsXML(ctx context.Context, body strin
 	return b.Res()
 }
 
+// addBuiltinDeletePathsXML is addDeletePathsXML for the device's built-in objects, which cannot be
+// deleted: it skips attributes marked builtin_keep so destroying one never disables it.
+func (data *WirelessRFProfile) addBuiltinDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	if !data.TrapThresholdNoise.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/trap-threshold-noise")
+	}
+	if !data.TrapThresholdInterference.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/trap-threshold-interference")
+	}
+	if !data.TrapThresholdClients.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/trap-threshold-clients")
+	}
+	if !data.TxPowerMin.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/tx-power-min")
+	}
+	if !data.TxPowerMax.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/tx-power-max")
+	}
+	if !data.TxPowerV1Threshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/tx-power-v1-threshold")
+	}
+	if !data.MaxClients.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/max-radio-clients")
+	}
+	if !data.LoadBalancingDenial.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/load-balancing-denial-count")
+	}
+	if !data.LoadBalancingWindow.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/load-balancing-window")
+	}
+	if !data.CoverageLevelGlobal.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/min-num-clients")
+	}
+	if !data.CoverageVoiceRssiThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/coverage-voice-packet-rssi-threshold")
+	}
+	if !data.CoverageDataRssiThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/coverage-data-packet-rssi-threshold")
+	}
+	for i := range data.DcaAllowedChannels {
+		keys := [...]string{"channel"}
+		keyValues := [...]string{strconv.FormatInt(data.DcaAllowedChannels[i].Channel.ValueInt64(), 10)}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/rf-dca-allowed-channels/rf-dca-allowed-channel%v", predicates))
+	}
+	if !data.BandSelectExpireSuppression.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/band-select-age-out-suppression")
+	}
+	if !data.BandSelectExpireDualBand.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/band-select-age-out-dual-band")
+	}
+	if !data.BandSelectCycleThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/band-select-cycle-threshold")
+	}
+	if !data.BandSelectCycleCount.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/band-select-cycle-count")
+	}
+	if !data.BandSelectClientRssi.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/band-select-client-rssi")
+	}
+	if !data.DataRate54m.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/data-rate-54m")
+	}
+	if !data.DataRate48m.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/data-rate-48m")
+	}
+	if !data.DataRate36m.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/data-rate-36m")
+	}
+	if !data.DataRate24m.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/data-rate-24m")
+	}
+	if !data.DataRate18m.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/data-rate-18m")
+	}
+	if !data.DataRate12m.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/data-rate-12m")
+	}
+	if !data.DataRate9m.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/data-rate-9m")
+	}
+	if !data.DataRate6m.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/data-rate-6m")
+	}
+	if !data.DataRate11m.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/data-rate-11m")
+	}
+	if !data.DataRate55m.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/data-rate-5-5m")
+	}
+	if !data.DataRate2m.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/data-rate-2m")
+	}
+	if !data.DataRate1m.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/data-rate-1m")
+	}
+	if !data.Description.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/description")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
 // End of section. //template:end addDeletePathsXML

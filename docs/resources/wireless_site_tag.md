@@ -3,12 +3,12 @@
 page_title: "iosxe_wireless_site_tag Resource - terraform-provider-iosxe"
 subcategory: "Wireless"
 description: |-
-  This resource can manage the Wireless Site Tag configuration.
+  This resource can manage the Wireless Site Tag configuration. The device's built-in default-site-tag cannot be deleted: destroying it only removes the attributes Terraform configured, which reverts them like the matching no commands (a description is cleared).
 ---
 
 # iosxe_wireless_site_tag (Resource)
 
-This resource can manage the Wireless Site Tag configuration.
+This resource can manage the Wireless Site Tag configuration. The device's built-in `default-site-tag` cannot be deleted: destroying it only removes the attributes Terraform configured, which reverts them like the matching `no` commands (a description is cleared).
 
 ## Example Usage
 
