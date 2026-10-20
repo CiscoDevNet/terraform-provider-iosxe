@@ -33,6 +33,7 @@ resource "iosxe_bgp" "example" {
 ### Optional
 
 - `asnotation_dot` (Boolean) AS dot notation
+  - Default value: `false`
 - `bgp_graceful_restart` (Boolean) Graceful restart capability parameters
   - Default value: `false`
 - `bgp_update_delay` (Number) Set the max initial delay for sending update

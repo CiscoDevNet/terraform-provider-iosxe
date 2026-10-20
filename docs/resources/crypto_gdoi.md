@@ -41,21 +41,33 @@ resource "iosxe_crypto_gdoi" "example" {
 - `client_bypass_policy` (Boolean) Allow group-key management traffic sent to this GM only
   - Default value: `true`
 - `client_fail_close_revert` (Boolean) Revert to Fail-Close policy in case of Registration Failure
+  - Default value: `false`
 - `client_pfs` (Boolean) Enable/Disable PFS on Group Member - by default PFS is enabled
+  - Default value: `false`
 - `client_protocol_gdoi` (Boolean) Use GDOI (ISAKMP) Protocol for Registration and Rekey
+  - Default value: `false`
 - `client_protocol_gikev2` (String) Use G-IKEv2 Protocol for Registration and Rekey - accepts the IKEv2 profile name
 - `client_recovery_check_interval` (Number) Waiting period in seconds between consecutive recovery registrations
   - Range: `100`-`1000`
 - `client_registration_interface` (String) Set the group client management/register interface
 - `client_rekey_encryption_3des_cbc` (Boolean) Accept 3DES-CBC cipher for rekey
+  - Default value: `false`
 - `client_rekey_encryption_aes_128` (Boolean) Accept 128-bit AES cipher for rekey
+  - Default value: `false`
 - `client_rekey_encryption_aes_192` (Boolean) Accept 192-bit AES cipher for rekey
+  - Default value: `false`
 - `client_rekey_encryption_aes_256` (Boolean) Accept 256-bit AES cipher for rekey
+  - Default value: `false`
 - `client_rekey_encryption_des_cbc` (Boolean) Accept DES in CBC mode cipher for rekey
+  - Default value: `false`
 - `client_rekey_hash_sha` (Boolean) Accept SHA hash for rekey
+  - Default value: `false`
 - `client_rekey_hash_sha256` (Boolean) Accept SHA-256 hash for rekey
+  - Default value: `false`
 - `client_rekey_hash_sha384` (Boolean) Accept SHA-384 hash for rekey
+  - Default value: `false`
 - `client_rekey_hash_sha512` (Boolean) Accept SHA-512 hash for rekey
+  - Default value: `false`
 - `client_status_active_sa_track` (Number) Enable stub tracking object for TEK SA with positive remaining lifetime
   - Range: `1`-`1000`
 - `client_transform_sets` (List of String) Specify list of group client acceptable transform sets
@@ -66,13 +78,17 @@ resource "iosxe_crypto_gdoi" "example" {
   - Range: `0`-`9223372036854775807`
 - `server_address_ipv4` (List of String) Set the IPv4 address of the group server
 - `server_local` (Boolean) Configure GKM group server defined locally
+  - Default value: `false`
 - `server_local_address_ipv4` (String) Set ipv4 address of local server
 - `server_local_authorization_address_ipv4` (String) Set authorization by IPv4 address ACL
 - `server_local_authorization_identity` (String) Set authorization by identity
 - `server_local_gdoi` (Boolean) Enable GDOI (ISAKMP) Protocol for Registration and Rekey
+  - Default value: `false`
 - `server_local_gikev2` (String) Enable G-IKEv2 (IKEv2) Protocol for Registration and Rekey - accepts the IKEv2 profile name
 - `server_local_pfs` (Boolean) Enable PFS on Key Server - requires gikev2 to be configured
+  - Default value: `false`
 - `server_local_redundancy` (Boolean) Enter cooperative key server configuration mode
+  - Default value: `false`
 - `server_local_redundancy_local_priority` (Number) Set local server priority
   - Range: `0`-`255`
 - `server_local_redundancy_peer_address_ipv4` (List of String) Peer server IPv4 addresses
@@ -90,13 +106,16 @@ resource "iosxe_crypto_gdoi" "example" {
 - `server_local_rekey_retransmit_number` (Number) Retransmit this many times
   - Range: `0`-`255`
 - `server_local_rekey_retransmit_periodic` (Boolean) Periodically send retransmit rekeys
+  - Default value: `false`
 - `server_local_rekey_retransmit_seconds` (Number) Rekey retransmit interval in seconds
   - Range: `10`-`60`
 - `server_local_rekey_sig_hash_algorithm` (String) Set the rekey signature-hash algorithm
   - Choices: `sha`, `sha256`, `sha384`, `sha512`
 - `server_local_rekey_transport_unicast` (Boolean) Specify unicast rekey distribution
+  - Default value: `false`
 - `server_local_sa_ipsec` (Attributes List) Configure an IPsec SA (see [below for nested schema](#nestedatt--server_local_sa_ipsec))
 - `server_local_sa_receive_only` (Boolean) Configure SA to work only in inbound direction
+  - Default value: `false`
 
 ### Read-Only
 
@@ -115,12 +134,15 @@ Optional:
 - `match_address_ipv4` (String) Match ipv4 packets ACL
 - `profile` (String) Configure an ipsec profile for the SA
 - `replay_counter` (Boolean) Enable anti-replay check for single source traffic by using sequence number
+  - Default value: `false`
 - `replay_counter_window_size` (String) Set replay window size
   - Choices: `64`, `128`, `256`, `512`, `1024`
 - `replay_time` (Boolean) Enable anti-replay check for any traffic by using time
+  - Default value: `false`
 - `replay_time_window_size` (Number) Time based replay window size
   - Range: `1`-`100`
 - `tag_cts_sgt` (Boolean) Cisco Trust Security - Security Group Tag
+  - Default value: `false`
 
 ## Import
 

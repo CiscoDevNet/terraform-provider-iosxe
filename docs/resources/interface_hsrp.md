@@ -85,7 +85,9 @@ resource "iosxe_interface_hsrp" "example" {
   - Default value: `true`
 - `standby_list` (Attributes List) HSRP group configuration (see [below for nested schema](#nestedatt--standby_list))
 - `use_bia` (Boolean) HSRP uses interface's burned in address
+  - Default value: `false`
 - `use_bia_scope_interface` (Boolean) Use-bia applies to all groups on this interface or sub-interface
+  - Default value: `false`
 - `version` (String) HSRP version
   - Choices: `1`, `2`
   - Default value: `1`
@@ -112,6 +114,7 @@ Optional:
 - `authentication_word_wo_version` (Number) The write-only version of the attribute.
 - `follow` (String) Name of HSRP group to follow
 - `ip` (Boolean) Enable HSRP and set the virtual IP address
+  - Default value: `false`
 - `ip_address` (String) Virtual IPv4 address
 - `ip_secondary_addresses` (Attributes List) Secondary virtual IPv4 addresses (see [below for nested schema](#nestedatt--standby_list--ip_secondary_addresses))
 - `ipv6_addresses` (Attributes List) IPv6 global unicast prefix addresses (see [below for nested schema](#nestedatt--standby_list--ipv6_addresses))
@@ -119,6 +122,7 @@ Optional:
 - `mac_address` (String) Virtual MAC address
 - `name` (String) Redundancy name string
 - `preempt` (Boolean) Overthrow lower priority Active routers
+  - Default value: `false`
 - `preempt_delay_minimum` (Number) Minimum preempt delay in seconds
   - Range: `0`-`3600`
 - `preempt_delay_reload` (Number) Preempt delay after reload in seconds
@@ -173,6 +177,7 @@ Optional:
   - Range: `1`-`255`
   - Default value: `10`
 - `shutdown` (Boolean) Shutdown group when tracked object goes down
+  - Default value: `false`
 
 ## Import
 

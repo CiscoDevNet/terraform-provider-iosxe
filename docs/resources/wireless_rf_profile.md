@@ -116,6 +116,7 @@ resource "iosxe_wireless_rf_profile" "example" {
 - `max_clients` (Number) Configure maximum number of radio clients per Access-Point(AP) in high density environment.
   - Range: `0`-`500`
 - `status` (Boolean) Configure the Radio-Frequency(rf)-profile operational state. The value false indicates that the Radio-Frequency(rf)-profile is inactive, the value of true indicate the Radio-Frequency(rf)-profile is active
+  - Default value: `false`
 - `trap_threshold_clients` (Number) Configure threshold number of clients per Access-Point(AP) radio to trigger a trap. The trap ciscoLwappApClientThresholdNotify will be triggered once the count of clients on the AP radio reaches this limit. A value of zero indicates that the trap is disabled.
   - Range: `1`-`200`
 - `trap_threshold_interference` (Number) Configure interference threshold in (%) traps are generated when interference exceeds this value .

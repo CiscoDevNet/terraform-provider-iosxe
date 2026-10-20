@@ -117,6 +117,7 @@ resource "iosxe_interface_tunnel" "example" {
   - Default value: `false`
 - `ip_nhrp_authentication` (String) authentication string
 - `ip_nhrp_map_multicast_dynamic` (Boolean) Dynamically learn destinations from client registrations on hub. Use this for versions `17.14` and later.
+  - Default value: `true`
 - `ip_nhrp_map_multicast_nbma_ipv4` (List of String) Static NBMA addresses for multicast mapping.
 - `ip_nhrp_maps` (Attributes List) (see [below for nested schema](#nestedatt--ip_nhrp_maps))
 - `ip_nhrp_network_id` (Number) Network identifier
