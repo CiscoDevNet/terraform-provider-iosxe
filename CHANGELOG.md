@@ -1,5 +1,6 @@
 ## Unreleased
 
+- Fix `iosxe_bgp_neighbor`, `iosxe_bgp_ipv6_unicast_neighbor`, and the other BGP neighbor resources when the neighbor IPv6 address is not in canonical lowercase form (e.g. `2001:DB8::1`). IOS-XE stores the key in lowercase and NETCONF key matching is case-sensitive, so import failed with "Cannot import non-existent remote object" and a created neighbor was planned for creation again on the next run. The key is now normalized in the resource path, ID, and import
 - Add `pqc_mlkem512`, `pqc_mlkem768`, `pqc_mlkem1024`, and `pqc_optional` attributes to `iosxe_crypto_ikev2_proposal` resource and data source
 - Add `set_pfs` attribute to `iosxe_crypto_ipsec_profile` resource and data source
 - Fix BGP resources when the AS number notation differs between Terraform and the device. IOS-XE keys a BGP process by the AS in the notation it was created with, so adopting an existing asdot process without import failed with `too many /native/router/ios-bgp:bgp`, and toggling `asnotation_dot` on a managed process dropped every BGP resource from state. BGP resources now read and write under whichever notation (`1.1` or `65537`) the device stores, so both cases settle as ordinary updates
