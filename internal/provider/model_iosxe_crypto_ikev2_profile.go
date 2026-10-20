@@ -62,6 +62,12 @@ type CryptoIKEv2Profile struct {
 	Lifetime                                 types.Int64                                            `tfsdk:"lifetime"`
 	MatchAddressLocalInterfaceLoopbackLegacy types.Int64                                            `tfsdk:"match_address_local_interface_loopback_legacy"`
 	MatchAddressLocalInterfaceLoopback       []CryptoIKEv2ProfileMatchAddressLocalInterfaceLoopback `tfsdk:"match_address_local_interface_loopback"`
+	AuthenticationLocalEcdsaSig              types.Bool                                             `tfsdk:"authentication_local_ecdsa_sig"`
+	AuthenticationLocalRsaSig                types.Bool                                             `tfsdk:"authentication_local_rsa_sig"`
+	AuthenticationRemoteEcdsaSig             types.Bool                                             `tfsdk:"authentication_remote_ecdsa_sig"`
+	AuthenticationRemoteRsaSig               types.Bool                                             `tfsdk:"authentication_remote_rsa_sig"`
+	MatchCertificateMaps                     types.List                                             `tfsdk:"match_certificate_maps"`
+	PkiTrustpoints                           []CryptoIKEv2ProfilePkiTrustpoints                     `tfsdk:"pki_trustpoints"`
 	ConfigExchangeRequest                    types.Bool                                             `tfsdk:"config_exchange_request"`
 }
 type CryptoIKEv2ProfileMatchIdentityRemoteIpv4Addresses struct {
@@ -70,6 +76,10 @@ type CryptoIKEv2ProfileMatchIdentityRemoteIpv4Addresses struct {
 }
 type CryptoIKEv2ProfileMatchAddressLocalInterfaceLoopback struct {
 	LoopbackNumber types.Int64 `tfsdk:"loopback_number"`
+}
+type CryptoIKEv2ProfilePkiTrustpoints struct {
+	Name types.String `tfsdk:"name"`
+	Uses types.String `tfsdk:"uses"`
 }
 
 type CryptoIKEv2ProfileData struct {
@@ -96,6 +106,12 @@ type CryptoIKEv2ProfileData struct {
 	Lifetime                                 types.Int64                                                `tfsdk:"lifetime"`
 	MatchAddressLocalInterfaceLoopbackLegacy types.Int64                                                `tfsdk:"match_address_local_interface_loopback_legacy"`
 	MatchAddressLocalInterfaceLoopback       []CryptoIKEv2ProfileMatchAddressLocalInterfaceLoopbackData `tfsdk:"match_address_local_interface_loopback"`
+	AuthenticationLocalEcdsaSig              types.Bool                                                 `tfsdk:"authentication_local_ecdsa_sig"`
+	AuthenticationLocalRsaSig                types.Bool                                                 `tfsdk:"authentication_local_rsa_sig"`
+	AuthenticationRemoteEcdsaSig             types.Bool                                                 `tfsdk:"authentication_remote_ecdsa_sig"`
+	AuthenticationRemoteRsaSig               types.Bool                                                 `tfsdk:"authentication_remote_rsa_sig"`
+	MatchCertificateMaps                     types.List                                                 `tfsdk:"match_certificate_maps"`
+	PkiTrustpoints                           []CryptoIKEv2ProfilePkiTrustpointsData                     `tfsdk:"pki_trustpoints"`
 	ConfigExchangeRequest                    types.Bool                                                 `tfsdk:"config_exchange_request"`
 }
 type CryptoIKEv2ProfileMatchIdentityRemoteIpv4AddressesData struct {
@@ -104,6 +120,10 @@ type CryptoIKEv2ProfileMatchIdentityRemoteIpv4AddressesData struct {
 }
 type CryptoIKEv2ProfileMatchAddressLocalInterfaceLoopbackData struct {
 	LoopbackNumber types.Int64 `tfsdk:"loopback_number"`
+}
+type CryptoIKEv2ProfilePkiTrustpointsData struct {
+	Name types.String `tfsdk:"name"`
+	Uses types.String `tfsdk:"uses"`
 }
 
 // End of section. //template:end types
@@ -136,7 +156,17 @@ func (data CryptoIKEv2ProfileData) getXPath() string {
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
 func (data CryptoIKEv2Profile) toBodyXML(ctx context.Context, config CryptoIKEv2Profile) string {
-	body := netconf.Body{}
+	body := data.addToBodyXML(ctx, config, netconf.Body{})
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// addToBodyXML adds this object to an existing body instead of starting from an empty one. Bulk
+// resources use this to serialize all of their items into a single NETCONF payload.
+func (data CryptoIKEv2Profile) addToBodyXML(ctx context.Context, config CryptoIKEv2Profile, body netconf.Body) netconf.Body {
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/name", data.Name.ValueString())
 	}
@@ -239,14 +269,57 @@ func (data CryptoIKEv2Profile) toBodyXML(ctx context.Context, config CryptoIKEv2
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/match/address/local/interface-options-local/Loopback", cBody.Res())
 		}
 	}
+	if !data.AuthenticationLocalEcdsaSig.IsNull() && !data.AuthenticationLocalEcdsaSig.IsUnknown() {
+		if data.AuthenticationLocalEcdsaSig.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/authentication/local/ecdsa-sig", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/authentication/local/ecdsa-sig")
+		}
+	}
+	if !data.AuthenticationLocalRsaSig.IsNull() && !data.AuthenticationLocalRsaSig.IsUnknown() {
+		if data.AuthenticationLocalRsaSig.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/authentication/local/rsa-sig", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/authentication/local/rsa-sig")
+		}
+	}
+	if !data.AuthenticationRemoteEcdsaSig.IsNull() && !data.AuthenticationRemoteEcdsaSig.IsUnknown() {
+		if data.AuthenticationRemoteEcdsaSig.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/authentication/remote/ecdsa-sig", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/authentication/remote/ecdsa-sig")
+		}
+	}
+	if !data.AuthenticationRemoteRsaSig.IsNull() && !data.AuthenticationRemoteRsaSig.IsUnknown() {
+		if data.AuthenticationRemoteRsaSig.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/authentication/remote/rsa-sig", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/authentication/remote/rsa-sig")
+		}
+	}
+	if !data.MatchCertificateMaps.IsNull() && !data.MatchCertificateMaps.IsUnknown() {
+		var values []string
+		data.MatchCertificateMaps.ElementsAs(ctx, &values, false)
+		for _, v := range values {
+			body = helpers.AppendFromXPath(body, data.getXPath()+"/match/certificate-map", v)
+		}
+	}
+	if len(data.PkiTrustpoints) > 0 {
+		for _, item := range data.PkiTrustpoints {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+			}
+			if !item.Uses.IsNull() && !item.Uses.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "uses", item.Uses.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/pki/trust-points", cBody.Res())
+		}
+	}
 	if !data.ConfigExchangeRequest.IsNull() && !data.ConfigExchangeRequest.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/config-exchange/request-1", data.ConfigExchangeRequest.ValueBool())
 	}
-	bodyString, err := body.String()
-	if err != nil {
-		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
-	}
-	return bodyString
+	return body
 }
 
 // End of section. //template:end toBodyXML
@@ -428,6 +501,81 @@ func (data *CryptoIKEv2Profile) updateFromBodyXML(ctx context.Context, res xmldo
 			data.MatchAddressLocalInterfaceLoopback[i].LoopbackNumber = types.Int64Null()
 		}
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/local/ecdsa-sig"); !data.AuthenticationLocalEcdsaSig.IsNull() {
+		if value.Exists() {
+			data.AuthenticationLocalEcdsaSig = types.BoolValue(true)
+		} else {
+			data.AuthenticationLocalEcdsaSig = types.BoolValue(false)
+		}
+	} else {
+		data.AuthenticationLocalEcdsaSig = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/local/rsa-sig"); !data.AuthenticationLocalRsaSig.IsNull() {
+		if value.Exists() {
+			data.AuthenticationLocalRsaSig = types.BoolValue(true)
+		} else {
+			data.AuthenticationLocalRsaSig = types.BoolValue(false)
+		}
+	} else {
+		data.AuthenticationLocalRsaSig = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/remote/ecdsa-sig"); !data.AuthenticationRemoteEcdsaSig.IsNull() {
+		if value.Exists() {
+			data.AuthenticationRemoteEcdsaSig = types.BoolValue(true)
+		} else {
+			data.AuthenticationRemoteEcdsaSig = types.BoolValue(false)
+		}
+	} else {
+		data.AuthenticationRemoteEcdsaSig = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/remote/rsa-sig"); !data.AuthenticationRemoteRsaSig.IsNull() {
+		if value.Exists() {
+			data.AuthenticationRemoteRsaSig = types.BoolValue(true)
+		} else {
+			data.AuthenticationRemoteRsaSig = types.BoolValue(false)
+		}
+	} else {
+		data.AuthenticationRemoteRsaSig = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/certificate-map"); value.Exists() && !data.MatchCertificateMaps.IsNull() {
+		data.MatchCertificateMaps = helpers.GetStringListXML(value.Array())
+	} else {
+		data.MatchCertificateMaps = types.ListNull(types.StringType)
+	}
+	for i := range data.PkiTrustpoints {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.PkiTrustpoints[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/pki/trust-points").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.PkiTrustpoints[i].Name.IsNull() {
+			data.PkiTrustpoints[i].Name = types.StringValue(value.String())
+		} else {
+			data.PkiTrustpoints[i].Name = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "uses"); value.Exists() && !data.PkiTrustpoints[i].Uses.IsNull() {
+			data.PkiTrustpoints[i].Uses = types.StringValue(value.String())
+		} else {
+			data.PkiTrustpoints[i].Uses = types.StringNull()
+		}
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/config-exchange/request-1"); !data.ConfigExchangeRequest.IsNull() {
 		if value.Exists() {
 			data.ConfigExchangeRequest = types.BoolValue(value.Bool())
@@ -530,6 +678,45 @@ func (data *CryptoIKEv2Profile) fromBodyXML(ctx context.Context, res xmldot.Resu
 				item.LoopbackNumber = types.Int64Value(cValue.Int())
 			}
 			data.MatchAddressLocalInterfaceLoopback = append(data.MatchAddressLocalInterfaceLoopback, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/local/ecdsa-sig"); value.Exists() {
+		data.AuthenticationLocalEcdsaSig = types.BoolValue(true)
+	} else {
+		data.AuthenticationLocalEcdsaSig = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/local/rsa-sig"); value.Exists() {
+		data.AuthenticationLocalRsaSig = types.BoolValue(true)
+	} else {
+		data.AuthenticationLocalRsaSig = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/remote/ecdsa-sig"); value.Exists() {
+		data.AuthenticationRemoteEcdsaSig = types.BoolValue(true)
+	} else {
+		data.AuthenticationRemoteEcdsaSig = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/remote/rsa-sig"); value.Exists() {
+		data.AuthenticationRemoteRsaSig = types.BoolValue(true)
+	} else {
+		data.AuthenticationRemoteRsaSig = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/certificate-map"); value.Exists() {
+		data.MatchCertificateMaps = helpers.GetStringListXML(value.Array())
+	} else {
+		data.MatchCertificateMaps = types.ListNull(types.StringType)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/pki/trust-points"); value.Exists() {
+		data.PkiTrustpoints = make([]CryptoIKEv2ProfilePkiTrustpoints, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := CryptoIKEv2ProfilePkiTrustpoints{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "uses"); cValue.Exists() {
+				item.Uses = types.StringValue(cValue.String())
+			}
+			data.PkiTrustpoints = append(data.PkiTrustpoints, item)
 			return true
 		})
 	}
@@ -636,6 +823,45 @@ func (data *CryptoIKEv2ProfileData) fromBodyXML(ctx context.Context, res xmldot.
 			return true
 		})
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/local/ecdsa-sig"); value.Exists() {
+		data.AuthenticationLocalEcdsaSig = types.BoolValue(true)
+	} else {
+		data.AuthenticationLocalEcdsaSig = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/local/rsa-sig"); value.Exists() {
+		data.AuthenticationLocalRsaSig = types.BoolValue(true)
+	} else {
+		data.AuthenticationLocalRsaSig = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/remote/ecdsa-sig"); value.Exists() {
+		data.AuthenticationRemoteEcdsaSig = types.BoolValue(true)
+	} else {
+		data.AuthenticationRemoteEcdsaSig = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/remote/rsa-sig"); value.Exists() {
+		data.AuthenticationRemoteRsaSig = types.BoolValue(true)
+	} else {
+		data.AuthenticationRemoteRsaSig = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/certificate-map"); value.Exists() {
+		data.MatchCertificateMaps = helpers.GetStringListXML(value.Array())
+	} else {
+		data.MatchCertificateMaps = types.ListNull(types.StringType)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/pki/trust-points"); value.Exists() {
+		data.PkiTrustpoints = make([]CryptoIKEv2ProfilePkiTrustpointsData, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := CryptoIKEv2ProfilePkiTrustpointsData{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "uses"); cValue.Exists() {
+				item.Uses = types.StringValue(cValue.String())
+			}
+			data.PkiTrustpoints = append(data.PkiTrustpoints, item)
+			return true
+		})
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/config-exchange/request-1"); value.Exists() {
 		data.ConfigExchangeRequest = types.BoolValue(value.Bool())
 	} else {
@@ -651,6 +877,76 @@ func (data *CryptoIKEv2Profile) addDeletedItemsXML(ctx context.Context, state Cr
 	b := netconf.NewBody(body)
 	if !state.ConfigExchangeRequest.IsNull() && data.ConfigExchangeRequest.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/config-exchange/request-1")
+	}
+	for i := range state.PkiTrustpoints {
+		stateKeys := [...]string{"name"}
+		stateKeyValues := [...]string{state.PkiTrustpoints[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.PkiTrustpoints[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.PkiTrustpoints {
+			found = true
+			if state.PkiTrustpoints[i].Name.ValueString() != data.PkiTrustpoints[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.PkiTrustpoints[i].Uses.IsNull() && data.PkiTrustpoints[j].Uses.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/pki/trust-points%v/uses", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/pki/trust-points%v", predicates))
+		}
+	}
+	if !state.MatchCertificateMaps.IsNull() {
+		if data.MatchCertificateMaps.IsNull() {
+			var values []string
+			state.MatchCertificateMaps.ElementsAs(ctx, &values, false)
+			for _, v := range values {
+				b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/match/certificate-map[.=%v]", v))
+			}
+		} else {
+			var dataValues, stateValues []string
+			data.MatchCertificateMaps.ElementsAs(ctx, &dataValues, false)
+			state.MatchCertificateMaps.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/match/certificate-map[.=%v]", v))
+				}
+			}
+		}
+	}
+	if !state.AuthenticationRemoteRsaSig.IsNull() && data.AuthenticationRemoteRsaSig.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/authentication/remote/rsa-sig")
+	}
+	if !state.AuthenticationRemoteEcdsaSig.IsNull() && data.AuthenticationRemoteEcdsaSig.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/authentication/remote/ecdsa-sig")
+	}
+	if !state.AuthenticationLocalRsaSig.IsNull() && data.AuthenticationLocalRsaSig.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/authentication/local/rsa-sig")
+	}
+	if !state.AuthenticationLocalEcdsaSig.IsNull() && data.AuthenticationLocalEcdsaSig.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/authentication/local/ecdsa-sig")
 	}
 	for i := range state.MatchAddressLocalInterfaceLoopback {
 		stateKeys := [...]string{"Loopback"}
@@ -826,6 +1122,35 @@ func (data *CryptoIKEv2Profile) addDeletePathsXML(ctx context.Context, body stri
 	b := netconf.NewBody(body)
 	if !data.ConfigExchangeRequest.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/config-exchange/request-1")
+	}
+	for i := range data.PkiTrustpoints {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.PkiTrustpoints[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/pki/trust-points%v", predicates))
+	}
+	if !data.MatchCertificateMaps.IsNull() {
+		var values []string
+		data.MatchCertificateMaps.ElementsAs(ctx, &values, false)
+		for _, v := range values {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/match/certificate-map[.=%v]", v))
+		}
+	}
+	if !data.AuthenticationRemoteRsaSig.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/authentication/remote/rsa-sig")
+	}
+	if !data.AuthenticationRemoteEcdsaSig.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/authentication/remote/ecdsa-sig")
+	}
+	if !data.AuthenticationLocalRsaSig.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/authentication/local/rsa-sig")
+	}
+	if !data.AuthenticationLocalEcdsaSig.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/authentication/local/ecdsa-sig")
 	}
 	for i := range data.MatchAddressLocalInterfaceLoopback {
 		keys := [...]string{"Loopback"}

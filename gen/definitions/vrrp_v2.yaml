@@ -33,6 +33,7 @@ attributes:
     description: Virtual IP address
     type: String
     mandatory: true
+    no_delete: true
     example: 192.0.2.254
   - yang_name: ip/secondary
     tf_name: ip_secondary_addresses

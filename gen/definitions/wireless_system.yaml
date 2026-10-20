@@ -1,0 +1,17 @@
+---
+name: Wireless System
+path: /Cisco-IOS-XE-wireless-general-cfg:general-cfg-data/sim-l3-interface-cache-data
+no_delete: true
+test_tags: [C9800]
+doc_category: Wireless
+attributes:
+  - yang_name: interface-name
+    tf_name: interface_name
+    type: String
+    example: Vlan10
+
+test_prerequisites:
+  - path: /Cisco-IOS-XE-native:native/interface/Vlan[name=10]
+    attributes:
+      - name: name
+        value: 10

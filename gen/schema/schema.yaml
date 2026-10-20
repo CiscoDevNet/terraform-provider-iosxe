@@ -5,13 +5,19 @@ augment_path: str(required=False)  # If a different path is required to augment 
 no_delete: bool(required=False)  # Set to true if the resource path cannot be deleted, e.g. an ethernet interface
 no_delete_attributes: bool(required=False)  # Set to true if the resource should not provide an attribute to delete the top level attributes individually
 default_delete_attributes: bool(required=False)  # Set to true if the resource should use the "attributes" delete mode by default
+builtin_objects: list(str(), required=False)  # Names of built-in objects the device creates and will not delete (e.g. default-site-tag). Destroying one of these only removes the configured attributes, as delete_mode "attributes" does
+builtin_readonly_objects: list(str(), required=False)  # Names of built-in objects the device will neither delete nor modify (e.g. pre-configured RF profiles). Destroying one of these only removes it from state
 wait: bool(required=False)  # Wait for the DB lock to be released, this is required for operations that require a full-sync, eg. applying a source template to an interface
 request_timeout: int(required=False)  # Timeout for write request in seconds, default is 60
 test_tags: list(str(), required=False)  # List of test tags, tests are only executed if an environment variable for each of these tags is configured
 skip_minimum_test: bool(required=False)  # Set to true if the resource should skip the minimum test
+skip_bulk_resource_test: bool(required=False)  # Set to true if the bulk resource should not generate an acceptance test
 no_augment_config: bool(required=False)  # Set to true if the definition should not be augmented by the YANG models
+bulk_resource: bool(required=False)  # Set to true to generate an additional bulk resource managing all list entries of this path in a single resource
+bulk_name: str(required=False)  # Optionally override the derived name of the bulk resource, otherwise the name is derived by pluralizing 'name'
 ds_description: str(required=False)  # Description for the data source
 res_description: str(required=False)  # Description for the resource
+res_bulk_description: str(required=False)  # Description for the bulk resource
 doc_category: str()  # Documentation category for the resource
 attributes: list(include('attribute'), required=False)  # List of attributes
 test_prerequisites: list(include('test_prerequisite'), required=False)  # List of test prerequisites
@@ -45,8 +51,10 @@ attribute:
   no_augment_config: bool(required=False)  # Set to true if the attribute should not be augmented by the YANG models
   delete_parent: bool(required=False)  # Set to true if the attribute should delete the parent YANG element when the attribute is deleted
   no_delete: bool(required=False)  # Set to true if the attribute should not be deleted
-  read_filter: str(required=False)  # Name of a Go helper function used to normalize values on read (e.g., community AA:NN normalization)
+  builtin_keep: bool(required=False)  # Set to true if destroying one of the resource's builtin_objects should leave this attribute as-is, e.g. a status flag whose removal disables the object
+  read_filter: str(required=False)  # Name of a Go helper function used to normalize values on read (e.g., community AA:NN normalization); StringList attributes only, "XML" is appended to the name
   normalize_ipv6: bool(required=False)  # Set to true if the attribute contains an IPv6 address or prefix that should be normalized to prevent case/compression drift
+  normalize_asn: bool(required=False)  # Set to true if the attribute contains a BGP AS number that should be normalized to prevent asdot/asplain drift
   test_tags: list(str(), required=False)  # List of test tags, tests are only executed if an environment variable for each of these tags is configured
   attributes: list(include('attribute'), required=False)  # List of attributes in case of a list
 

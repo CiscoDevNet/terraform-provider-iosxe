@@ -7,12 +7,14 @@ attributes:
   - yang_name: id
     yang_scope: bgp
     tf_name: asn
+    normalize_asn: true
     example: 65000
   - yang_name: id
     yang_scope: neighbor
     tf_name: ip
     example: 3.3.3.3
   - yang_name: remote-as
+    normalize_asn: true
     example: 65000
     no_delete: true
   - yang_name: description

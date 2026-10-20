@@ -107,7 +107,17 @@ func (data BGPBMPServerData) getXPath() string {
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
 func (data BGPBMPServer) toBodyXML(ctx context.Context, config BGPBMPServer) string {
-	body := netconf.Body{}
+	body := data.addToBodyXML(ctx, config, netconf.Body{})
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// addToBodyXML adds this object to an existing body instead of starting from an empty one. Bulk
+// resources use this to serialize all of their items into a single NETCONF payload.
+func (data BGPBMPServer) addToBodyXML(ctx context.Context, config BGPBMPServer, body netconf.Body) netconf.Body {
 	if !data.ServerId.IsNull() && !data.ServerId.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/id", strconv.FormatInt(data.ServerId.ValueInt64(), 10))
 	}
@@ -154,11 +164,7 @@ func (data BGPBMPServer) toBodyXML(ctx context.Context, config BGPBMPServer) str
 	if !data.UpdateSourceVlan.IsNull() && !data.UpdateSourceVlan.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/update-source/Vlan", strconv.FormatInt(data.UpdateSourceVlan.ValueInt64(), 10))
 	}
-	bodyString, err := body.String()
-	if err != nil {
-		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
-	}
-	return bodyString
+	return body
 }
 
 // End of section. //template:end toBodyXML

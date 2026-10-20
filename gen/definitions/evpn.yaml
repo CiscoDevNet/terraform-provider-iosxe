@@ -81,3 +81,6 @@ attributes:
         example: 1000
       - yang_name: l2vni-base
         example: 10000
+      - yang_name: re-originate/route-type5
+        tf_name: re_originate_route_type5
+        example: true

@@ -120,7 +120,17 @@ func (data InterfaceVRRPV2Data) getXPath() string {
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
 func (data InterfaceVRRPV2) toBodyXML(ctx context.Context, config InterfaceVRRPV2) string {
-	body := netconf.Body{}
+	body := data.addToBodyXML(ctx, config, netconf.Body{})
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// addToBodyXML adds this object to an existing body instead of starting from an empty one. Bulk
+// resources use this to serialize all of their items into a single NETCONF payload.
+func (data InterfaceVRRPV2) addToBodyXML(ctx context.Context, config InterfaceVRRPV2, body netconf.Body) netconf.Body {
 	if !data.GroupId.IsNull() && !data.GroupId.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/group-id", strconv.FormatInt(data.GroupId.ValueInt64(), 10))
 	}
@@ -180,11 +190,7 @@ func (data InterfaceVRRPV2) toBodyXML(ctx context.Context, config InterfaceVRRPV
 			body = helpers.RemoveFromXPath(body, data.getXPath()+"/shutdown")
 		}
 	}
-	bodyString, err := body.String()
-	if err != nil {
-		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
-	}
-	return bodyString
+	return body
 }
 
 // End of section. //template:end toBodyXML
@@ -540,9 +546,6 @@ func (data *InterfaceVRRPV2) addDeletedItemsXML(ctx context.Context, state Inter
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/secondary%v", predicates))
 		}
 	}
-	if !state.IpPrimaryAddress.IsNull() && data.IpPrimaryAddress.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/primary/address")
-	}
 
 	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
@@ -594,9 +597,6 @@ func (data *InterfaceVRRPV2) addDeletePathsXML(ctx context.Context, body string)
 		}
 
 		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/ip/secondary%v", predicates))
-	}
-	if !data.IpPrimaryAddress.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/primary/address")
 	}
 
 	b = helpers.CleanupRedundantRemoveOperations(b)

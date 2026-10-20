@@ -25,7 +25,16 @@ resource "iosxe_eigrp_vrf" "example" {
     }
   ]
   auto_summary = false
-  shutdown     = false
+  af_interfaces = [
+    {
+      interface         = "default"
+      passive_interface = true
+      split_horizon     = false
+    }
+  ]
+  stub_connected = true
+  stub_summary   = true
+  shutdown       = false
 }
 ```
 
@@ -41,6 +50,7 @@ resource "iosxe_eigrp_vrf" "example" {
 
 ### Optional
 
+- `af_interfaces` (Attributes List) Enter Address Family interface configuration (see [below for nested schema](#nestedatt--af_interfaces))
 - `auto_summary` (Boolean) Enable automatic network number summarization
   - Default value: `false`
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
@@ -49,6 +59,8 @@ resource "iosxe_eigrp_vrf" "example" {
 - `networks` (Attributes List) Enable routing on an IP network (see [below for nested schema](#nestedatt--networks))
 - `router_id` (String) Router ID for this EIGRP process
 - `shutdown` (Boolean) Shutdown address family
+- `stub_connected` (Boolean) Enable EIGRP stub routing and advertise connected routes (`eigrp stub connected`)
+- `stub_summary` (Boolean) Enable EIGRP stub routing and advertise summary routes (`eigrp stub summary`)
 - `topology_base` (String) Base topology (always base)
   - Choices: `base`
   - Default value: `base`
@@ -56,6 +68,21 @@ resource "iosxe_eigrp_vrf" "example" {
 ### Read-Only
 
 - `id` (String) The path of the object.
+
+<a id="nestedatt--af_interfaces"></a>
+### Nested Schema for `af_interfaces`
+
+Required:
+
+- `interface` (String) Interface name or default for the default AF interface
+
+Optional:
+
+- `passive_interface` (Boolean) Suppress address updates on an interface
+  - Default value: `false`
+- `split_horizon` (Boolean) Perform split horizon
+  - Default value: `true`
+
 
 <a id="nestedatt--networks"></a>
 ### Nested Schema for `networks`

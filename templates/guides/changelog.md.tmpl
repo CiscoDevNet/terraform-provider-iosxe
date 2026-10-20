@@ -11,6 +11,44 @@ description: |-
 
 - Add `pqc_mlkem512`, `pqc_mlkem768`, `pqc_mlkem1024`, and `pqc_optional` attributes to `iosxe_crypto_ikev2_proposal` resource and data source
 - Add `set_pfs` attribute to `iosxe_crypto_ipsec_profile` resource and data source
+- Fix BGP resources when the AS number notation differs between Terraform and the device. IOS-XE keys a BGP process by the AS in the notation it was created with, so adopting an existing asdot process without import failed with `too many /native/router/ios-bgp:bgp`, and toggling `asnotation_dot` on a managed process dropped every BGP resource from state. BGP resources now read and write under whichever notation (`1.1` or `65537`) the device stores, so both cases settle as ordinary updates
+- Fix `terraform destroy` failing on the C9800's built-in wireless objects (`default-site-tag`, `default-rf-tag`, `default-policy-profile`, `default-policy-tag`, `default-ap-profile`, `default-rf-profile-6ghz` and the six pre-configured `*_Client_Density_*` RF profiles), which the controller refuses to delete. Destroying one now removes only the attributes Terraform configured, the same as the matching `no` commands, and leaves the object in place; `status` and `band` on `default-rf-profile-6ghz` are left as-is so destroy never disables it, and the read-only pre-configured RF profiles are only removed from state. Add the `builtin_objects`, `builtin_readonly_objects` and `builtin_keep` definition options that implement this
+- Add `iosxe_interface_hsrp` resource and data source for HSRP (Hot Standby Router Protocol) interface-level standby configuration, including version selection, BFD, delay timers, MAC refresh, use-bia, redirect settings, and per-group configuration with virtual IPv4/IPv6 addresses, priority, preemption with delay options, hello/hold timers (seconds and milliseconds), plain text and MD5 authentication, object tracking with priority decrement or shutdown, virtual MAC address, redundancy naming, and group following
+- Add `interface_name`, `interface_protocol`, and `interface_routing` attributes to `iosxe_system` resource and data source `track_objects` list for interface object tracking configuration (`track <num> interface <name> line-protocol` and `track <num> interface <name> ip routing`)
+- Add `asnotation_dot` attribute to `iosxe_bgp` resource and data source for `bgp asnotation dot` configuration, enabling asdot notation for 4-byte BGP AS numbers
+- Add `ip_nhrp_nhs.nbma_ipv4s`, `ip_nhrp_map_multicast_dynamic`, and `ip_nhrp_map_multicast_nbma_ipv4` attributes to `iosxe_interface_tunnel` resource and data source for NHRP NHS NBMA address and dynamic multicast map support
+- Add `iosxe_wireless_system` resource and data source
+- Add `iosxe_wireless_policy_profile` resource and data source for C9800 wireless policy profile configuration, including AAA override, NAC, session/idle timeouts, exclusion list timeout, VLAN assignment, ACLs, QoS service policies, static IP mobility, DHCP/HTTP TLV caching, AVC flow monitors, and mobility anchors
+- Add `iosxe_wireless_policy_tag` resource and data source for C9800 wireless policy tag configuration, mapping WLAN profiles to policy profiles
+- Add `iosxe_wireless_rf_tag` resource and data source for C9800 RF tags mapping 2.4 GHz, 5 GHz, and 6 GHz RF profiles
+- Add `iosxe_wireless_site_tag` resource and data source
+- Add wireless YANG model support (wlan, rf, site, flex, mesh, general, ap profiles)
+- Add `iosxe_wireless_wlan_profile` resource and data source for managing C9800 WLAN profiles
+- Add `iosxe_wireless_rf_profile` resource and data source
+- Add `iosxe_wireless_ap_join_profile` resource and data source for C9800 AP join profiles
+- Add `iosxe_crypto_gdoi` resource and data source for GET VPN GDOI group configuration (`crypto gdoi group`), including key server (server local address, rekey, SA IPsec, redundancy, PFS, G-IKEv2) and group member (client protocol gdoi/gikev2, bypass-policy, PFS, fail-close revert, recovery-check interval, registration interface, rekey encryption/hash ciphers, transform-sets, transport-encrypt-key, status active-sa track)
+- Add `iosxe_crypto_map_gdoi` resource and data source for GET VPN crypto map GDOI binding (`crypto map <name> <seq> gdoi / set group <group>`)
+- Add `authentication_local_rsa_sig`, `authentication_remote_rsa_sig`, `authentication_local_ecdsa_sig`, `authentication_remote_ecdsa_sig`, `pki_trustpoints`, and `match_certificate_maps` attributes to `iosxe_crypto_ikev2_profile` resource and data source for PKI certificate-based authentication support
+- Add `af_interfaces` attribute to `iosxe_eigrp` and `iosxe_eigrp_vrf` resources and data sources for EIGRP named mode per-interface address-family controls (`af-interface`), including `passive_interface` and `split_horizon`
+- Fix nil pointer dereference when invoking actions by setting `ActionData` in the provider `Configure` method
+- Fix `iosxe_route_map` `set_communities` returning decimal community values instead of `AA:NN` notation on read, causing perpetual plan drift. The normalization added in 1.0.0 was not applied due to a code generator regression
+- BREAKING CHANGE: Remove all community `_legacy` attributes (`set_communities_legacy`, `set_communities_additive_legacy`, `set_community_none_legacy`, `set_community_list_delete_legacy`, `set_community_list_standard_legacy`, `set_community_list_expanded_legacy`, `set_community_list_name_legacy`, `match_community_lists_legacy`, `match_extcommunity_lists_legacy`) from `iosxe_route_map` resource and data source. The gen-1 attributes used the `set/community/...` YANG path (obsolete since IOS-XE 17.15). The gen-2 `set_communities` and `set_communities_additive` attributes used the deprecated `community-list` YANG leaf, which cannot round-trip on 17.15 devices (writes to `community-list` but reads back under `community-list-v2`, causing perpetual drift). The `set_communities` attribute now targets the `community-list-v2` YANG leaf instead, so it requires IOS-XE 17.15 or later; attribute names are unchanged
+- Add `re_originate_route_type5` attribute to `profiles` list in `iosxe_evpn` resource and data source for L2VPN EVPN profile `re-originate route-type5` configuration
+- Add `stub_connected` and `stub_summary` attributes to `iosxe_eigrp` and `iosxe_eigrp_vrf` resources and data sources for EIGRP stub routing advertisement control (`eigrp stub connected summary`)
+- Fix BGP resources triggering spurious destroy-recreate on import when the device uses `bgp asnotation dot` (asdot ASN format). A new `normalize_asn` plan modifier normalizes asdot and asplain representations to the same value before comparison
+
+## 1.1.1
+
+- Bump `go-netconf` dependency to v0.6.2, reverting a transitive `scrapligo` dependency bump to v1.4.1 that caused intermittent connection errors on the first operation of a new NETCONF session against some IOS-XE devices
+
+## 1.1.0
+
+- Add `iosxe_interface_ethernets` bulk resource, managing all ethernet interfaces of a device through an `items` map keyed by `<type>;<name>` (e.g. `"GigabitEthernet;3"`), requiring a single NETCONF read and write operation regardless of the number of interfaces. See the [bulk resources guide](https://registry.terraform.io/providers/CiscoDevNet/iosxe/latest/docs/guides/bulk_resources) for details.
+- Add `police_cir_exceed_transmit` attribute to `iosxe_policy_map` resource and data source for `police cir ... exceed-action transmit` use cases such as CoPP `class-default`
+- Fix `iosxe_snmp_server` `hosts`, `vrf_hosts`, and `snmp_communities` list attributes to no longer attempt drift detection during refresh, since they are keyed in part by a write-only attribute (e.g. `community_or_user`) that can never be read back from the device; only changes made through Terraform config are applied to these lists going forward
+
+## 1.0.0
+
 - BREAKING CHANGE: Consolidate `iosxe_device_tracking_policy` into `iosxe_device_tracking` as a `policies` list attribute
 - BREAKING CHANGE: Consolidate `iosxe_dhcp_pool` and `iosxe_ipv6_dhcp_pool` into `iosxe_dhcp` as `pools` and `ipv6_pools` list attributes
 - BREAKING CHANGE: Consolidate `iosxe_evpn_profile` into `iosxe_evpn` as a `profiles` list attribute
@@ -29,7 +67,6 @@ description: |-
 - Add `service` support to `iosxe_object_group` resource and data source for service object groups including TCP, UDP, TCP-UDP port configurations with operators, ranges, source/destination combinations, protocol flags, ICMP types, and group nesting
 - Add `iosxe_qos` resource and data source for global QoS configuration, including the `queue_softmax_multiplier` attribute for queue soft buffer maximum tuning on Catalyst 9000 series
 - Add `iosxe_switch` resource and data source for StackWise member provisioning (`switch <number> provision <model>`)
-- Add `iosxe_privilege` resource and data source for privilege level command mapping configuration (`privilege <mode> level <level> <command>`), including mode selection (exec, configure, interface, router, crypto-map, ipenacl) with nested level and command-list attributes
 - Add `mac_address_table_aging_time` attribute to `iosxe_system` resource and data source
 - Add `password_level`, `password_type`, and `password` attributes to `iosxe_line` aux entries for line aux password configuration
 - Add `power_redundancy_mode_combined`, `power_supply_autolc_shutdown`, and `power_supply_autolc_priority` attributes to `iosxe_system` resource and data source for chassis power redundancy mode and automatic linecard power management
