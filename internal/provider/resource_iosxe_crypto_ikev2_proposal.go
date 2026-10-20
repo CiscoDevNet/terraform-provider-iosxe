@@ -212,35 +212,6 @@ func (r *CryptoIKEv2ProposalResource) Configure(_ context.Context, req resource.
 
 // End of section. //template:end model
 
-var _ resource.ResourceWithValidateConfig = &CryptoIKEv2ProposalResource{}
-
-// ValidateConfig enforces relationships that are not represented by the IOS XE
-// YANG model. The device rejects the optional fallback keyword unless at least
-// one ML-KEM algorithm is configured in the same proposal.
-func (r *CryptoIKEv2ProposalResource) ValidateConfig(ctx context.Context, req resource.ValidateConfigRequest, resp *resource.ValidateConfigResponse) {
-	var config CryptoIKEv2Proposal
-	resp.Diagnostics.Append(req.Config.Get(ctx, &config)...)
-	if resp.Diagnostics.HasError() || config.PqcOptional.IsNull() || config.PqcOptional.IsUnknown() || !config.PqcOptional.ValueBool() {
-		return
-	}
-
-	algorithms := []types.Bool{config.PqcMlkem512, config.PqcMlkem768, config.PqcMlkem1024}
-	for _, algorithm := range algorithms {
-		if algorithm.IsUnknown() {
-			return
-		}
-		if !algorithm.IsNull() && algorithm.ValueBool() {
-			return
-		}
-	}
-
-	resp.Diagnostics.AddAttributeError(
-		path.Root("pqc_optional"),
-		"Missing PQC algorithm",
-		"pqc_optional requires at least one of pqc_mlkem512, pqc_mlkem768, or pqc_mlkem1024 to be true.",
-	)
-}
-
 // Section below is generated&owned by "gen/generator.go". //template:begin create
 
 func (r *CryptoIKEv2ProposalResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
