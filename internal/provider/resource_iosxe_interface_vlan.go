@@ -100,10 +100,8 @@ func (r *InterfaceVLANResource) Schema(ctx context.Context, req resource.SchemaR
 				},
 			},
 			"autostate": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable auto-state determination for VLAN").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable auto-state determination for VLAN").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 			"description": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Interface specific description").String,
@@ -120,10 +118,8 @@ func (r *InterfaceVLANResource) Schema(ctx context.Context, req resource.SchemaR
 				Default:             booldefault.StaticBool(false),
 			},
 			"ip_proxy_arp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable proxy ARP").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable proxy ARP").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 			"ip_local_proxy_arp": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Enable local-proxy ARP").AddDefaultValueDescription("false").String,
@@ -132,16 +128,12 @@ func (r *InterfaceVLANResource) Schema(ctx context.Context, req resource.SchemaR
 				Default:             booldefault.StaticBool(false),
 			},
 			"ip_redirects": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable sending ICMP Redirect messages").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable sending ICMP Redirect messages").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 			"ip_unreachables": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable sending ICMP Unreachable messages").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable sending ICMP Unreachable messages").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 			"vrf_forwarding": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Configure forwarding table").String,
@@ -232,10 +224,8 @@ func (r *InterfaceVLANResource) Schema(ctx context.Context, req resource.SchemaR
 				Optional:            true,
 			},
 			"bfd_enable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable BFD under the interface").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable BFD under the interface").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 			"bfd_local_address": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("The Source IP address to be used for BFD sessions over this interface.").String,
@@ -263,10 +253,8 @@ func (r *InterfaceVLANResource) Schema(ctx context.Context, req resource.SchemaR
 				},
 			},
 			"bfd_echo": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Use echo adjunct as bfd detection mechanism").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Use echo adjunct as bfd detection mechanism").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 			"ipv6_enable": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Enable IPv6 on interface").AddDefaultValueDescription("false").String,

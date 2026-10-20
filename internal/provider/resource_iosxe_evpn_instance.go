@@ -130,10 +130,8 @@ func (r *EVPNInstanceResource) Schema(ctx context.Context, req resource.SchemaRe
 				Default:             booldefault.StaticBool(false),
 			},
 			"vlan_based_auto_route_target": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Automatically set a route-target").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Automatically set a route-target").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 			"vlan_based_rd": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("ASN:nn or IP-address:nn").String,

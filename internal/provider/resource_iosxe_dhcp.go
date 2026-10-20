@@ -125,10 +125,8 @@ func (r *DHCPResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				Default:             booldefault.StaticBool(false),
 			},
 			"snooping_information_option": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 			"snooping_information_option_allow_untrusted": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("DHCP Snooping information option allow-untrusted").AddDefaultValueDescription("false").String,

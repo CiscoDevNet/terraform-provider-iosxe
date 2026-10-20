@@ -127,22 +127,16 @@ func (r *InterfacePortChannelResource) Schema(ctx context.Context, req resource.
 				Default:             booldefault.StaticBool(false),
 			},
 			"ip_proxy_arp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable proxy ARP").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable proxy ARP").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 			"ip_redirects": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable sending ICMP Redirect messages").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable sending ICMP Redirect messages").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 			"ip_unreachables": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable sending ICMP Unreachable messages").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable sending ICMP Unreachable messages").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 			"vrf_forwarding": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Configure forwarding table").String,
@@ -302,10 +296,8 @@ func (r *InterfacePortChannelResource) Schema(ctx context.Context, req resource.
 				Optional:            true,
 			},
 			"bfd_enable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable BFD under the interface").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable BFD under the interface").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 			"bfd_local_address": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("The Source IP address to be used for BFD sessions over this interface.").String,
@@ -333,10 +325,8 @@ func (r *InterfacePortChannelResource) Schema(ctx context.Context, req resource.
 				},
 			},
 			"bfd_echo": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Use echo adjunct as bfd detection mechanism").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Use echo adjunct as bfd detection mechanism").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 			"ipv6_enable": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Enable IPv6 on interface").AddDefaultValueDescription("false").String,
@@ -598,10 +588,8 @@ func (r *InterfacePortChannelResource) Schema(ctx context.Context, req resource.
 				Default:             booldefault.StaticBool(false),
 			},
 			"logging_event_link_status_enable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("UPDOWN and CHANGE messages").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("UPDOWN and CHANGE messages").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 			"device_tracking": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Configure device-tracking on the interface").AddDefaultValueDescription("false").String,

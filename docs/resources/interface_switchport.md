@@ -65,7 +65,6 @@ resource "iosxe_interface_switchport" "example" {
 - `trunk_allowed_vlans` (String)
 - `trunk_allowed_vlans_add` (Attributes List) (see [below for nested schema](#nestedatt--trunk_allowed_vlans_add))
 - `trunk_allowed_vlans_all` (Boolean) all VLANs
-  - Default value: `true`
 - `trunk_allowed_vlans_except` (String) all VLANs except the following
 - `trunk_allowed_vlans_legacy` (String)
 - `trunk_allowed_vlans_none` (Boolean) no VLANs
@@ -74,7 +73,7 @@ resource "iosxe_interface_switchport" "example" {
   - Default value: `false`
 - `trunk_allowed_vlans_remove` (String) VLAN IDs of disallowed VLANs when this port is in trunking mode
 - `trunk_native_vlan` (Number) - Range: `1`-`4094`
-- `trunk_native_vlan_tag` (Boolean) - Default value: `true`
+- `trunk_native_vlan_tag` (Boolean)
 - `voice_vlan` (String)
 
 ### Read-Only

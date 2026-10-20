@@ -61,7 +61,6 @@ resource "iosxe_interface_vrrp_v2" "example" {
 - `device` (String) A device name from the provider configuration.
 - `ip_secondary_addresses` (Attributes List) Secondary virtual IPv4 addresses (see [below for nested schema](#nestedatt--ip_secondary_addresses))
 - `preempt` (Boolean) Enable preemption of lower priority Master
-  - Default value: `true`
 - `preempt_delay_minimum` (Number) Seconds to delay before preempting
   - Range: `0`-`3600`
 - `priority` (Number) Priority level

@@ -221,10 +221,8 @@ func (r *ServiceResource) Schema(ctx context.Context, req resource.SchemaRequest
 				Default:             booldefault.StaticBool(false),
 			},
 			"dhcp_config": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable DHCP server and relay agent").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable DHCP server and relay agent").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 		},
 	}

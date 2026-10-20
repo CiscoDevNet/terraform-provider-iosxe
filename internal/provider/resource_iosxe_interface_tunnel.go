@@ -114,22 +114,16 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 				Default:             booldefault.StaticBool(false),
 			},
 			"ip_proxy_arp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable proxy ARP").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable proxy ARP").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 			"ip_redirects": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable sending ICMP Redirect messages").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable sending ICMP Redirect messages").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 			"ip_unreachables": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable sending ICMP Unreachable messages").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable sending ICMP Unreachable messages").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 			"vrf_forwarding": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Configure forwarding table").String,
@@ -417,10 +411,8 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 				Optional:            true,
 			},
 			"bfd_enable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable BFD under the interface").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable BFD under the interface").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 			"bfd_local_address": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("The Source IP address to be used for BFD sessions over this interface.").String,
@@ -448,10 +440,8 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 				},
 			},
 			"bfd_echo": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Use echo adjunct as bfd detection mechanism").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Use echo adjunct as bfd detection mechanism").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 			"load_interval": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Specify interval for load calculation for an interface").AddIntegerRangeDescription(30, 600).String,
@@ -467,10 +457,8 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 				Default:             booldefault.StaticBool(false),
 			},
 			"logging_event_link_status_enable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("UPDOWN and CHANGE messages").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("UPDOWN and CHANGE messages").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 			"tunnel_vrf": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
@@ -632,10 +620,8 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 				},
 			},
 			"ip_nhrp_map_multicast_dynamic": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Dynamically learn destinations from client registrations on hub. Use this for versions `17.14` and later.").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Dynamically learn destinations from client registrations on hub. Use this for versions `17.14` and later.").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 			"ip_nhrp_map_multicast_nbma_ipv4": schema.ListAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Static NBMA addresses for multicast mapping.").String,

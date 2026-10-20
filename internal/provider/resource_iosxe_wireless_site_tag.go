@@ -32,7 +32,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -99,10 +98,8 @@ func (r *WirelessSiteTagResource) Schema(ctx context.Context, req resource.Schem
 				Optional:            true,
 			},
 			"local_site": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("This parameter is set to enable local site").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("This parameter is set to enable local site").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 			"flex_profile": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("The flex profile which is part of the Site tag").String,

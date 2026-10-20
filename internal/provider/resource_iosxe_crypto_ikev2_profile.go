@@ -274,10 +274,8 @@ func (r *CryptoIKEv2ProfileResource) Schema(ctx context.Context, req resource.Sc
 				},
 			},
 			"config_exchange_request": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("enable config-exchange request").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("enable config-exchange request").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 		},
 	}

@@ -77,11 +77,8 @@ resource "iosxe_interface_vlan" "example" {
 ### Optional
 
 - `autostate` (Boolean) Enable auto-state determination for VLAN
-  - Default value: `true`
 - `bfd_echo` (Boolean) Use echo adjunct as bfd detection mechanism
-  - Default value: `true`
 - `bfd_enable` (Boolean) Enable BFD under the interface
-  - Default value: `true`
 - `bfd_interval` (Number) - Range: `50`-`9999`
 - `bfd_interval_min_rx` (Number) Minimum receive interval capability
   - Range: `50`-`9999`
@@ -114,12 +111,9 @@ resource "iosxe_interface_vlan" "example" {
 - `ip_nat_outside` (Boolean) Outside interface for address translation
   - Default value: `false`
 - `ip_proxy_arp` (Boolean) Enable proxy ARP
-  - Default value: `true`
 - `ip_redirects` (Boolean) Enable sending ICMP Redirect messages
-  - Default value: `true`
 - `ip_router_isis` (String)
 - `ip_unreachables` (Boolean) Enable sending ICMP Unreachable messages
-  - Default value: `true`
 - `ip_verify_unicast_source_allow_default` (Boolean) Allow default route to match when checking source address
   - Default value: `false`
 - `ip_verify_unicast_source_allow_self_ping` (Boolean) Allow router to ping itself (opens vulnerability in verification)

@@ -41,7 +41,6 @@ resource "iosxe_cdp" "example" {
 - `holdtime` (Number) Specify the holdtime (in sec) to be sent in packets
   - Range: `10`-`255`
 - `run` (Boolean) Enable CDP
-  - Default value: `true`
 - `timer` (Number) Specify the rate at which CDP packets are sent (in sec)
   - Range: `5`-`254`
 - `tlv_lists` (Attributes List) Configure tlv-list (see [below for nested schema](#nestedatt--tlv_lists))

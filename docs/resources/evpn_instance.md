@@ -41,7 +41,6 @@ resource "iosxe_evpn_instance" "example" {
 
 - `device` (String) A device name from the provider configuration.
 - `vlan_based_auto_route_target` (Boolean) Automatically set a route-target
-  - Default value: `true`
 - `vlan_based_auto_route_target_legacy` (Boolean) Automatically set a route-target (OBSOLETE, use auto-route-target-boolean)
   - Default value: `false`
 - `vlan_based_default_gateway_advertise` (String) Advertise Default Gateway MAC/IP routes

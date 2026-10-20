@@ -55,7 +55,6 @@ resource "iosxe_service" "example" {
 - `dhcp` (Boolean) Enable DHCP server and relay agent
   - Default value: `false`
 - `dhcp_config` (Boolean) Enable DHCP server and relay agent
-  - Default value: `true`
 - `pad` (Boolean) Enable PAD commands
   - Default value: `false`
 - `password_encryption` (Boolean) Encrypt system passwords

@@ -84,7 +84,7 @@ Optional:
   - Default value: `false`
 - `device_role` (String) The role of the device attached to the port
   - Choices: `node`, `router`, `switch`
-- `device_role_node_legacy` (Boolean) - Default value: `true`
+- `device_role_node_legacy` (Boolean)
 - `device_role_router_legacy` (Boolean) - Default value: `false`
 - `device_role_switch_legacy` (Boolean) - Default value: `false`
 - `limit_address_count` (Number) Configure maximum address per port

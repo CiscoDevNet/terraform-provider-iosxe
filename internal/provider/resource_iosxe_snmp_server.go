@@ -125,10 +125,8 @@ func (r *SNMPServerResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Default:             booldefault.StaticBool(false),
 			},
 			"enable_logging_setop": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable SNMP SET Operation logging").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable SNMP SET Operation logging").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 			"enable_informs": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Enable SNMP Informs").AddDefaultValueDescription("false").String,

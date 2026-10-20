@@ -277,28 +277,20 @@ func (r *WirelessAPJoinProfileResource) Schema(ctx context.Context, req resource
 				Optional:            true,
 			},
 			"capwap_fallback": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Backup Controllers fallback enabled").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Backup Controllers fallback enabled").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 			"capwap_discovery_private": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Discovery Response from private IP is enabled or disabled").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Discovery Response from private IP is enabled or disabled").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 			"capwap_discovery_public": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Discovery Response from public IP is enabled or disabled").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Discovery Response from public IP is enabled or disabled").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 			"cdp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("True if CDP enabled for the AP").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("True if CDP enabled for the AP").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 			"dot1x_eap_type": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Dot1x EAP auth type").AddStringEnumDescription("dot1x-eap-fast", "dot1x-eap-none", "dot1x-eap-peap", "dot1x-eap-tls").String,
@@ -342,10 +334,8 @@ func (r *WirelessAPJoinProfileResource) Schema(ctx context.Context, req resource
 				Default:             booldefault.StaticBool(false),
 			},
 			"ip_dhcp_fallback": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Represents AP fallback to DHCP, if AP fails to join via static IP address").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Represents AP fallback to DHCP, if AP fails to join via static IP address").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 			"lag": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("boolean to indicate whether ap lag enabled is used").AddDefaultValueDescription("false").String,
@@ -354,20 +344,16 @@ func (r *WirelessAPJoinProfileResource) Schema(ctx context.Context, req resource
 				Default:             booldefault.StaticBool(false),
 			},
 			"led": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("True if LED state is enabled otherwise disabled.").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("True if LED state is enabled otherwise disabled.").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 			"mesh_profile": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Specifies the mesh profile name for the AP").String,
 				Optional:            true,
 			},
 			"rogue_detection_enable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("rogue AP detection").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("rogue AP detection").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 			"rogue_detection_min_rssi": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("minmum RSSI for AP rogue detection").AddIntegerRangeDescription(-128, 70).String,
@@ -442,10 +428,8 @@ func (r *WirelessAPJoinProfileResource) Schema(ctx context.Context, req resource
 				},
 			},
 			"statistics_traffic_distribution": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable/Disable client traffic distribution stats").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable/Disable client traffic distribution stats").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 			"statistics_traffic_distribution_interval": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Interval at which AP will send the statistics").AddIntegerRangeDescription(30, 3600).String,
@@ -475,10 +459,8 @@ func (r *WirelessAPJoinProfileResource) Schema(ctx context.Context, req resource
 				},
 			},
 			"tcp_adjust_mss_enable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("adjust mss").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("adjust mss").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 			"tcp_adjust_mss_size": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("This object represents the Global AP TCP MSS value").AddIntegerRangeDescription(536, 1363).String,

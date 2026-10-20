@@ -105,11 +105,8 @@ resource "iosxe_wireless_ap_join_profile" "example" {
 - `capwap_backup_secondary_ip` (String) the AP's secondary controller ip address
 - `capwap_backup_secondary_name` (String) the AP's secondary controller name
 - `capwap_discovery_private` (Boolean) Discovery Response from private IP is enabled or disabled
-  - Default value: `true`
 - `capwap_discovery_public` (Boolean) Discovery Response from public IP is enabled or disabled
-  - Default value: `true`
 - `capwap_fallback` (Boolean) Backup Controllers fallback enabled
-  - Default value: `true`
 - `capwap_retransmit_count` (Number) retransmit timer count
   - Range: `3`-`8`
 - `capwap_retransmit_interval` (Number) retransmit timer interval
@@ -127,7 +124,6 @@ resource "iosxe_wireless_ap_join_profile" "example" {
 - `capwap_window_size` (Number) CAPWAP window size for request packets in multiwindow queue
   - Range: `1`-`50`
 - `cdp` (Boolean) True if CDP enabled for the AP
-  - Default value: `true`
 - `country` (String) AP country code
   - Choices: `ad`, `ae`, `af`, `ag`, `ai`, `al`, `am`, `ao`, `aq`, `ar`, `as`, `at`, `au`, `aw`, `ax`, `az`, `ba`, `bb`, `bd`, `be`, `bf`, `bg`, `bh`, `bi`, `bj`, `bl`, `bm`, `bn`, `bo`, `bq`, `br`, `bs`, `bt`, `bv`, `bw`, `by`, `bz`, `ca`, `cc`, `cd`, `cf`, `cg`, `ch`, `ci`, `ck`, `cl`, `cm`, `cn`, `co`, `cr`, `cu`, `cv`, `cw`, `cx`, `cy`, `cz`, `de`, `dj`, `dk`, `dm`, `do`, `dz`, `ec`, `ee`, `eg`, `eh`, `el`, `er`, `es`, `et`, `fi`, `fj`, `fk`, `fm`, `fo`, `fr`, `ga`, `gb`, `gd`, `ge`, `gf`, `gg`, `gh`, `gi`, `gl`, `gm`, `gn`, `gp`, `gq`, `gr`, `gs`, `gt`, `gu`, `gw`, `gy`, `hk`, `hm`, `hn`, `hr`, `ht`, `hu`, `id`, `ie`, `il`, `im`, `in`, `io`, `iq`, `ir`, `is`, `it`, `j2`, `j3`, `j4`, `je`, `jm`, `jo`, `jp`, `ke`, `kg`, `kh`, `ki`, `km`, `kn`, `kp`, `kr`, `kw`, `ky`, `kz`, `la`, `lb`, `lc`, `li`, `lk`, `lr`, `ls`, `lt`, `lu`, `lv`, `ly`, `ma`, `mc`, `md`, `me`, `mf`, `mg`, `mh`, `mk`, `ml`, `mm`, `mn`, `mo`, `mp`, `mq`, `mr`, `ms`, `mt`, `mu`, `mv`, `mw`, `mx`, `my`, `mz`, `na`, `nc`, `ne`, `nf`, `ng`, `ni`, `nl`, `no`, `np`, `nr`, `nu`, `nz`, `om`, `pa`, `pe`, `pf`, `pg`, `ph`, `pk`, `pl`, `pm`, `pn`, `pr`, `ps`, `pt`, `pw`, `py`, `qa`, `re`, `ro`, `rs`, `ru`, `rw`, `sa`, `sb`, `sc`, `sd`, `se`, `sg`, `sh`, `si`, `sj`, `sk`, `sl`, `sm`, `sn`, `so`, `sr`, `ss`, `st`, `sv`, `sx`, `sy`, `sz`, `tc`, `td`, `tf`, `tg`, `th`, `ti`, `tj`, `tk`, `tl`, `tm`, `tn`, `to`, `tr`, `tt`, `tv`, `tw`, `tz`, `ua`, `ug`, `um`, `unconfigured`, `us`, `uy`, `uz`, `va`, `vc`, `ve`, `vg`, `vi`, `vn`, `vu`, `wf`, `ws`, `xk`, `ye`, `yt`, `za`, `zm`, `zw`
 - `description` (String) Description for the ap configuration profile
@@ -143,11 +139,9 @@ resource "iosxe_wireless_ap_join_profile" "example" {
 - `hyperlocation` (Boolean) enable hyperlocation
   - Default value: `false`
 - `ip_dhcp_fallback` (Boolean) Represents AP fallback to DHCP, if AP fails to join via static IP address
-  - Default value: `true`
 - `lag` (Boolean) boolean to indicate whether ap lag enabled is used
   - Default value: `false`
 - `led` (Boolean) True if LED state is enabled otherwise disabled.
-  - Default value: `true`
 - `mesh_profile` (String) Specifies the mesh profile name for the AP
 - `mgmtuser_password` (String, Sensitive) AP user management password. Following criteria should be met if wireless password policy is configured. - Default passwords (cisco, Cisco, C!sco, ci$co, ..) are not allowed. - Reverse default passwords are not allowed. - At least one lower case letter is mandatory. - At least one upper case letter is mandatory. - At least one digit is mandatory. - Special characters are allowed, but not mandatory. - More than two sequential chars or digits (e.g., abc, 123) are not allowed. - More than two repeated chars or digits (e.g., 111, aaa) are not allowed. - Minimum password length is 8. Restriction: AP management password of cleartext type must contain ASCII characters only. This rule is not implemented using constraints.
 - `mgmtuser_password_type` (String) AP user management password type
@@ -162,7 +156,6 @@ resource "iosxe_wireless_ap_join_profile" "example" {
 - `mgmtuser_username` (String) AP user management username
 - `ntp_ip` (String) NTP server IP address
 - `rogue_detection_enable` (Boolean) rogue AP detection
-  - Default value: `true`
 - `rogue_detection_min_rssi` (Number) minmum RSSI for AP rogue detection
   - Range: `-128`-`70`
 - `rogue_detection_min_transient_time` (Number) transient interval for AP rogue detection
@@ -191,7 +184,6 @@ resource "iosxe_wireless_ap_join_profile" "example" {
 - `statistics_ap_system_monitoring_stats_interval` (Number) Statistics interval
   - Range: `120`-`900`
 - `statistics_traffic_distribution` (Boolean) Enable/Disable client traffic distribution stats
-  - Default value: `true`
 - `statistics_traffic_distribution_interval` (Number) Interval at which AP will send the statistics
   - Range: `30`-`3600`
 - `stats_timer` (Number) APs stats timer
@@ -202,7 +194,6 @@ resource "iosxe_wireless_ap_join_profile" "example" {
 - `syslog_level` (String) log level
   - Choices: `syslog-level-alert`, `syslog-level-critical`, `syslog-level-debug`, `syslog-level-emergency`, `syslog-level-errors`, `syslog-level-information`, `syslog-level-notification`, `syslog-level-warning`
 - `tcp_adjust_mss_enable` (Boolean) adjust mss
-  - Default value: `true`
 - `tcp_adjust_mss_size` (Number) This object represents the Global AP TCP MSS value
   - Range: `536`-`1363`
 

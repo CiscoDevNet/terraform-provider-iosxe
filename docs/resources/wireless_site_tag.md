@@ -36,7 +36,6 @@ resource "iosxe_wireless_site_tag" "example" {
 - `device` (String) A device name from the provider configuration.
 - `flex_profile` (String) The flex profile which is part of the Site tag
 - `local_site` (Boolean) This parameter is set to enable local site
-  - Default value: `true`
 
 ### Read-Only
 

@@ -115,7 +115,6 @@ resource "iosxe_template" "example" {
 - `access_session_interface_template_sticky_timer` (Number) Sticky timer value
   - Range: `1`-`65535`
 - `access_session_monitor` (Boolean) Apply template to monitor access sessions on the port
-  - Default value: `true`
 - `access_session_port_control` (String) Set the port-control value
   - Choices: `auto`, `force-authorized`, `force-unauthorized`
 - `authentication_periodic` (Boolean) Enable or Disable Reauthentication for this port
@@ -131,7 +130,6 @@ resource "iosxe_template" "example" {
 - `cts_manual_policy_static_trusted` (Boolean) Trust the Source Group Tags (SGT) that the peer uses for sending
   - Default value: `false`
 - `cts_manual_propagate_sgt` (Boolean) CTS SGT Propagation configuration
-  - Default value: `true`
 - `cts_role_based_enforcement` (Boolean) Enable Role-based Access Control enforcement
   - Default value: `false`
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
@@ -237,7 +235,6 @@ resource "iosxe_template" "example" {
 - `switchport_trunk_allowed_vlans_none` (Boolean) no VLANs
   - Default value: `false`
 - `switchport_trunk_native_vlan_tag` (Boolean) Set native VLAN tagging state
-  - Default value: `true`
 - `switchport_trunk_native_vlan_vlan_id` (Number) VLAN ID of the native VLAN when this port is in trunking mode
   - Range: `1`-`4094`
 - `switchport_voice_vlan` (Number) Vlan for voice traffic

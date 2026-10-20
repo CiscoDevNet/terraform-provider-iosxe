@@ -150,10 +150,8 @@ func (r *DeviceTrackingResource) Schema(ctx context.Context, req resource.Schema
 							},
 						},
 						"device_role_node_legacy": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").AddDefaultValueDescription("true").String,
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Optional:            true,
-							Computed:            true,
-							Default:             booldefault.StaticBool(true),
 						},
 						"device_role_switch_legacy": schema.BoolAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").AddDefaultValueDescription("false").String,

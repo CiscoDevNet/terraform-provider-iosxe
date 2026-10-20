@@ -33,24 +33,24 @@ resource "iosxe_parameter_map" "example" {
 
 - `alert` (Boolean) Turn on alert
   - Default value: `false`
-- `application_inspect_dns` (Boolean) - Default value: `true`
-- `application_inspect_exec` (Boolean) - Default value: `true`
-- `application_inspect_ftp` (Boolean) - Default value: `true`
-- `application_inspect_gtp` (Boolean) - Default value: `true`
-- `application_inspect_h323` (Boolean) - Default value: `true`
-- `application_inspect_http` (Boolean) - Default value: `true`
-- `application_inspect_imap` (Boolean) - Default value: `true`
-- `application_inspect_login` (Boolean) - Default value: `true`
-- `application_inspect_msrpc` (Boolean) - Default value: `true`
-- `application_inspect_netbios` (Boolean) - Default value: `true`
-- `application_inspect_pop3` (Boolean) - Default value: `true`
-- `application_inspect_rtsp` (Boolean) - Default value: `true`
-- `application_inspect_shell` (Boolean) - Default value: `true`
-- `application_inspect_sip` (Boolean) - Default value: `true`
-- `application_inspect_skinny` (Boolean) - Default value: `true`
-- `application_inspect_smtp` (Boolean) - Default value: `true`
-- `application_inspect_sunrpc` (Boolean) - Default value: `true`
-- `application_inspect_tftp` (Boolean) - Default value: `true`
+- `application_inspect_dns` (Boolean)
+- `application_inspect_exec` (Boolean)
+- `application_inspect_ftp` (Boolean)
+- `application_inspect_gtp` (Boolean)
+- `application_inspect_h323` (Boolean)
+- `application_inspect_http` (Boolean)
+- `application_inspect_imap` (Boolean)
+- `application_inspect_login` (Boolean)
+- `application_inspect_msrpc` (Boolean)
+- `application_inspect_netbios` (Boolean)
+- `application_inspect_pop3` (Boolean)
+- `application_inspect_rtsp` (Boolean)
+- `application_inspect_shell` (Boolean)
+- `application_inspect_sip` (Boolean)
+- `application_inspect_skinny` (Boolean)
+- `application_inspect_smtp` (Boolean)
+- `application_inspect_sunrpc` (Boolean)
+- `application_inspect_tftp` (Boolean)
 - `audit_trail` (Boolean) Turn on audit trail
   - Default value: `false`
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.

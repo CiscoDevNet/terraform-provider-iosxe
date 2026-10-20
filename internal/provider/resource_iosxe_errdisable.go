@@ -183,10 +183,8 @@ func (r *ErrdisableResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Default:             booldefault.StaticBool(false),
 			},
 			"detect_cause_loopdetect": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable error detection on loop detect").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable error detection on loop detect").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 			"flap_setting_cause_dtp_flap_max_flaps": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("maximum flaps allowed before setting to errdisable").AddIntegerRangeDescription(1, 100).String,

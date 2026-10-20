@@ -94,10 +94,8 @@ func (r *CDPResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				},
 			},
 			"run": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable CDP").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable CDP").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 			"filter_tlv_list": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Apply tlv-list globally").String,

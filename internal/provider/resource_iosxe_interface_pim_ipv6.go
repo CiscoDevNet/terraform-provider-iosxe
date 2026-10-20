@@ -101,10 +101,8 @@ func (r *InterfacePIMIPv6Resource) Schema(ctx context.Context, req resource.Sche
 				},
 			},
 			"pim": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("PIM interface commands").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("PIM interface commands").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 			"bfd": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Configure BFD").AddDefaultValueDescription("false").String,

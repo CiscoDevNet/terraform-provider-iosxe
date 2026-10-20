@@ -123,10 +123,8 @@ func (r *ISISResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				Default:             booldefault.StaticBool(false),
 			},
 			"log_adjacency_changes": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Log changes in adjacency state").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Log changes in adjacency state").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 			"log_adjacency_changes_all": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Log all adjacency changes including non-IIH events").AddDefaultValueDescription("false").String,

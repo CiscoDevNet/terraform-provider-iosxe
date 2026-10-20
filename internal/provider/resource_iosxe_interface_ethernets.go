@@ -126,22 +126,16 @@ func (r *InterfaceEthernetsResource) Schema(ctx context.Context, req resource.Sc
 							Default:             booldefault.StaticBool(false),
 						},
 						"ip_proxy_arp": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Enable proxy ARP").AddDefaultValueDescription("true").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Enable proxy ARP").String,
 							Optional:            true,
-							Computed:            true,
-							Default:             booldefault.StaticBool(true),
 						},
 						"ip_redirects": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Enable sending ICMP Redirect messages").AddDefaultValueDescription("true").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Enable sending ICMP Redirect messages").String,
 							Optional:            true,
-							Computed:            true,
-							Default:             booldefault.StaticBool(true),
 						},
 						"ip_unreachables": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Enable sending ICMP Unreachable messages").AddDefaultValueDescription("true").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Enable sending ICMP Unreachable messages").String,
 							Optional:            true,
-							Computed:            true,
-							Default:             booldefault.StaticBool(true),
 						},
 						"vrf_forwarding": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Configure forwarding table").String,
@@ -344,10 +338,8 @@ func (r *InterfaceEthernetsResource) Schema(ctx context.Context, req resource.Sc
 							Optional:            true,
 						},
 						"bfd_enable": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Enable BFD under the interface").AddDefaultValueDescription("true").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Enable BFD under the interface").String,
 							Optional:            true,
-							Computed:            true,
-							Default:             booldefault.StaticBool(true),
 						},
 						"bfd_local_address": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("The Source IP address to be used for BFD sessions over this interface.").String,
@@ -375,10 +367,8 @@ func (r *InterfaceEthernetsResource) Schema(ctx context.Context, req resource.Sc
 							},
 						},
 						"bfd_echo": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Use echo adjunct as bfd detection mechanism").AddDefaultValueDescription("true").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Use echo adjunct as bfd detection mechanism").String,
 							Optional:            true,
-							Computed:            true,
-							Default:             booldefault.StaticBool(true),
 						},
 						"ipv6_enable": schema.BoolAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Enable IPv6 on interface").AddDefaultValueDescription("false").String,
@@ -1024,10 +1014,8 @@ func (r *InterfaceEthernetsResource) Schema(ctx context.Context, req resource.Sc
 							Default:             booldefault.StaticBool(false),
 						},
 						"logging_event_link_status_enable": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("UPDOWN and CHANGE messages").AddDefaultValueDescription("true").String,
+							MarkdownDescription: helpers.NewAttributeDescription("UPDOWN and CHANGE messages").String,
 							Optional:            true,
-							Computed:            true,
-							Default:             booldefault.StaticBool(true),
 						},
 						"ip_nbar_protocol_discovery": schema.BoolAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Enable protocol discovery for both ipv4 and ipv6").AddDefaultValueDescription("false").String,
@@ -1054,28 +1042,20 @@ func (r *InterfaceEthernetsResource) Schema(ctx context.Context, req resource.Sc
 							},
 						},
 						"cdp_enable": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Enable CDP on interface").AddDefaultValueDescription("true").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Enable CDP on interface").String,
 							Optional:            true,
-							Computed:            true,
-							Default:             booldefault.StaticBool(true),
 						},
 						"cdp_tlv_app": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Enable/Configure Application TLV").AddDefaultValueDescription("true").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Enable/Configure Application TLV").String,
 							Optional:            true,
-							Computed:            true,
-							Default:             booldefault.StaticBool(true),
 						},
 						"cdp_tlv_location": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Exchange location information").AddDefaultValueDescription("true").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Exchange location information").String,
 							Optional:            true,
-							Computed:            true,
-							Default:             booldefault.StaticBool(true),
 						},
 						"cdp_tlv_server_location": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Enable CDP location server on interface").AddDefaultValueDescription("true").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Enable CDP location server on interface").String,
 							Optional:            true,
-							Computed:            true,
-							Default:             booldefault.StaticBool(true),
 						},
 						"ip_nat_inside": schema.BoolAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Inside interface for address translation").AddDefaultValueDescription("false").String,

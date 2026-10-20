@@ -172,10 +172,8 @@ func (r *InterfaceSwitchportResource) Schema(ctx context.Context, req resource.S
 				Default:             booldefault.StaticBool(false),
 			},
 			"trunk_allowed_vlans_all": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("all VLANs").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("all VLANs").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 			"trunk_allowed_vlans_add": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
@@ -220,10 +218,8 @@ func (r *InterfaceSwitchportResource) Schema(ctx context.Context, req resource.S
 				Default:             booldefault.StaticBool(false),
 			},
 			"trunk_native_vlan_tag": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 			"trunk_native_vlan": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 4094).String,

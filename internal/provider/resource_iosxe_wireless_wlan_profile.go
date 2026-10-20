@@ -112,10 +112,8 @@ func (r *WirelessWLANProfileResource) Schema(ctx context.Context, req resource.S
 				Default:             booldefault.StaticBool(false),
 			},
 			"broadcast_ssid": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("broadcast SSID on a WLAN").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("broadcast SSID on a WLAN").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 			"ccx_aironet_ie": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("This object indicates the support for the Cisco Compatible Extensions Aironet information element on this WLAN.").AddDefaultValueDescription("false").String,
@@ -131,10 +129,8 @@ func (r *WirelessWLANProfileResource) Schema(ctx context.Context, req resource.S
 				},
 			},
 			"security_wpa_akm_dot1x": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Authentication key management type 802.1x").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Authentication key management type 802.1x").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 			"security_wpa_akm_ft_dot1x": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Authentication key management type 802.11r dot1x").AddDefaultValueDescription("false").String,
@@ -167,10 +163,8 @@ func (r *WirelessWLANProfileResource) Schema(ctx context.Context, req resource.S
 				Default:             booldefault.StaticBool(false),
 			},
 			"security_wpa_wpa2_ciphers_aes": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("WPA2/CCMP128 support").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("WPA2/CCMP128 support").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 			"security_wpa_wpa2_ciphers_gcmp128": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("WPA2/GCMP128 support").AddDefaultValueDescription("false").String,

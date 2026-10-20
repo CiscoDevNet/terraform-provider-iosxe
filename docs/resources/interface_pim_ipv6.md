@@ -42,7 +42,6 @@ resource "iosxe_interface_pim_ipv6" "example" {
 - `dr_priority` (Number) PIM Hello DR priority
   - Range: `0`-`4294967295`
 - `pim` (Boolean) PIM interface commands
-  - Default value: `true`
 
 ### Read-Only
 

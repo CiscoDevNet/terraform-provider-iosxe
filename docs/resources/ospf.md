@@ -118,7 +118,6 @@ resource "iosxe_ospf" "example" {
 - `fast_reroute_per_prefix_enable_prefix_priority` (String) Priority of prefixes to be protected
   - Choices: `high`, `low`
 - `log_adjacency_changes` (Boolean) Log changes in adjacency state
-  - Default value: `true`
 - `log_adjacency_changes_detail` (Boolean) Log all state changes
   - Default value: `false`
 - `max_metric_router_lsa` (Boolean) Maximum metric in self-originated router-LSAs

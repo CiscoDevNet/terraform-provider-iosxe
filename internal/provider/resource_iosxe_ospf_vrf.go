@@ -164,10 +164,8 @@ func (r *OSPFVRFResource) Schema(ctx context.Context, req resource.SchemaRequest
 				},
 			},
 			"log_adjacency_changes": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Log changes in adjacency state").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Log changes in adjacency state").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 			"log_adjacency_changes_detail": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Log all state changes").AddDefaultValueDescription("false").String,

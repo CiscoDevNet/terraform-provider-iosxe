@@ -311,10 +311,8 @@ func (r *TemplateResource) Schema(ctx context.Context, req resource.SchemaReques
 				Default:             booldefault.StaticBool(false),
 			},
 			"switchport_trunk_native_vlan_tag": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set native VLAN tagging state").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Set native VLAN tagging state").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 			"switchport_trunk_native_vlan_vlan_id": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("VLAN ID of the native VLAN when this port is in trunking mode").AddIntegerRangeDescription(1, 4094).String,
@@ -342,10 +340,8 @@ func (r *TemplateResource) Schema(ctx context.Context, req resource.SchemaReques
 				Default:             booldefault.StaticBool(false),
 			},
 			"access_session_monitor": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Apply template to monitor access sessions on the port").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Apply template to monitor access sessions on the port").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 			"access_session_port_control": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Set the port-control value").AddStringEnumDescription("auto", "force-authorized", "force-unauthorized").String,
@@ -588,10 +584,8 @@ func (r *TemplateResource) Schema(ctx context.Context, req resource.SchemaReques
 				Default:             booldefault.StaticBool(false),
 			},
 			"cts_manual_propagate_sgt": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("CTS SGT Propagation configuration").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("CTS SGT Propagation configuration").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 			"cts_role_based_enforcement": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Enable Role-based Access Control enforcement").AddDefaultValueDescription("false").String,

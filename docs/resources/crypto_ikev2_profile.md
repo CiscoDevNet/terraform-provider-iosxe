@@ -69,7 +69,6 @@ resource "iosxe_crypto_ikev2_profile" "example" {
 - `authentication_remote_rsa_sig` (Boolean) Rivest-Shamir-Adleman Signature
   - Default value: `false`
 - `config_exchange_request` (Boolean) enable config-exchange request
-  - Default value: `true`
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `description` (String) Specify a description of this profile

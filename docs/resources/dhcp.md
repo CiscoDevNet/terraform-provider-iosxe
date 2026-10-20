@@ -64,7 +64,7 @@ resource "iosxe_dhcp" "example" {
   - Default value: `false`
 - `snooping` (Boolean) DHCP Snooping
   - Default value: `false`
-- `snooping_information_option` (Boolean) - Default value: `true`
+- `snooping_information_option` (Boolean)
 - `snooping_information_option_allow_untrusted` (Boolean) DHCP Snooping information option allow-untrusted
   - Default value: `false`
 - `snooping_information_option_format_remote_id_hostname` (Boolean) Use configured hostname for remote id

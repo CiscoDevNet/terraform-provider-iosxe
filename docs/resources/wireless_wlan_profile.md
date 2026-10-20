@@ -54,7 +54,6 @@ resource "iosxe_wireless_wlan_profile" "example" {
 > **NOTE**: [Write-only arguments](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments) are supported in Terraform 1.11 and later.
 
 - `broadcast_ssid` (Boolean) broadcast SSID on a WLAN
-  - Default value: `true`
 - `ccx_aironet_ie` (Boolean) This object indicates the support for the Cisco Compatible Extensions Aironet information element on this WLAN.
   - Default value: `false`
 - `device` (String) A device name from the provider configuration.
@@ -73,7 +72,6 @@ resource "iosxe_wireless_wlan_profile" "example" {
 - `security_web_auth_authentication_list` (String) Enter the Authentication list name
 - `security_web_auth_parameter_map` (String) Enter the parameter-map name
 - `security_wpa_akm_dot1x` (Boolean) Authentication key management type 802.1x
-  - Default value: `true`
 - `security_wpa_akm_ft_dot1x` (Boolean) Authentication key management type 802.11r dot1x
   - Default value: `false`
 - `security_wpa_akm_ft_psk` (Boolean) Authentication key management type 802.11r PSK
@@ -92,7 +90,6 @@ resource "iosxe_wireless_wlan_profile" "example" {
 - `security_wpa_psk_key_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
 - `security_wpa_psk_key_wo_version` (Number) The write-only version of the attribute.
 - `security_wpa_wpa2_ciphers_aes` (Boolean) WPA2/CCMP128 support
-  - Default value: `true`
 - `security_wpa_wpa2_ciphers_gcmp128` (Boolean) WPA2/GCMP128 support
   - Default value: `false`
 - `security_wpa_wpa2_ciphers_gcmp256` (Boolean) WPA2/GCMP256 support

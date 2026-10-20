@@ -96,16 +96,12 @@ func (r *BGPResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				},
 			},
 			"default_ipv4_unicast": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Activate ipv4-unicast for a peer by default").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Activate ipv4-unicast for a peer by default").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 			"log_neighbor_changes": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Log neighbor up/down and reset reason").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Log neighbor up/down and reset reason").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 			"router_id_loopback": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Loopback interface").AddIntegerRangeDescription(0, 2147483647).String,

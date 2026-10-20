@@ -71,7 +71,6 @@ resource "iosxe_errdisable" "example" {
 - `detect_cause_loopback` (Boolean) Enable error detection on loopback
   - Default value: `false`
 - `detect_cause_loopdetect` (Boolean) Enable error detection on loop detect
-  - Default value: `true`
 - `detect_cause_mlacp_minlink` (Boolean) - Default value: `false`
 - `detect_cause_pagp_flap` (Boolean) Enable error detection on pagp-flapping
   - Default value: `false`

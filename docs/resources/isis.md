@@ -39,7 +39,6 @@ resource "iosxe_isis" "example" {
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
 - `log_adjacency_changes` (Boolean) Log changes in adjacency state
-  - Default value: `true`
 - `log_adjacency_changes_all` (Boolean) Log all adjacency changes including non-IIH events
   - Default value: `false`
 - `metric_style_narrow` (Boolean) Use old style of TLVs with narrow metric

@@ -82,7 +82,6 @@ resource "iosxe_pim" "example" {
 ### Optional
 
 - `autorp` (Boolean) Configure AutoRP global operations
-  - Default value: `true`
 - `autorp_listener` (Boolean) Allow AutoRP packets across sparse mode interface
   - Default value: `false`
 - `bsr_candidate_accept_rp_candidate` (String) BSR RP candidate filter
@@ -157,7 +156,6 @@ Required:
 Optional:
 
 - `autorp` (Boolean) Configure AutoRP global operations
-  - Default value: `true`
 - `autorp_listener` (Boolean) Allow AutoRP packets across sparse mode interface
   - Default value: `false`
 - `bsr_candidate_accept_rp_candidate` (String) BSR RP candidate filter

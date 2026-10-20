@@ -177,7 +177,6 @@ resource "iosxe_snmp_server" "example" {
 - `enable_logging_getop` (Boolean) Enable SNMP GET Operation logging
   - Default value: `false`
 - `enable_logging_setop` (Boolean) Enable SNMP SET Operation logging
-  - Default value: `true`
 - `enable_traps` (Boolean) Enable SNMP Traps
   - Default value: `false`
 - `enable_traps_aaa_server` (Boolean) Enable SNMP AAA Server traps

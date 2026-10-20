@@ -88,10 +88,8 @@ func (r *PIMResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				},
 			},
 			"autorp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure AutoRP global operations").AddDefaultValueDescription("true").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configure AutoRP global operations").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 			"autorp_listener": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Allow AutoRP packets across sparse mode interface").AddDefaultValueDescription("false").String,
@@ -237,10 +235,8 @@ func (r *PIMResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 							Required:            true,
 						},
 						"autorp": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Configure AutoRP global operations").AddDefaultValueDescription("true").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Configure AutoRP global operations").String,
 							Optional:            true,
-							Computed:            true,
-							Default:             booldefault.StaticBool(true),
 						},
 						"autorp_listener": schema.BoolAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Allow AutoRP packets across sparse mode interface").AddDefaultValueDescription("false").String,

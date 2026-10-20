@@ -128,7 +128,6 @@ resource "iosxe_system" "example" {
 - `ip_domain_list_vrf` (String)
 - `ip_domain_list_vrf_domain` (String)
 - `ip_domain_lookup` (Boolean) Enable IP Domain Name System hostname translation
-  - Default value: `true`
 - `ip_domain_lookup_nsap` (Boolean) Enable IP DNS queries for CLNS NSAP addresses
   - Default value: `false`
 - `ip_domain_lookup_recursive` (Boolean) Enable IP DNS recursive lookup
@@ -147,9 +146,7 @@ resource "iosxe_system" "example" {
 - `ip_domain_lookup_vrfs` (Attributes List) Specify VRF (see [below for nested schema](#nestedatt--ip_domain_lookup_vrfs))
 - `ip_domain_name` (String) Define the default domain name
 - `ip_forward_protocol_nd` (Boolean) Sun's Network Disk protocol
-  - Default value: `true`
 - `ip_ftp_passive` (Boolean) Connect using passive mode
-  - Default value: `true`
 - `ip_hosts` (Attributes List) (see [below for nested schema](#nestedatt--ip_hosts))
 - `ip_hosts_vrf` (Attributes List) Specify VRF (see [below for nested schema](#nestedatt--ip_hosts_vrf))
 - `ip_http_access_class` (Number) Restrict http server access by access-class
@@ -168,10 +165,8 @@ resource "iosxe_system" "example" {
   - Range: `1`-`50`
 - `ip_http_secure_active_session_modules` (String) Set secure active session modules
 - `ip_http_secure_server` (Boolean) Enable HTTP secure server
-  - Default value: `true`
 - `ip_http_secure_trustpoint` (String) Set http secure server certificate trustpoint
 - `ip_http_server` (Boolean) Enable http server
-  - Default value: `true`
 - `ip_http_tls_version` (String) Set TLS version for HTTP secure server
   - Choices: `TLSv1.0`, `TLSv1.1`, `TLSv1.2`, `TLSv1.3`
 - `ip_multicast_route_limit` (Number) Maximum number of multicast routes
@@ -183,7 +178,6 @@ resource "iosxe_system" "example" {
 - `ip_name_servers` (List of String) Domain server IPv4/IPv6 address (maximum of 6)
 - `ip_name_servers_vrf` (Attributes List) (see [below for nested schema](#nestedatt--ip_name_servers_vrf))
 - `ip_nbar_classification_dns_classify_by_domain` (Boolean) dns classification by domain
-  - Default value: `true`
 - `ip_radius_source_interface_five_gigabit_ethernet` (String) Five GigabitEthernet
 - `ip_radius_source_interface_forty_gigabit_ethernet` (String) Forty GigabitEthernet
 - `ip_radius_source_interface_gigabit_ethernet` (String) GigabitEthernet IEEE 802.3z
@@ -197,9 +191,7 @@ resource "iosxe_system" "example" {
   - Range: `0`-`65535`
 - `ip_radius_source_interface_vrf` (String) VPN Routing/Forwarding parameters
 - `ip_routing` (Boolean) Enable or disable IP routing
-  - Default value: `true`
 - `ip_routing_protocol_purge_interface` (Boolean) Perform IP routing protocol routes purge on link failures
-  - Default value: `true`
 - `ip_scp_server_enable` (Boolean) Enable server side of SCP
   - Default value: `false`
 - `ip_sftp_password` (String, Sensitive)
@@ -292,7 +284,7 @@ resource "iosxe_system" "example" {
   - Choices: `none`, `rpr`, `rpr-plus`, `sso`
 - `security_passwords_min_length` (Number) Minimum length of passwords
   - Range: `1`-`16`
-- `standby_redirects` (Boolean) - Default value: `true`
+- `standby_redirects` (Boolean)
 - `standby_redirects_enable_disable` (String) - Choices: `disable`, `enable`
 - `subscriber_templating` (Boolean) Configure subscriber templating
   - Default value: `false`

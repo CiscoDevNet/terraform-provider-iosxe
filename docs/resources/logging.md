@@ -71,7 +71,6 @@ resource "iosxe_logging" "example" {
 - `buffered_size_legacy` (Number) DEPRECATED. Logging buffer size
   - Range: `4096`-`2147483647`
 - `console` (Boolean) Set console logging parameters
-  - Default value: `true`
 - `console_severity` (String)
 - `device` (String) A device name from the provider configuration.
 - `facility` (String) Facility parameter for syslog messages
