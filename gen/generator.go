@@ -845,7 +845,7 @@ func parseAttribute(e *yang.Entry, attr *YamlConfigAttribute) {
 			attr.Mandatory = leaf.Mandatory.Value()
 		}
 	}
-	if attr.Type == "Bool" && attr.DefaultValue == "" && !attr.WriteOnly {
+	if attr.Type == "Bool" && attr.DefaultValue == "" && !attr.WriteOnly && !attr.Mandatory && !attr.Id && !attr.Reference {
 		if len(leaf.Default) > 0 && leaf.Default[0] == "true" {
 			attr.DefaultValue = "true"
 		} else {

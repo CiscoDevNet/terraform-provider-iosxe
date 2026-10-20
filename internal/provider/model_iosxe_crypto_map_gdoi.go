@@ -104,6 +104,8 @@ func (data CryptoMapGDOI) addToBodyXML(ctx context.Context, config CryptoMapGDOI
 	if !data.Gdoi.IsNull() && !data.Gdoi.IsUnknown() {
 		if data.Gdoi.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/gdoi", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/gdoi")
 		}
 	}
 	if !data.SetGroup.IsNull() && !data.SetGroup.IsUnknown() {
