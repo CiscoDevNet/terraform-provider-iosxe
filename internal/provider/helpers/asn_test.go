@@ -46,3 +46,31 @@ func TestNormalizeASN(t *testing.T) {
 		})
 	}
 }
+
+func TestAlternateASN(t *testing.T) {
+	tests := []struct {
+		name     string
+		input    string
+		expected string
+	}{
+		{name: "empty", input: "", expected: ""},
+		{name: "asdot to asplain", input: "1.1", expected: "65537"},
+		{name: "asplain to asdot", input: "65537", expected: "1.1"},
+		{name: "asdot large to asplain", input: "64111.56369", expected: "4201634865"},
+		{name: "asplain large to asdot", input: "4201634865", expected: "64111.56369"},
+		{name: "asplain max to asdot", input: "4294967295", expected: "65535.65535"},
+		{name: "asplain first 4-byte", input: "65536", expected: "1.0"},
+		{name: "2-byte unchanged", input: "65000", expected: "65000"},
+		{name: "2-byte max unchanged", input: "65535", expected: "65535"},
+		{name: "asdot zero high to asplain", input: "0.65000", expected: "65000"},
+		{name: "invalid string", input: "not-a-number", expected: "not-a-number"},
+		{name: "out of range", input: "4294967296", expected: "4294967296"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := AlternateASN(tt.input); got != tt.expected {
+				t.Errorf("AlternateASN(%q) = %q, want %q", tt.input, got, tt.expected)
+			}
+		})
+	}
+}
