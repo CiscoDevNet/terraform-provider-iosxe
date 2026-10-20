@@ -3,6 +3,15 @@ name: Wireless RF Profile
 path: /Cisco-IOS-XE-wireless-rf-cfg:rf-cfg-data/rf-profiles/rf-profile[name=%s]
 no_delete_attributes: true
 test_tags: [C9800]
+builtin_objects:
+  - default-rf-profile-6ghz
+builtin_readonly_objects:
+  - Low_Client_Density_rf_24gh
+  - High_Client_Density_rf_24gh
+  - Typical_Client_Density_rf_24gh
+  - Low_Client_Density_rf_5gh
+  - High_Client_Density_rf_5gh
+  - Typical_Client_Density_rf_5gh
 doc_category: Wireless
 attributes:
   - yang_name: name
@@ -13,10 +22,12 @@ attributes:
     tf_name: band
     type: String
     enum_values: [dot11-2-dot-4-ghz-band, dot11-5-ghz-band, dot11-6-ghz-band]
+    builtin_keep: true
     example: dot11-5-ghz-band
   - yang_name: status
     tf_name: status
     type: Bool
+    builtin_keep: true
     example: true
   - yang_name: description
     tf_name: description
