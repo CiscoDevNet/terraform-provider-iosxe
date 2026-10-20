@@ -268,9 +268,6 @@ func (data *CryptoIPSecProfile) addDeletedItemsXML(ctx context.Context, state Cr
 	if !state.SetPfsGroup.IsNull() && data.SetPfsGroup.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/set/pfs/group")
 	}
-	if !state.SetPfs.IsNull() && data.SetPfs.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/set/pfs")
-	}
 	if !state.SetIsakmpProfile.IsNull() && data.SetIsakmpProfile.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/set/isakmp-profile")
 	}
@@ -321,9 +318,6 @@ func (data *CryptoIPSecProfile) addDeletePathsXML(ctx context.Context, body stri
 	}
 	if !data.SetPfsGroup.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/set/pfs/group")
-	}
-	if !data.SetPfs.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/set/pfs")
 	}
 	if !data.SetIsakmpProfile.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/set/isakmp-profile")
