@@ -88,7 +88,7 @@ func (r *VoiceClassTLSCipherResource) Schema(ctx context.Context, req resource.S
 				},
 			},
 			"tag": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Voice class srtp-crypto tag").AddIntegerRangeDescription(1, 10000).String,
+				MarkdownDescription: helpers.NewAttributeDescription("Voice class tls-cipher tag").AddIntegerRangeDescription(1, 10000).String,
 				Required:            true,
 				Validators: []validator.Int64{
 					int64validator.Between(1, 10000),

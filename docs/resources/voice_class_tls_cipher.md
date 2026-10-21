@@ -29,7 +29,7 @@ resource "iosxe_voice_class_tls_cipher" "example" {
 
 ### Required
 
-- `tag` (Number) Voice class srtp-crypto tag
+- `tag` (Number) Voice class tls-cipher tag
   - Range: `1`-`10000`
 
 ### Optional

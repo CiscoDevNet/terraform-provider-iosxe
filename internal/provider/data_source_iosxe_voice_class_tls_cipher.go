@@ -69,7 +69,7 @@ func (d *VoiceClassTLSCipherDataSource) Schema(ctx context.Context, req datasour
 				Computed:            true,
 			},
 			"tag": schema.Int64Attribute{
-				MarkdownDescription: "Voice class srtp-crypto tag",
+				MarkdownDescription: "Voice class tls-cipher tag",
 				Required:            true,
 			},
 			"ciphers": schema.ListNestedAttribute{

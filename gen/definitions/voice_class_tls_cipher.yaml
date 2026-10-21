@@ -9,6 +9,7 @@ attributes:
   - yang_name: id
     tf_name: tag
     id: true
+    description: Voice class tls-cipher tag
     example: 1
   - yang_name: cipher
     tf_name: ciphers
