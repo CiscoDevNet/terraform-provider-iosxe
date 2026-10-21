@@ -332,3 +332,34 @@ func TestIPv6NormalizationModifier_ExpandedVsCompressed(t *testing.T) {
 		t.Errorf("expected state value %q, got %q", "2001:db8::1", resp.PlanValue.ValueString())
 	}
 }
+
+func TestNormalizedEqualityModifier(t *testing.T) {
+	ctx := context.Background()
+	tests := []struct {
+		name      string
+		normalize func(string) string
+		config    types.String
+		state     types.String
+		expected  types.String
+	}{
+		{"numeric config, symbolic state", NormalizePort, types.StringValue("80"), types.StringValue("www"), types.StringValue("www")},
+		{"symbolic config, numeric state", NormalizePort, types.StringValue("www"), types.StringValue("80"), types.StringValue("80")},
+		{"genuine port change", NormalizePort, types.StringValue("443"), types.StringValue("www"), types.StringValue("443")},
+		{"unnamed port unchanged", NormalizePort, types.StringValue("8443"), types.StringValue("8443"), types.StringValue("8443")},
+		{"numeric dscp, symbolic state", NormalizeDscp, types.StringValue("46"), types.StringValue("ef"), types.StringValue("ef")},
+		{"genuine dscp change", NormalizeDscp, types.StringValue("af41"), types.StringValue("46"), types.StringValue("af41")},
+		{"create", NormalizePort, types.StringValue("80"), types.StringNull(), types.StringValue("80")},
+		{"null config", NormalizePort, types.StringNull(), types.StringValue("www"), types.StringNull()},
+		{"unknown config", NormalizePort, types.StringUnknown(), types.StringValue("www"), types.StringUnknown()},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			req := planmodifier.StringRequest{ConfigValue: tt.config, StateValue: tt.state}
+			resp := &planmodifier.StringResponse{PlanValue: tt.config}
+			UseNormalizedEquality(tt.normalize).PlanModifyString(ctx, req, resp)
+			if !resp.PlanValue.Equal(tt.expected) {
+				t.Errorf("expected %s, got %s", tt.expected, resp.PlanValue)
+			}
+		})
+	}
+}

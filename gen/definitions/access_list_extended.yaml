@@ -54,70 +54,84 @@ attributes:
       - yang_name: ace-rule/src-port-choice/src-eq-case/src-eq
         xpath: ace-rule/src-eq
         tf_name: source_port_equal
+        normalize_func: NormalizePort
         example: 1000
       - yang_name: ace-rule/src-port-choice/src-gt-case/src-gt
         xpath: ace-rule/src-gt
         tf_name: source_port_greater_than
+        normalize_func: NormalizePort
         example: 1000
         exclude_test: true
       - yang_name: ace-rule/src-port-choice/src-lt-case/src-lt
         xpath: ace-rule/src-lt
         tf_name: source_port_lesser_than
+        normalize_func: NormalizePort
         example: 1000
         exclude_test: true
       - yang_name: ace-rule/src-port-choice/src-range-case/src-range1
         xpath: ace-rule/src-range1
         tf_name: source_port_range_from
+        normalize_func: NormalizePort
         example: 1000
         exclude_test: true
       - yang_name: ace-rule/src-port-choice/src-range-case/src-range2
         xpath: ace-rule/src-range2
         tf_name: source_port_range_to
+        normalize_func: NormalizePort
         example: 2000
         exclude_test: true
       - yang_name: ace-rule/src-port-choice/src-eq-case/src-eq-port2
         xpath: ace-rule/src-eq-port2
         tf_name: source_port_equal_2
+        normalize_func: NormalizePort
         example: 1002
         exclude_test: true
       - yang_name: ace-rule/src-port-choice/src-eq-case/src-eq-port3
         xpath: ace-rule/src-eq-port3
         tf_name: source_port_equal_3
+        normalize_func: NormalizePort
         example: 1003
         exclude_test: true
       - yang_name: ace-rule/src-port-choice/src-eq-case/src-eq-port4
         xpath: ace-rule/src-eq-port4
         tf_name: source_port_equal_4
+        normalize_func: NormalizePort
         example: 1004
         exclude_test: true
       - yang_name: ace-rule/src-port-choice/src-eq-case/src-eq-port5
         xpath: ace-rule/src-eq-port5
         tf_name: source_port_equal_5
+        normalize_func: NormalizePort
         example: 1005
         exclude_test: true
       - yang_name: ace-rule/src-port-choice/src-eq-case/src-eq-port6
         xpath: ace-rule/src-eq-port6
         tf_name: source_port_equal_6
+        normalize_func: NormalizePort
         example: 1006
         exclude_test: true
       - yang_name: ace-rule/src-port-choice/src-eq-case/src-eq-port7
         xpath: ace-rule/src-eq-port7
         tf_name: source_port_equal_7
+        normalize_func: NormalizePort
         example: 1007
         exclude_test: true
       - yang_name: ace-rule/src-port-choice/src-eq-case/src-eq-port8
         xpath: ace-rule/src-eq-port8
         tf_name: source_port_equal_8
+        normalize_func: NormalizePort
         example: 1008
         exclude_test: true
       - yang_name: ace-rule/src-port-choice/src-eq-case/src-eq-port9
         xpath: ace-rule/src-eq-port9
         tf_name: source_port_equal_9
+        normalize_func: NormalizePort
         example: 1009
         exclude_test: true
       - yang_name: ace-rule/src-port-choice/src-eq-case/src-eq-port10
         xpath: ace-rule/src-eq-port10
         tf_name: source_port_equal_10
+        normalize_func: NormalizePort
         example: 1010
         exclude_test: true
       - yang_name: ace-rule/destination-choice/ipv4-prefix-case/dest-ipv4-address
@@ -152,25 +166,30 @@ attributes:
       - yang_name: ace-rule/dst-port-choice/dst-eq-case/dst-eq
         xpath: ace-rule/dst-eq
         tf_name: destination_port_equal
+        normalize_func: NormalizePort
         example: 1000
         exclude_test: true
       - yang_name: ace-rule/dst-port-choice/dst-gt-case/dst-gt
         xpath: ace-rule/dst-gt
         tf_name: destination_port_greater_than
+        normalize_func: NormalizePort
         example: 1000
         exclude_test: true
       - yang_name: ace-rule/dst-port-choice/dst-lt-case/dst-lt
         xpath: ace-rule/dst-lt
         tf_name: destination_port_lesser_than
+        normalize_func: NormalizePort
         example: 1000
         exclude_test: true
       - yang_name: ace-rule/dst-port-choice/dst-range-case/dst-range1
         xpath: ace-rule/dst-range1
         tf_name: destination_port_range_from
+        normalize_func: NormalizePort
         example: 1000
       - yang_name: ace-rule/dst-port-choice/dst-range-case/dst-range2
         xpath: ace-rule/dst-range2
         tf_name: destination_port_range_to
+        normalize_func: NormalizePort
         example: 2000
       - yang_name: ace-rule/ack
         tf_name: ack
@@ -196,6 +215,7 @@ attributes:
         exclude_test: true
       - yang_name: ace-rule/dscp
         tf_name: dscp
+        normalize_func: NormalizeDscp
         example: 46
       - yang_name: ace-rule/fragments
         tf_name: fragments
@@ -224,46 +244,55 @@ attributes:
       - yang_name: ace-rule/dst-port-choice/dst-eq-case/dst-eq-port2
         xpath: ace-rule/dst-eq-port2
         tf_name: destination_port_equal_2
+        normalize_func: NormalizePort
         example: 2002
         exclude_test: true
       - yang_name: ace-rule/dst-port-choice/dst-eq-case/dst-eq-port3
         xpath: ace-rule/dst-eq-port3
         tf_name: destination_port_equal_3
+        normalize_func: NormalizePort
         example: 2003
         exclude_test: true
       - yang_name: ace-rule/dst-port-choice/dst-eq-case/dst-eq-port4
         xpath: ace-rule/dst-eq-port4
         tf_name: destination_port_equal_4
+        normalize_func: NormalizePort
         example: 2004
         exclude_test: true
       - yang_name: ace-rule/dst-port-choice/dst-eq-case/dst-eq-port5
         xpath: ace-rule/dst-eq-port5
         tf_name: destination_port_equal_5
+        normalize_func: NormalizePort
         example: 2005
         exclude_test: true
       - yang_name: ace-rule/dst-port-choice/dst-eq-case/dst-eq-port6
         xpath: ace-rule/dst-eq-port6
         tf_name: destination_port_equal_6
+        normalize_func: NormalizePort
         example: 2006
         exclude_test: true
       - yang_name: ace-rule/dst-port-choice/dst-eq-case/dst-eq-port7
         xpath: ace-rule/dst-eq-port7
         tf_name: destination_port_equal_7
+        normalize_func: NormalizePort
         example: 2007
         exclude_test: true
       - yang_name: ace-rule/dst-port-choice/dst-eq-case/dst-eq-port8
         xpath: ace-rule/dst-eq-port8
         tf_name: destination_port_equal_8
+        normalize_func: NormalizePort
         example: 2008
         exclude_test: true
       - yang_name: ace-rule/dst-port-choice/dst-eq-case/dst-eq-port9
         xpath: ace-rule/dst-eq-port9
         tf_name: destination_port_equal_9
+        normalize_func: NormalizePort
         example: 2009
         exclude_test: true
       - yang_name: ace-rule/dst-port-choice/dst-eq-case/dst-eq-port10
         xpath: ace-rule/dst-eq-port10
         tf_name: destination_port_equal_10
+        normalize_func: NormalizePort
         example: 2010
         exclude_test: true
       - yang_name: ace-rule/icmp-msg-choice/icmp-msg-type-code/msg-type
