@@ -49,6 +49,8 @@ type VoiceClassTLSProfile struct {
 	CnSanValidateClient        types.Bool                       `tfsdk:"cn_san_validate_client"`
 	CnSanValidateBidirectional types.Bool                       `tfsdk:"cn_san_validate_bidirectional"`
 	CnSanNames                 []VoiceClassTLSProfileCnSanNames `tfsdk:"cn_san_names"`
+	EcdsaCipher                types.Bool                       `tfsdk:"ecdsa_cipher"`
+	EcdsaCipherCurveSize       types.String                     `tfsdk:"ecdsa_cipher_curve_size"`
 	StrictCipher               types.Bool                       `tfsdk:"strict_cipher"`
 	TlsCipherId                types.Int64                      `tfsdk:"tls_cipher_id"`
 	SniSend                    types.Bool                       `tfsdk:"sni_send"`
@@ -69,6 +71,8 @@ type VoiceClassTLSProfileData struct {
 	CnSanValidateClient        types.Bool                           `tfsdk:"cn_san_validate_client"`
 	CnSanValidateBidirectional types.Bool                           `tfsdk:"cn_san_validate_bidirectional"`
 	CnSanNames                 []VoiceClassTLSProfileCnSanNamesData `tfsdk:"cn_san_names"`
+	EcdsaCipher                types.Bool                           `tfsdk:"ecdsa_cipher"`
+	EcdsaCipherCurveSize       types.String                         `tfsdk:"ecdsa_cipher_curve_size"`
 	StrictCipher               types.Bool                           `tfsdk:"strict_cipher"`
 	TlsCipherId                types.Int64                          `tfsdk:"tls_cipher_id"`
 	SniSend                    types.Bool                           `tfsdk:"sni_send"`
@@ -163,6 +167,16 @@ func (data VoiceClassTLSProfile) addToBodyXML(ctx context.Context, config VoiceC
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/cn-san/tag", cBody.Res())
 		}
+	}
+	if !data.EcdsaCipher.IsNull() && !data.EcdsaCipher.IsUnknown() {
+		if data.EcdsaCipher.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/cipher/ecdsa-cipher", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/cipher/ecdsa-cipher")
+		}
+	}
+	if !data.EcdsaCipherCurveSize.IsNull() && !data.EcdsaCipherCurveSize.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/cipher/ecdsa-cipher/curve-size", data.EcdsaCipherCurveSize.ValueString())
 	}
 	if !data.StrictCipher.IsNull() && !data.StrictCipher.IsUnknown() {
 		if data.StrictCipher.ValueBool() {
@@ -270,6 +284,20 @@ func (data *VoiceClassTLSProfile) updateFromBodyXML(ctx context.Context, res xml
 			data.CnSanNames[i].Name = types.StringNull()
 		}
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/cipher/ecdsa-cipher"); !data.EcdsaCipher.IsNull() {
+		if value.Exists() {
+			data.EcdsaCipher = types.BoolValue(true)
+		} else {
+			data.EcdsaCipher = types.BoolValue(false)
+		}
+	} else {
+		data.EcdsaCipher = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/cipher/ecdsa-cipher/curve-size"); value.Exists() && !data.EcdsaCipherCurveSize.IsNull() {
+		data.EcdsaCipherCurveSize = types.StringValue(value.String())
+	} else {
+		data.EcdsaCipherCurveSize = types.StringNull()
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/cipher/strict-cipher"); !data.StrictCipher.IsNull() {
 		if value.Exists() {
 			data.StrictCipher = types.BoolValue(true)
@@ -338,6 +366,14 @@ func (data *VoiceClassTLSProfile) fromBodyXML(ctx context.Context, res xmldot.Re
 			return true
 		})
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/cipher/ecdsa-cipher"); value.Exists() {
+		data.EcdsaCipher = types.BoolValue(true)
+	} else {
+		data.EcdsaCipher = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/cipher/ecdsa-cipher/curve-size"); value.Exists() {
+		data.EcdsaCipherCurveSize = types.StringValue(value.String())
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/cipher/strict-cipher"); value.Exists() {
 		data.StrictCipher = types.BoolValue(true)
 	} else {
@@ -396,6 +432,14 @@ func (data *VoiceClassTLSProfileData) fromBodyXML(ctx context.Context, res xmldo
 			return true
 		})
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/cipher/ecdsa-cipher"); value.Exists() {
+		data.EcdsaCipher = types.BoolValue(true)
+	} else {
+		data.EcdsaCipher = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/cipher/ecdsa-cipher/curve-size"); value.Exists() {
+		data.EcdsaCipherCurveSize = types.StringValue(value.String())
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/cipher/strict-cipher"); value.Exists() {
 		data.StrictCipher = types.BoolValue(true)
 	} else {
@@ -425,6 +469,12 @@ func (data *VoiceClassTLSProfile) addDeletedItemsXML(ctx context.Context, state 
 	}
 	if !state.StrictCipher.IsNull() && data.StrictCipher.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/cipher/strict-cipher")
+	}
+	if !state.EcdsaCipherCurveSize.IsNull() && data.EcdsaCipherCurveSize.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/cipher/ecdsa-cipher/curve-size")
+	}
+	if !state.EcdsaCipher.IsNull() && data.EcdsaCipher.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/cipher/ecdsa-cipher")
 	}
 	for i := range state.CnSanNames {
 		stateKeys := [...]string{"id"}
@@ -496,6 +546,12 @@ func (data *VoiceClassTLSProfile) addDeletePathsXML(ctx context.Context, body st
 	}
 	if !data.StrictCipher.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/cipher/strict-cipher")
+	}
+	if !data.EcdsaCipherCurveSize.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/cipher/ecdsa-cipher/curve-size")
+	}
+	if !data.EcdsaCipher.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/cipher/ecdsa-cipher")
 	}
 	for i := range data.CnSanNames {
 		keys := [...]string{"id"}

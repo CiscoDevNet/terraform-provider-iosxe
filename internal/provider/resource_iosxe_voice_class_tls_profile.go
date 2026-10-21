@@ -154,6 +154,17 @@ func (r *VoiceClassTLSProfileResource) Schema(ctx context.Context, req resource.
 					},
 				},
 			},
+			"ecdsa_cipher": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Use ECDSA Ciphers").String,
+				Optional:            true,
+			},
+			"ecdsa_cipher_curve_size": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Size of Elliptic Curve to use.").AddStringEnumDescription("384").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("384"),
+				},
+			},
 			"strict_cipher": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Use only ciphers use by SIP standards").String,
 				Optional:            true,

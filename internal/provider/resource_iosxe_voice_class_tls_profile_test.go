@@ -62,7 +62,7 @@ func TestAccIosxeVoiceClassTLSProfile(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeVoiceClassTLSProfileImportStateIdFunc("iosxe_voice_class_tls_profile.test"),
-				ImportStateVerifyIgnore: []string{"cn_san_validate_client", "cn_san_validate_bidirectional"},
+				ImportStateVerifyIgnore: []string{"cn_san_validate_client", "cn_san_validate_bidirectional", "ecdsa_cipher"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},

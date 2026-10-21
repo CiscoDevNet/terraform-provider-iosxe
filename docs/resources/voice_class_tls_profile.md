@@ -47,6 +47,9 @@ resource "iosxe_voice_class_tls_profile" "example" {
   - Choices: `all`, `attributes`
 - `description` (String) Define the description of input options
 - `device` (String) A device name from the provider configuration.
+- `ecdsa_cipher` (Boolean) Use ECDSA Ciphers
+- `ecdsa_cipher_curve_size` (String) Size of Elliptic Curve to use.
+  - Choices: `384`
 - `sni_send` (Boolean) Include SNI extension in outbound TLS connections
 - `strict_cipher` (Boolean) Use only ciphers use by SIP standards
 - `tls_cipher_id` (Number) Specify tls-cipher list tag

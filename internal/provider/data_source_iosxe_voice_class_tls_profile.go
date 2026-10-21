@@ -112,6 +112,14 @@ func (d *VoiceClassTLSProfileDataSource) Schema(ctx context.Context, req datasou
 					},
 				},
 			},
+			"ecdsa_cipher": schema.BoolAttribute{
+				MarkdownDescription: "Use ECDSA Ciphers",
+				Computed:            true,
+			},
+			"ecdsa_cipher_curve_size": schema.StringAttribute{
+				MarkdownDescription: "Size of Elliptic Curve to use.",
+				Computed:            true,
+			},
 			"strict_cipher": schema.BoolAttribute{
 				MarkdownDescription: "Use only ciphers use by SIP standards",
 				Computed:            true,

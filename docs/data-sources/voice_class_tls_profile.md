@@ -37,6 +37,8 @@ data "iosxe_voice_class_tls_profile" "example" {
 - `cn_san_validate_client` (Boolean) Enable CN/SAN validation for client certificate
 - `cn_san_validate_server` (Boolean) Enable CN/SAN validation for server certificate
 - `description` (String) Define the description of input options
+- `ecdsa_cipher` (Boolean) Use ECDSA Ciphers
+- `ecdsa_cipher_curve_size` (String) Size of Elliptic Curve to use.
 - `id` (String) The path of the retrieved object.
 - `sni_send` (Boolean) Include SNI extension in outbound TLS connections
 - `strict_cipher` (Boolean) Use only ciphers use by SIP standards

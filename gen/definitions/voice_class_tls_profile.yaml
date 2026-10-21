@@ -41,6 +41,18 @@ attributes:
       - yang_name: cn-san-name
         tf_name: name
         example: cube.example.com
+  - yang_name: cipher/cipher-choice/ecdsa-cipher/ecdsa-cipher
+    xpath: cipher/ecdsa-cipher
+    tf_name: ecdsa_cipher
+    type: Bool
+    type_yang_bool: presence
+    exclude_test: true
+    example: true
+  - yang_name: cipher/cipher-choice/ecdsa-cipher/ecdsa-cipher/curve-size
+    xpath: cipher/ecdsa-cipher/curve-size
+    tf_name: ecdsa_cipher_curve_size
+    exclude_test: true
+    example: 384
   - yang_name: cipher/cipher-choice/strict-cipher/strict-cipher
     xpath: cipher/strict-cipher
     tf_name: strict_cipher
