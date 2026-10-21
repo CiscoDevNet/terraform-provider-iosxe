@@ -437,8 +437,21 @@ func (r *{{camelCase .Name}}Resource) Create(ctx context.Context, req resource.C
 			defer device.NetconfOpMutex.Unlock()
 		}
 		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+		{{- if asnKeyAttribute .Attributes}}
+
+		// Write under the key the device stores; state keeps the configured notation.
+		write, err := r.resolveAsnKey(ctx, device, plan)
+		if err != nil {
+			resp.Diagnostics.AddError("Client Error", err.Error())
+			return
+		}
+		writeConfig := config
+		writeConfig.{{asnKeyAttribute .Attributes}} = write.{{asnKeyAttribute .Attributes}}
+		body := write.toBodyXML(ctx, writeConfig)
+		{{- else}}
 
 		body := plan.toBodyXML(ctx, config)
+		{{- end}}
 
 		if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
 			resp.Diagnostics.AddError("Client Error", err.Error())
@@ -497,6 +510,30 @@ func (r *{{camelCase .Name}}Resource) Read(ctx context.Context, req resource.Rea
 			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", state.getPath(), err))
 			return
 		}
+		{{- $asnKey := asnKeyAttribute .Attributes}}
+		{{- if $asnKey}}
+
+		// IOS-XE keys the BGP process by the AS number in the notation `bgp asnotation dot` selects, so
+		// toggling it renames the list entry (1.1 <-> 65537). If the stored key is not found, retry with
+		// the other notation and keep that key, so the change is an update rather than a missing resource.
+		if helpers.IsGetConfigResponseEmpty(&res) {
+			if alt := helpers.AlternateASN(state.{{$asnKey}}.ValueString()); alt != state.{{$asnKey}}.ValueString() {
+				altState := state
+				altState.{{$asnKey}} = types.StringValue(alt)
+				altRes, err := device.NetconfClient.GetConfig(ctx, "running", helpers.GetXpathFilter(altState.getXPath()))
+				if err != nil {
+					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", altState.getPath(), err))
+					return
+				}
+				if !helpers.IsGetConfigResponseEmpty(&altRes) {
+					tflog.Debug(ctx, fmt.Sprintf("%s: Found under alternate AS notation %s", state.Id.ValueString(), alt))
+					state.{{$asnKey}} = altState.{{$asnKey}}
+					state.Id = types.StringValue(state.getPath())
+					res = altRes
+				}
+			}
+		}
+		{{- end}}
 
 		if helpers.IsGetConfigResponseEmpty(&res) && helpers.IsListPath(state.getXPath()) {
 			tflog.Debug(ctx, fmt.Sprintf("%s: Resource does not exist", state.Id.ValueString()))
@@ -519,6 +556,39 @@ func (r *{{camelCase .Name}}Resource) Read(ctx context.Context, req resource.Rea
 
 	helpers.SetFlagImporting(ctx, false, resp.Private, &resp.Diagnostics)
 }
+
+{{- $asnKey := asnKeyAttribute .Attributes}}
+{{- if $asnKey}}
+
+// resolveAsnKey returns data with its AS key replaced by the notation the device stores, if the
+// process already exists under the other notation. IOS-XE keeps the key a BGP process was created
+// with, whatever `bgp asnotation dot` now displays, and treats a write under the other notation as a
+// second process ("too many /native/router/ios-bgp:bgp"). Returns data unchanged if neither exists.
+func (r *{{camelCase .Name}}Resource) resolveAsnKey(ctx context.Context, device *IosxeProviderDataDevice, data {{camelCase .Name}}) ({{camelCase .Name}}, error) {
+	res, err := device.NetconfClient.GetConfig(ctx, "running", helpers.GetXpathFilter(data.getXPath()))
+	if err != nil {
+		return data, fmt.Errorf("failed to retrieve object (%s), got error: %s", data.getPath(), err)
+	}
+	if !helpers.IsGetConfigResponseEmpty(&res) {
+		return data, nil
+	}
+	alt := helpers.AlternateASN(data.{{$asnKey}}.ValueString())
+	if alt == data.{{$asnKey}}.ValueString() {
+		return data, nil
+	}
+	altData := data
+	altData.{{$asnKey}} = types.StringValue(alt)
+	altRes, err := device.NetconfClient.GetConfig(ctx, "running", helpers.GetXpathFilter(altData.getXPath()))
+	if err != nil {
+		return data, fmt.Errorf("failed to retrieve object (%s), got error: %s", altData.getPath(), err)
+	}
+	if helpers.IsGetConfigResponseEmpty(&altRes) {
+		return data, nil
+	}
+	tflog.Debug(ctx, fmt.Sprintf("%s: Device stores the AS key as %s", data.getPath(), alt))
+	return altData, nil
+}
+{{- end}}
 
 // End of section. //template:end read
 
@@ -564,8 +634,23 @@ func (r *{{camelCase .Name}}Resource) Update(ctx context.Context, req resource.U
 		}
 		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
 
+		{{- if asnKeyAttribute .Attributes}}
+		// Write under the key the device stores; state keeps the configured notation.
+		write, err := r.resolveAsnKey(ctx, device, plan)
+		if err != nil {
+			resp.Diagnostics.AddError("Client Error", err.Error())
+			return
+		}
+		writeConfig, writeState := config, state
+		writeConfig.{{asnKeyAttribute .Attributes}} = write.{{asnKeyAttribute .Attributes}}
+		writeState.{{asnKeyAttribute .Attributes}} = write.{{asnKeyAttribute .Attributes}}
+		body := write.toBodyXML(ctx, writeConfig)
+		body = write.addDeletedItemsXML(ctx, writeState, body)
+		{{- else}}
+
 		body := plan.toBodyXML(ctx, config)
 		body = plan.addDeletedItemsXML(ctx, state, body)
+		{{- end}}
 
 		if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
 			resp.Diagnostics.AddError("Client Error", err.Error())
@@ -638,6 +723,15 @@ func (r *{{camelCase .Name}}Resource) Delete(ctx context.Context, req resource.D
 		}
 		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
 
+		{{- if asnKeyAttribute .Attributes}}
+		resolved, err := r.resolveAsnKey(ctx, device, state)
+		if err != nil {
+			resp.Diagnostics.AddError("Client Error", err.Error())
+			return
+		}
+		state.{{asnKeyAttribute .Attributes}} = resolved.{{asnKeyAttribute .Attributes}}
+		{{- end}}
+
 		if deleteMode == "all" {
 			body := netconf.Body{}
 			body = helpers.RemoveFromXPath(body, state.getXPath())
@@ -685,7 +779,7 @@ func (r *{{camelCase .Name}}Resource) ImportState(ctx context.Context, req resou
 	}
 
 	{{- range $index, $attr := (importAttributes .)}}
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("{{.TfName}}"), {{if eq .Type "Bool"}}helpers.Must(strconv.ParseBool(idParts[{{$index}}])){{else if eq .Type "Int64"}}helpers.Must(strconv.ParseInt(idParts[{{$index}}], 10, 64)){{else if eq .Type "Float64"}}helpers.Must(strconv.ParseFloat(idParts[{{$index}}])){{else}}idParts[{{$index}}]{{end}})...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("{{.TfName}}"), {{if eq .Type "Bool"}}helpers.Must(strconv.ParseBool(idParts[{{$index}}])){{else if eq .Type "Int64"}}helpers.Must(strconv.ParseInt(idParts[{{$index}}], 10, 64)){{else if eq .Type "Float64"}}helpers.Must(strconv.ParseFloat(idParts[{{$index}}])){{else if .NormalizeIPv6}}helpers.NormalizeIPv6Address(idParts[{{$index}}]){{else}}idParts[{{$index}}]{{end}})...)
 	{{- end}}
 	if len(idParts) == {{add (len (importAttributes .)) 1}} {
 		resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("device"), idParts[len(idParts)-1])...)

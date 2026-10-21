@@ -199,10 +199,15 @@ Required:
 Required:
 
 - `dest_ipv4` (String) IP address of destination
+- `nbma_ipv4s` (Attributes List) NBMA address mapped to the destination. IOS-XE applies only one NBMA address per destination, so configure exactly one entry; with more than one, the running configuration keeps only the last and removing one of them removes the mapping. To remove the NBMA address, remove the `ip_nhrp_maps` entry instead. (see [below for nested schema](#nestedatt--ip_nhrp_maps--nbma_ipv4s))
 
-Optional:
+<a id="nestedatt--ip_nhrp_maps--nbma_ipv4s"></a>
+### Nested Schema for `ip_nhrp_maps.nbma_ipv4s`
 
-- `nbma_ipv4` (String) IP NBMA address
+Required:
+
+- `ipv4` (String) IP NBMA address
+
 
 
 <a id="nestedatt--ip_nhrp_nhs"></a>
@@ -214,7 +219,7 @@ Required:
 
 Optional:
 
-- `nbma_ipv4s` (Attributes List) NBMA addresses of the NHS (see [below for nested schema](#nestedatt--ip_nhrp_nhs--nbma_ipv4s))
+- `nbma_ipv4s` (Attributes List) NBMA address of the NHS. IOS-XE applies only one NBMA address per NHS, so configure exactly one entry; with more than one, the running configuration keeps only the last and removing one of them leaves the NHS without an NBMA address. (see [below for nested schema](#nestedatt--ip_nhrp_nhs--nbma_ipv4s))
 
 <a id="nestedatt--ip_nhrp_nhs--nbma_ipv4s"></a>
 ### Nested Schema for `ip_nhrp_nhs.nbma_ipv4s`

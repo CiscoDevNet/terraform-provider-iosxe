@@ -210,7 +210,7 @@ type {{$name}}{{$cname}}{{$ccname}}{{toGoName .TfName}}Data struct {
 
 func (data {{camelCase .Name}}) getPath() string {
 {{- if hasId .Attributes}}
-	return fmt.Sprintf("{{toRestconfPath .Path}}"{{range .Attributes}}{{if or .Id .Reference}}, url.QueryEscape(fmt.Sprintf("%v", data.{{toGoName .TfName}}.Value{{.Type}}())){{end}}{{end}})
+	return fmt.Sprintf("{{toRestconfPath .Path}}"{{range .Attributes}}{{if or .Id .Reference}}, url.QueryEscape({{if .NormalizeIPv6}}helpers.NormalizeIPv6Address(data.{{toGoName .TfName}}.ValueString()){{else}}fmt.Sprintf("%v", data.{{toGoName .TfName}}.Value{{.Type}}()){{end}}){{end}}{{end}})
 {{- else}}
 	return "{{toRestconfPath .Path}}"
 {{- end}}
@@ -218,7 +218,7 @@ func (data {{camelCase .Name}}) getPath() string {
 
 func (data {{camelCase .Name}}Data) getPath() string {
 {{- if hasId .Attributes}}
-	return fmt.Sprintf("{{toRestconfPath .Path}}"{{range .Attributes}}{{if or .Id .Reference}}, url.QueryEscape(fmt.Sprintf("%v", data.{{toGoName .TfName}}.Value{{.Type}}())){{end}}{{end}})
+	return fmt.Sprintf("{{toRestconfPath .Path}}"{{range .Attributes}}{{if or .Id .Reference}}, url.QueryEscape({{if .NormalizeIPv6}}helpers.NormalizeIPv6Address(data.{{toGoName .TfName}}.ValueString()){{else}}fmt.Sprintf("%v", data.{{toGoName .TfName}}.Value{{.Type}}()){{end}}){{end}}{{end}})
 {{- else}}
 	return "{{toRestconfPath .Path}}"
 {{- end}}
@@ -228,7 +228,7 @@ func (data {{camelCase .Name}}Data) getPath() string {
 func (data {{camelCase .Name}}) getXPath() string {
 	path := "{{.Path}}"
 {{- if hasId .Attributes}}
-	path = fmt.Sprintf(path{{range .Attributes}}{{if or .Id .Reference}}, fmt.Sprintf("%v", data.{{toGoName .TfName}}.Value{{.Type}}()){{end}}{{end}})
+	path = fmt.Sprintf(path{{range .Attributes}}{{if or .Id .Reference}}, {{if .NormalizeIPv6}}helpers.NormalizeIPv6Address(data.{{toGoName .TfName}}.ValueString()){{else}}fmt.Sprintf("%v", data.{{toGoName .TfName}}.Value{{.Type}}()){{end}}{{end}}{{end}})
 {{- end}}
 	return path
 }
@@ -236,7 +236,7 @@ func (data {{camelCase .Name}}) getXPath() string {
 func (data {{camelCase .Name}}Data) getXPath() string {
 	path := "{{.Path}}"
 {{- if hasId .Attributes}}
-	path = fmt.Sprintf(path{{range .Attributes}}{{if or .Id .Reference}}, fmt.Sprintf("%v", data.{{toGoName .TfName}}.Value{{.Type}}()){{end}}{{end}})
+	path = fmt.Sprintf(path{{range .Attributes}}{{if or .Id .Reference}}, {{if .NormalizeIPv6}}helpers.NormalizeIPv6Address(data.{{toGoName .TfName}}.ValueString()){{else}}fmt.Sprintf("%v", data.{{toGoName .TfName}}.Value{{.Type}}()){{end}}{{end}}{{end}})
 {{- end}}
 	return path
 }

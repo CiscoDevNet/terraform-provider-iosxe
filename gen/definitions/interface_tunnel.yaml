@@ -329,7 +329,7 @@ attributes:
       - yang_name: nbma/ipv4
         tf_name: nbma_ipv4s
         type: List
-        description: NBMA addresses of the NHS
+        description: NBMA address of the NHS. IOS-XE applies only one NBMA address per NHS, so configure exactly one entry; with more than one, the running configuration keeps only the last and removing one of them leaves the NHS without an NBMA address.
         attributes:
           - yang_name: ipv4
             id: true
@@ -357,9 +357,16 @@ attributes:
         tf_name: dest_ipv4
         id: true
         example: 10.0.0.1
-      - yang_name: nbma-ipv4/nbma-ipv4
-        tf_name: nbma_ipv4
-        example: 172.16.1.1
+      - yang_name: nbma-ipv4
+        tf_name: nbma_ipv4s
+        type: List
+        mandatory: true
+        description: NBMA address mapped to the destination. IOS-XE applies only one NBMA address per destination, so configure exactly one entry; with more than one, the running configuration keeps only the last and removing one of them removes the mapping. To remove the NBMA address, remove the `ip_nhrp_maps` entry instead.
+        attributes:
+          - yang_name: nbma-ipv4
+            tf_name: ipv4
+            id: true
+            example: 172.16.1.1
   - yang_name: ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/redirect
     tf_name: ip_nhrp_redirect
     example: true

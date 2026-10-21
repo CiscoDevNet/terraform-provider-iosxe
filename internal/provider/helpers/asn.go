@@ -54,3 +54,20 @@ func NormalizeASN(val string) string {
 	}
 	return val
 }
+
+// AlternateASN returns the same BGP AS number in the other notation: asdot
+// ("1.1") becomes asplain ("65537") and a 4-byte asplain value becomes asdot.
+// IOS-XE keys the BGP process by the AS in whichever notation `bgp asnotation
+// dot` currently selects, so toggling it renames the list entry. 2-byte AS
+// numbers look the same in both notations, and unparseable input is returned
+// unchanged.
+func AlternateASN(val string) string {
+	if strings.Contains(val, ".") {
+		return NormalizeASN(val)
+	}
+	n, err := strconv.ParseUint(val, 10, 32)
+	if err != nil || n < 65536 {
+		return val
+	}
+	return fmt.Sprintf("%d.%d", n/65536, n%65536)
+}
