@@ -156,58 +156,100 @@ func (r *AccessListExtendedResource) Schema(ctx context.Context, req resource.Sc
 						"source_port_equal": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Match only packets on a given port number up to 10 ports").String,
 							Optional:            true,
+							PlanModifiers: []planmodifier.String{
+								helpers.UseNormalizedEquality(helpers.NormalizePort),
+							},
 						},
 						"source_port_greater_than": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Match only packets with a greater port number").String,
 							Optional:            true,
+							PlanModifiers: []planmodifier.String{
+								helpers.UseNormalizedEquality(helpers.NormalizePort),
+							},
 						},
 						"source_port_lesser_than": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Match only packets with a lower port number").String,
 							Optional:            true,
+							PlanModifiers: []planmodifier.String{
+								helpers.UseNormalizedEquality(helpers.NormalizePort),
+							},
 						},
 						"source_port_range_from": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Match only packets in the range of port numbers").String,
 							Optional:            true,
+							PlanModifiers: []planmodifier.String{
+								helpers.UseNormalizedEquality(helpers.NormalizePort),
+							},
 						},
 						"source_port_range_to": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Match only packets in the range of port numbers").String,
 							Optional:            true,
+							PlanModifiers: []planmodifier.String{
+								helpers.UseNormalizedEquality(helpers.NormalizePort),
+							},
 						},
 						"source_port_equal_2": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Optional:            true,
+							PlanModifiers: []planmodifier.String{
+								helpers.UseNormalizedEquality(helpers.NormalizePort),
+							},
 						},
 						"source_port_equal_3": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Optional:            true,
+							PlanModifiers: []planmodifier.String{
+								helpers.UseNormalizedEquality(helpers.NormalizePort),
+							},
 						},
 						"source_port_equal_4": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Optional:            true,
+							PlanModifiers: []planmodifier.String{
+								helpers.UseNormalizedEquality(helpers.NormalizePort),
+							},
 						},
 						"source_port_equal_5": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Optional:            true,
+							PlanModifiers: []planmodifier.String{
+								helpers.UseNormalizedEquality(helpers.NormalizePort),
+							},
 						},
 						"source_port_equal_6": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Optional:            true,
+							PlanModifiers: []planmodifier.String{
+								helpers.UseNormalizedEquality(helpers.NormalizePort),
+							},
 						},
 						"source_port_equal_7": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Optional:            true,
+							PlanModifiers: []planmodifier.String{
+								helpers.UseNormalizedEquality(helpers.NormalizePort),
+							},
 						},
 						"source_port_equal_8": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Optional:            true,
+							PlanModifiers: []planmodifier.String{
+								helpers.UseNormalizedEquality(helpers.NormalizePort),
+							},
 						},
 						"source_port_equal_9": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Optional:            true,
+							PlanModifiers: []planmodifier.String{
+								helpers.UseNormalizedEquality(helpers.NormalizePort),
+							},
 						},
 						"source_port_equal_10": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Optional:            true,
+							PlanModifiers: []planmodifier.String{
+								helpers.UseNormalizedEquality(helpers.NormalizePort),
+							},
 						},
 						"destination_prefix": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
@@ -245,22 +287,37 @@ func (r *AccessListExtendedResource) Schema(ctx context.Context, req resource.Sc
 						"destination_port_equal": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Match only packets on a given port number up to 10 ports").String,
 							Optional:            true,
+							PlanModifiers: []planmodifier.String{
+								helpers.UseNormalizedEquality(helpers.NormalizePort),
+							},
 						},
 						"destination_port_greater_than": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Match only packets with a greater port number").String,
 							Optional:            true,
+							PlanModifiers: []planmodifier.String{
+								helpers.UseNormalizedEquality(helpers.NormalizePort),
+							},
 						},
 						"destination_port_lesser_than": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Match only packets with a lower port number").String,
 							Optional:            true,
+							PlanModifiers: []planmodifier.String{
+								helpers.UseNormalizedEquality(helpers.NormalizePort),
+							},
 						},
 						"destination_port_range_from": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Match only packets in the range of port numbers").String,
 							Optional:            true,
+							PlanModifiers: []planmodifier.String{
+								helpers.UseNormalizedEquality(helpers.NormalizePort),
+							},
 						},
 						"destination_port_range_to": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Match only packets in the range of port numbers").String,
 							Optional:            true,
+							PlanModifiers: []planmodifier.String{
+								helpers.UseNormalizedEquality(helpers.NormalizePort),
+							},
 						},
 						"ack": schema.BoolAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Match on the ACK bit").String,
@@ -293,6 +350,9 @@ func (r *AccessListExtendedResource) Schema(ctx context.Context, req resource.Sc
 						"dscp": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Match packets with given dscp value").String,
 							Optional:            true,
+							PlanModifiers: []planmodifier.String{
+								helpers.UseNormalizedEquality(helpers.NormalizeDscp),
+							},
 						},
 						"fragments": schema.BoolAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Check non-initial fragments").String,
@@ -324,38 +384,65 @@ func (r *AccessListExtendedResource) Schema(ctx context.Context, req resource.Sc
 						"destination_port_equal_2": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Optional:            true,
+							PlanModifiers: []planmodifier.String{
+								helpers.UseNormalizedEquality(helpers.NormalizePort),
+							},
 						},
 						"destination_port_equal_3": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Optional:            true,
+							PlanModifiers: []planmodifier.String{
+								helpers.UseNormalizedEquality(helpers.NormalizePort),
+							},
 						},
 						"destination_port_equal_4": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Optional:            true,
+							PlanModifiers: []planmodifier.String{
+								helpers.UseNormalizedEquality(helpers.NormalizePort),
+							},
 						},
 						"destination_port_equal_5": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Optional:            true,
+							PlanModifiers: []planmodifier.String{
+								helpers.UseNormalizedEquality(helpers.NormalizePort),
+							},
 						},
 						"destination_port_equal_6": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Optional:            true,
+							PlanModifiers: []planmodifier.String{
+								helpers.UseNormalizedEquality(helpers.NormalizePort),
+							},
 						},
 						"destination_port_equal_7": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Optional:            true,
+							PlanModifiers: []planmodifier.String{
+								helpers.UseNormalizedEquality(helpers.NormalizePort),
+							},
 						},
 						"destination_port_equal_8": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Optional:            true,
+							PlanModifiers: []planmodifier.String{
+								helpers.UseNormalizedEquality(helpers.NormalizePort),
+							},
 						},
 						"destination_port_equal_9": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Optional:            true,
+							PlanModifiers: []planmodifier.String{
+								helpers.UseNormalizedEquality(helpers.NormalizePort),
+							},
 						},
 						"destination_port_equal_10": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Optional:            true,
+							PlanModifiers: []planmodifier.String{
+								helpers.UseNormalizedEquality(helpers.NormalizePort),
+							},
 						},
 						"icmp_msg_type": schema.Int64Attribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(0, 255).String,

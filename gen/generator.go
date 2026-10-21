@@ -200,6 +200,7 @@ type YamlConfigAttribute struct {
 	ReadFilter         string                `yaml:"read_filter"`
 	NormalizeIPv6      bool                  `yaml:"normalize_ipv6"`
 	NormalizeASN       bool                  `yaml:"normalize_asn"`
+	NormalizeFunc      string                `yaml:"normalize_func"`
 	TestTags           []string              `yaml:"test_tags"`
 	Attributes         []YamlConfigAttribute `yaml:"attributes"`
 }

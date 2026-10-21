@@ -198,3 +198,40 @@ func (m ipv6NormalizationModifier) PlanModifyString(ctx context.Context, req pla
 
 	resp.PlanValue = req.ConfigValue
 }
+
+// normalizedEqualityModifier implements a plan modifier that treats two values as equal when they
+// normalize to the same string, so a device returning another spelling of the same value does not
+// plan a change.
+type normalizedEqualityModifier struct {
+	normalize func(string) string
+}
+
+// UseNormalizedEquality returns a plan modifier that keeps the prior state value when it and the
+// configured value normalize to the same string. IOS-XE stores some values in whichever form it
+// last parsed: an ACL port or DSCP written as "80" or "46" comes back as "www" or "ef" once the
+// device re-parses its running-config text (for example after a reload), and the reverse is true
+// for values written by name. Comparing normalized values keeps either spelling in the
+// configuration stable.
+func UseNormalizedEquality(normalize func(string) string) planmodifier.String {
+	return normalizedEqualityModifier{normalize: normalize}
+}
+
+func (m normalizedEqualityModifier) Description(_ context.Context) string {
+	return "Treats values that normalize to the same string as equal to prevent drift."
+}
+
+func (m normalizedEqualityModifier) MarkdownDescription(_ context.Context) string {
+	return "Treats values that normalize to the same string as equal to prevent drift."
+}
+
+func (m normalizedEqualityModifier) PlanModifyString(ctx context.Context, req planmodifier.StringRequest, resp *planmodifier.StringResponse) {
+	if req.ConfigValue.IsNull() || req.ConfigValue.IsUnknown() {
+		return
+	}
+	if req.StateValue.IsNull() || req.StateValue.IsUnknown() {
+		return
+	}
+	if m.normalize(req.ConfigValue.ValueString()) == m.normalize(req.StateValue.ValueString()) {
+		resp.PlanValue = req.StateValue
+	}
+}

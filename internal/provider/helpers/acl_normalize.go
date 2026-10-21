@@ -6,10 +6,10 @@
 
 package helpers
 
-// NormalizePort converts IOS-XE symbolic port names returned by NETCONF
-// get-config to their numeric equivalents. The provider writes numeric
-// values via edit-config, but the device returns symbolic names in
-// responses, causing idempotency drift.
+// NormalizePort converts an IOS-XE symbolic port name (e.g. "www") to its
+// numeric equivalent ("80"); numbers and unknown names pass through. IOS-XE
+// returns whichever form it last parsed, so UseNormalizedEquality compares
+// configured and device values with this to avoid drift.
 func NormalizePort(value string) string {
 	if v, ok := portSymbolicToNumeric[value]; ok {
 		return v
@@ -17,8 +17,8 @@ func NormalizePort(value string) string {
 	return value
 }
 
-// NormalizeDscp converts IOS-XE symbolic DSCP names returned by NETCONF
-// get-config to their numeric equivalents.
+// NormalizeDscp converts an IOS-XE symbolic DSCP name (e.g. "ef") to its
+// numeric equivalent ("46"); numbers and unknown names pass through.
 func NormalizeDscp(value string) string {
 	if v, ok := dscpSymbolicToNumeric[value]; ok {
 		return v
