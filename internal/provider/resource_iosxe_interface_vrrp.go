@@ -34,7 +34,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
@@ -50,26 +49,26 @@ import (
 
 // Ensure provider defined types fully satisfy framework interfaces
 var (
-	_ resource.Resource                = &VRRPIPv6Resource{}
-	_ resource.ResourceWithImportState = &VRRPIPv6Resource{}
+	_ resource.Resource                = &InterfaceVRRPResource{}
+	_ resource.ResourceWithImportState = &InterfaceVRRPResource{}
 )
 
-func NewVRRPIPv6Resource() resource.Resource {
-	return &VRRPIPv6Resource{}
+func NewInterfaceVRRPResource() resource.Resource {
+	return &InterfaceVRRPResource{}
 }
 
-type VRRPIPv6Resource struct {
+type InterfaceVRRPResource struct {
 	data *IosxeProviderData
 }
 
-func (r *VRRPIPv6Resource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_vrrp_ipv6"
+func (r *InterfaceVRRPResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_interface_vrrp"
 }
 
-func (r *VRRPIPv6Resource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *InterfaceVRRPResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This resource can manage the VRRP IPv6 configuration.",
+		MarkdownDescription: "This resource can manage a VRRPv3 group on an interface (`vrrp <group> address-family ipv4|ipv6`). Both address families of a group are managed by the same resource: setting `ipv4_primary_address` or `ipv6_primary_address` enables that family, removing it removes the family, and destroying the resource removes the group. At least one family must be configured, and `fhrp version vrrp v3` is required (see `iosxe_fhrp`).",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -113,73 +112,63 @@ func (r *VRRPIPv6Resource) Schema(ctx context.Context, req resource.SchemaReques
 					int64planmodifier.RequiresReplace(),
 				},
 			},
-			"ipv6_link_local": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("IPv6 link-local address").String,
-				Required:            true,
-				Validators: []validator.String{
-					stringvalidator.RegexMatches(regexp.MustCompile(`((:|[0-9a-fA-F]{0,4}):)([0-9a-fA-F]{0,4}:){0,5}((([0-9a-fA-F]{0,4}:)?(:|[0-9a-fA-F]{0,4}))|(((25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])))(%[\p{N}\p{L}]+)?`), ""),
-					stringvalidator.RegexMatches(regexp.MustCompile(`(([^:]+:){6}(([^:]+:[^:]+)|(.*\..*)))|((([^:]+:)*[^:]+)?::(([^:]+:)*[^:]+)?)(%.+)?`), ""),
-				},
-				PlanModifiers: []planmodifier.String{
-					helpers.UseIPv6Normalization(),
-				},
-			},
-			"ipv6_primary": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Mark address as primary IPv6 address").AddDefaultValueDescription("true").String,
+			"ipv4_primary_address": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Virtual primary IPv4 address. Setting it enables the IPv4 address family for the group, and removing it removes the IPv4 address family").String,
 				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
+				Validators: []validator.String{
+					stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+				},
 			},
-			"ipv6_prefixes": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("IPv6 prefix addresses").String,
+			"ipv4_secondary_addresses": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Secondary virtual IPv4 addresses").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"prefix": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("IPv6 prefix").String,
+						"address": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Secondary IPv4 address").String,
 							Required:            true,
 							Validators: []validator.String{
-								stringvalidator.RegexMatches(regexp.MustCompile(`((:|[0-9a-fA-F]{0,4}):)([0-9a-fA-F]{0,4}:){0,5}((([0-9a-fA-F]{0,4}:)?(:|[0-9a-fA-F]{0,4}))|(((25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])))(/(([0-9])|([0-9]{2})|(1[0-1][0-9])|(12[0-8])))`), ""),
-								stringvalidator.RegexMatches(regexp.MustCompile(`(([^:]+:){6}(([^:]+:[^:]+)|(.*\..*)))|((([^:]+:)*[^:]+)?::(([^:]+:)*[^:]+)?)(/.+)`), ""),
+								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
 							},
-							PlanModifiers: []planmodifier.String{
-								helpers.UseIPv6Normalization(),
-							},
+						},
+						"secondary": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Mark address as secondary").AddDefaultValueDescription("true").String,
+							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(true),
 						},
 					},
 				},
 			},
-			"priority": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Priority level").AddIntegerRangeDescription(1, 254).AddDefaultValueDescription("100").String,
+			"ipv4_priority": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Priority level").AddIntegerRangeDescription(1, 254).String,
 				Optional:            true,
-				Computed:            true,
 				Validators: []validator.Int64{
 					int64validator.Between(1, 254),
 				},
-				Default: int64default.StaticInt64(100),
 			},
-			"preempt_delay_minimum": schema.Int64Attribute{
+			"ipv4_preempt_delay_minimum": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Seconds to delay before preempting").AddIntegerRangeDescription(0, 3600).String,
 				Optional:            true,
 				Validators: []validator.Int64{
 					int64validator.Between(0, 3600),
 				},
 			},
-			"timers_advertise": schema.Int64Attribute{
+			"ipv4_timers_advertise": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Advertisement interval in milliseconds").AddIntegerRangeDescription(100, 40950).String,
 				Optional:            true,
 				Validators: []validator.Int64{
 					int64validator.Between(100, 40950),
 				},
 			},
-			"description": schema.StringAttribute{
+			"ipv4_description": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Group description").String,
 				Optional:            true,
 				Validators: []validator.String{
 					stringvalidator.LengthBetween(1, 80),
 				},
 			},
-			"tracks": schema.ListNestedAttribute{
+			"ipv4_tracks": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Object tracking configuration").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -202,7 +191,92 @@ func (r *VRRPIPv6Resource) Schema(ctx context.Context, req resource.SchemaReques
 					},
 				},
 			},
-			"shutdown": schema.BoolAttribute{
+			"ipv4_shutdown": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Shutdown the VRRP group").String,
+				Optional:            true,
+			},
+			"ipv6_primary_address": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Virtual primary IPv6 link-local address. Setting it enables the IPv6 address family for the group, and removing it removes the IPv6 address family").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.RegexMatches(regexp.MustCompile(`((:|[0-9a-fA-F]{0,4}):)([0-9a-fA-F]{0,4}:){0,5}((([0-9a-fA-F]{0,4}:)?(:|[0-9a-fA-F]{0,4}))|(((25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])))(%[\p{N}\p{L}]+)?`), ""),
+					stringvalidator.RegexMatches(regexp.MustCompile(`(([^:]+:){6}(([^:]+:[^:]+)|(.*\..*)))|((([^:]+:)*[^:]+)?::(([^:]+:)*[^:]+)?)(%.+)?`), ""),
+				},
+				PlanModifiers: []planmodifier.String{
+					helpers.UseIPv6Normalization(),
+				},
+			},
+			"ipv6_prefixes": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("IPv6 prefix addresses").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"prefix": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("IPv6 prefix").String,
+							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`((:|[0-9a-fA-F]{0,4}):)([0-9a-fA-F]{0,4}:){0,5}((([0-9a-fA-F]{0,4}:)?(:|[0-9a-fA-F]{0,4}))|(((25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])))(/(([0-9])|([0-9]{2})|(1[0-1][0-9])|(12[0-8])))`), ""),
+								stringvalidator.RegexMatches(regexp.MustCompile(`(([^:]+:){6}(([^:]+:[^:]+)|(.*\..*)))|((([^:]+:)*[^:]+)?::(([^:]+:)*[^:]+)?)(/.+)`), ""),
+							},
+							PlanModifiers: []planmodifier.String{
+								helpers.UseIPv6Normalization(),
+							},
+						},
+					},
+				},
+			},
+			"ipv6_priority": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Priority level").AddIntegerRangeDescription(1, 254).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 254),
+				},
+			},
+			"ipv6_preempt_delay_minimum": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Seconds to delay before preempting").AddIntegerRangeDescription(0, 3600).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 3600),
+				},
+			},
+			"ipv6_timers_advertise": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Advertisement interval in milliseconds").AddIntegerRangeDescription(100, 40950).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(100, 40950),
+				},
+			},
+			"ipv6_description": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Group description").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.LengthBetween(1, 80),
+				},
+			},
+			"ipv6_tracks": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Object tracking configuration").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"object_id": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Specify the tracked object-id").String,
+							Required:            true,
+						},
+						"decrement": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Decrement value for tracked object").AddIntegerRangeDescription(1, 255).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 255),
+							},
+						},
+						"shutdown": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Shutdown group when tracked object goes down").String,
+							Optional:            true,
+						},
+					},
+				},
+			},
+			"ipv6_shutdown": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Shutdown the VRRP group").String,
 				Optional:            true,
 			},
@@ -210,7 +284,7 @@ func (r *VRRPIPv6Resource) Schema(ctx context.Context, req resource.SchemaReques
 	}
 }
 
-func (r *VRRPIPv6Resource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
+func (r *InterfaceVRRPResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -222,8 +296,8 @@ func (r *VRRPIPv6Resource) Configure(_ context.Context, req resource.ConfigureRe
 
 // Section below is generated&owned by "gen/generator.go". //template:begin create
 
-func (r *VRRPIPv6Resource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan, config VRRPIPv6
+func (r *InterfaceVRRPResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var plan, config InterfaceVRRP
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -277,8 +351,8 @@ func (r *VRRPIPv6Resource) Create(ctx context.Context, req resource.CreateReques
 
 // Section below is generated&owned by "gen/generator.go". //template:begin read
 
-func (r *VRRPIPv6Resource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state VRRPIPv6
+func (r *InterfaceVRRPResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var state InterfaceVRRP
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -341,8 +415,8 @@ func (r *VRRPIPv6Resource) Read(ctx context.Context, req resource.ReadRequest, r
 
 // Section below is generated&owned by "gen/generator.go". //template:begin update
 
-func (r *VRRPIPv6Resource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan, state, config VRRPIPv6
+func (r *InterfaceVRRPResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var plan, state, config InterfaceVRRP
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -400,8 +474,8 @@ func (r *VRRPIPv6Resource) Update(ctx context.Context, req resource.UpdateReques
 
 // Section below is generated&owned by "gen/generator.go". //template:begin delete
 
-func (r *VRRPIPv6Resource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state VRRPIPv6
+func (r *InterfaceVRRPResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var state InterfaceVRRP
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -419,7 +493,7 @@ func (r *VRRPIPv6Resource) Delete(ctx context.Context, req resource.DeleteReques
 	}
 
 	if device.Managed {
-		deleteMode := "attributes"
+		deleteMode := "all"
 
 		// NETCONF - Serialize write operations
 		locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, true)
@@ -455,7 +529,7 @@ func (r *VRRPIPv6Resource) Delete(ctx context.Context, req resource.DeleteReques
 
 // Section below is generated&owned by "gen/generator.go". //template:begin import
 
-func (r *VRRPIPv6Resource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *InterfaceVRRPResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	idParts := strings.Split(req.ID, ",")
 	idParts = helpers.RemoveEmptyStrings(idParts)
 
@@ -476,7 +550,7 @@ func (r *VRRPIPv6Resource) ImportState(ctx context.Context, req resource.ImportS
 	}
 
 	// construct path for 'id' attribute
-	var state VRRPIPv6
+	var state InterfaceVRRP
 	diags := resp.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {

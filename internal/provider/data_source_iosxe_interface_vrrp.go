@@ -38,26 +38,26 @@ import (
 
 // Ensure the implementation satisfies the expected interfaces.
 var (
-	_ datasource.DataSource              = &VRRPIPv6DataSource{}
-	_ datasource.DataSourceWithConfigure = &VRRPIPv6DataSource{}
+	_ datasource.DataSource              = &InterfaceVRRPDataSource{}
+	_ datasource.DataSourceWithConfigure = &InterfaceVRRPDataSource{}
 )
 
-func NewVRRPIPv6DataSource() datasource.DataSource {
-	return &VRRPIPv6DataSource{}
+func NewInterfaceVRRPDataSource() datasource.DataSource {
+	return &InterfaceVRRPDataSource{}
 }
 
-type VRRPIPv6DataSource struct {
+type InterfaceVRRPDataSource struct {
 	data *IosxeProviderData
 }
 
-func (d *VRRPIPv6DataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_vrrp_ipv6"
+func (d *InterfaceVRRPDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_interface_vrrp"
 }
 
-func (d *VRRPIPv6DataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+func (d *InterfaceVRRPDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This data source can read the VRRP IPv6 configuration.",
+		MarkdownDescription: "This data source can read the Interface VRRP configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -80,43 +80,43 @@ func (d *VRRPIPv6DataSource) Schema(ctx context.Context, req datasource.SchemaRe
 				MarkdownDescription: "VRRP group number",
 				Required:            true,
 			},
-			"ipv6_link_local": schema.StringAttribute{
-				MarkdownDescription: "IPv6 link-local address",
+			"ipv4_primary_address": schema.StringAttribute{
+				MarkdownDescription: "Virtual primary IPv4 address. Setting it enables the IPv4 address family for the group, and removing it removes the IPv4 address family",
 				Computed:            true,
 			},
-			"ipv6_primary": schema.BoolAttribute{
-				MarkdownDescription: "Mark address as primary IPv6 address",
-				Computed:            true,
-			},
-			"ipv6_prefixes": schema.ListNestedAttribute{
-				MarkdownDescription: "IPv6 prefix addresses",
+			"ipv4_secondary_addresses": schema.ListNestedAttribute{
+				MarkdownDescription: "Secondary virtual IPv4 addresses",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"prefix": schema.StringAttribute{
-							MarkdownDescription: "IPv6 prefix",
+						"address": schema.StringAttribute{
+							MarkdownDescription: "Secondary IPv4 address",
+							Computed:            true,
+						},
+						"secondary": schema.BoolAttribute{
+							MarkdownDescription: "Mark address as secondary",
 							Computed:            true,
 						},
 					},
 				},
 			},
-			"priority": schema.Int64Attribute{
+			"ipv4_priority": schema.Int64Attribute{
 				MarkdownDescription: "Priority level",
 				Computed:            true,
 			},
-			"preempt_delay_minimum": schema.Int64Attribute{
+			"ipv4_preempt_delay_minimum": schema.Int64Attribute{
 				MarkdownDescription: "Seconds to delay before preempting",
 				Computed:            true,
 			},
-			"timers_advertise": schema.Int64Attribute{
+			"ipv4_timers_advertise": schema.Int64Attribute{
 				MarkdownDescription: "Advertisement interval in milliseconds",
 				Computed:            true,
 			},
-			"description": schema.StringAttribute{
+			"ipv4_description": schema.StringAttribute{
 				MarkdownDescription: "Group description",
 				Computed:            true,
 			},
-			"tracks": schema.ListNestedAttribute{
+			"ipv4_tracks": schema.ListNestedAttribute{
 				MarkdownDescription: "Object tracking configuration",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -136,7 +136,63 @@ func (d *VRRPIPv6DataSource) Schema(ctx context.Context, req datasource.SchemaRe
 					},
 				},
 			},
-			"shutdown": schema.BoolAttribute{
+			"ipv4_shutdown": schema.BoolAttribute{
+				MarkdownDescription: "Shutdown the VRRP group",
+				Computed:            true,
+			},
+			"ipv6_primary_address": schema.StringAttribute{
+				MarkdownDescription: "Virtual primary IPv6 link-local address. Setting it enables the IPv6 address family for the group, and removing it removes the IPv6 address family",
+				Computed:            true,
+			},
+			"ipv6_prefixes": schema.ListNestedAttribute{
+				MarkdownDescription: "IPv6 prefix addresses",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"prefix": schema.StringAttribute{
+							MarkdownDescription: "IPv6 prefix",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"ipv6_priority": schema.Int64Attribute{
+				MarkdownDescription: "Priority level",
+				Computed:            true,
+			},
+			"ipv6_preempt_delay_minimum": schema.Int64Attribute{
+				MarkdownDescription: "Seconds to delay before preempting",
+				Computed:            true,
+			},
+			"ipv6_timers_advertise": schema.Int64Attribute{
+				MarkdownDescription: "Advertisement interval in milliseconds",
+				Computed:            true,
+			},
+			"ipv6_description": schema.StringAttribute{
+				MarkdownDescription: "Group description",
+				Computed:            true,
+			},
+			"ipv6_tracks": schema.ListNestedAttribute{
+				MarkdownDescription: "Object tracking configuration",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"object_id": schema.StringAttribute{
+							MarkdownDescription: "Specify the tracked object-id",
+							Computed:            true,
+						},
+						"decrement": schema.Int64Attribute{
+							MarkdownDescription: "Decrement value for tracked object",
+							Computed:            true,
+						},
+						"shutdown": schema.BoolAttribute{
+							MarkdownDescription: "Shutdown group when tracked object goes down",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"ipv6_shutdown": schema.BoolAttribute{
 				MarkdownDescription: "Shutdown the VRRP group",
 				Computed:            true,
 			},
@@ -144,7 +200,7 @@ func (d *VRRPIPv6DataSource) Schema(ctx context.Context, req datasource.SchemaRe
 	}
 }
 
-func (d *VRRPIPv6DataSource) Configure(_ context.Context, req datasource.ConfigureRequest, _ *datasource.ConfigureResponse) {
+func (d *InterfaceVRRPDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, _ *datasource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -156,8 +212,8 @@ func (d *VRRPIPv6DataSource) Configure(_ context.Context, req datasource.Configu
 
 // Section below is generated&owned by "gen/generator.go". //template:begin read
 
-func (d *VRRPIPv6DataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var config VRRPIPv6Data
+func (d *InterfaceVRRPDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+	var config InterfaceVRRPData
 
 	// Read config
 	diags := req.Config.Get(ctx, &config)
