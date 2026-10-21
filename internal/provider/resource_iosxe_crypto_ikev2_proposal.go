@@ -119,6 +119,22 @@ func (r *CryptoIKEv2ProposalResource) Schema(ctx context.Context, req resource.S
 				Computed:            true,
 				Default:             booldefault.StaticBool(false),
 			},
+			"pqc_mlkem512": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable the ML-KEM-512 post-quantum key exchange algorithm. Requires IOS XE 26.1.1 or later on a supported Cisco Secure Router G2 platform in autonomous mode.").String,
+				Optional:            true,
+			},
+			"pqc_mlkem768": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable the ML-KEM-768 post-quantum key exchange algorithm. Requires IOS XE 26.1.1 or later on a supported Cisco Secure Router G2 platform in autonomous mode.").String,
+				Optional:            true,
+			},
+			"pqc_mlkem1024": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable the ML-KEM-1024 post-quantum key exchange algorithm. Requires IOS XE 26.1.1 or later on a supported Cisco Secure Router G2 platform in autonomous mode. IKEv2 fragmentation should be considered because of the larger key size.").String,
+				Optional:            true,
+			},
+			"pqc_optional": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Allow fallback to classical key exchange when the peer does not support ML-KEM. Requires at least one PQC ML-KEM algorithm and IOS XE 26.1.1 or later on a supported Cisco Secure Router G2 platform in autonomous mode.").String,
+				Optional:            true,
+			},
 			"group_one": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("DH 768 MODP").AddDefaultValueDescription("false").String,
 				Optional:            true,
