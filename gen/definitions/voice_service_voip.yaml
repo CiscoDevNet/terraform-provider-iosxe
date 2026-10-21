@@ -173,8 +173,9 @@ attributes:
     # Individual `no midcall-signaling passthru` works, but during teardown the
     # device refuses it when batched with `no allow-connections sip to sip` (its
     # `when` parent): "inconsistent value: Device refused one or more commands"
-    # (seen on 17.18.03a). Excluded from the lifecycle test until the provider
-    # can order that removal before allow-connections.
+    # (seen on 17.18.03a). The provider already places this removal before
+    # allow-connections in the same edit-config, so ordering is not the cause.
+    # Excluded from the lifecycle test until the device behavior is understood.
     exclude_test: true
     example: true
   - yang_name: sip/pass-thru/headers/headers-choice/unsupp-case/unsupp
