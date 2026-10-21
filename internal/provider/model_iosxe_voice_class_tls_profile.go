@@ -50,7 +50,7 @@ type VoiceClassTLSProfile struct {
 	CnSanValidateBidirectional types.Bool                       `tfsdk:"cn_san_validate_bidirectional"`
 	CnSanNames                 []VoiceClassTLSProfileCnSanNames `tfsdk:"cn_san_names"`
 	StrictCipher               types.Bool                       `tfsdk:"strict_cipher"`
-	TlsCipherId                types.String                     `tfsdk:"tls_cipher_id"`
+	TlsCipherId                types.Int64                      `tfsdk:"tls_cipher_id"`
 	SniSend                    types.Bool                       `tfsdk:"sni_send"`
 }
 type VoiceClassTLSProfileCnSanNames struct {
@@ -70,7 +70,7 @@ type VoiceClassTLSProfileData struct {
 	CnSanValidateBidirectional types.Bool                           `tfsdk:"cn_san_validate_bidirectional"`
 	CnSanNames                 []VoiceClassTLSProfileCnSanNamesData `tfsdk:"cn_san_names"`
 	StrictCipher               types.Bool                           `tfsdk:"strict_cipher"`
-	TlsCipherId                types.String                         `tfsdk:"tls_cipher_id"`
+	TlsCipherId                types.Int64                          `tfsdk:"tls_cipher_id"`
 	SniSend                    types.Bool                           `tfsdk:"sni_send"`
 }
 type VoiceClassTLSProfileCnSanNamesData struct {
@@ -172,7 +172,7 @@ func (data VoiceClassTLSProfile) addToBodyXML(ctx context.Context, config VoiceC
 		}
 	}
 	if !data.TlsCipherId.IsNull() && !data.TlsCipherId.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/cipher/cipher-id", data.TlsCipherId.ValueString())
+		body = helpers.SetFromXPath(body, data.getXPath()+"/cipher/cipher-id", strconv.FormatInt(data.TlsCipherId.ValueInt64(), 10))
 	}
 	if !data.SniSend.IsNull() && !data.SniSend.IsUnknown() {
 		if data.SniSend.ValueBool() {
@@ -280,9 +280,9 @@ func (data *VoiceClassTLSProfile) updateFromBodyXML(ctx context.Context, res xml
 		data.StrictCipher = types.BoolNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/cipher/cipher-id"); value.Exists() && !data.TlsCipherId.IsNull() {
-		data.TlsCipherId = types.StringValue(value.String())
+		data.TlsCipherId = types.Int64Value(value.Int())
 	} else {
-		data.TlsCipherId = types.StringNull()
+		data.TlsCipherId = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/sni/send"); !data.SniSend.IsNull() {
 		if value.Exists() {
@@ -344,7 +344,7 @@ func (data *VoiceClassTLSProfile) fromBodyXML(ctx context.Context, res xmldot.Re
 		data.StrictCipher = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/cipher/cipher-id"); value.Exists() {
-		data.TlsCipherId = types.StringValue(value.String())
+		data.TlsCipherId = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/sni/send"); value.Exists() {
 		data.SniSend = types.BoolValue(true)
@@ -402,7 +402,7 @@ func (data *VoiceClassTLSProfileData) fromBodyXML(ctx context.Context, res xmldo
 		data.StrictCipher = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/cipher/cipher-id"); value.Exists() {
-		data.TlsCipherId = types.StringValue(value.String())
+		data.TlsCipherId = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/sni/send"); value.Exists() {
 		data.SniSend = types.BoolValue(true)

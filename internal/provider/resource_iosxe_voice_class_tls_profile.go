@@ -158,7 +158,7 @@ func (r *VoiceClassTLSProfileResource) Schema(ctx context.Context, req resource.
 				MarkdownDescription: helpers.NewAttributeDescription("Use only ciphers use by SIP standards").String,
 				Optional:            true,
 			},
-			"tls_cipher_id": schema.StringAttribute{
+			"tls_cipher_id": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Specify tls-cipher list tag").String,
 				Optional:            true,
 			},

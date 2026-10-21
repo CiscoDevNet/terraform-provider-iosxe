@@ -48,6 +48,7 @@ attributes:
   - yang_name: cipher/cipher-choice/tls-cipher/cipher-id
     xpath: cipher/cipher-id
     tf_name: tls_cipher_id
+    type: Int64
     exclude_test: true
     example: 1
   - yang_name: sni/send

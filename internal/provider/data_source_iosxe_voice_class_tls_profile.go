@@ -116,7 +116,7 @@ func (d *VoiceClassTLSProfileDataSource) Schema(ctx context.Context, req datasou
 				MarkdownDescription: "Use only ciphers use by SIP standards",
 				Computed:            true,
 			},
-			"tls_cipher_id": schema.StringAttribute{
+			"tls_cipher_id": schema.Int64Attribute{
 				MarkdownDescription: "Specify tls-cipher list tag",
 				Computed:            true,
 			},

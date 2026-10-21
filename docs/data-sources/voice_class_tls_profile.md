@@ -40,7 +40,7 @@ data "iosxe_voice_class_tls_profile" "example" {
 - `id` (String) The path of the retrieved object.
 - `sni_send` (Boolean) Include SNI extension in outbound TLS connections
 - `strict_cipher` (Boolean) Use only ciphers use by SIP standards
-- `tls_cipher_id` (String) Specify tls-cipher list tag
+- `tls_cipher_id` (Number) Specify tls-cipher list tag
 - `trustpoint` (String) Define the trustpoint name
 
 <a id="nestedatt--cn_san_names"></a>

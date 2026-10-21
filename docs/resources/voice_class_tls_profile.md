@@ -49,7 +49,7 @@ resource "iosxe_voice_class_tls_profile" "example" {
 - `device` (String) A device name from the provider configuration.
 - `sni_send` (Boolean) Include SNI extension in outbound TLS connections
 - `strict_cipher` (Boolean) Use only ciphers use by SIP standards
-- `tls_cipher_id` (String) Specify tls-cipher list tag
+- `tls_cipher_id` (Number) Specify tls-cipher list tag
 - `trustpoint` (String) Define the trustpoint name
 
 ### Read-Only
