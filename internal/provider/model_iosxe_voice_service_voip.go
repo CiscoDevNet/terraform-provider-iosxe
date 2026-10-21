@@ -87,8 +87,8 @@ type VoiceServiceVoIP struct {
 	SipPassThruContentSdp                           types.String                               `tfsdk:"sip_pass_thru_content_sdp"`
 	SipAudioForced                                  types.Bool                                 `tfsdk:"sip_audio_forced"`
 	SipLocalhost                                    types.String                               `tfsdk:"sip_localhost"`
-	SipBindControlSourceInterface                   types.String                               `tfsdk:"sip_bind_control_source_interface"`
-	SipBindMediaSourceInterface                     types.String                               `tfsdk:"sip_bind_media_source_interface"`
+	SipBindControlSourceInterfaceGigabitEthernet    types.String                               `tfsdk:"sip_bind_control_source_interface_gigabit_ethernet"`
+	SipBindMediaSourceInterfaceGigabitEthernet      types.String                               `tfsdk:"sip_bind_media_source_interface_gigabit_ethernet"`
 	SipBindControlSourceInterfaceLoopback           types.Int64                                `tfsdk:"sip_bind_control_source_interface_loopback"`
 	SipBindMediaSourceInterfaceLoopback             types.Int64                                `tfsdk:"sip_bind_media_source_interface_loopback"`
 	SipBindControlSourceInterfaceTenGigabitEthernet types.String                               `tfsdk:"sip_bind_control_source_interface_ten_gigabit_ethernet"`
@@ -161,8 +161,8 @@ type VoiceServiceVoIPData struct {
 	SipPassThruContentSdp                           types.String                                   `tfsdk:"sip_pass_thru_content_sdp"`
 	SipAudioForced                                  types.Bool                                     `tfsdk:"sip_audio_forced"`
 	SipLocalhost                                    types.String                                   `tfsdk:"sip_localhost"`
-	SipBindControlSourceInterface                   types.String                                   `tfsdk:"sip_bind_control_source_interface"`
-	SipBindMediaSourceInterface                     types.String                                   `tfsdk:"sip_bind_media_source_interface"`
+	SipBindControlSourceInterfaceGigabitEthernet    types.String                                   `tfsdk:"sip_bind_control_source_interface_gigabit_ethernet"`
+	SipBindMediaSourceInterfaceGigabitEthernet      types.String                                   `tfsdk:"sip_bind_media_source_interface_gigabit_ethernet"`
 	SipBindControlSourceInterfaceLoopback           types.Int64                                    `tfsdk:"sip_bind_control_source_interface_loopback"`
 	SipBindMediaSourceInterfaceLoopback             types.Int64                                    `tfsdk:"sip_bind_media_source_interface_loopback"`
 	SipBindControlSourceInterfaceTenGigabitEthernet types.String                                   `tfsdk:"sip_bind_control_source_interface_ten_gigabit_ethernet"`
@@ -504,11 +504,11 @@ func (data VoiceServiceVoIP) addToBodyXML(ctx context.Context, config VoiceServi
 	if !data.SipLocalhost.IsNull() && !data.SipLocalhost.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/sip/localhost", data.SipLocalhost.ValueString())
 	}
-	if !data.SipBindControlSourceInterface.IsNull() && !data.SipBindControlSourceInterface.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/sip/bind/control/source-interface/source-interface-std/GigabitEthernet", data.SipBindControlSourceInterface.ValueString())
+	if !data.SipBindControlSourceInterfaceGigabitEthernet.IsNull() && !data.SipBindControlSourceInterfaceGigabitEthernet.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/sip/bind/control/source-interface/source-interface-std/GigabitEthernet", data.SipBindControlSourceInterfaceGigabitEthernet.ValueString())
 	}
-	if !data.SipBindMediaSourceInterface.IsNull() && !data.SipBindMediaSourceInterface.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/sip/bind/media/source-interface/source-interface-std/GigabitEthernet", data.SipBindMediaSourceInterface.ValueString())
+	if !data.SipBindMediaSourceInterfaceGigabitEthernet.IsNull() && !data.SipBindMediaSourceInterfaceGigabitEthernet.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/sip/bind/media/source-interface/source-interface-std/GigabitEthernet", data.SipBindMediaSourceInterfaceGigabitEthernet.ValueString())
 	}
 	if !data.SipBindControlSourceInterfaceLoopback.IsNull() && !data.SipBindControlSourceInterfaceLoopback.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/sip/bind/control/source-interface/source-interface-std/Loopback", strconv.FormatInt(data.SipBindControlSourceInterfaceLoopback.ValueInt64(), 10))
@@ -990,15 +990,15 @@ func (data *VoiceServiceVoIP) updateFromBodyXML(ctx context.Context, res xmldot.
 	} else {
 		data.SipLocalhost = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/sip/bind/control/source-interface/source-interface-std/GigabitEthernet"); value.Exists() && !data.SipBindControlSourceInterface.IsNull() {
-		data.SipBindControlSourceInterface = types.StringValue(value.String())
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/sip/bind/control/source-interface/source-interface-std/GigabitEthernet"); value.Exists() && !data.SipBindControlSourceInterfaceGigabitEthernet.IsNull() {
+		data.SipBindControlSourceInterfaceGigabitEthernet = types.StringValue(value.String())
 	} else {
-		data.SipBindControlSourceInterface = types.StringNull()
+		data.SipBindControlSourceInterfaceGigabitEthernet = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/sip/bind/media/source-interface/source-interface-std/GigabitEthernet"); value.Exists() && !data.SipBindMediaSourceInterface.IsNull() {
-		data.SipBindMediaSourceInterface = types.StringValue(value.String())
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/sip/bind/media/source-interface/source-interface-std/GigabitEthernet"); value.Exists() && !data.SipBindMediaSourceInterfaceGigabitEthernet.IsNull() {
+		data.SipBindMediaSourceInterfaceGigabitEthernet = types.StringValue(value.String())
 	} else {
-		data.SipBindMediaSourceInterface = types.StringNull()
+		data.SipBindMediaSourceInterfaceGigabitEthernet = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/sip/bind/control/source-interface/source-interface-std/Loopback"); value.Exists() && !data.SipBindControlSourceInterfaceLoopback.IsNull() {
 		data.SipBindControlSourceInterfaceLoopback = types.Int64Value(value.Int())
@@ -1335,10 +1335,10 @@ func (data *VoiceServiceVoIP) fromBodyXML(ctx context.Context, res xmldot.Result
 		data.SipLocalhost = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/sip/bind/control/source-interface/source-interface-std/GigabitEthernet"); value.Exists() {
-		data.SipBindControlSourceInterface = types.StringValue(value.String())
+		data.SipBindControlSourceInterfaceGigabitEthernet = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/sip/bind/media/source-interface/source-interface-std/GigabitEthernet"); value.Exists() {
-		data.SipBindMediaSourceInterface = types.StringValue(value.String())
+		data.SipBindMediaSourceInterfaceGigabitEthernet = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/sip/bind/control/source-interface/source-interface-std/Loopback"); value.Exists() {
 		data.SipBindControlSourceInterfaceLoopback = types.Int64Value(value.Int())
@@ -1629,10 +1629,10 @@ func (data *VoiceServiceVoIPData) fromBodyXML(ctx context.Context, res xmldot.Re
 		data.SipLocalhost = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/sip/bind/control/source-interface/source-interface-std/GigabitEthernet"); value.Exists() {
-		data.SipBindControlSourceInterface = types.StringValue(value.String())
+		data.SipBindControlSourceInterfaceGigabitEthernet = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/sip/bind/media/source-interface/source-interface-std/GigabitEthernet"); value.Exists() {
-		data.SipBindMediaSourceInterface = types.StringValue(value.String())
+		data.SipBindMediaSourceInterfaceGigabitEthernet = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/sip/bind/control/source-interface/source-interface-std/Loopback"); value.Exists() {
 		data.SipBindControlSourceInterfaceLoopback = types.Int64Value(value.Int())
@@ -1754,10 +1754,10 @@ func (data *VoiceServiceVoIP) addDeletedItemsXML(ctx context.Context, state Voic
 	if !state.SipBindControlSourceInterfaceLoopback.IsNull() && data.SipBindControlSourceInterfaceLoopback.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/sip/bind/control/source-interface/source-interface-std/Loopback")
 	}
-	if !state.SipBindMediaSourceInterface.IsNull() && data.SipBindMediaSourceInterface.IsNull() {
+	if !state.SipBindMediaSourceInterfaceGigabitEthernet.IsNull() && data.SipBindMediaSourceInterfaceGigabitEthernet.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/sip/bind/media/source-interface/source-interface-std/GigabitEthernet")
 	}
-	if !state.SipBindControlSourceInterface.IsNull() && data.SipBindControlSourceInterface.IsNull() {
+	if !state.SipBindControlSourceInterfaceGigabitEthernet.IsNull() && data.SipBindControlSourceInterfaceGigabitEthernet.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/sip/bind/control/source-interface/source-interface-std/GigabitEthernet")
 	}
 	if !state.SipLocalhost.IsNull() && data.SipLocalhost.IsNull() {
@@ -1984,10 +1984,10 @@ func (data *VoiceServiceVoIP) addDeletePathsXML(ctx context.Context, body string
 	if !data.SipBindControlSourceInterfaceLoopback.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/sip/bind/control/source-interface/source-interface-std/Loopback")
 	}
-	if !data.SipBindMediaSourceInterface.IsNull() {
+	if !data.SipBindMediaSourceInterfaceGigabitEthernet.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/sip/bind/media/source-interface/source-interface-std/GigabitEthernet")
 	}
-	if !data.SipBindControlSourceInterface.IsNull() {
+	if !data.SipBindControlSourceInterfaceGigabitEthernet.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/sip/bind/control/source-interface/source-interface-std/GigabitEthernet")
 	}
 	if !data.SipLocalhost.IsNull() {

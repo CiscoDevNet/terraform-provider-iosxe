@@ -198,12 +198,12 @@ attributes:
     example: dns:cube.example.com
   - yang_name: sip/bind/control/source-interface/source-interface-std/interface-choice/GigabitEthernet/GigabitEthernet
     xpath: sip/bind/control/source-interface/source-interface-std/GigabitEthernet
-    tf_name: sip_bind_control_source_interface
+    tf_name: sip_bind_control_source_interface_gigabit_ethernet
     exclude_test: true
     example: "1"
   - yang_name: sip/bind/media/source-interface/source-interface-std/interface-choice/GigabitEthernet/GigabitEthernet
     xpath: sip/bind/media/source-interface/source-interface-std/GigabitEthernet
-    tf_name: sip_bind_media_source_interface
+    tf_name: sip_bind_media_source_interface_gigabit_ethernet
     exclude_test: true
     example: "1"
   - yang_name: sip/bind/control/source-interface/source-interface-std/interface-choice/Loopback/Loopback

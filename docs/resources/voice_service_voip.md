@@ -94,13 +94,13 @@ resource "iosxe_voice_service_voip" "example" {
 - `sip_asserted_id_pai` (Boolean) Use privacy asserted identity
 - `sip_asymmetric_payload_full` (Boolean) Asymmetric Support for dynamic codec and dtmf payloads
 - `sip_audio_forced` (Boolean) Allow only audio/fax, drop all other
-- `sip_bind_control_source_interface` (String) GigabitEthernet IEEE 802.3z
+- `sip_bind_control_source_interface_gigabit_ethernet` (String) GigabitEthernet IEEE 802.3z
 - `sip_bind_control_source_interface_loopback` (Number) Loopback interface
   - Range: `0`-`2147483647`
 - `sip_bind_control_source_interface_port_channel` (Number) Ethernet Channel of interfaces
   - Range: `0`-`4294967295`
 - `sip_bind_control_source_interface_ten_gigabit_ethernet` (String) Ten Gigabit Ethernet
-- `sip_bind_media_source_interface` (String) GigabitEthernet IEEE 802.3z
+- `sip_bind_media_source_interface_gigabit_ethernet` (String) GigabitEthernet IEEE 802.3z
 - `sip_bind_media_source_interface_loopback` (Number) Loopback interface
   - Range: `0`-`2147483647`
 - `sip_bind_media_source_interface_port_channel` (Number) Ethernet Channel of interfaces

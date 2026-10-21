@@ -268,11 +268,11 @@ func (d *VoiceServiceVoIPDataSource) Schema(ctx context.Context, req datasource.
 				MarkdownDescription: "Specify the DNS name for the localhost",
 				Computed:            true,
 			},
-			"sip_bind_control_source_interface": schema.StringAttribute{
+			"sip_bind_control_source_interface_gigabit_ethernet": schema.StringAttribute{
 				MarkdownDescription: "GigabitEthernet IEEE 802.3z",
 				Computed:            true,
 			},
-			"sip_bind_media_source_interface": schema.StringAttribute{
+			"sip_bind_media_source_interface_gigabit_ethernet": schema.StringAttribute{
 				MarkdownDescription: "GigabitEthernet IEEE 802.3z",
 				Computed:            true,
 			},

@@ -322,11 +322,11 @@ func (r *VoiceServiceVoIPResource) Schema(ctx context.Context, req resource.Sche
 					stringvalidator.RegexMatches(regexp.MustCompile(`(dns:.*)`), ""),
 				},
 			},
-			"sip_bind_control_source_interface": schema.StringAttribute{
+			"sip_bind_control_source_interface_gigabit_ethernet": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("GigabitEthernet IEEE 802.3z").String,
 				Optional:            true,
 			},
-			"sip_bind_media_source_interface": schema.StringAttribute{
+			"sip_bind_media_source_interface_gigabit_ethernet": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("GigabitEthernet IEEE 802.3z").String,
 				Optional:            true,
 			},
