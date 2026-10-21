@@ -9,6 +9,9 @@ description: |-
 
 ## Unreleased
 
+- Add `iosxe_vrrp` resource and data source for VRRPv3 IPv4 interface-level configuration (`vrrp <group> address-family ipv4`), including primary/secondary virtual IPv4 addresses, priority, preempt delay, advertisement timers (milliseconds), description, object tracking with priority decrement and shutdown actions, and group shutdown
+- Add `iosxe_vrrp_ipv6` resource and data source for VRRPv3 IPv6 interface-level configuration (`vrrp <group> address-family ipv6`), including link-local primary address, secondary IPv6 prefixes, priority, preempt delay, advertisement timers (milliseconds), description, object tracking with priority decrement and shutdown actions, and group shutdown
+- Add `iosxe_fhrp` resource and data source for global FHRP version configuration (`fhrp version vrrp v3`)
 - BREAKING CHANGE: Replace `ip_nhrp_maps.nbma_ipv4` with the nested list `ip_nhrp_maps.nbma_ipv4s` (keyed on `ipv4`, matching `ip_nhrp_nhs.nbma_ipv4s`) in `iosxe_interface_tunnel` resource and data source. In YANG, `map/dest-ipv4/nbma-ipv4` is a list keyed on `nbma-ipv4`; modelling it as a single value meant changing the NBMA address left the old entry on the device (causing perpetual plan drift) and removing it failed with `invalid-value`. `nbma_ipv4s` is required on each `ip_nhrp_maps` entry because IOS-XE rejects a map without an NBMA address. Existing configurations must change `nbma_ipv4 = "X"` to `nbma_ipv4s = [{ ipv4 = "X" }]`
 - Fix `iosxe_bgp_neighbor`, `iosxe_bgp_ipv6_unicast_neighbor`, and the other BGP neighbor resources when the neighbor IPv6 address is not in canonical lowercase form (e.g. `2001:DB8::1`). IOS-XE stores the key in lowercase and NETCONF key matching is case-sensitive, so import failed with "Cannot import non-existent remote object" and a created neighbor was planned for creation again on the next run. The key is now normalized in the resource path, ID, and import
 - Add `pqc_mlkem512`, `pqc_mlkem768`, `pqc_mlkem1024`, and `pqc_optional` attributes to `iosxe_crypto_ikev2_proposal` resource and data source
@@ -45,9 +48,6 @@ description: |-
 
 ## 1.1.0
 
-- Add `iosxe_vrrp` resource and data source for VRRPv3 IPv4 interface-level configuration (`vrrp <group> address-family ipv4`), including primary/secondary virtual IPv4 addresses, priority, preempt delay, advertisement timers (milliseconds), description, object tracking with priority decrement and shutdown actions, and group shutdown
-- Add `iosxe_vrrp_ipv6` resource and data source for VRRPv3 IPv6 interface-level configuration (`vrrp <group> address-family ipv6`), including link-local primary address, secondary IPv6 prefixes, priority, preempt delay, advertisement timers (milliseconds), description, object tracking with priority decrement and shutdown actions, and group shutdown
-- Add `iosxe_fhrp` resource and data source for global FHRP version configuration (`fhrp version vrrp v3`)
 - Add `iosxe_interface_ethernets` bulk resource, managing all ethernet interfaces of a device through an `items` map keyed by `<type>;<name>` (e.g. `"GigabitEthernet;3"`), requiring a single NETCONF read and write operation regardless of the number of interfaces. See the [bulk resources guide](https://registry.terraform.io/providers/CiscoDevNet/iosxe/latest/docs/guides/bulk_resources) for details.
 - Add `police_cir_exceed_transmit` attribute to `iosxe_policy_map` resource and data source for `police cir ... exceed-action transmit` use cases such as CoPP `class-default`
 - Fix `iosxe_snmp_server` `hosts`, `vrf_hosts`, and `snmp_communities` list attributes to no longer attempt drift detection during refresh, since they are keyed in part by a write-only attribute (e.g. `community_or_user`) that can never be read back from the device; only changes made through Terraform config are applied to these lists going forward
