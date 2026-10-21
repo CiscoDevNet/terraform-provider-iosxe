@@ -733,13 +733,15 @@ func (data InterfaceTunnel) addToBodyXML(ctx context.Context, config InterfaceTu
 				cBody = helpers.SetFromXPath(cBody, "dest-ipv4", item.DestIpv4.ValueString())
 			}
 			if len(item.NbmaIpv4s) > 0 {
+				NbmaIpv4sFragments := make([]string, 0, len(item.NbmaIpv4s))
 				for _, citem := range item.NbmaIpv4s {
 					ccBody := netconf.Body{}
 					if !citem.Ipv4.IsNull() && !citem.Ipv4.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "nbma-ipv4", citem.Ipv4.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "nbma-ipv4", ccBody.Res())
+					NbmaIpv4sFragments = append(NbmaIpv4sFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "nbma-ipv4", NbmaIpv4sFragments)
 			}
 			IpNhrpMapsFragments = append(IpNhrpMapsFragments, cBody.Res())
 		}
@@ -1338,29 +1340,11 @@ func (data *InterfaceTunnel) updateFromBodyXML(ctx context.Context, res xmldot.R
 		} else {
 			data.IpNhrpMaps[i].DestIpv4 = types.StringNull()
 		}
+		NbmaIpv4sKeys := [...]string{"nbma-ipv4"}
+		NbmaIpv4sItems := helpers.CollectListItemsXML(r.Raw, "nbma-ipv4", NbmaIpv4sKeys[:])
 		for ci := range data.IpNhrpMaps[i].NbmaIpv4s {
-			keys := [...]string{"nbma-ipv4"}
-			keyValues := [...]string{data.IpNhrpMaps[i].NbmaIpv4s[ci].Ipv4.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "nbma-ipv4").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			NbmaIpv4sKeyValues := [...]string{data.IpNhrpMaps[i].NbmaIpv4s[ci].Ipv4.ValueString()}
+			cr := NbmaIpv4sItems[helpers.CompositeKey(NbmaIpv4sKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "nbma-ipv4"); value.Exists() && !data.IpNhrpMaps[i].NbmaIpv4s[ci].Ipv4.IsNull() {
 				data.IpNhrpMaps[i].NbmaIpv4s[ci].Ipv4 = types.StringValue(value.String())
 			} else {
