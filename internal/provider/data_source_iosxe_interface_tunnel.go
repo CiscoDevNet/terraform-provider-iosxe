@@ -439,7 +439,7 @@ func (d *InterfaceTunnelDataSource) Schema(ctx context.Context, req datasource.S
 							Computed:            true,
 						},
 						"nbma_ipv4s": schema.ListNestedAttribute{
-							MarkdownDescription: "NBMA addresses of the NHS",
+							MarkdownDescription: "NBMA address of the NHS. IOS-XE applies only one NBMA address per NHS, so configure exactly one entry; with more than one, the running configuration keeps only the last and removing one of them leaves the NHS without an NBMA address.",
 							Computed:            true,
 							NestedObject: schema.NestedAttributeObject{
 								Attributes: map[string]schema.Attribute{

@@ -147,7 +147,7 @@ Read-Only:
 Read-Only:
 
 - `ipv4` (String) Protocol IP address of NHS
-- `nbma_ipv4s` (Attributes List) NBMA addresses of the NHS (see [below for nested schema](#nestedatt--ip_nhrp_nhs--nbma_ipv4s))
+- `nbma_ipv4s` (Attributes List) NBMA address of the NHS. IOS-XE applies only one NBMA address per NHS, so configure exactly one entry; with more than one, the running configuration keeps only the last and removing one of them leaves the NHS without an NBMA address. (see [below for nested schema](#nestedatt--ip_nhrp_nhs--nbma_ipv4s))
 
 <a id="nestedatt--ip_nhrp_nhs--nbma_ipv4s"></a>
 ### Nested Schema for `ip_nhrp_nhs.nbma_ipv4s`

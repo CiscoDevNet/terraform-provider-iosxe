@@ -329,7 +329,7 @@ attributes:
       - yang_name: nbma/ipv4
         tf_name: nbma_ipv4s
         type: List
-        description: NBMA addresses of the NHS
+        description: NBMA address of the NHS. IOS-XE applies only one NBMA address per NHS, so configure exactly one entry; with more than one, the running configuration keeps only the last and removing one of them leaves the NHS without an NBMA address.
         attributes:
           - yang_name: ipv4
             id: true
