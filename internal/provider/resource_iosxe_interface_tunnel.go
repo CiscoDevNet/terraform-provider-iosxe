@@ -598,7 +598,7 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 							},
 						},
 						"nbma_ipv4s": schema.ListNestedAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("NBMA addresses mapped to the destination. IOS-XE requires at least one; to remove the last NBMA address, remove the `ip_nhrp_maps` entry instead.").String,
+							MarkdownDescription: helpers.NewAttributeDescription("NBMA address mapped to the destination. IOS-XE applies only one NBMA address per destination, so configure exactly one entry; with more than one, the running configuration keeps only the last and removing one of them removes the mapping. To remove the NBMA address, remove the `ip_nhrp_maps` entry instead.").String,
 							Required:            true,
 							NestedObject: schema.NestedAttributeObject{
 								Attributes: map[string]schema.Attribute{
