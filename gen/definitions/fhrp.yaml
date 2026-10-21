@@ -11,5 +11,4 @@ attributes:
     enum_values:
       - v2
       - v3
-    default_value: v2
     example: v3

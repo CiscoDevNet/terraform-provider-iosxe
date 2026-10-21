@@ -31,7 +31,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -79,13 +78,11 @@ func (r *FHRPResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				},
 			},
 			"version_vrrp": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure Virtual Router Redundancy Protocol version").AddStringEnumDescription("v2", "v3").AddDefaultValueDescription("v2").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configure Virtual Router Redundancy Protocol version").AddStringEnumDescription("v2", "v3").String,
 				Optional:            true,
-				Computed:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("v2", "v3"),
 				},
-				Default: stringdefault.StaticString("v2"),
 			},
 		},
 	}
