@@ -195,6 +195,7 @@ type YamlConfigAttribute struct {
 	RequiresReplace    bool                  `yaml:"requires_replace"`
 	NoAugmentConfig    bool                  `yaml:"no_augment_config"`
 	DeleteParent       bool                  `yaml:"delete_parent"`
+	DeletePath         string                `yaml:"delete_path"`
 	NoDelete           bool                  `yaml:"no_delete"`
 	BuiltinKeep        bool                  `yaml:"builtin_keep"`
 	ReadFilter         string                `yaml:"read_filter"`
@@ -364,6 +365,9 @@ func ImportAttributes(config YamlConfig) []YamlConfigAttribute {
 }
 
 func GetDeletePath(attribute YamlConfigAttribute) string {
+	if attribute.DeletePath != "" {
+		return attribute.DeletePath
+	}
 	path := attribute.XPath
 	if attribute.DeleteParent {
 		return RemoveLastPathElement(path)
