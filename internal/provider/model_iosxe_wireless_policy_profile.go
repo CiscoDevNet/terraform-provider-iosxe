@@ -205,24 +205,29 @@ func (data WirelessPolicyProfile) addToBodyXML(ctx context.Context, config Wirel
 		body = helpers.SetFromXPath(body, data.getXPath()+"/wlan-local-profiling/http-tlv-caching", data.HttpTlvCaching.ValueBool())
 	}
 	if len(data.Ipv4FlowMonitorsInput) > 0 {
+		Ipv4FlowMonitorsInputFragments := make([]string, 0, len(data.Ipv4FlowMonitorsInput))
 		for _, item := range data.Ipv4FlowMonitorsInput {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/avc-ipv4-fm-ingress-entries/avc-ipv4-fm-ingress-entry", cBody.Res())
+			Ipv4FlowMonitorsInputFragments = append(Ipv4FlowMonitorsInputFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/avc-ipv4-fm-ingress-entries/avc-ipv4-fm-ingress-entry", Ipv4FlowMonitorsInputFragments)
 	}
 	if len(data.Ipv4FlowMonitorsOutput) > 0 {
+		Ipv4FlowMonitorsOutputFragments := make([]string, 0, len(data.Ipv4FlowMonitorsOutput))
 		for _, item := range data.Ipv4FlowMonitorsOutput {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/avc-ipv4-fm-egress-entries/avc-ipv4-fm-egress-entry", cBody.Res())
+			Ipv4FlowMonitorsOutputFragments = append(Ipv4FlowMonitorsOutputFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/avc-ipv4-fm-egress-entries/avc-ipv4-fm-egress-entry", Ipv4FlowMonitorsOutputFragments)
 	}
 	if len(data.MobilityAnchors) > 0 {
+		MobilityAnchorsFragments := make([]string, 0, len(data.MobilityAnchors))
 		for _, item := range data.MobilityAnchors {
 			cBody := netconf.Body{}
 			if !item.Ip.IsNull() && !item.Ip.IsUnknown() {
@@ -231,8 +236,9 @@ func (data WirelessPolicyProfile) addToBodyXML(ctx context.Context, config Wirel
 			if !item.Priority.IsNull() && !item.Priority.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "anchor-priority", item.Priority.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/guest-mm-db-export-entries/guest-mm-db-export-entry", cBody.Res())
+			MobilityAnchorsFragments = append(MobilityAnchorsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/guest-mm-db-export-entries/guest-mm-db-export-entry", MobilityAnchorsFragments)
 	}
 	return body
 }
@@ -344,87 +350,36 @@ func (data *WirelessPolicyProfile) updateFromBodyXML(ctx context.Context, res xm
 	} else {
 		data.HttpTlvCaching = types.BoolNull()
 	}
+	Ipv4FlowMonitorsInputParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	Ipv4FlowMonitorsInputKeys := [...]string{"name"}
+	Ipv4FlowMonitorsInputItems := helpers.CollectListItemsXML(Ipv4FlowMonitorsInputParentScope.Raw, "avc-ipv4-fm-ingress-entries/avc-ipv4-fm-ingress-entry", Ipv4FlowMonitorsInputKeys[:])
 	for i := range data.Ipv4FlowMonitorsInput {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.Ipv4FlowMonitorsInput[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/avc-ipv4-fm-ingress-entries/avc-ipv4-fm-ingress-entry").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		Ipv4FlowMonitorsInputKeyValues := [...]string{data.Ipv4FlowMonitorsInput[i].Name.ValueString()}
+		r := Ipv4FlowMonitorsInputItems[helpers.CompositeKey(Ipv4FlowMonitorsInputKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.Ipv4FlowMonitorsInput[i].Name.IsNull() {
 			data.Ipv4FlowMonitorsInput[i].Name = types.StringValue(value.String())
 		} else {
 			data.Ipv4FlowMonitorsInput[i].Name = types.StringNull()
 		}
 	}
+	Ipv4FlowMonitorsOutputParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	Ipv4FlowMonitorsOutputKeys := [...]string{"name"}
+	Ipv4FlowMonitorsOutputItems := helpers.CollectListItemsXML(Ipv4FlowMonitorsOutputParentScope.Raw, "avc-ipv4-fm-egress-entries/avc-ipv4-fm-egress-entry", Ipv4FlowMonitorsOutputKeys[:])
 	for i := range data.Ipv4FlowMonitorsOutput {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.Ipv4FlowMonitorsOutput[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/avc-ipv4-fm-egress-entries/avc-ipv4-fm-egress-entry").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		Ipv4FlowMonitorsOutputKeyValues := [...]string{data.Ipv4FlowMonitorsOutput[i].Name.ValueString()}
+		r := Ipv4FlowMonitorsOutputItems[helpers.CompositeKey(Ipv4FlowMonitorsOutputKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.Ipv4FlowMonitorsOutput[i].Name.IsNull() {
 			data.Ipv4FlowMonitorsOutput[i].Name = types.StringValue(value.String())
 		} else {
 			data.Ipv4FlowMonitorsOutput[i].Name = types.StringNull()
 		}
 	}
+	MobilityAnchorsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	MobilityAnchorsKeys := [...]string{"ip"}
+	MobilityAnchorsItems := helpers.CollectListItemsXML(MobilityAnchorsParentScope.Raw, "guest-mm-db-export-entries/guest-mm-db-export-entry", MobilityAnchorsKeys[:])
 	for i := range data.MobilityAnchors {
-		keys := [...]string{"ip"}
-		keyValues := [...]string{data.MobilityAnchors[i].Ip.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/guest-mm-db-export-entries/guest-mm-db-export-entry").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		MobilityAnchorsKeyValues := [...]string{data.MobilityAnchors[i].Ip.ValueString()}
+		r := MobilityAnchorsItems[helpers.CompositeKey(MobilityAnchorsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "ip"); value.Exists() && !data.MobilityAnchors[i].Ip.IsNull() {
 			data.MobilityAnchors[i].Ip = types.StringValue(value.String())
 		} else {
