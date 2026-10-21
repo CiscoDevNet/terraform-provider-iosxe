@@ -1,0 +1,227 @@
+---
+name: SIP UA
+path: /Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:sip-ua
+doc_category: Voice
+# CUBE is a router feature; a switch rejects `sip-ua`.
+test_tags: [C8000V]
+# Always-present global singleton; delete the managed attributes individually
+# rather than the container (same pattern as system, line).
+no_delete: true
+attributes:
+  # --- Transport (TCP/UDP/TLS) ---
+  - yang_name: transport/udp
+    example: true
+  - yang_name: transport/tcp
+    example: true
+  - yang_name: transport/tcp-tls/tcp/tls-choice/tls/tls
+    xpath: transport/tcp-tls/tcp/tls
+    tf_name: transport_tcp_tls
+    example: true
+  # --- Server / redirection / RPID ---
+  - yang_name: sip-server
+    example: ipv4:10.0.0.1
+  - yang_name: redirection
+    example: true
+  - yang_name: remote-party-id
+    exclude_test: true
+    example: true
+  # --- Common SIP UA options ---
+  - yang_name: handle-replaces
+    example: true
+  - yang_name: reason-header/override
+    example: true
+  - yang_name: host-registrar
+    example: true
+  - yang_name: max-forwards
+    example: 70
+  - yang_name: disable-early-media
+    example: "180"
+  # --- Retries (config-sip-retry-timers) ---
+  - yang_name: retry/invite
+    example: 6
+  - yang_name: retry/register
+    example: 6
+  - yang_name: retry/rel1xx
+    example: 6
+  - yang_name: retry/response
+    example: 6
+  - yang_name: retry/keepalive
+    example: 6
+  # --- Timers (config-sip-signaling-timers) ---
+  - yang_name: timers/expires
+    example: 180000
+  - yang_name: timers/trying
+    example: 500
+  - yang_name: timers/connection/aging/tls
+    example: 720
+  - yang_name: timers/options
+    example: 500
+  - yang_name: timers/keepalive/active
+    example: 120
+  - yang_name: timers/keepalive/down
+    example: 30
+  # --- Connection reuse (augment /native/sip-ua) ---
+  - yang_name: connection-reuse
+    example: true
+  - yang_name: connection-reuse/via-port
+    example: true
+  # --- Crypto signaling (TLS trustpoint via voice class tls-profile) ---
+  - yang_name: crypto/signaling/default/tls-profile
+    tf_name: crypto_signaling_default_tls_profile
+    exclude_test: true
+    example: 100
+  - yang_name: crypto/signaling/remote-addr
+    tf_name: crypto_signaling_remote_addrs
+    type: List
+    exclude_test: true
+    attributes:
+      - yang_name: ipv4address
+        tf_name: ipv4_address
+        id: true
+        example: 10.0.0.100
+      - yang_name: subnetmask
+        tf_name: subnet_mask
+        id: true
+        example: 255.255.255.255
+      - yang_name: tls-profile
+        tf_name: tls_profile
+        mandatory: true
+        example: 100
+  # --- Digest authentication (global) ---
+  - yang_name: authentication/username-password/username
+    tf_name: authentication_username
+    exclude_test: true
+    example: cube-auth
+  - yang_name: authentication/username-password/password/encryption
+    tf_name: authentication_password_type
+    exclude_test: true
+    example: "0"
+  - yang_name: authentication/username-password/password/password-string
+    tf_name: authentication_password
+    sensitive: true
+    write_only: true
+    exclude_test: true
+    example: Cisco123
+  - yang_name: authentication/auth-with-realm/username
+    tf_name: authentication_realm_username
+    exclude_test: true
+    example: cube-auth
+  - yang_name: authentication/auth-with-realm/password/encryption
+    tf_name: authentication_realm_password_type
+    exclude_test: true
+    example: "0"
+  - yang_name: authentication/auth-with-realm/password/password-string
+    tf_name: authentication_realm_password
+    sensitive: true
+    write_only: true
+    exclude_test: true
+    example: Cisco123
+  - yang_name: authentication/auth-with-realm/realm
+    tf_name: authentication_realm
+    exclude_test: true
+    example: cisco.com
+  # --- Registration credentials ---
+  - yang_name: credentials/number-list
+    tf_name: credentials_numbers
+    type: List
+    exclude_test: true
+    attributes:
+      - yang_name: number
+        id: true
+        example: "1001"
+      - yang_name: username
+        example: cube-auth
+      - yang_name: password/encryption
+        tf_name: password_type
+        example: "0"
+      - yang_name: password/password-string
+        tf_name: password
+        sensitive: true
+        write_only: true
+        example: Cisco123
+      - yang_name: realm
+        example: cisco.com
+  - yang_name: credentials/username-list
+    tf_name: credentials_usernames
+    type: List
+    exclude_test: true
+    attributes:
+      - yang_name: username
+        id: true
+        example: cube-auth
+      - yang_name: password/encryption
+        tf_name: password_type
+        example: "0"
+      - yang_name: password/password-string
+        tf_name: password
+        sensitive: true
+        write_only: true
+        example: Cisco123
+      - yang_name: realm
+        example: cisco.com
+  - yang_name: credentials/dhcp/password/encryption
+    tf_name: credentials_dhcp_password_type
+    exclude_test: true
+    example: "0"
+  - yang_name: credentials/dhcp/password/password-string
+    tf_name: credentials_dhcp_password
+    sensitive: true
+    write_only: true
+    exclude_test: true
+    example: Cisco123
+  - yang_name: credentials/dhcp/realm
+    tf_name: credentials_dhcp_realm
+    exclude_test: true
+    example: cisco.com
+  # --- SIP registrar (primary / secondary / dhcp / multiple) ---
+  - yang_name: registrar/primary-registrar/registrar-config
+    tf_name: registrar_primary
+    exclude_test: true
+    example: ipv4:10.0.0.100
+  - yang_name: registrar/primary-registrar/expires
+    tf_name: registrar_primary_expires
+    exclude_test: true
+    example: 3600
+  - yang_name: registrar/primary-registrar/scheme
+    tf_name: registrar_primary_scheme
+    exclude_test: true
+    example: sip
+  - yang_name: registrar/primary-registrar/tcp
+    tf_name: registrar_primary_tcp
+    exclude_test: true
+    example: true
+  - yang_name: registrar/primary-registrar/tls
+    tf_name: registrar_primary_tls
+    exclude_test: true
+    example: true
+  - yang_name: registrar/primary-registrar/refresh-ratio
+    tf_name: registrar_primary_refresh_ratio
+    exclude_test: true
+    example: 80
+  - yang_name: registrar/secondary-registrar/registrar-config
+    tf_name: registrar_secondary
+    exclude_test: true
+    example: ipv4:10.0.0.101
+  - yang_name: registrar/secondary-registrar/expires
+    tf_name: registrar_secondary_expires
+    exclude_test: true
+    example: 3600
+  - yang_name: registrar/dhcp-config/dhcp
+    tf_name: registrar_dhcp
+    exclude_test: true
+    example: true
+  - yang_name: registrar/multiple-registrars/index
+    tf_name: registrars
+    type: List
+    exclude_test: true
+    attributes:
+      - yang_name: id
+        id: true
+        example: 1
+      - yang_name: registrar-config
+        tf_name: registrar
+        example: ipv4:10.0.0.100
+      - yang_name: expires
+        example: 3600
+      - yang_name: scheme
+        example: sip
