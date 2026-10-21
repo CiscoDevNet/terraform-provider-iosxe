@@ -69,7 +69,7 @@ func (d *VoiceClassTLSProfileDataSource) Schema(ctx context.Context, req datasou
 				Computed:            true,
 			},
 			"tag": schema.Int64Attribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Voice class tls-profile tag",
 				Required:            true,
 			},
 			"description": schema.StringAttribute{

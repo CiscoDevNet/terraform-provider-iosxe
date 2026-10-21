@@ -34,7 +34,8 @@ resource "iosxe_voice_class_tls_profile" "example" {
 
 ### Required
 
-- `tag` (Number) - Range: `1`-`10000`
+- `tag` (Number) Voice class tls-profile tag
+  - Range: `1`-`10000`
 
 ### Optional
 

@@ -23,7 +23,7 @@ data "iosxe_voice_class_tls_profile" "example" {
 
 ### Required
 
-- `tag` (Number)
+- `tag` (Number) Voice class tls-profile tag
 
 ### Optional
 

@@ -8,6 +8,7 @@ attributes:
   - yang_name: id
     tf_name: tag
     id: true
+    description: Voice class tls-profile tag
     example: 100
   - yang_name: description
     example: CUBE TLS Profile

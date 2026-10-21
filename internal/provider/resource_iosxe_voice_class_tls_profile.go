@@ -89,7 +89,7 @@ func (r *VoiceClassTLSProfileResource) Schema(ctx context.Context, req resource.
 				},
 			},
 			"tag": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 10000).String,
+				MarkdownDescription: helpers.NewAttributeDescription("Voice class tls-profile tag").AddIntegerRangeDescription(1, 10000).String,
 				Required:            true,
 				Validators: []validator.Int64{
 					int64validator.Between(1, 10000),
