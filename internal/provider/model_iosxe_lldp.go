@@ -345,7 +345,7 @@ func (data *LLDP) addDeletedItemsXML(ctx context.Context, state LLDP, body strin
 				found = false
 			}
 			if found {
-				if !state.SystemNames[i].Name.IsNull() && data.SystemNames[j].Name.IsNull() {
+				if !state.SystemNames[i].Name.IsNull() && (data.SystemNames[j].Name.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/system-name%v/name", predicates))
 				}
 				break
@@ -405,16 +405,16 @@ func (data *LLDP) addDeletedItemsXML(ctx context.Context, state LLDP, body strin
 			}
 		}
 	}
-	if !state.Timer.IsNull() && data.Timer.IsNull() {
+	if !state.Timer.IsNull() && (data.Timer.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timer")
 	}
-	if !state.ManagementVlan.IsNull() && data.ManagementVlan.IsNull() {
+	if !state.ManagementVlan.IsNull() && (data.ManagementVlan.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/management-vlan")
 	}
-	if !state.Holdtime.IsNull() && data.Holdtime.IsNull() {
+	if !state.Holdtime.IsNull() && (data.Holdtime.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/holdtime")
 	}
-	if !state.Run.IsNull() && data.Run.IsNull() {
+	if !state.Run.IsNull() && (data.Run.IsNull() || (state.Run.ValueBool() && !data.Run.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/run")
 	}
 

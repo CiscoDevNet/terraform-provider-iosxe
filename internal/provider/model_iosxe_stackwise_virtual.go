@@ -173,13 +173,13 @@ func (data *StackwiseVirtualData) fromBodyXML(ctx context.Context, res xmldot.Re
 
 func (data *StackwiseVirtual) addDeletedItemsXML(ctx context.Context, state StackwiseVirtual, body string) string {
 	b := netconf.NewBody(body)
-	if !state.DualActiveDetectionPagpTrustChannelGroup.IsNull() && data.DualActiveDetectionPagpTrustChannelGroup.IsNull() {
+	if !state.DualActiveDetectionPagpTrustChannelGroup.IsNull() && (data.DualActiveDetectionPagpTrustChannelGroup.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-stackwise-virtual:dual-active/detection/pagp/trust/channel-group/channel-group-number")
 	}
-	if !state.DualActiveDetectionPagp.IsNull() && data.DualActiveDetectionPagp.IsNull() {
+	if !state.DualActiveDetectionPagp.IsNull() && (data.DualActiveDetectionPagp.IsNull() || (state.DualActiveDetectionPagp.ValueBool() && !data.DualActiveDetectionPagp.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-stackwise-virtual:dual-active/detection/pagp")
 	}
-	if !state.Domain.IsNull() && data.Domain.IsNull() {
+	if !state.Domain.IsNull() && (data.Domain.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-stackwise-virtual:domain/domain")
 	}
 

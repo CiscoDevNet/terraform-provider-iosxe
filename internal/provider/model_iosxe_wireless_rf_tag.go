@@ -190,16 +190,16 @@ func (data *WirelessRFTagData) fromBodyXML(ctx context.Context, res xmldot.Resul
 
 func (data *WirelessRFTag) addDeletedItemsXML(ctx context.Context, state WirelessRFTag, body string) string {
 	b := netconf.NewBody(body)
-	if !state.RfPolicy6ghz.IsNull() && data.RfPolicy6ghz.IsNull() {
+	if !state.RfPolicy6ghz.IsNull() && (data.RfPolicy6ghz.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot11-6ghz-rf-prof-name")
 	}
-	if !state.RfPolicy5ghz.IsNull() && data.RfPolicy5ghz.IsNull() {
+	if !state.RfPolicy5ghz.IsNull() && (data.RfPolicy5ghz.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot11a-rf-profile-name")
 	}
-	if !state.RfPolicy24ghz.IsNull() && data.RfPolicy24ghz.IsNull() {
+	if !state.RfPolicy24ghz.IsNull() && (data.RfPolicy24ghz.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot11b-rf-profile-name")
 	}
-	if !state.Description.IsNull() && data.Description.IsNull() {
+	if !state.Description.IsNull() && (data.Description.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/description")
 	}
 

@@ -370,7 +370,7 @@ func (data *IPv6PrefixList) addDeletedItemsXML(ctx context.Context, state IPv6Pr
 				found = false
 			}
 			if found {
-				if !state.PrefixListDescription[i].Description.IsNull() && data.PrefixListDescription[j].Description.IsNull() {
+				if !state.PrefixListDescription[i].Description.IsNull() && (data.PrefixListDescription[j].Description.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/prefix-list-description%v/description", predicates))
 				}
 				break
@@ -409,16 +409,16 @@ func (data *IPv6PrefixList) addDeletedItemsXML(ctx context.Context, state IPv6Pr
 				found = false
 			}
 			if found {
-				if !state.Prefixes[i].Le.IsNull() && data.Prefixes[j].Le.IsNull() {
+				if !state.Prefixes[i].Le.IsNull() && (data.Prefixes[j].Le.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/prefixes%v/le", predicates))
 				}
-				if !state.Prefixes[i].Ge.IsNull() && data.Prefixes[j].Ge.IsNull() {
+				if !state.Prefixes[i].Ge.IsNull() && (data.Prefixes[j].Ge.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/prefixes%v/ge", predicates))
 				}
-				if !state.Prefixes[i].Ip.IsNull() && data.Prefixes[j].Ip.IsNull() {
+				if !state.Prefixes[i].Ip.IsNull() && (data.Prefixes[j].Ip.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/prefixes%v/ip", predicates))
 				}
-				if !state.Prefixes[i].Action.IsNull() && data.Prefixes[j].Action.IsNull() {
+				if !state.Prefixes[i].Action.IsNull() && (data.Prefixes[j].Action.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/prefixes%v/action", predicates))
 				}
 				break

@@ -1209,187 +1209,187 @@ func (data *WirelessAPJoinProfileData) fromBodyXML(ctx context.Context, res xmld
 
 func (data *WirelessAPJoinProfile) addDeletedItemsXML(ctx context.Context, state WirelessAPJoinProfile, body string) string {
 	b := netconf.NewBody(body)
-	if !state.BleScan.IsNull() && data.BleScan.IsNull() {
+	if !state.BleScan.IsNull() && (data.BleScan.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ble/scan-state")
 	}
-	if !state.TcpAdjustMssSize.IsNull() && data.TcpAdjustMssSize.IsNull() {
+	if !state.TcpAdjustMssSize.IsNull() && (data.TcpAdjustMssSize.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/tcp-mss/tcp-adjust-mss")
 	}
-	if !state.TcpAdjustMssEnable.IsNull() && data.TcpAdjustMssEnable.IsNull() {
+	if !state.TcpAdjustMssEnable.IsNull() && (data.TcpAdjustMssEnable.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/tcp-mss/adjust-mss")
 	}
-	if !state.StatsTimer.IsNull() && data.StatsTimer.IsNull() {
+	if !state.StatsTimer.IsNull() && (data.StatsTimer.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/stats-timer/stats-timer")
 	}
-	if !state.StatisticsApRadioMonitoringSamplingInterval.IsNull() && data.StatisticsApRadioMonitoringSamplingInterval.IsNull() {
+	if !state.StatisticsApRadioMonitoringSamplingInterval.IsNull() && (data.StatisticsApRadioMonitoringSamplingInterval.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/radio-stats-monitor/sample-intvl")
 	}
-	if !state.StatisticsApRadioMonitoringEnable.IsNull() && data.StatisticsApRadioMonitoringEnable.IsNull() {
+	if !state.StatisticsApRadioMonitoringEnable.IsNull() && (data.StatisticsApRadioMonitoringEnable.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/radio-stats-monitor/enable")
 	}
-	if !state.StatisticsTrafficDistributionInterval.IsNull() && data.StatisticsTrafficDistributionInterval.IsNull() {
+	if !state.StatisticsTrafficDistributionInterval.IsNull() && (data.StatisticsTrafficDistributionInterval.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/traffic-distribution/interval")
 	}
-	if !state.StatisticsTrafficDistribution.IsNull() && data.StatisticsTrafficDistribution.IsNull() {
+	if !state.StatisticsTrafficDistribution.IsNull() && (data.StatisticsTrafficDistribution.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/traffic-distribution/status")
 	}
-	if !state.StatisticsApSystemMonitoringStatsInterval.IsNull() && data.StatisticsApSystemMonitoringStatsInterval.IsNull() {
+	if !state.StatisticsApSystemMonitoringStatsInterval.IsNull() && (data.StatisticsApSystemMonitoringStatsInterval.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/stats-monitor/stats-intvl")
 	}
-	if !state.StatisticsApSystemMonitoringSamplingInterval.IsNull() && data.StatisticsApSystemMonitoringSamplingInterval.IsNull() {
+	if !state.StatisticsApSystemMonitoringSamplingInterval.IsNull() && (data.StatisticsApSystemMonitoringSamplingInterval.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/stats-monitor/sample-intvl")
 	}
-	if !state.StatisticsApSystemMonitoringMemThreshold.IsNull() && data.StatisticsApSystemMonitoringMemThreshold.IsNull() {
+	if !state.StatisticsApSystemMonitoringMemThreshold.IsNull() && (data.StatisticsApSystemMonitoringMemThreshold.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/stats-monitor/mem-threshold")
 	}
-	if !state.StatisticsApSystemMonitoringCpuThreshold.IsNull() && data.StatisticsApSystemMonitoringCpuThreshold.IsNull() {
+	if !state.StatisticsApSystemMonitoringCpuThreshold.IsNull() && (data.StatisticsApSystemMonitoringCpuThreshold.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/stats-monitor/cpu-threshold")
 	}
-	if !state.StatisticsApSystemMonitoringAlarmRetransmitTime.IsNull() && data.StatisticsApSystemMonitoringAlarmRetransmitTime.IsNull() {
+	if !state.StatisticsApSystemMonitoringAlarmRetransmitTime.IsNull() && (data.StatisticsApSystemMonitoringAlarmRetransmitTime.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/stats-monitor/trap-retx-time")
 	}
-	if !state.StatisticsApSystemMonitoringAlarmHoldTime.IsNull() && data.StatisticsApSystemMonitoringAlarmHoldTime.IsNull() {
+	if !state.StatisticsApSystemMonitoringAlarmHoldTime.IsNull() && (data.StatisticsApSystemMonitoringAlarmHoldTime.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/stats-monitor/alarm-hold-time")
 	}
-	if !state.StatisticsApSystemMonitoringAlarmEnable.IsNull() && data.StatisticsApSystemMonitoringAlarmEnable.IsNull() {
+	if !state.StatisticsApSystemMonitoringAlarmEnable.IsNull() && (data.StatisticsApSystemMonitoringAlarmEnable.IsNull() || (state.StatisticsApSystemMonitoringAlarmEnable.ValueBool() && !data.StatisticsApSystemMonitoringAlarmEnable.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/stats-monitor/alarms-enable")
 	}
-	if !state.StatisticsApSystemMonitoringEnable.IsNull() && data.StatisticsApSystemMonitoringEnable.IsNull() {
+	if !state.StatisticsApSystemMonitoringEnable.IsNull() && (data.StatisticsApSystemMonitoringEnable.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/stats-monitor/enable")
 	}
-	if !state.RogueDetectionReportInterval.IsNull() && data.RogueDetectionReportInterval.IsNull() {
+	if !state.RogueDetectionReportInterval.IsNull() && (data.RogueDetectionReportInterval.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/rogue-detection/rogue-detection-monitor-mode-report-interval")
 	}
-	if !state.RogueDetectionMinTransientTime.IsNull() && data.RogueDetectionMinTransientTime.IsNull() {
+	if !state.RogueDetectionMinTransientTime.IsNull() && (data.RogueDetectionMinTransientTime.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/rogue-detection/ap-rogue-detection-transient-interval")
 	}
-	if !state.RogueDetectionMinRssi.IsNull() && data.RogueDetectionMinRssi.IsNull() {
+	if !state.RogueDetectionMinRssi.IsNull() && (data.RogueDetectionMinRssi.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/rogue-detection/ap-rogue-detection-min-rssi")
 	}
-	if !state.RogueDetectionEnable.IsNull() && data.RogueDetectionEnable.IsNull() {
+	if !state.RogueDetectionEnable.IsNull() && (data.RogueDetectionEnable.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/rogue-detection/ap-rogue-detection")
 	}
-	if !state.MeshProfile.IsNull() && data.MeshProfile.IsNull() {
+	if !state.MeshProfile.IsNull() && (data.MeshProfile.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/mesh/mesh-profile-name")
 	}
-	if !state.Led.IsNull() && data.Led.IsNull() {
+	if !state.Led.IsNull() && (data.Led.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/led-state/led-state")
 	}
-	if !state.Lag.IsNull() && data.Lag.IsNull() {
+	if !state.Lag.IsNull() && (data.Lag.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/lag-info/ap-lag-enabled")
 	}
-	if !state.IpDhcpFallback.IsNull() && data.IpDhcpFallback.IsNull() {
+	if !state.IpDhcpFallback.IsNull() && (data.IpDhcpFallback.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dhcp-fallback/dhcp-fallback")
 	}
-	if !state.Hyperlocation.IsNull() && data.Hyperlocation.IsNull() {
+	if !state.Hyperlocation.IsNull() && (data.Hyperlocation.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/hyperlocation/hyperlocation-enable")
 	}
-	if !state.Dot1xPasswordType.IsNull() && data.Dot1xPasswordType.IsNull() {
+	if !state.Dot1xPasswordType.IsNull() && (data.Dot1xPasswordType.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/login-credentials/dot1x-password-type")
 	}
-	if !state.Dot1xPassword.IsNull() && data.Dot1xPassword.IsNull() {
+	if !state.Dot1xPassword.IsNull() && (data.Dot1xPassword.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/login-credentials/dot1x-password")
 	}
-	if !state.Dot1xUsername.IsNull() && data.Dot1xUsername.IsNull() {
+	if !state.Dot1xUsername.IsNull() && (data.Dot1xUsername.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/login-credentials/dot1x-username")
 	}
-	if !state.Dot1xEapType.IsNull() && data.Dot1xEapType.IsNull() {
+	if !state.Dot1xEapType.IsNull() && (data.Dot1xEapType.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot1x-eap-type-info/dot1x-eap-type")
 	}
-	if !state.Cdp.IsNull() && data.Cdp.IsNull() {
+	if !state.Cdp.IsNull() && (data.Cdp.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/cdp/cdp-enable")
 	}
-	if !state.CapwapDiscoveryPublic.IsNull() && data.CapwapDiscoveryPublic.IsNull() {
+	if !state.CapwapDiscoveryPublic.IsNull() && (data.CapwapDiscoveryPublic.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/public-ip-discovery")
 	}
-	if !state.CapwapDiscoveryPrivate.IsNull() && data.CapwapDiscoveryPrivate.IsNull() {
+	if !state.CapwapDiscoveryPrivate.IsNull() && (data.CapwapDiscoveryPrivate.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/private-ip-discovery")
 	}
-	if !state.CapwapFallback.IsNull() && data.CapwapFallback.IsNull() {
+	if !state.CapwapFallback.IsNull() && (data.CapwapFallback.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/backup-controllers/fallback-enabled")
 	}
-	if !state.CapwapBackupSecondaryIp.IsNull() && data.CapwapBackupSecondaryIp.IsNull() {
+	if !state.CapwapBackupSecondaryIp.IsNull() && (data.CapwapBackupSecondaryIp.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/backup-controllers/secondary-controller-ip")
 	}
-	if !state.CapwapBackupSecondaryName.IsNull() && data.CapwapBackupSecondaryName.IsNull() {
+	if !state.CapwapBackupSecondaryName.IsNull() && (data.CapwapBackupSecondaryName.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/backup-controllers/secondary-controller-name")
 	}
-	if !state.CapwapBackupPrimaryIp.IsNull() && data.CapwapBackupPrimaryIp.IsNull() {
+	if !state.CapwapBackupPrimaryIp.IsNull() && (data.CapwapBackupPrimaryIp.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/backup-controllers/primary-controller-ip")
 	}
-	if !state.CapwapBackupPrimaryName.IsNull() && data.CapwapBackupPrimaryName.IsNull() {
+	if !state.CapwapBackupPrimaryName.IsNull() && (data.CapwapBackupPrimaryName.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/backup-controllers/primary-controller-name")
 	}
-	if !state.CapwapTimersPrimedJoinTimeout.IsNull() && data.CapwapTimersPrimedJoinTimeout.IsNull() {
+	if !state.CapwapTimersPrimedJoinTimeout.IsNull() && (data.CapwapTimersPrimedJoinTimeout.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/capwap-timer/primed-join-timeout")
 	}
-	if !state.CapwapTimersPrimaryDiscoveryTimeout.IsNull() && data.CapwapTimersPrimaryDiscoveryTimeout.IsNull() {
+	if !state.CapwapTimersPrimaryDiscoveryTimeout.IsNull() && (data.CapwapTimersPrimaryDiscoveryTimeout.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/capwap-timer/primary-discovery-timeout")
 	}
-	if !state.CapwapTimersHeartbeatTimeout.IsNull() && data.CapwapTimersHeartbeatTimeout.IsNull() {
+	if !state.CapwapTimersHeartbeatTimeout.IsNull() && (data.CapwapTimersHeartbeatTimeout.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/capwap-timer/heart-beat-timeout")
 	}
-	if !state.CapwapTimersFastHeartbeatTimeout.IsNull() && data.CapwapTimersFastHeartbeatTimeout.IsNull() {
+	if !state.CapwapTimersFastHeartbeatTimeout.IsNull() && (data.CapwapTimersFastHeartbeatTimeout.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/capwap-timer/fast-heart-beat-timeout")
 	}
-	if !state.CapwapTimersDiscoveryTimeout.IsNull() && data.CapwapTimersDiscoveryTimeout.IsNull() {
+	if !state.CapwapTimersDiscoveryTimeout.IsNull() && (data.CapwapTimersDiscoveryTimeout.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/capwap-timer/discovery-timeout")
 	}
-	if !state.CapwapRetransmitInterval.IsNull() && data.CapwapRetransmitInterval.IsNull() {
+	if !state.CapwapRetransmitInterval.IsNull() && (data.CapwapRetransmitInterval.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/retransmit-timer/interval")
 	}
-	if !state.CapwapRetransmitCount.IsNull() && data.CapwapRetransmitCount.IsNull() {
+	if !state.CapwapRetransmitCount.IsNull() && (data.CapwapRetransmitCount.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/retransmit-timer/count")
 	}
-	if !state.AwipsForensic.IsNull() && data.AwipsForensic.IsNull() {
+	if !state.AwipsForensic.IsNull() && (data.AwipsForensic.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/awips-forensic-enabled")
 	}
-	if !state.Awips.IsNull() && data.Awips.IsNull() {
+	if !state.Awips.IsNull() && (data.Awips.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/awips-enabled")
 	}
-	if !state.AssociationLimit.IsNull() && data.AssociationLimit.IsNull() {
+	if !state.AssociationLimit.IsNull() && (data.AssociationLimit.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/client-limit/max-cfg-clients")
 	}
-	if !state.Apphost.IsNull() && data.Apphost.IsNull() {
+	if !state.Apphost.IsNull() && (data.Apphost.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/apphost/enable")
 	}
-	if !state.SyslogLevel.IsNull() && data.SyslogLevel.IsNull() {
+	if !state.SyslogLevel.IsNull() && (data.SyslogLevel.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/syslog/log-level")
 	}
-	if !state.SyslogFacility.IsNull() && data.SyslogFacility.IsNull() {
+	if !state.SyslogFacility.IsNull() && (data.SyslogFacility.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/syslog/facility-value")
 	}
-	if !state.SyslogHost.IsNull() && data.SyslogHost.IsNull() {
+	if !state.SyslogHost.IsNull() && (data.SyslogHost.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/syslog/host")
 	}
-	if !state.NtpIp.IsNull() && data.NtpIp.IsNull() {
+	if !state.NtpIp.IsNull() && (data.NtpIp.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ntp-server-info/ntp-address")
 	}
-	if !state.MgmtuserSecretType.IsNull() && data.MgmtuserSecretType.IsNull() {
+	if !state.MgmtuserSecretType.IsNull() && (data.MgmtuserSecretType.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/user-mgmt/secret-type")
 	}
-	if !state.MgmtuserSecret.IsNull() && data.MgmtuserSecret.IsNull() {
+	if !state.MgmtuserSecret.IsNull() && (data.MgmtuserSecret.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/user-mgmt/secret")
 	}
-	if !state.MgmtuserPasswordType.IsNull() && data.MgmtuserPasswordType.IsNull() {
+	if !state.MgmtuserPasswordType.IsNull() && (data.MgmtuserPasswordType.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/user-mgmt/password-type")
 	}
-	if !state.MgmtuserPassword.IsNull() && data.MgmtuserPassword.IsNull() {
+	if !state.MgmtuserPassword.IsNull() && (data.MgmtuserPassword.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/user-mgmt/password")
 	}
-	if !state.MgmtuserUsername.IsNull() && data.MgmtuserUsername.IsNull() {
+	if !state.MgmtuserUsername.IsNull() && (data.MgmtuserUsername.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/user-mgmt/username")
 	}
-	if !state.Ssh.IsNull() && data.Ssh.IsNull() {
+	if !state.Ssh.IsNull() && (data.Ssh.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/device-mgmt/ssh")
 	}
-	if !state.Country.IsNull() && data.Country.IsNull() {
+	if !state.Country.IsNull() && (data.Country.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ap-country/country-code")
 	}
-	if !state.CapwapWindowSize.IsNull() && data.CapwapWindowSize.IsNull() {
+	if !state.CapwapWindowSize.IsNull() && (data.CapwapWindowSize.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/capwap-window/window-size")
 	}
-	if !state.Description.IsNull() && data.Description.IsNull() {
+	if !state.Description.IsNull() && (data.Description.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/description")
 	}
 

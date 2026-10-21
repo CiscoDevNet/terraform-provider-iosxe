@@ -201,7 +201,7 @@ func (data *VLANAccessMapData) fromBodyXML(ctx context.Context, res xmldot.Resul
 
 func (data *VLANAccessMap) addDeletedItemsXML(ctx context.Context, state VLANAccessMap, body string) string {
 	b := netconf.NewBody(body)
-	if !state.Action.IsNull() && data.Action.IsNull() {
+	if !state.Action.IsNull() && (data.Action.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/action")
 	}
 	if !state.MatchIpAddress.IsNull() {

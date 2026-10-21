@@ -2287,49 +2287,49 @@ func (data *LoggingData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 func (data *Logging) addDeletedItemsXML(ctx context.Context, state Logging, body string) string {
 	b := netconf.NewBody(body)
-	if !state.RateLimitConsoleAllExceptSeverity.IsNull() && data.RateLimitConsoleAllExceptSeverity.IsNull() {
+	if !state.RateLimitConsoleAllExceptSeverity.IsNull() && (data.RateLimitConsoleAllExceptSeverity.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/rate-limit-config/common-config/rate-limit/console/all/common-options/except/range")
 	}
-	if !state.RateLimitConsoleAll.IsNull() && data.RateLimitConsoleAll.IsNull() {
+	if !state.RateLimitConsoleAll.IsNull() && (data.RateLimitConsoleAll.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/rate-limit-config/common-config/rate-limit/console/all/common-options/range")
 	}
-	if !state.RateLimitConsoleExceptSeverity.IsNull() && data.RateLimitConsoleExceptSeverity.IsNull() {
+	if !state.RateLimitConsoleExceptSeverity.IsNull() && (data.RateLimitConsoleExceptSeverity.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/rate-limit-config/common-config/rate-limit/console/common-options/except/range")
 	}
-	if !state.RateLimitConsole.IsNull() && data.RateLimitConsole.IsNull() {
+	if !state.RateLimitConsole.IsNull() && (data.RateLimitConsole.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/rate-limit-config/common-config/rate-limit/console/common-options/range")
 	}
-	if !state.RateLimitAllExceptSeverity.IsNull() && data.RateLimitAllExceptSeverity.IsNull() {
+	if !state.RateLimitAllExceptSeverity.IsNull() && (data.RateLimitAllExceptSeverity.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/rate-limit-config/common-config/rate-limit/all/common-options/except/range")
 	}
-	if !state.RateLimitAll.IsNull() && data.RateLimitAll.IsNull() {
+	if !state.RateLimitAll.IsNull() && (data.RateLimitAll.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/rate-limit-config/common-config/rate-limit/all/common-options/range")
 	}
-	if !state.PersistentProtected.IsNull() && data.PersistentProtected.IsNull() {
+	if !state.PersistentProtected.IsNull() && (data.PersistentProtected.IsNull() || (state.PersistentProtected.ValueBool() && !data.PersistentProtected.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/persistent/protected")
 	}
-	if !state.PersistentNotify.IsNull() && data.PersistentNotify.IsNull() {
+	if !state.PersistentNotify.IsNull() && (data.PersistentNotify.IsNull() || (state.PersistentNotify.ValueBool() && !data.PersistentNotify.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/persistent/notify")
 	}
-	if !state.PersistentImmediate.IsNull() && data.PersistentImmediate.IsNull() {
+	if !state.PersistentImmediate.IsNull() && (data.PersistentImmediate.IsNull() || (state.PersistentImmediate.ValueBool() && !data.PersistentImmediate.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/persistent/immediate")
 	}
-	if !state.PersistentThreshold.IsNull() && data.PersistentThreshold.IsNull() {
+	if !state.PersistentThreshold.IsNull() && (data.PersistentThreshold.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/persistent/threshold")
 	}
-	if !state.PersistentBatch.IsNull() && data.PersistentBatch.IsNull() {
+	if !state.PersistentBatch.IsNull() && (data.PersistentBatch.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/persistent/batch")
 	}
-	if !state.PersistentFilesize.IsNull() && data.PersistentFilesize.IsNull() {
+	if !state.PersistentFilesize.IsNull() && (data.PersistentFilesize.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/persistent/filesize")
 	}
-	if !state.PersistentSize.IsNull() && data.PersistentSize.IsNull() {
+	if !state.PersistentSize.IsNull() && (data.PersistentSize.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/persistent/size")
 	}
-	if !state.PersistentUrl.IsNull() && data.PersistentUrl.IsNull() {
+	if !state.PersistentUrl.IsNull() && (data.PersistentUrl.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/persistent/url")
 	}
-	if !state.LoggingCount.IsNull() && data.LoggingCount.IsNull() {
+	if !state.LoggingCount.IsNull() && (data.LoggingCount.IsNull() || (state.LoggingCount.ValueBool() && !data.LoggingCount.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/count")
 	}
 	for i := range state.Ipv6VrfHostsTransport {
@@ -2384,7 +2384,7 @@ func (data *Logging) addDeletedItemsXML(ctx context.Context, state Logging, body
 							found = false
 						}
 						if found {
-							if !state.Ipv6VrfHostsTransport[i].TransportTlsPorts[ci].Profile.IsNull() && data.Ipv6VrfHostsTransport[j].TransportTlsPorts[cj].Profile.IsNull() {
+							if !state.Ipv6VrfHostsTransport[i].TransportTlsPorts[ci].Profile.IsNull() && (data.Ipv6VrfHostsTransport[j].TransportTlsPorts[cj].Profile.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/host/ipv6/ipv6-host-vrf-transport-list%v/transport/tls/port%v/profile", predicates, cpredicates))
 							}
 							break
@@ -2543,7 +2543,7 @@ func (data *Logging) addDeletedItemsXML(ctx context.Context, state Logging, body
 							found = false
 						}
 						if found {
-							if !state.Ipv6HostsTransport[i].TransportTlsPorts[ci].Profile.IsNull() && data.Ipv6HostsTransport[j].TransportTlsPorts[cj].Profile.IsNull() {
+							if !state.Ipv6HostsTransport[i].TransportTlsPorts[ci].Profile.IsNull() && (data.Ipv6HostsTransport[j].TransportTlsPorts[cj].Profile.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/host/ipv6/ipv6-host-transport-list%v/transport/tls/port%v/profile", predicates, cpredicates))
 							}
 							break
@@ -2702,7 +2702,7 @@ func (data *Logging) addDeletedItemsXML(ctx context.Context, state Logging, body
 							found = false
 						}
 						if found {
-							if !state.Ipv4VrfHostsTransport[i].TransportTlsPorts[ci].Profile.IsNull() && data.Ipv4VrfHostsTransport[j].TransportTlsPorts[cj].Profile.IsNull() {
+							if !state.Ipv4VrfHostsTransport[i].TransportTlsPorts[ci].Profile.IsNull() && (data.Ipv4VrfHostsTransport[j].TransportTlsPorts[cj].Profile.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/host/ipv4-host-vrf-transport-list%v/transport/tls/port%v/profile", predicates, cpredicates))
 							}
 							break
@@ -2861,7 +2861,7 @@ func (data *Logging) addDeletedItemsXML(ctx context.Context, state Logging, body
 							found = false
 						}
 						if found {
-							if !state.Ipv4HostsTransport[i].TransportTlsPorts[ci].Profile.IsNull() && data.Ipv4HostsTransport[j].TransportTlsPorts[cj].Profile.IsNull() {
+							if !state.Ipv4HostsTransport[i].TransportTlsPorts[ci].Profile.IsNull() && (data.Ipv4HostsTransport[j].TransportTlsPorts[cj].Profile.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/host/ipv4-host-transport-list%v/transport/tls/port%v/profile", predicates, cpredicates))
 							}
 							break
@@ -2991,7 +2991,7 @@ func (data *Logging) addDeletedItemsXML(ctx context.Context, state Logging, body
 				found = false
 			}
 			if found {
-				if !state.SourceInterfacesVrf[i].InterfaceName.IsNull() && data.SourceInterfacesVrf[j].InterfaceName.IsNull() {
+				if !state.SourceInterfacesVrf[i].InterfaceName.IsNull() && (data.SourceInterfacesVrf[j].InterfaceName.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/source-interface-conf/source-interface-vrf%v/interface-name", predicates))
 				}
 				break
@@ -3001,61 +3001,61 @@ func (data *Logging) addDeletedItemsXML(ctx context.Context, state Logging, body
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/source-interface-conf/source-interface-vrf%v", predicates))
 		}
 	}
-	if !state.Console.IsNull() && data.Console.IsNull() {
+	if !state.Console.IsNull() && (data.Console.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/console-config/console")
 	}
-	if !state.SourceInterface.IsNull() && data.SourceInterface.IsNull() {
+	if !state.SourceInterface.IsNull() && (data.SourceInterface.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/source-interface-conf/interface-name-non-vrf")
 	}
-	if !state.FileSeverity.IsNull() && data.FileSeverity.IsNull() {
+	if !state.FileSeverity.IsNull() && (data.FileSeverity.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/file/severity")
 	}
-	if !state.FileMinSize.IsNull() && data.FileMinSize.IsNull() {
+	if !state.FileMinSize.IsNull() && (data.FileMinSize.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/file/min-size")
 	}
-	if !state.FileMaxSize.IsNull() && data.FileMaxSize.IsNull() {
+	if !state.FileMaxSize.IsNull() && (data.FileMaxSize.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/file/max-size")
 	}
-	if !state.FileName.IsNull() && data.FileName.IsNull() {
+	if !state.FileName.IsNull() && (data.FileName.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/file/name")
 	}
-	if !state.OriginIdName.IsNull() && data.OriginIdName.IsNull() {
+	if !state.OriginIdName.IsNull() && (data.OriginIdName.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/origin-id/string")
 	}
-	if !state.OriginIdType.IsNull() && data.OriginIdType.IsNull() {
+	if !state.OriginIdType.IsNull() && (data.OriginIdType.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/origin-id/type-value")
 	}
-	if !state.TrapSeverity.IsNull() && data.TrapSeverity.IsNull() {
+	if !state.TrapSeverity.IsNull() && (data.TrapSeverity.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/trap/severity")
 	}
-	if !state.Trap.IsNull() && data.Trap.IsNull() {
+	if !state.Trap.IsNull() && (data.Trap.IsNull() || (state.Trap.ValueBool() && !data.Trap.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/trap")
 	}
-	if !state.HistorySeverity.IsNull() && data.HistorySeverity.IsNull() {
+	if !state.HistorySeverity.IsNull() && (data.HistorySeverity.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/history/severity-level")
 	}
-	if !state.HistorySize.IsNull() && data.HistorySize.IsNull() {
+	if !state.HistorySize.IsNull() && (data.HistorySize.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/history/size")
 	}
-	if !state.Facility.IsNull() && data.Facility.IsNull() {
+	if !state.Facility.IsNull() && (data.Facility.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/facility")
 	}
-	if !state.ConsoleSeverity.IsNull() && data.ConsoleSeverity.IsNull() {
+	if !state.ConsoleSeverity.IsNull() && (data.ConsoleSeverity.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/console-config/common-config/console/severity")
 	}
-	if !state.BufferedSeverity.IsNull() && data.BufferedSeverity.IsNull() {
+	if !state.BufferedSeverity.IsNull() && (data.BufferedSeverity.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/buffered-config/common-config/buffered/severity-level")
 	}
-	if !state.BufferedSize.IsNull() && data.BufferedSize.IsNull() {
+	if !state.BufferedSize.IsNull() && (data.BufferedSize.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/buffered-config/common-config/buffered/size-value")
 	}
-	if !state.BufferedSeverityLegacy.IsNull() && data.BufferedSeverityLegacy.IsNull() {
+	if !state.BufferedSeverityLegacy.IsNull() && (data.BufferedSeverityLegacy.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/buffered/severity-level")
 	}
-	if !state.BufferedSizeLegacy.IsNull() && data.BufferedSizeLegacy.IsNull() {
+	if !state.BufferedSizeLegacy.IsNull() && (data.BufferedSizeLegacy.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/buffered/size-value")
 	}
-	if !state.MonitorSeverity.IsNull() && data.MonitorSeverity.IsNull() {
+	if !state.MonitorSeverity.IsNull() && (data.MonitorSeverity.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/monitor-config/common-config/monitor/severity")
 	}
 

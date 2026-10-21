@@ -1823,25 +1823,25 @@ func (data *AAAAccounting) addDeletedItemsXML(ctx context.Context, state AAAAcco
 				found = false
 			}
 			if found {
-				if !state.Dot1x[i].StartStopGroupLogger.IsNull() && data.Dot1x[j].StartStopGroupLogger.IsNull() {
+				if !state.Dot1x[i].StartStopGroupLogger.IsNull() && (data.Dot1x[j].StartStopGroupLogger.IsNull() || (state.Dot1x[i].StartStopGroupLogger.ValueBool() && !data.Dot1x[j].StartStopGroupLogger.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/accounting-list%v/start-stop/group-config/logger", predicates))
 				}
-				if !state.Dot1x[i].StartStopGroupBroadcast.IsNull() && data.Dot1x[j].StartStopGroupBroadcast.IsNull() {
+				if !state.Dot1x[i].StartStopGroupBroadcast.IsNull() && (data.Dot1x[j].StartStopGroupBroadcast.IsNull() || (state.Dot1x[i].StartStopGroupBroadcast.ValueBool() && !data.Dot1x[j].StartStopGroupBroadcast.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/accounting-list%v/start-stop/group-config/broadcast", predicates))
 				}
-				if !state.Dot1x[i].StartStopBroadcast.IsNull() && data.Dot1x[j].StartStopBroadcast.IsNull() {
+				if !state.Dot1x[i].StartStopBroadcast.IsNull() && (data.Dot1x[j].StartStopBroadcast.IsNull() || (state.Dot1x[i].StartStopBroadcast.ValueBool() && !data.Dot1x[j].StartStopBroadcast.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/accounting-list%v/start-stop/broadcast", predicates))
 				}
-				if !state.Dot1x[i].StartStopGroup4.IsNull() && data.Dot1x[j].StartStopGroup4.IsNull() {
+				if !state.Dot1x[i].StartStopGroup4.IsNull() && (data.Dot1x[j].StartStopGroup4.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/accounting-list%v/start-stop/group-config/group4/group", predicates))
 				}
-				if !state.Dot1x[i].StartStopGroup3.IsNull() && data.Dot1x[j].StartStopGroup3.IsNull() {
+				if !state.Dot1x[i].StartStopGroup3.IsNull() && (data.Dot1x[j].StartStopGroup3.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/accounting-list%v/start-stop/group-config/group3/group", predicates))
 				}
-				if !state.Dot1x[i].StartStopGroup2.IsNull() && data.Dot1x[j].StartStopGroup2.IsNull() {
+				if !state.Dot1x[i].StartStopGroup2.IsNull() && (data.Dot1x[j].StartStopGroup2.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/accounting-list%v/start-stop/group-config/group2/group", predicates))
 				}
-				if !state.Dot1x[i].StartStopGroup1.IsNull() && data.Dot1x[j].StartStopGroup1.IsNull() {
+				if !state.Dot1x[i].StartStopGroup1.IsNull() && (data.Dot1x[j].StartStopGroup1.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/accounting-list%v/start-stop/group-config/group1/group", predicates))
 				}
 				break
@@ -1851,25 +1851,25 @@ func (data *AAAAccounting) addDeletedItemsXML(ctx context.Context, state AAAAcco
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/accounting-list%v", predicates))
 		}
 	}
-	if !state.Dot1xDefaultStartStopGroupLogger.IsNull() && data.Dot1xDefaultStartStopGroupLogger.IsNull() {
+	if !state.Dot1xDefaultStartStopGroupLogger.IsNull() && (data.Dot1xDefaultStartStopGroupLogger.IsNull() || (state.Dot1xDefaultStartStopGroupLogger.ValueBool() && !data.Dot1xDefaultStartStopGroupLogger.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot1x/default/start-stop/group-config/logger")
 	}
-	if !state.Dot1xDefaultStartStopGroupBroadcast.IsNull() && data.Dot1xDefaultStartStopGroupBroadcast.IsNull() {
+	if !state.Dot1xDefaultStartStopGroupBroadcast.IsNull() && (data.Dot1xDefaultStartStopGroupBroadcast.IsNull() || (state.Dot1xDefaultStartStopGroupBroadcast.ValueBool() && !data.Dot1xDefaultStartStopGroupBroadcast.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot1x/default/start-stop/group-config/broadcast")
 	}
-	if !state.Dot1xDefaultStartStopBroadcast.IsNull() && data.Dot1xDefaultStartStopBroadcast.IsNull() {
+	if !state.Dot1xDefaultStartStopBroadcast.IsNull() && (data.Dot1xDefaultStartStopBroadcast.IsNull() || (state.Dot1xDefaultStartStopBroadcast.ValueBool() && !data.Dot1xDefaultStartStopBroadcast.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot1x/default/start-stop/broadcast")
 	}
-	if !state.Dot1xDefaultStartStopGroup4.IsNull() && data.Dot1xDefaultStartStopGroup4.IsNull() {
+	if !state.Dot1xDefaultStartStopGroup4.IsNull() && (data.Dot1xDefaultStartStopGroup4.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot1x/default/start-stop/group-config/group4/group")
 	}
-	if !state.Dot1xDefaultStartStopGroup3.IsNull() && data.Dot1xDefaultStartStopGroup3.IsNull() {
+	if !state.Dot1xDefaultStartStopGroup3.IsNull() && (data.Dot1xDefaultStartStopGroup3.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot1x/default/start-stop/group-config/group3/group")
 	}
-	if !state.Dot1xDefaultStartStopGroup2.IsNull() && data.Dot1xDefaultStartStopGroup2.IsNull() {
+	if !state.Dot1xDefaultStartStopGroup2.IsNull() && (data.Dot1xDefaultStartStopGroup2.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot1x/default/start-stop/group-config/group2/group")
 	}
-	if !state.Dot1xDefaultStartStopGroup1.IsNull() && data.Dot1xDefaultStartStopGroup1.IsNull() {
+	if !state.Dot1xDefaultStartStopGroup1.IsNull() && (data.Dot1xDefaultStartStopGroup1.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot1x/default/start-stop/group-config/group1/group")
 	}
 	for i := range state.Execs {
@@ -1895,43 +1895,43 @@ func (data *AAAAccounting) addDeletedItemsXML(ctx context.Context, state AAAAcco
 				found = false
 			}
 			if found {
-				if !state.Execs[i].StopOnlyGroup4.IsNull() && data.Execs[j].StopOnlyGroup4.IsNull() {
+				if !state.Execs[i].StopOnlyGroup4.IsNull() && (data.Execs[j].StopOnlyGroup4.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/stop-only/group4/group", predicates))
 				}
-				if !state.Execs[i].StopOnlyGroup3.IsNull() && data.Execs[j].StopOnlyGroup3.IsNull() {
+				if !state.Execs[i].StopOnlyGroup3.IsNull() && (data.Execs[j].StopOnlyGroup3.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/stop-only/group3/group", predicates))
 				}
-				if !state.Execs[i].StopOnlyGroup2.IsNull() && data.Execs[j].StopOnlyGroup2.IsNull() {
+				if !state.Execs[i].StopOnlyGroup2.IsNull() && (data.Execs[j].StopOnlyGroup2.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/stop-only/group2/group", predicates))
 				}
-				if !state.Execs[i].StopOnlyGroup1.IsNull() && data.Execs[j].StopOnlyGroup1.IsNull() {
+				if !state.Execs[i].StopOnlyGroup1.IsNull() && (data.Execs[j].StopOnlyGroup1.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/stop-only/group1/group", predicates))
 				}
-				if !state.Execs[i].StopOnlyLogger.IsNull() && data.Execs[j].StopOnlyLogger.IsNull() {
+				if !state.Execs[i].StopOnlyLogger.IsNull() && (data.Execs[j].StopOnlyLogger.IsNull() || (state.Execs[i].StopOnlyLogger.ValueBool() && !data.Execs[j].StopOnlyLogger.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/stop-only/logger", predicates))
 				}
-				if !state.Execs[i].StopOnlyBroadcast.IsNull() && data.Execs[j].StopOnlyBroadcast.IsNull() {
+				if !state.Execs[i].StopOnlyBroadcast.IsNull() && (data.Execs[j].StopOnlyBroadcast.IsNull() || (state.Execs[i].StopOnlyBroadcast.ValueBool() && !data.Execs[j].StopOnlyBroadcast.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/stop-only/broadcast", predicates))
 				}
-				if !state.Execs[i].StartStopGroup4.IsNull() && data.Execs[j].StartStopGroup4.IsNull() {
+				if !state.Execs[i].StartStopGroup4.IsNull() && (data.Execs[j].StartStopGroup4.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/start-stop/group4/group", predicates))
 				}
-				if !state.Execs[i].StartStopGroup3.IsNull() && data.Execs[j].StartStopGroup3.IsNull() {
+				if !state.Execs[i].StartStopGroup3.IsNull() && (data.Execs[j].StartStopGroup3.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/start-stop/group3/group", predicates))
 				}
-				if !state.Execs[i].StartStopGroup2.IsNull() && data.Execs[j].StartStopGroup2.IsNull() {
+				if !state.Execs[i].StartStopGroup2.IsNull() && (data.Execs[j].StartStopGroup2.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/start-stop/group2/group", predicates))
 				}
-				if !state.Execs[i].StartStopGroup1.IsNull() && data.Execs[j].StartStopGroup1.IsNull() {
+				if !state.Execs[i].StartStopGroup1.IsNull() && (data.Execs[j].StartStopGroup1.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/start-stop/group1/group", predicates))
 				}
-				if !state.Execs[i].StartStopLogger.IsNull() && data.Execs[j].StartStopLogger.IsNull() {
+				if !state.Execs[i].StartStopLogger.IsNull() && (data.Execs[j].StartStopLogger.IsNull() || (state.Execs[i].StartStopLogger.ValueBool() && !data.Execs[j].StartStopLogger.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/start-stop/logger", predicates))
 				}
-				if !state.Execs[i].StartStopBroadcast.IsNull() && data.Execs[j].StartStopBroadcast.IsNull() {
+				if !state.Execs[i].StartStopBroadcast.IsNull() && (data.Execs[j].StartStopBroadcast.IsNull() || (state.Execs[i].StartStopBroadcast.ValueBool() && !data.Execs[j].StartStopBroadcast.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/start-stop/broadcast", predicates))
 				}
-				if !state.Execs[i].None.IsNull() && data.Execs[j].None.IsNull() {
+				if !state.Execs[i].None.IsNull() && (data.Execs[j].None.IsNull() || (state.Execs[i].None.ValueBool() && !data.Execs[j].None.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/none", predicates))
 				}
 				break
@@ -1964,46 +1964,46 @@ func (data *AAAAccounting) addDeletedItemsXML(ctx context.Context, state AAAAcco
 				found = false
 			}
 			if found {
-				if !state.Connections[i].StopOnlyGroup4.IsNull() && data.Connections[j].StopOnlyGroup4.IsNull() {
+				if !state.Connections[i].StopOnlyGroup4.IsNull() && (data.Connections[j].StopOnlyGroup4.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/connection%v/stop-only/group4/group", predicates))
 				}
-				if !state.Connections[i].StopOnlyGroup3.IsNull() && data.Connections[j].StopOnlyGroup3.IsNull() {
+				if !state.Connections[i].StopOnlyGroup3.IsNull() && (data.Connections[j].StopOnlyGroup3.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/connection%v/stop-only/group3/group", predicates))
 				}
-				if !state.Connections[i].StopOnlyGroup2.IsNull() && data.Connections[j].StopOnlyGroup2.IsNull() {
+				if !state.Connections[i].StopOnlyGroup2.IsNull() && (data.Connections[j].StopOnlyGroup2.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/connection%v/stop-only/group2/group", predicates))
 				}
-				if !state.Connections[i].StopOnlyGroup1.IsNull() && data.Connections[j].StopOnlyGroup1.IsNull() {
+				if !state.Connections[i].StopOnlyGroup1.IsNull() && (data.Connections[j].StopOnlyGroup1.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/connection%v/stop-only/group1/group", predicates))
 				}
-				if !state.Connections[i].StopOnlyLogger.IsNull() && data.Connections[j].StopOnlyLogger.IsNull() {
+				if !state.Connections[i].StopOnlyLogger.IsNull() && (data.Connections[j].StopOnlyLogger.IsNull() || (state.Connections[i].StopOnlyLogger.ValueBool() && !data.Connections[j].StopOnlyLogger.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/connection%v/stop-only/logger", predicates))
 				}
-				if !state.Connections[i].StopOnlyBroadcast.IsNull() && data.Connections[j].StopOnlyBroadcast.IsNull() {
+				if !state.Connections[i].StopOnlyBroadcast.IsNull() && (data.Connections[j].StopOnlyBroadcast.IsNull() || (state.Connections[i].StopOnlyBroadcast.ValueBool() && !data.Connections[j].StopOnlyBroadcast.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/connection%v/stop-only/broadcast", predicates))
 				}
-				if !state.Connections[i].StartStopGroup4.IsNull() && data.Connections[j].StartStopGroup4.IsNull() {
+				if !state.Connections[i].StartStopGroup4.IsNull() && (data.Connections[j].StartStopGroup4.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/connection%v/start-stop/group4/group", predicates))
 				}
-				if !state.Connections[i].StartStopGroup3.IsNull() && data.Connections[j].StartStopGroup3.IsNull() {
+				if !state.Connections[i].StartStopGroup3.IsNull() && (data.Connections[j].StartStopGroup3.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/connection%v/start-stop/group3/group", predicates))
 				}
-				if !state.Connections[i].StartStopGroup2.IsNull() && data.Connections[j].StartStopGroup2.IsNull() {
+				if !state.Connections[i].StartStopGroup2.IsNull() && (data.Connections[j].StartStopGroup2.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/connection%v/start-stop/group2/group", predicates))
 				}
-				if !state.Connections[i].StartStopGroup1.IsNull() && data.Connections[j].StartStopGroup1.IsNull() {
+				if !state.Connections[i].StartStopGroup1.IsNull() && (data.Connections[j].StartStopGroup1.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/connection%v/start-stop/group1/group", predicates))
 				}
-				if !state.Connections[i].StartStopLogger.IsNull() && data.Connections[j].StartStopLogger.IsNull() {
+				if !state.Connections[i].StartStopLogger.IsNull() && (data.Connections[j].StartStopLogger.IsNull() || (state.Connections[i].StartStopLogger.ValueBool() && !data.Connections[j].StartStopLogger.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/connection%v/start-stop/logger", predicates))
 				}
-				if !state.Connections[i].StartStopBroadcast.IsNull() && data.Connections[j].StartStopBroadcast.IsNull() {
+				if !state.Connections[i].StartStopBroadcast.IsNull() && (data.Connections[j].StartStopBroadcast.IsNull() || (state.Connections[i].StartStopBroadcast.ValueBool() && !data.Connections[j].StartStopBroadcast.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/connection%v/start-stop/broadcast", predicates))
 				}
-				if !state.Connections[i].None.IsNull() && data.Connections[j].None.IsNull() {
+				if !state.Connections[i].None.IsNull() && (data.Connections[j].None.IsNull() || (state.Connections[i].None.ValueBool() && !data.Connections[j].None.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/connection%v/none", predicates))
 				}
-				if !state.Connections[i].Default.IsNull() && data.Connections[j].Default.IsNull() {
+				if !state.Connections[i].Default.IsNull() && (data.Connections[j].Default.IsNull() || (state.Connections[i].Default.ValueBool() && !data.Connections[j].Default.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/connection%v/default", predicates))
 				}
 				break
@@ -2042,28 +2042,28 @@ func (data *AAAAccounting) addDeletedItemsXML(ctx context.Context, state AAAAcco
 				found = false
 			}
 			if found {
-				if !state.Commands[i].Group4Group.IsNull() && data.Commands[j].Group4Group.IsNull() {
+				if !state.Commands[i].Group4Group.IsNull() && (data.Commands[j].Group4Group.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/commands%v/commands-config/group-config/group4/group", predicates))
 				}
-				if !state.Commands[i].Group3Group.IsNull() && data.Commands[j].Group3Group.IsNull() {
+				if !state.Commands[i].Group3Group.IsNull() && (data.Commands[j].Group3Group.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/commands%v/commands-config/group-config/group3/group", predicates))
 				}
-				if !state.Commands[i].Group2Group.IsNull() && data.Commands[j].Group2Group.IsNull() {
+				if !state.Commands[i].Group2Group.IsNull() && (data.Commands[j].Group2Group.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/commands%v/commands-config/group-config/group2/group", predicates))
 				}
-				if !state.Commands[i].Group1Group.IsNull() && data.Commands[j].Group1Group.IsNull() {
+				if !state.Commands[i].Group1Group.IsNull() && (data.Commands[j].Group1Group.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/commands%v/commands-config/group-config/group1/group", predicates))
 				}
-				if !state.Commands[i].GroupLogger.IsNull() && data.Commands[j].GroupLogger.IsNull() {
+				if !state.Commands[i].GroupLogger.IsNull() && (data.Commands[j].GroupLogger.IsNull() || (state.Commands[i].GroupLogger.ValueBool() && !data.Commands[j].GroupLogger.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/commands%v/commands-config/group-config/logger", predicates))
 				}
-				if !state.Commands[i].GroupBroadcast.IsNull() && data.Commands[j].GroupBroadcast.IsNull() {
+				if !state.Commands[i].GroupBroadcast.IsNull() && (data.Commands[j].GroupBroadcast.IsNull() || (state.Commands[i].GroupBroadcast.ValueBool() && !data.Commands[j].GroupBroadcast.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/commands%v/commands-config/group-config/broadcast", predicates))
 				}
-				if !state.Commands[i].Broadcast.IsNull() && data.Commands[j].Broadcast.IsNull() {
+				if !state.Commands[i].Broadcast.IsNull() && (data.Commands[j].Broadcast.IsNull() || (state.Commands[i].Broadcast.ValueBool() && !data.Commands[j].Broadcast.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/commands%v/commands-config/broadcast", predicates))
 				}
-				if !state.Commands[i].ActionType.IsNull() && data.Commands[j].ActionType.IsNull() {
+				if !state.Commands[i].ActionType.IsNull() && (data.Commands[j].ActionType.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/commands%v/commands-config/action-type", predicates))
 				}
 				break
@@ -2073,7 +2073,7 @@ func (data *AAAAccounting) addDeletedItemsXML(ctx context.Context, state AAAAcco
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/commands%v", predicates))
 		}
 	}
-	if !state.SystemGuaranteeFirst.IsNull() && data.SystemGuaranteeFirst.IsNull() {
+	if !state.SystemGuaranteeFirst.IsNull() && (data.SystemGuaranteeFirst.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/system/guarantee-first")
 	}
 	for i := range state.Networks {
@@ -2099,10 +2099,10 @@ func (data *AAAAccounting) addDeletedItemsXML(ctx context.Context, state AAAAcco
 				found = false
 			}
 			if found {
-				if !state.Networks[i].StartStopGroup2.IsNull() && data.Networks[j].StartStopGroup2.IsNull() {
+				if !state.Networks[i].StartStopGroup2.IsNull() && (data.Networks[j].StartStopGroup2.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/network%v/start-stop/group-config/group2/group", predicates))
 				}
-				if !state.Networks[i].StartStopGroup1.IsNull() && data.Networks[j].StartStopGroup1.IsNull() {
+				if !state.Networks[i].StartStopGroup1.IsNull() && (data.Networks[j].StartStopGroup1.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/network%v/start-stop/group-config/group1/group", predicates))
 				}
 				break
@@ -2112,16 +2112,16 @@ func (data *AAAAccounting) addDeletedItemsXML(ctx context.Context, state AAAAcco
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/network%v", predicates))
 		}
 	}
-	if !state.IdentityDefaultStartStopGroup4.IsNull() && data.IdentityDefaultStartStopGroup4.IsNull() {
+	if !state.IdentityDefaultStartStopGroup4.IsNull() && (data.IdentityDefaultStartStopGroup4.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/identity/default/start-stop/group-config/group4/group")
 	}
-	if !state.IdentityDefaultStartStopGroup3.IsNull() && data.IdentityDefaultStartStopGroup3.IsNull() {
+	if !state.IdentityDefaultStartStopGroup3.IsNull() && (data.IdentityDefaultStartStopGroup3.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/identity/default/start-stop/group-config/group3/group")
 	}
-	if !state.IdentityDefaultStartStopGroup2.IsNull() && data.IdentityDefaultStartStopGroup2.IsNull() {
+	if !state.IdentityDefaultStartStopGroup2.IsNull() && (data.IdentityDefaultStartStopGroup2.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/identity/default/start-stop/group-config/group2/group")
 	}
-	if !state.IdentityDefaultStartStopGroup1.IsNull() && data.IdentityDefaultStartStopGroup1.IsNull() {
+	if !state.IdentityDefaultStartStopGroup1.IsNull() && (data.IdentityDefaultStartStopGroup1.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/identity/default/start-stop/group-config/group1/group")
 	}
 	for i := range state.Identities {
@@ -2147,25 +2147,25 @@ func (data *AAAAccounting) addDeletedItemsXML(ctx context.Context, state AAAAcco
 				found = false
 			}
 			if found {
-				if !state.Identities[i].StartStopGroup4.IsNull() && data.Identities[j].StartStopGroup4.IsNull() {
+				if !state.Identities[i].StartStopGroup4.IsNull() && (data.Identities[j].StartStopGroup4.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/identity/accounting-list%v/start-stop/group-config/group4/group", predicates))
 				}
-				if !state.Identities[i].StartStopGroup3.IsNull() && data.Identities[j].StartStopGroup3.IsNull() {
+				if !state.Identities[i].StartStopGroup3.IsNull() && (data.Identities[j].StartStopGroup3.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/identity/accounting-list%v/start-stop/group-config/group3/group", predicates))
 				}
-				if !state.Identities[i].StartStopGroup2.IsNull() && data.Identities[j].StartStopGroup2.IsNull() {
+				if !state.Identities[i].StartStopGroup2.IsNull() && (data.Identities[j].StartStopGroup2.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/identity/accounting-list%v/start-stop/group-config/group2/group", predicates))
 				}
-				if !state.Identities[i].StartStopGroup1.IsNull() && data.Identities[j].StartStopGroup1.IsNull() {
+				if !state.Identities[i].StartStopGroup1.IsNull() && (data.Identities[j].StartStopGroup1.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/identity/accounting-list%v/start-stop/group-config/group1/group", predicates))
 				}
-				if !state.Identities[i].StartStopGroupLogger.IsNull() && data.Identities[j].StartStopGroupLogger.IsNull() {
+				if !state.Identities[i].StartStopGroupLogger.IsNull() && (data.Identities[j].StartStopGroupLogger.IsNull() || (state.Identities[i].StartStopGroupLogger.ValueBool() && !data.Identities[j].StartStopGroupLogger.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/identity/accounting-list%v/start-stop/group-config/logger", predicates))
 				}
-				if !state.Identities[i].StartStopGroupBroadcast.IsNull() && data.Identities[j].StartStopGroupBroadcast.IsNull() {
+				if !state.Identities[i].StartStopGroupBroadcast.IsNull() && (data.Identities[j].StartStopGroupBroadcast.IsNull() || (state.Identities[i].StartStopGroupBroadcast.ValueBool() && !data.Identities[j].StartStopGroupBroadcast.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/identity/accounting-list%v/start-stop/group-config/broadcast", predicates))
 				}
-				if !state.Identities[i].StartStopBroadcast.IsNull() && data.Identities[j].StartStopBroadcast.IsNull() {
+				if !state.Identities[i].StartStopBroadcast.IsNull() && (data.Identities[j].StartStopBroadcast.IsNull() || (state.Identities[i].StartStopBroadcast.ValueBool() && !data.Identities[j].StartStopBroadcast.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/identity/accounting-list%v/start-stop/broadcast", predicates))
 				}
 				break
@@ -2175,7 +2175,7 @@ func (data *AAAAccounting) addDeletedItemsXML(ctx context.Context, state AAAAcco
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/identity/accounting-list%v", predicates))
 		}
 	}
-	if !state.UpdateNewinfoPeriodic.IsNull() && data.UpdateNewinfoPeriodic.IsNull() {
+	if !state.UpdateNewinfoPeriodic.IsNull() && (data.UpdateNewinfoPeriodic.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/update/newinfo/periodic")
 	}
 

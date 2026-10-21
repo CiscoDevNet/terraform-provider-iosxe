@@ -365,7 +365,7 @@ func (data *BGPIPv6UnicastNeighbor) addDeletedItemsXML(ctx context.Context, stat
 				found = false
 			}
 			if found {
-				if !state.RouteMaps[i].RouteMapName.IsNull() && data.RouteMaps[j].RouteMapName.IsNull() {
+				if !state.RouteMaps[i].RouteMapName.IsNull() && (data.RouteMaps[j].RouteMapName.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/route-map%v/route-map-name", predicates))
 				}
 				break
@@ -375,19 +375,19 @@ func (data *BGPIPv6UnicastNeighbor) addDeletedItemsXML(ctx context.Context, stat
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/route-map%v", predicates))
 		}
 	}
-	if !state.DefaultOriginateRouteMap.IsNull() && data.DefaultOriginateRouteMap.IsNull() {
+	if !state.DefaultOriginateRouteMap.IsNull() && (data.DefaultOriginateRouteMap.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/default-originate/route-map")
 	}
-	if !state.DefaultOriginate.IsNull() && data.DefaultOriginate.IsNull() {
+	if !state.DefaultOriginate.IsNull() && (data.DefaultOriginate.IsNull() || (state.DefaultOriginate.ValueBool() && !data.DefaultOriginate.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/default-originate")
 	}
-	if !state.SoftReconfiguration.IsNull() && data.SoftReconfiguration.IsNull() {
+	if !state.SoftReconfiguration.IsNull() && (data.SoftReconfiguration.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/soft-reconfiguration")
 	}
-	if !state.RouteReflectorClient.IsNull() && data.RouteReflectorClient.IsNull() {
+	if !state.RouteReflectorClient.IsNull() && (data.RouteReflectorClient.IsNull() || (state.RouteReflectorClient.ValueBool() && !data.RouteReflectorClient.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/route-reflector-client")
 	}
-	if !state.SendCommunity.IsNull() && data.SendCommunity.IsNull() {
+	if !state.SendCommunity.IsNull() && (data.SendCommunity.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/send-community/send-community-where")
 	}
 

@@ -1923,22 +1923,22 @@ func (data *TemplateData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 func (data *Template) addDeletedItemsXML(ctx context.Context, state Template, body string) string {
 	b := netconf.NewBody(body)
-	if !state.CtsRoleBasedEnforcement.IsNull() && data.CtsRoleBasedEnforcement.IsNull() {
+	if !state.CtsRoleBasedEnforcement.IsNull() && (data.CtsRoleBasedEnforcement.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/cts/role-based/enforcement")
 	}
-	if !state.CtsManualPropagateSgt.IsNull() && data.CtsManualPropagateSgt.IsNull() {
+	if !state.CtsManualPropagateSgt.IsNull() && (data.CtsManualPropagateSgt.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/cts/manual/propagate/sgt")
 	}
-	if !state.CtsManualPolicyStaticTrusted.IsNull() && data.CtsManualPolicyStaticTrusted.IsNull() {
+	if !state.CtsManualPolicyStaticTrusted.IsNull() && (data.CtsManualPolicyStaticTrusted.IsNull() || (state.CtsManualPolicyStaticTrusted.ValueBool() && !data.CtsManualPolicyStaticTrusted.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/cts/manual/policy/static/trusted")
 	}
-	if !state.CtsManualPolicyStaticSgt.IsNull() && data.CtsManualPolicyStaticSgt.IsNull() {
+	if !state.CtsManualPolicyStaticSgt.IsNull() && (data.CtsManualPolicyStaticSgt.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/cts/manual/policy/static/sgt")
 	}
-	if !state.CtsManual.IsNull() && data.CtsManual.IsNull() {
+	if !state.CtsManual.IsNull() && (data.CtsManual.IsNull() || (state.CtsManual.ValueBool() && !data.CtsManual.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/cts/manual")
 	}
-	if !state.DeviceTrackingVlanRange.IsNull() && data.DeviceTrackingVlanRange.IsNull() {
+	if !state.DeviceTrackingVlanRange.IsNull() && (data.DeviceTrackingVlanRange.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/device-tracking/vlan/vlan-range")
 	}
 	for i := range state.DeviceTrackingAttachPolicy {
@@ -1964,7 +1964,7 @@ func (data *Template) addDeletedItemsXML(ctx context.Context, state Template, bo
 				found = false
 			}
 			if found {
-				if !state.DeviceTrackingAttachPolicy[i].VlanRange.IsNull() && data.DeviceTrackingAttachPolicy[j].VlanRange.IsNull() {
+				if !state.DeviceTrackingAttachPolicy[i].VlanRange.IsNull() && (data.DeviceTrackingAttachPolicy[j].VlanRange.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/device-tracking/attach-policy/policy-name%v/vlan/vlan-range", predicates))
 				}
 				break
@@ -1974,16 +1974,16 @@ func (data *Template) addDeletedItemsXML(ctx context.Context, state Template, bo
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/device-tracking/attach-policy/policy-name%v", predicates))
 		}
 	}
-	if !state.DeviceTracking.IsNull() && data.DeviceTracking.IsNull() {
+	if !state.DeviceTracking.IsNull() && (data.DeviceTracking.IsNull() || (state.DeviceTracking.ValueBool() && !data.DeviceTracking.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/device-tracking")
 	}
-	if !state.SubscriberAgingProbe.IsNull() && data.SubscriberAgingProbe.IsNull() {
+	if !state.SubscriberAgingProbe.IsNull() && (data.SubscriberAgingProbe.IsNull() || (state.SubscriberAgingProbe.ValueBool() && !data.SubscriberAgingProbe.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/subscriber/aging/probe")
 	}
-	if !state.SubscriberAgingInactivityTimerProbe.IsNull() && data.SubscriberAgingInactivityTimerProbe.IsNull() {
+	if !state.SubscriberAgingInactivityTimerProbe.IsNull() && (data.SubscriberAgingInactivityTimerProbe.IsNull() || (state.SubscriberAgingInactivityTimerProbe.ValueBool() && !data.SubscriberAgingInactivityTimerProbe.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/subscriber/aging/inactivity-timer/probe")
 	}
-	if !state.SubscriberAgingInactivityTimerValue.IsNull() && data.SubscriberAgingInactivityTimerValue.IsNull() {
+	if !state.SubscriberAgingInactivityTimerValue.IsNull() && (data.SubscriberAgingInactivityTimerValue.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/subscriber/aging/inactivity-timer/value")
 	}
 	for i := range state.IpAccessGroup {
@@ -2009,7 +2009,7 @@ func (data *Template) addDeletedItemsXML(ctx context.Context, state Template, bo
 				found = false
 			}
 			if found {
-				if !state.IpAccessGroup[i].AccessList.IsNull() && data.IpAccessGroup[j].AccessList.IsNull() {
+				if !state.IpAccessGroup[i].AccessList.IsNull() && (data.IpAccessGroup[j].AccessList.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/access-group%v/access-list", predicates))
 				}
 				break
@@ -2019,124 +2019,124 @@ func (data *Template) addDeletedItemsXML(ctx context.Context, state Template, bo
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/access-group%v", predicates))
 		}
 	}
-	if !state.IpDhcpSnoopingTrust.IsNull() && data.IpDhcpSnoopingTrust.IsNull() {
+	if !state.IpDhcpSnoopingTrust.IsNull() && (data.IpDhcpSnoopingTrust.IsNull() || (state.IpDhcpSnoopingTrust.ValueBool() && !data.IpDhcpSnoopingTrust.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/dhcp/snooping/trust")
 	}
-	if !state.IpDhcpSnoopingLimitRate.IsNull() && data.IpDhcpSnoopingLimitRate.IsNull() {
+	if !state.IpDhcpSnoopingLimitRate.IsNull() && (data.IpDhcpSnoopingLimitRate.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/dhcp/snooping/limit/rate")
 	}
-	if !state.LoadInterval.IsNull() && data.LoadInterval.IsNull() {
+	if !state.LoadInterval.IsNull() && (data.LoadInterval.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/load-interval")
 	}
-	if !state.StormControlActionTrap.IsNull() && data.StormControlActionTrap.IsNull() {
+	if !state.StormControlActionTrap.IsNull() && (data.StormControlActionTrap.IsNull() || (state.StormControlActionTrap.ValueBool() && !data.StormControlActionTrap.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/storm-control/action/trap")
 	}
-	if !state.StormControlActionShutdown.IsNull() && data.StormControlActionShutdown.IsNull() {
+	if !state.StormControlActionShutdown.IsNull() && (data.StormControlActionShutdown.IsNull() || (state.StormControlActionShutdown.ValueBool() && !data.StormControlActionShutdown.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/storm-control/action/shutdown")
 	}
-	if !state.StormControlMulticastLevelThreshold.IsNull() && data.StormControlMulticastLevelThreshold.IsNull() {
+	if !state.StormControlMulticastLevelThreshold.IsNull() && (data.StormControlMulticastLevelThreshold.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/storm-control/multicast/level/threshold")
 	}
-	if !state.StormControlMulticastLevelBpsThreshold.IsNull() && data.StormControlMulticastLevelBpsThreshold.IsNull() {
+	if !state.StormControlMulticastLevelBpsThreshold.IsNull() && (data.StormControlMulticastLevelBpsThreshold.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/storm-control/multicast/level/bps/threshold")
 	}
-	if !state.StormControlMulticastLevelPpsThreshold.IsNull() && data.StormControlMulticastLevelPpsThreshold.IsNull() {
+	if !state.StormControlMulticastLevelPpsThreshold.IsNull() && (data.StormControlMulticastLevelPpsThreshold.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/storm-control/multicast/level/pps/threshold")
 	}
-	if !state.StormControlBroadcastLevelThreshold.IsNull() && data.StormControlBroadcastLevelThreshold.IsNull() {
+	if !state.StormControlBroadcastLevelThreshold.IsNull() && (data.StormControlBroadcastLevelThreshold.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/storm-control/broadcast/level/threshold")
 	}
-	if !state.StormControlBroadcastLevelBpsThreshold.IsNull() && data.StormControlBroadcastLevelBpsThreshold.IsNull() {
+	if !state.StormControlBroadcastLevelBpsThreshold.IsNull() && (data.StormControlBroadcastLevelBpsThreshold.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/storm-control/broadcast/level/bps/threshold")
 	}
-	if !state.StormControlBroadcastLevelPpsThreshold.IsNull() && data.StormControlBroadcastLevelPpsThreshold.IsNull() {
+	if !state.StormControlBroadcastLevelPpsThreshold.IsNull() && (data.StormControlBroadcastLevelPpsThreshold.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/storm-control/broadcast/level/pps/threshold")
 	}
-	if !state.SpanningTreePortfastNetwork.IsNull() && data.SpanningTreePortfastNetwork.IsNull() {
+	if !state.SpanningTreePortfastNetwork.IsNull() && (data.SpanningTreePortfastNetwork.IsNull() || (state.SpanningTreePortfastNetwork.ValueBool() && !data.SpanningTreePortfastNetwork.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/spanning-tree/portfast/network")
 	}
-	if !state.SpanningTreePortfastEdge.IsNull() && data.SpanningTreePortfastEdge.IsNull() {
+	if !state.SpanningTreePortfastEdge.IsNull() && (data.SpanningTreePortfastEdge.IsNull() || (state.SpanningTreePortfastEdge.ValueBool() && !data.SpanningTreePortfastEdge.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/spanning-tree/portfast/edge")
 	}
-	if !state.SpanningTreePortfastDisable.IsNull() && data.SpanningTreePortfastDisable.IsNull() {
+	if !state.SpanningTreePortfastDisable.IsNull() && (data.SpanningTreePortfastDisable.IsNull() || (state.SpanningTreePortfastDisable.ValueBool() && !data.SpanningTreePortfastDisable.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/spanning-tree/portfast/disable")
 	}
-	if !state.SpanningTreeServicePolicy.IsNull() && data.SpanningTreeServicePolicy.IsNull() {
+	if !state.SpanningTreeServicePolicy.IsNull() && (data.SpanningTreeServicePolicy.IsNull() || (state.SpanningTreeServicePolicy.ValueBool() && !data.SpanningTreeServicePolicy.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/spanning-tree/service-policy")
 	}
-	if !state.SpanningTreeBpduguardEnable.IsNull() && data.SpanningTreeBpduguardEnable.IsNull() {
+	if !state.SpanningTreeBpduguardEnable.IsNull() && (data.SpanningTreeBpduguardEnable.IsNull() || (state.SpanningTreeBpduguardEnable.ValueBool() && !data.SpanningTreeBpduguardEnable.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/spanning-tree/bpduguard/enable")
 	}
-	if !state.AuthenticationTimerReauthenticateRange.IsNull() && data.AuthenticationTimerReauthenticateRange.IsNull() {
+	if !state.AuthenticationTimerReauthenticateRange.IsNull() && (data.AuthenticationTimerReauthenticateRange.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/authentication/timer/reauthenticate/range")
 	}
-	if !state.AuthenticationTimerReauthenticateServer.IsNull() && data.AuthenticationTimerReauthenticateServer.IsNull() {
+	if !state.AuthenticationTimerReauthenticateServer.IsNull() && (data.AuthenticationTimerReauthenticateServer.IsNull() || (state.AuthenticationTimerReauthenticateServer.ValueBool() && !data.AuthenticationTimerReauthenticateServer.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/authentication/timer/reauthenticate/server")
 	}
-	if !state.AuthenticationPeriodic.IsNull() && data.AuthenticationPeriodic.IsNull() {
+	if !state.AuthenticationPeriodic.IsNull() && (data.AuthenticationPeriodic.IsNull() || (state.AuthenticationPeriodic.ValueBool() && !data.AuthenticationPeriodic.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/authentication/periodic")
 	}
-	if !state.AccessSessionInterfaceTemplateStickyTimer.IsNull() && data.AccessSessionInterfaceTemplateStickyTimer.IsNull() {
+	if !state.AccessSessionInterfaceTemplateStickyTimer.IsNull() && (data.AccessSessionInterfaceTemplateStickyTimer.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/access-session/interface-template/sticky/timer")
 	}
-	if !state.AccessSessionInterfaceTemplateSticky.IsNull() && data.AccessSessionInterfaceTemplateSticky.IsNull() {
+	if !state.AccessSessionInterfaceTemplateSticky.IsNull() && (data.AccessSessionInterfaceTemplateSticky.IsNull() || (state.AccessSessionInterfaceTemplateSticky.ValueBool() && !data.AccessSessionInterfaceTemplateSticky.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/access-session/interface-template/sticky")
 	}
-	if !state.AccessSessionHostMode.IsNull() && data.AccessSessionHostMode.IsNull() {
+	if !state.AccessSessionHostMode.IsNull() && (data.AccessSessionHostMode.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/access-session/host-mode")
 	}
-	if !state.AccessSessionControlDirection.IsNull() && data.AccessSessionControlDirection.IsNull() {
+	if !state.AccessSessionControlDirection.IsNull() && (data.AccessSessionControlDirection.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/access-session/control-direction")
 	}
-	if !state.AccessSessionPortControl.IsNull() && data.AccessSessionPortControl.IsNull() {
+	if !state.AccessSessionPortControl.IsNull() && (data.AccessSessionPortControl.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/access-session/port-control")
 	}
-	if !state.AccessSessionMonitor.IsNull() && data.AccessSessionMonitor.IsNull() {
+	if !state.AccessSessionMonitor.IsNull() && (data.AccessSessionMonitor.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/access-session/monitor")
 	}
-	if !state.AccessSessionClosed.IsNull() && data.AccessSessionClosed.IsNull() {
+	if !state.AccessSessionClosed.IsNull() && (data.AccessSessionClosed.IsNull() || (state.AccessSessionClosed.ValueBool() && !data.AccessSessionClosed.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/access-session/closed")
 	}
-	if !state.MabEap.IsNull() && data.MabEap.IsNull() {
+	if !state.MabEap.IsNull() && (data.MabEap.IsNull() || (state.MabEap.ValueBool() && !data.MabEap.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/mab/eap")
 	}
-	if !state.Mab.IsNull() && data.Mab.IsNull() {
+	if !state.Mab.IsNull() && (data.Mab.IsNull() || (state.Mab.ValueBool() && !data.Mab.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/mab")
 	}
-	if !state.SwitchportTrunkNativeVlanVlanId.IsNull() && data.SwitchportTrunkNativeVlanVlanId.IsNull() {
+	if !state.SwitchportTrunkNativeVlanVlanId.IsNull() && (data.SwitchportTrunkNativeVlanVlanId.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/trunk/native/vlan/vlan-id")
 	}
-	if !state.SwitchportTrunkNativeVlanTag.IsNull() && data.SwitchportTrunkNativeVlanTag.IsNull() {
+	if !state.SwitchportTrunkNativeVlanTag.IsNull() && (data.SwitchportTrunkNativeVlanTag.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/trunk/native/vlan/tag")
 	}
-	if !state.SwitchportTrunkAllowedVlansAll.IsNull() && data.SwitchportTrunkAllowedVlansAll.IsNull() {
+	if !state.SwitchportTrunkAllowedVlansAll.IsNull() && (data.SwitchportTrunkAllowedVlansAll.IsNull() || (state.SwitchportTrunkAllowedVlansAll.ValueBool() && !data.SwitchportTrunkAllowedVlansAll.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/trunk/allowed/vlan/all")
 	}
-	if !state.SwitchportTrunkAllowedVlansNone.IsNull() && data.SwitchportTrunkAllowedVlansNone.IsNull() {
+	if !state.SwitchportTrunkAllowedVlansNone.IsNull() && (data.SwitchportTrunkAllowedVlansNone.IsNull() || (state.SwitchportTrunkAllowedVlansNone.ValueBool() && !data.SwitchportTrunkAllowedVlansNone.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/trunk/allowed/vlan/none")
 	}
-	if !state.SwitchportTrunkAllowedVlans.IsNull() && data.SwitchportTrunkAllowedVlans.IsNull() {
+	if !state.SwitchportTrunkAllowedVlans.IsNull() && (data.SwitchportTrunkAllowedVlans.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/trunk/allowed/vlan/vlans")
 	}
-	if !state.SwitchportPrivateVlanHostAssociationSecondaryRange.IsNull() && data.SwitchportPrivateVlanHostAssociationSecondaryRange.IsNull() {
+	if !state.SwitchportPrivateVlanHostAssociationSecondaryRange.IsNull() && (data.SwitchportPrivateVlanHostAssociationSecondaryRange.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/private-vlan/host-association")
 	}
-	if !state.SwitchportPrivateVlanHostAssociationPrimaryRange.IsNull() && data.SwitchportPrivateVlanHostAssociationPrimaryRange.IsNull() {
+	if !state.SwitchportPrivateVlanHostAssociationPrimaryRange.IsNull() && (data.SwitchportPrivateVlanHostAssociationPrimaryRange.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/private-vlan/host-association")
 	}
-	if !state.SwitchportVoiceVlan.IsNull() && data.SwitchportVoiceVlan.IsNull() {
+	if !state.SwitchportVoiceVlan.IsNull() && (data.SwitchportVoiceVlan.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/voice/vlan")
 	}
-	if !state.SwitchportAccessVlan.IsNull() && data.SwitchportAccessVlan.IsNull() {
+	if !state.SwitchportAccessVlan.IsNull() && (data.SwitchportAccessVlan.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/access/vlan")
 	}
-	if !state.SwitchportPortSecurityViolationShutdown.IsNull() && data.SwitchportPortSecurityViolationShutdown.IsNull() {
+	if !state.SwitchportPortSecurityViolationShutdown.IsNull() && (data.SwitchportPortSecurityViolationShutdown.IsNull() || (state.SwitchportPortSecurityViolationShutdown.ValueBool() && !data.SwitchportPortSecurityViolationShutdown.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/port-security/violation/shutdown")
 	}
-	if !state.SwitchportPortSecurityViolationRestrict.IsNull() && data.SwitchportPortSecurityViolationRestrict.IsNull() {
+	if !state.SwitchportPortSecurityViolationRestrict.IsNull() && (data.SwitchportPortSecurityViolationRestrict.IsNull() || (state.SwitchportPortSecurityViolationRestrict.ValueBool() && !data.SwitchportPortSecurityViolationRestrict.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/port-security/violation/restrict")
 	}
-	if !state.SwitchportPortSecurityViolationProtect.IsNull() && data.SwitchportPortSecurityViolationProtect.IsNull() {
+	if !state.SwitchportPortSecurityViolationProtect.IsNull() && (data.SwitchportPortSecurityViolationProtect.IsNull() || (state.SwitchportPortSecurityViolationProtect.ValueBool() && !data.SwitchportPortSecurityViolationProtect.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/port-security/violation/protect")
 	}
 	for i := range state.SwitchportPortSecurityMaximumRange {
@@ -2162,10 +2162,10 @@ func (data *Template) addDeletedItemsXML(ctx context.Context, state Template, bo
 				found = false
 			}
 			if found {
-				if !state.SwitchportPortSecurityMaximumRange[i].VlanAccess.IsNull() && data.SwitchportPortSecurityMaximumRange[j].VlanAccess.IsNull() {
+				if !state.SwitchportPortSecurityMaximumRange[i].VlanAccess.IsNull() && (data.SwitchportPortSecurityMaximumRange[j].VlanAccess.IsNull() || (state.SwitchportPortSecurityMaximumRange[i].VlanAccess.ValueBool() && !data.SwitchportPortSecurityMaximumRange[j].VlanAccess.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/switchport/port-security/maximum/range%v/vlan/access", predicates))
 				}
-				if !state.SwitchportPortSecurityMaximumRange[i].Vlan.IsNull() && data.SwitchportPortSecurityMaximumRange[j].Vlan.IsNull() {
+				if !state.SwitchportPortSecurityMaximumRange[i].Vlan.IsNull() && (data.SwitchportPortSecurityMaximumRange[j].Vlan.IsNull() || (state.SwitchportPortSecurityMaximumRange[i].Vlan.ValueBool() && !data.SwitchportPortSecurityMaximumRange[j].Vlan.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/switchport/port-security/maximum/range%v/vlan", predicates))
 				}
 				break
@@ -2175,67 +2175,67 @@ func (data *Template) addDeletedItemsXML(ctx context.Context, state Template, bo
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/switchport/port-security/maximum/range%v", predicates))
 		}
 	}
-	if !state.SwitchportPortSecurityAgingTypeInactivity.IsNull() && data.SwitchportPortSecurityAgingTypeInactivity.IsNull() {
+	if !state.SwitchportPortSecurityAgingTypeInactivity.IsNull() && (data.SwitchportPortSecurityAgingTypeInactivity.IsNull() || (state.SwitchportPortSecurityAgingTypeInactivity.ValueBool() && !data.SwitchportPortSecurityAgingTypeInactivity.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/port-security/aging/type")
 	}
-	if !state.SwitchportPortSecurityAgingType.IsNull() && data.SwitchportPortSecurityAgingType.IsNull() {
+	if !state.SwitchportPortSecurityAgingType.IsNull() && (data.SwitchportPortSecurityAgingType.IsNull() || (state.SwitchportPortSecurityAgingType.ValueBool() && !data.SwitchportPortSecurityAgingType.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/port-security/aging/type")
 	}
-	if !state.SwitchportPortSecurityAgingTime.IsNull() && data.SwitchportPortSecurityAgingTime.IsNull() {
+	if !state.SwitchportPortSecurityAgingTime.IsNull() && (data.SwitchportPortSecurityAgingTime.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/port-security/aging/time")
 	}
-	if !state.SwitchportPortSecurityAgingStatic.IsNull() && data.SwitchportPortSecurityAgingStatic.IsNull() {
+	if !state.SwitchportPortSecurityAgingStatic.IsNull() && (data.SwitchportPortSecurityAgingStatic.IsNull() || (state.SwitchportPortSecurityAgingStatic.ValueBool() && !data.SwitchportPortSecurityAgingStatic.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/port-security/aging/static")
 	}
-	if !state.SwitchportPortSecurity.IsNull() && data.SwitchportPortSecurity.IsNull() {
+	if !state.SwitchportPortSecurity.IsNull() && (data.SwitchportPortSecurity.IsNull() || (state.SwitchportPortSecurity.ValueBool() && !data.SwitchportPortSecurity.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/port-security")
 	}
-	if !state.SwitchportBlockUnicast.IsNull() && data.SwitchportBlockUnicast.IsNull() {
+	if !state.SwitchportBlockUnicast.IsNull() && (data.SwitchportBlockUnicast.IsNull() || (state.SwitchportBlockUnicast.ValueBool() && !data.SwitchportBlockUnicast.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/block/unicast")
 	}
-	if !state.SwitchportNonegotiate.IsNull() && data.SwitchportNonegotiate.IsNull() {
+	if !state.SwitchportNonegotiate.IsNull() && (data.SwitchportNonegotiate.IsNull() || (state.SwitchportNonegotiate.ValueBool() && !data.SwitchportNonegotiate.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/nonegotiate")
 	}
-	if !state.SwitchportModeAccess.IsNull() && data.SwitchportModeAccess.IsNull() {
+	if !state.SwitchportModeAccess.IsNull() && (data.SwitchportModeAccess.IsNull() || (state.SwitchportModeAccess.ValueBool() && !data.SwitchportModeAccess.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/mode/access")
 	}
-	if !state.SwitchportModeTrunk.IsNull() && data.SwitchportModeTrunk.IsNull() {
+	if !state.SwitchportModeTrunk.IsNull() && (data.SwitchportModeTrunk.IsNull() || (state.SwitchportModeTrunk.ValueBool() && !data.SwitchportModeTrunk.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/mode/trunk")
 	}
-	if !state.SourceTemplate.IsNull() && data.SourceTemplate.IsNull() {
+	if !state.SourceTemplate.IsNull() && (data.SourceTemplate.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/source/template")
 	}
-	if !state.ServicePolicyOutput.IsNull() && data.ServicePolicyOutput.IsNull() {
+	if !state.ServicePolicyOutput.IsNull() && (data.ServicePolicyOutput.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/service-policy/output/policy-map-name")
 	}
-	if !state.ServicePolicyInput.IsNull() && data.ServicePolicyInput.IsNull() {
+	if !state.ServicePolicyInput.IsNull() && (data.ServicePolicyInput.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/service-policy/input/policy-map-name")
 	}
-	if !state.ServicePolicyTypeControlSubscriber.IsNull() && data.ServicePolicyTypeControlSubscriber.IsNull() {
+	if !state.ServicePolicyTypeControlSubscriber.IsNull() && (data.ServicePolicyTypeControlSubscriber.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/service-policy/type/control/subscriber")
 	}
-	if !state.Dot1xTimeoutServerTimeout.IsNull() && data.Dot1xTimeoutServerTimeout.IsNull() {
+	if !state.Dot1xTimeoutServerTimeout.IsNull() && (data.Dot1xTimeoutServerTimeout.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot1x/timeout/server-timeout")
 	}
-	if !state.Dot1xTimeoutRatelimitPeriod.IsNull() && data.Dot1xTimeoutRatelimitPeriod.IsNull() {
+	if !state.Dot1xTimeoutRatelimitPeriod.IsNull() && (data.Dot1xTimeoutRatelimitPeriod.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot1x/timeout/ratelimit-period")
 	}
-	if !state.Dot1xTimeoutSuppTimeout.IsNull() && data.Dot1xTimeoutSuppTimeout.IsNull() {
+	if !state.Dot1xTimeoutSuppTimeout.IsNull() && (data.Dot1xTimeoutSuppTimeout.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot1x/timeout/supp-timeout")
 	}
-	if !state.Dot1xTimeoutQuietPeriod.IsNull() && data.Dot1xTimeoutQuietPeriod.IsNull() {
+	if !state.Dot1xTimeoutQuietPeriod.IsNull() && (data.Dot1xTimeoutQuietPeriod.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot1x/timeout/quiet-period")
 	}
-	if !state.Dot1xTimeoutTxPeriod.IsNull() && data.Dot1xTimeoutTxPeriod.IsNull() {
+	if !state.Dot1xTimeoutTxPeriod.IsNull() && (data.Dot1xTimeoutTxPeriod.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot1x/timeout/tx-period")
 	}
-	if !state.Dot1xMaxReq.IsNull() && data.Dot1xMaxReq.IsNull() {
+	if !state.Dot1xMaxReq.IsNull() && (data.Dot1xMaxReq.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot1x/max-req")
 	}
-	if !state.Dot1xMaxReauthReq.IsNull() && data.Dot1xMaxReauthReq.IsNull() {
+	if !state.Dot1xMaxReauthReq.IsNull() && (data.Dot1xMaxReauthReq.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot1x/max-reauth-req")
 	}
-	if !state.Dot1xPae.IsNull() && data.Dot1xPae.IsNull() {
+	if !state.Dot1xPae.IsNull() && (data.Dot1xPae.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot1x/pae")
 	}
 

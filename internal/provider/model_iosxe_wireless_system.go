@@ -129,7 +129,7 @@ func (data *WirelessSystemData) fromBodyXML(ctx context.Context, res xmldot.Resu
 
 func (data *WirelessSystem) addDeletedItemsXML(ctx context.Context, state WirelessSystem, body string) string {
 	b := netconf.NewBody(body)
-	if !state.InterfaceName.IsNull() && data.InterfaceName.IsNull() {
+	if !state.InterfaceName.IsNull() && (data.InterfaceName.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/interface-name")
 	}
 

@@ -1019,130 +1019,130 @@ func (data *KeyChain) addDeletedItemsXML(ctx context.Context, state KeyChain, bo
 				found = false
 			}
 			if found {
-				if !state.Keys[i].AcceptAoMismatch.IsNull() && data.Keys[j].AcceptAoMismatch.IsNull() {
+				if !state.Keys[i].AcceptAoMismatch.IsNull() && (data.Keys[j].AcceptAoMismatch.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/key%v/accept-ao-mismatch", predicates))
 				}
-				if !state.Keys[i].IncludeTcpOptions.IsNull() && data.Keys[j].IncludeTcpOptions.IsNull() {
+				if !state.Keys[i].IncludeTcpOptions.IsNull() && (data.Keys[j].IncludeTcpOptions.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/key%v/include-tcp-options", predicates))
 				}
-				if !state.Keys[i].RecvId.IsNull() && data.Keys[j].RecvId.IsNull() {
+				if !state.Keys[i].RecvId.IsNull() && (data.Keys[j].RecvId.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/key%v/recv-id", predicates))
 				}
-				if !state.Keys[i].SendId.IsNull() && data.Keys[j].SendId.IsNull() {
+				if !state.Keys[i].SendId.IsNull() && (data.Keys[j].SendId.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/key%v/send-id", predicates))
 				}
-				if !state.Keys[i].MacsecLifetimeEndYear.IsNull() && data.Keys[j].MacsecLifetimeEndYear.IsNull() {
+				if !state.Keys[i].MacsecLifetimeEndYear.IsNull() && (data.Keys[j].MacsecLifetimeEndYear.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/key%v/macsec-lifetime/lifetime/lifetime-group-v1/end-year", predicates))
 				}
-				if !state.Keys[i].MacsecLifetimeEndDay.IsNull() && data.Keys[j].MacsecLifetimeEndDay.IsNull() {
+				if !state.Keys[i].MacsecLifetimeEndDay.IsNull() && (data.Keys[j].MacsecLifetimeEndDay.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/key%v/macsec-lifetime/lifetime/lifetime-group-v1/end-day", predicates))
 				}
-				if !state.Keys[i].MacsecLifetimeEndMonth.IsNull() && data.Keys[j].MacsecLifetimeEndMonth.IsNull() {
+				if !state.Keys[i].MacsecLifetimeEndMonth.IsNull() && (data.Keys[j].MacsecLifetimeEndMonth.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/key%v/macsec-lifetime/lifetime/lifetime-group-v1/end-month", predicates))
 				}
-				if !state.Keys[i].MacsecLifetimeEndTime.IsNull() && data.Keys[j].MacsecLifetimeEndTime.IsNull() {
+				if !state.Keys[i].MacsecLifetimeEndTime.IsNull() && (data.Keys[j].MacsecLifetimeEndTime.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/key%v/macsec-lifetime/lifetime/lifetime-group-v1/end-hh-mm-ss", predicates))
 				}
-				if !state.Keys[i].MacsecLifetimeInfinite.IsNull() && data.Keys[j].MacsecLifetimeInfinite.IsNull() {
+				if !state.Keys[i].MacsecLifetimeInfinite.IsNull() && (data.Keys[j].MacsecLifetimeInfinite.IsNull() || (state.Keys[i].MacsecLifetimeInfinite.ValueBool() && !data.Keys[j].MacsecLifetimeInfinite.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/key%v/macsec-lifetime/lifetime/lifetime-group-v1/infinite", predicates))
 				}
-				if !state.Keys[i].MacsecLifetimeDuration.IsNull() && data.Keys[j].MacsecLifetimeDuration.IsNull() {
+				if !state.Keys[i].MacsecLifetimeDuration.IsNull() && (data.Keys[j].MacsecLifetimeDuration.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/key%v/macsec-lifetime/lifetime/lifetime-group-v1/duration", predicates))
 				}
-				if !state.Keys[i].MacsecLifetimeStartYear.IsNull() && data.Keys[j].MacsecLifetimeStartYear.IsNull() {
+				if !state.Keys[i].MacsecLifetimeStartYear.IsNull() && (data.Keys[j].MacsecLifetimeStartYear.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/key%v/macsec-lifetime/lifetime/lifetime-group-v1/start-year", predicates))
 				}
-				if !state.Keys[i].MacsecLifetimeStartDay.IsNull() && data.Keys[j].MacsecLifetimeStartDay.IsNull() {
+				if !state.Keys[i].MacsecLifetimeStartDay.IsNull() && (data.Keys[j].MacsecLifetimeStartDay.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/key%v/macsec-lifetime/lifetime/lifetime-group-v1/start-day", predicates))
 				}
-				if !state.Keys[i].MacsecLifetimeStartMonth.IsNull() && data.Keys[j].MacsecLifetimeStartMonth.IsNull() {
+				if !state.Keys[i].MacsecLifetimeStartMonth.IsNull() && (data.Keys[j].MacsecLifetimeStartMonth.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/key%v/macsec-lifetime/lifetime/lifetime-group-v1/start-month", predicates))
 				}
-				if !state.Keys[i].MacsecLifetimeStartTime.IsNull() && data.Keys[j].MacsecLifetimeStartTime.IsNull() {
+				if !state.Keys[i].MacsecLifetimeStartTime.IsNull() && (data.Keys[j].MacsecLifetimeStartTime.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/key%v/macsec-lifetime/lifetime/lifetime-group-v1/start-hh-mm-ss", predicates))
 				}
-				if !state.Keys[i].MacsecLifetimeLocal.IsNull() && data.Keys[j].MacsecLifetimeLocal.IsNull() {
+				if !state.Keys[i].MacsecLifetimeLocal.IsNull() && (data.Keys[j].MacsecLifetimeLocal.IsNull() || (state.Keys[i].MacsecLifetimeLocal.ValueBool() && !data.Keys[j].MacsecLifetimeLocal.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/key%v/macsec-lifetime/lifetime/lifetime-group-v1/local", predicates))
 				}
-				if !state.Keys[i].SendLifetimeEndYear.IsNull() && data.Keys[j].SendLifetimeEndYear.IsNull() {
+				if !state.Keys[i].SendLifetimeEndYear.IsNull() && (data.Keys[j].SendLifetimeEndYear.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/key%v/send-lifetime/lifetime-group-v1/end-year", predicates))
 				}
-				if !state.Keys[i].SendLifetimeEndDay.IsNull() && data.Keys[j].SendLifetimeEndDay.IsNull() {
+				if !state.Keys[i].SendLifetimeEndDay.IsNull() && (data.Keys[j].SendLifetimeEndDay.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/key%v/send-lifetime/lifetime-group-v1/end-day", predicates))
 				}
-				if !state.Keys[i].SendLifetimeEndMonth.IsNull() && data.Keys[j].SendLifetimeEndMonth.IsNull() {
+				if !state.Keys[i].SendLifetimeEndMonth.IsNull() && (data.Keys[j].SendLifetimeEndMonth.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/key%v/send-lifetime/lifetime-group-v1/end-month", predicates))
 				}
-				if !state.Keys[i].SendLifetimeEndTime.IsNull() && data.Keys[j].SendLifetimeEndTime.IsNull() {
+				if !state.Keys[i].SendLifetimeEndTime.IsNull() && (data.Keys[j].SendLifetimeEndTime.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/key%v/send-lifetime/lifetime-group-v1/end-hh-mm-ss", predicates))
 				}
-				if !state.Keys[i].SendLifetimeInfinite.IsNull() && data.Keys[j].SendLifetimeInfinite.IsNull() {
+				if !state.Keys[i].SendLifetimeInfinite.IsNull() && (data.Keys[j].SendLifetimeInfinite.IsNull() || (state.Keys[i].SendLifetimeInfinite.ValueBool() && !data.Keys[j].SendLifetimeInfinite.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/key%v/send-lifetime/lifetime-group-v1/infinite", predicates))
 				}
-				if !state.Keys[i].SendLifetimeDuration.IsNull() && data.Keys[j].SendLifetimeDuration.IsNull() {
+				if !state.Keys[i].SendLifetimeDuration.IsNull() && (data.Keys[j].SendLifetimeDuration.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/key%v/send-lifetime/lifetime-group-v1/duration", predicates))
 				}
-				if !state.Keys[i].SendLifetimeStartYear.IsNull() && data.Keys[j].SendLifetimeStartYear.IsNull() {
+				if !state.Keys[i].SendLifetimeStartYear.IsNull() && (data.Keys[j].SendLifetimeStartYear.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/key%v/send-lifetime/lifetime-group-v1/start-year", predicates))
 				}
-				if !state.Keys[i].SendLifetimeStartDay.IsNull() && data.Keys[j].SendLifetimeStartDay.IsNull() {
+				if !state.Keys[i].SendLifetimeStartDay.IsNull() && (data.Keys[j].SendLifetimeStartDay.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/key%v/send-lifetime/lifetime-group-v1/start-day", predicates))
 				}
-				if !state.Keys[i].SendLifetimeStartMonth.IsNull() && data.Keys[j].SendLifetimeStartMonth.IsNull() {
+				if !state.Keys[i].SendLifetimeStartMonth.IsNull() && (data.Keys[j].SendLifetimeStartMonth.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/key%v/send-lifetime/lifetime-group-v1/start-month", predicates))
 				}
-				if !state.Keys[i].SendLifetimeStartTime.IsNull() && data.Keys[j].SendLifetimeStartTime.IsNull() {
+				if !state.Keys[i].SendLifetimeStartTime.IsNull() && (data.Keys[j].SendLifetimeStartTime.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/key%v/send-lifetime/lifetime-group-v1/start-hh-mm-ss", predicates))
 				}
-				if !state.Keys[i].SendLifetimeLocal.IsNull() && data.Keys[j].SendLifetimeLocal.IsNull() {
+				if !state.Keys[i].SendLifetimeLocal.IsNull() && (data.Keys[j].SendLifetimeLocal.IsNull() || (state.Keys[i].SendLifetimeLocal.ValueBool() && !data.Keys[j].SendLifetimeLocal.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/key%v/send-lifetime/lifetime-group-v1/local", predicates))
 				}
-				if !state.Keys[i].AcceptLifetimeEndYear.IsNull() && data.Keys[j].AcceptLifetimeEndYear.IsNull() {
+				if !state.Keys[i].AcceptLifetimeEndYear.IsNull() && (data.Keys[j].AcceptLifetimeEndYear.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/key%v/accept-lifetime/lifetime-group-v1/end-year", predicates))
 				}
-				if !state.Keys[i].AcceptLifetimeEndDay.IsNull() && data.Keys[j].AcceptLifetimeEndDay.IsNull() {
+				if !state.Keys[i].AcceptLifetimeEndDay.IsNull() && (data.Keys[j].AcceptLifetimeEndDay.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/key%v/accept-lifetime/lifetime-group-v1/end-day", predicates))
 				}
-				if !state.Keys[i].AcceptLifetimeEndMonth.IsNull() && data.Keys[j].AcceptLifetimeEndMonth.IsNull() {
+				if !state.Keys[i].AcceptLifetimeEndMonth.IsNull() && (data.Keys[j].AcceptLifetimeEndMonth.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/key%v/accept-lifetime/lifetime-group-v1/end-month", predicates))
 				}
-				if !state.Keys[i].AcceptLifetimeEndTime.IsNull() && data.Keys[j].AcceptLifetimeEndTime.IsNull() {
+				if !state.Keys[i].AcceptLifetimeEndTime.IsNull() && (data.Keys[j].AcceptLifetimeEndTime.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/key%v/accept-lifetime/lifetime-group-v1/end-hh-mm-ss", predicates))
 				}
-				if !state.Keys[i].AcceptLifetimeInfinite.IsNull() && data.Keys[j].AcceptLifetimeInfinite.IsNull() {
+				if !state.Keys[i].AcceptLifetimeInfinite.IsNull() && (data.Keys[j].AcceptLifetimeInfinite.IsNull() || (state.Keys[i].AcceptLifetimeInfinite.ValueBool() && !data.Keys[j].AcceptLifetimeInfinite.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/key%v/accept-lifetime/lifetime-group-v1/infinite", predicates))
 				}
-				if !state.Keys[i].AcceptLifetimeDuration.IsNull() && data.Keys[j].AcceptLifetimeDuration.IsNull() {
+				if !state.Keys[i].AcceptLifetimeDuration.IsNull() && (data.Keys[j].AcceptLifetimeDuration.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/key%v/accept-lifetime/lifetime-group-v1/duration", predicates))
 				}
-				if !state.Keys[i].AcceptLifetimeStartYear.IsNull() && data.Keys[j].AcceptLifetimeStartYear.IsNull() {
+				if !state.Keys[i].AcceptLifetimeStartYear.IsNull() && (data.Keys[j].AcceptLifetimeStartYear.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/key%v/accept-lifetime/lifetime-group-v1/start-year", predicates))
 				}
-				if !state.Keys[i].AcceptLifetimeStartDay.IsNull() && data.Keys[j].AcceptLifetimeStartDay.IsNull() {
+				if !state.Keys[i].AcceptLifetimeStartDay.IsNull() && (data.Keys[j].AcceptLifetimeStartDay.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/key%v/accept-lifetime/lifetime-group-v1/start-day", predicates))
 				}
-				if !state.Keys[i].AcceptLifetimeStartMonth.IsNull() && data.Keys[j].AcceptLifetimeStartMonth.IsNull() {
+				if !state.Keys[i].AcceptLifetimeStartMonth.IsNull() && (data.Keys[j].AcceptLifetimeStartMonth.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/key%v/accept-lifetime/lifetime-group-v1/start-month", predicates))
 				}
-				if !state.Keys[i].AcceptLifetimeStartTime.IsNull() && data.Keys[j].AcceptLifetimeStartTime.IsNull() {
+				if !state.Keys[i].AcceptLifetimeStartTime.IsNull() && (data.Keys[j].AcceptLifetimeStartTime.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/key%v/accept-lifetime/lifetime-group-v1/start-hh-mm-ss", predicates))
 				}
-				if !state.Keys[i].AcceptLifetimeLocal.IsNull() && data.Keys[j].AcceptLifetimeLocal.IsNull() {
+				if !state.Keys[i].AcceptLifetimeLocal.IsNull() && (data.Keys[j].AcceptLifetimeLocal.IsNull() || (state.Keys[i].AcceptLifetimeLocal.ValueBool() && !data.Keys[j].AcceptLifetimeLocal.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/key%v/accept-lifetime/lifetime-group-v1/local", predicates))
 				}
-				if !state.Keys[i].KeyStringKey.IsNull() && data.Keys[j].KeyStringKey.IsNull() {
+				if !state.Keys[i].KeyStringKey.IsNull() && (data.Keys[j].KeyStringKey.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/key%v/key-string/key", predicates))
 				}
-				if !state.Keys[i].KeyStringEncryption.IsNull() && data.Keys[j].KeyStringEncryption.IsNull() {
+				if !state.Keys[i].KeyStringEncryption.IsNull() && (data.Keys[j].KeyStringEncryption.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/key%v/key-string/encryption", predicates))
 				}
-				if !state.Keys[i].CryptographicAlgorithmMacsec.IsNull() && data.Keys[j].CryptographicAlgorithmMacsec.IsNull() {
+				if !state.Keys[i].CryptographicAlgorithmMacsec.IsNull() && (data.Keys[j].CryptographicAlgorithmMacsec.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/key%v/cryptographic-algorithm-choice/macsec", predicates))
 				}
-				if !state.Keys[i].CryptographicAlgorithmTcp.IsNull() && data.Keys[j].CryptographicAlgorithmTcp.IsNull() {
+				if !state.Keys[i].CryptographicAlgorithmTcp.IsNull() && (data.Keys[j].CryptographicAlgorithmTcp.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/key%v/cryptographic-algorithm-choice/tcp", predicates))
 				}
-				if !state.Keys[i].CryptographicAlgorithm.IsNull() && data.Keys[j].CryptographicAlgorithm.IsNull() {
+				if !state.Keys[i].CryptographicAlgorithm.IsNull() && (data.Keys[j].CryptographicAlgorithm.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/key%v/cryptographic-algorithm-choice/default", predicates))
 				}
 				break
@@ -1152,10 +1152,10 @@ func (data *KeyChain) addDeletedItemsXML(ctx context.Context, state KeyChain, bo
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/key%v", predicates))
 		}
 	}
-	if !state.Tcp.IsNull() && data.Tcp.IsNull() {
+	if !state.Tcp.IsNull() && (data.Tcp.IsNull() || (state.Tcp.ValueBool() && !data.Tcp.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/tcp")
 	}
-	if !state.Macsec.IsNull() && data.Macsec.IsNull() {
+	if !state.Macsec.IsNull() && (data.Macsec.IsNull() || (state.Macsec.ValueBool() && !data.Macsec.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/macsec")
 	}
 

@@ -590,19 +590,19 @@ func (data *StaticRoutesVRF) addDeletedItemsXML(ctx context.Context, state Stati
 							found = false
 						}
 						if found {
-							if !state.Routes[i].NextHopsWithTrack[ci].Permanent.IsNull() && data.Routes[j].NextHopsWithTrack[cj].Permanent.IsNull() {
+							if !state.Routes[i].NextHopsWithTrack[ci].Permanent.IsNull() && (data.Routes[j].NextHopsWithTrack[cj].Permanent.IsNull() || (state.Routes[i].NextHopsWithTrack[ci].Permanent.ValueBool() && !data.Routes[j].NextHopsWithTrack[cj].Permanent.ValueBool())) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip-route-interface-forwarding-list%v/fwd-list-with-track%v/permanent", predicates, cpredicates))
 							}
-							if !state.Routes[i].NextHopsWithTrack[ci].Tag.IsNull() && data.Routes[j].NextHopsWithTrack[cj].Tag.IsNull() {
+							if !state.Routes[i].NextHopsWithTrack[ci].Tag.IsNull() && (data.Routes[j].NextHopsWithTrack[cj].Tag.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip-route-interface-forwarding-list%v/fwd-list-with-track%v/tag", predicates, cpredicates))
 							}
-							if !state.Routes[i].NextHopsWithTrack[ci].Distance.IsNull() && data.Routes[j].NextHopsWithTrack[cj].Distance.IsNull() {
+							if !state.Routes[i].NextHopsWithTrack[ci].Distance.IsNull() && (data.Routes[j].NextHopsWithTrack[cj].Distance.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip-route-interface-forwarding-list%v/fwd-list-with-track%v/metric", predicates, cpredicates))
 							}
-							if !state.Routes[i].NextHopsWithTrack[ci].TrackIdName.IsNull() && data.Routes[j].NextHopsWithTrack[cj].TrackIdName.IsNull() {
+							if !state.Routes[i].NextHopsWithTrack[ci].TrackIdName.IsNull() && (data.Routes[j].NextHopsWithTrack[cj].TrackIdName.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip-route-interface-forwarding-list%v/fwd-list-with-track%v/track-id-name/id", predicates, cpredicates))
 							}
-							if !state.Routes[i].NextHopsWithTrack[ci].Name.IsNull() && data.Routes[j].NextHopsWithTrack[cj].Name.IsNull() {
+							if !state.Routes[i].NextHopsWithTrack[ci].Name.IsNull() && (data.Routes[j].NextHopsWithTrack[cj].Name.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip-route-interface-forwarding-list%v/fwd-list-with-track%v/name", predicates, cpredicates))
 							}
 							break
@@ -635,19 +635,19 @@ func (data *StaticRoutesVRF) addDeletedItemsXML(ctx context.Context, state Stati
 							found = false
 						}
 						if found {
-							if !state.Routes[i].NextHops[ci].Tag.IsNull() && data.Routes[j].NextHops[cj].Tag.IsNull() {
+							if !state.Routes[i].NextHops[ci].Tag.IsNull() && (data.Routes[j].NextHops[cj].Tag.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip-route-interface-forwarding-list%v/fwd-list%v/tag", predicates, cpredicates))
 							}
-							if !state.Routes[i].NextHops[ci].Permanent.IsNull() && data.Routes[j].NextHops[cj].Permanent.IsNull() {
+							if !state.Routes[i].NextHops[ci].Permanent.IsNull() && (data.Routes[j].NextHops[cj].Permanent.IsNull() || (state.Routes[i].NextHops[ci].Permanent.ValueBool() && !data.Routes[j].NextHops[cj].Permanent.ValueBool())) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip-route-interface-forwarding-list%v/fwd-list%v/permanent", predicates, cpredicates))
 							}
-							if !state.Routes[i].NextHops[ci].Name.IsNull() && data.Routes[j].NextHops[cj].Name.IsNull() {
+							if !state.Routes[i].NextHops[ci].Name.IsNull() && (data.Routes[j].NextHops[cj].Name.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip-route-interface-forwarding-list%v/fwd-list%v/name", predicates, cpredicates))
 							}
-							if !state.Routes[i].NextHops[ci].Global.IsNull() && data.Routes[j].NextHops[cj].Global.IsNull() {
+							if !state.Routes[i].NextHops[ci].Global.IsNull() && (data.Routes[j].NextHops[cj].Global.IsNull() || (state.Routes[i].NextHops[ci].Global.ValueBool() && !data.Routes[j].NextHops[cj].Global.ValueBool())) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip-route-interface-forwarding-list%v/fwd-list%v/global", predicates, cpredicates))
 							}
-							if !state.Routes[i].NextHops[ci].Distance.IsNull() && data.Routes[j].NextHops[cj].Distance.IsNull() {
+							if !state.Routes[i].NextHops[ci].Distance.IsNull() && (data.Routes[j].NextHops[cj].Distance.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip-route-interface-forwarding-list%v/fwd-list%v/metric", predicates, cpredicates))
 							}
 							break

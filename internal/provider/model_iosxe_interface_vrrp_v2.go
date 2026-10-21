@@ -457,7 +457,7 @@ func (data *InterfaceVRRPV2Data) fromBodyXML(ctx context.Context, res xmldot.Res
 
 func (data *InterfaceVRRPV2) addDeletedItemsXML(ctx context.Context, state InterfaceVRRPV2, body string) string {
 	b := netconf.NewBody(body)
-	if !state.Shutdown.IsNull() && data.Shutdown.IsNull() {
+	if !state.Shutdown.IsNull() && (data.Shutdown.IsNull() || (state.Shutdown.ValueBool() && !data.Shutdown.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/shutdown")
 	}
 	for i := range state.Tracks {
@@ -483,7 +483,7 @@ func (data *InterfaceVRRPV2) addDeletedItemsXML(ctx context.Context, state Inter
 				found = false
 			}
 			if found {
-				if !state.Tracks[i].Decrement.IsNull() && data.Tracks[j].Decrement.IsNull() {
+				if !state.Tracks[i].Decrement.IsNull() && (data.Tracks[j].Decrement.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/track/event%v/decrement", predicates))
 				}
 				break
@@ -493,22 +493,22 @@ func (data *InterfaceVRRPV2) addDeletedItemsXML(ctx context.Context, state Inter
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/track/event%v", predicates))
 		}
 	}
-	if !state.Description.IsNull() && data.Description.IsNull() {
+	if !state.Description.IsNull() && (data.Description.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/description")
 	}
-	if !state.AuthenticationText.IsNull() && data.AuthenticationText.IsNull() {
+	if !state.AuthenticationText.IsNull() && (data.AuthenticationText.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/authentication/text")
 	}
-	if !state.TimersAdvertiseInterval.IsNull() && data.TimersAdvertiseInterval.IsNull() {
+	if !state.TimersAdvertiseInterval.IsNull() && (data.TimersAdvertiseInterval.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timers/advertise/interval")
 	}
-	if !state.PreemptDelayMinimum.IsNull() && data.PreemptDelayMinimum.IsNull() {
+	if !state.PreemptDelayMinimum.IsNull() && (data.PreemptDelayMinimum.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/preempt/delay/minimum")
 	}
-	if !state.Preempt.IsNull() && data.Preempt.IsNull() {
+	if !state.Preempt.IsNull() && (data.Preempt.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/preempt-config/preempt")
 	}
-	if !state.Priority.IsNull() && data.Priority.IsNull() {
+	if !state.Priority.IsNull() && (data.Priority.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/priority")
 	}
 	for i := range state.IpSecondaryAddresses {
@@ -534,7 +534,7 @@ func (data *InterfaceVRRPV2) addDeletedItemsXML(ctx context.Context, state Inter
 				found = false
 			}
 			if found {
-				if !state.IpSecondaryAddresses[i].Secondary.IsNull() && data.IpSecondaryAddresses[j].Secondary.IsNull() {
+				if !state.IpSecondaryAddresses[i].Secondary.IsNull() && (data.IpSecondaryAddresses[j].Secondary.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/secondary%v/secondary", predicates))
 				}
 				break

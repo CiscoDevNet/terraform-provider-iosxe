@@ -319,28 +319,28 @@ func (data *InterfacePIMData) fromBodyXML(ctx context.Context, res xmldot.Result
 
 func (data *InterfacePIM) addDeletedItemsXML(ctx context.Context, state InterfacePIM, body string) string {
 	b := netconf.NewBody(body)
-	if !state.DrPriority.IsNull() && data.DrPriority.IsNull() {
+	if !state.DrPriority.IsNull() && (data.DrPriority.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-multicast:dr-priority")
 	}
-	if !state.BsrBorder.IsNull() && data.BsrBorder.IsNull() {
+	if !state.BsrBorder.IsNull() && (data.BsrBorder.IsNull() || (state.BsrBorder.ValueBool() && !data.BsrBorder.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-multicast:bsr-border")
 	}
-	if !state.Border.IsNull() && data.Border.IsNull() {
+	if !state.Border.IsNull() && (data.Border.IsNull() || (state.Border.ValueBool() && !data.Border.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-multicast:border")
 	}
-	if !state.Bfd.IsNull() && data.Bfd.IsNull() {
+	if !state.Bfd.IsNull() && (data.Bfd.IsNull() || (state.Bfd.ValueBool() && !data.Bfd.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-multicast:bfd")
 	}
-	if !state.SparseDenseMode.IsNull() && data.SparseDenseMode.IsNull() {
+	if !state.SparseDenseMode.IsNull() && (data.SparseDenseMode.IsNull() || (state.SparseDenseMode.ValueBool() && !data.SparseDenseMode.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-multicast:pim-mode-choice-cfg/sparse-dense-mode")
 	}
-	if !state.SparseMode.IsNull() && data.SparseMode.IsNull() {
+	if !state.SparseMode.IsNull() && (data.SparseMode.IsNull() || (state.SparseMode.ValueBool() && !data.SparseMode.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-multicast:pim-mode-choice-cfg/sparse-mode")
 	}
-	if !state.DenseMode.IsNull() && data.DenseMode.IsNull() {
+	if !state.DenseMode.IsNull() && (data.DenseMode.IsNull() || (state.DenseMode.ValueBool() && !data.DenseMode.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-multicast:pim-mode-choice-cfg/dense-mode")
 	}
-	if !state.Passive.IsNull() && data.Passive.IsNull() {
+	if !state.Passive.IsNull() && (data.Passive.IsNull() || (state.Passive.ValueBool() && !data.Passive.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-multicast:pim-mode-choice-cfg/passive")
 	}
 

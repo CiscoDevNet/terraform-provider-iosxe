@@ -330,34 +330,34 @@ func (data *BGPPeerSessionTemplateData) fromBodyXML(ctx context.Context, res xml
 
 func (data *BGPPeerSessionTemplate) addDeletedItemsXML(ctx context.Context, state BGPPeerSessionTemplate, body string) string {
 	b := netconf.NewBody(body)
-	if !state.InheritPeerSession.IsNull() && data.InheritPeerSession.IsNull() {
+	if !state.InheritPeerSession.IsNull() && (data.InheritPeerSession.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/inherit/peer-session")
 	}
-	if !state.AoAcceptMismatchConnections.IsNull() && data.AoAcceptMismatchConnections.IsNull() {
+	if !state.AoAcceptMismatchConnections.IsNull() && (data.AoAcceptMismatchConnections.IsNull() || (state.AoAcceptMismatchConnections.ValueBool() && !data.AoAcceptMismatchConnections.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ao")
 	}
-	if !state.AoIncludeTcpOptions.IsNull() && data.AoIncludeTcpOptions.IsNull() {
+	if !state.AoIncludeTcpOptions.IsNull() && (data.AoIncludeTcpOptions.IsNull() || (state.AoIncludeTcpOptions.ValueBool() && !data.AoIncludeTcpOptions.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ao")
 	}
-	if !state.AoKeychain.IsNull() && data.AoKeychain.IsNull() {
+	if !state.AoKeychain.IsNull() && (data.AoKeychain.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ao")
 	}
-	if !state.UpdateSourceInterfaceLoopback.IsNull() && data.UpdateSourceInterfaceLoopback.IsNull() {
+	if !state.UpdateSourceInterfaceLoopback.IsNull() && (data.UpdateSourceInterfaceLoopback.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/update-source/interface/Loopback")
 	}
-	if !state.EbgpMultihopMaxHop.IsNull() && data.EbgpMultihopMaxHop.IsNull() {
+	if !state.EbgpMultihopMaxHop.IsNull() && (data.EbgpMultihopMaxHop.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ebgp-multihop/max-hop")
 	}
-	if !state.EbgpMultihop.IsNull() && data.EbgpMultihop.IsNull() {
+	if !state.EbgpMultihop.IsNull() && (data.EbgpMultihop.IsNull() || (state.EbgpMultihop.ValueBool() && !data.EbgpMultihop.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ebgp-multihop")
 	}
-	if !state.DisableConnectedCheck.IsNull() && data.DisableConnectedCheck.IsNull() {
+	if !state.DisableConnectedCheck.IsNull() && (data.DisableConnectedCheck.IsNull() || (state.DisableConnectedCheck.ValueBool() && !data.DisableConnectedCheck.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/disable-connected-check")
 	}
-	if !state.Description.IsNull() && data.Description.IsNull() {
+	if !state.Description.IsNull() && (data.Description.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/description")
 	}
-	if !state.RemoteAs.IsNull() && data.RemoteAs.IsNull() {
+	if !state.RemoteAs.IsNull() && (data.RemoteAs.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/remote-as")
 	}
 

@@ -888,91 +888,91 @@ func (data *CryptoIKEv2ProposalData) fromBodyXML(ctx context.Context, res xmldot
 
 func (data *CryptoIKEv2Proposal) addDeletedItemsXML(ctx context.Context, state CryptoIKEv2Proposal, body string) string {
 	b := netconf.NewBody(body)
-	if !state.PrfSha512.IsNull() && data.PrfSha512.IsNull() {
+	if !state.PrfSha512.IsNull() && (data.PrfSha512.IsNull() || (state.PrfSha512.ValueBool() && !data.PrfSha512.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/prf/sha512")
 	}
-	if !state.PrfSha384.IsNull() && data.PrfSha384.IsNull() {
+	if !state.PrfSha384.IsNull() && (data.PrfSha384.IsNull() || (state.PrfSha384.ValueBool() && !data.PrfSha384.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/prf/sha384")
 	}
-	if !state.PrfSha256.IsNull() && data.PrfSha256.IsNull() {
+	if !state.PrfSha256.IsNull() && (data.PrfSha256.IsNull() || (state.PrfSha256.ValueBool() && !data.PrfSha256.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/prf/sha256")
 	}
-	if !state.PrfSha1.IsNull() && data.PrfSha1.IsNull() {
+	if !state.PrfSha1.IsNull() && (data.PrfSha1.IsNull() || (state.PrfSha1.ValueBool() && !data.PrfSha1.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/prf/sha1")
 	}
-	if !state.PrfMd5.IsNull() && data.PrfMd5.IsNull() {
+	if !state.PrfMd5.IsNull() && (data.PrfMd5.IsNull() || (state.PrfMd5.ValueBool() && !data.PrfMd5.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/prf/md5")
 	}
-	if !state.IntegritySha512.IsNull() && data.IntegritySha512.IsNull() {
+	if !state.IntegritySha512.IsNull() && (data.IntegritySha512.IsNull() || (state.IntegritySha512.ValueBool() && !data.IntegritySha512.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/integrity/sha512")
 	}
-	if !state.IntegritySha384.IsNull() && data.IntegritySha384.IsNull() {
+	if !state.IntegritySha384.IsNull() && (data.IntegritySha384.IsNull() || (state.IntegritySha384.ValueBool() && !data.IntegritySha384.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/integrity/sha384")
 	}
-	if !state.IntegritySha256.IsNull() && data.IntegritySha256.IsNull() {
+	if !state.IntegritySha256.IsNull() && (data.IntegritySha256.IsNull() || (state.IntegritySha256.ValueBool() && !data.IntegritySha256.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/integrity/sha256")
 	}
-	if !state.IntegritySha1.IsNull() && data.IntegritySha1.IsNull() {
+	if !state.IntegritySha1.IsNull() && (data.IntegritySha1.IsNull() || (state.IntegritySha1.ValueBool() && !data.IntegritySha1.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/integrity/sha1")
 	}
-	if !state.IntegrityMd5.IsNull() && data.IntegrityMd5.IsNull() {
+	if !state.IntegrityMd5.IsNull() && (data.IntegrityMd5.IsNull() || (state.IntegrityMd5.ValueBool() && !data.IntegrityMd5.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/integrity/md5")
 	}
-	if !state.GroupTwentyFour.IsNull() && data.GroupTwentyFour.IsNull() {
+	if !state.GroupTwentyFour.IsNull() && (data.GroupTwentyFour.IsNull() || (state.GroupTwentyFour.ValueBool() && !data.GroupTwentyFour.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/group/twenty-four")
 	}
-	if !state.GroupTwentyOne.IsNull() && data.GroupTwentyOne.IsNull() {
+	if !state.GroupTwentyOne.IsNull() && (data.GroupTwentyOne.IsNull() || (state.GroupTwentyOne.ValueBool() && !data.GroupTwentyOne.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/group/twenty-one")
 	}
-	if !state.GroupTwenty.IsNull() && data.GroupTwenty.IsNull() {
+	if !state.GroupTwenty.IsNull() && (data.GroupTwenty.IsNull() || (state.GroupTwenty.ValueBool() && !data.GroupTwenty.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/group/twenty")
 	}
-	if !state.GroupNineteen.IsNull() && data.GroupNineteen.IsNull() {
+	if !state.GroupNineteen.IsNull() && (data.GroupNineteen.IsNull() || (state.GroupNineteen.ValueBool() && !data.GroupNineteen.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/group/nineteen")
 	}
-	if !state.GroupSixteen.IsNull() && data.GroupSixteen.IsNull() {
+	if !state.GroupSixteen.IsNull() && (data.GroupSixteen.IsNull() || (state.GroupSixteen.ValueBool() && !data.GroupSixteen.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/group/sixteen")
 	}
-	if !state.GroupFifteen.IsNull() && data.GroupFifteen.IsNull() {
+	if !state.GroupFifteen.IsNull() && (data.GroupFifteen.IsNull() || (state.GroupFifteen.ValueBool() && !data.GroupFifteen.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/group/fifteen")
 	}
-	if !state.GroupFourteen.IsNull() && data.GroupFourteen.IsNull() {
+	if !state.GroupFourteen.IsNull() && (data.GroupFourteen.IsNull() || (state.GroupFourteen.ValueBool() && !data.GroupFourteen.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/group/fourteen")
 	}
-	if !state.GroupTwo.IsNull() && data.GroupTwo.IsNull() {
+	if !state.GroupTwo.IsNull() && (data.GroupTwo.IsNull() || (state.GroupTwo.ValueBool() && !data.GroupTwo.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/group/two")
 	}
-	if !state.GroupOne.IsNull() && data.GroupOne.IsNull() {
+	if !state.GroupOne.IsNull() && (data.GroupOne.IsNull() || (state.GroupOne.ValueBool() && !data.GroupOne.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/group/one")
 	}
-	if !state.PqcOptional.IsNull() && data.PqcOptional.IsNull() {
+	if !state.PqcOptional.IsNull() && (data.PqcOptional.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/pqc/optional")
 	}
-	if !state.PqcMlkem1024.IsNull() && data.PqcMlkem1024.IsNull() {
+	if !state.PqcMlkem1024.IsNull() && (data.PqcMlkem1024.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/pqc/mlkem1024")
 	}
-	if !state.PqcMlkem768.IsNull() && data.PqcMlkem768.IsNull() {
+	if !state.PqcMlkem768.IsNull() && (data.PqcMlkem768.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/pqc/mlkem768")
 	}
-	if !state.PqcMlkem512.IsNull() && data.PqcMlkem512.IsNull() {
+	if !state.PqcMlkem512.IsNull() && (data.PqcMlkem512.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/pqc/mlkem512")
 	}
-	if !state.EncryptionAesGcm256.IsNull() && data.EncryptionAesGcm256.IsNull() {
+	if !state.EncryptionAesGcm256.IsNull() && (data.EncryptionAesGcm256.IsNull() || (state.EncryptionAesGcm256.ValueBool() && !data.EncryptionAesGcm256.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/encryption/aes-gcm-256")
 	}
-	if !state.EncryptionAesGcm128.IsNull() && data.EncryptionAesGcm128.IsNull() {
+	if !state.EncryptionAesGcm128.IsNull() && (data.EncryptionAesGcm128.IsNull() || (state.EncryptionAesGcm128.ValueBool() && !data.EncryptionAesGcm128.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/encryption/aes-gcm-128")
 	}
-	if !state.EncryptionAesCbc256.IsNull() && data.EncryptionAesCbc256.IsNull() {
+	if !state.EncryptionAesCbc256.IsNull() && (data.EncryptionAesCbc256.IsNull() || (state.EncryptionAesCbc256.ValueBool() && !data.EncryptionAesCbc256.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/encryption/aes-cbc-256")
 	}
-	if !state.EncryptionAesCbc192.IsNull() && data.EncryptionAesCbc192.IsNull() {
+	if !state.EncryptionAesCbc192.IsNull() && (data.EncryptionAesCbc192.IsNull() || (state.EncryptionAesCbc192.ValueBool() && !data.EncryptionAesCbc192.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/encryption/aes-cbc-192")
 	}
-	if !state.EncryptionAesCbc128.IsNull() && data.EncryptionAesCbc128.IsNull() {
+	if !state.EncryptionAesCbc128.IsNull() && (data.EncryptionAesCbc128.IsNull() || (state.EncryptionAesCbc128.ValueBool() && !data.EncryptionAesCbc128.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/encryption/aes-cbc-128")
 	}
-	if !state.EncryptionEn3des.IsNull() && data.EncryptionEn3des.IsNull() {
+	if !state.EncryptionEn3des.IsNull() && (data.EncryptionEn3des.IsNull() || (state.EncryptionEn3des.ValueBool() && !data.EncryptionEn3des.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/encryption/en-3des")
 	}
 

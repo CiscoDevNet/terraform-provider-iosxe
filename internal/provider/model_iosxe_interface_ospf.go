@@ -728,7 +728,7 @@ func (data *InterfaceOSPF) addDeletedItemsXML(ctx context.Context, state Interfa
 				found = false
 			}
 			if found {
-				if !state.MessageDigestKeys[i].Md5AuthKey.IsNull() && data.MessageDigestKeys[j].Md5AuthKey.IsNull() {
+				if !state.MessageDigestKeys[i].Md5AuthKey.IsNull() && (data.MessageDigestKeys[j].Md5AuthKey.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/message-digest-key%v/md5/auth-key", predicates))
 				}
 				break
@@ -828,43 +828,43 @@ func (data *InterfaceOSPF) addDeletedItemsXML(ctx context.Context, state Interfa
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/process-id%v", predicates))
 		}
 	}
-	if !state.TtlSecurityHops.IsNull() && data.TtlSecurityHops.IsNull() {
+	if !state.TtlSecurityHops.IsNull() && (data.TtlSecurityHops.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ttl-security/hops")
 	}
-	if !state.Priority.IsNull() && data.Priority.IsNull() {
+	if !state.Priority.IsNull() && (data.Priority.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/priority")
 	}
-	if !state.NetworkTypePointToPoint.IsNull() && data.NetworkTypePointToPoint.IsNull() {
+	if !state.NetworkTypePointToPoint.IsNull() && (data.NetworkTypePointToPoint.IsNull() || (state.NetworkTypePointToPoint.ValueBool() && !data.NetworkTypePointToPoint.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/network/point-to-point")
 	}
-	if !state.NetworkTypePointToMultipoint.IsNull() && data.NetworkTypePointToMultipoint.IsNull() {
+	if !state.NetworkTypePointToMultipoint.IsNull() && (data.NetworkTypePointToMultipoint.IsNull() || (state.NetworkTypePointToMultipoint.ValueBool() && !data.NetworkTypePointToMultipoint.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/network/point-to-multipoint")
 	}
-	if !state.NetworkTypeNonBroadcast.IsNull() && data.NetworkTypeNonBroadcast.IsNull() {
+	if !state.NetworkTypeNonBroadcast.IsNull() && (data.NetworkTypeNonBroadcast.IsNull() || (state.NetworkTypeNonBroadcast.ValueBool() && !data.NetworkTypeNonBroadcast.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/network/non-broadcast")
 	}
-	if !state.NetworkTypeBroadcast.IsNull() && data.NetworkTypeBroadcast.IsNull() {
+	if !state.NetworkTypeBroadcast.IsNull() && (data.NetworkTypeBroadcast.IsNull() || (state.NetworkTypeBroadcast.ValueBool() && !data.NetworkTypeBroadcast.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/network/broadcast")
 	}
-	if !state.MtuIgnore.IsNull() && data.MtuIgnore.IsNull() {
+	if !state.MtuIgnore.IsNull() && (data.MtuIgnore.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/mtu-ignore")
 	}
-	if !state.AuthenticationNull.IsNull() && data.AuthenticationNull.IsNull() {
+	if !state.AuthenticationNull.IsNull() && (data.AuthenticationNull.IsNull() || (state.AuthenticationNull.ValueBool() && !data.AuthenticationNull.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/authentication/null")
 	}
-	if !state.AuthenticationMessageDigest.IsNull() && data.AuthenticationMessageDigest.IsNull() {
+	if !state.AuthenticationMessageDigest.IsNull() && (data.AuthenticationMessageDigest.IsNull() || (state.AuthenticationMessageDigest.ValueBool() && !data.AuthenticationMessageDigest.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/authentication/message-digest")
 	}
-	if !state.AuthenticationKeyChain.IsNull() && data.AuthenticationKeyChain.IsNull() {
+	if !state.AuthenticationKeyChain.IsNull() && (data.AuthenticationKeyChain.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/authentication/key-chain")
 	}
-	if !state.HelloInterval.IsNull() && data.HelloInterval.IsNull() {
+	if !state.HelloInterval.IsNull() && (data.HelloInterval.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/hello-interval")
 	}
-	if !state.DeadInterval.IsNull() && data.DeadInterval.IsNull() {
+	if !state.DeadInterval.IsNull() && (data.DeadInterval.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dead-interval")
 	}
-	if !state.Cost.IsNull() && data.Cost.IsNull() {
+	if !state.Cost.IsNull() && (data.Cost.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/cost")
 	}
 

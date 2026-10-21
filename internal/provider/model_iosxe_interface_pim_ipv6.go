@@ -211,16 +211,16 @@ func (data *InterfacePIMIPv6Data) fromBodyXML(ctx context.Context, res xmldot.Re
 
 func (data *InterfacePIMIPv6) addDeletedItemsXML(ctx context.Context, state InterfacePIMIPv6, body string) string {
 	b := netconf.NewBody(body)
-	if !state.DrPriority.IsNull() && data.DrPriority.IsNull() {
+	if !state.DrPriority.IsNull() && (data.DrPriority.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-multicast:pim-container/dr-priority")
 	}
-	if !state.BsrBorder.IsNull() && data.BsrBorder.IsNull() {
+	if !state.BsrBorder.IsNull() && (data.BsrBorder.IsNull() || (state.BsrBorder.ValueBool() && !data.BsrBorder.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-multicast:pim-container/bsr/border")
 	}
-	if !state.Bfd.IsNull() && data.Bfd.IsNull() {
+	if !state.Bfd.IsNull() && (data.Bfd.IsNull() || (state.Bfd.ValueBool() && !data.Bfd.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-multicast:pim-container/bfd")
 	}
-	if !state.Pim.IsNull() && data.Pim.IsNull() {
+	if !state.Pim.IsNull() && (data.Pim.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-multicast:pim-conf/pim")
 	}
 

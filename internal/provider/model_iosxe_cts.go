@@ -767,19 +767,19 @@ func (data *CTS) addDeletedItemsXML(ctx context.Context, state CTS, body string)
 			}
 		}
 	}
-	if !state.RoleBasedEnforcementLoggingInterval.IsNull() && data.RoleBasedEnforcementLoggingInterval.IsNull() {
+	if !state.RoleBasedEnforcementLoggingInterval.IsNull() && (data.RoleBasedEnforcementLoggingInterval.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-cts:role-based/enforcement/logging-interval")
 	}
-	if !state.RoleBasedEnforcement.IsNull() && data.RoleBasedEnforcement.IsNull() {
+	if !state.RoleBasedEnforcement.IsNull() && (data.RoleBasedEnforcement.IsNull() || (state.RoleBasedEnforcement.ValueBool() && !data.RoleBasedEnforcement.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-cts:role-based/enforcement-only/enforcement")
 	}
-	if !state.SxpListenerHoldMaxTime.IsNull() && data.SxpListenerHoldMaxTime.IsNull() {
+	if !state.SxpListenerHoldMaxTime.IsNull() && (data.SxpListenerHoldMaxTime.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-cts:sxp/listener/hold-time/max-time")
 	}
-	if !state.SxpListenerHoldMinTime.IsNull() && data.SxpListenerHoldMinTime.IsNull() {
+	if !state.SxpListenerHoldMinTime.IsNull() && (data.SxpListenerHoldMinTime.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-cts:sxp/listener/hold-time/min-time")
 	}
-	if !state.SxpSpeakerHoldTime.IsNull() && data.SxpSpeakerHoldTime.IsNull() {
+	if !state.SxpSpeakerHoldTime.IsNull() && (data.SxpSpeakerHoldTime.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-cts:sxp/speaker/hold-time")
 	}
 	for i := range state.SxpConnectionPeersIpv4Vrf {
@@ -811,22 +811,22 @@ func (data *CTS) addDeletedItemsXML(ctx context.Context, state CTS, body string)
 				found = false
 			}
 			if found {
-				if !state.SxpConnectionPeersIpv4Vrf[i].MaxTime.IsNull() && data.SxpConnectionPeersIpv4Vrf[j].MaxTime.IsNull() {
+				if !state.SxpConnectionPeersIpv4Vrf[i].MaxTime.IsNull() && (data.SxpConnectionPeersIpv4Vrf[j].MaxTime.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-with-vrf%v/max-time", predicates))
 				}
-				if !state.SxpConnectionPeersIpv4Vrf[i].HoldTime.IsNull() && data.SxpConnectionPeersIpv4Vrf[j].HoldTime.IsNull() {
+				if !state.SxpConnectionPeersIpv4Vrf[i].HoldTime.IsNull() && (data.SxpConnectionPeersIpv4Vrf[j].HoldTime.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-with-vrf%v/hold-time", predicates))
 				}
-				if !state.SxpConnectionPeersIpv4Vrf[i].Option.IsNull() && data.SxpConnectionPeersIpv4Vrf[j].Option.IsNull() {
+				if !state.SxpConnectionPeersIpv4Vrf[i].Option.IsNull() && (data.SxpConnectionPeersIpv4Vrf[j].Option.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-with-vrf%v/option", predicates))
 				}
-				if !state.SxpConnectionPeersIpv4Vrf[i].ConnectionMode.IsNull() && data.SxpConnectionPeersIpv4Vrf[j].ConnectionMode.IsNull() {
+				if !state.SxpConnectionPeersIpv4Vrf[i].ConnectionMode.IsNull() && (data.SxpConnectionPeersIpv4Vrf[j].ConnectionMode.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-with-vrf%v/mode", predicates))
 				}
-				if !state.SxpConnectionPeersIpv4Vrf[i].Password.IsNull() && data.SxpConnectionPeersIpv4Vrf[j].Password.IsNull() {
+				if !state.SxpConnectionPeersIpv4Vrf[i].Password.IsNull() && (data.SxpConnectionPeersIpv4Vrf[j].Password.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-with-vrf%v/password", predicates))
 				}
-				if !state.SxpConnectionPeersIpv4Vrf[i].SourceIp.IsNull() && data.SxpConnectionPeersIpv4Vrf[j].SourceIp.IsNull() {
+				if !state.SxpConnectionPeersIpv4Vrf[i].SourceIp.IsNull() && (data.SxpConnectionPeersIpv4Vrf[j].SourceIp.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-with-vrf%v/source", predicates))
 				}
 				break
@@ -859,22 +859,22 @@ func (data *CTS) addDeletedItemsXML(ctx context.Context, state CTS, body string)
 				found = false
 			}
 			if found {
-				if !state.SxpConnectionPeersIpv4[i].MaxTime.IsNull() && data.SxpConnectionPeersIpv4[j].MaxTime.IsNull() {
+				if !state.SxpConnectionPeersIpv4[i].MaxTime.IsNull() && (data.SxpConnectionPeersIpv4[j].MaxTime.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-no-vrf%v/max-time", predicates))
 				}
-				if !state.SxpConnectionPeersIpv4[i].HoldTime.IsNull() && data.SxpConnectionPeersIpv4[j].HoldTime.IsNull() {
+				if !state.SxpConnectionPeersIpv4[i].HoldTime.IsNull() && (data.SxpConnectionPeersIpv4[j].HoldTime.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-no-vrf%v/hold-time", predicates))
 				}
-				if !state.SxpConnectionPeersIpv4[i].Option.IsNull() && data.SxpConnectionPeersIpv4[j].Option.IsNull() {
+				if !state.SxpConnectionPeersIpv4[i].Option.IsNull() && (data.SxpConnectionPeersIpv4[j].Option.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-no-vrf%v/option", predicates))
 				}
-				if !state.SxpConnectionPeersIpv4[i].ConnectionMode.IsNull() && data.SxpConnectionPeersIpv4[j].ConnectionMode.IsNull() {
+				if !state.SxpConnectionPeersIpv4[i].ConnectionMode.IsNull() && (data.SxpConnectionPeersIpv4[j].ConnectionMode.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-no-vrf%v/mode", predicates))
 				}
-				if !state.SxpConnectionPeersIpv4[i].Password.IsNull() && data.SxpConnectionPeersIpv4[j].Password.IsNull() {
+				if !state.SxpConnectionPeersIpv4[i].Password.IsNull() && (data.SxpConnectionPeersIpv4[j].Password.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-no-vrf%v/password", predicates))
 				}
-				if !state.SxpConnectionPeersIpv4[i].SourceIp.IsNull() && data.SxpConnectionPeersIpv4[j].SourceIp.IsNull() {
+				if !state.SxpConnectionPeersIpv4[i].SourceIp.IsNull() && (data.SxpConnectionPeersIpv4[j].SourceIp.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-no-vrf%v/source", predicates))
 				}
 				break
@@ -884,22 +884,22 @@ func (data *CTS) addDeletedItemsXML(ctx context.Context, state CTS, body string)
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-no-vrf%v", predicates))
 		}
 	}
-	if !state.SxpRetryPeriod.IsNull() && data.SxpRetryPeriod.IsNull() {
+	if !state.SxpRetryPeriod.IsNull() && (data.SxpRetryPeriod.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-cts:sxp/retry/period")
 	}
-	if !state.SxpDefaultPassword.IsNull() && data.SxpDefaultPassword.IsNull() {
+	if !state.SxpDefaultPassword.IsNull() && (data.SxpDefaultPassword.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-cts:sxp/default/password/secret")
 	}
-	if !state.SxpDefaultPasswordType.IsNull() && data.SxpDefaultPasswordType.IsNull() {
+	if !state.SxpDefaultPasswordType.IsNull() && (data.SxpDefaultPasswordType.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-cts:sxp/default/password/type")
 	}
-	if !state.SxpEnable.IsNull() && data.SxpEnable.IsNull() {
+	if !state.SxpEnable.IsNull() && (data.SxpEnable.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-cts:sxp/sxp-def-enable")
 	}
-	if !state.Sgt.IsNull() && data.Sgt.IsNull() {
+	if !state.Sgt.IsNull() && (data.Sgt.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-cts:sgt")
 	}
-	if !state.AuthorizationList.IsNull() && data.AuthorizationList.IsNull() {
+	if !state.AuthorizationList.IsNull() && (data.AuthorizationList.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-cts:authorization/list")
 	}
 

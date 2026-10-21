@@ -1148,7 +1148,7 @@ func (data *{{camelCase .Name}}) addDeletedItemsXML(ctx context.Context, state {
 		}
 	}
 	{{- else if and (not .Reference) (not .Id) (ne .Type "List") (ne .Type "Set") (not .NoDelete)}}
-	if !state.{{toGoName .TfName}}.IsNull() && data.{{toGoName .TfName}}.IsNull() {
+	if !state.{{toGoName .TfName}}.IsNull() && (data.{{toGoName .TfName}}.IsNull(){{if and (eq .Type "Bool") (ne .TypeYangBool "boolean") (eq .DefaultValue "false")}} || (state.{{toGoName .TfName}}.ValueBool() && !data.{{toGoName .TfName}}.ValueBool()){{end}}) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/{{getDeletePath .}}")
 	}
 	{{- else if or (eq .Type "List") (eq .Type "Set")}}
@@ -1213,7 +1213,7 @@ func (data *{{camelCase .Name}}) addDeletedItemsXML(ctx context.Context, state {
 					}
 				}
 				{{- else if and (not .Reference) (not .Id) (ne .Type "List") (ne .Type "Set") (not .NoDelete)}}
-				if !state.{{$list}}[i].{{toGoName .TfName}}.IsNull() && data.{{$list}}[j].{{toGoName .TfName}}.IsNull() {
+				if !state.{{$list}}[i].{{toGoName .TfName}}.IsNull() && (data.{{$list}}[j].{{toGoName .TfName}}.IsNull(){{if and (eq .Type "Bool") (ne .TypeYangBool "boolean") (eq .DefaultValue "false")}} || (state.{{$list}}[i].{{toGoName .TfName}}.ValueBool() && !data.{{$list}}[j].{{toGoName .TfName}}.ValueBool()){{end}}) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/{{$xpath}}%v/{{getDeletePath .}}", predicates))
 				}
 				{{- else if or (eq .Type "List") (eq .Type "Set")}}
@@ -1278,7 +1278,7 @@ func (data *{{camelCase .Name}}) addDeletedItemsXML(ctx context.Context, state {
 								}
 							}
 							{{- else if and (not .Reference) (not .Id) (ne .Type "List") (ne .Type "Set") (not .NoDelete)}}
-							if !state.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.IsNull() && data.{{$list}}[j].{{$clist}}[cj].{{toGoName .TfName}}.IsNull() {
+							if !state.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.IsNull() && (data.{{$list}}[j].{{$clist}}[cj].{{toGoName .TfName}}.IsNull(){{if and (eq .Type "Bool") (ne .TypeYangBool "boolean") (eq .DefaultValue "false")}} || (state.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.ValueBool() && !data.{{$list}}[j].{{$clist}}[cj].{{toGoName .TfName}}.ValueBool()){{end}}) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/{{$xpath}}%v/{{$cXpath}}%v/{{getDeletePath .}}", predicates, cpredicates))
 							}
 							{{- end}}

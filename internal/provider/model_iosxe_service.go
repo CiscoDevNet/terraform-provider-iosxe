@@ -751,76 +751,76 @@ func (data *ServiceData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 func (data *Service) addDeletedItemsXML(ctx context.Context, state Service, body string) string {
 	b := netconf.NewBody(body)
-	if !state.DhcpConfig.IsNull() && data.DhcpConfig.IsNull() {
+	if !state.DhcpConfig.IsNull() && (data.DhcpConfig.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dhcp-config")
 	}
-	if !state.CallHome.IsNull() && data.CallHome.IsNull() {
+	if !state.CallHome.IsNull() && (data.CallHome.IsNull() || (state.CallHome.ValueBool() && !data.CallHome.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/call-home")
 	}
-	if !state.SequenceNumbers.IsNull() && data.SequenceNumbers.IsNull() {
+	if !state.SequenceNumbers.IsNull() && (data.SequenceNumbers.IsNull() || (state.SequenceNumbers.ValueBool() && !data.SequenceNumbers.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/sequence-numbers")
 	}
-	if !state.CompressConfig.IsNull() && data.CompressConfig.IsNull() {
+	if !state.CompressConfig.IsNull() && (data.CompressConfig.IsNull() || (state.CompressConfig.ValueBool() && !data.CompressConfig.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/compress-config")
 	}
-	if !state.TcpKeepalivesOut.IsNull() && data.TcpKeepalivesOut.IsNull() {
+	if !state.TcpKeepalivesOut.IsNull() && (data.TcpKeepalivesOut.IsNull() || (state.TcpKeepalivesOut.ValueBool() && !data.TcpKeepalivesOut.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/tcp-keepalives-out")
 	}
-	if !state.TcpKeepalivesIn.IsNull() && data.TcpKeepalivesIn.IsNull() {
+	if !state.TcpKeepalivesIn.IsNull() && (data.TcpKeepalivesIn.IsNull() || (state.TcpKeepalivesIn.ValueBool() && !data.TcpKeepalivesIn.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/tcp-keepalives-in")
 	}
-	if !state.Dhcp.IsNull() && data.Dhcp.IsNull() {
+	if !state.Dhcp.IsNull() && (data.Dhcp.IsNull() || (state.Dhcp.ValueBool() && !data.Dhcp.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dhcp")
 	}
-	if !state.TimestampsLogUptime.IsNull() && data.TimestampsLogUptime.IsNull() {
+	if !state.TimestampsLogUptime.IsNull() && (data.TimestampsLogUptime.IsNull() || (state.TimestampsLogUptime.ValueBool() && !data.TimestampsLogUptime.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timestamps/log-config/uptime")
 	}
-	if !state.TimestampsLogDatetimeYear.IsNull() && data.TimestampsLogDatetimeYear.IsNull() {
+	if !state.TimestampsLogDatetimeYear.IsNull() && (data.TimestampsLogDatetimeYear.IsNull() || (state.TimestampsLogDatetimeYear.ValueBool() && !data.TimestampsLogDatetimeYear.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timestamps/log-config/datetime/year")
 	}
-	if !state.TimestampsLogDatetimeShowTimezone.IsNull() && data.TimestampsLogDatetimeShowTimezone.IsNull() {
+	if !state.TimestampsLogDatetimeShowTimezone.IsNull() && (data.TimestampsLogDatetimeShowTimezone.IsNull() || (state.TimestampsLogDatetimeShowTimezone.ValueBool() && !data.TimestampsLogDatetimeShowTimezone.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timestamps/log-config/datetime/show-timezone")
 	}
-	if !state.TimestampsLogDatetimeLocaltime.IsNull() && data.TimestampsLogDatetimeLocaltime.IsNull() {
+	if !state.TimestampsLogDatetimeLocaltime.IsNull() && (data.TimestampsLogDatetimeLocaltime.IsNull() || (state.TimestampsLogDatetimeLocaltime.ValueBool() && !data.TimestampsLogDatetimeLocaltime.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timestamps/log-config/datetime/localtime")
 	}
-	if !state.TimestampsLogDatetimeMsec.IsNull() && data.TimestampsLogDatetimeMsec.IsNull() {
+	if !state.TimestampsLogDatetimeMsec.IsNull() && (data.TimestampsLogDatetimeMsec.IsNull() || (state.TimestampsLogDatetimeMsec.ValueBool() && !data.TimestampsLogDatetimeMsec.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timestamps/log-config/datetime/msec")
 	}
-	if !state.TimestampsLogDatetime.IsNull() && data.TimestampsLogDatetime.IsNull() {
+	if !state.TimestampsLogDatetime.IsNull() && (data.TimestampsLogDatetime.IsNull() || (state.TimestampsLogDatetime.ValueBool() && !data.TimestampsLogDatetime.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timestamps/log-config/datetime")
 	}
-	if !state.TimestampsLog.IsNull() && data.TimestampsLog.IsNull() {
+	if !state.TimestampsLog.IsNull() && (data.TimestampsLog.IsNull() || (state.TimestampsLog.ValueBool() && !data.TimestampsLog.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timestamps/log-config")
 	}
-	if !state.TimestampsDebugUptime.IsNull() && data.TimestampsDebugUptime.IsNull() {
+	if !state.TimestampsDebugUptime.IsNull() && (data.TimestampsDebugUptime.IsNull() || (state.TimestampsDebugUptime.ValueBool() && !data.TimestampsDebugUptime.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timestamps/debug-config/uptime")
 	}
-	if !state.TimestampsDebugDatetimeYear.IsNull() && data.TimestampsDebugDatetimeYear.IsNull() {
+	if !state.TimestampsDebugDatetimeYear.IsNull() && (data.TimestampsDebugDatetimeYear.IsNull() || (state.TimestampsDebugDatetimeYear.ValueBool() && !data.TimestampsDebugDatetimeYear.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timestamps/debug-config/datetime/year")
 	}
-	if !state.TimestampsDebugDatetimeShowTimezone.IsNull() && data.TimestampsDebugDatetimeShowTimezone.IsNull() {
+	if !state.TimestampsDebugDatetimeShowTimezone.IsNull() && (data.TimestampsDebugDatetimeShowTimezone.IsNull() || (state.TimestampsDebugDatetimeShowTimezone.ValueBool() && !data.TimestampsDebugDatetimeShowTimezone.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timestamps/debug-config/datetime/show-timezone")
 	}
-	if !state.TimestampsDebugDatetimeLocaltime.IsNull() && data.TimestampsDebugDatetimeLocaltime.IsNull() {
+	if !state.TimestampsDebugDatetimeLocaltime.IsNull() && (data.TimestampsDebugDatetimeLocaltime.IsNull() || (state.TimestampsDebugDatetimeLocaltime.ValueBool() && !data.TimestampsDebugDatetimeLocaltime.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timestamps/debug-config/datetime/localtime")
 	}
-	if !state.TimestampsDebugDatetimeMsec.IsNull() && data.TimestampsDebugDatetimeMsec.IsNull() {
+	if !state.TimestampsDebugDatetimeMsec.IsNull() && (data.TimestampsDebugDatetimeMsec.IsNull() || (state.TimestampsDebugDatetimeMsec.ValueBool() && !data.TimestampsDebugDatetimeMsec.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timestamps/debug-config/datetime/msec")
 	}
-	if !state.TimestampsDebugDatetime.IsNull() && data.TimestampsDebugDatetime.IsNull() {
+	if !state.TimestampsDebugDatetime.IsNull() && (data.TimestampsDebugDatetime.IsNull() || (state.TimestampsDebugDatetime.ValueBool() && !data.TimestampsDebugDatetime.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timestamps/debug-config/datetime")
 	}
-	if !state.TimestampsDebug.IsNull() && data.TimestampsDebug.IsNull() {
+	if !state.TimestampsDebug.IsNull() && (data.TimestampsDebug.IsNull() || (state.TimestampsDebug.ValueBool() && !data.TimestampsDebug.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timestamps/debug-config")
 	}
-	if !state.Timestamps.IsNull() && data.Timestamps.IsNull() {
+	if !state.Timestamps.IsNull() && (data.Timestamps.IsNull() || (state.Timestamps.ValueBool() && !data.Timestamps.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timestamps")
 	}
-	if !state.PasswordEncryption.IsNull() && data.PasswordEncryption.IsNull() {
+	if !state.PasswordEncryption.IsNull() && (data.PasswordEncryption.IsNull() || (state.PasswordEncryption.ValueBool() && !data.PasswordEncryption.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/password-encryption")
 	}
-	if !state.Pad.IsNull() && data.Pad.IsNull() {
+	if !state.Pad.IsNull() && (data.Pad.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/pad-conf/pad")
 	}
 

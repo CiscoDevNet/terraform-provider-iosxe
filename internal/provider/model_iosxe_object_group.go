@@ -7856,106 +7856,106 @@ func (data *ObjectGroup) addDeletedItemsXML(ctx context.Context, state ObjectGro
 						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/tcp-conf/tcp/tcp-port-list-op%v", predicates, cpredicates))
 					}
 				}
-				if !state.Service[i].IcmpUnreachable.IsNull() && data.Service[j].IcmpUnreachable.IsNull() {
+				if !state.Service[i].IcmpUnreachable.IsNull() && (data.Service[j].IcmpUnreachable.IsNull() || (state.Service[i].IcmpUnreachable.ValueBool() && !data.Service[j].IcmpUnreachable.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/icmp-conf/icmp/unreachable", predicates))
 				}
-				if !state.Service[i].IcmpTraceroute.IsNull() && data.Service[j].IcmpTraceroute.IsNull() {
+				if !state.Service[i].IcmpTraceroute.IsNull() && (data.Service[j].IcmpTraceroute.IsNull() || (state.Service[i].IcmpTraceroute.ValueBool() && !data.Service[j].IcmpTraceroute.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/icmp-conf/icmp/traceroute", predicates))
 				}
-				if !state.Service[i].IcmpTimestampRequest.IsNull() && data.Service[j].IcmpTimestampRequest.IsNull() {
+				if !state.Service[i].IcmpTimestampRequest.IsNull() && (data.Service[j].IcmpTimestampRequest.IsNull() || (state.Service[i].IcmpTimestampRequest.ValueBool() && !data.Service[j].IcmpTimestampRequest.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/icmp-conf/icmp/timestamp-request", predicates))
 				}
-				if !state.Service[i].IcmpTimestampReply.IsNull() && data.Service[j].IcmpTimestampReply.IsNull() {
+				if !state.Service[i].IcmpTimestampReply.IsNull() && (data.Service[j].IcmpTimestampReply.IsNull() || (state.Service[i].IcmpTimestampReply.ValueBool() && !data.Service[j].IcmpTimestampReply.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/icmp-conf/icmp/timestamp-reply", predicates))
 				}
-				if !state.Service[i].IcmpTimeExceeded.IsNull() && data.Service[j].IcmpTimeExceeded.IsNull() {
+				if !state.Service[i].IcmpTimeExceeded.IsNull() && (data.Service[j].IcmpTimeExceeded.IsNull() || (state.Service[i].IcmpTimeExceeded.ValueBool() && !data.Service[j].IcmpTimeExceeded.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/icmp-conf/icmp/time-exceeded", predicates))
 				}
-				if !state.Service[i].IcmpSourceQuench.IsNull() && data.Service[j].IcmpSourceQuench.IsNull() {
+				if !state.Service[i].IcmpSourceQuench.IsNull() && (data.Service[j].IcmpSourceQuench.IsNull() || (state.Service[i].IcmpSourceQuench.ValueBool() && !data.Service[j].IcmpSourceQuench.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/icmp-conf/icmp/source-quench", predicates))
 				}
-				if !state.Service[i].IcmpRouterSolicitation.IsNull() && data.Service[j].IcmpRouterSolicitation.IsNull() {
+				if !state.Service[i].IcmpRouterSolicitation.IsNull() && (data.Service[j].IcmpRouterSolicitation.IsNull() || (state.Service[i].IcmpRouterSolicitation.ValueBool() && !data.Service[j].IcmpRouterSolicitation.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/icmp-conf/icmp/router-solicitation", predicates))
 				}
-				if !state.Service[i].IcmpRouterAdvertisement.IsNull() && data.Service[j].IcmpRouterAdvertisement.IsNull() {
+				if !state.Service[i].IcmpRouterAdvertisement.IsNull() && (data.Service[j].IcmpRouterAdvertisement.IsNull() || (state.Service[i].IcmpRouterAdvertisement.ValueBool() && !data.Service[j].IcmpRouterAdvertisement.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/icmp-conf/icmp/router-advertisement", predicates))
 				}
-				if !state.Service[i].IcmpRedirect.IsNull() && data.Service[j].IcmpRedirect.IsNull() {
+				if !state.Service[i].IcmpRedirect.IsNull() && (data.Service[j].IcmpRedirect.IsNull() || (state.Service[i].IcmpRedirect.ValueBool() && !data.Service[j].IcmpRedirect.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/icmp-conf/icmp/redirect", predicates))
 				}
-				if !state.Service[i].IcmpParameterProblem.IsNull() && data.Service[j].IcmpParameterProblem.IsNull() {
+				if !state.Service[i].IcmpParameterProblem.IsNull() && (data.Service[j].IcmpParameterProblem.IsNull() || (state.Service[i].IcmpParameterProblem.ValueBool() && !data.Service[j].IcmpParameterProblem.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/icmp-conf/icmp/parameter-problem", predicates))
 				}
-				if !state.Service[i].IcmpMobileRedirect.IsNull() && data.Service[j].IcmpMobileRedirect.IsNull() {
+				if !state.Service[i].IcmpMobileRedirect.IsNull() && (data.Service[j].IcmpMobileRedirect.IsNull() || (state.Service[i].IcmpMobileRedirect.ValueBool() && !data.Service[j].IcmpMobileRedirect.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/icmp-conf/icmp/mobile-redirect", predicates))
 				}
-				if !state.Service[i].IcmpMaskRequest.IsNull() && data.Service[j].IcmpMaskRequest.IsNull() {
+				if !state.Service[i].IcmpMaskRequest.IsNull() && (data.Service[j].IcmpMaskRequest.IsNull() || (state.Service[i].IcmpMaskRequest.ValueBool() && !data.Service[j].IcmpMaskRequest.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/icmp-conf/icmp/mask-request", predicates))
 				}
-				if !state.Service[i].IcmpMaskReply.IsNull() && data.Service[j].IcmpMaskReply.IsNull() {
+				if !state.Service[i].IcmpMaskReply.IsNull() && (data.Service[j].IcmpMaskReply.IsNull() || (state.Service[i].IcmpMaskReply.ValueBool() && !data.Service[j].IcmpMaskReply.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/icmp-conf/icmp/mask-reply", predicates))
 				}
-				if !state.Service[i].IcmpInformationRequest.IsNull() && data.Service[j].IcmpInformationRequest.IsNull() {
+				if !state.Service[i].IcmpInformationRequest.IsNull() && (data.Service[j].IcmpInformationRequest.IsNull() || (state.Service[i].IcmpInformationRequest.ValueBool() && !data.Service[j].IcmpInformationRequest.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/icmp-conf/icmp/information-request", predicates))
 				}
-				if !state.Service[i].IcmpInformationReply.IsNull() && data.Service[j].IcmpInformationReply.IsNull() {
+				if !state.Service[i].IcmpInformationReply.IsNull() && (data.Service[j].IcmpInformationReply.IsNull() || (state.Service[i].IcmpInformationReply.ValueBool() && !data.Service[j].IcmpInformationReply.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/icmp-conf/icmp/information-reply", predicates))
 				}
-				if !state.Service[i].IcmpEchoReply.IsNull() && data.Service[j].IcmpEchoReply.IsNull() {
+				if !state.Service[i].IcmpEchoReply.IsNull() && (data.Service[j].IcmpEchoReply.IsNull() || (state.Service[i].IcmpEchoReply.ValueBool() && !data.Service[j].IcmpEchoReply.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/icmp-conf/icmp/echo-reply", predicates))
 				}
-				if !state.Service[i].IcmpEcho.IsNull() && data.Service[j].IcmpEcho.IsNull() {
+				if !state.Service[i].IcmpEcho.IsNull() && (data.Service[j].IcmpEcho.IsNull() || (state.Service[i].IcmpEcho.ValueBool() && !data.Service[j].IcmpEcho.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/icmp-conf/icmp/echo", predicates))
 				}
-				if !state.Service[i].IcmpConversionError.IsNull() && data.Service[j].IcmpConversionError.IsNull() {
+				if !state.Service[i].IcmpConversionError.IsNull() && (data.Service[j].IcmpConversionError.IsNull() || (state.Service[i].IcmpConversionError.ValueBool() && !data.Service[j].IcmpConversionError.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/icmp-conf/icmp/conversion-error", predicates))
 				}
-				if !state.Service[i].IcmpAlternateAddress.IsNull() && data.Service[j].IcmpAlternateAddress.IsNull() {
+				if !state.Service[i].IcmpAlternateAddress.IsNull() && (data.Service[j].IcmpAlternateAddress.IsNull() || (state.Service[i].IcmpAlternateAddress.ValueBool() && !data.Service[j].IcmpAlternateAddress.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/icmp-conf/icmp/alternate-address", predicates))
 				}
-				if !state.Service[i].IcmpPortNumber.IsNull() && data.Service[j].IcmpPortNumber.IsNull() {
+				if !state.Service[i].IcmpPortNumber.IsNull() && (data.Service[j].IcmpPortNumber.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/icmp-conf/icmp/port-number", predicates))
 				}
-				if !state.Service[i].Udp.IsNull() && data.Service[j].Udp.IsNull() {
+				if !state.Service[i].Udp.IsNull() && (data.Service[j].Udp.IsNull() || (state.Service[i].Udp.ValueBool() && !data.Service[j].Udp.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/udp", predicates))
 				}
-				if !state.Service[i].Tcp.IsNull() && data.Service[j].Tcp.IsNull() {
+				if !state.Service[i].Tcp.IsNull() && (data.Service[j].Tcp.IsNull() || (state.Service[i].Tcp.ValueBool() && !data.Service[j].Tcp.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/tcp", predicates))
 				}
-				if !state.Service[i].Pim.IsNull() && data.Service[j].Pim.IsNull() {
+				if !state.Service[i].Pim.IsNull() && (data.Service[j].Pim.IsNull() || (state.Service[i].Pim.ValueBool() && !data.Service[j].Pim.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/pim", predicates))
 				}
-				if !state.Service[i].Pcp.IsNull() && data.Service[j].Pcp.IsNull() {
+				if !state.Service[i].Pcp.IsNull() && (data.Service[j].Pcp.IsNull() || (state.Service[i].Pcp.ValueBool() && !data.Service[j].Pcp.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/pcp", predicates))
 				}
-				if !state.Service[i].Ospf.IsNull() && data.Service[j].Ospf.IsNull() {
+				if !state.Service[i].Ospf.IsNull() && (data.Service[j].Ospf.IsNull() || (state.Service[i].Ospf.ValueBool() && !data.Service[j].Ospf.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/ospf", predicates))
 				}
-				if !state.Service[i].Nos.IsNull() && data.Service[j].Nos.IsNull() {
+				if !state.Service[i].Nos.IsNull() && (data.Service[j].Nos.IsNull() || (state.Service[i].Nos.ValueBool() && !data.Service[j].Nos.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/nos", predicates))
 				}
-				if !state.Service[i].Ipinip.IsNull() && data.Service[j].Ipinip.IsNull() {
+				if !state.Service[i].Ipinip.IsNull() && (data.Service[j].Ipinip.IsNull() || (state.Service[i].Ipinip.ValueBool() && !data.Service[j].Ipinip.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/ipinip", predicates))
 				}
-				if !state.Service[i].Ip.IsNull() && data.Service[j].Ip.IsNull() {
+				if !state.Service[i].Ip.IsNull() && (data.Service[j].Ip.IsNull() || (state.Service[i].Ip.ValueBool() && !data.Service[j].Ip.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/ip", predicates))
 				}
-				if !state.Service[i].Igmp.IsNull() && data.Service[j].Igmp.IsNull() {
+				if !state.Service[i].Igmp.IsNull() && (data.Service[j].Igmp.IsNull() || (state.Service[i].Igmp.ValueBool() && !data.Service[j].Igmp.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/igmp", predicates))
 				}
-				if !state.Service[i].Icmp.IsNull() && data.Service[j].Icmp.IsNull() {
+				if !state.Service[i].Icmp.IsNull() && (data.Service[j].Icmp.IsNull() || (state.Service[i].Icmp.ValueBool() && !data.Service[j].Icmp.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/icmp", predicates))
 				}
-				if !state.Service[i].Gre.IsNull() && data.Service[j].Gre.IsNull() {
+				if !state.Service[i].Gre.IsNull() && (data.Service[j].Gre.IsNull() || (state.Service[i].Gre.ValueBool() && !data.Service[j].Gre.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/gre", predicates))
 				}
-				if !state.Service[i].Esp.IsNull() && data.Service[j].Esp.IsNull() {
+				if !state.Service[i].Esp.IsNull() && (data.Service[j].Esp.IsNull() || (state.Service[i].Esp.ValueBool() && !data.Service[j].Esp.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/esp", predicates))
 				}
-				if !state.Service[i].Eigrp.IsNull() && data.Service[j].Eigrp.IsNull() {
+				if !state.Service[i].Eigrp.IsNull() && (data.Service[j].Eigrp.IsNull() || (state.Service[i].Eigrp.ValueBool() && !data.Service[j].Eigrp.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/eigrp", predicates))
 				}
-				if !state.Service[i].Ahp.IsNull() && data.Service[j].Ahp.IsNull() {
+				if !state.Service[i].Ahp.IsNull() && (data.Service[j].Ahp.IsNull() || (state.Service[i].Ahp.ValueBool() && !data.Service[j].Ahp.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/ahp", predicates))
 				}
 				if !state.Service[i].ProtocolNumbers.IsNull() {
@@ -8013,7 +8013,7 @@ func (data *ObjectGroup) addDeletedItemsXML(ctx context.Context, state ObjectGro
 						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/group-objects%v", predicates, cpredicates))
 					}
 				}
-				if !state.Service[i].Description.IsNull() && data.Service[j].Description.IsNull() {
+				if !state.Service[i].Description.IsNull() && (data.Service[j].Description.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/description", predicates))
 				}
 				break
@@ -8178,7 +8178,7 @@ func (data *ObjectGroup) addDeletedItemsXML(ctx context.Context, state ObjectGro
 						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:network%v/obj-Mode-config-network-group/host%v", predicates, cpredicates))
 					}
 				}
-				if !state.Network[i].Description.IsNull() && data.Network[j].Description.IsNull() {
+				if !state.Network[i].Description.IsNull() && (data.Network[j].Description.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:network%v/obj-Mode-config-network-group/description", predicates))
 				}
 				break
@@ -8271,7 +8271,7 @@ func (data *ObjectGroup) addDeletedItemsXML(ctx context.Context, state ObjectGro
 						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:fqdn%v/group-object%v", predicates, cpredicates))
 					}
 				}
-				if !state.Fqdn[i].Description.IsNull() && data.Fqdn[j].Description.IsNull() {
+				if !state.Fqdn[i].Description.IsNull() && (data.Fqdn[j].Description.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:fqdn%v/description", predicates))
 				}
 				break

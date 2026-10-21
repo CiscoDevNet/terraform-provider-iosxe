@@ -780,19 +780,19 @@ func (data *BGPAddressFamilyIPv6VRF) addDeletedItemsXML(ctx context.Context, sta
 				found = false
 			}
 			if found {
-				if !state.Vrfs[i].Ipv6UnicastMaximumPathsIbgp.IsNull() && data.Vrfs[j].Ipv6UnicastMaximumPathsIbgp.IsNull() {
+				if !state.Vrfs[i].Ipv6UnicastMaximumPathsIbgp.IsNull() && (data.Vrfs[j].Ipv6UnicastMaximumPathsIbgp.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv6-unicast/maximum-paths/ibgp/max", predicates))
 				}
-				if !state.Vrfs[i].Ipv6UnicastMaximumPathsEbgp.IsNull() && data.Vrfs[j].Ipv6UnicastMaximumPathsEbgp.IsNull() {
+				if !state.Vrfs[i].Ipv6UnicastMaximumPathsEbgp.IsNull() && (data.Vrfs[j].Ipv6UnicastMaximumPathsEbgp.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv6-unicast/maximum-paths/ebgp", predicates))
 				}
-				if !state.Vrfs[i].Ipv6UnicastDistanceBgpLocal.IsNull() && data.Vrfs[j].Ipv6UnicastDistanceBgpLocal.IsNull() {
+				if !state.Vrfs[i].Ipv6UnicastDistanceBgpLocal.IsNull() && (data.Vrfs[j].Ipv6UnicastDistanceBgpLocal.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv6-unicast/distance/bgp/local", predicates))
 				}
-				if !state.Vrfs[i].Ipv6UnicastDistanceBgpInternal.IsNull() && data.Vrfs[j].Ipv6UnicastDistanceBgpInternal.IsNull() {
+				if !state.Vrfs[i].Ipv6UnicastDistanceBgpInternal.IsNull() && (data.Vrfs[j].Ipv6UnicastDistanceBgpInternal.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv6-unicast/distance/bgp/internal-as", predicates))
 				}
-				if !state.Vrfs[i].Ipv6UnicastDistanceBgpExternal.IsNull() && data.Vrfs[j].Ipv6UnicastDistanceBgpExternal.IsNull() {
+				if !state.Vrfs[i].Ipv6UnicastDistanceBgpExternal.IsNull() && (data.Vrfs[j].Ipv6UnicastDistanceBgpExternal.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv6-unicast/distance/bgp/extern-as", predicates))
 				}
 				for ci := range state.Vrfs[i].Ipv6UnicastAdminDistances {
@@ -824,7 +824,7 @@ func (data *BGPAddressFamilyIPv6VRF) addDeletedItemsXML(ctx context.Context, sta
 							found = false
 						}
 						if found {
-							if !state.Vrfs[i].Ipv6UnicastAdminDistances[ci].PrefixListName.IsNull() && data.Vrfs[j].Ipv6UnicastAdminDistances[cj].PrefixListName.IsNull() {
+							if !state.Vrfs[i].Ipv6UnicastAdminDistances[ci].PrefixListName.IsNull() && (data.Vrfs[j].Ipv6UnicastAdminDistances[cj].PrefixListName.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv6-unicast/distance/adm-distance%v/prefix-list-name", predicates, cpredicates))
 							}
 							break
@@ -857,13 +857,13 @@ func (data *BGPAddressFamilyIPv6VRF) addDeletedItemsXML(ctx context.Context, sta
 							found = false
 						}
 						if found {
-							if !state.Vrfs[i].Ipv6UnicastNetworks[ci].Evpn.IsNull() && data.Vrfs[j].Ipv6UnicastNetworks[cj].Evpn.IsNull() {
+							if !state.Vrfs[i].Ipv6UnicastNetworks[ci].Evpn.IsNull() && (data.Vrfs[j].Ipv6UnicastNetworks[cj].Evpn.IsNull() || (state.Vrfs[i].Ipv6UnicastNetworks[ci].Evpn.ValueBool() && !data.Vrfs[j].Ipv6UnicastNetworks[cj].Evpn.ValueBool())) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv6-unicast/network%v/evpn", predicates, cpredicates))
 							}
-							if !state.Vrfs[i].Ipv6UnicastNetworks[ci].Backdoor.IsNull() && data.Vrfs[j].Ipv6UnicastNetworks[cj].Backdoor.IsNull() {
+							if !state.Vrfs[i].Ipv6UnicastNetworks[ci].Backdoor.IsNull() && (data.Vrfs[j].Ipv6UnicastNetworks[cj].Backdoor.IsNull() || (state.Vrfs[i].Ipv6UnicastNetworks[ci].Backdoor.ValueBool() && !data.Vrfs[j].Ipv6UnicastNetworks[cj].Backdoor.ValueBool())) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv6-unicast/network%v/backdoor", predicates, cpredicates))
 							}
-							if !state.Vrfs[i].Ipv6UnicastNetworks[ci].RouteMap.IsNull() && data.Vrfs[j].Ipv6UnicastNetworks[cj].RouteMap.IsNull() {
+							if !state.Vrfs[i].Ipv6UnicastNetworks[ci].RouteMap.IsNull() && (data.Vrfs[j].Ipv6UnicastNetworks[cj].RouteMap.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv6-unicast/network%v/route-map", predicates, cpredicates))
 							}
 							break
@@ -903,31 +903,31 @@ func (data *BGPAddressFamilyIPv6VRF) addDeletedItemsXML(ctx context.Context, sta
 						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv6-unicast/aggregate-address%v", predicates, cpredicates))
 					}
 				}
-				if !state.Vrfs[i].Ipv6UnicastRouterIdIp.IsNull() && data.Vrfs[j].Ipv6UnicastRouterIdIp.IsNull() {
+				if !state.Vrfs[i].Ipv6UnicastRouterIdIp.IsNull() && (data.Vrfs[j].Ipv6UnicastRouterIdIp.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv6-unicast/bgp/router-id/ip-id", predicates))
 				}
-				if !state.Vrfs[i].Ipv6UnicastRouterIdLoopback.IsNull() && data.Vrfs[j].Ipv6UnicastRouterIdLoopback.IsNull() {
+				if !state.Vrfs[i].Ipv6UnicastRouterIdLoopback.IsNull() && (data.Vrfs[j].Ipv6UnicastRouterIdLoopback.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv6-unicast/bgp/router-id/interface/Loopback", predicates))
 				}
-				if !state.Vrfs[i].Ipv6UnicastRedistributeStaticMetric.IsNull() && data.Vrfs[j].Ipv6UnicastRedistributeStaticMetric.IsNull() {
+				if !state.Vrfs[i].Ipv6UnicastRedistributeStaticMetric.IsNull() && (data.Vrfs[j].Ipv6UnicastRedistributeStaticMetric.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv6-unicast/redistribute-v6/static/metric", predicates))
 				}
-				if !state.Vrfs[i].Ipv6UnicastRedistributeStaticRouteMap.IsNull() && data.Vrfs[j].Ipv6UnicastRedistributeStaticRouteMap.IsNull() {
+				if !state.Vrfs[i].Ipv6UnicastRedistributeStaticRouteMap.IsNull() && (data.Vrfs[j].Ipv6UnicastRedistributeStaticRouteMap.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv6-unicast/redistribute-v6/static/route-map", predicates))
 				}
-				if !state.Vrfs[i].Ipv6UnicastRedistributeStatic.IsNull() && data.Vrfs[j].Ipv6UnicastRedistributeStatic.IsNull() {
+				if !state.Vrfs[i].Ipv6UnicastRedistributeStatic.IsNull() && (data.Vrfs[j].Ipv6UnicastRedistributeStatic.IsNull() || (state.Vrfs[i].Ipv6UnicastRedistributeStatic.ValueBool() && !data.Vrfs[j].Ipv6UnicastRedistributeStatic.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv6-unicast/redistribute-v6/static", predicates))
 				}
-				if !state.Vrfs[i].Ipv6UnicastRedistributeConnectedMetric.IsNull() && data.Vrfs[j].Ipv6UnicastRedistributeConnectedMetric.IsNull() {
+				if !state.Vrfs[i].Ipv6UnicastRedistributeConnectedMetric.IsNull() && (data.Vrfs[j].Ipv6UnicastRedistributeConnectedMetric.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv6-unicast/redistribute-v6/connected/metric", predicates))
 				}
-				if !state.Vrfs[i].Ipv6UnicastRedistributeConnectedRouteMap.IsNull() && data.Vrfs[j].Ipv6UnicastRedistributeConnectedRouteMap.IsNull() {
+				if !state.Vrfs[i].Ipv6UnicastRedistributeConnectedRouteMap.IsNull() && (data.Vrfs[j].Ipv6UnicastRedistributeConnectedRouteMap.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv6-unicast/redistribute-v6/connected/route-map", predicates))
 				}
-				if !state.Vrfs[i].Ipv6UnicastRedistributeConnected.IsNull() && data.Vrfs[j].Ipv6UnicastRedistributeConnected.IsNull() {
+				if !state.Vrfs[i].Ipv6UnicastRedistributeConnected.IsNull() && (data.Vrfs[j].Ipv6UnicastRedistributeConnected.IsNull() || (state.Vrfs[i].Ipv6UnicastRedistributeConnected.ValueBool() && !data.Vrfs[j].Ipv6UnicastRedistributeConnected.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv6-unicast/redistribute-v6/connected", predicates))
 				}
-				if !state.Vrfs[i].Ipv6UnicastAdvertiseL2vpnEvpn.IsNull() && data.Vrfs[j].Ipv6UnicastAdvertiseL2vpnEvpn.IsNull() {
+				if !state.Vrfs[i].Ipv6UnicastAdvertiseL2vpnEvpn.IsNull() && (data.Vrfs[j].Ipv6UnicastAdvertiseL2vpnEvpn.IsNull() || (state.Vrfs[i].Ipv6UnicastAdvertiseL2vpnEvpn.ValueBool() && !data.Vrfs[j].Ipv6UnicastAdvertiseL2vpnEvpn.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv6-unicast/advertise/l2vpn/evpn", predicates))
 				}
 				break

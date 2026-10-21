@@ -504,28 +504,28 @@ func (data *ARPData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 func (data *ARP) addDeletedItemsXML(ctx context.Context, state ARP, body string) string {
 	b := netconf.NewBody(body)
-	if !state.InspectionVlan.IsNull() && data.InspectionVlan.IsNull() {
+	if !state.InspectionVlan.IsNull() && (data.InspectionVlan.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/inspection/vlan")
 	}
-	if !state.InspectionLogBufferLogsInterval.IsNull() && data.InspectionLogBufferLogsInterval.IsNull() {
+	if !state.InspectionLogBufferLogsInterval.IsNull() && (data.InspectionLogBufferLogsInterval.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/inspection/log-buffer/logs")
 	}
-	if !state.InspectionLogBufferLogsEntries.IsNull() && data.InspectionLogBufferLogsEntries.IsNull() {
+	if !state.InspectionLogBufferLogsEntries.IsNull() && (data.InspectionLogBufferLogsEntries.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/inspection/log-buffer/logs")
 	}
-	if !state.InspectionLogBufferEntries.IsNull() && data.InspectionLogBufferEntries.IsNull() {
+	if !state.InspectionLogBufferEntries.IsNull() && (data.InspectionLogBufferEntries.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/inspection/log-buffer/entries")
 	}
-	if !state.InspectionValidateAllowZeros.IsNull() && data.InspectionValidateAllowZeros.IsNull() {
+	if !state.InspectionValidateAllowZeros.IsNull() && (data.InspectionValidateAllowZeros.IsNull() || (state.InspectionValidateAllowZeros.ValueBool() && !data.InspectionValidateAllowZeros.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/inspection/validate/allow")
 	}
-	if !state.InspectionValidateIp.IsNull() && data.InspectionValidateIp.IsNull() {
+	if !state.InspectionValidateIp.IsNull() && (data.InspectionValidateIp.IsNull() || (state.InspectionValidateIp.ValueBool() && !data.InspectionValidateIp.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/inspection/validate")
 	}
-	if !state.InspectionValidateDstMac.IsNull() && data.InspectionValidateDstMac.IsNull() {
+	if !state.InspectionValidateDstMac.IsNull() && (data.InspectionValidateDstMac.IsNull() || (state.InspectionValidateDstMac.ValueBool() && !data.InspectionValidateDstMac.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/inspection/validate")
 	}
-	if !state.InspectionValidateSrcMac.IsNull() && data.InspectionValidateSrcMac.IsNull() {
+	if !state.InspectionValidateSrcMac.IsNull() && (data.InspectionValidateSrcMac.IsNull() || (state.InspectionValidateSrcMac.ValueBool() && !data.InspectionValidateSrcMac.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/inspection/validate")
 	}
 	for i := range state.InspectionFilters {
@@ -574,7 +574,7 @@ func (data *ARP) addDeletedItemsXML(ctx context.Context, state ARP, body string)
 							found = false
 						}
 						if found {
-							if !state.InspectionFilters[i].Vlans[ci].Static.IsNull() && data.InspectionFilters[j].Vlans[cj].Static.IsNull() {
+							if !state.InspectionFilters[i].Vlans[ci].Static.IsNull() && (data.InspectionFilters[j].Vlans[cj].Static.IsNull() || (state.InspectionFilters[i].Vlans[ci].Static.ValueBool() && !data.InspectionFilters[j].Vlans[cj].Static.ValueBool())) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/inspection/filter%v/vlan%v/static", predicates, cpredicates))
 							}
 							break
@@ -591,13 +591,13 @@ func (data *ARP) addDeletedItemsXML(ctx context.Context, state ARP, body string)
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/inspection/filter%v", predicates))
 		}
 	}
-	if !state.EntryLearn.IsNull() && data.EntryLearn.IsNull() {
+	if !state.EntryLearn.IsNull() && (data.EntryLearn.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/entry/learn")
 	}
-	if !state.ProxyDisable.IsNull() && data.ProxyDisable.IsNull() {
+	if !state.ProxyDisable.IsNull() && (data.ProxyDisable.IsNull() || (state.ProxyDisable.ValueBool() && !data.ProxyDisable.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/proxy/disable")
 	}
-	if !state.IncompleteEntries.IsNull() && data.IncompleteEntries.IsNull() {
+	if !state.IncompleteEntries.IsNull() && (data.IncompleteEntries.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/incomplete/entries")
 	}
 

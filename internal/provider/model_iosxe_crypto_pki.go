@@ -414,19 +414,19 @@ func (data *CryptoPKI) addDeletedItemsXML(ctx context.Context, state CryptoPKI, 
 				found = false
 			}
 			if found {
-				if !state.Trustpoints[i].Hash.IsNull() && data.Trustpoints[j].Hash.IsNull() {
+				if !state.Trustpoints[i].Hash.IsNull() && (data.Trustpoints[j].Hash.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/trustpoint%v/hash", predicates))
 				}
-				if !state.Trustpoints[i].SourceInterface.IsNull() && data.Trustpoints[j].SourceInterface.IsNull() {
+				if !state.Trustpoints[i].SourceInterface.IsNull() && (data.Trustpoints[j].SourceInterface.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/trustpoint%v/source/interface", predicates))
 				}
-				if !state.Trustpoints[i].Usage.IsNull() && data.Trustpoints[j].Usage.IsNull() {
+				if !state.Trustpoints[i].Usage.IsNull() && (data.Trustpoints[j].Usage.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/trustpoint%v/usage", predicates))
 				}
-				if !state.Trustpoints[i].Rsakeypair.IsNull() && data.Trustpoints[j].Rsakeypair.IsNull() {
+				if !state.Trustpoints[i].Rsakeypair.IsNull() && (data.Trustpoints[j].Rsakeypair.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/trustpoint%v/rsakeypair/key-label", predicates))
 				}
-				if !state.Trustpoints[i].SubjectName.IsNull() && data.Trustpoints[j].SubjectName.IsNull() {
+				if !state.Trustpoints[i].SubjectName.IsNull() && (data.Trustpoints[j].SubjectName.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/trustpoint%v/subject-name", predicates))
 				}
 				if !state.Trustpoints[i].RevocationCheck.IsNull() {
@@ -454,16 +454,16 @@ func (data *CryptoPKI) addDeletedItemsXML(ctx context.Context, state CryptoPKI, 
 						}
 					}
 				}
-				if !state.Trustpoints[i].EnrollmentTerminal.IsNull() && data.Trustpoints[j].EnrollmentTerminal.IsNull() {
+				if !state.Trustpoints[i].EnrollmentTerminal.IsNull() && (data.Trustpoints[j].EnrollmentTerminal.IsNull() || (state.Trustpoints[i].EnrollmentTerminal.ValueBool() && !data.Trustpoints[j].EnrollmentTerminal.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/trustpoint%v/enrollment/terminal", predicates))
 				}
-				if !state.Trustpoints[i].EnrollmentModeRa.IsNull() && data.Trustpoints[j].EnrollmentModeRa.IsNull() {
+				if !state.Trustpoints[i].EnrollmentModeRa.IsNull() && (data.Trustpoints[j].EnrollmentModeRa.IsNull() || (state.Trustpoints[i].EnrollmentModeRa.ValueBool() && !data.Trustpoints[j].EnrollmentModeRa.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/trustpoint%v/enrollment/mode/ra", predicates))
 				}
-				if !state.Trustpoints[i].EnrollmentSelfsigned.IsNull() && data.Trustpoints[j].EnrollmentSelfsigned.IsNull() {
+				if !state.Trustpoints[i].EnrollmentSelfsigned.IsNull() && (data.Trustpoints[j].EnrollmentSelfsigned.IsNull() || (state.Trustpoints[i].EnrollmentSelfsigned.ValueBool() && !data.Trustpoints[j].EnrollmentSelfsigned.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/trustpoint%v/enrollment/enrollment-method/selfsigned", predicates))
 				}
-				if !state.Trustpoints[i].EnrollmentPkcs12.IsNull() && data.Trustpoints[j].EnrollmentPkcs12.IsNull() {
+				if !state.Trustpoints[i].EnrollmentPkcs12.IsNull() && (data.Trustpoints[j].EnrollmentPkcs12.IsNull() || (state.Trustpoints[i].EnrollmentPkcs12.ValueBool() && !data.Trustpoints[j].EnrollmentPkcs12.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/trustpoint%v/enrollment/enrollment-method/pkcs12", predicates))
 				}
 				break

@@ -1303,142 +1303,142 @@ func (data *FlowRecordData) fromBodyXML(ctx context.Context, res xmldot.Result) 
 
 func (data *FlowRecord) addDeletedItemsXML(ctx context.Context, state FlowRecord, body string) string {
 	b := netconf.NewBody(body)
-	if !state.CollectFlowDirection.IsNull() && data.CollectFlowDirection.IsNull() {
+	if !state.CollectFlowDirection.IsNull() && (data.CollectFlowDirection.IsNull() || (state.CollectFlowDirection.ValueBool() && !data.CollectFlowDirection.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/collect/flow/direction")
 	}
-	if !state.CollectDatalinkMacSourceAddressInput.IsNull() && data.CollectDatalinkMacSourceAddressInput.IsNull() {
+	if !state.CollectDatalinkMacSourceAddressInput.IsNull() && (data.CollectDatalinkMacSourceAddressInput.IsNull() || (state.CollectDatalinkMacSourceAddressInput.ValueBool() && !data.CollectDatalinkMacSourceAddressInput.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/collect/datalink/mac/source/address/input")
 	}
-	if !state.CollectConnectionServerCounterPacketsLong.IsNull() && data.CollectConnectionServerCounterPacketsLong.IsNull() {
+	if !state.CollectConnectionServerCounterPacketsLong.IsNull() && (data.CollectConnectionServerCounterPacketsLong.IsNull() || (state.CollectConnectionServerCounterPacketsLong.ValueBool() && !data.CollectConnectionServerCounterPacketsLong.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/collect/connection/server/counter/packets/long")
 	}
-	if !state.CollectConnectionServerCounterBytesNetworkLong.IsNull() && data.CollectConnectionServerCounterBytesNetworkLong.IsNull() {
+	if !state.CollectConnectionServerCounterBytesNetworkLong.IsNull() && (data.CollectConnectionServerCounterBytesNetworkLong.IsNull() || (state.CollectConnectionServerCounterBytesNetworkLong.ValueBool() && !data.CollectConnectionServerCounterBytesNetworkLong.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/collect/connection/server/counter/bytes/network/long")
 	}
-	if !state.CollectConnectionNewConnections.IsNull() && data.CollectConnectionNewConnections.IsNull() {
+	if !state.CollectConnectionNewConnections.IsNull() && (data.CollectConnectionNewConnections.IsNull() || (state.CollectConnectionNewConnections.ValueBool() && !data.CollectConnectionNewConnections.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/collect/connection/new-connections")
 	}
-	if !state.CollectConnectionInitiator.IsNull() && data.CollectConnectionInitiator.IsNull() {
+	if !state.CollectConnectionInitiator.IsNull() && (data.CollectConnectionInitiator.IsNull() || (state.CollectConnectionInitiator.ValueBool() && !data.CollectConnectionInitiator.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/collect/connection/initiator")
 	}
-	if !state.CollectTimestampAbsoluteLast.IsNull() && data.CollectTimestampAbsoluteLast.IsNull() {
+	if !state.CollectTimestampAbsoluteLast.IsNull() && (data.CollectTimestampAbsoluteLast.IsNull() || (state.CollectTimestampAbsoluteLast.ValueBool() && !data.CollectTimestampAbsoluteLast.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/collect/timestamp/absolute/last")
 	}
-	if !state.CollectTimestampAbsoluteFirst.IsNull() && data.CollectTimestampAbsoluteFirst.IsNull() {
+	if !state.CollectTimestampAbsoluteFirst.IsNull() && (data.CollectTimestampAbsoluteFirst.IsNull() || (state.CollectTimestampAbsoluteFirst.ValueBool() && !data.CollectTimestampAbsoluteFirst.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/collect/timestamp/absolute/first")
 	}
-	if !state.CollectTransportTcpFlags.IsNull() && data.CollectTransportTcpFlags.IsNull() {
+	if !state.CollectTransportTcpFlags.IsNull() && (data.CollectTransportTcpFlags.IsNull() || (state.CollectTransportTcpFlags.ValueBool() && !data.CollectTransportTcpFlags.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/collect/transport/tcp/flags")
 	}
-	if !state.CollectCounterPacketsLong.IsNull() && data.CollectCounterPacketsLong.IsNull() {
+	if !state.CollectCounterPacketsLong.IsNull() && (data.CollectCounterPacketsLong.IsNull() || (state.CollectCounterPacketsLong.ValueBool() && !data.CollectCounterPacketsLong.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/collect/counter/packets")
 	}
-	if !state.CollectCounterBytesLong.IsNull() && data.CollectCounterBytesLong.IsNull() {
+	if !state.CollectCounterBytesLong.IsNull() && (data.CollectCounterBytesLong.IsNull() || (state.CollectCounterBytesLong.ValueBool() && !data.CollectCounterBytesLong.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/collect/counter/bytes")
 	}
-	if !state.CollectInterfaceOutput.IsNull() && data.CollectInterfaceOutput.IsNull() {
+	if !state.CollectInterfaceOutput.IsNull() && (data.CollectInterfaceOutput.IsNull() || (state.CollectInterfaceOutput.ValueBool() && !data.CollectInterfaceOutput.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/collect/interface/output")
 	}
-	if !state.CollectInterfaceInput.IsNull() && data.CollectInterfaceInput.IsNull() {
+	if !state.CollectInterfaceInput.IsNull() && (data.CollectInterfaceInput.IsNull() || (state.CollectInterfaceInput.ValueBool() && !data.CollectInterfaceInput.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/collect/interface/input")
 	}
-	if !state.MatchVxlanVtepOutput.IsNull() && data.MatchVxlanVtepOutput.IsNull() {
+	if !state.MatchVxlanVtepOutput.IsNull() && (data.MatchVxlanVtepOutput.IsNull() || (state.MatchVxlanVtepOutput.ValueBool() && !data.MatchVxlanVtepOutput.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/vxlan/vtep/output")
 	}
-	if !state.MatchVxlanVtepInput.IsNull() && data.MatchVxlanVtepInput.IsNull() {
+	if !state.MatchVxlanVtepInput.IsNull() && (data.MatchVxlanVtepInput.IsNull() || (state.MatchVxlanVtepInput.ValueBool() && !data.MatchVxlanVtepInput.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/vxlan/vtep/input")
 	}
-	if !state.MatchVxlanVnid.IsNull() && data.MatchVxlanVnid.IsNull() {
+	if !state.MatchVxlanVnid.IsNull() && (data.MatchVxlanVnid.IsNull() || (state.MatchVxlanVnid.ValueBool() && !data.MatchVxlanVnid.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/vxlan/vnid")
 	}
-	if !state.MatchRoutingVrfInput.IsNull() && data.MatchRoutingVrfInput.IsNull() {
+	if !state.MatchRoutingVrfInput.IsNull() && (data.MatchRoutingVrfInput.IsNull() || (state.MatchRoutingVrfInput.ValueBool() && !data.MatchRoutingVrfInput.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/routing/vrf/input")
 	}
-	if !state.MatchIpv4Ttl.IsNull() && data.MatchIpv4Ttl.IsNull() {
+	if !state.MatchIpv4Ttl.IsNull() && (data.MatchIpv4Ttl.IsNull() || (state.MatchIpv4Ttl.ValueBool() && !data.MatchIpv4Ttl.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/ipv4/ttl")
 	}
-	if !state.MatchDatalinkDestinationVlanId.IsNull() && data.MatchDatalinkDestinationVlanId.IsNull() {
+	if !state.MatchDatalinkDestinationVlanId.IsNull() && (data.MatchDatalinkDestinationVlanId.IsNull() || (state.MatchDatalinkDestinationVlanId.ValueBool() && !data.MatchDatalinkDestinationVlanId.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/datalink/destination-vlan-id")
 	}
-	if !state.MatchDatalinkSourceVlanId.IsNull() && data.MatchDatalinkSourceVlanId.IsNull() {
+	if !state.MatchDatalinkSourceVlanId.IsNull() && (data.MatchDatalinkSourceVlanId.IsNull() || (state.MatchDatalinkSourceVlanId.ValueBool() && !data.MatchDatalinkSourceVlanId.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/datalink/source-vlan-id")
 	}
-	if !state.MatchDatalinkVlan.IsNull() && data.MatchDatalinkVlan.IsNull() {
+	if !state.MatchDatalinkVlan.IsNull() && (data.MatchDatalinkVlan.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/datalink/vlan")
 	}
-	if !state.MatchDatalinkMacDestinationAddressInput.IsNull() && data.MatchDatalinkMacDestinationAddressInput.IsNull() {
+	if !state.MatchDatalinkMacDestinationAddressInput.IsNull() && (data.MatchDatalinkMacDestinationAddressInput.IsNull() || (state.MatchDatalinkMacDestinationAddressInput.ValueBool() && !data.MatchDatalinkMacDestinationAddressInput.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/datalink/mac/destination/address/input")
 	}
-	if !state.MatchDatalinkMacSourceAddressInput.IsNull() && data.MatchDatalinkMacSourceAddressInput.IsNull() {
+	if !state.MatchDatalinkMacSourceAddressInput.IsNull() && (data.MatchDatalinkMacSourceAddressInput.IsNull() || (state.MatchDatalinkMacSourceAddressInput.ValueBool() && !data.MatchDatalinkMacSourceAddressInput.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/datalink/mac/source/address/input")
 	}
-	if !state.MatchConnectionServerTransportPort.IsNull() && data.MatchConnectionServerTransportPort.IsNull() {
+	if !state.MatchConnectionServerTransportPort.IsNull() && (data.MatchConnectionServerTransportPort.IsNull() || (state.MatchConnectionServerTransportPort.ValueBool() && !data.MatchConnectionServerTransportPort.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/connection/server/transport/port")
 	}
-	if !state.MatchConnectionServerIpv6Address.IsNull() && data.MatchConnectionServerIpv6Address.IsNull() {
+	if !state.MatchConnectionServerIpv6Address.IsNull() && (data.MatchConnectionServerIpv6Address.IsNull() || (state.MatchConnectionServerIpv6Address.ValueBool() && !data.MatchConnectionServerIpv6Address.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/connection/server/ipv6/address")
 	}
-	if !state.MatchConnectionClientIpv6Address.IsNull() && data.MatchConnectionClientIpv6Address.IsNull() {
+	if !state.MatchConnectionClientIpv6Address.IsNull() && (data.MatchConnectionClientIpv6Address.IsNull() || (state.MatchConnectionClientIpv6Address.ValueBool() && !data.MatchConnectionClientIpv6Address.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/connection/client/ipv6/address")
 	}
-	if !state.MatchConnectionServerIpv4Address.IsNull() && data.MatchConnectionServerIpv4Address.IsNull() {
+	if !state.MatchConnectionServerIpv4Address.IsNull() && (data.MatchConnectionServerIpv4Address.IsNull() || (state.MatchConnectionServerIpv4Address.ValueBool() && !data.MatchConnectionServerIpv4Address.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/connection/server/ipv4/address")
 	}
-	if !state.MatchConnectionClientIpv4Address.IsNull() && data.MatchConnectionClientIpv4Address.IsNull() {
+	if !state.MatchConnectionClientIpv4Address.IsNull() && (data.MatchConnectionClientIpv4Address.IsNull() || (state.MatchConnectionClientIpv4Address.ValueBool() && !data.MatchConnectionClientIpv4Address.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/connection/client/ipv4/address")
 	}
-	if !state.MatchIpv6Protocol.IsNull() && data.MatchIpv6Protocol.IsNull() {
+	if !state.MatchIpv6Protocol.IsNull() && (data.MatchIpv6Protocol.IsNull() || (state.MatchIpv6Protocol.ValueBool() && !data.MatchIpv6Protocol.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/ipv6/protocol")
 	}
-	if !state.MatchIpv6Version.IsNull() && data.MatchIpv6Version.IsNull() {
+	if !state.MatchIpv6Version.IsNull() && (data.MatchIpv6Version.IsNull() || (state.MatchIpv6Version.ValueBool() && !data.MatchIpv6Version.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/ipv6/version")
 	}
-	if !state.MatchIpv4Version.IsNull() && data.MatchIpv4Version.IsNull() {
+	if !state.MatchIpv4Version.IsNull() && (data.MatchIpv4Version.IsNull() || (state.MatchIpv4Version.ValueBool() && !data.MatchIpv4Version.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/ipv4/version")
 	}
-	if !state.MatchFlowObservationPoint.IsNull() && data.MatchFlowObservationPoint.IsNull() {
+	if !state.MatchFlowObservationPoint.IsNull() && (data.MatchFlowObservationPoint.IsNull() || (state.MatchFlowObservationPoint.ValueBool() && !data.MatchFlowObservationPoint.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/flow/observation/point")
 	}
-	if !state.MatchApplicationName.IsNull() && data.MatchApplicationName.IsNull() {
+	if !state.MatchApplicationName.IsNull() && (data.MatchApplicationName.IsNull() || (state.MatchApplicationName.ValueBool() && !data.MatchApplicationName.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/application/name")
 	}
-	if !state.MatchFlowCtsSourceGroupTag.IsNull() && data.MatchFlowCtsSourceGroupTag.IsNull() {
+	if !state.MatchFlowCtsSourceGroupTag.IsNull() && (data.MatchFlowCtsSourceGroupTag.IsNull() || (state.MatchFlowCtsSourceGroupTag.ValueBool() && !data.MatchFlowCtsSourceGroupTag.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/flow/cts/source/group-tag")
 	}
-	if !state.MatchFlowCtsDestinationGroupTag.IsNull() && data.MatchFlowCtsDestinationGroupTag.IsNull() {
+	if !state.MatchFlowCtsDestinationGroupTag.IsNull() && (data.MatchFlowCtsDestinationGroupTag.IsNull() || (state.MatchFlowCtsDestinationGroupTag.ValueBool() && !data.MatchFlowCtsDestinationGroupTag.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/flow/cts/destination/group-tag")
 	}
-	if !state.MatchFlowDirection.IsNull() && data.MatchFlowDirection.IsNull() {
+	if !state.MatchFlowDirection.IsNull() && (data.MatchFlowDirection.IsNull() || (state.MatchFlowDirection.ValueBool() && !data.MatchFlowDirection.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/flow/direction")
 	}
-	if !state.MatchInterfaceInput.IsNull() && data.MatchInterfaceInput.IsNull() {
+	if !state.MatchInterfaceInput.IsNull() && (data.MatchInterfaceInput.IsNull() || (state.MatchInterfaceInput.ValueBool() && !data.MatchInterfaceInput.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/interface/input")
 	}
-	if !state.MatchTransportDestinationPort.IsNull() && data.MatchTransportDestinationPort.IsNull() {
+	if !state.MatchTransportDestinationPort.IsNull() && (data.MatchTransportDestinationPort.IsNull() || (state.MatchTransportDestinationPort.ValueBool() && !data.MatchTransportDestinationPort.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/transport/destination-port")
 	}
-	if !state.MatchTransportSourcePort.IsNull() && data.MatchTransportSourcePort.IsNull() {
+	if !state.MatchTransportSourcePort.IsNull() && (data.MatchTransportSourcePort.IsNull() || (state.MatchTransportSourcePort.ValueBool() && !data.MatchTransportSourcePort.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/transport/source-port")
 	}
-	if !state.MatchIpv6DestinationAddress.IsNull() && data.MatchIpv6DestinationAddress.IsNull() {
+	if !state.MatchIpv6DestinationAddress.IsNull() && (data.MatchIpv6DestinationAddress.IsNull() || (state.MatchIpv6DestinationAddress.ValueBool() && !data.MatchIpv6DestinationAddress.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/ipv6/destination/address")
 	}
-	if !state.MatchIpv6SourceAddress.IsNull() && data.MatchIpv6SourceAddress.IsNull() {
+	if !state.MatchIpv6SourceAddress.IsNull() && (data.MatchIpv6SourceAddress.IsNull() || (state.MatchIpv6SourceAddress.ValueBool() && !data.MatchIpv6SourceAddress.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/ipv6/source/address")
 	}
-	if !state.MatchIpv4Tos.IsNull() && data.MatchIpv4Tos.IsNull() {
+	if !state.MatchIpv4Tos.IsNull() && (data.MatchIpv4Tos.IsNull() || (state.MatchIpv4Tos.ValueBool() && !data.MatchIpv4Tos.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/ipv4/tos")
 	}
-	if !state.MatchIpv4Protocol.IsNull() && data.MatchIpv4Protocol.IsNull() {
+	if !state.MatchIpv4Protocol.IsNull() && (data.MatchIpv4Protocol.IsNull() || (state.MatchIpv4Protocol.ValueBool() && !data.MatchIpv4Protocol.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/ipv4/protocol")
 	}
-	if !state.MatchIpv4DestinationAddress.IsNull() && data.MatchIpv4DestinationAddress.IsNull() {
+	if !state.MatchIpv4DestinationAddress.IsNull() && (data.MatchIpv4DestinationAddress.IsNull() || (state.MatchIpv4DestinationAddress.ValueBool() && !data.MatchIpv4DestinationAddress.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/ipv4/destination/address")
 	}
-	if !state.MatchIpv4SourceAddress.IsNull() && data.MatchIpv4SourceAddress.IsNull() {
+	if !state.MatchIpv4SourceAddress.IsNull() && (data.MatchIpv4SourceAddress.IsNull() || (state.MatchIpv4SourceAddress.ValueBool() && !data.MatchIpv4SourceAddress.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/ipv4/source/address")
 	}
-	if !state.Description.IsNull() && data.Description.IsNull() {
+	if !state.Description.IsNull() && (data.Description.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/description")
 	}
 

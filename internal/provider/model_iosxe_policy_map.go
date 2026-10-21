@@ -1040,103 +1040,103 @@ func (data *PolicyMap) addDeletedItemsXML(ctx context.Context, state PolicyMap, 
 							found = false
 						}
 						if found {
-							if !state.Classes[i].Actions[ci].ServicePolicy.IsNull() && data.Classes[j].Actions[cj].ServicePolicy.IsNull() {
+							if !state.Classes[i].Actions[ci].ServicePolicy.IsNull() && (data.Classes[j].Actions[cj].ServicePolicy.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/service-policy", predicates, cpredicates))
 							}
-							if !state.Classes[i].Actions[ci].SetDscp.IsNull() && data.Classes[j].Actions[cj].SetDscp.IsNull() {
+							if !state.Classes[i].Actions[ci].SetDscp.IsNull() && (data.Classes[j].Actions[cj].SetDscp.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/set/dscp/dscp-val", predicates, cpredicates))
 							}
-							if !state.Classes[i].Actions[ci].QueueBuffersRatio.IsNull() && data.Classes[j].Actions[cj].QueueBuffersRatio.IsNull() {
+							if !state.Classes[i].Actions[ci].QueueBuffersRatio.IsNull() && (data.Classes[j].Actions[cj].QueueBuffersRatio.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/queue-buffers/ratio", predicates, cpredicates))
 							}
-							if !state.Classes[i].Actions[ci].PoliceRatePercent.IsNull() && data.Classes[j].Actions[cj].PoliceRatePercent.IsNull() {
+							if !state.Classes[i].Actions[ci].PoliceRatePercent.IsNull() && (data.Classes[j].Actions[cj].PoliceRatePercent.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/police-rate-percent/police/rate/percent/percentage", predicates, cpredicates))
 							}
-							if !state.Classes[i].Actions[ci].PoliceCirExceedTransmit.IsNull() && data.Classes[j].Actions[cj].PoliceCirExceedTransmit.IsNull() {
+							if !state.Classes[i].Actions[ci].PoliceCirExceedTransmit.IsNull() && (data.Classes[j].Actions[cj].PoliceCirExceedTransmit.IsNull() || (state.Classes[i].Actions[ci].PoliceCirExceedTransmit.ValueBool() && !data.Classes[j].Actions[cj].PoliceCirExceedTransmit.ValueBool())) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/police-policy-map/police/actions/exceed-transmit/exceed-action/transmit", predicates, cpredicates))
 							}
-							if !state.Classes[i].Actions[ci].PoliceCirExceedDrop.IsNull() && data.Classes[j].Actions[cj].PoliceCirExceedDrop.IsNull() {
+							if !state.Classes[i].Actions[ci].PoliceCirExceedDrop.IsNull() && (data.Classes[j].Actions[cj].PoliceCirExceedDrop.IsNull() || (state.Classes[i].Actions[ci].PoliceCirExceedDrop.ValueBool() && !data.Classes[j].Actions[cj].PoliceCirExceedDrop.ValueBool())) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/police-policy-map/police/actions/exceed-drop/exceed-action/drop", predicates, cpredicates))
 							}
-							if !state.Classes[i].Actions[ci].PoliceCirConformTransmit.IsNull() && data.Classes[j].Actions[cj].PoliceCirConformTransmit.IsNull() {
+							if !state.Classes[i].Actions[ci].PoliceCirConformTransmit.IsNull() && (data.Classes[j].Actions[cj].PoliceCirConformTransmit.IsNull() || (state.Classes[i].Actions[ci].PoliceCirConformTransmit.ValueBool() && !data.Classes[j].Actions[cj].PoliceCirConformTransmit.ValueBool())) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/police-policy-map/police/actions/conform-transmit/conform-action/transmit", predicates, cpredicates))
 							}
-							if !state.Classes[i].Actions[ci].PolicePirBe.IsNull() && data.Classes[j].Actions[cj].PolicePirBe.IsNull() {
+							if !state.Classes[i].Actions[ci].PolicePirBe.IsNull() && (data.Classes[j].Actions[cj].PolicePirBe.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/police-policy-map/police/pir-be/be", predicates, cpredicates))
 							}
-							if !state.Classes[i].Actions[ci].PolicePir.IsNull() && data.Classes[j].Actions[cj].PolicePir.IsNull() {
+							if !state.Classes[i].Actions[ci].PolicePir.IsNull() && (data.Classes[j].Actions[cj].PolicePir.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/police-policy-map/police/pir", predicates, cpredicates))
 							}
-							if !state.Classes[i].Actions[ci].PoliceBe.IsNull() && data.Classes[j].Actions[cj].PoliceBe.IsNull() {
+							if !state.Classes[i].Actions[ci].PoliceBe.IsNull() && (data.Classes[j].Actions[cj].PoliceBe.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/police-policy-map/police/be", predicates, cpredicates))
 							}
-							if !state.Classes[i].Actions[ci].PoliceBc.IsNull() && data.Classes[j].Actions[cj].PoliceBc.IsNull() {
+							if !state.Classes[i].Actions[ci].PoliceBc.IsNull() && (data.Classes[j].Actions[cj].PoliceBc.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/police-policy-map/police/bc", predicates, cpredicates))
 							}
-							if !state.Classes[i].Actions[ci].PoliceCir.IsNull() && data.Classes[j].Actions[cj].PoliceCir.IsNull() {
+							if !state.Classes[i].Actions[ci].PoliceCir.IsNull() && (data.Classes[j].Actions[cj].PoliceCir.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/police-policy-map/police/cir", predicates, cpredicates))
 							}
-							if !state.Classes[i].Actions[ci].PoliceTargetBitrateExceedDrop.IsNull() && data.Classes[j].Actions[cj].PoliceTargetBitrateExceedDrop.IsNull() {
+							if !state.Classes[i].Actions[ci].PoliceTargetBitrateExceedDrop.IsNull() && (data.Classes[j].Actions[cj].PoliceTargetBitrateExceedDrop.IsNull() || (state.Classes[i].Actions[ci].PoliceTargetBitrateExceedDrop.ValueBool() && !data.Classes[j].Actions[cj].PoliceTargetBitrateExceedDrop.ValueBool())) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/police-target-bitrate/police/actions/exceed-drop/exceed-action/drop", predicates, cpredicates))
 							}
-							if !state.Classes[i].Actions[ci].PoliceTargetBitrateExcessBurstByte.IsNull() && data.Classes[j].Actions[cj].PoliceTargetBitrateExcessBurstByte.IsNull() {
+							if !state.Classes[i].Actions[ci].PoliceTargetBitrateExcessBurstByte.IsNull() && (data.Classes[j].Actions[cj].PoliceTargetBitrateExcessBurstByte.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/police-target-bitrate/police/excess_burst-byte", predicates, cpredicates))
 							}
-							if !state.Classes[i].Actions[ci].PoliceTargetBitrateConformBurstByte.IsNull() && data.Classes[j].Actions[cj].PoliceTargetBitrateConformBurstByte.IsNull() {
+							if !state.Classes[i].Actions[ci].PoliceTargetBitrateConformBurstByte.IsNull() && (data.Classes[j].Actions[cj].PoliceTargetBitrateConformBurstByte.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/police-target-bitrate/police/confirm_burst-byte", predicates, cpredicates))
 							}
-							if !state.Classes[i].Actions[ci].PoliceTargetBitrate.IsNull() && data.Classes[j].Actions[cj].PoliceTargetBitrate.IsNull() {
+							if !state.Classes[i].Actions[ci].PoliceTargetBitrate.IsNull() && (data.Classes[j].Actions[cj].PoliceTargetBitrate.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/police-target-bitrate/police/bit-rate", predicates, cpredicates))
 							}
-							if !state.Classes[i].Actions[ci].PoliceTargetBitrateExceedTransmit.IsNull() && data.Classes[j].Actions[cj].PoliceTargetBitrateExceedTransmit.IsNull() {
+							if !state.Classes[i].Actions[ci].PoliceTargetBitrateExceedTransmit.IsNull() && (data.Classes[j].Actions[cj].PoliceTargetBitrateExceedTransmit.IsNull() || (state.Classes[i].Actions[ci].PoliceTargetBitrateExceedTransmit.ValueBool() && !data.Classes[j].Actions[cj].PoliceTargetBitrateExceedTransmit.ValueBool())) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/police-target-bitrate/police/actions/exceed-transmit/exceed-action/transmit", predicates, cpredicates))
 							}
-							if !state.Classes[i].Actions[ci].PoliceTargetBitrateConformTransmit.IsNull() && data.Classes[j].Actions[cj].PoliceTargetBitrateConformTransmit.IsNull() {
+							if !state.Classes[i].Actions[ci].PoliceTargetBitrateConformTransmit.IsNull() && (data.Classes[j].Actions[cj].PoliceTargetBitrateConformTransmit.IsNull() || (state.Classes[i].Actions[ci].PoliceTargetBitrateConformTransmit.ValueBool() && !data.Classes[j].Actions[cj].PoliceTargetBitrateConformTransmit.ValueBool())) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/police-target-bitrate/police/actions/conform-transmit/conform-action/transmit", predicates, cpredicates))
 							}
-							if !state.Classes[i].Actions[ci].ShapeAverageMs.IsNull() && data.Classes[j].Actions[cj].ShapeAverageMs.IsNull() {
+							if !state.Classes[i].Actions[ci].ShapeAverageMs.IsNull() && (data.Classes[j].Actions[cj].ShapeAverageMs.IsNull() || (state.Classes[i].Actions[ci].ShapeAverageMs.ValueBool() && !data.Classes[j].Actions[cj].ShapeAverageMs.ValueBool())) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/shape/average/ms", predicates, cpredicates))
 							}
-							if !state.Classes[i].Actions[ci].ShapeAverageBurstSizeSustained.IsNull() && data.Classes[j].Actions[cj].ShapeAverageBurstSizeSustained.IsNull() {
+							if !state.Classes[i].Actions[ci].ShapeAverageBurstSizeSustained.IsNull() && (data.Classes[j].Actions[cj].ShapeAverageBurstSizeSustained.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/shape/average/burst-size-sustained", predicates, cpredicates))
 							}
-							if !state.Classes[i].Actions[ci].ShapeAveragePercent.IsNull() && data.Classes[j].Actions[cj].ShapeAveragePercent.IsNull() {
+							if !state.Classes[i].Actions[ci].ShapeAveragePercent.IsNull() && (data.Classes[j].Actions[cj].ShapeAveragePercent.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/shape/average/percent", predicates, cpredicates))
 							}
-							if !state.Classes[i].Actions[ci].ShapeAverageBitsPerIntervalExcess.IsNull() && data.Classes[j].Actions[cj].ShapeAverageBitsPerIntervalExcess.IsNull() {
+							if !state.Classes[i].Actions[ci].ShapeAverageBitsPerIntervalExcess.IsNull() && (data.Classes[j].Actions[cj].ShapeAverageBitsPerIntervalExcess.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/shape/average/bits-per-interval-excess", predicates, cpredicates))
 							}
-							if !state.Classes[i].Actions[ci].ShapeAverageBitsPerIntervalSustained.IsNull() && data.Classes[j].Actions[cj].ShapeAverageBitsPerIntervalSustained.IsNull() {
+							if !state.Classes[i].Actions[ci].ShapeAverageBitsPerIntervalSustained.IsNull() && (data.Classes[j].Actions[cj].ShapeAverageBitsPerIntervalSustained.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/shape/average/bits-per-interval-sustained", predicates, cpredicates))
 							}
-							if !state.Classes[i].Actions[ci].ShapeAverageBitRate.IsNull() && data.Classes[j].Actions[cj].ShapeAverageBitRate.IsNull() {
+							if !state.Classes[i].Actions[ci].ShapeAverageBitRate.IsNull() && (data.Classes[j].Actions[cj].ShapeAverageBitRate.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/shape/average/bit-rate", predicates, cpredicates))
 							}
-							if !state.Classes[i].Actions[ci].QueueLimitType.IsNull() && data.Classes[j].Actions[cj].QueueLimitType.IsNull() {
+							if !state.Classes[i].Actions[ci].QueueLimitType.IsNull() && (data.Classes[j].Actions[cj].QueueLimitType.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/queue-limit/queue-limit-type", predicates, cpredicates))
 							}
-							if !state.Classes[i].Actions[ci].QueueLimit.IsNull() && data.Classes[j].Actions[cj].QueueLimit.IsNull() {
+							if !state.Classes[i].Actions[ci].QueueLimit.IsNull() && (data.Classes[j].Actions[cj].QueueLimit.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/queue-limit/queue-limit-value", predicates, cpredicates))
 							}
-							if !state.Classes[i].Actions[ci].PriorityBurst.IsNull() && data.Classes[j].Actions[cj].PriorityBurst.IsNull() {
+							if !state.Classes[i].Actions[ci].PriorityBurst.IsNull() && (data.Classes[j].Actions[cj].PriorityBurst.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/priority/burst", predicates, cpredicates))
 							}
-							if !state.Classes[i].Actions[ci].PriorityLevel.IsNull() && data.Classes[j].Actions[cj].PriorityLevel.IsNull() {
+							if !state.Classes[i].Actions[ci].PriorityLevel.IsNull() && (data.Classes[j].Actions[cj].PriorityLevel.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/priority/level", predicates, cpredicates))
 							}
-							if !state.Classes[i].Actions[ci].BandwidthRemainingRatio.IsNull() && data.Classes[j].Actions[cj].BandwidthRemainingRatio.IsNull() {
+							if !state.Classes[i].Actions[ci].BandwidthRemainingRatio.IsNull() && (data.Classes[j].Actions[cj].BandwidthRemainingRatio.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/bandwidth/remaining/ratio", predicates, cpredicates))
 							}
-							if !state.Classes[i].Actions[ci].BandwidthRemainingPercent.IsNull() && data.Classes[j].Actions[cj].BandwidthRemainingPercent.IsNull() {
+							if !state.Classes[i].Actions[ci].BandwidthRemainingPercent.IsNull() && (data.Classes[j].Actions[cj].BandwidthRemainingPercent.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/bandwidth/remaining/percent", predicates, cpredicates))
 							}
-							if !state.Classes[i].Actions[ci].BandwidthRemainingOption.IsNull() && data.Classes[j].Actions[cj].BandwidthRemainingOption.IsNull() {
+							if !state.Classes[i].Actions[ci].BandwidthRemainingOption.IsNull() && (data.Classes[j].Actions[cj].BandwidthRemainingOption.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/bandwidth/remaining/rem-option", predicates, cpredicates))
 							}
-							if !state.Classes[i].Actions[ci].BandwidthPercent.IsNull() && data.Classes[j].Actions[cj].BandwidthPercent.IsNull() {
+							if !state.Classes[i].Actions[ci].BandwidthPercent.IsNull() && (data.Classes[j].Actions[cj].BandwidthPercent.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/bandwidth/percent", predicates, cpredicates))
 							}
-							if !state.Classes[i].Actions[ci].BandwidthBits.IsNull() && data.Classes[j].Actions[cj].BandwidthBits.IsNull() {
+							if !state.Classes[i].Actions[ci].BandwidthBits.IsNull() && (data.Classes[j].Actions[cj].BandwidthBits.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/bandwidth/bits", predicates, cpredicates))
 							}
 							break
@@ -1146,16 +1146,16 @@ func (data *PolicyMap) addDeletedItemsXML(ctx context.Context, state PolicyMap, 
 						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v", predicates, cpredicates))
 					}
 				}
-				if !state.Classes[i].PolicyParameterMap.IsNull() && data.Classes[j].PolicyParameterMap.IsNull() {
+				if !state.Classes[i].PolicyParameterMap.IsNull() && (data.Classes[j].PolicyParameterMap.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/policy/parameter-map", predicates))
 				}
-				if !state.Classes[i].PolicyLog.IsNull() && data.Classes[j].PolicyLog.IsNull() {
+				if !state.Classes[i].PolicyLog.IsNull() && (data.Classes[j].PolicyLog.IsNull() || (state.Classes[i].PolicyLog.ValueBool() && !data.Classes[j].PolicyLog.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/policy/log", predicates))
 				}
-				if !state.Classes[i].PolicyAction.IsNull() && data.Classes[j].PolicyAction.IsNull() {
+				if !state.Classes[i].PolicyAction.IsNull() && (data.Classes[j].PolicyAction.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/policy/action", predicates))
 				}
-				if !state.Classes[i].ClassType.IsNull() && data.Classes[j].ClassType.IsNull() {
+				if !state.Classes[i].ClassType.IsNull() && (data.Classes[j].ClassType.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/type", predicates))
 				}
 				break
@@ -1165,13 +1165,13 @@ func (data *PolicyMap) addDeletedItemsXML(ctx context.Context, state PolicyMap, 
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v", predicates))
 		}
 	}
-	if !state.Description.IsNull() && data.Description.IsNull() {
+	if !state.Description.IsNull() && (data.Description.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/description")
 	}
-	if !state.Subscriber.IsNull() && data.Subscriber.IsNull() {
+	if !state.Subscriber.IsNull() && (data.Subscriber.IsNull() || (state.Subscriber.ValueBool() && !data.Subscriber.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/subscriber")
 	}
-	if !state.Type.IsNull() && data.Type.IsNull() {
+	if !state.Type.IsNull() && (data.Type.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/type")
 	}
 

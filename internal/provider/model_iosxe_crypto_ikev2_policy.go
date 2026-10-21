@@ -317,10 +317,10 @@ func (data *CryptoIKEv2Policy) addDeletedItemsXML(ctx context.Context, state Cry
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/proposal%v", predicates))
 		}
 	}
-	if !state.MatchFvrfAny.IsNull() && data.MatchFvrfAny.IsNull() {
+	if !state.MatchFvrfAny.IsNull() && (data.MatchFvrfAny.IsNull() || (state.MatchFvrfAny.ValueBool() && !data.MatchFvrfAny.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/fvrf/any")
 	}
-	if !state.MatchFvrf.IsNull() && data.MatchFvrf.IsNull() {
+	if !state.MatchFvrf.IsNull() && (data.MatchFvrf.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/fvrf/name")
 	}
 	if !state.MatchAddressLocalIp.IsNull() {
@@ -348,7 +348,7 @@ func (data *CryptoIKEv2Policy) addDeletedItemsXML(ctx context.Context, state Cry
 			}
 		}
 	}
-	if !state.MatchInboundOnly.IsNull() && data.MatchInboundOnly.IsNull() {
+	if !state.MatchInboundOnly.IsNull() && (data.MatchInboundOnly.IsNull() || (state.MatchInboundOnly.ValueBool() && !data.MatchInboundOnly.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/inbound-only")
 	}
 

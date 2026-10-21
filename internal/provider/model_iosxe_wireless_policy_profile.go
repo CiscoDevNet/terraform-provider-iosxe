@@ -679,7 +679,7 @@ func (data *WirelessPolicyProfile) addDeletedItemsXML(ctx context.Context, state
 				found = false
 			}
 			if found {
-				if !state.MobilityAnchors[i].Priority.IsNull() && data.MobilityAnchors[j].Priority.IsNull() {
+				if !state.MobilityAnchors[i].Priority.IsNull() && (data.MobilityAnchors[j].Priority.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/guest-mm-db-export-entries/guest-mm-db-export-entry%v/anchor-priority", predicates))
 				}
 				break
@@ -749,55 +749,55 @@ func (data *WirelessPolicyProfile) addDeletedItemsXML(ctx context.Context, state
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/avc-ipv4-fm-ingress-entries/avc-ipv4-fm-ingress-entry%v", predicates))
 		}
 	}
-	if !state.HttpTlvCaching.IsNull() && data.HttpTlvCaching.IsNull() {
+	if !state.HttpTlvCaching.IsNull() && (data.HttpTlvCaching.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/wlan-local-profiling/http-tlv-caching")
 	}
-	if !state.DhcpTlvCaching.IsNull() && data.DhcpTlvCaching.IsNull() {
+	if !state.DhcpTlvCaching.IsNull() && (data.DhcpTlvCaching.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/wlan-local-profiling/dhcp-tlv-caching")
 	}
-	if !state.StaticIpMobility.IsNull() && data.StaticIpMobility.IsNull() {
+	if !state.StaticIpMobility.IsNull() && (data.StaticIpMobility.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/static-ip-mobility/is-static-ip-mobility")
 	}
-	if !state.ServicePolicyOutput.IsNull() && data.ServicePolicyOutput.IsNull() {
+	if !state.ServicePolicyOutput.IsNull() && (data.ServicePolicyOutput.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/per-ssid-qos/egress-service-name")
 	}
-	if !state.ServicePolicyInput.IsNull() && data.ServicePolicyInput.IsNull() {
+	if !state.ServicePolicyInput.IsNull() && (data.ServicePolicyInput.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/per-ssid-qos/ingress-service-name")
 	}
-	if !state.Ipv6Acl.IsNull() && data.Ipv6Acl.IsNull() {
+	if !state.Ipv6Acl.IsNull() && (data.Ipv6Acl.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/wlan-acl/ipv6-acl")
 	}
-	if !state.Ipv4Acl.IsNull() && data.Ipv4Acl.IsNull() {
+	if !state.Ipv4Acl.IsNull() && (data.Ipv4Acl.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/wlan-acl/ipv4-acl")
 	}
-	if !state.ExclusionlistTimeout.IsNull() && data.ExclusionlistTimeout.IsNull() {
+	if !state.ExclusionlistTimeout.IsNull() && (data.ExclusionlistTimeout.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/blacklist-params/blacklist-timeout")
 	}
-	if !state.IdleTimeout.IsNull() && data.IdleTimeout.IsNull() {
+	if !state.IdleTimeout.IsNull() && (data.IdleTimeout.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/wlan-timeout/idle-timeout")
 	}
-	if !state.SessionTimeout.IsNull() && data.SessionTimeout.IsNull() {
+	if !state.SessionTimeout.IsNull() && (data.SessionTimeout.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/wlan-timeout/session-timeout")
 	}
-	if !state.NacType.IsNull() && data.NacType.IsNull() {
+	if !state.NacType.IsNull() && (data.NacType.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/aaa-policy-params/nac-type")
 	}
-	if !state.Nac.IsNull() && data.Nac.IsNull() {
+	if !state.Nac.IsNull() && (data.Nac.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/aaa-policy-params/nac")
 	}
-	if !state.AaaOverride.IsNull() && data.AaaOverride.IsNull() {
+	if !state.AaaOverride.IsNull() && (data.AaaOverride.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/aaa-policy-params/aaa-override")
 	}
-	if !state.AccountingList.IsNull() && data.AccountingList.IsNull() {
+	if !state.AccountingList.IsNull() && (data.AccountingList.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/accounting-list")
 	}
-	if !state.Vlan.IsNull() && data.Vlan.IsNull() {
+	if !state.Vlan.IsNull() && (data.Vlan.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/interface-name")
 	}
-	if !state.Status.IsNull() && data.Status.IsNull() {
+	if !state.Status.IsNull() && (data.Status.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/status")
 	}
-	if !state.Description.IsNull() && data.Description.IsNull() {
+	if !state.Description.IsNull() && (data.Description.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/description")
 	}
 

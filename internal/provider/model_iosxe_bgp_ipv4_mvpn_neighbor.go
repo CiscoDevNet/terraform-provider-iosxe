@@ -173,7 +173,7 @@ func (data *BGPIPv4MVPNNeighborData) fromBodyXML(ctx context.Context, res xmldot
 
 func (data *BGPIPv4MVPNNeighbor) addDeletedItemsXML(ctx context.Context, state BGPIPv4MVPNNeighbor, body string) string {
 	b := netconf.NewBody(body)
-	if !state.SendCommunity.IsNull() && data.SendCommunity.IsNull() {
+	if !state.SendCommunity.IsNull() && (data.SendCommunity.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/send-community/send-community-where")
 	}
 

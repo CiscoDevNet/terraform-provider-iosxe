@@ -911,25 +911,25 @@ func (data *NAT) addDeletedItemsXML(ctx context.Context, state NAT, body string)
 				found = false
 			}
 			if found {
-				if !state.OutsideSourceStaticEntries[i].OutsideStaticPool.IsNull() && data.OutsideSourceStaticEntries[j].OutsideStaticPool.IsNull() {
+				if !state.OutsideSourceStaticEntries[i].OutsideStaticPool.IsNull() && (data.OutsideSourceStaticEntries[j].OutsideStaticPool.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/outside/source/static/nat-static-transport-list-no-vrf%v/pool", predicates))
 				}
-				if !state.OutsideSourceStaticEntries[i].MatchInVrf.IsNull() && data.OutsideSourceStaticEntries[j].MatchInVrf.IsNull() {
+				if !state.OutsideSourceStaticEntries[i].MatchInVrf.IsNull() && (data.OutsideSourceStaticEntries[j].MatchInVrf.IsNull() || (state.OutsideSourceStaticEntries[i].MatchInVrf.ValueBool() && !data.OutsideSourceStaticEntries[j].MatchInVrf.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/outside/source/static/nat-static-transport-list-no-vrf%v/match-in-vrf", predicates))
 				}
-				if !state.OutsideSourceStaticEntries[i].Redundancy.IsNull() && data.OutsideSourceStaticEntries[j].Redundancy.IsNull() {
+				if !state.OutsideSourceStaticEntries[i].Redundancy.IsNull() && (data.OutsideSourceStaticEntries[j].Redundancy.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/outside/source/static/nat-static-transport-list-no-vrf%v/redundancy", predicates))
 				}
-				if !state.OutsideSourceStaticEntries[i].NoPayload.IsNull() && data.OutsideSourceStaticEntries[j].NoPayload.IsNull() {
+				if !state.OutsideSourceStaticEntries[i].NoPayload.IsNull() && (data.OutsideSourceStaticEntries[j].NoPayload.IsNull() || (state.OutsideSourceStaticEntries[i].NoPayload.ValueBool() && !data.OutsideSourceStaticEntries[j].NoPayload.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/outside/source/static/nat-static-transport-list-no-vrf%v/no-payload", predicates))
 				}
-				if !state.OutsideSourceStaticEntries[i].Extendable.IsNull() && data.OutsideSourceStaticEntries[j].Extendable.IsNull() {
+				if !state.OutsideSourceStaticEntries[i].Extendable.IsNull() && (data.OutsideSourceStaticEntries[j].Extendable.IsNull() || (state.OutsideSourceStaticEntries[i].Extendable.ValueBool() && !data.OutsideSourceStaticEntries[j].Extendable.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/outside/source/static/nat-static-transport-list-no-vrf%v/extendable", predicates))
 				}
-				if !state.OutsideSourceStaticEntries[i].Mask.IsNull() && data.OutsideSourceStaticEntries[j].Mask.IsNull() {
+				if !state.OutsideSourceStaticEntries[i].Mask.IsNull() && (data.OutsideSourceStaticEntries[j].Mask.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/outside/source/static/nat-static-transport-list-no-vrf%v/mask", predicates))
 				}
-				if !state.OutsideSourceStaticEntries[i].Network.IsNull() && data.OutsideSourceStaticEntries[j].Network.IsNull() {
+				if !state.OutsideSourceStaticEntries[i].Network.IsNull() && (data.OutsideSourceStaticEntries[j].Network.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/outside/source/static/nat-static-transport-list-no-vrf%v/network", predicates))
 				}
 				break
@@ -968,46 +968,46 @@ func (data *NAT) addDeletedItemsXML(ctx context.Context, state NAT, body string)
 				found = false
 			}
 			if found {
-				if !state.InsideSourceStaticEntries[i].EgressInterfaceLoopback.IsNull() && data.InsideSourceStaticEntries[j].EgressInterfaceLoopback.IsNull() {
+				if !state.InsideSourceStaticEntries[i].EgressInterfaceLoopback.IsNull() && (data.InsideSourceStaticEntries[j].EgressInterfaceLoopback.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/inside/source/static/nat-static-transport-list%v/egress-interface-new/Loopback", predicates))
 				}
-				if !state.InsideSourceStaticEntries[i].InsideStaticPool.IsNull() && data.InsideSourceStaticEntries[j].InsideStaticPool.IsNull() {
+				if !state.InsideSourceStaticEntries[i].InsideStaticPool.IsNull() && (data.InsideSourceStaticEntries[j].InsideStaticPool.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/inside/source/static/nat-static-transport-list%v/pool", predicates))
 				}
-				if !state.InsideSourceStaticEntries[i].InsideStaticOverload.IsNull() && data.InsideSourceStaticEntries[j].InsideStaticOverload.IsNull() {
+				if !state.InsideSourceStaticEntries[i].InsideStaticOverload.IsNull() && (data.InsideSourceStaticEntries[j].InsideStaticOverload.IsNull() || (state.InsideSourceStaticEntries[i].InsideStaticOverload.ValueBool() && !data.InsideSourceStaticEntries[j].InsideStaticOverload.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/inside/source/static/nat-static-transport-list%v/overload", predicates))
 				}
-				if !state.InsideSourceStaticEntries[i].Forced.IsNull() && data.InsideSourceStaticEntries[j].Forced.IsNull() {
+				if !state.InsideSourceStaticEntries[i].Forced.IsNull() && (data.InsideSourceStaticEntries[j].Forced.IsNull() || (state.InsideSourceStaticEntries[i].Forced.ValueBool() && !data.InsideSourceStaticEntries[j].Forced.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/inside/source/static/nat-static-transport-list%v/forced", predicates))
 				}
-				if !state.InsideSourceStaticEntries[i].Stateless.IsNull() && data.InsideSourceStaticEntries[j].Stateless.IsNull() {
+				if !state.InsideSourceStaticEntries[i].Stateless.IsNull() && (data.InsideSourceStaticEntries[j].Stateless.IsNull() || (state.InsideSourceStaticEntries[i].Stateless.ValueBool() && !data.InsideSourceStaticEntries[j].Stateless.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/inside/source/static/nat-static-transport-list%v/stateless", predicates))
 				}
-				if !state.InsideSourceStaticEntries[i].MappingId.IsNull() && data.InsideSourceStaticEntries[j].MappingId.IsNull() {
+				if !state.InsideSourceStaticEntries[i].MappingId.IsNull() && (data.InsideSourceStaticEntries[j].MappingId.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/inside/source/static/nat-static-transport-list%v/mapping-id", predicates))
 				}
-				if !state.InsideSourceStaticEntries[i].Redundancy.IsNull() && data.InsideSourceStaticEntries[j].Redundancy.IsNull() {
+				if !state.InsideSourceStaticEntries[i].Redundancy.IsNull() && (data.InsideSourceStaticEntries[j].Redundancy.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/inside/source/static/nat-static-transport-list%v/redundancy", predicates))
 				}
-				if !state.InsideSourceStaticEntries[i].Reversible.IsNull() && data.InsideSourceStaticEntries[j].Reversible.IsNull() {
+				if !state.InsideSourceStaticEntries[i].Reversible.IsNull() && (data.InsideSourceStaticEntries[j].Reversible.IsNull() || (state.InsideSourceStaticEntries[i].Reversible.ValueBool() && !data.InsideSourceStaticEntries[j].Reversible.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/inside/source/static/nat-static-transport-list%v/reversible", predicates))
 				}
-				if !state.InsideSourceStaticEntries[i].RouteMap.IsNull() && data.InsideSourceStaticEntries[j].RouteMap.IsNull() {
+				if !state.InsideSourceStaticEntries[i].RouteMap.IsNull() && (data.InsideSourceStaticEntries[j].RouteMap.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/inside/source/static/nat-static-transport-list%v/route-map", predicates))
 				}
-				if !state.InsideSourceStaticEntries[i].NoPayload.IsNull() && data.InsideSourceStaticEntries[j].NoPayload.IsNull() {
+				if !state.InsideSourceStaticEntries[i].NoPayload.IsNull() && (data.InsideSourceStaticEntries[j].NoPayload.IsNull() || (state.InsideSourceStaticEntries[i].NoPayload.ValueBool() && !data.InsideSourceStaticEntries[j].NoPayload.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/inside/source/static/nat-static-transport-list%v/no-payload", predicates))
 				}
-				if !state.InsideSourceStaticEntries[i].NoAlias.IsNull() && data.InsideSourceStaticEntries[j].NoAlias.IsNull() {
+				if !state.InsideSourceStaticEntries[i].NoAlias.IsNull() && (data.InsideSourceStaticEntries[j].NoAlias.IsNull() || (state.InsideSourceStaticEntries[i].NoAlias.ValueBool() && !data.InsideSourceStaticEntries[j].NoAlias.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/inside/source/static/nat-static-transport-list%v/no-alias", predicates))
 				}
-				if !state.InsideSourceStaticEntries[i].Extendable.IsNull() && data.InsideSourceStaticEntries[j].Extendable.IsNull() {
+				if !state.InsideSourceStaticEntries[i].Extendable.IsNull() && (data.InsideSourceStaticEntries[j].Extendable.IsNull() || (state.InsideSourceStaticEntries[i].Extendable.ValueBool() && !data.InsideSourceStaticEntries[j].Extendable.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/inside/source/static/nat-static-transport-list%v/extendable", predicates))
 				}
-				if !state.InsideSourceStaticEntries[i].Mask.IsNull() && data.InsideSourceStaticEntries[j].Mask.IsNull() {
+				if !state.InsideSourceStaticEntries[i].Mask.IsNull() && (data.InsideSourceStaticEntries[j].Mask.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/inside/source/static/nat-static-transport-list%v/mask", predicates))
 				}
-				if !state.InsideSourceStaticEntries[i].Network.IsNull() && data.InsideSourceStaticEntries[j].Network.IsNull() {
+				if !state.InsideSourceStaticEntries[i].Network.IsNull() && (data.InsideSourceStaticEntries[j].Network.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/inside/source/static/nat-static-transport-list%v/network-config", predicates))
 				}
 				break
@@ -1063,7 +1063,7 @@ func (data *NAT) addDeletedItemsXML(ctx context.Context, state NAT, body string)
 							found = false
 						}
 						if found {
-							if !state.InsideSourceInterfaces[i].Interfaces[ci].Overload.IsNull() && data.InsideSourceInterfaces[j].Interfaces[cj].Overload.IsNull() {
+							if !state.InsideSourceInterfaces[i].Interfaces[ci].Overload.IsNull() && (data.InsideSourceInterfaces[j].Interfaces[cj].Overload.IsNull() || (state.InsideSourceInterfaces[i].Interfaces[ci].Overload.ValueBool() && !data.InsideSourceInterfaces[j].Interfaces[cj].Overload.ValueBool())) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/inside/source/list-interface/list%v/interface%v/overload-new", predicates, cpredicates))
 							}
 							break

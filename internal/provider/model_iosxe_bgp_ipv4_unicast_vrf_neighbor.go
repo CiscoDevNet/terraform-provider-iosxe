@@ -987,22 +987,22 @@ func (data *BGPIPv4UnicastVRFNeighborData) fromBodyXML(ctx context.Context, res 
 
 func (data *BGPIPv4UnicastVRFNeighbor) addDeletedItemsXML(ctx context.Context, state BGPIPv4UnicastVRFNeighbor, body string) string {
 	b := netconf.NewBody(body)
-	if !state.AdvertisementInterval.IsNull() && data.AdvertisementInterval.IsNull() {
+	if !state.AdvertisementInterval.IsNull() && (data.AdvertisementInterval.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/advertisement-interval")
 	}
-	if !state.NextHopSelfAll.IsNull() && data.NextHopSelfAll.IsNull() {
+	if !state.NextHopSelfAll.IsNull() && (data.NextHopSelfAll.IsNull() || (state.NextHopSelfAll.ValueBool() && !data.NextHopSelfAll.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/next-hop-self/all")
 	}
-	if !state.NextHopSelf.IsNull() && data.NextHopSelf.IsNull() {
+	if !state.NextHopSelf.IsNull() && (data.NextHopSelf.IsNull() || (state.NextHopSelf.ValueBool() && !data.NextHopSelf.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/next-hop-self")
 	}
-	if !state.HaModeGracefulRestart.IsNull() && data.HaModeGracefulRestart.IsNull() {
+	if !state.HaModeGracefulRestart.IsNull() && (data.HaModeGracefulRestart.IsNull() || (state.HaModeGracefulRestart.ValueBool() && !data.HaModeGracefulRestart.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ha-mode/graceful-restart")
 	}
-	if !state.EbgpMultihopMaxHop.IsNull() && data.EbgpMultihopMaxHop.IsNull() {
+	if !state.EbgpMultihopMaxHop.IsNull() && (data.EbgpMultihopMaxHop.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ebgp-multihop/max-hop")
 	}
-	if !state.EbgpMultihop.IsNull() && data.EbgpMultihop.IsNull() {
+	if !state.EbgpMultihop.IsNull() && (data.EbgpMultihop.IsNull() || (state.EbgpMultihop.ValueBool() && !data.EbgpMultihop.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ebgp-multihop")
 	}
 	for i := range state.RouteMaps {
@@ -1028,7 +1028,7 @@ func (data *BGPIPv4UnicastVRFNeighbor) addDeletedItemsXML(ctx context.Context, s
 				found = false
 			}
 			if found {
-				if !state.RouteMaps[i].RouteMapName.IsNull() && data.RouteMaps[j].RouteMapName.IsNull() {
+				if !state.RouteMaps[i].RouteMapName.IsNull() && (data.RouteMaps[j].RouteMapName.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/route-map%v/route-map-name", predicates))
 				}
 				break
@@ -1038,91 +1038,91 @@ func (data *BGPIPv4UnicastVRFNeighbor) addDeletedItemsXML(ctx context.Context, s
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/route-map%v", predicates))
 		}
 	}
-	if !state.DefaultOriginateRouteMap.IsNull() && data.DefaultOriginateRouteMap.IsNull() {
+	if !state.DefaultOriginateRouteMap.IsNull() && (data.DefaultOriginateRouteMap.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/default-originate/route-map")
 	}
-	if !state.DefaultOriginate.IsNull() && data.DefaultOriginate.IsNull() {
+	if !state.DefaultOriginate.IsNull() && (data.DefaultOriginate.IsNull() || (state.DefaultOriginate.ValueBool() && !data.DefaultOriginate.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/default-originate")
 	}
-	if !state.SoftReconfiguration.IsNull() && data.SoftReconfiguration.IsNull() {
+	if !state.SoftReconfiguration.IsNull() && (data.SoftReconfiguration.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/soft-reconfiguration")
 	}
-	if !state.RouteReflectorClient.IsNull() && data.RouteReflectorClient.IsNull() {
+	if !state.RouteReflectorClient.IsNull() && (data.RouteReflectorClient.IsNull() || (state.RouteReflectorClient.ValueBool() && !data.RouteReflectorClient.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/route-reflector-client")
 	}
-	if !state.SendCommunity.IsNull() && data.SendCommunity.IsNull() {
+	if !state.SendCommunity.IsNull() && (data.SendCommunity.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/send-community/send-community-where")
 	}
-	if !state.UpdateSourceInterfaceLoopback.IsNull() && data.UpdateSourceInterfaceLoopback.IsNull() {
+	if !state.UpdateSourceInterfaceLoopback.IsNull() && (data.UpdateSourceInterfaceLoopback.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/update-source/interface/Loopback")
 	}
-	if !state.LocalAsDualAs.IsNull() && data.LocalAsDualAs.IsNull() {
+	if !state.LocalAsDualAs.IsNull() && (data.LocalAsDualAs.IsNull() || (state.LocalAsDualAs.ValueBool() && !data.LocalAsDualAs.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/local-as/dual-as")
 	}
-	if !state.LocalAsReplaceAs.IsNull() && data.LocalAsReplaceAs.IsNull() {
+	if !state.LocalAsReplaceAs.IsNull() && (data.LocalAsReplaceAs.IsNull() || (state.LocalAsReplaceAs.ValueBool() && !data.LocalAsReplaceAs.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/local-as/replace-as")
 	}
-	if !state.LocalAsNoPrepend.IsNull() && data.LocalAsNoPrepend.IsNull() {
+	if !state.LocalAsNoPrepend.IsNull() && (data.LocalAsNoPrepend.IsNull() || (state.LocalAsNoPrepend.ValueBool() && !data.LocalAsNoPrepend.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/local-as/no-prepend")
 	}
-	if !state.LocalAs.IsNull() && data.LocalAs.IsNull() {
+	if !state.LocalAs.IsNull() && (data.LocalAs.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/local-as/as-no")
 	}
-	if !state.TtlSecurityHops.IsNull() && data.TtlSecurityHops.IsNull() {
+	if !state.TtlSecurityHops.IsNull() && (data.TtlSecurityHops.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ttl-security/hops")
 	}
-	if !state.DisableConnectedCheck.IsNull() && data.DisableConnectedCheck.IsNull() {
+	if !state.DisableConnectedCheck.IsNull() && (data.DisableConnectedCheck.IsNull() || (state.DisableConnectedCheck.ValueBool() && !data.DisableConnectedCheck.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/disable-connected-check")
 	}
-	if !state.FallOverMaximumMetricRouteMap.IsNull() && data.FallOverMaximumMetricRouteMap.IsNull() {
+	if !state.FallOverMaximumMetricRouteMap.IsNull() && (data.FallOverMaximumMetricRouteMap.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/fall-over/maximum-metric/route-map")
 	}
-	if !state.FallOverBfdStrictMode.IsNull() && data.FallOverBfdStrictMode.IsNull() {
+	if !state.FallOverBfdStrictMode.IsNull() && (data.FallOverBfdStrictMode.IsNull() || (state.FallOverBfdStrictMode.ValueBool() && !data.FallOverBfdStrictMode.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/fall-over/bfd/strict-mode")
 	}
-	if !state.FallOverBfdCheckControlPlaneFailure.IsNull() && data.FallOverBfdCheckControlPlaneFailure.IsNull() {
+	if !state.FallOverBfdCheckControlPlaneFailure.IsNull() && (data.FallOverBfdCheckControlPlaneFailure.IsNull() || (state.FallOverBfdCheckControlPlaneFailure.ValueBool() && !data.FallOverBfdCheckControlPlaneFailure.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/fall-over/bfd/check-control-plane-failure")
 	}
-	if !state.FallOverBfdSingleHop.IsNull() && data.FallOverBfdSingleHop.IsNull() {
+	if !state.FallOverBfdSingleHop.IsNull() && (data.FallOverBfdSingleHop.IsNull() || (state.FallOverBfdSingleHop.ValueBool() && !data.FallOverBfdSingleHop.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/fall-over/bfd/single-hop")
 	}
-	if !state.FallOverBfdMultiHop.IsNull() && data.FallOverBfdMultiHop.IsNull() {
+	if !state.FallOverBfdMultiHop.IsNull() && (data.FallOverBfdMultiHop.IsNull() || (state.FallOverBfdMultiHop.ValueBool() && !data.FallOverBfdMultiHop.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/fall-over/bfd/multi-hop")
 	}
-	if !state.FallOverBfd.IsNull() && data.FallOverBfd.IsNull() {
+	if !state.FallOverBfd.IsNull() && (data.FallOverBfd.IsNull() || (state.FallOverBfd.ValueBool() && !data.FallOverBfd.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/fall-over/bfd")
 	}
-	if !state.FallOverDefaultRouteMap.IsNull() && data.FallOverDefaultRouteMap.IsNull() {
+	if !state.FallOverDefaultRouteMap.IsNull() && (data.FallOverDefaultRouteMap.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/fall-over/default/route-map")
 	}
-	if !state.Version.IsNull() && data.Version.IsNull() {
+	if !state.Version.IsNull() && (data.Version.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/version")
 	}
-	if !state.TimersMinimumNeighborHold.IsNull() && data.TimersMinimumNeighborHold.IsNull() {
+	if !state.TimersMinimumNeighborHold.IsNull() && (data.TimersMinimumNeighborHold.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timers")
 	}
-	if !state.TimersHoldtime.IsNull() && data.TimersHoldtime.IsNull() {
+	if !state.TimersHoldtime.IsNull() && (data.TimersHoldtime.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timers")
 	}
-	if !state.TimersKeepaliveInterval.IsNull() && data.TimersKeepaliveInterval.IsNull() {
+	if !state.TimersKeepaliveInterval.IsNull() && (data.TimersKeepaliveInterval.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timers")
 	}
-	if !state.Password.IsNull() && data.Password.IsNull() {
+	if !state.Password.IsNull() && (data.Password.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/password")
 	}
-	if !state.PasswordType.IsNull() && data.PasswordType.IsNull() {
+	if !state.PasswordType.IsNull() && (data.PasswordType.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/password")
 	}
-	if !state.LogNeighborChangesDisable.IsNull() && data.LogNeighborChangesDisable.IsNull() {
+	if !state.LogNeighborChangesDisable.IsNull() && (data.LogNeighborChangesDisable.IsNull() || (state.LogNeighborChangesDisable.ValueBool() && !data.LogNeighborChangesDisable.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/log-neighbor-changes/disable")
 	}
-	if !state.ClusterId.IsNull() && data.ClusterId.IsNull() {
+	if !state.ClusterId.IsNull() && (data.ClusterId.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/cluster-id")
 	}
-	if !state.Shutdown.IsNull() && data.Shutdown.IsNull() {
+	if !state.Shutdown.IsNull() && (data.Shutdown.IsNull() || (state.Shutdown.ValueBool() && !data.Shutdown.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/shutdown")
 	}
-	if !state.Description.IsNull() && data.Description.IsNull() {
+	if !state.Description.IsNull() && (data.Description.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/description")
 	}
 

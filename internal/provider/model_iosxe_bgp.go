@@ -272,25 +272,25 @@ func (data *BGPData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 func (data *BGP) addDeletedItemsXML(ctx context.Context, state BGP, body string) string {
 	b := netconf.NewBody(body)
-	if !state.BgpUpdateDelay.IsNull() && data.BgpUpdateDelay.IsNull() {
+	if !state.BgpUpdateDelay.IsNull() && (data.BgpUpdateDelay.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/bgp/update-delay")
 	}
-	if !state.BgpGracefulRestart.IsNull() && data.BgpGracefulRestart.IsNull() {
+	if !state.BgpGracefulRestart.IsNull() && (data.BgpGracefulRestart.IsNull() || (state.BgpGracefulRestart.ValueBool() && !data.BgpGracefulRestart.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/bgp/gr-options/graceful-restart")
 	}
-	if !state.AsnotationDot.IsNull() && data.AsnotationDot.IsNull() {
+	if !state.AsnotationDot.IsNull() && (data.AsnotationDot.IsNull() || (state.AsnotationDot.ValueBool() && !data.AsnotationDot.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/bgp/asnotation/dot")
 	}
-	if !state.RouterIdIp.IsNull() && data.RouterIdIp.IsNull() {
+	if !state.RouterIdIp.IsNull() && (data.RouterIdIp.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/bgp/router-id/ip-id")
 	}
-	if !state.RouterIdLoopback.IsNull() && data.RouterIdLoopback.IsNull() {
+	if !state.RouterIdLoopback.IsNull() && (data.RouterIdLoopback.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/bgp/router-id/interface/Loopback")
 	}
-	if !state.LogNeighborChanges.IsNull() && data.LogNeighborChanges.IsNull() {
+	if !state.LogNeighborChanges.IsNull() && (data.LogNeighborChanges.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/bgp/log-neighbor-changes")
 	}
-	if !state.DefaultIpv4Unicast.IsNull() && data.DefaultIpv4Unicast.IsNull() {
+	if !state.DefaultIpv4Unicast.IsNull() && (data.DefaultIpv4Unicast.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/bgp/default/ipv4-unicast")
 	}
 

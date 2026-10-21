@@ -960,10 +960,10 @@ func (data *ClassMap) addDeletedItemsXML(ctx context.Context, state ClassMap, bo
 			}
 		}
 	}
-	if !state.MatchAccessGroupIndexLegacy.IsNull() && data.MatchAccessGroupIndexLegacy.IsNull() {
+	if !state.MatchAccessGroupIndexLegacy.IsNull() && (data.MatchAccessGroupIndexLegacy.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/access-group/index")
 	}
-	if !state.Description.IsNull() && data.Description.IsNull() {
+	if !state.Description.IsNull() && (data.Description.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/description")
 	}
 	if !state.MatchCos.IsNull() {
@@ -1016,22 +1016,22 @@ func (data *ClassMap) addDeletedItemsXML(ctx context.Context, state ClassMap, bo
 			}
 		}
 	}
-	if !state.MatchResultTypeMethodMabAuthoritative.IsNull() && data.MatchResultTypeMethodMabAuthoritative.IsNull() {
+	if !state.MatchResultTypeMethodMabAuthoritative.IsNull() && (data.MatchResultTypeMethodMabAuthoritative.IsNull() || (state.MatchResultTypeMethodMabAuthoritative.ValueBool() && !data.MatchResultTypeMethodMabAuthoritative.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/result-type/method/mab/authoritative")
 	}
-	if !state.MatchMethodMab.IsNull() && data.MatchMethodMab.IsNull() {
+	if !state.MatchMethodMab.IsNull() && (data.MatchMethodMab.IsNull() || (state.MatchMethodMab.ValueBool() && !data.MatchMethodMab.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/method/mab")
 	}
-	if !state.MatchResultTypeMethodDot1xMethodTimeout.IsNull() && data.MatchResultTypeMethodDot1xMethodTimeout.IsNull() {
+	if !state.MatchResultTypeMethodDot1xMethodTimeout.IsNull() && (data.MatchResultTypeMethodDot1xMethodTimeout.IsNull() || (state.MatchResultTypeMethodDot1xMethodTimeout.ValueBool() && !data.MatchResultTypeMethodDot1xMethodTimeout.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/result-type/method/dot1x/method-timeout")
 	}
-	if !state.MatchResultTypeMethodDot1xAgentNotFound.IsNull() && data.MatchResultTypeMethodDot1xAgentNotFound.IsNull() {
+	if !state.MatchResultTypeMethodDot1xAgentNotFound.IsNull() && (data.MatchResultTypeMethodDot1xAgentNotFound.IsNull() || (state.MatchResultTypeMethodDot1xAgentNotFound.ValueBool() && !data.MatchResultTypeMethodDot1xAgentNotFound.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/result-type/method/dot1x/agent-not-found")
 	}
-	if !state.MatchResultTypeMethodDot1xAuthoritative.IsNull() && data.MatchResultTypeMethodDot1xAuthoritative.IsNull() {
+	if !state.MatchResultTypeMethodDot1xAuthoritative.IsNull() && (data.MatchResultTypeMethodDot1xAuthoritative.IsNull() || (state.MatchResultTypeMethodDot1xAuthoritative.ValueBool() && !data.MatchResultTypeMethodDot1xAuthoritative.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/result-type/method/dot1x/authoritative")
 	}
-	if !state.MatchMethodDot1x.IsNull() && data.MatchMethodDot1x.IsNull() {
+	if !state.MatchMethodDot1x.IsNull() && (data.MatchMethodDot1x.IsNull() || (state.MatchMethodDot1x.ValueBool() && !data.MatchMethodDot1x.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/method/dot1x")
 	}
 	if !state.MatchAuthorizingMethodPriorityGreaterThan.IsNull() {
@@ -1089,25 +1089,25 @@ func (data *ClassMap) addDeletedItemsXML(ctx context.Context, state ClassMap, bo
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/match/activated-service-template%v", predicates))
 		}
 	}
-	if !state.MatchAuthorizationStatusUnauthorized.IsNull() && data.MatchAuthorizationStatusUnauthorized.IsNull() {
+	if !state.MatchAuthorizationStatusUnauthorized.IsNull() && (data.MatchAuthorizationStatusUnauthorized.IsNull() || (state.MatchAuthorizationStatusUnauthorized.ValueBool() && !data.MatchAuthorizationStatusUnauthorized.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/authorization-status/unauthorized")
 	}
-	if !state.MatchResultTypeSuccess.IsNull() && data.MatchResultTypeSuccess.IsNull() {
+	if !state.MatchResultTypeSuccess.IsNull() && (data.MatchResultTypeSuccess.IsNull() || (state.MatchResultTypeSuccess.ValueBool() && !data.MatchResultTypeSuccess.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/result-type/success")
 	}
-	if !state.MatchResultTypeAaaTimeout.IsNull() && data.MatchResultTypeAaaTimeout.IsNull() {
+	if !state.MatchResultTypeAaaTimeout.IsNull() && (data.MatchResultTypeAaaTimeout.IsNull() || (state.MatchResultTypeAaaTimeout.ValueBool() && !data.MatchResultTypeAaaTimeout.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/result-type/aaa-timeout")
 	}
-	if !state.MatchAuthorizationStatusAuthorized.IsNull() && data.MatchAuthorizationStatusAuthorized.IsNull() {
+	if !state.MatchAuthorizationStatusAuthorized.IsNull() && (data.MatchAuthorizationStatusAuthorized.IsNull() || (state.MatchAuthorizationStatusAuthorized.ValueBool() && !data.MatchAuthorizationStatusAuthorized.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/authorization-status/authorized")
 	}
-	if !state.Prematch.IsNull() && data.Prematch.IsNull() {
+	if !state.Prematch.IsNull() && (data.Prematch.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/prematch")
 	}
-	if !state.Subscriber.IsNull() && data.Subscriber.IsNull() {
+	if !state.Subscriber.IsNull() && (data.Subscriber.IsNull() || (state.Subscriber.ValueBool() && !data.Subscriber.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/subscriber")
 	}
-	if !state.Type.IsNull() && data.Type.IsNull() {
+	if !state.Type.IsNull() && (data.Type.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/type")
 	}
 

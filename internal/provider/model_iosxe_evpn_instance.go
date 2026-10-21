@@ -622,19 +622,19 @@ func (data *EVPNInstanceData) fromBodyXML(ctx context.Context, res xmldot.Result
 
 func (data *EVPNInstance) addDeletedItemsXML(ctx context.Context, state EVPNInstance, body string) string {
 	b := netconf.NewBody(body)
-	if !state.VlanBasedMulticastAdvertise.IsNull() && data.VlanBasedMulticastAdvertise.IsNull() {
+	if !state.VlanBasedMulticastAdvertise.IsNull() && (data.VlanBasedMulticastAdvertise.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/vlan-based/multicast/advertise")
 	}
-	if !state.VlanBasedReOriginateRouteType5.IsNull() && data.VlanBasedReOriginateRouteType5.IsNull() {
+	if !state.VlanBasedReOriginateRouteType5.IsNull() && (data.VlanBasedReOriginateRouteType5.IsNull() || (state.VlanBasedReOriginateRouteType5.ValueBool() && !data.VlanBasedReOriginateRouteType5.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/vlan-based/re-originate/route-type5")
 	}
-	if !state.VlanBasedDefaultGatewayAdvertise.IsNull() && data.VlanBasedDefaultGatewayAdvertise.IsNull() {
+	if !state.VlanBasedDefaultGatewayAdvertise.IsNull() && (data.VlanBasedDefaultGatewayAdvertise.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/vlan-based/default-gateway/advertise")
 	}
-	if !state.VlanBasedIpLocalLearningEnable.IsNull() && data.VlanBasedIpLocalLearningEnable.IsNull() {
+	if !state.VlanBasedIpLocalLearningEnable.IsNull() && (data.VlanBasedIpLocalLearningEnable.IsNull() || (state.VlanBasedIpLocalLearningEnable.ValueBool() && !data.VlanBasedIpLocalLearningEnable.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/vlan-based/ip/local-learning/enable")
 	}
-	if !state.VlanBasedIpLocalLearningDisable.IsNull() && data.VlanBasedIpLocalLearningDisable.IsNull() {
+	if !state.VlanBasedIpLocalLearningDisable.IsNull() && (data.VlanBasedIpLocalLearningDisable.IsNull() || (state.VlanBasedIpLocalLearningDisable.ValueBool() && !data.VlanBasedIpLocalLearningDisable.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/vlan-based/ip/local-learning/disable")
 	}
 	for i := range state.VlanBasedRouteTargetImports {
@@ -697,40 +697,40 @@ func (data *EVPNInstance) addDeletedItemsXML(ctx context.Context, state EVPNInst
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vlan-based/route-target-v2/export%v", predicates))
 		}
 	}
-	if !state.VlanBasedRouteTargetExportLegacy.IsNull() && data.VlanBasedRouteTargetExportLegacy.IsNull() {
+	if !state.VlanBasedRouteTargetExportLegacy.IsNull() && (data.VlanBasedRouteTargetExportLegacy.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/vlan-based/route-target/export/rt-value")
 	}
-	if !state.VlanBasedRouteTargetImportLegacy.IsNull() && data.VlanBasedRouteTargetImportLegacy.IsNull() {
+	if !state.VlanBasedRouteTargetImportLegacy.IsNull() && (data.VlanBasedRouteTargetImportLegacy.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/vlan-based/route-target/import/rt-value")
 	}
-	if !state.VlanBasedRouteTargetBothLegacy.IsNull() && data.VlanBasedRouteTargetBothLegacy.IsNull() {
+	if !state.VlanBasedRouteTargetBothLegacy.IsNull() && (data.VlanBasedRouteTargetBothLegacy.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/vlan-based/route-target/both/rt-value")
 	}
-	if !state.VlanBasedRouteTargetLegacy.IsNull() && data.VlanBasedRouteTargetLegacy.IsNull() {
+	if !state.VlanBasedRouteTargetLegacy.IsNull() && (data.VlanBasedRouteTargetLegacy.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/vlan-based/route-target/rt-value")
 	}
-	if !state.VlanBasedRd.IsNull() && data.VlanBasedRd.IsNull() {
+	if !state.VlanBasedRd.IsNull() && (data.VlanBasedRd.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/vlan-based/rd/rd-value")
 	}
-	if !state.VlanBasedAutoRouteTarget.IsNull() && data.VlanBasedAutoRouteTarget.IsNull() {
+	if !state.VlanBasedAutoRouteTarget.IsNull() && (data.VlanBasedAutoRouteTarget.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/vlan-based/auto-route-target_cont/auto-route-target-boolean")
 	}
-	if !state.VlanBasedAutoRouteTargetLegacy.IsNull() && data.VlanBasedAutoRouteTargetLegacy.IsNull() {
+	if !state.VlanBasedAutoRouteTargetLegacy.IsNull() && (data.VlanBasedAutoRouteTargetLegacy.IsNull() || (state.VlanBasedAutoRouteTargetLegacy.ValueBool() && !data.VlanBasedAutoRouteTargetLegacy.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/vlan-based/auto-route-target_cont/auto-route-target")
 	}
-	if !state.VlanBasedEncapsulation.IsNull() && data.VlanBasedEncapsulation.IsNull() {
+	if !state.VlanBasedEncapsulation.IsNull() && (data.VlanBasedEncapsulation.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/vlan-based/encapsulation")
 	}
-	if !state.VlanBasedReplicationTypeMp2mp.IsNull() && data.VlanBasedReplicationTypeMp2mp.IsNull() {
+	if !state.VlanBasedReplicationTypeMp2mp.IsNull() && (data.VlanBasedReplicationTypeMp2mp.IsNull() || (state.VlanBasedReplicationTypeMp2mp.ValueBool() && !data.VlanBasedReplicationTypeMp2mp.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/vlan-based/replication-type/mp2mp")
 	}
-	if !state.VlanBasedReplicationTypeP2mp.IsNull() && data.VlanBasedReplicationTypeP2mp.IsNull() {
+	if !state.VlanBasedReplicationTypeP2mp.IsNull() && (data.VlanBasedReplicationTypeP2mp.IsNull() || (state.VlanBasedReplicationTypeP2mp.ValueBool() && !data.VlanBasedReplicationTypeP2mp.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/vlan-based/replication-type/p2mp")
 	}
-	if !state.VlanBasedReplicationTypeStatic.IsNull() && data.VlanBasedReplicationTypeStatic.IsNull() {
+	if !state.VlanBasedReplicationTypeStatic.IsNull() && (data.VlanBasedReplicationTypeStatic.IsNull() || (state.VlanBasedReplicationTypeStatic.ValueBool() && !data.VlanBasedReplicationTypeStatic.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/vlan-based/replication-type/static")
 	}
-	if !state.VlanBasedReplicationTypeIngress.IsNull() && data.VlanBasedReplicationTypeIngress.IsNull() {
+	if !state.VlanBasedReplicationTypeIngress.IsNull() && (data.VlanBasedReplicationTypeIngress.IsNull() || (state.VlanBasedReplicationTypeIngress.ValueBool() && !data.VlanBasedReplicationTypeIngress.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/vlan-based/replication-type/ingress")
 	}
 

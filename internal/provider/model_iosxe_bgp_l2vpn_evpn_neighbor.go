@@ -316,7 +316,7 @@ func (data *BGPL2VPNEVPNNeighborData) fromBodyXML(ctx context.Context, res xmldo
 
 func (data *BGPL2VPNEVPNNeighbor) addDeletedItemsXML(ctx context.Context, state BGPL2VPNEVPNNeighbor, body string) string {
 	b := netconf.NewBody(body)
-	if !state.InheritPeerPolicy.IsNull() && data.InheritPeerPolicy.IsNull() {
+	if !state.InheritPeerPolicy.IsNull() && (data.InheritPeerPolicy.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/inherit/peer-policy")
 	}
 	for i := range state.RouteMaps {
@@ -342,7 +342,7 @@ func (data *BGPL2VPNEVPNNeighbor) addDeletedItemsXML(ctx context.Context, state 
 				found = false
 			}
 			if found {
-				if !state.RouteMaps[i].RouteMapName.IsNull() && data.RouteMaps[j].RouteMapName.IsNull() {
+				if !state.RouteMaps[i].RouteMapName.IsNull() && (data.RouteMaps[j].RouteMapName.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/route-map%v/route-map-name", predicates))
 				}
 				break
@@ -352,13 +352,13 @@ func (data *BGPL2VPNEVPNNeighbor) addDeletedItemsXML(ctx context.Context, state 
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/route-map%v", predicates))
 		}
 	}
-	if !state.SoftReconfiguration.IsNull() && data.SoftReconfiguration.IsNull() {
+	if !state.SoftReconfiguration.IsNull() && (data.SoftReconfiguration.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/soft-reconfiguration")
 	}
-	if !state.RouteReflectorClient.IsNull() && data.RouteReflectorClient.IsNull() {
+	if !state.RouteReflectorClient.IsNull() && (data.RouteReflectorClient.IsNull() || (state.RouteReflectorClient.ValueBool() && !data.RouteReflectorClient.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/route-reflector-client")
 	}
-	if !state.SendCommunity.IsNull() && data.SendCommunity.IsNull() {
+	if !state.SendCommunity.IsNull() && (data.SendCommunity.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/send-community/send-community-where")
 	}
 

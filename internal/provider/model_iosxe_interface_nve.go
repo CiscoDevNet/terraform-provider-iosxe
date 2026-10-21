@@ -456,13 +456,13 @@ func (data *InterfaceNVE) addDeletedItemsXML(ctx context.Context, state Interfac
 				found = false
 			}
 			if found {
-				if !state.Vnis[i].LocalRouting.IsNull() && data.Vnis[j].LocalRouting.IsNull() {
+				if !state.Vnis[i].LocalRouting.IsNull() && (data.Vnis[j].LocalRouting.IsNull() || (state.Vnis[i].LocalRouting.ValueBool() && !data.Vnis[j].LocalRouting.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/member/vni%v/ir-cp-config/local-routing", predicates))
 				}
-				if !state.Vnis[i].IngressReplication.IsNull() && data.Vnis[j].IngressReplication.IsNull() {
+				if !state.Vnis[i].IngressReplication.IsNull() && (data.Vnis[j].IngressReplication.IsNull() || (state.Vnis[i].IngressReplication.ValueBool() && !data.Vnis[j].IngressReplication.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/member/vni%v/ir-cp-config/ingress-replication", predicates))
 				}
-				if !state.Vnis[i].Ipv4MulticastGroup.IsNull() && data.Vnis[j].Ipv4MulticastGroup.IsNull() {
+				if !state.Vnis[i].Ipv4MulticastGroup.IsNull() && (data.Vnis[j].Ipv4MulticastGroup.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/member/vni%v/mcast-group/multicast-group-min", predicates))
 				}
 				break
@@ -495,7 +495,7 @@ func (data *InterfaceNVE) addDeletedItemsXML(ctx context.Context, state Interfac
 				found = false
 			}
 			if found {
-				if !state.VniVrfs[i].Vrf.IsNull() && data.VniVrfs[j].Vrf.IsNull() {
+				if !state.VniVrfs[i].Vrf.IsNull() && (data.VniVrfs[j].Vrf.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/member-in-one-line/member/vni%v/vrf", predicates))
 				}
 				break
@@ -505,13 +505,13 @@ func (data *InterfaceNVE) addDeletedItemsXML(ctx context.Context, state Interfac
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/member-in-one-line/member/vni%v", predicates))
 		}
 	}
-	if !state.SourceInterfaceLoopback.IsNull() && data.SourceInterfaceLoopback.IsNull() {
+	if !state.SourceInterfaceLoopback.IsNull() && (data.SourceInterfaceLoopback.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/source-interface/Loopback")
 	}
-	if !state.Shutdown.IsNull() && data.Shutdown.IsNull() {
+	if !state.Shutdown.IsNull() && (data.Shutdown.IsNull() || (state.Shutdown.ValueBool() && !data.Shutdown.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/shutdown")
 	}
-	if !state.Description.IsNull() && data.Description.IsNull() {
+	if !state.Description.IsNull() && (data.Description.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/description")
 	}
 

@@ -259,19 +259,19 @@ func (data *CryptoIPSecProfileData) fromBodyXML(ctx context.Context, res xmldot.
 
 func (data *CryptoIPSecProfile) addDeletedItemsXML(ctx context.Context, state CryptoIPSecProfile, body string) string {
 	b := netconf.NewBody(body)
-	if !state.SetSecurityAssociationLifetimeSecondsLegacy.IsNull() && data.SetSecurityAssociationLifetimeSecondsLegacy.IsNull() {
+	if !state.SetSecurityAssociationLifetimeSecondsLegacy.IsNull() && (data.SetSecurityAssociationLifetimeSecondsLegacy.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/set/security-association/lifetime/seconds")
 	}
-	if !state.SetSecurityAssociationLifetimeSeconds.IsNull() && data.SetSecurityAssociationLifetimeSeconds.IsNull() {
+	if !state.SetSecurityAssociationLifetimeSeconds.IsNull() && (data.SetSecurityAssociationLifetimeSeconds.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/set/security-association/lifetime/seconds-case")
 	}
-	if !state.SetPfsGroup.IsNull() && data.SetPfsGroup.IsNull() {
+	if !state.SetPfsGroup.IsNull() && (data.SetPfsGroup.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/set/pfs/group")
 	}
-	if !state.SetIsakmpProfile.IsNull() && data.SetIsakmpProfile.IsNull() {
+	if !state.SetIsakmpProfile.IsNull() && (data.SetIsakmpProfile.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/set/isakmp-profile")
 	}
-	if !state.SetIkev2Profile.IsNull() && data.SetIkev2Profile.IsNull() {
+	if !state.SetIkev2Profile.IsNull() && (data.SetIkev2Profile.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/set/ikev2-profile")
 	}
 	if !state.SetTransformSet.IsNull() {

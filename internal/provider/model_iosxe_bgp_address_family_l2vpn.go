@@ -172,10 +172,10 @@ func (data *BGPAddressFamilyL2VPNData) fromBodyXML(ctx context.Context, res xmld
 
 func (data *BGPAddressFamilyL2VPN) addDeletedItemsXML(ctx context.Context, state BGPAddressFamilyL2VPN, body string) string {
 	b := netconf.NewBody(body)
-	if !state.BgpNexthopTriggerDelay.IsNull() && data.BgpNexthopTriggerDelay.IsNull() {
+	if !state.BgpNexthopTriggerDelay.IsNull() && (data.BgpNexthopTriggerDelay.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/l2vpn-evpn/bgp/nexthop/trigger/delay")
 	}
-	if !state.RewriteEvpnRtAsn.IsNull() && data.RewriteEvpnRtAsn.IsNull() {
+	if !state.RewriteEvpnRtAsn.IsNull() && (data.RewriteEvpnRtAsn.IsNull() || (state.RewriteEvpnRtAsn.ValueBool() && !data.RewriteEvpnRtAsn.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/l2vpn-evpn/rewrite-evpn-rt-asn")
 	}
 

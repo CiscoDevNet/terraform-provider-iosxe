@@ -1195,7 +1195,7 @@ func (data *DeviceSensorData) fromBodyXML(ctx context.Context, res xmldot.Result
 
 func (data *DeviceSensor) addDeletedItemsXML(ctx context.Context, state DeviceSensor, body string) string {
 	b := netconf.NewBody(body)
-	if !state.NotifyAllChanges.IsNull() && data.NotifyAllChanges.IsNull() {
+	if !state.NotifyAllChanges.IsNull() && (data.NotifyAllChanges.IsNull() || (state.NotifyAllChanges.ValueBool() && !data.NotifyAllChanges.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/notify/all-changes")
 	}
 	for i := range state.FilterSpecCdpExcludes {
@@ -1401,19 +1401,19 @@ func (data *DeviceSensor) addDeletedItemsXML(ctx context.Context, state DeviceSe
 				found = false
 			}
 			if found {
-				if !state.FilterListsCdp[i].TlvNamePlatformType.IsNull() && data.FilterListsCdp[j].TlvNamePlatformType.IsNull() {
+				if !state.FilterListsCdp[i].TlvNamePlatformType.IsNull() && (data.FilterListsCdp[j].TlvNamePlatformType.IsNull() || (state.FilterListsCdp[i].TlvNamePlatformType.ValueBool() && !data.FilterListsCdp[j].TlvNamePlatformType.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/filter-list/cdp/list%v/tlv/name/platform-type", predicates))
 				}
-				if !state.FilterListsCdp[i].TlvNameCapabilitiesType.IsNull() && data.FilterListsCdp[j].TlvNameCapabilitiesType.IsNull() {
+				if !state.FilterListsCdp[i].TlvNameCapabilitiesType.IsNull() && (data.FilterListsCdp[j].TlvNameCapabilitiesType.IsNull() || (state.FilterListsCdp[i].TlvNameCapabilitiesType.ValueBool() && !data.FilterListsCdp[j].TlvNameCapabilitiesType.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/filter-list/cdp/list%v/tlv/name/capabilities-type", predicates))
 				}
-				if !state.FilterListsCdp[i].TlvNamePortIdType.IsNull() && data.FilterListsCdp[j].TlvNamePortIdType.IsNull() {
+				if !state.FilterListsCdp[i].TlvNamePortIdType.IsNull() && (data.FilterListsCdp[j].TlvNamePortIdType.IsNull() || (state.FilterListsCdp[i].TlvNamePortIdType.ValueBool() && !data.FilterListsCdp[j].TlvNamePortIdType.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/filter-list/cdp/list%v/tlv/name/port-id-type", predicates))
 				}
-				if !state.FilterListsCdp[i].TlvNameAddressType.IsNull() && data.FilterListsCdp[j].TlvNameAddressType.IsNull() {
+				if !state.FilterListsCdp[i].TlvNameAddressType.IsNull() && (data.FilterListsCdp[j].TlvNameAddressType.IsNull() || (state.FilterListsCdp[i].TlvNameAddressType.ValueBool() && !data.FilterListsCdp[j].TlvNameAddressType.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/filter-list/cdp/list%v/tlv/name/address-type", predicates))
 				}
-				if !state.FilterListsCdp[i].TlvNameDeviceName.IsNull() && data.FilterListsCdp[j].TlvNameDeviceName.IsNull() {
+				if !state.FilterListsCdp[i].TlvNameDeviceName.IsNull() && (data.FilterListsCdp[j].TlvNameDeviceName.IsNull() || (state.FilterListsCdp[i].TlvNameDeviceName.ValueBool() && !data.FilterListsCdp[j].TlvNameDeviceName.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/filter-list/cdp/list%v/tlv/name/device-name", predicates))
 				}
 				break
@@ -1446,25 +1446,25 @@ func (data *DeviceSensor) addDeletedItemsXML(ctx context.Context, state DeviceSe
 				found = false
 			}
 			if found {
-				if !state.FilterListsDhcp[i].OptionNameClientFqdn.IsNull() && data.FilterListsDhcp[j].OptionNameClientFqdn.IsNull() {
+				if !state.FilterListsDhcp[i].OptionNameClientFqdn.IsNull() && (data.FilterListsDhcp[j].OptionNameClientFqdn.IsNull() || (state.FilterListsDhcp[i].OptionNameClientFqdn.ValueBool() && !data.FilterListsDhcp[j].OptionNameClientFqdn.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/filter-list/dhcp/list%v/option/name/client-fqdn", predicates))
 				}
-				if !state.FilterListsDhcp[i].OptionNameClientIdentifier.IsNull() && data.FilterListsDhcp[j].OptionNameClientIdentifier.IsNull() {
+				if !state.FilterListsDhcp[i].OptionNameClientIdentifier.IsNull() && (data.FilterListsDhcp[j].OptionNameClientIdentifier.IsNull() || (state.FilterListsDhcp[i].OptionNameClientIdentifier.ValueBool() && !data.FilterListsDhcp[j].OptionNameClientIdentifier.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/filter-list/dhcp/list%v/option/name/client-identifier", predicates))
 				}
-				if !state.FilterListsDhcp[i].OptionNameClassIdentifier.IsNull() && data.FilterListsDhcp[j].OptionNameClassIdentifier.IsNull() {
+				if !state.FilterListsDhcp[i].OptionNameClassIdentifier.IsNull() && (data.FilterListsDhcp[j].OptionNameClassIdentifier.IsNull() || (state.FilterListsDhcp[i].OptionNameClassIdentifier.ValueBool() && !data.FilterListsDhcp[j].OptionNameClassIdentifier.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/filter-list/dhcp/list%v/option/name/class-identifier", predicates))
 				}
-				if !state.FilterListsDhcp[i].OptionNameParameterRequestList.IsNull() && data.FilterListsDhcp[j].OptionNameParameterRequestList.IsNull() {
+				if !state.FilterListsDhcp[i].OptionNameParameterRequestList.IsNull() && (data.FilterListsDhcp[j].OptionNameParameterRequestList.IsNull() || (state.FilterListsDhcp[i].OptionNameParameterRequestList.ValueBool() && !data.FilterListsDhcp[j].OptionNameParameterRequestList.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/filter-list/dhcp/list%v/option/name/parameter-request-list", predicates))
 				}
-				if !state.FilterListsDhcp[i].OptionNameRequestedAddress.IsNull() && data.FilterListsDhcp[j].OptionNameRequestedAddress.IsNull() {
+				if !state.FilterListsDhcp[i].OptionNameRequestedAddress.IsNull() && (data.FilterListsDhcp[j].OptionNameRequestedAddress.IsNull() || (state.FilterListsDhcp[i].OptionNameRequestedAddress.ValueBool() && !data.FilterListsDhcp[j].OptionNameRequestedAddress.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/filter-list/dhcp/list%v/option/name/requested-address", predicates))
 				}
-				if !state.FilterListsDhcp[i].OptionNameDefaultIpTtl.IsNull() && data.FilterListsDhcp[j].OptionNameDefaultIpTtl.IsNull() {
+				if !state.FilterListsDhcp[i].OptionNameDefaultIpTtl.IsNull() && (data.FilterListsDhcp[j].OptionNameDefaultIpTtl.IsNull() || (state.FilterListsDhcp[i].OptionNameDefaultIpTtl.ValueBool() && !data.FilterListsDhcp[j].OptionNameDefaultIpTtl.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/filter-list/dhcp/list%v/option/name/default-ip-ttl", predicates))
 				}
-				if !state.FilterListsDhcp[i].OptionNameHostName.IsNull() && data.FilterListsDhcp[j].OptionNameHostName.IsNull() {
+				if !state.FilterListsDhcp[i].OptionNameHostName.IsNull() && (data.FilterListsDhcp[j].OptionNameHostName.IsNull() || (state.FilterListsDhcp[i].OptionNameHostName.ValueBool() && !data.FilterListsDhcp[j].OptionNameHostName.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/filter-list/dhcp/list%v/option/name/host-name", predicates))
 				}
 				break
@@ -1497,19 +1497,19 @@ func (data *DeviceSensor) addDeletedItemsXML(ctx context.Context, state DeviceSe
 				found = false
 			}
 			if found {
-				if !state.FilterListsLldp[i].TlvNameSystemCapabilities.IsNull() && data.FilterListsLldp[j].TlvNameSystemCapabilities.IsNull() {
+				if !state.FilterListsLldp[i].TlvNameSystemCapabilities.IsNull() && (data.FilterListsLldp[j].TlvNameSystemCapabilities.IsNull() || (state.FilterListsLldp[i].TlvNameSystemCapabilities.ValueBool() && !data.FilterListsLldp[j].TlvNameSystemCapabilities.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/filter-list/lldp/list%v/tlv/name/system-capabilities", predicates))
 				}
-				if !state.FilterListsLldp[i].TlvNameSystemDescription.IsNull() && data.FilterListsLldp[j].TlvNameSystemDescription.IsNull() {
+				if !state.FilterListsLldp[i].TlvNameSystemDescription.IsNull() && (data.FilterListsLldp[j].TlvNameSystemDescription.IsNull() || (state.FilterListsLldp[i].TlvNameSystemDescription.ValueBool() && !data.FilterListsLldp[j].TlvNameSystemDescription.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/filter-list/lldp/list%v/tlv/name/system-description", predicates))
 				}
-				if !state.FilterListsLldp[i].TlvNameSystemName.IsNull() && data.FilterListsLldp[j].TlvNameSystemName.IsNull() {
+				if !state.FilterListsLldp[i].TlvNameSystemName.IsNull() && (data.FilterListsLldp[j].TlvNameSystemName.IsNull() || (state.FilterListsLldp[i].TlvNameSystemName.ValueBool() && !data.FilterListsLldp[j].TlvNameSystemName.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/filter-list/lldp/list%v/tlv/name/system-name", predicates))
 				}
-				if !state.FilterListsLldp[i].TlvNamePortDescription.IsNull() && data.FilterListsLldp[j].TlvNamePortDescription.IsNull() {
+				if !state.FilterListsLldp[i].TlvNamePortDescription.IsNull() && (data.FilterListsLldp[j].TlvNamePortDescription.IsNull() || (state.FilterListsLldp[i].TlvNamePortDescription.ValueBool() && !data.FilterListsLldp[j].TlvNamePortDescription.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/filter-list/lldp/list%v/tlv/name/port-description", predicates))
 				}
-				if !state.FilterListsLldp[i].TlvNamePortId.IsNull() && data.FilterListsLldp[j].TlvNamePortId.IsNull() {
+				if !state.FilterListsLldp[i].TlvNamePortId.IsNull() && (data.FilterListsLldp[j].TlvNamePortId.IsNull() || (state.FilterListsLldp[i].TlvNamePortId.ValueBool() && !data.FilterListsLldp[j].TlvNamePortId.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/filter-list/lldp/list%v/tlv/name/port-id", predicates))
 				}
 				break

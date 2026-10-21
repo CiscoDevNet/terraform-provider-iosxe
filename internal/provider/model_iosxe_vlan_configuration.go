@@ -291,31 +291,31 @@ func (data *VLANConfigurationData) fromBodyXML(ctx context.Context, res xmldot.R
 
 func (data *VLANConfiguration) addDeletedItemsXML(ctx context.Context, state VLANConfiguration, body string) string {
 	b := netconf.NewBody(body)
-	if !state.EvpnInstanceProfileProtected.IsNull() && data.EvpnInstanceProfileProtected.IsNull() {
+	if !state.EvpnInstanceProfileProtected.IsNull() && (data.EvpnInstanceProfileProtected.IsNull() || (state.EvpnInstanceProfileProtected.ValueBool() && !data.EvpnInstanceProfileProtected.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/member/evi-member/evpn-instance/auto-evi-config/protected")
 	}
-	if !state.EvpnInstanceProfile.IsNull() && data.EvpnInstanceProfile.IsNull() {
+	if !state.EvpnInstanceProfile.IsNull() && (data.EvpnInstanceProfile.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/member/evi-member/evpn-instance/auto-evi-config/profile")
 	}
-	if !state.EvpnInstanceProtected.IsNull() && data.EvpnInstanceProtected.IsNull() {
+	if !state.EvpnInstanceProtected.IsNull() && (data.EvpnInstanceProtected.IsNull() || (state.EvpnInstanceProtected.ValueBool() && !data.EvpnInstanceProtected.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/member/evi-member/evpn-instance/manual-evi-config/protected")
 	}
-	if !state.EvpnInstanceVni.IsNull() && data.EvpnInstanceVni.IsNull() {
+	if !state.EvpnInstanceVni.IsNull() && (data.EvpnInstanceVni.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/member/evi-member/evpn-instance/manual-evi-config/vni")
 	}
-	if !state.EvpnInstance.IsNull() && data.EvpnInstance.IsNull() {
+	if !state.EvpnInstance.IsNull() && (data.EvpnInstance.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/member/evi-member/evpn-instance/manual-evi-config/evi")
 	}
-	if !state.EvpnInstanceVniLegacy.IsNull() && data.EvpnInstanceVniLegacy.IsNull() {
+	if !state.EvpnInstanceVniLegacy.IsNull() && (data.EvpnInstanceVniLegacy.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/member/evpn-instance/vni")
 	}
-	if !state.EvpnInstanceLegacy.IsNull() && data.EvpnInstanceLegacy.IsNull() {
+	if !state.EvpnInstanceLegacy.IsNull() && (data.EvpnInstanceLegacy.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/member/evpn-instance/evpn-instance")
 	}
-	if !state.AccessVfi.IsNull() && data.AccessVfi.IsNull() {
+	if !state.AccessVfi.IsNull() && (data.AccessVfi.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/member/access-vfi")
 	}
-	if !state.Vni.IsNull() && data.Vni.IsNull() {
+	if !state.Vni.IsNull() && (data.Vni.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/member/vni")
 	}
 

@@ -1419,163 +1419,163 @@ func (data *ErrdisableData) fromBodyXML(ctx context.Context, res xmldot.Result) 
 
 func (data *Errdisable) addDeletedItemsXML(ctx context.Context, state Errdisable, body string) string {
 	b := netconf.NewBody(body)
-	if !state.RecoveryCauseMrpMiscabling.IsNull() && data.RecoveryCauseMrpMiscabling.IsNull() {
+	if !state.RecoveryCauseMrpMiscabling.IsNull() && (data.RecoveryCauseMrpMiscabling.IsNull() || (state.RecoveryCauseMrpMiscabling.ValueBool() && !data.RecoveryCauseMrpMiscabling.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/recovery/cause/mrp-miscabling")
 	}
-	if !state.RecoveryCauseOamRemoteFailure.IsNull() && data.RecoveryCauseOamRemoteFailure.IsNull() {
+	if !state.RecoveryCauseOamRemoteFailure.IsNull() && (data.RecoveryCauseOamRemoteFailure.IsNull() || (state.RecoveryCauseOamRemoteFailure.ValueBool() && !data.RecoveryCauseOamRemoteFailure.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/recovery/cause/oam-remote-failure")
 	}
-	if !state.RecoveryCauseLoopdetect.IsNull() && data.RecoveryCauseLoopdetect.IsNull() {
+	if !state.RecoveryCauseLoopdetect.IsNull() && (data.RecoveryCauseLoopdetect.IsNull() || (state.RecoveryCauseLoopdetect.ValueBool() && !data.RecoveryCauseLoopdetect.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/recovery/cause/loopdetect")
 	}
-	if !state.RecoveryCauseVmps.IsNull() && data.RecoveryCauseVmps.IsNull() {
+	if !state.RecoveryCauseVmps.IsNull() && (data.RecoveryCauseVmps.IsNull() || (state.RecoveryCauseVmps.ValueBool() && !data.RecoveryCauseVmps.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/recovery/cause/vmps")
 	}
-	if !state.RecoveryCauseUnicastFlood.IsNull() && data.RecoveryCauseUnicastFlood.IsNull() {
+	if !state.RecoveryCauseUnicastFlood.IsNull() && (data.RecoveryCauseUnicastFlood.IsNull() || (state.RecoveryCauseUnicastFlood.ValueBool() && !data.RecoveryCauseUnicastFlood.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/recovery/cause/unicast-flood")
 	}
-	if !state.RecoveryCauseUdld.IsNull() && data.RecoveryCauseUdld.IsNull() {
+	if !state.RecoveryCauseUdld.IsNull() && (data.RecoveryCauseUdld.IsNull() || (state.RecoveryCauseUdld.ValueBool() && !data.RecoveryCauseUdld.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/recovery/cause/udld")
 	}
-	if !state.RecoveryCauseStormControl.IsNull() && data.RecoveryCauseStormControl.IsNull() {
+	if !state.RecoveryCauseStormControl.IsNull() && (data.RecoveryCauseStormControl.IsNull() || (state.RecoveryCauseStormControl.ValueBool() && !data.RecoveryCauseStormControl.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/recovery/cause/storm-control")
 	}
-	if !state.RecoveryCauseSmallFrame.IsNull() && data.RecoveryCauseSmallFrame.IsNull() {
+	if !state.RecoveryCauseSmallFrame.IsNull() && (data.RecoveryCauseSmallFrame.IsNull() || (state.RecoveryCauseSmallFrame.ValueBool() && !data.RecoveryCauseSmallFrame.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/recovery/cause/small-frame")
 	}
-	if !state.RecoveryCauseSfpConfigMismatch.IsNull() && data.RecoveryCauseSfpConfigMismatch.IsNull() {
+	if !state.RecoveryCauseSfpConfigMismatch.IsNull() && (data.RecoveryCauseSfpConfigMismatch.IsNull() || (state.RecoveryCauseSfpConfigMismatch.ValueBool() && !data.RecoveryCauseSfpConfigMismatch.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/recovery/cause/sfp-config-mismatch")
 	}
-	if !state.RecoveryCauseSecurityViolation.IsNull() && data.RecoveryCauseSecurityViolation.IsNull() {
+	if !state.RecoveryCauseSecurityViolation.IsNull() && (data.RecoveryCauseSecurityViolation.IsNull() || (state.RecoveryCauseSecurityViolation.ValueBool() && !data.RecoveryCauseSecurityViolation.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/recovery/cause/security-violation")
 	}
-	if !state.RecoveryCausePsecureViolation.IsNull() && data.RecoveryCausePsecureViolation.IsNull() {
+	if !state.RecoveryCausePsecureViolation.IsNull() && (data.RecoveryCausePsecureViolation.IsNull() || (state.RecoveryCausePsecureViolation.ValueBool() && !data.RecoveryCausePsecureViolation.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/recovery/cause/psecure-violation")
 	}
-	if !state.RecoveryCausePsp.IsNull() && data.RecoveryCausePsp.IsNull() {
+	if !state.RecoveryCausePsp.IsNull() && (data.RecoveryCausePsp.IsNull() || (state.RecoveryCausePsp.ValueBool() && !data.RecoveryCausePsp.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/recovery/cause/psp")
 	}
-	if !state.RecoveryCausePppoeIaRateLimit.IsNull() && data.RecoveryCausePppoeIaRateLimit.IsNull() {
+	if !state.RecoveryCausePppoeIaRateLimit.IsNull() && (data.RecoveryCausePppoeIaRateLimit.IsNull() || (state.RecoveryCausePppoeIaRateLimit.ValueBool() && !data.RecoveryCausePppoeIaRateLimit.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/recovery/cause/pppoe-ia-rate-limit")
 	}
-	if !state.RecoveryCausePortModeFailure.IsNull() && data.RecoveryCausePortModeFailure.IsNull() {
+	if !state.RecoveryCausePortModeFailure.IsNull() && (data.RecoveryCausePortModeFailure.IsNull() || (state.RecoveryCausePortModeFailure.ValueBool() && !data.RecoveryCausePortModeFailure.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/recovery/cause/port-mode-failure")
 	}
-	if !state.RecoveryCausePagpFlap.IsNull() && data.RecoveryCausePagpFlap.IsNull() {
+	if !state.RecoveryCausePagpFlap.IsNull() && (data.RecoveryCausePagpFlap.IsNull() || (state.RecoveryCausePagpFlap.ValueBool() && !data.RecoveryCausePagpFlap.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/recovery/cause/pagp-flap")
 	}
-	if !state.RecoveryCauseMlacpMinlink.IsNull() && data.RecoveryCauseMlacpMinlink.IsNull() {
+	if !state.RecoveryCauseMlacpMinlink.IsNull() && (data.RecoveryCauseMlacpMinlink.IsNull() || (state.RecoveryCauseMlacpMinlink.ValueBool() && !data.RecoveryCauseMlacpMinlink.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/recovery/cause/mlacp-minlink")
 	}
-	if !state.RecoveryCauseMacLimit.IsNull() && data.RecoveryCauseMacLimit.IsNull() {
+	if !state.RecoveryCauseMacLimit.IsNull() && (data.RecoveryCauseMacLimit.IsNull() || (state.RecoveryCauseMacLimit.ValueBool() && !data.RecoveryCauseMacLimit.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/recovery/cause/mac-limit")
 	}
-	if !state.RecoveryCauseLoopback.IsNull() && data.RecoveryCauseLoopback.IsNull() {
+	if !state.RecoveryCauseLoopback.IsNull() && (data.RecoveryCauseLoopback.IsNull() || (state.RecoveryCauseLoopback.ValueBool() && !data.RecoveryCauseLoopback.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/recovery/cause/loopback")
 	}
-	if !state.RecoveryCauseLinkMonitorFailure.IsNull() && data.RecoveryCauseLinkMonitorFailure.IsNull() {
+	if !state.RecoveryCauseLinkMonitorFailure.IsNull() && (data.RecoveryCauseLinkMonitorFailure.IsNull() || (state.RecoveryCauseLinkMonitorFailure.ValueBool() && !data.RecoveryCauseLinkMonitorFailure.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/recovery/cause/link-monitor-failure")
 	}
-	if !state.RecoveryCauseLinkFlap.IsNull() && data.RecoveryCauseLinkFlap.IsNull() {
+	if !state.RecoveryCauseLinkFlap.IsNull() && (data.RecoveryCauseLinkFlap.IsNull() || (state.RecoveryCauseLinkFlap.ValueBool() && !data.RecoveryCauseLinkFlap.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/recovery/cause/link-flap")
 	}
-	if !state.RecoveryCauseL2ptguard.IsNull() && data.RecoveryCauseL2ptguard.IsNull() {
+	if !state.RecoveryCauseL2ptguard.IsNull() && (data.RecoveryCauseL2ptguard.IsNull() || (state.RecoveryCauseL2ptguard.ValueBool() && !data.RecoveryCauseL2ptguard.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/recovery/cause/l2ptguard")
 	}
-	if !state.RecoveryCauseInlinePower.IsNull() && data.RecoveryCauseInlinePower.IsNull() {
+	if !state.RecoveryCauseInlinePower.IsNull() && (data.RecoveryCauseInlinePower.IsNull() || (state.RecoveryCauseInlinePower.ValueBool() && !data.RecoveryCauseInlinePower.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/recovery/cause/inline-power")
 	}
-	if !state.RecoveryCauseGbicInvalid.IsNull() && data.RecoveryCauseGbicInvalid.IsNull() {
+	if !state.RecoveryCauseGbicInvalid.IsNull() && (data.RecoveryCauseGbicInvalid.IsNull() || (state.RecoveryCauseGbicInvalid.ValueBool() && !data.RecoveryCauseGbicInvalid.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/recovery/cause/gbic-invalid")
 	}
-	if !state.RecoveryCauseDtpFlap.IsNull() && data.RecoveryCauseDtpFlap.IsNull() {
+	if !state.RecoveryCauseDtpFlap.IsNull() && (data.RecoveryCauseDtpFlap.IsNull() || (state.RecoveryCauseDtpFlap.ValueBool() && !data.RecoveryCauseDtpFlap.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/recovery/cause/dtp-flap")
 	}
-	if !state.RecoveryCauseDhcpRateLimit.IsNull() && data.RecoveryCauseDhcpRateLimit.IsNull() {
+	if !state.RecoveryCauseDhcpRateLimit.IsNull() && (data.RecoveryCauseDhcpRateLimit.IsNull() || (state.RecoveryCauseDhcpRateLimit.ValueBool() && !data.RecoveryCauseDhcpRateLimit.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/recovery/cause/dhcp-rate-limit")
 	}
-	if !state.RecoveryCauseChannelMisconfig.IsNull() && data.RecoveryCauseChannelMisconfig.IsNull() {
+	if !state.RecoveryCauseChannelMisconfig.IsNull() && (data.RecoveryCauseChannelMisconfig.IsNull() || (state.RecoveryCauseChannelMisconfig.ValueBool() && !data.RecoveryCauseChannelMisconfig.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/recovery/cause/channel-misconfig")
 	}
-	if !state.RecoveryCauseBpduguard.IsNull() && data.RecoveryCauseBpduguard.IsNull() {
+	if !state.RecoveryCauseBpduguard.IsNull() && (data.RecoveryCauseBpduguard.IsNull() || (state.RecoveryCauseBpduguard.ValueBool() && !data.RecoveryCauseBpduguard.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/recovery/cause/bpduguard")
 	}
-	if !state.RecoveryCauseArpInspection.IsNull() && data.RecoveryCauseArpInspection.IsNull() {
+	if !state.RecoveryCauseArpInspection.IsNull() && (data.RecoveryCauseArpInspection.IsNull() || (state.RecoveryCauseArpInspection.ValueBool() && !data.RecoveryCauseArpInspection.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/recovery/cause/arp-inspection")
 	}
-	if !state.RecoveryCauseAll.IsNull() && data.RecoveryCauseAll.IsNull() {
+	if !state.RecoveryCauseAll.IsNull() && (data.RecoveryCauseAll.IsNull() || (state.RecoveryCauseAll.ValueBool() && !data.RecoveryCauseAll.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/recovery/cause/all")
 	}
-	if !state.RecoveryInterval.IsNull() && data.RecoveryInterval.IsNull() {
+	if !state.RecoveryInterval.IsNull() && (data.RecoveryInterval.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/recovery/interval")
 	}
-	if !state.FlapSettingCausePagpFlapTime.IsNull() && data.FlapSettingCausePagpFlapTime.IsNull() {
+	if !state.FlapSettingCausePagpFlapTime.IsNull() && (data.FlapSettingCausePagpFlapTime.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/flap-setting/cause/pagp-flap")
 	}
-	if !state.FlapSettingCausePagpFlapMaxFlaps.IsNull() && data.FlapSettingCausePagpFlapMaxFlaps.IsNull() {
+	if !state.FlapSettingCausePagpFlapMaxFlaps.IsNull() && (data.FlapSettingCausePagpFlapMaxFlaps.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/flap-setting/cause/pagp-flap")
 	}
-	if !state.FlapSettingCauseLinkFlapTime.IsNull() && data.FlapSettingCauseLinkFlapTime.IsNull() {
+	if !state.FlapSettingCauseLinkFlapTime.IsNull() && (data.FlapSettingCauseLinkFlapTime.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/flap-setting/cause/link-flap")
 	}
-	if !state.FlapSettingCauseLinkFlapMaxFlaps.IsNull() && data.FlapSettingCauseLinkFlapMaxFlaps.IsNull() {
+	if !state.FlapSettingCauseLinkFlapMaxFlaps.IsNull() && (data.FlapSettingCauseLinkFlapMaxFlaps.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/flap-setting/cause/link-flap")
 	}
-	if !state.FlapSettingCauseDtpFlapTime.IsNull() && data.FlapSettingCauseDtpFlapTime.IsNull() {
+	if !state.FlapSettingCauseDtpFlapTime.IsNull() && (data.FlapSettingCauseDtpFlapTime.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/flap-setting/cause/dtp-flap")
 	}
-	if !state.FlapSettingCauseDtpFlapMaxFlaps.IsNull() && data.FlapSettingCauseDtpFlapMaxFlaps.IsNull() {
+	if !state.FlapSettingCauseDtpFlapMaxFlaps.IsNull() && (data.FlapSettingCauseDtpFlapMaxFlaps.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/flap-setting/cause/dtp-flap")
 	}
-	if !state.DetectCauseLoopdetect.IsNull() && data.DetectCauseLoopdetect.IsNull() {
+	if !state.DetectCauseLoopdetect.IsNull() && (data.DetectCauseLoopdetect.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/detect/cause/loopdetect")
 	}
-	if !state.DetectCauseSmallFrame.IsNull() && data.DetectCauseSmallFrame.IsNull() {
+	if !state.DetectCauseSmallFrame.IsNull() && (data.DetectCauseSmallFrame.IsNull() || (state.DetectCauseSmallFrame.ValueBool() && !data.DetectCauseSmallFrame.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/detect/cause/small-frame")
 	}
-	if !state.DetectCauseSfpConfigMismatch.IsNull() && data.DetectCauseSfpConfigMismatch.IsNull() {
+	if !state.DetectCauseSfpConfigMismatch.IsNull() && (data.DetectCauseSfpConfigMismatch.IsNull() || (state.DetectCauseSfpConfigMismatch.ValueBool() && !data.DetectCauseSfpConfigMismatch.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/detect/cause/sfp-config-mismatch")
 	}
-	if !state.DetectCauseSecurityViolationShutdownVlan.IsNull() && data.DetectCauseSecurityViolationShutdownVlan.IsNull() {
+	if !state.DetectCauseSecurityViolationShutdownVlan.IsNull() && (data.DetectCauseSecurityViolationShutdownVlan.IsNull() || (state.DetectCauseSecurityViolationShutdownVlan.ValueBool() && !data.DetectCauseSecurityViolationShutdownVlan.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/detect/cause/security-violation/shutdown/vlan")
 	}
-	if !state.DetectCausePppoeIaRateLimit.IsNull() && data.DetectCausePppoeIaRateLimit.IsNull() {
+	if !state.DetectCausePppoeIaRateLimit.IsNull() && (data.DetectCausePppoeIaRateLimit.IsNull() || (state.DetectCausePppoeIaRateLimit.ValueBool() && !data.DetectCausePppoeIaRateLimit.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/detect/cause/pppoe-ia-rate-limit")
 	}
-	if !state.DetectCausePagpFlap.IsNull() && data.DetectCausePagpFlap.IsNull() {
+	if !state.DetectCausePagpFlap.IsNull() && (data.DetectCausePagpFlap.IsNull() || (state.DetectCausePagpFlap.ValueBool() && !data.DetectCausePagpFlap.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/detect/cause/pagp-flap")
 	}
-	if !state.DetectCauseMlacpMinlink.IsNull() && data.DetectCauseMlacpMinlink.IsNull() {
+	if !state.DetectCauseMlacpMinlink.IsNull() && (data.DetectCauseMlacpMinlink.IsNull() || (state.DetectCauseMlacpMinlink.ValueBool() && !data.DetectCauseMlacpMinlink.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/detect/cause/mlacp-minlink")
 	}
-	if !state.DetectCauseLoopback.IsNull() && data.DetectCauseLoopback.IsNull() {
+	if !state.DetectCauseLoopback.IsNull() && (data.DetectCauseLoopback.IsNull() || (state.DetectCauseLoopback.ValueBool() && !data.DetectCauseLoopback.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/detect/cause/loopback")
 	}
-	if !state.DetectCauseLinkFlap.IsNull() && data.DetectCauseLinkFlap.IsNull() {
+	if !state.DetectCauseLinkFlap.IsNull() && (data.DetectCauseLinkFlap.IsNull() || (state.DetectCauseLinkFlap.ValueBool() && !data.DetectCauseLinkFlap.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/detect/cause/link-flap")
 	}
-	if !state.DetectCauseL2ptguard.IsNull() && data.DetectCauseL2ptguard.IsNull() {
+	if !state.DetectCauseL2ptguard.IsNull() && (data.DetectCauseL2ptguard.IsNull() || (state.DetectCauseL2ptguard.ValueBool() && !data.DetectCauseL2ptguard.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/detect/cause/l2ptguard")
 	}
-	if !state.DetectCauseInlinePower.IsNull() && data.DetectCauseInlinePower.IsNull() {
+	if !state.DetectCauseInlinePower.IsNull() && (data.DetectCauseInlinePower.IsNull() || (state.DetectCauseInlinePower.ValueBool() && !data.DetectCauseInlinePower.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/detect/cause/inline-power")
 	}
-	if !state.DetectCauseGbicInvalid.IsNull() && data.DetectCauseGbicInvalid.IsNull() {
+	if !state.DetectCauseGbicInvalid.IsNull() && (data.DetectCauseGbicInvalid.IsNull() || (state.DetectCauseGbicInvalid.ValueBool() && !data.DetectCauseGbicInvalid.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/detect/cause/gbic-invalid")
 	}
-	if !state.DetectCauseDtpFlap.IsNull() && data.DetectCauseDtpFlap.IsNull() {
+	if !state.DetectCauseDtpFlap.IsNull() && (data.DetectCauseDtpFlap.IsNull() || (state.DetectCauseDtpFlap.ValueBool() && !data.DetectCauseDtpFlap.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/detect/cause/dtp-flap")
 	}
-	if !state.DetectCauseDhcpRateLimit.IsNull() && data.DetectCauseDhcpRateLimit.IsNull() {
+	if !state.DetectCauseDhcpRateLimit.IsNull() && (data.DetectCauseDhcpRateLimit.IsNull() || (state.DetectCauseDhcpRateLimit.ValueBool() && !data.DetectCauseDhcpRateLimit.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/detect/cause/dhcp-rate-limit")
 	}
-	if !state.DetectCauseBpduguard.IsNull() && data.DetectCauseBpduguard.IsNull() {
+	if !state.DetectCauseBpduguard.IsNull() && (data.DetectCauseBpduguard.IsNull() || (state.DetectCauseBpduguard.ValueBool() && !data.DetectCauseBpduguard.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/detect/cause/bpduguard")
 	}
-	if !state.DetectCauseArpInspection.IsNull() && data.DetectCauseArpInspection.IsNull() {
+	if !state.DetectCauseArpInspection.IsNull() && (data.DetectCauseArpInspection.IsNull() || (state.DetectCauseArpInspection.ValueBool() && !data.DetectCauseArpInspection.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/detect/cause/arp-inspection")
 	}
-	if !state.DetectCauseAll.IsNull() && data.DetectCauseAll.IsNull() {
+	if !state.DetectCauseAll.IsNull() && (data.DetectCauseAll.IsNull() || (state.DetectCauseAll.ValueBool() && !data.DetectCauseAll.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/detect/cause/all")
 	}
 

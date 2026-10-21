@@ -319,10 +319,10 @@ func (data *EVPNEthernetSegment) addDeletedItemsXML(ctx context.Context, state E
 				found = false
 			}
 			if found {
-				if !state.IdentifierTypes[i].SystemMac.IsNull() && data.IdentifierTypes[j].SystemMac.IsNull() {
+				if !state.IdentifierTypes[i].SystemMac.IsNull() && (data.IdentifierTypes[j].SystemMac.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/identifier/type%v/system-mac", predicates))
 				}
-				if !state.IdentifierTypes[i].HexString.IsNull() && data.IdentifierTypes[j].HexString.IsNull() {
+				if !state.IdentifierTypes[i].HexString.IsNull() && (data.IdentifierTypes[j].HexString.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/identifier/type%v/hex-string", predicates))
 				}
 				break
@@ -332,13 +332,13 @@ func (data *EVPNEthernetSegment) addDeletedItemsXML(ctx context.Context, state E
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/identifier/type%v", predicates))
 		}
 	}
-	if !state.RedundancySingleActive.IsNull() && data.RedundancySingleActive.IsNull() {
+	if !state.RedundancySingleActive.IsNull() && (data.RedundancySingleActive.IsNull() || (state.RedundancySingleActive.ValueBool() && !data.RedundancySingleActive.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/redundancy/single-active")
 	}
-	if !state.RedundancyAllActive.IsNull() && data.RedundancyAllActive.IsNull() {
+	if !state.RedundancyAllActive.IsNull() && (data.RedundancyAllActive.IsNull() || (state.RedundancyAllActive.ValueBool() && !data.RedundancyAllActive.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/redundancy/all-active")
 	}
-	if !state.DfElectionWaitTime.IsNull() && data.DfElectionWaitTime.IsNull() {
+	if !state.DfElectionWaitTime.IsNull() && (data.DfElectionWaitTime.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/df-election/wait-time")
 	}
 

@@ -375,7 +375,7 @@ func (data *MDTSubscription) addDeletedItemsXML(ctx context.Context, state MDTSu
 				found = false
 			}
 			if found {
-				if !state.Receivers[i].Protocol.IsNull() && data.Receivers[j].Protocol.IsNull() {
+				if !state.Receivers[i].Protocol.IsNull() && (data.Receivers[j].Protocol.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/mdt-receivers%v/protocol", predicates))
 				}
 				break
@@ -385,25 +385,25 @@ func (data *MDTSubscription) addDeletedItemsXML(ctx context.Context, state MDTSu
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/mdt-receivers%v", predicates))
 		}
 	}
-	if !state.FilterXpath.IsNull() && data.FilterXpath.IsNull() {
+	if !state.FilterXpath.IsNull() && (data.FilterXpath.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/base/xpath")
 	}
-	if !state.UpdatePolicyOnChange.IsNull() && data.UpdatePolicyOnChange.IsNull() {
+	if !state.UpdatePolicyOnChange.IsNull() && (data.UpdatePolicyOnChange.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/base/no-synch-on-start")
 	}
-	if !state.UpdatePolicyPeriodic.IsNull() && data.UpdatePolicyPeriodic.IsNull() {
+	if !state.UpdatePolicyPeriodic.IsNull() && (data.UpdatePolicyPeriodic.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/base/period")
 	}
-	if !state.SourceAddress.IsNull() && data.SourceAddress.IsNull() {
+	if !state.SourceAddress.IsNull() && (data.SourceAddress.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/base/source-address")
 	}
-	if !state.SourceVrf.IsNull() && data.SourceVrf.IsNull() {
+	if !state.SourceVrf.IsNull() && (data.SourceVrf.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/base/source-vrf")
 	}
-	if !state.Encoding.IsNull() && data.Encoding.IsNull() {
+	if !state.Encoding.IsNull() && (data.Encoding.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/base/encoding")
 	}
-	if !state.Stream.IsNull() && data.Stream.IsNull() {
+	if !state.Stream.IsNull() && (data.Stream.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/base/stream")
 	}
 

@@ -550,34 +550,34 @@ func (data *Dot1xData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 func (data *Dot1x) addDeletedItemsXML(ctx context.Context, state Dot1x, body string) string {
 	b := netconf.NewBody(body)
-	if !state.CriticalEapolBlock.IsNull() && data.CriticalEapolBlock.IsNull() {
+	if !state.CriticalEapolBlock.IsNull() && (data.CriticalEapolBlock.IsNull() || (state.CriticalEapolBlock.ValueBool() && !data.CriticalEapolBlock.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-dot1x:critical/eapol-config/block")
 	}
-	if !state.CriticalEapol.IsNull() && data.CriticalEapol.IsNull() {
+	if !state.CriticalEapol.IsNull() && (data.CriticalEapol.IsNull() || (state.CriticalEapol.ValueBool() && !data.CriticalEapol.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-dot1x:critical/eapol-config")
 	}
-	if !state.GuestVlanSupplicant.IsNull() && data.GuestVlanSupplicant.IsNull() {
+	if !state.GuestVlanSupplicant.IsNull() && (data.GuestVlanSupplicant.IsNull() || (state.GuestVlanSupplicant.ValueBool() && !data.GuestVlanSupplicant.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-dot1x:guest-vlan/supplicant")
 	}
-	if !state.SystemAuthControl.IsNull() && data.SystemAuthControl.IsNull() {
+	if !state.SystemAuthControl.IsNull() && (data.SystemAuthControl.IsNull() || (state.SystemAuthControl.ValueBool() && !data.SystemAuthControl.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-dot1x:system-auth-control")
 	}
-	if !state.SupplicantForceMulticast.IsNull() && data.SupplicantForceMulticast.IsNull() {
+	if !state.SupplicantForceMulticast.IsNull() && (data.SupplicantForceMulticast.IsNull() || (state.SupplicantForceMulticast.ValueBool() && !data.SupplicantForceMulticast.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-dot1x:supplicant/force-multicast")
 	}
-	if !state.SupplicantControlledTransient.IsNull() && data.SupplicantControlledTransient.IsNull() {
+	if !state.SupplicantControlledTransient.IsNull() && (data.SupplicantControlledTransient.IsNull() || (state.SupplicantControlledTransient.ValueBool() && !data.SupplicantControlledTransient.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-dot1x:supplicant/controlled/transient")
 	}
-	if !state.LoggingVerbose.IsNull() && data.LoggingVerbose.IsNull() {
+	if !state.LoggingVerbose.IsNull() && (data.LoggingVerbose.IsNull() || (state.LoggingVerbose.ValueBool() && !data.LoggingVerbose.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-dot1x:logging/verbose")
 	}
-	if !state.TestTimeout.IsNull() && data.TestTimeout.IsNull() {
+	if !state.TestTimeout.IsNull() && (data.TestTimeout.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-dot1x:test/timeout")
 	}
-	if !state.CriticalRecoveryDelay.IsNull() && data.CriticalRecoveryDelay.IsNull() {
+	if !state.CriticalRecoveryDelay.IsNull() && (data.CriticalRecoveryDelay.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-dot1x:critical/recovery/delay")
 	}
-	if !state.CriticalEapolConfigBlock.IsNull() && data.CriticalEapolConfigBlock.IsNull() {
+	if !state.CriticalEapolConfigBlock.IsNull() && (data.CriticalEapolConfigBlock.IsNull() || (state.CriticalEapolConfigBlock.ValueBool() && !data.CriticalEapolConfigBlock.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-dot1x:critical/eapol-config/block")
 	}
 	for i := range state.Credentials {
@@ -603,22 +603,22 @@ func (data *Dot1x) addDeletedItemsXML(ctx context.Context, state Dot1x, body str
 				found = false
 			}
 			if found {
-				if !state.Credentials[i].AnonymousId.IsNull() && data.Credentials[j].AnonymousId.IsNull() {
+				if !state.Credentials[i].AnonymousId.IsNull() && (data.Credentials[j].AnonymousId.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-dot1x:credentials%v/anonymous-id", predicates))
 				}
-				if !state.Credentials[i].PkiTrustpoint.IsNull() && data.Credentials[j].PkiTrustpoint.IsNull() {
+				if !state.Credentials[i].PkiTrustpoint.IsNull() && (data.Credentials[j].PkiTrustpoint.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-dot1x:credentials%v/pki-trustpoint", predicates))
 				}
-				if !state.Credentials[i].Password.IsNull() && data.Credentials[j].Password.IsNull() {
+				if !state.Credentials[i].Password.IsNull() && (data.Credentials[j].Password.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-dot1x:credentials%v/password/secret", predicates))
 				}
-				if !state.Credentials[i].PasswordType.IsNull() && data.Credentials[j].PasswordType.IsNull() {
+				if !state.Credentials[i].PasswordType.IsNull() && (data.Credentials[j].PasswordType.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-dot1x:credentials%v/password/type", predicates))
 				}
-				if !state.Credentials[i].Username.IsNull() && data.Credentials[j].Username.IsNull() {
+				if !state.Credentials[i].Username.IsNull() && (data.Credentials[j].Username.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-dot1x:credentials%v/username", predicates))
 				}
-				if !state.Credentials[i].Description.IsNull() && data.Credentials[j].Description.IsNull() {
+				if !state.Credentials[i].Description.IsNull() && (data.Credentials[j].Description.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-dot1x:credentials%v/description", predicates))
 				}
 				break
@@ -628,7 +628,7 @@ func (data *Dot1x) addDeletedItemsXML(ctx context.Context, state Dot1x, body str
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-dot1x:credentials%v", predicates))
 		}
 	}
-	if !state.AuthFailEapol.IsNull() && data.AuthFailEapol.IsNull() {
+	if !state.AuthFailEapol.IsNull() && (data.AuthFailEapol.IsNull() || (state.AuthFailEapol.ValueBool() && !data.AuthFailEapol.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-dot1x:auth-fail/eapol")
 	}
 

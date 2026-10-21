@@ -176,13 +176,13 @@ func (data *IPv6LocalPoolData) fromBodyXML(ctx context.Context, res xmldot.Resul
 
 func (data *IPv6LocalPool) addDeletedItemsXML(ctx context.Context, state IPv6LocalPool, body string) string {
 	b := netconf.NewBody(body)
-	if !state.Group.IsNull() && data.Group.IsNull() {
+	if !state.Group.IsNull() && (data.Group.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/group")
 	}
-	if !state.PrefixLength.IsNull() && data.PrefixLength.IsNull() {
+	if !state.PrefixLength.IsNull() && (data.PrefixLength.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/prefix-length")
 	}
-	if !state.StartAddress.IsNull() && data.StartAddress.IsNull() {
+	if !state.StartAddress.IsNull() && (data.StartAddress.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/start-address")
 	}
 

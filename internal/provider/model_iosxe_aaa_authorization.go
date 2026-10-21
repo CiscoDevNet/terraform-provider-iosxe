@@ -1772,7 +1772,7 @@ func (data *AAAAuthorizationData) fromBodyXML(ctx context.Context, res xmldot.Re
 
 func (data *AAAAuthorization) addDeletedItemsXML(ctx context.Context, state AAAAuthorization, body string) string {
 	b := netconf.NewBody(body)
-	if !state.Console.IsNull() && data.Console.IsNull() {
+	if !state.Console.IsNull() && (data.Console.IsNull() || (state.Console.ValueBool() && !data.Console.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/console")
 	}
 	for i := range state.ConfigLists {
@@ -1798,16 +1798,16 @@ func (data *AAAAuthorization) addDeletedItemsXML(ctx context.Context, state AAAA
 				found = false
 			}
 			if found {
-				if !state.ConfigLists[i].Group1Tacacs.IsNull() && data.ConfigLists[j].Group1Tacacs.IsNull() {
+				if !state.ConfigLists[i].Group1Tacacs.IsNull() && (data.ConfigLists[j].Group1Tacacs.IsNull() || (state.ConfigLists[i].Group1Tacacs.ValueBool() && !data.ConfigLists[j].Group1Tacacs.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/configuration/config-list%v/group1/tacacs", predicates))
 				}
-				if !state.ConfigLists[i].Group1Radius.IsNull() && data.ConfigLists[j].Group1Radius.IsNull() {
+				if !state.ConfigLists[i].Group1Radius.IsNull() && (data.ConfigLists[j].Group1Radius.IsNull() || (state.ConfigLists[i].Group1Radius.ValueBool() && !data.ConfigLists[j].Group1Radius.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/configuration/config-list%v/group1/radius", predicates))
 				}
-				if !state.ConfigLists[i].Group1Group.IsNull() && data.ConfigLists[j].Group1Group.IsNull() {
+				if !state.ConfigLists[i].Group1Group.IsNull() && (data.ConfigLists[j].Group1Group.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/configuration/config-list%v/group1/group", predicates))
 				}
-				if !state.ConfigLists[i].Group1Cache.IsNull() && data.ConfigLists[j].Group1Cache.IsNull() {
+				if !state.ConfigLists[i].Group1Cache.IsNull() && (data.ConfigLists[j].Group1Cache.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/configuration/config-list%v/group1/cache", predicates))
 				}
 				break
@@ -1817,7 +1817,7 @@ func (data *AAAAuthorization) addDeletedItemsXML(ctx context.Context, state AAAA
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/configuration/config-list%v", predicates))
 		}
 	}
-	if !state.ConfigCommands.IsNull() && data.ConfigCommands.IsNull() {
+	if !state.ConfigCommands.IsNull() && (data.ConfigCommands.IsNull() || (state.ConfigCommands.ValueBool() && !data.ConfigCommands.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/config-commands")
 	}
 	for i := range state.Commands {
@@ -1849,76 +1849,76 @@ func (data *AAAAuthorization) addDeletedItemsXML(ctx context.Context, state AAAA
 				found = false
 			}
 			if found {
-				if !state.Commands[i].A4Tacacs.IsNull() && data.Commands[j].A4Tacacs.IsNull() {
+				if !state.Commands[i].A4Tacacs.IsNull() && (data.Commands[j].A4Tacacs.IsNull() || (state.Commands[i].A4Tacacs.ValueBool() && !data.Commands[j].A4Tacacs.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/commands%v/a4/tacacs", predicates))
 				}
-				if !state.Commands[i].A4Radius.IsNull() && data.Commands[j].A4Radius.IsNull() {
+				if !state.Commands[i].A4Radius.IsNull() && (data.Commands[j].A4Radius.IsNull() || (state.Commands[i].A4Radius.ValueBool() && !data.Commands[j].A4Radius.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/commands%v/a4/radius", predicates))
 				}
-				if !state.Commands[i].A4None.IsNull() && data.Commands[j].A4None.IsNull() {
+				if !state.Commands[i].A4None.IsNull() && (data.Commands[j].A4None.IsNull() || (state.Commands[i].A4None.ValueBool() && !data.Commands[j].A4None.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/commands%v/a4/none", predicates))
 				}
-				if !state.Commands[i].A4IfAuthenticated.IsNull() && data.Commands[j].A4IfAuthenticated.IsNull() {
+				if !state.Commands[i].A4IfAuthenticated.IsNull() && (data.Commands[j].A4IfAuthenticated.IsNull() || (state.Commands[i].A4IfAuthenticated.ValueBool() && !data.Commands[j].A4IfAuthenticated.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/commands%v/a4/if-authenticated", predicates))
 				}
-				if !state.Commands[i].A4Local.IsNull() && data.Commands[j].A4Local.IsNull() {
+				if !state.Commands[i].A4Local.IsNull() && (data.Commands[j].A4Local.IsNull() || (state.Commands[i].A4Local.ValueBool() && !data.Commands[j].A4Local.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/commands%v/a4/local", predicates))
 				}
-				if !state.Commands[i].A4Group.IsNull() && data.Commands[j].A4Group.IsNull() {
+				if !state.Commands[i].A4Group.IsNull() && (data.Commands[j].A4Group.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/commands%v/a4/group", predicates))
 				}
-				if !state.Commands[i].A3Tacacs.IsNull() && data.Commands[j].A3Tacacs.IsNull() {
+				if !state.Commands[i].A3Tacacs.IsNull() && (data.Commands[j].A3Tacacs.IsNull() || (state.Commands[i].A3Tacacs.ValueBool() && !data.Commands[j].A3Tacacs.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/commands%v/a3/tacacs", predicates))
 				}
-				if !state.Commands[i].A3Radius.IsNull() && data.Commands[j].A3Radius.IsNull() {
+				if !state.Commands[i].A3Radius.IsNull() && (data.Commands[j].A3Radius.IsNull() || (state.Commands[i].A3Radius.ValueBool() && !data.Commands[j].A3Radius.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/commands%v/a3/radius", predicates))
 				}
-				if !state.Commands[i].A3None.IsNull() && data.Commands[j].A3None.IsNull() {
+				if !state.Commands[i].A3None.IsNull() && (data.Commands[j].A3None.IsNull() || (state.Commands[i].A3None.ValueBool() && !data.Commands[j].A3None.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/commands%v/a3/none", predicates))
 				}
-				if !state.Commands[i].A3IfAuthenticated.IsNull() && data.Commands[j].A3IfAuthenticated.IsNull() {
+				if !state.Commands[i].A3IfAuthenticated.IsNull() && (data.Commands[j].A3IfAuthenticated.IsNull() || (state.Commands[i].A3IfAuthenticated.ValueBool() && !data.Commands[j].A3IfAuthenticated.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/commands%v/a3/if-authenticated", predicates))
 				}
-				if !state.Commands[i].A3Local.IsNull() && data.Commands[j].A3Local.IsNull() {
+				if !state.Commands[i].A3Local.IsNull() && (data.Commands[j].A3Local.IsNull() || (state.Commands[i].A3Local.ValueBool() && !data.Commands[j].A3Local.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/commands%v/a3/local", predicates))
 				}
-				if !state.Commands[i].A3Group.IsNull() && data.Commands[j].A3Group.IsNull() {
+				if !state.Commands[i].A3Group.IsNull() && (data.Commands[j].A3Group.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/commands%v/a3/group", predicates))
 				}
-				if !state.Commands[i].A2Tacacs.IsNull() && data.Commands[j].A2Tacacs.IsNull() {
+				if !state.Commands[i].A2Tacacs.IsNull() && (data.Commands[j].A2Tacacs.IsNull() || (state.Commands[i].A2Tacacs.ValueBool() && !data.Commands[j].A2Tacacs.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/commands%v/a2/tacacs", predicates))
 				}
-				if !state.Commands[i].A2Radius.IsNull() && data.Commands[j].A2Radius.IsNull() {
+				if !state.Commands[i].A2Radius.IsNull() && (data.Commands[j].A2Radius.IsNull() || (state.Commands[i].A2Radius.ValueBool() && !data.Commands[j].A2Radius.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/commands%v/a2/radius", predicates))
 				}
-				if !state.Commands[i].A2None.IsNull() && data.Commands[j].A2None.IsNull() {
+				if !state.Commands[i].A2None.IsNull() && (data.Commands[j].A2None.IsNull() || (state.Commands[i].A2None.ValueBool() && !data.Commands[j].A2None.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/commands%v/a2/none", predicates))
 				}
-				if !state.Commands[i].A2IfAuthenticated.IsNull() && data.Commands[j].A2IfAuthenticated.IsNull() {
+				if !state.Commands[i].A2IfAuthenticated.IsNull() && (data.Commands[j].A2IfAuthenticated.IsNull() || (state.Commands[i].A2IfAuthenticated.ValueBool() && !data.Commands[j].A2IfAuthenticated.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/commands%v/a2/if-authenticated", predicates))
 				}
-				if !state.Commands[i].A2Local.IsNull() && data.Commands[j].A2Local.IsNull() {
+				if !state.Commands[i].A2Local.IsNull() && (data.Commands[j].A2Local.IsNull() || (state.Commands[i].A2Local.ValueBool() && !data.Commands[j].A2Local.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/commands%v/a2/local", predicates))
 				}
-				if !state.Commands[i].A2Group.IsNull() && data.Commands[j].A2Group.IsNull() {
+				if !state.Commands[i].A2Group.IsNull() && (data.Commands[j].A2Group.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/commands%v/a2/group", predicates))
 				}
-				if !state.Commands[i].A1Tacacs.IsNull() && data.Commands[j].A1Tacacs.IsNull() {
+				if !state.Commands[i].A1Tacacs.IsNull() && (data.Commands[j].A1Tacacs.IsNull() || (state.Commands[i].A1Tacacs.ValueBool() && !data.Commands[j].A1Tacacs.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/commands%v/a1/tacacs", predicates))
 				}
-				if !state.Commands[i].A1Radius.IsNull() && data.Commands[j].A1Radius.IsNull() {
+				if !state.Commands[i].A1Radius.IsNull() && (data.Commands[j].A1Radius.IsNull() || (state.Commands[i].A1Radius.ValueBool() && !data.Commands[j].A1Radius.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/commands%v/a1/radius", predicates))
 				}
-				if !state.Commands[i].A1None.IsNull() && data.Commands[j].A1None.IsNull() {
+				if !state.Commands[i].A1None.IsNull() && (data.Commands[j].A1None.IsNull() || (state.Commands[i].A1None.ValueBool() && !data.Commands[j].A1None.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/commands%v/a1/none", predicates))
 				}
-				if !state.Commands[i].A1IfAuthenticated.IsNull() && data.Commands[j].A1IfAuthenticated.IsNull() {
+				if !state.Commands[i].A1IfAuthenticated.IsNull() && (data.Commands[j].A1IfAuthenticated.IsNull() || (state.Commands[i].A1IfAuthenticated.ValueBool() && !data.Commands[j].A1IfAuthenticated.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/commands%v/a1/if-authenticated", predicates))
 				}
-				if !state.Commands[i].A1Local.IsNull() && data.Commands[j].A1Local.IsNull() {
+				if !state.Commands[i].A1Local.IsNull() && (data.Commands[j].A1Local.IsNull() || (state.Commands[i].A1Local.ValueBool() && !data.Commands[j].A1Local.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/commands%v/a1/local", predicates))
 				}
-				if !state.Commands[i].A1Group.IsNull() && data.Commands[j].A1Group.IsNull() {
+				if !state.Commands[i].A1Group.IsNull() && (data.Commands[j].A1Group.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/commands%v/a1/group", predicates))
 				}
 				break
@@ -1951,28 +1951,28 @@ func (data *AAAAuthorization) addDeletedItemsXML(ctx context.Context, state AAAA
 				found = false
 			}
 			if found {
-				if !state.Networks[i].A4Group.IsNull() && data.Networks[j].A4Group.IsNull() {
+				if !state.Networks[i].A4Group.IsNull() && (data.Networks[j].A4Group.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/network%v/a4/group", predicates))
 				}
-				if !state.Networks[i].A4Local.IsNull() && data.Networks[j].A4Local.IsNull() {
+				if !state.Networks[i].A4Local.IsNull() && (data.Networks[j].A4Local.IsNull() || (state.Networks[i].A4Local.ValueBool() && !data.Networks[j].A4Local.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/network%v/a4/local", predicates))
 				}
-				if !state.Networks[i].A3Group.IsNull() && data.Networks[j].A3Group.IsNull() {
+				if !state.Networks[i].A3Group.IsNull() && (data.Networks[j].A3Group.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/network%v/a3/group", predicates))
 				}
-				if !state.Networks[i].A3Local.IsNull() && data.Networks[j].A3Local.IsNull() {
+				if !state.Networks[i].A3Local.IsNull() && (data.Networks[j].A3Local.IsNull() || (state.Networks[i].A3Local.ValueBool() && !data.Networks[j].A3Local.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/network%v/a3/local", predicates))
 				}
-				if !state.Networks[i].A2Group.IsNull() && data.Networks[j].A2Group.IsNull() {
+				if !state.Networks[i].A2Group.IsNull() && (data.Networks[j].A2Group.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/network%v/a2/group", predicates))
 				}
-				if !state.Networks[i].A2Local.IsNull() && data.Networks[j].A2Local.IsNull() {
+				if !state.Networks[i].A2Local.IsNull() && (data.Networks[j].A2Local.IsNull() || (state.Networks[i].A2Local.ValueBool() && !data.Networks[j].A2Local.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/network%v/a2/local", predicates))
 				}
-				if !state.Networks[i].A1Group.IsNull() && data.Networks[j].A1Group.IsNull() {
+				if !state.Networks[i].A1Group.IsNull() && (data.Networks[j].A1Group.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/network%v/a1/group", predicates))
 				}
-				if !state.Networks[i].A1Local.IsNull() && data.Networks[j].A1Local.IsNull() {
+				if !state.Networks[i].A1Local.IsNull() && (data.Networks[j].A1Local.IsNull() || (state.Networks[i].A1Local.ValueBool() && !data.Networks[j].A1Local.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/network%v/a1/local", predicates))
 				}
 				break
@@ -2005,64 +2005,64 @@ func (data *AAAAuthorization) addDeletedItemsXML(ctx context.Context, state AAAA
 				found = false
 			}
 			if found {
-				if !state.Execs[i].A4IfAuthenticated.IsNull() && data.Execs[j].A4IfAuthenticated.IsNull() {
+				if !state.Execs[i].A4IfAuthenticated.IsNull() && (data.Execs[j].A4IfAuthenticated.IsNull() || (state.Execs[i].A4IfAuthenticated.ValueBool() && !data.Execs[j].A4IfAuthenticated.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/a4/if-authenticated", predicates))
 				}
-				if !state.Execs[i].A4Tacacs.IsNull() && data.Execs[j].A4Tacacs.IsNull() {
+				if !state.Execs[i].A4Tacacs.IsNull() && (data.Execs[j].A4Tacacs.IsNull() || (state.Execs[i].A4Tacacs.ValueBool() && !data.Execs[j].A4Tacacs.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/a4/tacacs", predicates))
 				}
-				if !state.Execs[i].A4Radius.IsNull() && data.Execs[j].A4Radius.IsNull() {
+				if !state.Execs[i].A4Radius.IsNull() && (data.Execs[j].A4Radius.IsNull() || (state.Execs[i].A4Radius.ValueBool() && !data.Execs[j].A4Radius.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/a4/radius", predicates))
 				}
-				if !state.Execs[i].A4Group.IsNull() && data.Execs[j].A4Group.IsNull() {
+				if !state.Execs[i].A4Group.IsNull() && (data.Execs[j].A4Group.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/a4/group", predicates))
 				}
-				if !state.Execs[i].A4Local.IsNull() && data.Execs[j].A4Local.IsNull() {
+				if !state.Execs[i].A4Local.IsNull() && (data.Execs[j].A4Local.IsNull() || (state.Execs[i].A4Local.ValueBool() && !data.Execs[j].A4Local.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/a4/local", predicates))
 				}
-				if !state.Execs[i].A3IfAuthenticated.IsNull() && data.Execs[j].A3IfAuthenticated.IsNull() {
+				if !state.Execs[i].A3IfAuthenticated.IsNull() && (data.Execs[j].A3IfAuthenticated.IsNull() || (state.Execs[i].A3IfAuthenticated.ValueBool() && !data.Execs[j].A3IfAuthenticated.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/a3/if-authenticated", predicates))
 				}
-				if !state.Execs[i].A3Tacacs.IsNull() && data.Execs[j].A3Tacacs.IsNull() {
+				if !state.Execs[i].A3Tacacs.IsNull() && (data.Execs[j].A3Tacacs.IsNull() || (state.Execs[i].A3Tacacs.ValueBool() && !data.Execs[j].A3Tacacs.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/a3/tacacs", predicates))
 				}
-				if !state.Execs[i].A3Radius.IsNull() && data.Execs[j].A3Radius.IsNull() {
+				if !state.Execs[i].A3Radius.IsNull() && (data.Execs[j].A3Radius.IsNull() || (state.Execs[i].A3Radius.ValueBool() && !data.Execs[j].A3Radius.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/a3/radius", predicates))
 				}
-				if !state.Execs[i].A3Group.IsNull() && data.Execs[j].A3Group.IsNull() {
+				if !state.Execs[i].A3Group.IsNull() && (data.Execs[j].A3Group.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/a3/group", predicates))
 				}
-				if !state.Execs[i].A3Local.IsNull() && data.Execs[j].A3Local.IsNull() {
+				if !state.Execs[i].A3Local.IsNull() && (data.Execs[j].A3Local.IsNull() || (state.Execs[i].A3Local.ValueBool() && !data.Execs[j].A3Local.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/a3/local", predicates))
 				}
-				if !state.Execs[i].A2IfAuthenticated.IsNull() && data.Execs[j].A2IfAuthenticated.IsNull() {
+				if !state.Execs[i].A2IfAuthenticated.IsNull() && (data.Execs[j].A2IfAuthenticated.IsNull() || (state.Execs[i].A2IfAuthenticated.ValueBool() && !data.Execs[j].A2IfAuthenticated.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/a2/if-authenticated", predicates))
 				}
-				if !state.Execs[i].A2Tacacs.IsNull() && data.Execs[j].A2Tacacs.IsNull() {
+				if !state.Execs[i].A2Tacacs.IsNull() && (data.Execs[j].A2Tacacs.IsNull() || (state.Execs[i].A2Tacacs.ValueBool() && !data.Execs[j].A2Tacacs.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/a2/tacacs", predicates))
 				}
-				if !state.Execs[i].A2Radius.IsNull() && data.Execs[j].A2Radius.IsNull() {
+				if !state.Execs[i].A2Radius.IsNull() && (data.Execs[j].A2Radius.IsNull() || (state.Execs[i].A2Radius.ValueBool() && !data.Execs[j].A2Radius.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/a2/radius", predicates))
 				}
-				if !state.Execs[i].A2Group.IsNull() && data.Execs[j].A2Group.IsNull() {
+				if !state.Execs[i].A2Group.IsNull() && (data.Execs[j].A2Group.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/a2/group", predicates))
 				}
-				if !state.Execs[i].A2Local.IsNull() && data.Execs[j].A2Local.IsNull() {
+				if !state.Execs[i].A2Local.IsNull() && (data.Execs[j].A2Local.IsNull() || (state.Execs[i].A2Local.ValueBool() && !data.Execs[j].A2Local.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/a2/local", predicates))
 				}
-				if !state.Execs[i].A1IfAuthenticated.IsNull() && data.Execs[j].A1IfAuthenticated.IsNull() {
+				if !state.Execs[i].A1IfAuthenticated.IsNull() && (data.Execs[j].A1IfAuthenticated.IsNull() || (state.Execs[i].A1IfAuthenticated.ValueBool() && !data.Execs[j].A1IfAuthenticated.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/a1/if-authenticated", predicates))
 				}
-				if !state.Execs[i].A1Tacacs.IsNull() && data.Execs[j].A1Tacacs.IsNull() {
+				if !state.Execs[i].A1Tacacs.IsNull() && (data.Execs[j].A1Tacacs.IsNull() || (state.Execs[i].A1Tacacs.ValueBool() && !data.Execs[j].A1Tacacs.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/a1/tacacs", predicates))
 				}
-				if !state.Execs[i].A1Radius.IsNull() && data.Execs[j].A1Radius.IsNull() {
+				if !state.Execs[i].A1Radius.IsNull() && (data.Execs[j].A1Radius.IsNull() || (state.Execs[i].A1Radius.ValueBool() && !data.Execs[j].A1Radius.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/a1/radius", predicates))
 				}
-				if !state.Execs[i].A1Group.IsNull() && data.Execs[j].A1Group.IsNull() {
+				if !state.Execs[i].A1Group.IsNull() && (data.Execs[j].A1Group.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/a1/group", predicates))
 				}
-				if !state.Execs[i].A1Local.IsNull() && data.Execs[j].A1Local.IsNull() {
+				if !state.Execs[i].A1Local.IsNull() && (data.Execs[j].A1Local.IsNull() || (state.Execs[i].A1Local.ValueBool() && !data.Execs[j].A1Local.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/a1/local", predicates))
 				}
 				break

@@ -196,16 +196,16 @@ func (data *WirelessSiteTagData) fromBodyXML(ctx context.Context, res xmldot.Res
 
 func (data *WirelessSiteTag) addDeletedItemsXML(ctx context.Context, state WirelessSiteTag, body string) string {
 	b := netconf.NewBody(body)
-	if !state.FlexProfile.IsNull() && data.FlexProfile.IsNull() {
+	if !state.FlexProfile.IsNull() && (data.FlexProfile.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/flex-profile")
 	}
-	if !state.LocalSite.IsNull() && data.LocalSite.IsNull() {
+	if !state.LocalSite.IsNull() && (data.LocalSite.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/is-local-site")
 	}
-	if !state.ApJoinProfile.IsNull() && data.ApJoinProfile.IsNull() {
+	if !state.ApJoinProfile.IsNull() && (data.ApJoinProfile.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ap-join-profile")
 	}
-	if !state.Description.IsNull() && data.Description.IsNull() {
+	if !state.Description.IsNull() && (data.Description.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/description")
 	}
 

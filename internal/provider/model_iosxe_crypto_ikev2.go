@@ -201,19 +201,19 @@ func (data *CryptoIKEv2Data) fromBodyXML(ctx context.Context, res xmldot.Result)
 
 func (data *CryptoIKEv2) addDeletedItemsXML(ctx context.Context, state CryptoIKEv2, body string) string {
 	b := netconf.NewBody(body)
-	if !state.HttpUrlCert.IsNull() && data.HttpUrlCert.IsNull() {
+	if !state.HttpUrlCert.IsNull() && (data.HttpUrlCert.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/http-url")
 	}
-	if !state.DpdQuery.IsNull() && data.DpdQuery.IsNull() {
+	if !state.DpdQuery.IsNull() && (data.DpdQuery.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dpd-container")
 	}
-	if !state.DpdRetryInterval.IsNull() && data.DpdRetryInterval.IsNull() {
+	if !state.DpdRetryInterval.IsNull() && (data.DpdRetryInterval.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dpd-container")
 	}
-	if !state.Dpd.IsNull() && data.Dpd.IsNull() {
+	if !state.Dpd.IsNull() && (data.Dpd.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dpd-container")
 	}
-	if !state.NatKeepalive.IsNull() && data.NatKeepalive.IsNull() {
+	if !state.NatKeepalive.IsNull() && (data.NatKeepalive.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/nat/keepalive")
 	}
 

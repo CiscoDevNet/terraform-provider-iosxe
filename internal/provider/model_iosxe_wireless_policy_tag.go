@@ -250,7 +250,7 @@ func (data *WirelessPolicyTag) addDeletedItemsXML(ctx context.Context, state Wir
 				found = false
 			}
 			if found {
-				if !state.WlanPolicies[i].PolicyProfileName.IsNull() && data.WlanPolicies[j].PolicyProfileName.IsNull() {
+				if !state.WlanPolicies[i].PolicyProfileName.IsNull() && (data.WlanPolicies[j].PolicyProfileName.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/wlan-policies/wlan-policy%v/policy-profile-name", predicates))
 				}
 				break
@@ -260,7 +260,7 @@ func (data *WirelessPolicyTag) addDeletedItemsXML(ctx context.Context, state Wir
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/wlan-policies/wlan-policy%v", predicates))
 		}
 	}
-	if !state.Description.IsNull() && data.Description.IsNull() {
+	if !state.Description.IsNull() && (data.Description.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/description")
 	}
 

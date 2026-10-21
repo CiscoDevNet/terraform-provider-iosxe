@@ -263,25 +263,25 @@ func (data *TACACSServerData) fromBodyXML(ctx context.Context, res xmldot.Result
 
 func (data *TACACSServer) addDeletedItemsXML(ctx context.Context, state TACACSServer, body string) string {
 	b := netconf.NewBody(body)
-	if !state.AttributeAllowUnknown.IsNull() && data.AttributeAllowUnknown.IsNull() {
+	if !state.AttributeAllowUnknown.IsNull() && (data.AttributeAllowUnknown.IsNull() || (state.AttributeAllowUnknown.ValueBool() && !data.AttributeAllowUnknown.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-aaa:attribute/allow/unknown")
 	}
-	if !state.Key.IsNull() && data.Key.IsNull() {
+	if !state.Key.IsNull() && (data.Key.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-aaa:key")
 	}
-	if !state.Encryption.IsNull() && data.Encryption.IsNull() {
+	if !state.Encryption.IsNull() && (data.Encryption.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-aaa:key")
 	}
-	if !state.DirectedRequestNoTruncate.IsNull() && data.DirectedRequestNoTruncate.IsNull() {
+	if !state.DirectedRequestNoTruncate.IsNull() && (data.DirectedRequestNoTruncate.IsNull() || (state.DirectedRequestNoTruncate.ValueBool() && !data.DirectedRequestNoTruncate.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-aaa:directed-request/no-truncate")
 	}
-	if !state.DirectedRequestRestricted.IsNull() && data.DirectedRequestRestricted.IsNull() {
+	if !state.DirectedRequestRestricted.IsNull() && (data.DirectedRequestRestricted.IsNull() || (state.DirectedRequestRestricted.ValueBool() && !data.DirectedRequestRestricted.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-aaa:directed-request/restricted")
 	}
-	if !state.DirectedRequest.IsNull() && data.DirectedRequest.IsNull() {
+	if !state.DirectedRequest.IsNull() && (data.DirectedRequest.IsNull() || (state.DirectedRequest.ValueBool() && !data.DirectedRequest.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-aaa:directed-request")
 	}
-	if !state.Timeout.IsNull() && data.Timeout.IsNull() {
+	if !state.Timeout.IsNull() && (data.Timeout.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-aaa:timeout")
 	}
 

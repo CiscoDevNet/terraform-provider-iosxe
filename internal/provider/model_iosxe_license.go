@@ -340,37 +340,37 @@ func (data *LicenseData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 func (data *License) addDeletedItemsXML(ctx context.Context, state License, body string) string {
 	b := netconf.NewBody(body)
-	if !state.UdiSn.IsNull() && data.UdiSn.IsNull() {
+	if !state.UdiSn.IsNull() && (data.UdiSn.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/udi/sn")
 	}
-	if !state.UdiPid.IsNull() && data.UdiPid.IsNull() {
+	if !state.UdiPid.IsNull() && (data.UdiPid.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/udi/pid")
 	}
-	if !state.AcceptUser.IsNull() && data.AcceptUser.IsNull() {
+	if !state.AcceptUser.IsNull() && (data.AcceptUser.IsNull() || (state.AcceptUser.ValueBool() && !data.AcceptUser.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/accept/user")
 	}
-	if !state.AcceptEnd.IsNull() && data.AcceptEnd.IsNull() {
+	if !state.AcceptEnd.IsNull() && (data.AcceptEnd.IsNull() || (state.AcceptEnd.ValueBool() && !data.AcceptEnd.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/accept/end")
 	}
-	if !state.AcceptAgreement.IsNull() && data.AcceptAgreement.IsNull() {
+	if !state.AcceptAgreement.IsNull() && (data.AcceptAgreement.IsNull() || (state.AcceptAgreement.ValueBool() && !data.AcceptAgreement.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/accept/agreement")
 	}
-	if !state.SmartUrlCslu.IsNull() && data.SmartUrlCslu.IsNull() {
+	if !state.SmartUrlCslu.IsNull() && (data.SmartUrlCslu.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/smart/url/cslu")
 	}
-	if !state.SmartTransportType.IsNull() && data.SmartTransportType.IsNull() {
+	if !state.SmartTransportType.IsNull() && (data.SmartTransportType.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/smart/transport-type")
 	}
-	if !state.BootLevelNetworkEssentialsAddon.IsNull() && data.BootLevelNetworkEssentialsAddon.IsNull() {
+	if !state.BootLevelNetworkEssentialsAddon.IsNull() && (data.BootLevelNetworkEssentialsAddon.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/boot/level/network-essentials/addon")
 	}
-	if !state.BootLevelNetworkEssentials.IsNull() && data.BootLevelNetworkEssentials.IsNull() {
+	if !state.BootLevelNetworkEssentials.IsNull() && (data.BootLevelNetworkEssentials.IsNull() || (state.BootLevelNetworkEssentials.ValueBool() && !data.BootLevelNetworkEssentials.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/boot/level/network-essentials")
 	}
-	if !state.BootLevelNetworkAdvantageAddon.IsNull() && data.BootLevelNetworkAdvantageAddon.IsNull() {
+	if !state.BootLevelNetworkAdvantageAddon.IsNull() && (data.BootLevelNetworkAdvantageAddon.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/boot/level/network-advantage/addon")
 	}
-	if !state.BootLevelNetworkAdvantage.IsNull() && data.BootLevelNetworkAdvantage.IsNull() {
+	if !state.BootLevelNetworkAdvantage.IsNull() && (data.BootLevelNetworkAdvantage.IsNull() || (state.BootLevelNetworkAdvantage.ValueBool() && !data.BootLevelNetworkAdvantage.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/boot/level/network-advantage")
 	}
 

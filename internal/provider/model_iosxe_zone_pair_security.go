@@ -190,16 +190,16 @@ func (data *ZonePairSecurityData) fromBodyXML(ctx context.Context, res xmldot.Re
 
 func (data *ZonePairSecurity) addDeletedItemsXML(ctx context.Context, state ZonePairSecurity, body string) string {
 	b := netconf.NewBody(body)
-	if !state.ServicePolicyTypeInspect.IsNull() && data.ServicePolicyTypeInspect.IsNull() {
+	if !state.ServicePolicyTypeInspect.IsNull() && (data.ServicePolicyTypeInspect.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/service-policy/type/inspect")
 	}
-	if !state.Description.IsNull() && data.Description.IsNull() {
+	if !state.Description.IsNull() && (data.Description.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/description")
 	}
-	if !state.Destination.IsNull() && data.Destination.IsNull() {
+	if !state.Destination.IsNull() && (data.Destination.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/destination")
 	}
-	if !state.Source.IsNull() && data.Source.IsNull() {
+	if !state.Source.IsNull() && (data.Source.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/source")
 	}
 
