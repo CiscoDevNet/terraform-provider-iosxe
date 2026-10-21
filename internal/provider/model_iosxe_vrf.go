@@ -286,8 +286,6 @@ func (data VRF) addToBodyXML(ctx context.Context, config VRF, body netconf.Body)
 	if !data.RdAuto.IsNull() && !data.RdAuto.IsUnknown() {
 		if data.RdAuto.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/rd-auto", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/rd-auto")
 		}
 	}
 	if !data.Rd.IsNull() && !data.Rd.IsUnknown() {
@@ -296,15 +294,11 @@ func (data VRF) addToBodyXML(ctx context.Context, config VRF, body netconf.Body)
 	if !data.AddressFamilyIpv4.IsNull() && !data.AddressFamilyIpv4.IsUnknown() {
 		if data.AddressFamilyIpv4.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/address-family/ipv4", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/address-family/ipv4")
 		}
 	}
 	if !data.AddressFamilyIpv6.IsNull() && !data.AddressFamilyIpv6.IsUnknown() {
 		if data.AddressFamilyIpv6.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/address-family/ipv6", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/address-family/ipv6")
 		}
 	}
 	if !data.VpnId.IsNull() && !data.VpnId.IsUnknown() {
@@ -319,8 +313,6 @@ func (data VRF) addToBodyXML(ctx context.Context, config VRF, body netconf.Body)
 			if !item.Stitching.IsNull() && !item.Stitching.IsUnknown() {
 				if item.Stitching.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "stitching", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "stitching")
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/route-target/import", cBody.Res())
@@ -335,8 +327,6 @@ func (data VRF) addToBodyXML(ctx context.Context, config VRF, body netconf.Body)
 			if !item.Stitching.IsNull() && !item.Stitching.IsUnknown() {
 				if item.Stitching.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "stitching", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "stitching")
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/route-target/export", cBody.Res())
@@ -401,8 +391,6 @@ func (data VRF) addToBodyXML(ctx context.Context, config VRF, body netconf.Body)
 			if !item.UnicastAll.IsNull() && !item.UnicastAll.IsUnknown() {
 				if item.UnicastAll.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "unicast/source-proto-config/all", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "unicast/source-proto-config/all")
 				}
 			}
 			if !item.UnicastAllRouteMap.IsNull() && !item.UnicastAllRouteMap.IsUnknown() {
@@ -500,43 +488,31 @@ func (data VRF) addToBodyXML(ctx context.Context, config VRF, body netconf.Body)
 	if !data.Ipv4MdtAutoDiscoveryVxlan.IsNull() && !data.Ipv4MdtAutoDiscoveryVxlan.IsUnknown() {
 		if data.Ipv4MdtAutoDiscoveryVxlan.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/address-family/ipv4/mdt/auto-discovery/vxlan-config/vxlan", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/address-family/ipv4/mdt/auto-discovery/vxlan-config/vxlan")
 		}
 	}
 	if !data.Ipv4MdtAutoDiscoveryVxlanInterAs.IsNull() && !data.Ipv4MdtAutoDiscoveryVxlanInterAs.IsUnknown() {
 		if data.Ipv4MdtAutoDiscoveryVxlanInterAs.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/address-family/ipv4/mdt/auto-discovery/vxlan-config/inter-as", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/address-family/ipv4/mdt/auto-discovery/vxlan-config/inter-as")
 		}
 	}
 	if !data.Ipv4MdtAutoDiscoveryInterworkingVxlanPim.IsNull() && !data.Ipv4MdtAutoDiscoveryInterworkingVxlanPim.IsUnknown() {
 		if data.Ipv4MdtAutoDiscoveryInterworkingVxlanPim.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/address-family/ipv4/mdt/auto-discovery/interworking/vxlan-pim-config/vxlan-pim", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/address-family/ipv4/mdt/auto-discovery/interworking/vxlan-pim-config/vxlan-pim")
 		}
 	}
 	if !data.Ipv4MdtAutoDiscoveryInterworkingVxlanPimInterAs.IsNull() && !data.Ipv4MdtAutoDiscoveryInterworkingVxlanPimInterAs.IsUnknown() {
 		if data.Ipv4MdtAutoDiscoveryInterworkingVxlanPimInterAs.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/address-family/ipv4/mdt/auto-discovery/interworking/vxlan-pim-config/inter-as", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/address-family/ipv4/mdt/auto-discovery/interworking/vxlan-pim-config/inter-as")
 		}
 	}
 	if !data.Ipv4MdtOverlayUseBgp.IsNull() && !data.Ipv4MdtOverlayUseBgp.IsUnknown() {
 		if data.Ipv4MdtOverlayUseBgp.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/address-family/ipv4/mdt/overlay/use-bgp-config", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/address-family/ipv4/mdt/overlay/use-bgp-config")
 		}
 	}
 	if !data.Ipv4MdtOverlayUseBgpSptOnly.IsNull() && !data.Ipv4MdtOverlayUseBgpSptOnly.IsUnknown() {
 		if data.Ipv4MdtOverlayUseBgpSptOnly.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/address-family/ipv4/mdt/overlay/use-bgp-config/spt-only", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/address-family/ipv4/mdt/overlay/use-bgp-config/spt-only")
 		}
 	}
 	if len(data.Ipv4MdtDataMulticast) > 0 {
@@ -1865,31 +1841,31 @@ func (data *VRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 func (data *VRF) addDeletedItemsXML(ctx context.Context, state VRF, body string) string {
 	b := netconf.NewBody(body)
-	if !state.Ipv6EvpnMcastDataMaskBits.IsNull() && data.Ipv6EvpnMcastDataMaskBits.IsNull() {
+	if !state.Ipv6EvpnMcastDataMaskBits.IsNull() && (data.Ipv6EvpnMcastDataMaskBits.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address-family/ipv6/evpn-mcast/data/mask-bits")
 	}
-	if !state.Ipv6EvpnMcastDataAddress.IsNull() && data.Ipv6EvpnMcastDataAddress.IsNull() {
+	if !state.Ipv6EvpnMcastDataAddress.IsNull() && (data.Ipv6EvpnMcastDataAddress.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address-family/ipv6/evpn-mcast/data/data-addr")
 	}
-	if !state.Ipv6EvpnMcastAnycast.IsNull() && data.Ipv6EvpnMcastAnycast.IsNull() {
+	if !state.Ipv6EvpnMcastAnycast.IsNull() && (data.Ipv6EvpnMcastAnycast.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address-family/ipv6/evpn-mcast/anycast")
 	}
-	if !state.Ipv6EvpnMcastMdtDefaultAddress.IsNull() && data.Ipv6EvpnMcastMdtDefaultAddress.IsNull() {
+	if !state.Ipv6EvpnMcastMdtDefaultAddress.IsNull() && (data.Ipv6EvpnMcastMdtDefaultAddress.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address-family/ipv6/evpn-mcast/mdt-def-addr")
 	}
-	if !state.Ipv4EvpnMcastDataMaskBits.IsNull() && data.Ipv4EvpnMcastDataMaskBits.IsNull() {
+	if !state.Ipv4EvpnMcastDataMaskBits.IsNull() && (data.Ipv4EvpnMcastDataMaskBits.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address-family/ipv4/evpn-mcast/data/mask-bits")
 	}
-	if !state.Ipv4EvpnMcastDataAddress.IsNull() && data.Ipv4EvpnMcastDataAddress.IsNull() {
+	if !state.Ipv4EvpnMcastDataAddress.IsNull() && (data.Ipv4EvpnMcastDataAddress.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address-family/ipv4/evpn-mcast/data/data-addr")
 	}
-	if !state.Ipv4EvpnMcastAnycast.IsNull() && data.Ipv4EvpnMcastAnycast.IsNull() {
+	if !state.Ipv4EvpnMcastAnycast.IsNull() && (data.Ipv4EvpnMcastAnycast.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address-family/ipv4/evpn-mcast/anycast")
 	}
-	if !state.Ipv4EvpnMcastMdtDefaultAddress.IsNull() && data.Ipv4EvpnMcastMdtDefaultAddress.IsNull() {
+	if !state.Ipv4EvpnMcastMdtDefaultAddress.IsNull() && (data.Ipv4EvpnMcastMdtDefaultAddress.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address-family/ipv4/evpn-mcast/mdt-def-addr")
 	}
-	if !state.Ipv4MdtDataThreshold.IsNull() && data.Ipv4MdtDataThreshold.IsNull() {
+	if !state.Ipv4MdtDataThreshold.IsNull() && (data.Ipv4MdtDataThreshold.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address-family/ipv4/mdt/data/threshold")
 	}
 	for i := range state.Ipv4MdtDataMulticast {
@@ -1921,7 +1897,7 @@ func (data *VRF) addDeletedItemsXML(ctx context.Context, state VRF, body string)
 				found = false
 			}
 			if found {
-				if !state.Ipv4MdtDataMulticast[i].List.IsNull() && data.Ipv4MdtDataMulticast[j].List.IsNull() {
+				if !state.Ipv4MdtDataMulticast[i].List.IsNull() && (data.Ipv4MdtDataMulticast[j].List.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/address-family/ipv4/mdt/data/multicast%v/list", predicates))
 				}
 				break
@@ -1931,25 +1907,25 @@ func (data *VRF) addDeletedItemsXML(ctx context.Context, state VRF, body string)
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/address-family/ipv4/mdt/data/multicast%v", predicates))
 		}
 	}
-	if !state.Ipv4MdtOverlayUseBgpSptOnly.IsNull() && data.Ipv4MdtOverlayUseBgpSptOnly.IsNull() {
+	if !state.Ipv4MdtOverlayUseBgpSptOnly.IsNull() && (data.Ipv4MdtOverlayUseBgpSptOnly.IsNull() || (state.Ipv4MdtOverlayUseBgpSptOnly.ValueBool() && !data.Ipv4MdtOverlayUseBgpSptOnly.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address-family/ipv4/mdt/overlay/use-bgp-config/spt-only")
 	}
-	if !state.Ipv4MdtOverlayUseBgp.IsNull() && data.Ipv4MdtOverlayUseBgp.IsNull() {
+	if !state.Ipv4MdtOverlayUseBgp.IsNull() && (data.Ipv4MdtOverlayUseBgp.IsNull() || (state.Ipv4MdtOverlayUseBgp.ValueBool() && !data.Ipv4MdtOverlayUseBgp.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address-family/ipv4/mdt/overlay/use-bgp-config")
 	}
-	if !state.Ipv4MdtAutoDiscoveryInterworkingVxlanPimInterAs.IsNull() && data.Ipv4MdtAutoDiscoveryInterworkingVxlanPimInterAs.IsNull() {
+	if !state.Ipv4MdtAutoDiscoveryInterworkingVxlanPimInterAs.IsNull() && (data.Ipv4MdtAutoDiscoveryInterworkingVxlanPimInterAs.IsNull() || (state.Ipv4MdtAutoDiscoveryInterworkingVxlanPimInterAs.ValueBool() && !data.Ipv4MdtAutoDiscoveryInterworkingVxlanPimInterAs.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address-family/ipv4/mdt/auto-discovery/interworking/vxlan-pim-config/inter-as")
 	}
-	if !state.Ipv4MdtAutoDiscoveryInterworkingVxlanPim.IsNull() && data.Ipv4MdtAutoDiscoveryInterworkingVxlanPim.IsNull() {
+	if !state.Ipv4MdtAutoDiscoveryInterworkingVxlanPim.IsNull() && (data.Ipv4MdtAutoDiscoveryInterworkingVxlanPim.IsNull() || (state.Ipv4MdtAutoDiscoveryInterworkingVxlanPim.ValueBool() && !data.Ipv4MdtAutoDiscoveryInterworkingVxlanPim.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address-family/ipv4/mdt/auto-discovery/interworking/vxlan-pim-config/vxlan-pim")
 	}
-	if !state.Ipv4MdtAutoDiscoveryVxlanInterAs.IsNull() && data.Ipv4MdtAutoDiscoveryVxlanInterAs.IsNull() {
+	if !state.Ipv4MdtAutoDiscoveryVxlanInterAs.IsNull() && (data.Ipv4MdtAutoDiscoveryVxlanInterAs.IsNull() || (state.Ipv4MdtAutoDiscoveryVxlanInterAs.ValueBool() && !data.Ipv4MdtAutoDiscoveryVxlanInterAs.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address-family/ipv4/mdt/auto-discovery/vxlan-config/inter-as")
 	}
-	if !state.Ipv4MdtAutoDiscoveryVxlan.IsNull() && data.Ipv4MdtAutoDiscoveryVxlan.IsNull() {
+	if !state.Ipv4MdtAutoDiscoveryVxlan.IsNull() && (data.Ipv4MdtAutoDiscoveryVxlan.IsNull() || (state.Ipv4MdtAutoDiscoveryVxlan.ValueBool() && !data.Ipv4MdtAutoDiscoveryVxlan.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address-family/ipv4/mdt/auto-discovery/vxlan-config/vxlan")
 	}
-	if !state.Ipv4MdtDefaultAddress.IsNull() && data.Ipv4MdtDefaultAddress.IsNull() {
+	if !state.Ipv4MdtDefaultAddress.IsNull() && (data.Ipv4MdtDefaultAddress.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address-family/ipv4/mdt/default/address")
 	}
 	for i := range state.Vnids {
@@ -1998,7 +1974,7 @@ func (data *VRF) addDeletedItemsXML(ctx context.Context, state VRF, body string)
 							found = false
 						}
 						if found {
-							if !state.Vnids[i].EvpnInstanceVnis[ci].CoreVlan.IsNull() && data.Vnids[j].EvpnInstanceVnis[cj].CoreVlan.IsNull() {
+							if !state.Vnids[i].EvpnInstanceVnis[ci].CoreVlan.IsNull() && (data.Vnids[j].EvpnInstanceVnis[cj].CoreVlan.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vnid%v/evpn-instance/vni/vni-num%v/core-vlan", predicates, cpredicates))
 							}
 							break
@@ -2015,10 +1991,10 @@ func (data *VRF) addDeletedItemsXML(ctx context.Context, state VRF, body string)
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vnid%v", predicates))
 		}
 	}
-	if !state.Ipv6ExportMap.IsNull() && data.Ipv6ExportMap.IsNull() {
+	if !state.Ipv6ExportMap.IsNull() && (data.Ipv6ExportMap.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address-family/ipv6/export/map")
 	}
-	if !state.Ipv6ImportMap.IsNull() && data.Ipv6ImportMap.IsNull() {
+	if !state.Ipv6ImportMap.IsNull() && (data.Ipv6ImportMap.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address-family/ipv6/import/map")
 	}
 	for i := range state.Ipv6RouteTargetExportStitching {
@@ -2044,7 +2020,7 @@ func (data *VRF) addDeletedItemsXML(ctx context.Context, state VRF, body string)
 				found = false
 			}
 			if found {
-				if !state.Ipv6RouteTargetExportStitching[i].Stitching.IsNull() && data.Ipv6RouteTargetExportStitching[j].Stitching.IsNull() {
+				if !state.Ipv6RouteTargetExportStitching[i].Stitching.IsNull() && (data.Ipv6RouteTargetExportStitching[j].Stitching.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/address-family/ipv6/route-target/export-route-target/with-stitching%v/stitching", predicates))
 				}
 				break
@@ -2107,7 +2083,7 @@ func (data *VRF) addDeletedItemsXML(ctx context.Context, state VRF, body string)
 				found = false
 			}
 			if found {
-				if !state.Ipv6RouteTargetImportStitching[i].Stitching.IsNull() && data.Ipv6RouteTargetImportStitching[j].Stitching.IsNull() {
+				if !state.Ipv6RouteTargetImportStitching[i].Stitching.IsNull() && (data.Ipv6RouteTargetImportStitching[j].Stitching.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/address-family/ipv6/route-target/import-route-target/with-stitching%v/stitching", predicates))
 				}
 				break
@@ -2147,10 +2123,10 @@ func (data *VRF) addDeletedItemsXML(ctx context.Context, state VRF, body string)
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/address-family/ipv6/route-target/import-route-target/without-stitching%v", predicates))
 		}
 	}
-	if !state.Ipv4ExportMap.IsNull() && data.Ipv4ExportMap.IsNull() {
+	if !state.Ipv4ExportMap.IsNull() && (data.Ipv4ExportMap.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address-family/ipv4/export/map")
 	}
-	if !state.Ipv4ImportMap.IsNull() && data.Ipv4ImportMap.IsNull() {
+	if !state.Ipv4ImportMap.IsNull() && (data.Ipv4ImportMap.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address-family/ipv4/import/map")
 	}
 	for i := range state.Ipv4RouteReplicate {
@@ -2176,10 +2152,10 @@ func (data *VRF) addDeletedItemsXML(ctx context.Context, state VRF, body string)
 				found = false
 			}
 			if found {
-				if !state.Ipv4RouteReplicate[i].UnicastAllRouteMap.IsNull() && data.Ipv4RouteReplicate[j].UnicastAllRouteMap.IsNull() {
+				if !state.Ipv4RouteReplicate[i].UnicastAllRouteMap.IsNull() && (data.Ipv4RouteReplicate[j].UnicastAllRouteMap.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/address-family/ipv4/route-replicate/from/vrf%v/unicast/source-proto-config/all/route-map", predicates))
 				}
-				if !state.Ipv4RouteReplicate[i].UnicastAll.IsNull() && data.Ipv4RouteReplicate[j].UnicastAll.IsNull() {
+				if !state.Ipv4RouteReplicate[i].UnicastAll.IsNull() && (data.Ipv4RouteReplicate[j].UnicastAll.IsNull() || (state.Ipv4RouteReplicate[i].UnicastAll.ValueBool() && !data.Ipv4RouteReplicate[j].UnicastAll.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/address-family/ipv4/route-replicate/from/vrf%v/unicast/source-proto-config/all", predicates))
 				}
 				break
@@ -2212,7 +2188,7 @@ func (data *VRF) addDeletedItemsXML(ctx context.Context, state VRF, body string)
 				found = false
 			}
 			if found {
-				if !state.Ipv4RouteTargetExportStitching[i].Stitching.IsNull() && data.Ipv4RouteTargetExportStitching[j].Stitching.IsNull() {
+				if !state.Ipv4RouteTargetExportStitching[i].Stitching.IsNull() && (data.Ipv4RouteTargetExportStitching[j].Stitching.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/address-family/ipv4/route-target/export-route-target/with-stitching%v/stitching", predicates))
 				}
 				break
@@ -2275,7 +2251,7 @@ func (data *VRF) addDeletedItemsXML(ctx context.Context, state VRF, body string)
 				found = false
 			}
 			if found {
-				if !state.Ipv4RouteTargetImportStitching[i].Stitching.IsNull() && data.Ipv4RouteTargetImportStitching[j].Stitching.IsNull() {
+				if !state.Ipv4RouteTargetImportStitching[i].Stitching.IsNull() && (data.Ipv4RouteTargetImportStitching[j].Stitching.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/address-family/ipv4/route-target/import-route-target/with-stitching%v/stitching", predicates))
 				}
 				break
@@ -2338,7 +2314,7 @@ func (data *VRF) addDeletedItemsXML(ctx context.Context, state VRF, body string)
 				found = false
 			}
 			if found {
-				if !state.RouteTargetExport[i].Stitching.IsNull() && data.RouteTargetExport[j].Stitching.IsNull() {
+				if !state.RouteTargetExport[i].Stitching.IsNull() && (data.RouteTargetExport[j].Stitching.IsNull() || (state.RouteTargetExport[i].Stitching.ValueBool() && !data.RouteTargetExport[j].Stitching.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/route-target/export%v/stitching", predicates))
 				}
 				break
@@ -2371,7 +2347,7 @@ func (data *VRF) addDeletedItemsXML(ctx context.Context, state VRF, body string)
 				found = false
 			}
 			if found {
-				if !state.RouteTargetImport[i].Stitching.IsNull() && data.RouteTargetImport[j].Stitching.IsNull() {
+				if !state.RouteTargetImport[i].Stitching.IsNull() && (data.RouteTargetImport[j].Stitching.IsNull() || (state.RouteTargetImport[i].Stitching.ValueBool() && !data.RouteTargetImport[j].Stitching.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/route-target/import%v/stitching", predicates))
 				}
 				break
@@ -2381,22 +2357,22 @@ func (data *VRF) addDeletedItemsXML(ctx context.Context, state VRF, body string)
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/route-target/import%v", predicates))
 		}
 	}
-	if !state.VpnId.IsNull() && data.VpnId.IsNull() {
+	if !state.VpnId.IsNull() && (data.VpnId.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/vpn/id")
 	}
-	if !state.AddressFamilyIpv6.IsNull() && data.AddressFamilyIpv6.IsNull() {
+	if !state.AddressFamilyIpv6.IsNull() && (data.AddressFamilyIpv6.IsNull() || (state.AddressFamilyIpv6.ValueBool() && !data.AddressFamilyIpv6.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address-family/ipv6")
 	}
-	if !state.AddressFamilyIpv4.IsNull() && data.AddressFamilyIpv4.IsNull() {
+	if !state.AddressFamilyIpv4.IsNull() && (data.AddressFamilyIpv4.IsNull() || (state.AddressFamilyIpv4.ValueBool() && !data.AddressFamilyIpv4.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address-family/ipv4")
 	}
-	if !state.Rd.IsNull() && data.Rd.IsNull() {
+	if !state.Rd.IsNull() && (data.Rd.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/rd")
 	}
-	if !state.RdAuto.IsNull() && data.RdAuto.IsNull() {
+	if !state.RdAuto.IsNull() && (data.RdAuto.IsNull() || (state.RdAuto.ValueBool() && !data.RdAuto.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/rd-auto")
 	}
-	if !state.Description.IsNull() && data.Description.IsNull() {
+	if !state.Description.IsNull() && (data.Description.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/description")
 	}
 

@@ -132,8 +132,6 @@ func (data ARP) addToBodyXML(ctx context.Context, config ARP, body netconf.Body)
 	if !data.ProxyDisable.IsNull() && !data.ProxyDisable.IsUnknown() {
 		if data.ProxyDisable.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/proxy/disable", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/proxy/disable")
 		}
 	}
 	if !data.EntryLearn.IsNull() && !data.EntryLearn.IsUnknown() {
@@ -154,8 +152,6 @@ func (data ARP) addToBodyXML(ctx context.Context, config ARP, body netconf.Body)
 					if !citem.Static.IsNull() && !citem.Static.IsUnknown() {
 						if citem.Static.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "static", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "static")
 						}
 					}
 					cBody = helpers.SetRawFromXPath(cBody, "vlan", ccBody.Res())
@@ -167,29 +163,21 @@ func (data ARP) addToBodyXML(ctx context.Context, config ARP, body netconf.Body)
 	if !data.InspectionValidateSrcMac.IsNull() && !data.InspectionValidateSrcMac.IsUnknown() {
 		if data.InspectionValidateSrcMac.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/inspection/validate/src-mac", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/inspection/validate/src-mac")
 		}
 	}
 	if !data.InspectionValidateDstMac.IsNull() && !data.InspectionValidateDstMac.IsUnknown() {
 		if data.InspectionValidateDstMac.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/inspection/validate/dst-mac", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/inspection/validate/dst-mac")
 		}
 	}
 	if !data.InspectionValidateIp.IsNull() && !data.InspectionValidateIp.IsUnknown() {
 		if data.InspectionValidateIp.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/inspection/validate/ip", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/inspection/validate/ip")
 		}
 	}
 	if !data.InspectionValidateAllowZeros.IsNull() && !data.InspectionValidateAllowZeros.IsUnknown() {
 		if data.InspectionValidateAllowZeros.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/inspection/validate/allow/zeros", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/inspection/validate/allow/zeros")
 		}
 	}
 	if !data.InspectionLogBufferEntries.IsNull() && !data.InspectionLogBufferEntries.IsUnknown() {
@@ -516,28 +504,28 @@ func (data *ARPData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 func (data *ARP) addDeletedItemsXML(ctx context.Context, state ARP, body string) string {
 	b := netconf.NewBody(body)
-	if !state.InspectionVlan.IsNull() && data.InspectionVlan.IsNull() {
+	if !state.InspectionVlan.IsNull() && (data.InspectionVlan.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/inspection/vlan")
 	}
-	if !state.InspectionLogBufferLogsInterval.IsNull() && data.InspectionLogBufferLogsInterval.IsNull() {
+	if !state.InspectionLogBufferLogsInterval.IsNull() && (data.InspectionLogBufferLogsInterval.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/inspection/log-buffer/logs")
 	}
-	if !state.InspectionLogBufferLogsEntries.IsNull() && data.InspectionLogBufferLogsEntries.IsNull() {
+	if !state.InspectionLogBufferLogsEntries.IsNull() && (data.InspectionLogBufferLogsEntries.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/inspection/log-buffer/logs")
 	}
-	if !state.InspectionLogBufferEntries.IsNull() && data.InspectionLogBufferEntries.IsNull() {
+	if !state.InspectionLogBufferEntries.IsNull() && (data.InspectionLogBufferEntries.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/inspection/log-buffer/entries")
 	}
-	if !state.InspectionValidateAllowZeros.IsNull() && data.InspectionValidateAllowZeros.IsNull() {
+	if !state.InspectionValidateAllowZeros.IsNull() && (data.InspectionValidateAllowZeros.IsNull() || (state.InspectionValidateAllowZeros.ValueBool() && !data.InspectionValidateAllowZeros.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/inspection/validate/allow")
 	}
-	if !state.InspectionValidateIp.IsNull() && data.InspectionValidateIp.IsNull() {
+	if !state.InspectionValidateIp.IsNull() && (data.InspectionValidateIp.IsNull() || (state.InspectionValidateIp.ValueBool() && !data.InspectionValidateIp.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/inspection/validate")
 	}
-	if !state.InspectionValidateDstMac.IsNull() && data.InspectionValidateDstMac.IsNull() {
+	if !state.InspectionValidateDstMac.IsNull() && (data.InspectionValidateDstMac.IsNull() || (state.InspectionValidateDstMac.ValueBool() && !data.InspectionValidateDstMac.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/inspection/validate")
 	}
-	if !state.InspectionValidateSrcMac.IsNull() && data.InspectionValidateSrcMac.IsNull() {
+	if !state.InspectionValidateSrcMac.IsNull() && (data.InspectionValidateSrcMac.IsNull() || (state.InspectionValidateSrcMac.ValueBool() && !data.InspectionValidateSrcMac.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/inspection/validate")
 	}
 	for i := range state.InspectionFilters {
@@ -586,7 +574,7 @@ func (data *ARP) addDeletedItemsXML(ctx context.Context, state ARP, body string)
 							found = false
 						}
 						if found {
-							if !state.InspectionFilters[i].Vlans[ci].Static.IsNull() && data.InspectionFilters[j].Vlans[cj].Static.IsNull() {
+							if !state.InspectionFilters[i].Vlans[ci].Static.IsNull() && (data.InspectionFilters[j].Vlans[cj].Static.IsNull() || (state.InspectionFilters[i].Vlans[ci].Static.ValueBool() && !data.InspectionFilters[j].Vlans[cj].Static.ValueBool())) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/inspection/filter%v/vlan%v/static", predicates, cpredicates))
 							}
 							break
@@ -603,13 +591,13 @@ func (data *ARP) addDeletedItemsXML(ctx context.Context, state ARP, body string)
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/inspection/filter%v", predicates))
 		}
 	}
-	if !state.EntryLearn.IsNull() && data.EntryLearn.IsNull() {
+	if !state.EntryLearn.IsNull() && (data.EntryLearn.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/entry/learn")
 	}
-	if !state.ProxyDisable.IsNull() && data.ProxyDisable.IsNull() {
+	if !state.ProxyDisable.IsNull() && (data.ProxyDisable.IsNull() || (state.ProxyDisable.ValueBool() && !data.ProxyDisable.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/proxy/disable")
 	}
-	if !state.IncompleteEntries.IsNull() && data.IncompleteEntries.IsNull() {
+	if !state.IncompleteEntries.IsNull() && (data.IncompleteEntries.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/incomplete/entries")
 	}
 

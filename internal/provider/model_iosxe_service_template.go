@@ -170,8 +170,6 @@ func (data ServiceTemplate) addToBodyXML(ctx context.Context, config ServiceTemp
 	if !data.InactivityTimerProbe.IsNull() && !data.InactivityTimerProbe.IsUnknown() {
 		if data.InactivityTimerProbe.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/inactivity-timer/probe", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/inactivity-timer/probe")
 		}
 	}
 	if !data.Vlan.IsNull() && !data.Vlan.IsUnknown() {
@@ -180,8 +178,6 @@ func (data ServiceTemplate) addToBodyXML(ctx context.Context, config ServiceTemp
 	if !data.VoiceVlan.IsNull() && !data.VoiceVlan.IsUnknown() {
 		if data.VoiceVlan.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/voice/vlan", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/voice/vlan")
 		}
 	}
 	if !data.LinksecPolicy.IsNull() && !data.LinksecPolicy.IsUnknown() {
@@ -660,7 +656,7 @@ func (data *ServiceTemplateData) fromBodyXML(ctx context.Context, res xmldot.Res
 
 func (data *ServiceTemplate) addDeletedItemsXML(ctx context.Context, state ServiceTemplate, body string) string {
 	b := netconf.NewBody(body)
-	if !state.MdnsServicePolicy.IsNull() && data.MdnsServicePolicy.IsNull() {
+	if !state.MdnsServicePolicy.IsNull() && (data.MdnsServicePolicy.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/mdns-service-policy")
 	}
 	for i := range state.Tags {
@@ -693,34 +689,34 @@ func (data *ServiceTemplate) addDeletedItemsXML(ctx context.Context, state Servi
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/tag-config%v", predicates))
 		}
 	}
-	if !state.ServicePolicyQosOutput.IsNull() && data.ServicePolicyQosOutput.IsNull() {
+	if !state.ServicePolicyQosOutput.IsNull() && (data.ServicePolicyQosOutput.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/service-policy/qos/output")
 	}
-	if !state.ServicePolicyQosInput.IsNull() && data.ServicePolicyQosInput.IsNull() {
+	if !state.ServicePolicyQosInput.IsNull() && (data.ServicePolicyQosInput.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/service-policy/qos/input")
 	}
-	if !state.DnsAclPreauth.IsNull() && data.DnsAclPreauth.IsNull() {
+	if !state.DnsAclPreauth.IsNull() && (data.DnsAclPreauth.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dns-acl/preauth")
 	}
-	if !state.RedirectUrlMatchAction.IsNull() && data.RedirectUrlMatchAction.IsNull() {
+	if !state.RedirectUrlMatchAction.IsNull() && (data.RedirectUrlMatchAction.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/redirect/url/match/action")
 	}
-	if !state.RedirectUrlMatchAcl.IsNull() && data.RedirectUrlMatchAcl.IsNull() {
+	if !state.RedirectUrlMatchAcl.IsNull() && (data.RedirectUrlMatchAcl.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/redirect/url/match/acl_name")
 	}
-	if !state.RedirectUrl.IsNull() && data.RedirectUrl.IsNull() {
+	if !state.RedirectUrl.IsNull() && (data.RedirectUrl.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/redirect/url/url_name")
 	}
-	if !state.RedirectAppendSwitchMac.IsNull() && data.RedirectAppendSwitchMac.IsNull() {
+	if !state.RedirectAppendSwitchMac.IsNull() && (data.RedirectAppendSwitchMac.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/redirect/append/switch-mac")
 	}
-	if !state.RedirectAppendClientMac.IsNull() && data.RedirectAppendClientMac.IsNull() {
+	if !state.RedirectAppendClientMac.IsNull() && (data.RedirectAppendClientMac.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/redirect/append/client-mac")
 	}
-	if !state.Vnid.IsNull() && data.Vnid.IsNull() {
+	if !state.Vnid.IsNull() && (data.Vnid.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/vnid")
 	}
-	if !state.TunnelCapwapName.IsNull() && data.TunnelCapwapName.IsNull() {
+	if !state.TunnelCapwapName.IsNull() && (data.TunnelCapwapName.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/tunnel/type/capwap/name")
 	}
 	for i := range state.InterfaceTemplates {
@@ -753,28 +749,28 @@ func (data *ServiceTemplate) addDeletedItemsXML(ctx context.Context, state Servi
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/interface-template%v", predicates))
 		}
 	}
-	if !state.Description.IsNull() && data.Description.IsNull() {
+	if !state.Description.IsNull() && (data.Description.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/description")
 	}
-	if !state.AbsoluteTimer.IsNull() && data.AbsoluteTimer.IsNull() {
+	if !state.AbsoluteTimer.IsNull() && (data.AbsoluteTimer.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/absolute-timer")
 	}
-	if !state.Sgt.IsNull() && data.Sgt.IsNull() {
+	if !state.Sgt.IsNull() && (data.Sgt.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/sgt")
 	}
-	if !state.LinksecPolicy.IsNull() && data.LinksecPolicy.IsNull() {
+	if !state.LinksecPolicy.IsNull() && (data.LinksecPolicy.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/linksec/policy")
 	}
-	if !state.VoiceVlan.IsNull() && data.VoiceVlan.IsNull() {
+	if !state.VoiceVlan.IsNull() && (data.VoiceVlan.IsNull() || (state.VoiceVlan.ValueBool() && !data.VoiceVlan.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/voice/vlan")
 	}
-	if !state.Vlan.IsNull() && data.Vlan.IsNull() {
+	if !state.Vlan.IsNull() && (data.Vlan.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/vlan")
 	}
-	if !state.InactivityTimerProbe.IsNull() && data.InactivityTimerProbe.IsNull() {
+	if !state.InactivityTimerProbe.IsNull() && (data.InactivityTimerProbe.IsNull() || (state.InactivityTimerProbe.ValueBool() && !data.InactivityTimerProbe.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/inactivity-timer/probe")
 	}
-	if !state.InactivityTimer.IsNull() && data.InactivityTimer.IsNull() {
+	if !state.InactivityTimer.IsNull() && (data.InactivityTimer.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/inactivity-timer/value")
 	}
 	for i := range state.AccessGroups {

@@ -130,7 +130,7 @@ func (data *QoSData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 func (data *QoS) addDeletedItemsXML(ctx context.Context, state QoS, body string) string {
 	b := netconf.NewBody(body)
-	if !state.QueueSoftmaxMultiplier.IsNull() && data.QueueSoftmaxMultiplier.IsNull() {
+	if !state.QueueSoftmaxMultiplier.IsNull() && (data.QueueSoftmaxMultiplier.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-qos:queue-softmax-multiplier/value")
 	}
 

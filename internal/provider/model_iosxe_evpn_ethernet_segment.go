@@ -117,15 +117,11 @@ func (data EVPNEthernetSegment) addToBodyXML(ctx context.Context, config EVPNEth
 	if !data.RedundancyAllActive.IsNull() && !data.RedundancyAllActive.IsUnknown() {
 		if data.RedundancyAllActive.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/redundancy/all-active", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/redundancy/all-active")
 		}
 	}
 	if !data.RedundancySingleActive.IsNull() && !data.RedundancySingleActive.IsUnknown() {
 		if data.RedundancySingleActive.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/redundancy/single-active", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/redundancy/single-active")
 		}
 	}
 	if len(data.IdentifierTypes) > 0 {
@@ -323,10 +319,10 @@ func (data *EVPNEthernetSegment) addDeletedItemsXML(ctx context.Context, state E
 				found = false
 			}
 			if found {
-				if !state.IdentifierTypes[i].SystemMac.IsNull() && data.IdentifierTypes[j].SystemMac.IsNull() {
+				if !state.IdentifierTypes[i].SystemMac.IsNull() && (data.IdentifierTypes[j].SystemMac.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/identifier/type%v/system-mac", predicates))
 				}
-				if !state.IdentifierTypes[i].HexString.IsNull() && data.IdentifierTypes[j].HexString.IsNull() {
+				if !state.IdentifierTypes[i].HexString.IsNull() && (data.IdentifierTypes[j].HexString.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/identifier/type%v/hex-string", predicates))
 				}
 				break
@@ -336,13 +332,13 @@ func (data *EVPNEthernetSegment) addDeletedItemsXML(ctx context.Context, state E
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/identifier/type%v", predicates))
 		}
 	}
-	if !state.RedundancySingleActive.IsNull() && data.RedundancySingleActive.IsNull() {
+	if !state.RedundancySingleActive.IsNull() && (data.RedundancySingleActive.IsNull() || (state.RedundancySingleActive.ValueBool() && !data.RedundancySingleActive.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/redundancy/single-active")
 	}
-	if !state.RedundancyAllActive.IsNull() && data.RedundancyAllActive.IsNull() {
+	if !state.RedundancyAllActive.IsNull() && (data.RedundancyAllActive.IsNull() || (state.RedundancyAllActive.ValueBool() && !data.RedundancyAllActive.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/redundancy/all-active")
 	}
-	if !state.DfElectionWaitTime.IsNull() && data.DfElectionWaitTime.IsNull() {
+	if !state.DfElectionWaitTime.IsNull() && (data.DfElectionWaitTime.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/df-election/wait-time")
 	}
 

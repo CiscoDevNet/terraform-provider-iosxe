@@ -32,12 +32,16 @@ resource "iosxe_tacacs_server" "example" {
 > **NOTE**: [Write-only arguments](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments) are supported in Terraform 1.11 and later.
 
 - `attribute_allow_unknown` (Boolean) Unknown Tacacs+ attributes
+  - Default value: `false`
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
 - `directed_request` (Boolean) Allow user to specify tacacs server to use with `@server'
+  - Default value: `false`
 - `directed_request_no_truncate` (Boolean) Do not truncate the @hostname from username.
+  - Default value: `false`
 - `directed_request_restricted` (Boolean) restrict queries to directed request servers only
+  - Default value: `false`
 - `encryption` (String) 0 - Specifies an UNENCRYPTED key will follow 6 - Specifies an ENCRYPTED key will follow 7 - Specifies HIDDEN key will follow
   - Choices: `0`, `6`, `7`
 - `key` (String, Sensitive)

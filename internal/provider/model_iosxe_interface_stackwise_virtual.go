@@ -102,8 +102,6 @@ func (data InterfaceStackwiseVirtual) addToBodyXML(ctx context.Context, config I
 	if !data.DualActiveDetection.IsNull() && !data.DualActiveDetection.IsUnknown() {
 		if data.DualActiveDetection.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/dual-active-detection", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/dual-active-detection")
 		}
 	}
 	return body
@@ -166,10 +164,10 @@ func (data *InterfaceStackwiseVirtualData) fromBodyXML(ctx context.Context, res 
 
 func (data *InterfaceStackwiseVirtual) addDeletedItemsXML(ctx context.Context, state InterfaceStackwiseVirtual, body string) string {
 	b := netconf.NewBody(body)
-	if !state.DualActiveDetection.IsNull() && data.DualActiveDetection.IsNull() {
+	if !state.DualActiveDetection.IsNull() && (data.DualActiveDetection.IsNull() || (state.DualActiveDetection.ValueBool() && !data.DualActiveDetection.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dual-active-detection")
 	}
-	if !state.Link.IsNull() && data.Link.IsNull() {
+	if !state.Link.IsNull() && (data.Link.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/link")
 	}
 

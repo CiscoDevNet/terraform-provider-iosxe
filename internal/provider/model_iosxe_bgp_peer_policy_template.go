@@ -117,8 +117,6 @@ func (data BGPPeerPolicyTemplate) addToBodyXML(ctx context.Context, config BGPPe
 	if !data.RouteReflectorClient.IsNull() && !data.RouteReflectorClient.IsUnknown() {
 		if data.RouteReflectorClient.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/route-reflector-client", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/route-reflector-client")
 		}
 	}
 	if !data.SendCommunity.IsNull() && !data.SendCommunity.IsUnknown() {
@@ -142,8 +140,6 @@ func (data BGPPeerPolicyTemplate) addToBodyXML(ctx context.Context, config BGPPe
 	if !data.AsOverrideSplitHorizon.IsNull() && !data.AsOverrideSplitHorizon.IsUnknown() {
 		if data.AsOverrideSplitHorizon.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/as-override/split-horizon", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/as-override/split-horizon")
 		}
 	}
 	return body
@@ -303,10 +299,10 @@ func (data *BGPPeerPolicyTemplateData) fromBodyXML(ctx context.Context, res xmld
 
 func (data *BGPPeerPolicyTemplate) addDeletedItemsXML(ctx context.Context, state BGPPeerPolicyTemplate, body string) string {
 	b := netconf.NewBody(body)
-	if !state.AsOverrideSplitHorizon.IsNull() && data.AsOverrideSplitHorizon.IsNull() {
+	if !state.AsOverrideSplitHorizon.IsNull() && (data.AsOverrideSplitHorizon.IsNull() || (state.AsOverrideSplitHorizon.ValueBool() && !data.AsOverrideSplitHorizon.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/as-override/split-horizon")
 	}
-	if !state.AllowasInAsNumber.IsNull() && data.AllowasInAsNumber.IsNull() {
+	if !state.AllowasInAsNumber.IsNull() && (data.AllowasInAsNumber.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/allowas-in/as-number")
 	}
 	for i := range state.RouteMaps {
@@ -332,7 +328,7 @@ func (data *BGPPeerPolicyTemplate) addDeletedItemsXML(ctx context.Context, state
 				found = false
 			}
 			if found {
-				if !state.RouteMaps[i].RouteMapName.IsNull() && data.RouteMaps[j].RouteMapName.IsNull() {
+				if !state.RouteMaps[i].RouteMapName.IsNull() && (data.RouteMaps[j].RouteMapName.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/route-map1%v/route-map-name", predicates))
 				}
 				break
@@ -342,10 +338,10 @@ func (data *BGPPeerPolicyTemplate) addDeletedItemsXML(ctx context.Context, state
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/route-map1%v", predicates))
 		}
 	}
-	if !state.SendCommunity.IsNull() && data.SendCommunity.IsNull() {
+	if !state.SendCommunity.IsNull() && (data.SendCommunity.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/send-community/send-community-where")
 	}
-	if !state.RouteReflectorClient.IsNull() && data.RouteReflectorClient.IsNull() {
+	if !state.RouteReflectorClient.IsNull() && (data.RouteReflectorClient.IsNull() || (state.RouteReflectorClient.ValueBool() && !data.RouteReflectorClient.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/route-reflector-client")
 	}
 

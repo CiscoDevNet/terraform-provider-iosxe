@@ -64,7 +64,9 @@ resource "iosxe_aaa" "example" {
 - `local_authentication_type` (String)
 - `local_authorization` (String)
 - `new_model` (Boolean) Enable NEW access control commands and functions.(Disables OLD commands.)
+  - Default value: `false`
 - `server_radius_dynamic_author` (Boolean) Local server profile for RFC 3576 support
+  - Default value: `false`
 - `server_radius_dynamic_author_clients` (Attributes List) Specify a RADIUS client (see [below for nested schema](#nestedatt--server_radius_dynamic_author_clients))
 - `session_id` (String) AAA Session ID
   - Choices: `common`, `unique`

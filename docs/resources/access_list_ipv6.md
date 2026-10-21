@@ -56,8 +56,9 @@ Optional:
 - `ace_rule_action` (String) - Choices: `deny`, `permit`
 - `ace_rule_protocol` (String)
 - `ack` (Boolean) Match on the ACK bit
+  - Default value: `false`
 - `destination_address` (String)
-- `destination_any` (Boolean)
+- `destination_any` (Boolean) - Default value: `false`
 - `destination_fqdn_group` (String) Destination FQDN group
 - `destination_host` (String)
 - `destination_object_group` (String) Destination IPv6 network object group
@@ -79,19 +80,26 @@ Optional:
 - `destination_wildcard_bits` (String)
 - `dscp` (String) Match packets with given dscp value
 - `established` (Boolean) Match established connections
+  - Default value: `false`
 - `fin` (Boolean) Match on the FIN bit
+  - Default value: `false`
 - `fragments` (Boolean) Check non-initial fragments
+  - Default value: `false`
 - `icmp_msg_code` (Number) - Range: `0`-`255`
 - `icmp_msg_type` (Number) - Range: `0`-`255`
 - `icmp_named_msg_type` (String) - Choices: `beyond-scope`, `destination-unreachable`, `dhaad-reply`, `dhaad-request`, `echo-reply`, `echo-request`, `header`, `hop-limit`, `mld-query`, `mld-reduction`, `mld-report`, `mpd-advertisement`, `mpd-solicitation`, `nd-na`, `nd-ns`, `next-header`, `no-admin`, `no-route`, `packet-too-big`, `parameter-option`, `parameter-problem`, `port-unreachable`, `reassembly-timeout`, `redirect`, `reject-route`, `renum-command`, `renum-result`, `renum-seq-number`, `router-advertisement`, `router-renumbering`, `router-solicitation`, `source-policy`, `time-exceeded`, `unreachable`
 - `log` (Boolean) Log matches against this entry
+  - Default value: `false`
 - `log_input` (Boolean) Log matches against this entry, including input
+  - Default value: `false`
 - `psh` (Boolean) Match on the PSH bit
+  - Default value: `false`
 - `remark` (String) Access list entry comment
 - `rst` (Boolean) Match on the RST bit
+  - Default value: `false`
 - `service_object_group` (String) Service object group name
 - `source_address` (String)
-- `source_any` (Boolean)
+- `source_any` (Boolean) - Default value: `false`
 - `source_fqdn_group` (String) Source FQDN group
 - `source_host` (String)
 - `source_object_group` (String) Source IPv6 network object group
@@ -112,7 +120,9 @@ Optional:
 - `source_prefix` (String)
 - `source_wildcard_bits` (String)
 - `syn` (Boolean) Match on the SYN bit
+  - Default value: `false`
 - `urg` (Boolean) Match on the URG bit
+  - Default value: `false`
 
 ## Import
 

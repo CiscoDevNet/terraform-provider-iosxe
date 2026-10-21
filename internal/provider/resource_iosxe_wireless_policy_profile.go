@@ -33,6 +33,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -95,8 +96,10 @@ func (r *WirelessPolicyProfileResource) Schema(ctx context.Context, req resource
 				Optional:            true,
 			},
 			"status": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("This object specifies whether the policy profile is shutdown or active").String,
+				MarkdownDescription: helpers.NewAttributeDescription("This object specifies whether the policy profile is shutdown or active").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"vlan": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("This object represents the interface attached to the wireless lan.").String,
@@ -107,12 +110,16 @@ func (r *WirelessPolicyProfileResource) Schema(ctx context.Context, req resource
 				Optional:            true,
 			},
 			"aaa_override": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("This flag is set when aaa override is enabled").String,
+				MarkdownDescription: helpers.NewAttributeDescription("This flag is set when aaa override is enabled").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"nac": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("This flag is set when NAC is enabled").String,
+				MarkdownDescription: helpers.NewAttributeDescription("This flag is set when NAC is enabled").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"nac_type": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Type of Network Authentication Control (NAC) supported").AddStringEnumDescription("nac-support-radius").String,
@@ -165,16 +172,22 @@ func (r *WirelessPolicyProfileResource) Schema(ctx context.Context, req resource
 				},
 			},
 			"static_ip_mobility": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configuration of static IP mobility").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configuration of static IP mobility").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"dhcp_tlv_caching": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("DHCP TLV caching").String,
+				MarkdownDescription: helpers.NewAttributeDescription("DHCP TLV caching").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"http_tlv_caching": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("HTTP TLV caching").String,
+				MarkdownDescription: helpers.NewAttributeDescription("HTTP TLV caching").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ipv4_flow_monitors_input": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("IPv4 ingress flow monitor associated to policy profile").String,

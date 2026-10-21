@@ -35,6 +35,7 @@ resource "iosxe_multicast" "example" {
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
 - `multipath` (Boolean) RPF across equal-cost paths
+  - Default value: `false`
 - `multipath_s_g_hash` (String) Per-(source, group) load sharing algorithm selection
   - Choices: `basic`, `next-hop-based`
 - `vrfs` (Attributes List) Select VPN Routing/Forwarding instance (see [below for nested schema](#nestedatt--vrfs))
@@ -53,6 +54,7 @@ Required:
 Optional:
 
 - `multipath` (Boolean) RPF across equal-cost paths
+  - Default value: `false`
 - `multipath_s_g_hash` (String) Per-(source, group) load sharing algorithm selection
   - Choices: `basic`, `next-hop-based`
 

@@ -153,8 +153,6 @@ func (data BGPAddressFamilyIPv6) addToBodyXML(ctx context.Context, config BGPAdd
 	if !data.Ipv6UnicastRedistributeConnected.IsNull() && !data.Ipv6UnicastRedistributeConnected.IsUnknown() {
 		if data.Ipv6UnicastRedistributeConnected.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ipv6-unicast/redistribute-v6/connected", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ipv6-unicast/redistribute-v6/connected")
 		}
 	}
 	if !data.Ipv6UnicastRedistributeConnectedRouteMap.IsNull() && !data.Ipv6UnicastRedistributeConnectedRouteMap.IsUnknown() {
@@ -166,8 +164,6 @@ func (data BGPAddressFamilyIPv6) addToBodyXML(ctx context.Context, config BGPAdd
 	if !data.Ipv6UnicastRedistributeStatic.IsNull() && !data.Ipv6UnicastRedistributeStatic.IsUnknown() {
 		if data.Ipv6UnicastRedistributeStatic.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ipv6-unicast/redistribute-v6/static", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ipv6-unicast/redistribute-v6/static")
 		}
 	}
 	if !data.Ipv6UnicastRedistributeStaticRouteMap.IsNull() && !data.Ipv6UnicastRedistributeStaticRouteMap.IsUnknown() {
@@ -197,8 +193,6 @@ func (data BGPAddressFamilyIPv6) addToBodyXML(ctx context.Context, config BGPAdd
 			if !item.Backdoor.IsNull() && !item.Backdoor.IsUnknown() {
 				if item.Backdoor.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "backdoor", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "backdoor")
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ipv6-unicast/network", cBody.Res())
@@ -611,19 +605,19 @@ func (data *BGPAddressFamilyIPv6Data) fromBodyXML(ctx context.Context, res xmldo
 
 func (data *BGPAddressFamilyIPv6) addDeletedItemsXML(ctx context.Context, state BGPAddressFamilyIPv6, body string) string {
 	b := netconf.NewBody(body)
-	if !state.Ipv6UnicastMaximumPathsIbgp.IsNull() && data.Ipv6UnicastMaximumPathsIbgp.IsNull() {
+	if !state.Ipv6UnicastMaximumPathsIbgp.IsNull() && (data.Ipv6UnicastMaximumPathsIbgp.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ipv6-unicast/maximum-paths/ibgp-leaf")
 	}
-	if !state.Ipv6UnicastMaximumPathsEbgp.IsNull() && data.Ipv6UnicastMaximumPathsEbgp.IsNull() {
+	if !state.Ipv6UnicastMaximumPathsEbgp.IsNull() && (data.Ipv6UnicastMaximumPathsEbgp.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ipv6-unicast/maximum-paths/ebgp")
 	}
-	if !state.Ipv6UnicastDistanceBgpLocal.IsNull() && data.Ipv6UnicastDistanceBgpLocal.IsNull() {
+	if !state.Ipv6UnicastDistanceBgpLocal.IsNull() && (data.Ipv6UnicastDistanceBgpLocal.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ipv6-unicast/distance/bgp/local")
 	}
-	if !state.Ipv6UnicastDistanceBgpInternal.IsNull() && data.Ipv6UnicastDistanceBgpInternal.IsNull() {
+	if !state.Ipv6UnicastDistanceBgpInternal.IsNull() && (data.Ipv6UnicastDistanceBgpInternal.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ipv6-unicast/distance/bgp/internal-as")
 	}
-	if !state.Ipv6UnicastDistanceBgpExternal.IsNull() && data.Ipv6UnicastDistanceBgpExternal.IsNull() {
+	if !state.Ipv6UnicastDistanceBgpExternal.IsNull() && (data.Ipv6UnicastDistanceBgpExternal.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ipv6-unicast/distance/bgp/extern-as")
 	}
 	for i := range state.Ipv6UnicastAdminDistances {
@@ -655,7 +649,7 @@ func (data *BGPAddressFamilyIPv6) addDeletedItemsXML(ctx context.Context, state 
 				found = false
 			}
 			if found {
-				if !state.Ipv6UnicastAdminDistances[i].PrefixListName.IsNull() && data.Ipv6UnicastAdminDistances[j].PrefixListName.IsNull() {
+				if !state.Ipv6UnicastAdminDistances[i].PrefixListName.IsNull() && (data.Ipv6UnicastAdminDistances[j].PrefixListName.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6-unicast/distance/adm-distance%v/prefix-list-name", predicates))
 				}
 				break
@@ -688,10 +682,10 @@ func (data *BGPAddressFamilyIPv6) addDeletedItemsXML(ctx context.Context, state 
 				found = false
 			}
 			if found {
-				if !state.Ipv6UnicastNetworks[i].Backdoor.IsNull() && data.Ipv6UnicastNetworks[j].Backdoor.IsNull() {
+				if !state.Ipv6UnicastNetworks[i].Backdoor.IsNull() && (data.Ipv6UnicastNetworks[j].Backdoor.IsNull() || (state.Ipv6UnicastNetworks[i].Backdoor.ValueBool() && !data.Ipv6UnicastNetworks[j].Backdoor.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6-unicast/network%v/backdoor", predicates))
 				}
-				if !state.Ipv6UnicastNetworks[i].RouteMap.IsNull() && data.Ipv6UnicastNetworks[j].RouteMap.IsNull() {
+				if !state.Ipv6UnicastNetworks[i].RouteMap.IsNull() && (data.Ipv6UnicastNetworks[j].RouteMap.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6-unicast/network%v/route-map", predicates))
 				}
 				break
@@ -731,22 +725,22 @@ func (data *BGPAddressFamilyIPv6) addDeletedItemsXML(ctx context.Context, state 
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6-unicast/aggregate-address%v", predicates))
 		}
 	}
-	if !state.Ipv6UnicastRedistributeStaticMetric.IsNull() && data.Ipv6UnicastRedistributeStaticMetric.IsNull() {
+	if !state.Ipv6UnicastRedistributeStaticMetric.IsNull() && (data.Ipv6UnicastRedistributeStaticMetric.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ipv6-unicast/redistribute-v6/static/metric")
 	}
-	if !state.Ipv6UnicastRedistributeStaticRouteMap.IsNull() && data.Ipv6UnicastRedistributeStaticRouteMap.IsNull() {
+	if !state.Ipv6UnicastRedistributeStaticRouteMap.IsNull() && (data.Ipv6UnicastRedistributeStaticRouteMap.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ipv6-unicast/redistribute-v6/static/route-map")
 	}
-	if !state.Ipv6UnicastRedistributeStatic.IsNull() && data.Ipv6UnicastRedistributeStatic.IsNull() {
+	if !state.Ipv6UnicastRedistributeStatic.IsNull() && (data.Ipv6UnicastRedistributeStatic.IsNull() || (state.Ipv6UnicastRedistributeStatic.ValueBool() && !data.Ipv6UnicastRedistributeStatic.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ipv6-unicast/redistribute-v6/static")
 	}
-	if !state.Ipv6UnicastRedistributeConnectedMetric.IsNull() && data.Ipv6UnicastRedistributeConnectedMetric.IsNull() {
+	if !state.Ipv6UnicastRedistributeConnectedMetric.IsNull() && (data.Ipv6UnicastRedistributeConnectedMetric.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ipv6-unicast/redistribute-v6/connected/metric")
 	}
-	if !state.Ipv6UnicastRedistributeConnectedRouteMap.IsNull() && data.Ipv6UnicastRedistributeConnectedRouteMap.IsNull() {
+	if !state.Ipv6UnicastRedistributeConnectedRouteMap.IsNull() && (data.Ipv6UnicastRedistributeConnectedRouteMap.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ipv6-unicast/redistribute-v6/connected/route-map")
 	}
-	if !state.Ipv6UnicastRedistributeConnected.IsNull() && data.Ipv6UnicastRedistributeConnected.IsNull() {
+	if !state.Ipv6UnicastRedistributeConnected.IsNull() && (data.Ipv6UnicastRedistributeConnected.IsNull() || (state.Ipv6UnicastRedistributeConnected.ValueBool() && !data.Ipv6UnicastRedistributeConnected.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ipv6-unicast/redistribute-v6/connected")
 	}
 

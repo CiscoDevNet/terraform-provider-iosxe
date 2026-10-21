@@ -203,50 +203,36 @@ func (data AccessListRoleBased) addToBodyXML(ctx context.Context, config AccessL
 			if !item.Ack.IsNull() && !item.Ack.IsUnknown() {
 				if item.Ack.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/ack", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/ack")
 				}
 			}
 			if !item.Fin.IsNull() && !item.Fin.IsUnknown() {
 				if item.Fin.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/fin", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/fin")
 				}
 			}
 			if !item.Psh.IsNull() && !item.Psh.IsUnknown() {
 				if item.Psh.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/psh", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/psh")
 				}
 			}
 			if !item.Rst.IsNull() && !item.Rst.IsUnknown() {
 				if item.Rst.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/rst", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/rst")
 				}
 			}
 			if !item.Syn.IsNull() && !item.Syn.IsUnknown() {
 				if item.Syn.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/syn", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/syn")
 				}
 			}
 			if !item.Urg.IsNull() && !item.Urg.IsUnknown() {
 				if item.Urg.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/urg", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/urg")
 				}
 			}
 			if !item.Established.IsNull() && !item.Established.IsUnknown() {
 				if item.Established.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/established", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/established")
 				}
 			}
 			if !item.Dscp.IsNull() && !item.Dscp.IsUnknown() {
@@ -255,8 +241,6 @@ func (data AccessListRoleBased) addToBodyXML(ctx context.Context, config AccessL
 			if !item.Fragments.IsNull() && !item.Fragments.IsUnknown() {
 				if item.Fragments.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/fragments", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/fragments")
 				}
 			}
 			if !item.Option.IsNull() && !item.Option.IsUnknown() {
@@ -274,183 +258,131 @@ func (data AccessListRoleBased) addToBodyXML(ctx context.Context, config AccessL
 			if !item.Log.IsNull() && !item.Log.IsUnknown() {
 				if item.Log.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/log", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/log")
 				}
 			}
 			if !item.LogInput.IsNull() && !item.LogInput.IsUnknown() {
 				if item.LogInput.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/log-input", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/log-input")
 				}
 			}
 			if !item.MatchAllPlusack.IsNull() && !item.MatchAllPlusack.IsUnknown() {
 				if item.MatchAllPlusack.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-all/plusack", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-all/plusack")
 				}
 			}
 			if !item.MatchAllPlusfin.IsNull() && !item.MatchAllPlusfin.IsUnknown() {
 				if item.MatchAllPlusfin.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-all/plusfin", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-all/plusfin")
 				}
 			}
 			if !item.MatchAllPluspsh.IsNull() && !item.MatchAllPluspsh.IsUnknown() {
 				if item.MatchAllPluspsh.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-all/pluspsh", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-all/pluspsh")
 				}
 			}
 			if !item.MatchAllPlusrst.IsNull() && !item.MatchAllPlusrst.IsUnknown() {
 				if item.MatchAllPlusrst.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-all/plusrst", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-all/plusrst")
 				}
 			}
 			if !item.MatchAllPlussyn.IsNull() && !item.MatchAllPlussyn.IsUnknown() {
 				if item.MatchAllPlussyn.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-all/plussyn", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-all/plussyn")
 				}
 			}
 			if !item.MatchAllPlusurg.IsNull() && !item.MatchAllPlusurg.IsUnknown() {
 				if item.MatchAllPlusurg.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-all/plusurg", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-all/plusurg")
 				}
 			}
 			if !item.MatchAllMinusack.IsNull() && !item.MatchAllMinusack.IsUnknown() {
 				if item.MatchAllMinusack.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-all/minusack", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-all/minusack")
 				}
 			}
 			if !item.MatchAllMinusfin.IsNull() && !item.MatchAllMinusfin.IsUnknown() {
 				if item.MatchAllMinusfin.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-all/minusfin", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-all/minusfin")
 				}
 			}
 			if !item.MatchAllMinuspsh.IsNull() && !item.MatchAllMinuspsh.IsUnknown() {
 				if item.MatchAllMinuspsh.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-all/minuspsh", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-all/minuspsh")
 				}
 			}
 			if !item.MatchAllMinusrst.IsNull() && !item.MatchAllMinusrst.IsUnknown() {
 				if item.MatchAllMinusrst.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-all/minusrst", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-all/minusrst")
 				}
 			}
 			if !item.MatchAllMinussyn.IsNull() && !item.MatchAllMinussyn.IsUnknown() {
 				if item.MatchAllMinussyn.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-all/minussyn", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-all/minussyn")
 				}
 			}
 			if !item.MatchAllMinusurg.IsNull() && !item.MatchAllMinusurg.IsUnknown() {
 				if item.MatchAllMinusurg.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-all/minusurg", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-all/minusurg")
 				}
 			}
 			if !item.MatchAnyPlusack.IsNull() && !item.MatchAnyPlusack.IsUnknown() {
 				if item.MatchAnyPlusack.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-any/plusack", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-any/plusack")
 				}
 			}
 			if !item.MatchAnyPlusfin.IsNull() && !item.MatchAnyPlusfin.IsUnknown() {
 				if item.MatchAnyPlusfin.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-any/plusfin", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-any/plusfin")
 				}
 			}
 			if !item.MatchAnyPluspsh.IsNull() && !item.MatchAnyPluspsh.IsUnknown() {
 				if item.MatchAnyPluspsh.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-any/pluspsh", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-any/pluspsh")
 				}
 			}
 			if !item.MatchAnyPlusrst.IsNull() && !item.MatchAnyPlusrst.IsUnknown() {
 				if item.MatchAnyPlusrst.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-any/plusrst", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-any/plusrst")
 				}
 			}
 			if !item.MatchAnyPlussyn.IsNull() && !item.MatchAnyPlussyn.IsUnknown() {
 				if item.MatchAnyPlussyn.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-any/plussyn", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-any/plussyn")
 				}
 			}
 			if !item.MatchAnyPlusurg.IsNull() && !item.MatchAnyPlusurg.IsUnknown() {
 				if item.MatchAnyPlusurg.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-any/plusurg", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-any/plusurg")
 				}
 			}
 			if !item.MatchAnyMinusack.IsNull() && !item.MatchAnyMinusack.IsUnknown() {
 				if item.MatchAnyMinusack.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-any/minusack", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-any/minusack")
 				}
 			}
 			if !item.MatchAnyMinusfin.IsNull() && !item.MatchAnyMinusfin.IsUnknown() {
 				if item.MatchAnyMinusfin.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-any/minusfin", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-any/minusfin")
 				}
 			}
 			if !item.MatchAnyMinuspsh.IsNull() && !item.MatchAnyMinuspsh.IsUnknown() {
 				if item.MatchAnyMinuspsh.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-any/minuspsh", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-any/minuspsh")
 				}
 			}
 			if !item.MatchAnyMinusrst.IsNull() && !item.MatchAnyMinusrst.IsUnknown() {
 				if item.MatchAnyMinusrst.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-any/minusrst", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-any/minusrst")
 				}
 			}
 			if !item.MatchAnyMinussyn.IsNull() && !item.MatchAnyMinussyn.IsUnknown() {
 				if item.MatchAnyMinussyn.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-any/minussyn", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-any/minussyn")
 				}
 			}
 			if !item.MatchAnyMinusurg.IsNull() && !item.MatchAnyMinusurg.IsUnknown() {
 				if item.MatchAnyMinusurg.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-any/minusurg", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-any/minusurg")
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/access-list-seq-rule", cBody.Res())
@@ -1299,130 +1231,130 @@ func (data *AccessListRoleBased) addDeletedItemsXML(ctx context.Context, state A
 				found = false
 			}
 			if found {
-				if !state.Entries[i].MatchAnyMinusurg.IsNull() && data.Entries[j].MatchAnyMinusurg.IsNull() {
+				if !state.Entries[i].MatchAnyMinusurg.IsNull() && (data.Entries[j].MatchAnyMinusurg.IsNull() || (state.Entries[i].MatchAnyMinusurg.ValueBool() && !data.Entries[j].MatchAnyMinusurg.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-any/minusurg", predicates))
 				}
-				if !state.Entries[i].MatchAnyMinussyn.IsNull() && data.Entries[j].MatchAnyMinussyn.IsNull() {
+				if !state.Entries[i].MatchAnyMinussyn.IsNull() && (data.Entries[j].MatchAnyMinussyn.IsNull() || (state.Entries[i].MatchAnyMinussyn.ValueBool() && !data.Entries[j].MatchAnyMinussyn.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-any/minussyn", predicates))
 				}
-				if !state.Entries[i].MatchAnyMinusrst.IsNull() && data.Entries[j].MatchAnyMinusrst.IsNull() {
+				if !state.Entries[i].MatchAnyMinusrst.IsNull() && (data.Entries[j].MatchAnyMinusrst.IsNull() || (state.Entries[i].MatchAnyMinusrst.ValueBool() && !data.Entries[j].MatchAnyMinusrst.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-any/minusrst", predicates))
 				}
-				if !state.Entries[i].MatchAnyMinuspsh.IsNull() && data.Entries[j].MatchAnyMinuspsh.IsNull() {
+				if !state.Entries[i].MatchAnyMinuspsh.IsNull() && (data.Entries[j].MatchAnyMinuspsh.IsNull() || (state.Entries[i].MatchAnyMinuspsh.ValueBool() && !data.Entries[j].MatchAnyMinuspsh.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-any/minuspsh", predicates))
 				}
-				if !state.Entries[i].MatchAnyMinusfin.IsNull() && data.Entries[j].MatchAnyMinusfin.IsNull() {
+				if !state.Entries[i].MatchAnyMinusfin.IsNull() && (data.Entries[j].MatchAnyMinusfin.IsNull() || (state.Entries[i].MatchAnyMinusfin.ValueBool() && !data.Entries[j].MatchAnyMinusfin.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-any/minusfin", predicates))
 				}
-				if !state.Entries[i].MatchAnyMinusack.IsNull() && data.Entries[j].MatchAnyMinusack.IsNull() {
+				if !state.Entries[i].MatchAnyMinusack.IsNull() && (data.Entries[j].MatchAnyMinusack.IsNull() || (state.Entries[i].MatchAnyMinusack.ValueBool() && !data.Entries[j].MatchAnyMinusack.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-any/minusack", predicates))
 				}
-				if !state.Entries[i].MatchAnyPlusurg.IsNull() && data.Entries[j].MatchAnyPlusurg.IsNull() {
+				if !state.Entries[i].MatchAnyPlusurg.IsNull() && (data.Entries[j].MatchAnyPlusurg.IsNull() || (state.Entries[i].MatchAnyPlusurg.ValueBool() && !data.Entries[j].MatchAnyPlusurg.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-any/plusurg", predicates))
 				}
-				if !state.Entries[i].MatchAnyPlussyn.IsNull() && data.Entries[j].MatchAnyPlussyn.IsNull() {
+				if !state.Entries[i].MatchAnyPlussyn.IsNull() && (data.Entries[j].MatchAnyPlussyn.IsNull() || (state.Entries[i].MatchAnyPlussyn.ValueBool() && !data.Entries[j].MatchAnyPlussyn.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-any/plussyn", predicates))
 				}
-				if !state.Entries[i].MatchAnyPlusrst.IsNull() && data.Entries[j].MatchAnyPlusrst.IsNull() {
+				if !state.Entries[i].MatchAnyPlusrst.IsNull() && (data.Entries[j].MatchAnyPlusrst.IsNull() || (state.Entries[i].MatchAnyPlusrst.ValueBool() && !data.Entries[j].MatchAnyPlusrst.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-any/plusrst", predicates))
 				}
-				if !state.Entries[i].MatchAnyPluspsh.IsNull() && data.Entries[j].MatchAnyPluspsh.IsNull() {
+				if !state.Entries[i].MatchAnyPluspsh.IsNull() && (data.Entries[j].MatchAnyPluspsh.IsNull() || (state.Entries[i].MatchAnyPluspsh.ValueBool() && !data.Entries[j].MatchAnyPluspsh.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-any/pluspsh", predicates))
 				}
-				if !state.Entries[i].MatchAnyPlusfin.IsNull() && data.Entries[j].MatchAnyPlusfin.IsNull() {
+				if !state.Entries[i].MatchAnyPlusfin.IsNull() && (data.Entries[j].MatchAnyPlusfin.IsNull() || (state.Entries[i].MatchAnyPlusfin.ValueBool() && !data.Entries[j].MatchAnyPlusfin.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-any/plusfin", predicates))
 				}
-				if !state.Entries[i].MatchAnyPlusack.IsNull() && data.Entries[j].MatchAnyPlusack.IsNull() {
+				if !state.Entries[i].MatchAnyPlusack.IsNull() && (data.Entries[j].MatchAnyPlusack.IsNull() || (state.Entries[i].MatchAnyPlusack.ValueBool() && !data.Entries[j].MatchAnyPlusack.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-any/plusack", predicates))
 				}
-				if !state.Entries[i].MatchAllMinusurg.IsNull() && data.Entries[j].MatchAllMinusurg.IsNull() {
+				if !state.Entries[i].MatchAllMinusurg.IsNull() && (data.Entries[j].MatchAllMinusurg.IsNull() || (state.Entries[i].MatchAllMinusurg.ValueBool() && !data.Entries[j].MatchAllMinusurg.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-all/minusurg", predicates))
 				}
-				if !state.Entries[i].MatchAllMinussyn.IsNull() && data.Entries[j].MatchAllMinussyn.IsNull() {
+				if !state.Entries[i].MatchAllMinussyn.IsNull() && (data.Entries[j].MatchAllMinussyn.IsNull() || (state.Entries[i].MatchAllMinussyn.ValueBool() && !data.Entries[j].MatchAllMinussyn.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-all/minussyn", predicates))
 				}
-				if !state.Entries[i].MatchAllMinusrst.IsNull() && data.Entries[j].MatchAllMinusrst.IsNull() {
+				if !state.Entries[i].MatchAllMinusrst.IsNull() && (data.Entries[j].MatchAllMinusrst.IsNull() || (state.Entries[i].MatchAllMinusrst.ValueBool() && !data.Entries[j].MatchAllMinusrst.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-all/minusrst", predicates))
 				}
-				if !state.Entries[i].MatchAllMinuspsh.IsNull() && data.Entries[j].MatchAllMinuspsh.IsNull() {
+				if !state.Entries[i].MatchAllMinuspsh.IsNull() && (data.Entries[j].MatchAllMinuspsh.IsNull() || (state.Entries[i].MatchAllMinuspsh.ValueBool() && !data.Entries[j].MatchAllMinuspsh.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-all/minuspsh", predicates))
 				}
-				if !state.Entries[i].MatchAllMinusfin.IsNull() && data.Entries[j].MatchAllMinusfin.IsNull() {
+				if !state.Entries[i].MatchAllMinusfin.IsNull() && (data.Entries[j].MatchAllMinusfin.IsNull() || (state.Entries[i].MatchAllMinusfin.ValueBool() && !data.Entries[j].MatchAllMinusfin.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-all/minusfin", predicates))
 				}
-				if !state.Entries[i].MatchAllMinusack.IsNull() && data.Entries[j].MatchAllMinusack.IsNull() {
+				if !state.Entries[i].MatchAllMinusack.IsNull() && (data.Entries[j].MatchAllMinusack.IsNull() || (state.Entries[i].MatchAllMinusack.ValueBool() && !data.Entries[j].MatchAllMinusack.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-all/minusack", predicates))
 				}
-				if !state.Entries[i].MatchAllPlusurg.IsNull() && data.Entries[j].MatchAllPlusurg.IsNull() {
+				if !state.Entries[i].MatchAllPlusurg.IsNull() && (data.Entries[j].MatchAllPlusurg.IsNull() || (state.Entries[i].MatchAllPlusurg.ValueBool() && !data.Entries[j].MatchAllPlusurg.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-all/plusurg", predicates))
 				}
-				if !state.Entries[i].MatchAllPlussyn.IsNull() && data.Entries[j].MatchAllPlussyn.IsNull() {
+				if !state.Entries[i].MatchAllPlussyn.IsNull() && (data.Entries[j].MatchAllPlussyn.IsNull() || (state.Entries[i].MatchAllPlussyn.ValueBool() && !data.Entries[j].MatchAllPlussyn.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-all/plussyn", predicates))
 				}
-				if !state.Entries[i].MatchAllPlusrst.IsNull() && data.Entries[j].MatchAllPlusrst.IsNull() {
+				if !state.Entries[i].MatchAllPlusrst.IsNull() && (data.Entries[j].MatchAllPlusrst.IsNull() || (state.Entries[i].MatchAllPlusrst.ValueBool() && !data.Entries[j].MatchAllPlusrst.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-all/plusrst", predicates))
 				}
-				if !state.Entries[i].MatchAllPluspsh.IsNull() && data.Entries[j].MatchAllPluspsh.IsNull() {
+				if !state.Entries[i].MatchAllPluspsh.IsNull() && (data.Entries[j].MatchAllPluspsh.IsNull() || (state.Entries[i].MatchAllPluspsh.ValueBool() && !data.Entries[j].MatchAllPluspsh.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-all/pluspsh", predicates))
 				}
-				if !state.Entries[i].MatchAllPlusfin.IsNull() && data.Entries[j].MatchAllPlusfin.IsNull() {
+				if !state.Entries[i].MatchAllPlusfin.IsNull() && (data.Entries[j].MatchAllPlusfin.IsNull() || (state.Entries[i].MatchAllPlusfin.ValueBool() && !data.Entries[j].MatchAllPlusfin.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-all/plusfin", predicates))
 				}
-				if !state.Entries[i].MatchAllPlusack.IsNull() && data.Entries[j].MatchAllPlusack.IsNull() {
+				if !state.Entries[i].MatchAllPlusack.IsNull() && (data.Entries[j].MatchAllPlusack.IsNull() || (state.Entries[i].MatchAllPlusack.ValueBool() && !data.Entries[j].MatchAllPlusack.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-all/plusack", predicates))
 				}
-				if !state.Entries[i].LogInput.IsNull() && data.Entries[j].LogInput.IsNull() {
+				if !state.Entries[i].LogInput.IsNull() && (data.Entries[j].LogInput.IsNull() || (state.Entries[i].LogInput.ValueBool() && !data.Entries[j].LogInput.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/log-input", predicates))
 				}
-				if !state.Entries[i].Log.IsNull() && data.Entries[j].Log.IsNull() {
+				if !state.Entries[i].Log.IsNull() && (data.Entries[j].Log.IsNull() || (state.Entries[i].Log.ValueBool() && !data.Entries[j].Log.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/log", predicates))
 				}
-				if !state.Entries[i].Tos.IsNull() && data.Entries[j].Tos.IsNull() {
+				if !state.Entries[i].Tos.IsNull() && (data.Entries[j].Tos.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/tos", predicates))
 				}
-				if !state.Entries[i].TimeRange.IsNull() && data.Entries[j].TimeRange.IsNull() {
+				if !state.Entries[i].TimeRange.IsNull() && (data.Entries[j].TimeRange.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/time-range", predicates))
 				}
-				if !state.Entries[i].Precedence.IsNull() && data.Entries[j].Precedence.IsNull() {
+				if !state.Entries[i].Precedence.IsNull() && (data.Entries[j].Precedence.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/precedence", predicates))
 				}
-				if !state.Entries[i].Option.IsNull() && data.Entries[j].Option.IsNull() {
+				if !state.Entries[i].Option.IsNull() && (data.Entries[j].Option.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/option", predicates))
 				}
-				if !state.Entries[i].Fragments.IsNull() && data.Entries[j].Fragments.IsNull() {
+				if !state.Entries[i].Fragments.IsNull() && (data.Entries[j].Fragments.IsNull() || (state.Entries[i].Fragments.ValueBool() && !data.Entries[j].Fragments.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/fragments", predicates))
 				}
-				if !state.Entries[i].Dscp.IsNull() && data.Entries[j].Dscp.IsNull() {
+				if !state.Entries[i].Dscp.IsNull() && (data.Entries[j].Dscp.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/dscp", predicates))
 				}
-				if !state.Entries[i].Established.IsNull() && data.Entries[j].Established.IsNull() {
+				if !state.Entries[i].Established.IsNull() && (data.Entries[j].Established.IsNull() || (state.Entries[i].Established.ValueBool() && !data.Entries[j].Established.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/established", predicates))
 				}
-				if !state.Entries[i].Urg.IsNull() && data.Entries[j].Urg.IsNull() {
+				if !state.Entries[i].Urg.IsNull() && (data.Entries[j].Urg.IsNull() || (state.Entries[i].Urg.ValueBool() && !data.Entries[j].Urg.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/urg", predicates))
 				}
-				if !state.Entries[i].Syn.IsNull() && data.Entries[j].Syn.IsNull() {
+				if !state.Entries[i].Syn.IsNull() && (data.Entries[j].Syn.IsNull() || (state.Entries[i].Syn.ValueBool() && !data.Entries[j].Syn.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/syn", predicates))
 				}
-				if !state.Entries[i].Rst.IsNull() && data.Entries[j].Rst.IsNull() {
+				if !state.Entries[i].Rst.IsNull() && (data.Entries[j].Rst.IsNull() || (state.Entries[i].Rst.ValueBool() && !data.Entries[j].Rst.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/rst", predicates))
 				}
-				if !state.Entries[i].Psh.IsNull() && data.Entries[j].Psh.IsNull() {
+				if !state.Entries[i].Psh.IsNull() && (data.Entries[j].Psh.IsNull() || (state.Entries[i].Psh.ValueBool() && !data.Entries[j].Psh.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/psh", predicates))
 				}
-				if !state.Entries[i].Fin.IsNull() && data.Entries[j].Fin.IsNull() {
+				if !state.Entries[i].Fin.IsNull() && (data.Entries[j].Fin.IsNull() || (state.Entries[i].Fin.ValueBool() && !data.Entries[j].Fin.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/fin", predicates))
 				}
-				if !state.Entries[i].Ack.IsNull() && data.Entries[j].Ack.IsNull() {
+				if !state.Entries[i].Ack.IsNull() && (data.Entries[j].Ack.IsNull() || (state.Entries[i].Ack.ValueBool() && !data.Entries[j].Ack.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/ack", predicates))
 				}
-				if !state.Entries[i].AceRuleProtocol.IsNull() && data.Entries[j].AceRuleProtocol.IsNull() {
+				if !state.Entries[i].AceRuleProtocol.IsNull() && (data.Entries[j].AceRuleProtocol.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/protocol", predicates))
 				}
-				if !state.Entries[i].AceRuleAction.IsNull() && data.Entries[j].AceRuleAction.IsNull() {
+				if !state.Entries[i].AceRuleAction.IsNull() && (data.Entries[j].AceRuleAction.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/action", predicates))
 				}
-				if !state.Entries[i].Remark.IsNull() && data.Entries[j].Remark.IsNull() {
+				if !state.Entries[i].Remark.IsNull() && (data.Entries[j].Remark.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/remark", predicates))
 				}
 				break

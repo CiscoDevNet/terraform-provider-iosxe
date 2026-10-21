@@ -133,29 +133,21 @@ func (data EVPN) addToBodyXML(ctx context.Context, config EVPN, body netconf.Bod
 	if !data.ReplicationTypeIngress.IsNull() && !data.ReplicationTypeIngress.IsUnknown() {
 		if data.ReplicationTypeIngress.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/evpn/replication-type/ingress", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/evpn/replication-type/ingress")
 		}
 	}
 	if !data.ReplicationTypeStatic.IsNull() && !data.ReplicationTypeStatic.IsUnknown() {
 		if data.ReplicationTypeStatic.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/evpn/replication-type/static", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/evpn/replication-type/static")
 		}
 	}
 	if !data.ReplicationTypeP2mp.IsNull() && !data.ReplicationTypeP2mp.IsUnknown() {
 		if data.ReplicationTypeP2mp.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/evpn/replication-type/p2mp", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/evpn/replication-type/p2mp")
 		}
 	}
 	if !data.ReplicationTypeMp2mp.IsNull() && !data.ReplicationTypeMp2mp.IsUnknown() {
 		if data.ReplicationTypeMp2mp.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/evpn/replication-type/mp2mp", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/evpn/replication-type/mp2mp")
 		}
 	}
 	if !data.MacDuplicationLimit.IsNull() && !data.MacDuplicationLimit.IsUnknown() {
@@ -176,43 +168,31 @@ func (data EVPN) addToBodyXML(ctx context.Context, config EVPN, body netconf.Bod
 	if !data.DefaultGatewayAdvertise.IsNull() && !data.DefaultGatewayAdvertise.IsUnknown() {
 		if data.DefaultGatewayAdvertise.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/evpn/default-gateway/advertise", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/evpn/default-gateway/advertise")
 		}
 	}
 	if !data.LoggingPeerState.IsNull() && !data.LoggingPeerState.IsUnknown() {
 		if data.LoggingPeerState.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/evpn/logging/peer/state", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/evpn/logging/peer/state")
 		}
 	}
 	if !data.RouteTargetAutoVni.IsNull() && !data.RouteTargetAutoVni.IsUnknown() {
 		if data.RouteTargetAutoVni.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/evpn/route-target/auto/vni", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/evpn/route-target/auto/vni")
 		}
 	}
 	if !data.AnycastGatewayMacAuto.IsNull() && !data.AnycastGatewayMacAuto.IsUnknown() {
 		if data.AnycastGatewayMacAuto.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/evpn/anycast-gateway/mac/auto", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/evpn/anycast-gateway/mac/auto")
 		}
 	}
 	if !data.FloodingSuppressionAddressResolutionDisable.IsNull() && !data.FloodingSuppressionAddressResolutionDisable.IsUnknown() {
 		if data.FloodingSuppressionAddressResolutionDisable.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/evpn/flooding-suppression/address-resolution/disable", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/evpn/flooding-suppression/address-resolution/disable")
 		}
 	}
 	if !data.MulticastAdvertise.IsNull() && !data.MulticastAdvertise.IsUnknown() {
 		if data.MulticastAdvertise.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/evpn/multicast/advertise", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/evpn/multicast/advertise")
 		}
 	}
 	if len(data.Profiles) > 0 {
@@ -230,8 +210,6 @@ func (data EVPN) addToBodyXML(ctx context.Context, config EVPN, body netconf.Bod
 			if !item.ReOriginateRouteType5.IsNull() && !item.ReOriginateRouteType5.IsUnknown() {
 				if item.ReOriginateRouteType5.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "re-originate/route-type5", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "re-originate/route-type5")
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/l2-profile/evpn/profile/profile-name-list", cBody.Res())
@@ -627,13 +605,13 @@ func (data *EVPN) addDeletedItemsXML(ctx context.Context, state EVPN, body strin
 				found = false
 			}
 			if found {
-				if !state.Profiles[i].ReOriginateRouteType5.IsNull() && data.Profiles[j].ReOriginateRouteType5.IsNull() {
+				if !state.Profiles[i].ReOriginateRouteType5.IsNull() && (data.Profiles[j].ReOriginateRouteType5.IsNull() || (state.Profiles[i].ReOriginateRouteType5.ValueBool() && !data.Profiles[j].ReOriginateRouteType5.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/l2-profile/evpn/profile/profile-name-list%v/re-originate/route-type5", predicates))
 				}
-				if !state.Profiles[i].L2vniBase.IsNull() && data.Profiles[j].L2vniBase.IsNull() {
+				if !state.Profiles[i].L2vniBase.IsNull() && (data.Profiles[j].L2vniBase.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/l2-profile/evpn/profile/profile-name-list%v/l2vni-base", predicates))
 				}
-				if !state.Profiles[i].EviBase.IsNull() && data.Profiles[j].EviBase.IsNull() {
+				if !state.Profiles[i].EviBase.IsNull() && (data.Profiles[j].EviBase.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/l2-profile/evpn/profile/profile-name-list%v/evi-base", predicates))
 				}
 				break
@@ -643,49 +621,49 @@ func (data *EVPN) addDeletedItemsXML(ctx context.Context, state EVPN, body strin
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/l2-profile/evpn/profile/profile-name-list%v", predicates))
 		}
 	}
-	if !state.MulticastAdvertise.IsNull() && data.MulticastAdvertise.IsNull() {
+	if !state.MulticastAdvertise.IsNull() && (data.MulticastAdvertise.IsNull() || (state.MulticastAdvertise.ValueBool() && !data.MulticastAdvertise.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/evpn/multicast/advertise")
 	}
-	if !state.FloodingSuppressionAddressResolutionDisable.IsNull() && data.FloodingSuppressionAddressResolutionDisable.IsNull() {
+	if !state.FloodingSuppressionAddressResolutionDisable.IsNull() && (data.FloodingSuppressionAddressResolutionDisable.IsNull() || (state.FloodingSuppressionAddressResolutionDisable.ValueBool() && !data.FloodingSuppressionAddressResolutionDisable.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/evpn/flooding-suppression/address-resolution/disable")
 	}
-	if !state.AnycastGatewayMacAuto.IsNull() && data.AnycastGatewayMacAuto.IsNull() {
+	if !state.AnycastGatewayMacAuto.IsNull() && (data.AnycastGatewayMacAuto.IsNull() || (state.AnycastGatewayMacAuto.ValueBool() && !data.AnycastGatewayMacAuto.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/evpn/anycast-gateway/mac/auto")
 	}
-	if !state.RouteTargetAutoVni.IsNull() && data.RouteTargetAutoVni.IsNull() {
+	if !state.RouteTargetAutoVni.IsNull() && (data.RouteTargetAutoVni.IsNull() || (state.RouteTargetAutoVni.ValueBool() && !data.RouteTargetAutoVni.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/evpn/route-target/auto/vni")
 	}
-	if !state.LoggingPeerState.IsNull() && data.LoggingPeerState.IsNull() {
+	if !state.LoggingPeerState.IsNull() && (data.LoggingPeerState.IsNull() || (state.LoggingPeerState.ValueBool() && !data.LoggingPeerState.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/evpn/logging/peer/state")
 	}
-	if !state.DefaultGatewayAdvertise.IsNull() && data.DefaultGatewayAdvertise.IsNull() {
+	if !state.DefaultGatewayAdvertise.IsNull() && (data.DefaultGatewayAdvertise.IsNull() || (state.DefaultGatewayAdvertise.ValueBool() && !data.DefaultGatewayAdvertise.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/evpn/default-gateway/advertise")
 	}
-	if !state.RouterIdLoopback.IsNull() && data.RouterIdLoopback.IsNull() {
+	if !state.RouterIdLoopback.IsNull() && (data.RouterIdLoopback.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/evpn/router-id/interface/Loopback")
 	}
-	if !state.IpDuplicationTime.IsNull() && data.IpDuplicationTime.IsNull() {
+	if !state.IpDuplicationTime.IsNull() && (data.IpDuplicationTime.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/evpn/ip/duplication")
 	}
-	if !state.IpDuplicationLimit.IsNull() && data.IpDuplicationLimit.IsNull() {
+	if !state.IpDuplicationLimit.IsNull() && (data.IpDuplicationLimit.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/evpn/ip/duplication")
 	}
-	if !state.MacDuplicationTime.IsNull() && data.MacDuplicationTime.IsNull() {
+	if !state.MacDuplicationTime.IsNull() && (data.MacDuplicationTime.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/evpn/mac/duplication")
 	}
-	if !state.MacDuplicationLimit.IsNull() && data.MacDuplicationLimit.IsNull() {
+	if !state.MacDuplicationLimit.IsNull() && (data.MacDuplicationLimit.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/evpn/mac/duplication")
 	}
-	if !state.ReplicationTypeMp2mp.IsNull() && data.ReplicationTypeMp2mp.IsNull() {
+	if !state.ReplicationTypeMp2mp.IsNull() && (data.ReplicationTypeMp2mp.IsNull() || (state.ReplicationTypeMp2mp.ValueBool() && !data.ReplicationTypeMp2mp.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/evpn/replication-type/mp2mp")
 	}
-	if !state.ReplicationTypeP2mp.IsNull() && data.ReplicationTypeP2mp.IsNull() {
+	if !state.ReplicationTypeP2mp.IsNull() && (data.ReplicationTypeP2mp.IsNull() || (state.ReplicationTypeP2mp.ValueBool() && !data.ReplicationTypeP2mp.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/evpn/replication-type/p2mp")
 	}
-	if !state.ReplicationTypeStatic.IsNull() && data.ReplicationTypeStatic.IsNull() {
+	if !state.ReplicationTypeStatic.IsNull() && (data.ReplicationTypeStatic.IsNull() || (state.ReplicationTypeStatic.ValueBool() && !data.ReplicationTypeStatic.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/evpn/replication-type/static")
 	}
-	if !state.ReplicationTypeIngress.IsNull() && data.ReplicationTypeIngress.IsNull() {
+	if !state.ReplicationTypeIngress.IsNull() && (data.ReplicationTypeIngress.IsNull() || (state.ReplicationTypeIngress.ValueBool() && !data.ReplicationTypeIngress.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/evpn/replication-type/ingress")
 	}
 

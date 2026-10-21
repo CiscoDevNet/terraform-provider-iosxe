@@ -75,10 +75,12 @@ resource "iosxe_bgp_address_family_ipv6" "example" {
   - Range: `1`-`32`
 - `ipv6_unicast_networks` (Attributes List) Specify a network to announce via BGP (see [below for nested schema](#nestedatt--ipv6_unicast_networks))
 - `ipv6_unicast_redistribute_connected` (Boolean) Connected
+  - Default value: `false`
 - `ipv6_unicast_redistribute_connected_metric` (Number) Metric for redistributed routes
   - Range: `0`-`4294967295`
 - `ipv6_unicast_redistribute_connected_route_map` (String) Route map reference
 - `ipv6_unicast_redistribute_static` (Boolean) Static routes
+  - Default value: `false`
 - `ipv6_unicast_redistribute_static_metric` (Number) Metric for redistributed routes
   - Range: `0`-`4294967295`
 - `ipv6_unicast_redistribute_static_route_map` (String) Route map reference
@@ -119,6 +121,7 @@ Required:
 Optional:
 
 - `backdoor` (Boolean) Specify a BGP backdoor route
+  - Default value: `false`
 - `route_map` (String) Route-map to modify the attributes
 
 ## Import

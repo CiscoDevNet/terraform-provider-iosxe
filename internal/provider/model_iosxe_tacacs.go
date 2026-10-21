@@ -204,19 +204,19 @@ func (data *TACACSData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 func (data *TACACS) addDeletedItemsXML(ctx context.Context, state TACACS, body string) string {
 	b := netconf.NewBody(body)
-	if !state.Key.IsNull() && data.Key.IsNull() {
+	if !state.Key.IsNull() && (data.Key.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/key")
 	}
-	if !state.Encryption.IsNull() && data.Encryption.IsNull() {
+	if !state.Encryption.IsNull() && (data.Encryption.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/key")
 	}
-	if !state.Port.IsNull() && data.Port.IsNull() {
+	if !state.Port.IsNull() && (data.Port.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/port")
 	}
-	if !state.Timeout.IsNull() && data.Timeout.IsNull() {
+	if !state.Timeout.IsNull() && (data.Timeout.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timeout")
 	}
-	if !state.AddressIpv4.IsNull() && data.AddressIpv4.IsNull() {
+	if !state.AddressIpv4.IsNull() && (data.AddressIpv4.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address/ipv4")
 	}
 

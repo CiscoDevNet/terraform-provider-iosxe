@@ -31,6 +31,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -108,8 +109,10 @@ func (r *ServiceTemplateResource) Schema(ctx context.Context, req resource.Schem
 				},
 			},
 			"inactivity_timer_probe": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("ARP probe").String,
+				MarkdownDescription: helpers.NewAttributeDescription("ARP probe").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"vlan": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Vlan to be applied").AddIntegerRangeDescription(1, 4094).String,
@@ -119,8 +122,10 @@ func (r *ServiceTemplateResource) Schema(ctx context.Context, req resource.Schem
 				},
 			},
 			"voice_vlan": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Critical voice vlan").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Critical voice vlan").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"linksec_policy": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Set the link security policy").AddStringEnumDescription("must-not-secure", "must-secure", "should-secure").String,

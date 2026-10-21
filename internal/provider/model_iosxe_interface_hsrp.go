@@ -207,15 +207,11 @@ func (data InterfaceHSRP) addToBodyXML(ctx context.Context, config InterfaceHSRP
 	if !data.UseBia.IsNull() && !data.UseBia.IsUnknown() {
 		if data.UseBia.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/use-bia", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/use-bia")
 		}
 	}
 	if !data.UseBiaScopeInterface.IsNull() && !data.UseBiaScopeInterface.IsUnknown() {
 		if data.UseBiaScopeInterface.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/use-bia/scope/interface", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/use-bia/scope/interface")
 		}
 	}
 	if !data.RedirectTimersAdvertisement.IsNull() && !data.RedirectTimersAdvertisement.IsUnknown() {
@@ -261,8 +257,6 @@ func (data InterfaceHSRP) addToBodyXML(ctx context.Context, config InterfaceHSRP
 			if !item.Ip.IsNull() && !item.Ip.IsUnknown() {
 				if item.Ip.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ip-config", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "ip-config")
 				}
 			}
 			if !item.IpAddress.IsNull() && !item.IpAddress.IsUnknown() {
@@ -305,8 +299,6 @@ func (data InterfaceHSRP) addToBodyXML(ctx context.Context, config InterfaceHSRP
 			if !item.Preempt.IsNull() && !item.Preempt.IsUnknown() {
 				if item.Preempt.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "preempt", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "preempt")
 				}
 			}
 			if !item.PreemptDelayMinimum.IsNull() && !item.PreemptDelayMinimum.IsUnknown() {
@@ -345,8 +337,6 @@ func (data InterfaceHSRP) addToBodyXML(ctx context.Context, config InterfaceHSRP
 					if !citem.Shutdown.IsNull() && !citem.Shutdown.IsUnknown() {
 						if citem.Shutdown.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "shutdown", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "shutdown")
 						}
 					}
 					cBody = helpers.SetRawFromXPath(cBody, "track", ccBody.Res())
@@ -1025,10 +1015,10 @@ func (data *InterfaceHSRP) addDeletedItemsXML(ctx context.Context, state Interfa
 							found = false
 						}
 						if found {
-							if !state.StandbyList[i].Tracks[ci].Shutdown.IsNull() && data.StandbyList[j].Tracks[cj].Shutdown.IsNull() {
+							if !state.StandbyList[i].Tracks[ci].Shutdown.IsNull() && (data.StandbyList[j].Tracks[cj].Shutdown.IsNull() || (state.StandbyList[i].Tracks[ci].Shutdown.ValueBool() && !data.StandbyList[j].Tracks[cj].Shutdown.ValueBool())) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/standby-list%v/track%v/shutdown", predicates, cpredicates))
 							}
-							if !state.StandbyList[i].Tracks[ci].Decrement.IsNull() && data.StandbyList[j].Tracks[cj].Decrement.IsNull() {
+							if !state.StandbyList[i].Tracks[ci].Decrement.IsNull() && (data.StandbyList[j].Tracks[cj].Decrement.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/standby-list%v/track%v/decrement", predicates, cpredicates))
 							}
 							break
@@ -1038,37 +1028,37 @@ func (data *InterfaceHSRP) addDeletedItemsXML(ctx context.Context, state Interfa
 						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/standby-list%v/track%v", predicates, cpredicates))
 					}
 				}
-				if !state.StandbyList[i].TimersHoldTimeMsec.IsNull() && data.StandbyList[j].TimersHoldTimeMsec.IsNull() {
+				if !state.StandbyList[i].TimersHoldTimeMsec.IsNull() && (data.StandbyList[j].TimersHoldTimeMsec.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/standby-list%v/timers/hold-time/msec", predicates))
 				}
-				if !state.StandbyList[i].TimersHoldTimeSeconds.IsNull() && data.StandbyList[j].TimersHoldTimeSeconds.IsNull() {
+				if !state.StandbyList[i].TimersHoldTimeSeconds.IsNull() && (data.StandbyList[j].TimersHoldTimeSeconds.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/standby-list%v/timers/hold-time/seconds", predicates))
 				}
-				if !state.StandbyList[i].TimersHelloIntervalMsec.IsNull() && data.StandbyList[j].TimersHelloIntervalMsec.IsNull() {
+				if !state.StandbyList[i].TimersHelloIntervalMsec.IsNull() && (data.StandbyList[j].TimersHelloIntervalMsec.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/standby-list%v/timers/hello-interval/msec", predicates))
 				}
-				if !state.StandbyList[i].TimersHelloIntervalSeconds.IsNull() && data.StandbyList[j].TimersHelloIntervalSeconds.IsNull() {
+				if !state.StandbyList[i].TimersHelloIntervalSeconds.IsNull() && (data.StandbyList[j].TimersHelloIntervalSeconds.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/standby-list%v/timers/hello-interval/seconds", predicates))
 				}
-				if !state.StandbyList[i].Priority.IsNull() && data.StandbyList[j].Priority.IsNull() {
+				if !state.StandbyList[i].Priority.IsNull() && (data.StandbyList[j].Priority.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/standby-list%v/priority", predicates))
 				}
-				if !state.StandbyList[i].PreemptDelaySync.IsNull() && data.StandbyList[j].PreemptDelaySync.IsNull() {
+				if !state.StandbyList[i].PreemptDelaySync.IsNull() && (data.StandbyList[j].PreemptDelaySync.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/standby-list%v/preempt/delay/sync", predicates))
 				}
-				if !state.StandbyList[i].PreemptDelayReload.IsNull() && data.StandbyList[j].PreemptDelayReload.IsNull() {
+				if !state.StandbyList[i].PreemptDelayReload.IsNull() && (data.StandbyList[j].PreemptDelayReload.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/standby-list%v/preempt/delay/reload", predicates))
 				}
-				if !state.StandbyList[i].PreemptDelayMinimum.IsNull() && data.StandbyList[j].PreemptDelayMinimum.IsNull() {
+				if !state.StandbyList[i].PreemptDelayMinimum.IsNull() && (data.StandbyList[j].PreemptDelayMinimum.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/standby-list%v/preempt/delay/minimum", predicates))
 				}
-				if !state.StandbyList[i].Preempt.IsNull() && data.StandbyList[j].Preempt.IsNull() {
+				if !state.StandbyList[i].Preempt.IsNull() && (data.StandbyList[j].Preempt.IsNull() || (state.StandbyList[i].Preempt.ValueBool() && !data.StandbyList[j].Preempt.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/standby-list%v/preempt", predicates))
 				}
-				if !state.StandbyList[i].Name.IsNull() && data.StandbyList[j].Name.IsNull() {
+				if !state.StandbyList[i].Name.IsNull() && (data.StandbyList[j].Name.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/standby-list%v/name", predicates))
 				}
-				if !state.StandbyList[i].MacAddress.IsNull() && data.StandbyList[j].MacAddress.IsNull() {
+				if !state.StandbyList[i].MacAddress.IsNull() && (data.StandbyList[j].MacAddress.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/standby-list%v/mac-address", predicates))
 				}
 				for ci := range state.StandbyList[i].Ipv6Addresses {
@@ -1101,7 +1091,7 @@ func (data *InterfaceHSRP) addDeletedItemsXML(ctx context.Context, state Interfa
 						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/standby-list%v/ipv6-config/ipv6_prefix%v", predicates, cpredicates))
 					}
 				}
-				if !state.StandbyList[i].Ipv6LinkLocal.IsNull() && data.StandbyList[j].Ipv6LinkLocal.IsNull() {
+				if !state.StandbyList[i].Ipv6LinkLocal.IsNull() && (data.StandbyList[j].Ipv6LinkLocal.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/standby-list%v/ipv6-config/ipv6-link-local", predicates))
 				}
 				for ci := range state.StandbyList[i].IpSecondaryAddresses {
@@ -1127,7 +1117,7 @@ func (data *InterfaceHSRP) addDeletedItemsXML(ctx context.Context, state Interfa
 							found = false
 						}
 						if found {
-							if !state.StandbyList[i].IpSecondaryAddresses[ci].Secondary.IsNull() && data.StandbyList[j].IpSecondaryAddresses[cj].Secondary.IsNull() {
+							if !state.StandbyList[i].IpSecondaryAddresses[ci].Secondary.IsNull() && (data.StandbyList[j].IpSecondaryAddresses[cj].Secondary.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/standby-list%v/ip-config/secondary-address%v/secondary", predicates, cpredicates))
 							}
 							break
@@ -1137,19 +1127,19 @@ func (data *InterfaceHSRP) addDeletedItemsXML(ctx context.Context, state Interfa
 						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/standby-list%v/ip-config/secondary-address%v", predicates, cpredicates))
 					}
 				}
-				if !state.StandbyList[i].IpAddress.IsNull() && data.StandbyList[j].IpAddress.IsNull() {
+				if !state.StandbyList[i].IpAddress.IsNull() && (data.StandbyList[j].IpAddress.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/standby-list%v/ip-config/address", predicates))
 				}
-				if !state.StandbyList[i].Ip.IsNull() && data.StandbyList[j].Ip.IsNull() {
+				if !state.StandbyList[i].Ip.IsNull() && (data.StandbyList[j].Ip.IsNull() || (state.StandbyList[i].Ip.ValueBool() && !data.StandbyList[j].Ip.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/standby-list%v/ip-config", predicates))
 				}
-				if !state.StandbyList[i].Follow.IsNull() && data.StandbyList[j].Follow.IsNull() {
+				if !state.StandbyList[i].Follow.IsNull() && (data.StandbyList[j].Follow.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/standby-list%v/follow", predicates))
 				}
-				if !state.StandbyList[i].AuthenticationText.IsNull() && data.StandbyList[j].AuthenticationText.IsNull() {
+				if !state.StandbyList[i].AuthenticationText.IsNull() && (data.StandbyList[j].AuthenticationText.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/standby-list%v/authentication/text", predicates))
 				}
-				if !state.StandbyList[i].AuthenticationWord.IsNull() && data.StandbyList[j].AuthenticationWord.IsNull() {
+				if !state.StandbyList[i].AuthenticationWord.IsNull() && (data.StandbyList[j].AuthenticationWord.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/standby-list%v/authentication/word", predicates))
 				}
 				break
@@ -1159,34 +1149,34 @@ func (data *InterfaceHSRP) addDeletedItemsXML(ctx context.Context, state Interfa
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/standby-list%v", predicates))
 		}
 	}
-	if !state.RedirectUnknown.IsNull() && data.RedirectUnknown.IsNull() {
+	if !state.RedirectUnknown.IsNull() && (data.RedirectUnknown.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/redirect/unknown")
 	}
-	if !state.RedirectTimersHolddown.IsNull() && data.RedirectTimersHolddown.IsNull() {
+	if !state.RedirectTimersHolddown.IsNull() && (data.RedirectTimersHolddown.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/redirect/timers/holddown")
 	}
-	if !state.RedirectTimersAdvertisement.IsNull() && data.RedirectTimersAdvertisement.IsNull() {
+	if !state.RedirectTimersAdvertisement.IsNull() && (data.RedirectTimersAdvertisement.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/redirect/timers/advertisement")
 	}
-	if !state.UseBiaScopeInterface.IsNull() && data.UseBiaScopeInterface.IsNull() {
+	if !state.UseBiaScopeInterface.IsNull() && (data.UseBiaScopeInterface.IsNull() || (state.UseBiaScopeInterface.ValueBool() && !data.UseBiaScopeInterface.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/use-bia/scope/interface")
 	}
-	if !state.UseBia.IsNull() && data.UseBia.IsNull() {
+	if !state.UseBia.IsNull() && (data.UseBia.IsNull() || (state.UseBia.ValueBool() && !data.UseBia.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/use-bia")
 	}
-	if !state.MacRefresh.IsNull() && data.MacRefresh.IsNull() {
+	if !state.MacRefresh.IsNull() && (data.MacRefresh.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/mac-refresh")
 	}
-	if !state.DelayReload.IsNull() && data.DelayReload.IsNull() {
+	if !state.DelayReload.IsNull() && (data.DelayReload.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/delay/reload")
 	}
-	if !state.DelayMinimum.IsNull() && data.DelayMinimum.IsNull() {
+	if !state.DelayMinimum.IsNull() && (data.DelayMinimum.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/delay/minimum")
 	}
-	if !state.Bfd.IsNull() && data.Bfd.IsNull() {
+	if !state.Bfd.IsNull() && (data.Bfd.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/bfd-config")
 	}
-	if !state.Version.IsNull() && data.Version.IsNull() {
+	if !state.Version.IsNull() && (data.Version.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/version")
 	}
 

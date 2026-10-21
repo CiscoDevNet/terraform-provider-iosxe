@@ -186,15 +186,11 @@ func (data AAA) addToBodyXML(ctx context.Context, config AAA, body netconf.Body)
 	if !data.NewModel.IsNull() && !data.NewModel.IsUnknown() {
 		if data.NewModel.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-aaa:new-model", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-aaa:new-model")
 		}
 	}
 	if !data.ServerRadiusDynamicAuthor.IsNull() && !data.ServerRadiusDynamicAuthor.IsUnknown() {
 		if data.ServerRadiusDynamicAuthor.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-aaa:server/radius/dynamic-author", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-aaa:server/radius/dynamic-author")
 		}
 	}
 	if !data.SessionId.IsNull() && !data.SessionId.IsUnknown() {
@@ -931,13 +927,13 @@ func (data *AAAData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 func (data *AAA) addDeletedItemsXML(ctx context.Context, state AAA, body string) string {
 	b := netconf.NewBody(body)
-	if !state.LocalAuthenticationMaxFailAttempts.IsNull() && data.LocalAuthenticationMaxFailAttempts.IsNull() {
+	if !state.LocalAuthenticationMaxFailAttempts.IsNull() && (data.LocalAuthenticationMaxFailAttempts.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-aaa:local/authentication/attempts/max-fail")
 	}
-	if !state.LocalAuthorization.IsNull() && data.LocalAuthorization.IsNull() {
+	if !state.LocalAuthorization.IsNull() && (data.LocalAuthorization.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-aaa:local/authentication/authorization/authorization")
 	}
-	if !state.LocalAuthenticationType.IsNull() && data.LocalAuthenticationType.IsNull() {
+	if !state.LocalAuthenticationType.IsNull() && (data.LocalAuthenticationType.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-aaa:local/authentication/authorization/authen-type")
 	}
 	for i := range state.GroupServerTacacsplus {
@@ -963,34 +959,34 @@ func (data *AAA) addDeletedItemsXML(ctx context.Context, state AAA, body string)
 				found = false
 			}
 			if found {
-				if !state.GroupServerTacacsplus[i].Vrf.IsNull() && data.GroupServerTacacsplus[j].Vrf.IsNull() {
+				if !state.GroupServerTacacsplus[i].Vrf.IsNull() && (data.GroupServerTacacsplus[j].Vrf.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:group/server/tacacsplus%v/ip/vrf/forwarding", predicates))
 				}
-				if !state.GroupServerTacacsplus[i].IpTacacsSourceInterfaceHundredGigabitEthernet.IsNull() && data.GroupServerTacacsplus[j].IpTacacsSourceInterfaceHundredGigabitEthernet.IsNull() {
+				if !state.GroupServerTacacsplus[i].IpTacacsSourceInterfaceHundredGigabitEthernet.IsNull() && (data.GroupServerTacacsplus[j].IpTacacsSourceInterfaceHundredGigabitEthernet.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:group/server/tacacsplus%v/ip/tacacs/source-interface/HundredGigE", predicates))
 				}
-				if !state.GroupServerTacacsplus[i].IpTacacsSourceInterfaceFortyGigabitEthernet.IsNull() && data.GroupServerTacacsplus[j].IpTacacsSourceInterfaceFortyGigabitEthernet.IsNull() {
+				if !state.GroupServerTacacsplus[i].IpTacacsSourceInterfaceFortyGigabitEthernet.IsNull() && (data.GroupServerTacacsplus[j].IpTacacsSourceInterfaceFortyGigabitEthernet.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:group/server/tacacsplus%v/ip/tacacs/source-interface/FortyGigabitEthernet", predicates))
 				}
-				if !state.GroupServerTacacsplus[i].IpTacacsSourceInterfaceTwentyFiveGigabitEthernet.IsNull() && data.GroupServerTacacsplus[j].IpTacacsSourceInterfaceTwentyFiveGigabitEthernet.IsNull() {
+				if !state.GroupServerTacacsplus[i].IpTacacsSourceInterfaceTwentyFiveGigabitEthernet.IsNull() && (data.GroupServerTacacsplus[j].IpTacacsSourceInterfaceTwentyFiveGigabitEthernet.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:group/server/tacacsplus%v/ip/tacacs/source-interface/TwentyFiveGigE", predicates))
 				}
-				if !state.GroupServerTacacsplus[i].IpTacacsSourceInterfaceTenGigabitEthernet.IsNull() && data.GroupServerTacacsplus[j].IpTacacsSourceInterfaceTenGigabitEthernet.IsNull() {
+				if !state.GroupServerTacacsplus[i].IpTacacsSourceInterfaceTenGigabitEthernet.IsNull() && (data.GroupServerTacacsplus[j].IpTacacsSourceInterfaceTenGigabitEthernet.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:group/server/tacacsplus%v/ip/tacacs/source-interface/TenGigabitEthernet", predicates))
 				}
-				if !state.GroupServerTacacsplus[i].IpTacacsSourceInterfaceFiveGigabitEthernet.IsNull() && data.GroupServerTacacsplus[j].IpTacacsSourceInterfaceFiveGigabitEthernet.IsNull() {
+				if !state.GroupServerTacacsplus[i].IpTacacsSourceInterfaceFiveGigabitEthernet.IsNull() && (data.GroupServerTacacsplus[j].IpTacacsSourceInterfaceFiveGigabitEthernet.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:group/server/tacacsplus%v/ip/tacacs/source-interface/FiveGigabitEthernet", predicates))
 				}
-				if !state.GroupServerTacacsplus[i].IpTacacsSourceInterfaceTwoGigabitEthernet.IsNull() && data.GroupServerTacacsplus[j].IpTacacsSourceInterfaceTwoGigabitEthernet.IsNull() {
+				if !state.GroupServerTacacsplus[i].IpTacacsSourceInterfaceTwoGigabitEthernet.IsNull() && (data.GroupServerTacacsplus[j].IpTacacsSourceInterfaceTwoGigabitEthernet.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:group/server/tacacsplus%v/ip/tacacs/source-interface/TwoGigabitEthernet", predicates))
 				}
-				if !state.GroupServerTacacsplus[i].IpTacacsSourceInterfaceGigabitEthernet.IsNull() && data.GroupServerTacacsplus[j].IpTacacsSourceInterfaceGigabitEthernet.IsNull() {
+				if !state.GroupServerTacacsplus[i].IpTacacsSourceInterfaceGigabitEthernet.IsNull() && (data.GroupServerTacacsplus[j].IpTacacsSourceInterfaceGigabitEthernet.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:group/server/tacacsplus%v/ip/tacacs/source-interface/GigabitEthernet", predicates))
 				}
-				if !state.GroupServerTacacsplus[i].IpTacacsSourceInterfaceVlan.IsNull() && data.GroupServerTacacsplus[j].IpTacacsSourceInterfaceVlan.IsNull() {
+				if !state.GroupServerTacacsplus[i].IpTacacsSourceInterfaceVlan.IsNull() && (data.GroupServerTacacsplus[j].IpTacacsSourceInterfaceVlan.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:group/server/tacacsplus%v/ip/tacacs/source-interface/Vlan", predicates))
 				}
-				if !state.GroupServerTacacsplus[i].IpTacacsSourceInterfaceLoopback.IsNull() && data.GroupServerTacacsplus[j].IpTacacsSourceInterfaceLoopback.IsNull() {
+				if !state.GroupServerTacacsplus[i].IpTacacsSourceInterfaceLoopback.IsNull() && (data.GroupServerTacacsplus[j].IpTacacsSourceInterfaceLoopback.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:group/server/tacacsplus%v/ip/tacacs/source-interface/Loopback", predicates))
 				}
 				for ci := range state.GroupServerTacacsplus[i].ServerNames {
@@ -1053,31 +1049,31 @@ func (data *AAA) addDeletedItemsXML(ctx context.Context, state AAA, body string)
 				found = false
 			}
 			if found {
-				if !state.GroupServerRadius[i].IpRadiusSourceInterfaceHundredGigabitEthernet.IsNull() && data.GroupServerRadius[j].IpRadiusSourceInterfaceHundredGigabitEthernet.IsNull() {
+				if !state.GroupServerRadius[i].IpRadiusSourceInterfaceHundredGigabitEthernet.IsNull() && (data.GroupServerRadius[j].IpRadiusSourceInterfaceHundredGigabitEthernet.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:group/server/radius%v/ip/radius/source-interface/HundredGigE", predicates))
 				}
-				if !state.GroupServerRadius[i].IpRadiusSourceInterfaceFortyGigabitEthernet.IsNull() && data.GroupServerRadius[j].IpRadiusSourceInterfaceFortyGigabitEthernet.IsNull() {
+				if !state.GroupServerRadius[i].IpRadiusSourceInterfaceFortyGigabitEthernet.IsNull() && (data.GroupServerRadius[j].IpRadiusSourceInterfaceFortyGigabitEthernet.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:group/server/radius%v/ip/radius/source-interface/FortyGigabitEthernet", predicates))
 				}
-				if !state.GroupServerRadius[i].IpRadiusSourceInterfaceTwentyFiveGigabitEthernet.IsNull() && data.GroupServerRadius[j].IpRadiusSourceInterfaceTwentyFiveGigabitEthernet.IsNull() {
+				if !state.GroupServerRadius[i].IpRadiusSourceInterfaceTwentyFiveGigabitEthernet.IsNull() && (data.GroupServerRadius[j].IpRadiusSourceInterfaceTwentyFiveGigabitEthernet.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:group/server/radius%v/ip/radius/source-interface/TwentyFiveGigE", predicates))
 				}
-				if !state.GroupServerRadius[i].IpRadiusSourceInterfaceTenGigabitEthernet.IsNull() && data.GroupServerRadius[j].IpRadiusSourceInterfaceTenGigabitEthernet.IsNull() {
+				if !state.GroupServerRadius[i].IpRadiusSourceInterfaceTenGigabitEthernet.IsNull() && (data.GroupServerRadius[j].IpRadiusSourceInterfaceTenGigabitEthernet.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:group/server/radius%v/ip/radius/source-interface/TenGigabitEthernet", predicates))
 				}
-				if !state.GroupServerRadius[i].IpRadiusSourceInterfaceFiveGigabitEthernet.IsNull() && data.GroupServerRadius[j].IpRadiusSourceInterfaceFiveGigabitEthernet.IsNull() {
+				if !state.GroupServerRadius[i].IpRadiusSourceInterfaceFiveGigabitEthernet.IsNull() && (data.GroupServerRadius[j].IpRadiusSourceInterfaceFiveGigabitEthernet.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:group/server/radius%v/ip/radius/source-interface/FiveGigabitEthernet", predicates))
 				}
-				if !state.GroupServerRadius[i].IpRadiusSourceInterfaceTwoGigabitEthernet.IsNull() && data.GroupServerRadius[j].IpRadiusSourceInterfaceTwoGigabitEthernet.IsNull() {
+				if !state.GroupServerRadius[i].IpRadiusSourceInterfaceTwoGigabitEthernet.IsNull() && (data.GroupServerRadius[j].IpRadiusSourceInterfaceTwoGigabitEthernet.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:group/server/radius%v/ip/radius/source-interface/TwoGigabitEthernet", predicates))
 				}
-				if !state.GroupServerRadius[i].IpRadiusSourceInterfaceGigabitEthernet.IsNull() && data.GroupServerRadius[j].IpRadiusSourceInterfaceGigabitEthernet.IsNull() {
+				if !state.GroupServerRadius[i].IpRadiusSourceInterfaceGigabitEthernet.IsNull() && (data.GroupServerRadius[j].IpRadiusSourceInterfaceGigabitEthernet.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:group/server/radius%v/ip/radius/source-interface/GigabitEthernet", predicates))
 				}
-				if !state.GroupServerRadius[i].IpRadiusSourceInterfaceVlan.IsNull() && data.GroupServerRadius[j].IpRadiusSourceInterfaceVlan.IsNull() {
+				if !state.GroupServerRadius[i].IpRadiusSourceInterfaceVlan.IsNull() && (data.GroupServerRadius[j].IpRadiusSourceInterfaceVlan.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:group/server/radius%v/ip/radius/source-interface/Vlan", predicates))
 				}
-				if !state.GroupServerRadius[i].IpRadiusSourceInterfaceLoopback.IsNull() && data.GroupServerRadius[j].IpRadiusSourceInterfaceLoopback.IsNull() {
+				if !state.GroupServerRadius[i].IpRadiusSourceInterfaceLoopback.IsNull() && (data.GroupServerRadius[j].IpRadiusSourceInterfaceLoopback.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:group/server/radius%v/ip/radius/source-interface/Loopback", predicates))
 				}
 				for ci := range state.GroupServerRadius[i].ServerNames {
@@ -1110,7 +1106,7 @@ func (data *AAA) addDeletedItemsXML(ctx context.Context, state AAA, body string)
 						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:group/server/radius%v/server/name%v", predicates, cpredicates))
 					}
 				}
-				if !state.GroupServerRadius[i].Deadtime.IsNull() && data.GroupServerRadius[j].Deadtime.IsNull() {
+				if !state.GroupServerRadius[i].Deadtime.IsNull() && (data.GroupServerRadius[j].Deadtime.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:group/server/radius%v/deadtime", predicates))
 				}
 				break
@@ -1143,10 +1139,10 @@ func (data *AAA) addDeletedItemsXML(ctx context.Context, state AAA, body string)
 				found = false
 			}
 			if found {
-				if !state.ServerRadiusDynamicAuthorClients[i].ServerKey.IsNull() && data.ServerRadiusDynamicAuthorClients[j].ServerKey.IsNull() {
+				if !state.ServerRadiusDynamicAuthorClients[i].ServerKey.IsNull() && (data.ServerRadiusDynamicAuthorClients[j].ServerKey.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:server/radius/dynamic-author/client%v/server-key/string", predicates))
 				}
-				if !state.ServerRadiusDynamicAuthorClients[i].ServerKeyType.IsNull() && data.ServerRadiusDynamicAuthorClients[j].ServerKeyType.IsNull() {
+				if !state.ServerRadiusDynamicAuthorClients[i].ServerKeyType.IsNull() && (data.ServerRadiusDynamicAuthorClients[j].ServerKeyType.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:server/radius/dynamic-author/client%v/server-key/key", predicates))
 				}
 				break
@@ -1156,10 +1152,10 @@ func (data *AAA) addDeletedItemsXML(ctx context.Context, state AAA, body string)
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:server/radius/dynamic-author/client%v", predicates))
 		}
 	}
-	if !state.SessionId.IsNull() && data.SessionId.IsNull() {
+	if !state.SessionId.IsNull() && (data.SessionId.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-aaa:session-id")
 	}
-	if !state.ServerRadiusDynamicAuthor.IsNull() && data.ServerRadiusDynamicAuthor.IsNull() {
+	if !state.ServerRadiusDynamicAuthor.IsNull() && (data.ServerRadiusDynamicAuthor.IsNull() || (state.ServerRadiusDynamicAuthor.ValueBool() && !data.ServerRadiusDynamicAuthor.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-aaa:server/radius/dynamic-author")
 	}
 

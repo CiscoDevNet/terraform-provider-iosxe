@@ -33,6 +33,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -129,8 +130,10 @@ func (r *EEMResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				Optional:            true,
 			},
 			"scheduler_applet_thread_class_default": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("default scheduler thread class").String,
+				MarkdownDescription: helpers.NewAttributeDescription("default scheduler thread class").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"scheduler_applet_thread_class_number": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Number of concurrent execution threads").AddIntegerRangeDescription(1, 65535).String,
@@ -283,8 +286,10 @@ func (r *EEMResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 										Optional:            true,
 									},
 									"else": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("else conditional").String,
+										MarkdownDescription: helpers.NewAttributeDescription("else conditional").AddDefaultValueDescription("false").String,
 										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(false),
 									},
 									"while_operand1": schema.StringAttribute{
 										MarkdownDescription: helpers.NewAttributeDescription("First operand of while conditional").String,
@@ -302,12 +307,16 @@ func (r *EEMResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 										Optional:            true,
 									},
 									"break": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("break conditional").String,
+										MarkdownDescription: helpers.NewAttributeDescription("break conditional").AddDefaultValueDescription("false").String,
 										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(false),
 									},
 									"continue": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("continue conditional").String,
+										MarkdownDescription: helpers.NewAttributeDescription("continue conditional").AddDefaultValueDescription("false").String,
 										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(false),
 									},
 									"increment_varname": schema.StringAttribute{
 										MarkdownDescription: helpers.NewAttributeDescription("Name of the variable of increment conditional").String,
@@ -369,16 +378,22 @@ func (r *EEMResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 										},
 									},
 									"end": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("end conditional block").String,
+										MarkdownDescription: helpers.NewAttributeDescription("end conditional block").AddDefaultValueDescription("false").String,
 										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(false),
 									},
 									"exit": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Exit from applet run").String,
+										MarkdownDescription: helpers.NewAttributeDescription("Exit from applet run").AddDefaultValueDescription("false").String,
 										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(false),
 									},
 									"reload": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Reload system").String,
+										MarkdownDescription: helpers.NewAttributeDescription("Reload system").AddDefaultValueDescription("false").String,
 										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(false),
 									},
 									"context_retrieve_key": schema.StringAttribute{
 										MarkdownDescription: helpers.NewAttributeDescription("key name").String,
@@ -445,20 +460,28 @@ func (r *EEMResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 										},
 									},
 									"counter_op_dec": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Decrement the value of the counter by the given value").String,
+										MarkdownDescription: helpers.NewAttributeDescription("Decrement the value of the counter by the given value").AddDefaultValueDescription("false").String,
 										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(false),
 									},
 									"counter_op_inc": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Increment the value of the counter by the given value").String,
+										MarkdownDescription: helpers.NewAttributeDescription("Increment the value of the counter by the given value").AddDefaultValueDescription("false").String,
 										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(false),
 									},
 									"counter_op_set": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Set the value of the counter by the given value").String,
+										MarkdownDescription: helpers.NewAttributeDescription("Set the value of the counter by the given value").AddDefaultValueDescription("false").String,
 										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(false),
 									},
 									"counter_op_nop": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Read the value of the counter").String,
+										MarkdownDescription: helpers.NewAttributeDescription("Read the value of the counter").AddDefaultValueDescription("false").String,
 										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(false),
 									},
 									"snmp_trap_intdata1": schema.Int64Attribute{
 										MarkdownDescription: helpers.NewAttributeDescription("SNMP integer data1").AddIntegerRangeDescription(-2147483648, 2147483647).String,

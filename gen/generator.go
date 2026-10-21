@@ -858,6 +858,15 @@ func parseAttribute(e *yang.Entry, attr *YamlConfigAttribute) {
 			attr.Mandatory = leaf.Mandatory.Value()
 		}
 	}
+	// Presence/empty leaves read back as false after import when absent, while the config leaves them
+	// unset, so default them to false to avoid planning `false -> null` removals. Leaves with a YANG
+	// `default true` are left without a default: injecting one would make Terraform enforce true on
+	// attributes the user never configured.
+	if attr.Type == "Bool" && attr.DefaultValue == "" && !attr.WriteOnly && !attr.Mandatory && !attr.Id && !attr.Reference {
+		if len(leaf.Default) == 0 || leaf.Default[0] != "true" {
+			attr.DefaultValue = "false"
+		}
+	}
 }
 
 func augmentConfig(config *YamlConfig, yangModules *yang.Modules) {

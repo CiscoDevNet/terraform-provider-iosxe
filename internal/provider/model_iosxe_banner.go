@@ -184,16 +184,16 @@ func (data *BannerData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 func (data *Banner) addDeletedItemsXML(ctx context.Context, state Banner, body string) string {
 	b := netconf.NewBody(body)
-	if !state.MotdBanner.IsNull() && data.MotdBanner.IsNull() {
+	if !state.MotdBanner.IsNull() && (data.MotdBanner.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/motd/banner")
 	}
-	if !state.PromptTimeoutBanner.IsNull() && data.PromptTimeoutBanner.IsNull() {
+	if !state.PromptTimeoutBanner.IsNull() && (data.PromptTimeoutBanner.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/prompt-timeout/banner")
 	}
-	if !state.LoginBanner.IsNull() && data.LoginBanner.IsNull() {
+	if !state.LoginBanner.IsNull() && (data.LoginBanner.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/login/banner")
 	}
-	if !state.ExecBanner.IsNull() && data.ExecBanner.IsNull() {
+	if !state.ExecBanner.IsNull() && (data.ExecBanner.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/exec/banner")
 	}
 

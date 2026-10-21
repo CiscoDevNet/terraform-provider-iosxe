@@ -46,36 +46,55 @@ resource "iosxe_aaa_authentication" "example" {
 - `dot1x` (Attributes List) (see [below for nested schema](#nestedatt--dot1x))
 - `dot1x_default_a1_group` (String) Use Server-group
 - `dot1x_default_a1_local` (Boolean) Use local username authentication
+  - Default value: `false`
 - `dot1x_default_a2_group` (String) Use Server-group
 - `dot1x_default_a2_local` (Boolean) Use local username authentication
+  - Default value: `false`
 - `dot1x_default_a3_group` (String) Use Server-group
 - `dot1x_default_a3_local` (Boolean) Use local username authentication
+  - Default value: `false`
 - `dot1x_default_a4_group` (String) Use Server-group
 - `dot1x_default_a4_local` (Boolean) Use local username authentication
+  - Default value: `false`
 - `enable_default_enable_legacy` (Boolean) Use enable password for authentication.
+  - Default value: `false`
 - `enable_default_group1_cache` (String) Privileged command level(enable) authentication using cached group
 - `enable_default_group1_enable` (Boolean) Privileged command level(enable) authentication using enable password
+  - Default value: `false`
 - `enable_default_group1_group` (String) Privileged command level(enable) authentication using radius/tacacs+/ldap server(s)
 - `enable_default_group1_line` (Boolean) Privileged command level(enable) authentication using line password
+  - Default value: `false`
 - `enable_default_group1_none` (Boolean) No authentication for Privileged command level(enable)
+  - Default value: `false`
 - `enable_default_group2_cache` (String) Privileged command level(enable) authentication using cached group
 - `enable_default_group2_enable` (Boolean) Privileged command level(enable) authentication using enable password
+  - Default value: `false`
 - `enable_default_group2_group` (String) Privileged command level(enable) authentication using radius/tacacs+/ldap server(s)
 - `enable_default_group2_line` (Boolean) Privileged command level(enable) authentication using line password
+  - Default value: `false`
 - `enable_default_group2_none` (Boolean) No authentication for Privileged command level(enable)
+  - Default value: `false`
 - `enable_default_group3_cache` (String) Privileged command level(enable) authentication using cached group
 - `enable_default_group3_enable` (Boolean) Privileged command level(enable) authentication using enable password
+  - Default value: `false`
 - `enable_default_group3_group` (String) Privileged command level(enable) authentication using radius/tacacs+/ldap server(s)
 - `enable_default_group3_line` (Boolean) Privileged command level(enable) authentication using line password
+  - Default value: `false`
 - `enable_default_group3_none` (Boolean) No authentication for Privileged command level(enable)
+  - Default value: `false`
 - `enable_default_group4_cache` (String) Privileged command level(enable) authentication using cached group
 - `enable_default_group4_enable` (Boolean) Privileged command level(enable) authentication using enable password
+  - Default value: `false`
 - `enable_default_group4_group` (String) Privileged command level(enable) authentication using radius/tacacs+/ldap server(s)
 - `enable_default_group4_line` (Boolean) Privileged command level(enable) authentication using line password
+  - Default value: `false`
 - `enable_default_group4_none` (Boolean) No authentication for Privileged command level(enable)
+  - Default value: `false`
 - `enable_default_group_legacy` (String) Use Server-group
 - `enable_default_line_legacy` (Boolean) Use line password for authentication.
+  - Default value: `false`
 - `enable_default_none_legacy` (Boolean) No authentication.
+  - Default value: `false`
 - `logins` (Attributes List) Set authentication lists for logins. (see [below for nested schema](#nestedatt--logins))
 
 ### Read-Only
@@ -94,19 +113,27 @@ Optional:
 - `a1_cache` (String) Use Cached-group
 - `a1_group` (String) Use Server-group
 - `a1_local` (Boolean) Use local username authentication
+  - Default value: `false`
 - `a1_radius` (Boolean) Use list of all Radius hosts
+  - Default value: `false`
 - `a2_cache` (String) Use Cached-group
 - `a2_group` (String) Use Server-group
 - `a2_local` (Boolean) Use local username authentication
+  - Default value: `false`
 - `a2_radius` (Boolean) Use list of all Radius hosts
+  - Default value: `false`
 - `a3_cache` (String) Use Cached-group
 - `a3_group` (String) Use Server-group
 - `a3_local` (Boolean) Use local username authentication
+  - Default value: `false`
 - `a3_radius` (Boolean) Use list of all Radius hosts
+  - Default value: `false`
 - `a4_cache` (String) Use Cached-group
 - `a4_group` (String) Use Server-group
 - `a4_local` (Boolean) Use local username authentication
+  - Default value: `false`
 - `a4_radius` (Boolean) Use list of all Radius hosts
+  - Default value: `false`
 
 
 <a id="nestedatt--logins"></a>
@@ -119,25 +146,38 @@ Required:
 Optional:
 
 - `a1_enable` (Boolean) Use enable password for authentication.
+  - Default value: `false`
 - `a1_group` (String) Use Server-group
 - `a1_line` (Boolean) Use line password for authentication.
+  - Default value: `false`
 - `a1_local` (Boolean) Use local username authentication.
+  - Default value: `false`
 - `a1_none` (Boolean) NO authentication.
+  - Default value: `false`
 - `a2_enable` (Boolean) Use enable password for authentication.
+  - Default value: `false`
 - `a2_group` (String) Use Server-group
 - `a2_line` (Boolean) Use line password for authentication.
-- `a2_local` (Boolean)
+  - Default value: `false`
+- `a2_local` (Boolean) - Default value: `false`
 - `a2_none` (Boolean) NO authentication.
+  - Default value: `false`
 - `a3_enable` (Boolean) Use enable password for authentication.
+  - Default value: `false`
 - `a3_group` (String) Use Server-group
 - `a3_line` (Boolean) Use line password for authentication.
-- `a3_local` (Boolean)
+  - Default value: `false`
+- `a3_local` (Boolean) - Default value: `false`
 - `a3_none` (Boolean) NO authentication.
+  - Default value: `false`
 - `a4_enable` (Boolean) Use enable password for authentication.
+  - Default value: `false`
 - `a4_group` (String) Use Server-group
 - `a4_line` (Boolean) Use line password for authentication.
-- `a4_local` (Boolean)
+  - Default value: `false`
+- `a4_local` (Boolean) - Default value: `false`
 - `a4_none` (Boolean) NO authentication.
+  - Default value: `false`
 
 ## Import
 

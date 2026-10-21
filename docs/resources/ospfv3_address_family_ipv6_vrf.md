@@ -80,10 +80,13 @@ resource "iosxe_ospfv3_address_family_ipv6_vrf" "example" {
 - `auto_cost_reference_bandwidth` (Number) Use reference bandwidth method to assign OSPF cost
   - Range: `1`-`4294967`
 - `bfd_all_interfaces` (Boolean) Enable BFD on all interfaces
+  - Default value: `false`
 - `capability_vrf` (String) Enable specific OSPF feature
   - Choices: `vrf-lite`
 - `default_information_originate` (Boolean) Distribute a default route
+  - Default value: `false`
 - `default_information_originate_always` (Boolean) Always advertise default route
+  - Default value: `false`
 - `default_information_originate_metric` (Number) OSPF default metric
   - Range: `1`-`16777214`
 - `default_information_originate_metric_type` (Number) OSPF metric type for default routes
@@ -95,21 +98,30 @@ resource "iosxe_ospfv3_address_family_ipv6_vrf" "example" {
 - `device` (String) A device name from the provider configuration.
 - `distance` (Number) - Range: `1`-`254`
 - `log_adjacency_changes` (Boolean) Log changes in adjacency state
+  - Default value: `false`
 - `log_adjacency_changes_detail` (Boolean) Log all state changes
+  - Default value: `false`
 - `max_metric_router_config_lsa_on_startup_time` (Number) - Range: `5`-`86400`
 - `max_metric_router_config_lsa_on_startup_wait_for_bgp` (Boolean) Let BGP decide when to originate router-LSA with normal metric
+  - Default value: `false`
 - `max_metric_router_lsa_config` (Boolean) Maximum metric in self-originated router-LSAs
+  - Default value: `false`
 - `max_metric_router_lsa_config_external_lsa_metric` (Number) Overriding metric in external-LSAs (default 16711680)
   - Range: `1`-`16777215`
 - `max_metric_router_lsa_config_inter_area_lsas_metric` (Number) Overriding metric in inter-area-LSAs (default 16711680)
   - Range: `1`-`16777215`
 - `max_metric_router_lsa_config_stub_prefix_lsa` (Boolean) Set maximum metric for stub links in prefix LSAs
+  - Default value: `false`
 - `passive_interface` (List of String)
 - `passive_interface_default` (Boolean) Suppress routing updates on all interfaces
+  - Default value: `false`
 - `redistribute_connected` (Boolean) Connected
+  - Default value: `false`
 - `redistribute_static` (Boolean) Static routes
+  - Default value: `false`
 - `router_id` (String) Configure router identifier. New router-id will take effect immediately (peers will reset)
 - `shutdown` (Boolean) Shutdown the OSPF protocol under the current instance
+  - Default value: `false`
 - `summary_prefix` (Attributes List) Configure IPv6 summary prefix (see [below for nested schema](#nestedatt--summary_prefix))
 - `timers_lsa_arrival` (Number) OSPF LSA arrival timer
   - Range: `0`-`600000`
@@ -121,7 +133,7 @@ resource "iosxe_ospfv3_address_family_ipv6_vrf" "example" {
 - `timers_throttle_spf_delay` (Number) - Range: `1`-`600000`
 - `timers_throttle_spf_max_delay` (Number) - Range: `1`-`600000`
 - `timers_throttle_spf_min_delay` (Number) - Range: `1`-`600000`
-- `unicast` (Boolean)
+- `unicast` (Boolean) - Default value: `false`
 
 ### Read-Only
 
@@ -137,13 +149,17 @@ Required:
 Optional:
 
 - `nssa` (Boolean) Specify a NSSA area
+  - Default value: `false`
 - `nssa_default_information_originate` (Boolean) Originate Type 7 default into NSSA area
+  - Default value: `false`
 - `nssa_default_information_originate_metric` (Number) OSPF default metric
   - Range: `0`-`16777214`
 - `nssa_default_information_originate_metric_type` (Number) OSPF metric type for default routes
   - Range: `1`-`2`
 - `nssa_no_redistribution` (Boolean) No redistribution into this NSSA area
+  - Default value: `false`
 - `nssa_no_summary` (Boolean) Do not send summary LSA into NSSA
+  - Default value: `false`
 
 
 <a id="nestedatt--summary_prefix"></a>

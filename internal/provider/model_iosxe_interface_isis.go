@@ -252,7 +252,7 @@ func (data *InterfaceISIS) addDeletedItemsXML(ctx context.Context, state Interfa
 				found = false
 			}
 			if found {
-				if !state.Ipv4MetricLevels[i].Value.IsNull() && data.Ipv4MetricLevels[j].Value.IsNull() {
+				if !state.Ipv4MetricLevels[i].Value.IsNull() && (data.Ipv4MetricLevels[j].Value.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-isis:metric/metric-list%v/value", predicates))
 				}
 				break
@@ -262,7 +262,7 @@ func (data *InterfaceISIS) addDeletedItemsXML(ctx context.Context, state Interfa
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-isis:metric/metric-list%v", predicates))
 		}
 	}
-	if !state.NetworkPointToPoint.IsNull() && data.NetworkPointToPoint.IsNull() {
+	if !state.NetworkPointToPoint.IsNull() && (data.NetworkPointToPoint.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-isis:network/point-to-point")
 	}
 

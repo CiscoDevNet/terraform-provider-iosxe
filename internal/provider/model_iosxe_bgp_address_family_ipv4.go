@@ -171,8 +171,6 @@ func (data BGPAddressFamilyIPv4) addToBodyXML(ctx context.Context, config BGPAdd
 	if !data.Ipv4UnicastRedistributeConnected.IsNull() && !data.Ipv4UnicastRedistributeConnected.IsUnknown() {
 		if data.Ipv4UnicastRedistributeConnected.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ipv4-unicast/redistribute/connected", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ipv4-unicast/redistribute/connected")
 		}
 	}
 	if !data.Ipv4UnicastRedistributeConnectedRouteMap.IsNull() && !data.Ipv4UnicastRedistributeConnectedRouteMap.IsUnknown() {
@@ -184,8 +182,6 @@ func (data BGPAddressFamilyIPv4) addToBodyXML(ctx context.Context, config BGPAdd
 	if !data.Ipv4UnicastRedistributeStatic.IsNull() && !data.Ipv4UnicastRedistributeStatic.IsUnknown() {
 		if data.Ipv4UnicastRedistributeStatic.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ipv4-unicast/redistribute/static", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ipv4-unicast/redistribute/static")
 		}
 	}
 	if !data.Ipv4UnicastRedistributeStaticRouteMap.IsNull() && !data.Ipv4UnicastRedistributeStaticRouteMap.IsUnknown() {
@@ -221,8 +217,6 @@ func (data BGPAddressFamilyIPv4) addToBodyXML(ctx context.Context, config BGPAdd
 			if !item.Backdoor.IsNull() && !item.Backdoor.IsUnknown() {
 				if item.Backdoor.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "backdoor", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "backdoor")
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ipv4-unicast/network/with-mask", cBody.Res())
@@ -240,8 +234,6 @@ func (data BGPAddressFamilyIPv4) addToBodyXML(ctx context.Context, config BGPAdd
 			if !item.Backdoor.IsNull() && !item.Backdoor.IsUnknown() {
 				if item.Backdoor.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "backdoor", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "backdoor")
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ipv4-unicast/network/no-mask", cBody.Res())
@@ -771,19 +763,19 @@ func (data *BGPAddressFamilyIPv4Data) fromBodyXML(ctx context.Context, res xmldo
 
 func (data *BGPAddressFamilyIPv4) addDeletedItemsXML(ctx context.Context, state BGPAddressFamilyIPv4, body string) string {
 	b := netconf.NewBody(body)
-	if !state.Ipv4UnicastMaximumPathsIbgp.IsNull() && data.Ipv4UnicastMaximumPathsIbgp.IsNull() {
+	if !state.Ipv4UnicastMaximumPathsIbgp.IsNull() && (data.Ipv4UnicastMaximumPathsIbgp.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ipv4-unicast/maximum-paths/ibgp-leaf")
 	}
-	if !state.Ipv4UnicastMaximumPathsEbgp.IsNull() && data.Ipv4UnicastMaximumPathsEbgp.IsNull() {
+	if !state.Ipv4UnicastMaximumPathsEbgp.IsNull() && (data.Ipv4UnicastMaximumPathsEbgp.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ipv4-unicast/maximum-paths/ebgp")
 	}
-	if !state.Ipv4UnicastDistanceBgpLocal.IsNull() && data.Ipv4UnicastDistanceBgpLocal.IsNull() {
+	if !state.Ipv4UnicastDistanceBgpLocal.IsNull() && (data.Ipv4UnicastDistanceBgpLocal.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ipv4-unicast/distance/bgp/local")
 	}
-	if !state.Ipv4UnicastDistanceBgpInternal.IsNull() && data.Ipv4UnicastDistanceBgpInternal.IsNull() {
+	if !state.Ipv4UnicastDistanceBgpInternal.IsNull() && (data.Ipv4UnicastDistanceBgpInternal.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ipv4-unicast/distance/bgp/internal-as")
 	}
-	if !state.Ipv4UnicastDistanceBgpExternal.IsNull() && data.Ipv4UnicastDistanceBgpExternal.IsNull() {
+	if !state.Ipv4UnicastDistanceBgpExternal.IsNull() && (data.Ipv4UnicastDistanceBgpExternal.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ipv4-unicast/distance/bgp/extern-as")
 	}
 	for i := range state.Ipv4UnicastAdminDistances {
@@ -821,7 +813,7 @@ func (data *BGPAddressFamilyIPv4) addDeletedItemsXML(ctx context.Context, state 
 				found = false
 			}
 			if found {
-				if !state.Ipv4UnicastAdminDistances[i].Acl.IsNull() && data.Ipv4UnicastAdminDistances[j].Acl.IsNull() {
+				if !state.Ipv4UnicastAdminDistances[i].Acl.IsNull() && (data.Ipv4UnicastAdminDistances[j].Acl.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv4-unicast/distance/adm-distance%v/acl", predicates))
 				}
 				break
@@ -854,10 +846,10 @@ func (data *BGPAddressFamilyIPv4) addDeletedItemsXML(ctx context.Context, state 
 				found = false
 			}
 			if found {
-				if !state.Ipv4UnicastNetworks[i].Backdoor.IsNull() && data.Ipv4UnicastNetworks[j].Backdoor.IsNull() {
+				if !state.Ipv4UnicastNetworks[i].Backdoor.IsNull() && (data.Ipv4UnicastNetworks[j].Backdoor.IsNull() || (state.Ipv4UnicastNetworks[i].Backdoor.ValueBool() && !data.Ipv4UnicastNetworks[j].Backdoor.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv4-unicast/network/no-mask%v/backdoor", predicates))
 				}
-				if !state.Ipv4UnicastNetworks[i].RouteMap.IsNull() && data.Ipv4UnicastNetworks[j].RouteMap.IsNull() {
+				if !state.Ipv4UnicastNetworks[i].RouteMap.IsNull() && (data.Ipv4UnicastNetworks[j].RouteMap.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv4-unicast/network/no-mask%v/route-map", predicates))
 				}
 				break
@@ -896,10 +888,10 @@ func (data *BGPAddressFamilyIPv4) addDeletedItemsXML(ctx context.Context, state 
 				found = false
 			}
 			if found {
-				if !state.Ipv4UnicastNetworksMask[i].Backdoor.IsNull() && data.Ipv4UnicastNetworksMask[j].Backdoor.IsNull() {
+				if !state.Ipv4UnicastNetworksMask[i].Backdoor.IsNull() && (data.Ipv4UnicastNetworksMask[j].Backdoor.IsNull() || (state.Ipv4UnicastNetworksMask[i].Backdoor.ValueBool() && !data.Ipv4UnicastNetworksMask[j].Backdoor.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv4-unicast/network/with-mask%v/backdoor", predicates))
 				}
-				if !state.Ipv4UnicastNetworksMask[i].RouteMap.IsNull() && data.Ipv4UnicastNetworksMask[j].RouteMap.IsNull() {
+				if !state.Ipv4UnicastNetworksMask[i].RouteMap.IsNull() && (data.Ipv4UnicastNetworksMask[j].RouteMap.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv4-unicast/network/with-mask%v/route-map", predicates))
 				}
 				break
@@ -945,22 +937,22 @@ func (data *BGPAddressFamilyIPv4) addDeletedItemsXML(ctx context.Context, state 
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv4-unicast/aggregate-address%v", predicates))
 		}
 	}
-	if !state.Ipv4UnicastRedistributeStaticMetric.IsNull() && data.Ipv4UnicastRedistributeStaticMetric.IsNull() {
+	if !state.Ipv4UnicastRedistributeStaticMetric.IsNull() && (data.Ipv4UnicastRedistributeStaticMetric.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ipv4-unicast/redistribute/static/default/metric")
 	}
-	if !state.Ipv4UnicastRedistributeStaticRouteMap.IsNull() && data.Ipv4UnicastRedistributeStaticRouteMap.IsNull() {
+	if !state.Ipv4UnicastRedistributeStaticRouteMap.IsNull() && (data.Ipv4UnicastRedistributeStaticRouteMap.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ipv4-unicast/redistribute/static/default/route-map")
 	}
-	if !state.Ipv4UnicastRedistributeStatic.IsNull() && data.Ipv4UnicastRedistributeStatic.IsNull() {
+	if !state.Ipv4UnicastRedistributeStatic.IsNull() && (data.Ipv4UnicastRedistributeStatic.IsNull() || (state.Ipv4UnicastRedistributeStatic.ValueBool() && !data.Ipv4UnicastRedistributeStatic.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ipv4-unicast/redistribute/static")
 	}
-	if !state.Ipv4UnicastRedistributeConnectedMetric.IsNull() && data.Ipv4UnicastRedistributeConnectedMetric.IsNull() {
+	if !state.Ipv4UnicastRedistributeConnectedMetric.IsNull() && (data.Ipv4UnicastRedistributeConnectedMetric.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ipv4-unicast/redistribute/connected/metric")
 	}
-	if !state.Ipv4UnicastRedistributeConnectedRouteMap.IsNull() && data.Ipv4UnicastRedistributeConnectedRouteMap.IsNull() {
+	if !state.Ipv4UnicastRedistributeConnectedRouteMap.IsNull() && (data.Ipv4UnicastRedistributeConnectedRouteMap.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ipv4-unicast/redistribute/connected/route-map")
 	}
-	if !state.Ipv4UnicastRedistributeConnected.IsNull() && data.Ipv4UnicastRedistributeConnected.IsNull() {
+	if !state.Ipv4UnicastRedistributeConnected.IsNull() && (data.Ipv4UnicastRedistributeConnected.IsNull() || (state.Ipv4UnicastRedistributeConnected.ValueBool() && !data.Ipv4UnicastRedistributeConnected.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ipv4-unicast/redistribute/connected")
 	}
 

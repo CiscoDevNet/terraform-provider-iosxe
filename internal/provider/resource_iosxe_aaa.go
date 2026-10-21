@@ -32,6 +32,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -80,12 +81,16 @@ func (r *AAAResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				},
 			},
 			"new_model": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable NEW access control commands and functions.(Disables OLD commands.)").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable NEW access control commands and functions.(Disables OLD commands.)").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"server_radius_dynamic_author": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Local server profile for RFC 3576 support").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Local server profile for RFC 3576 support").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"session_id": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("AAA Session ID").AddStringEnumDescription("common", "unique").String,

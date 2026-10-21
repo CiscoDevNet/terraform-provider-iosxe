@@ -33,6 +33,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
@@ -106,8 +107,10 @@ func (r *OSPFv3Resource) Schema(ctx context.Context, req resource.SchemaRequest,
 				},
 			},
 			"bfd_all_interfaces": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable BFD on all interfaces").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable BFD on all interfaces").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"auto_cost_reference_bandwidth": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Use reference bandwidth method to assign OSPF cost").AddIntegerRangeDescription(1, 4294967).String,
@@ -117,16 +120,22 @@ func (r *OSPFv3Resource) Schema(ctx context.Context, req resource.SchemaRequest,
 				},
 			},
 			"shutdown": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Shutdown the OSPF protocol under the current instance").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Shutdown the OSPF protocol under the current instance").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"log_adjacency_changes": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Log changes in adjacency state").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Log changes in adjacency state").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"log_adjacency_changes_detail": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Log all state changes").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Log all state changes").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 		},
 	}

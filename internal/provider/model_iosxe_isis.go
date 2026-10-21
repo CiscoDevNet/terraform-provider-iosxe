@@ -123,22 +123,16 @@ func (data ISIS) addToBodyXML(ctx context.Context, config ISIS, body netconf.Bod
 	if !data.MetricStyleWide.IsNull() && !data.MetricStyleWide.IsUnknown() {
 		if data.MetricStyleWide.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/metric-style/wide", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/metric-style/wide")
 		}
 	}
 	if !data.MetricStyleNarrow.IsNull() && !data.MetricStyleNarrow.IsUnknown() {
 		if data.MetricStyleNarrow.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/metric-style/narrow", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/metric-style/narrow")
 		}
 	}
 	if !data.MetricStyleTransition.IsNull() && !data.MetricStyleTransition.IsUnknown() {
 		if data.MetricStyleTransition.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/metric-style/transition", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/metric-style/transition")
 		}
 	}
 	if !data.LogAdjacencyChanges.IsNull() && !data.LogAdjacencyChanges.IsUnknown() {
@@ -147,8 +141,6 @@ func (data ISIS) addToBodyXML(ctx context.Context, config ISIS, body netconf.Bod
 	if !data.LogAdjacencyChangesAll.IsNull() && !data.LogAdjacencyChangesAll.IsUnknown() {
 		if data.LogAdjacencyChangesAll.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/log-adj-changes/all", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/log-adj-changes/all")
 		}
 	}
 	return body
@@ -330,19 +322,19 @@ func (data *ISISData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 func (data *ISIS) addDeletedItemsXML(ctx context.Context, state ISIS, body string) string {
 	b := netconf.NewBody(body)
-	if !state.LogAdjacencyChangesAll.IsNull() && data.LogAdjacencyChangesAll.IsNull() {
+	if !state.LogAdjacencyChangesAll.IsNull() && (data.LogAdjacencyChangesAll.IsNull() || (state.LogAdjacencyChangesAll.ValueBool() && !data.LogAdjacencyChangesAll.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/log-adj-changes/all")
 	}
-	if !state.LogAdjacencyChanges.IsNull() && data.LogAdjacencyChanges.IsNull() {
+	if !state.LogAdjacencyChanges.IsNull() && (data.LogAdjacencyChanges.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/log-adj-changes/log-adjacency-changes")
 	}
-	if !state.MetricStyleTransition.IsNull() && data.MetricStyleTransition.IsNull() {
+	if !state.MetricStyleTransition.IsNull() && (data.MetricStyleTransition.IsNull() || (state.MetricStyleTransition.ValueBool() && !data.MetricStyleTransition.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/metric-style/transition")
 	}
-	if !state.MetricStyleNarrow.IsNull() && data.MetricStyleNarrow.IsNull() {
+	if !state.MetricStyleNarrow.IsNull() && (data.MetricStyleNarrow.IsNull() || (state.MetricStyleNarrow.ValueBool() && !data.MetricStyleNarrow.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/metric-style/narrow")
 	}
-	if !state.MetricStyleWide.IsNull() && data.MetricStyleWide.IsNull() {
+	if !state.MetricStyleWide.IsNull() && (data.MetricStyleWide.IsNull() || (state.MetricStyleWide.ValueBool() && !data.MetricStyleWide.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/metric-style/wide")
 	}
 	for i := range state.Nets {

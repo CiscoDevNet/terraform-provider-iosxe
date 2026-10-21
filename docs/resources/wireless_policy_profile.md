@@ -50,13 +50,16 @@ resource "iosxe_wireless_policy_profile" "example" {
 ### Optional
 
 - `aaa_override` (Boolean) This flag is set when aaa override is enabled
+  - Default value: `false`
 - `accounting_list` (String) Specifies the accounting list configured on the policy profile.
 - `description` (String) This object specifies the description associated to this WLAN policy.This can be any user defined string
 - `device` (String) A device name from the provider configuration.
 - `dhcp_tlv_caching` (Boolean) DHCP TLV caching
+  - Default value: `false`
 - `exclusionlist_timeout` (Number) Set time the client will be excluded
   - Range: `0`-`2147483647`
 - `http_tlv_caching` (Boolean) HTTP TLV caching
+  - Default value: `false`
 - `idle_timeout` (Number) The duration of idle timeout in seconds
   - Range: `15`-`100000`
 - `ipv4_acl` (String) Name of IPV4 ACL
@@ -65,6 +68,7 @@ resource "iosxe_wireless_policy_profile" "example" {
 - `ipv6_acl` (String) Configure the name of IPV6 ACL
 - `mobility_anchors` (Attributes List) Guest mm DB associated to policy profile (see [below for nested schema](#nestedatt--mobility_anchors))
 - `nac` (Boolean) This flag is set when NAC is enabled
+  - Default value: `false`
 - `nac_type` (String) Type of Network Authentication Control (NAC) supported
   - Choices: `nac-support-radius`
 - `service_policy_input` (String) This object specifies the ingress service-policy name. It can be system generated policy name or user-defined policy name.
@@ -72,7 +76,9 @@ resource "iosxe_wireless_policy_profile" "example" {
 - `session_timeout` (Number) Configures client Session timeout
   - Range: `0`-`86400`
 - `static_ip_mobility` (Boolean) Configuration of static IP mobility
+  - Default value: `false`
 - `status` (Boolean) This object specifies whether the policy profile is shutdown or active
+  - Default value: `false`
 - `vlan` (String) This object represents the interface attached to the wireless lan.
 
 ### Read-Only

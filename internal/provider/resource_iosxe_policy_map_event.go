@@ -31,6 +31,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -138,12 +139,16 @@ func (r *PolicyMapEventResource) Schema(ctx context.Context, req resource.Schema
 										},
 									},
 									"pause_reauthentication": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("pause reauthentication").String,
+										MarkdownDescription: helpers.NewAttributeDescription("pause reauthentication").AddDefaultValueDescription("false").String,
 										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(false),
 									},
 									"authorize": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("authorize session").String,
+										MarkdownDescription: helpers.NewAttributeDescription("authorize session").AddDefaultValueDescription("false").String,
 										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(false),
 									},
 									"terminate_config": schema.StringAttribute{
 										MarkdownDescription: helpers.NewAttributeDescription("terminate auth method").AddStringEnumDescription("dot1x", "mab", "webauth").String,
@@ -171,8 +176,10 @@ func (r *PolicyMapEventResource) Schema(ctx context.Context, req resource.Schema
 										},
 									},
 									"activate_service_template_config_replace_all": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Replace all existing authorization data and services").String,
+										MarkdownDescription: helpers.NewAttributeDescription("Replace all existing authorization data and services").AddDefaultValueDescription("false").String,
 										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(false),
 									},
 									"activate_interface_template": schema.StringAttribute{
 										MarkdownDescription: helpers.NewAttributeDescription("activate interface template").String,
@@ -223,8 +230,10 @@ func (r *PolicyMapEventResource) Schema(ctx context.Context, req resource.Schema
 										},
 									},
 									"authenticate_using_aaa_config": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Configure AAA method list. Required when using `authenticate_using_authc_list` or `authenticate_using_authz_list` (versions `17.18` and later).").String,
+										MarkdownDescription: helpers.NewAttributeDescription("Configure AAA method list. Required when using `authenticate_using_authc_list` or `authenticate_using_authz_list` (versions `17.18` and later).").AddDefaultValueDescription("false").String,
 										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(false),
 									},
 									"authenticate_using_authc_list": schema.StringAttribute{
 										MarkdownDescription: helpers.NewAttributeDescription("Specify authentication method list. Use this for versions `17.18` and later.").String,
@@ -243,40 +252,56 @@ func (r *PolicyMapEventResource) Schema(ctx context.Context, req resource.Schema
 										Optional:            true,
 									},
 									"authenticate_using_both": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Enabling Dot1x Authenticator & Supplicant").String,
+										MarkdownDescription: helpers.NewAttributeDescription("Enabling Dot1x Authenticator & Supplicant").AddDefaultValueDescription("false").String,
 										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(false),
 									},
 									"authenticate_using_parameter_map": schema.StringAttribute{
 										MarkdownDescription: helpers.NewAttributeDescription("Specify parameter map name").String,
 										Optional:            true,
 									},
 									"replace": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("clear existing session and create session for violating host").String,
+										MarkdownDescription: helpers.NewAttributeDescription("clear existing session and create session for violating host").AddDefaultValueDescription("false").String,
 										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(false),
 									},
 									"restrict": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("drop violating packets and generate a syslog").String,
+										MarkdownDescription: helpers.NewAttributeDescription("drop violating packets and generate a syslog").AddDefaultValueDescription("false").String,
 										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(false),
 									},
 									"clear_session": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("clears an active session").String,
+										MarkdownDescription: helpers.NewAttributeDescription("clears an active session").AddDefaultValueDescription("false").String,
 										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(false),
 									},
 									"clear_authenticated_data_hosts_on_port": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("clears authenticated data hosts on the port").String,
+										MarkdownDescription: helpers.NewAttributeDescription("clears authenticated data hosts on the port").AddDefaultValueDescription("false").String,
 										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(false),
 									},
 									"protect": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("silently drop violating packets").String,
+										MarkdownDescription: helpers.NewAttributeDescription("silently drop violating packets").AddDefaultValueDescription("false").String,
 										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(false),
 									},
 									"err_disable": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("temporarily disable port").String,
+										MarkdownDescription: helpers.NewAttributeDescription("temporarily disable port").AddDefaultValueDescription("false").String,
 										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(false),
 									},
 									"resume_reauthentication": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("resume reauthentication").String,
+										MarkdownDescription: helpers.NewAttributeDescription("resume reauthentication").AddDefaultValueDescription("false").String,
 										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(false),
 									},
 									"authentication_restart": schema.Int64Attribute{
 										MarkdownDescription: helpers.NewAttributeDescription("restarts the auth sequence after the specified number of sec").AddIntegerRangeDescription(1, 65535).String,
@@ -293,12 +318,16 @@ func (r *PolicyMapEventResource) Schema(ctx context.Context, req resource.Schema
 										},
 									},
 									"unauthorize": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("unauthorize session").String,
+										MarkdownDescription: helpers.NewAttributeDescription("unauthorize session").AddDefaultValueDescription("false").String,
 										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(false),
 									},
 									"notify": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("notifies the session attributes").String,
+										MarkdownDescription: helpers.NewAttributeDescription("notifies the session attributes").AddDefaultValueDescription("false").String,
 										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(false),
 									},
 									"set_timer_name": schema.StringAttribute{
 										MarkdownDescription: helpers.NewAttributeDescription("timer name").String,

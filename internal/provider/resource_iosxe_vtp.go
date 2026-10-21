@@ -31,6 +31,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -101,8 +102,10 @@ func (r *VTPResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				Optional:            true,
 			},
 			"interface_only": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Use only this interface's IP address as the VTP IP updater address").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Use only this interface's IP address as the VTP IP updater address").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"password": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("The ascii password for the VTP administrative domain").String,
@@ -119,8 +122,10 @@ func (r *VTPResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				Optional:            true,
 			},
 			"password_hidden": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set the VTP password hidden option").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Set the VTP password hidden option").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"password_secret": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Specify the vtp password in encrypted form").String,
@@ -137,76 +142,110 @@ func (r *VTPResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				Optional:            true,
 			},
 			"pruning": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set the administrative domain to permit pruning").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Set the administrative domain to permit pruning").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"domain": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Set the name of the VTP administrative domain.").String,
 				Optional:            true,
 			},
 			"mode_client": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set the device to client mode").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Set the device to client mode").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"mode_client_mst": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set the mode for MST VTP instance").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Set the mode for MST VTP instance").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"mode_client_unknown": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set the mode for unknown VTP instances").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Set the mode for unknown VTP instances").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"mode_client_vlan": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set the mode for VLAN VTP instance").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Set the mode for VLAN VTP instance").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"mode_off": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set the device to off mode").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Set the device to off mode").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"mode_off_mst": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set the mode for MST VTP instance").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Set the mode for MST VTP instance").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"mode_off_unknown": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set the mode for unknown VTP instances").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Set the mode for unknown VTP instances").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"mode_off_vlan": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set the mode for VLAN VTP instance").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Set the mode for VLAN VTP instance").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"mode_server": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set the device to server mode").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Set the device to server mode").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"mode_server_mst": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set the mode for MST VTP instance").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Set the mode for MST VTP instance").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"mode_server_unknown": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set the mode for unknown VTP instances").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Set the mode for unknown VTP instances").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"mode_server_vlan": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set the mode for VLAN VTP instance").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Set the mode for VLAN VTP instance").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"mode_transparent": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set the device to transparent mode").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Set the device to transparent mode").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"mode_transparent_mst": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set the mode for MST VTP instance").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Set the mode for MST VTP instance").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"mode_transparent_unknown": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set the mode for unknown VTP instances").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Set the mode for unknown VTP instances").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"mode_transparent_vlan": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set the mode for VLAN VTP instance").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Set the mode for VLAN VTP instance").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 		},
 	}

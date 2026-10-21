@@ -57,11 +57,17 @@ resource "iosxe_crypto_ikev2_profile" "example" {
 ### Optional
 
 - `authentication_local_ecdsa_sig` (Boolean) ECDSA Signature
+  - Default value: `false`
 - `authentication_local_pre_share` (Boolean) Pre-Shared Key
+  - Default value: `false`
 - `authentication_local_rsa_sig` (Boolean) Rivest-Shamir-Adleman Signature
+  - Default value: `false`
 - `authentication_remote_ecdsa_sig` (Boolean) ECDSA Signature
+  - Default value: `false`
 - `authentication_remote_pre_share` (Boolean) Pre-Shared Key
+  - Default value: `false`
 - `authentication_remote_rsa_sig` (Boolean) Rivest-Shamir-Adleman Signature
+  - Default value: `false`
 - `config_exchange_request` (Boolean) enable config-exchange request
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
@@ -83,10 +89,12 @@ resource "iosxe_crypto_ikev2_profile" "example" {
 - `match_certificate_maps` (List of String) Peer certificate attributes
 - `match_fvrf` (String)
 - `match_fvrf_any` (Boolean) Any fvrf
+  - Default value: `false`
 - `match_identity_remote_ipv4_addresses` (Attributes List) (see [below for nested schema](#nestedatt--match_identity_remote_ipv4_addresses))
 - `match_identity_remote_ipv6_prefixes` (List of String)
 - `match_identity_remote_keys` (List of String) key-id opaque string
 - `match_inbound_only` (Boolean) Match the profile for incoming connections only
+  - Default value: `false`
 - `pki_trustpoints` (Attributes List) PKI certificate authority trustpoints (see [below for nested schema](#nestedatt--pki_trustpoints))
 
 ### Read-Only

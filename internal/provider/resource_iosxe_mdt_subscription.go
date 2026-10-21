@@ -31,6 +31,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
@@ -113,8 +114,10 @@ func (r *MDTSubscriptionResource) Schema(ctx context.Context, req resource.Schem
 				},
 			},
 			"update_policy_on_change": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("If true, there is no initial update notification with the current value of all the data. NOT CURRENTLY SUPPORTED. If specified, must be false").String,
+				MarkdownDescription: helpers.NewAttributeDescription("If true, there is no initial update notification with the current value of all the data. NOT CURRENTLY SUPPORTED. If specified, must be false").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"filter_xpath": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("XPath expression describing the set of objects wanted as part of the subscription").String,

@@ -130,8 +130,6 @@ func (data BGPBMPServer) addToBodyXML(ctx context.Context, config BGPBMPServer, 
 	if !data.Activate.IsNull() && !data.Activate.IsUnknown() {
 		if data.Activate.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/activate", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/activate")
 		}
 	}
 	if !data.Description.IsNull() && !data.Description.IsUnknown() {
@@ -350,43 +348,43 @@ func (data *BGPBMPServerData) fromBodyXML(ctx context.Context, res xmldot.Result
 
 func (data *BGPBMPServer) addDeletedItemsXML(ctx context.Context, state BGPBMPServer, body string) string {
 	b := netconf.NewBody(body)
-	if !state.UpdateSourceVlan.IsNull() && data.UpdateSourceVlan.IsNull() {
+	if !state.UpdateSourceVlan.IsNull() && (data.UpdateSourceVlan.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/update-source/Vlan")
 	}
-	if !state.UpdateSourceTenGigabitEthernet.IsNull() && data.UpdateSourceTenGigabitEthernet.IsNull() {
+	if !state.UpdateSourceTenGigabitEthernet.IsNull() && (data.UpdateSourceTenGigabitEthernet.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/update-source/TenGigabitEthernet")
 	}
-	if !state.UpdateSourceGigabitEthernet.IsNull() && data.UpdateSourceGigabitEthernet.IsNull() {
+	if !state.UpdateSourceGigabitEthernet.IsNull() && (data.UpdateSourceGigabitEthernet.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/update-source/GigabitEthernet")
 	}
-	if !state.UpdateSourceLoopback.IsNull() && data.UpdateSourceLoopback.IsNull() {
+	if !state.UpdateSourceLoopback.IsNull() && (data.UpdateSourceLoopback.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/update-source/Loopback")
 	}
-	if !state.IpDscp.IsNull() && data.IpDscp.IsNull() {
+	if !state.IpDscp.IsNull() && (data.IpDscp.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/set/ip/dscp")
 	}
-	if !state.StatsReportingPeriod.IsNull() && data.StatsReportingPeriod.IsNull() {
+	if !state.StatsReportingPeriod.IsNull() && (data.StatsReportingPeriod.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/stats-reporting-period")
 	}
-	if !state.InitialDelay.IsNull() && data.InitialDelay.IsNull() {
+	if !state.InitialDelay.IsNull() && (data.InitialDelay.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/initial-delay")
 	}
-	if !state.FlappingDelay.IsNull() && data.FlappingDelay.IsNull() {
+	if !state.FlappingDelay.IsNull() && (data.FlappingDelay.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/flapping-delay")
 	}
-	if !state.FailureRetryDelay.IsNull() && data.FailureRetryDelay.IsNull() {
+	if !state.FailureRetryDelay.IsNull() && (data.FailureRetryDelay.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/failure-retry-delay")
 	}
-	if !state.Description.IsNull() && data.Description.IsNull() {
+	if !state.Description.IsNull() && (data.Description.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/description")
 	}
-	if !state.Activate.IsNull() && data.Activate.IsNull() {
+	if !state.Activate.IsNull() && (data.Activate.IsNull() || (state.Activate.ValueBool() && !data.Activate.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/activate")
 	}
-	if !state.PortNumber.IsNull() && data.PortNumber.IsNull() {
+	if !state.PortNumber.IsNull() && (data.PortNumber.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address-config/port-number")
 	}
-	if !state.Address.IsNull() && data.Address.IsNull() {
+	if !state.Address.IsNull() && (data.Address.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address-config/address")
 	}
 

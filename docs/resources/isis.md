@@ -40,9 +40,13 @@ resource "iosxe_isis" "example" {
 - `device` (String) A device name from the provider configuration.
 - `log_adjacency_changes` (Boolean) Log changes in adjacency state
 - `log_adjacency_changes_all` (Boolean) Log all adjacency changes including non-IIH events
+  - Default value: `false`
 - `metric_style_narrow` (Boolean) Use old style of TLVs with narrow metric
+  - Default value: `false`
 - `metric_style_transition` (Boolean) Send and accept both styles of TLVs during transition
+  - Default value: `false`
 - `metric_style_wide` (Boolean) Use new style of TLVs to carry wider metric
+  - Default value: `false`
 - `nets` (Attributes Set) Network Entity Titles for this IS-IS process (see [below for nested schema](#nestedatt--nets))
 
 ### Read-Only

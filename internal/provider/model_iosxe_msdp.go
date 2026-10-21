@@ -678,10 +678,10 @@ func (data *MSDP) addDeletedItemsXML(ctx context.Context, state MSDP, body strin
 							found = false
 						}
 						if found {
-							if !state.Vrfs[i].Passwords[ci].Password.IsNull() && data.Vrfs[j].Passwords[cj].Password.IsNull() {
+							if !state.Vrfs[i].Passwords[ci].Password.IsNull() && (data.Vrfs[j].Passwords[cj].Password.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/password/peer-list%v/password", predicates, cpredicates))
 							}
-							if !state.Vrfs[i].Passwords[ci].Encryption.IsNull() && data.Vrfs[j].Passwords[cj].Encryption.IsNull() {
+							if !state.Vrfs[i].Passwords[ci].Encryption.IsNull() && (data.Vrfs[j].Passwords[cj].Encryption.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/password/peer-list%v/encryption", predicates, cpredicates))
 							}
 							break
@@ -714,10 +714,10 @@ func (data *MSDP) addDeletedItemsXML(ctx context.Context, state MSDP, body strin
 							found = false
 						}
 						if found {
-							if !state.Vrfs[i].Peers[ci].ConnectSourceLoopback.IsNull() && data.Vrfs[j].Peers[cj].ConnectSourceLoopback.IsNull() {
+							if !state.Vrfs[i].Peers[ci].ConnectSourceLoopback.IsNull() && (data.Vrfs[j].Peers[cj].ConnectSourceLoopback.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/peer%v/connect-source/Loopback", predicates, cpredicates))
 							}
-							if !state.Vrfs[i].Peers[ci].RemoteAs.IsNull() && data.Vrfs[j].Peers[cj].RemoteAs.IsNull() {
+							if !state.Vrfs[i].Peers[ci].RemoteAs.IsNull() && (data.Vrfs[j].Peers[cj].RemoteAs.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/peer%v/remote-as", predicates, cpredicates))
 							}
 							break
@@ -727,7 +727,7 @@ func (data *MSDP) addDeletedItemsXML(ctx context.Context, state MSDP, body strin
 						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/peer%v", predicates, cpredicates))
 					}
 				}
-				if !state.Vrfs[i].OriginatorId.IsNull() && data.Vrfs[j].OriginatorId.IsNull() {
+				if !state.Vrfs[i].OriginatorId.IsNull() && (data.Vrfs[j].OriginatorId.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/originator-id", predicates))
 				}
 				break
@@ -760,10 +760,10 @@ func (data *MSDP) addDeletedItemsXML(ctx context.Context, state MSDP, body strin
 				found = false
 			}
 			if found {
-				if !state.Passwords[i].Password.IsNull() && data.Passwords[j].Password.IsNull() {
+				if !state.Passwords[i].Password.IsNull() && (data.Passwords[j].Password.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/password/peer-list%v/password", predicates))
 				}
-				if !state.Passwords[i].Encryption.IsNull() && data.Passwords[j].Encryption.IsNull() {
+				if !state.Passwords[i].Encryption.IsNull() && (data.Passwords[j].Encryption.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/password/peer-list%v/encryption", predicates))
 				}
 				break
@@ -796,10 +796,10 @@ func (data *MSDP) addDeletedItemsXML(ctx context.Context, state MSDP, body strin
 				found = false
 			}
 			if found {
-				if !state.Peers[i].ConnectSourceLoopback.IsNull() && data.Peers[j].ConnectSourceLoopback.IsNull() {
+				if !state.Peers[i].ConnectSourceLoopback.IsNull() && (data.Peers[j].ConnectSourceLoopback.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/peer%v/connect-source/Loopback", predicates))
 				}
-				if !state.Peers[i].RemoteAs.IsNull() && data.Peers[j].RemoteAs.IsNull() {
+				if !state.Peers[i].RemoteAs.IsNull() && (data.Peers[j].RemoteAs.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/peer%v/remote-as", predicates))
 				}
 				break
@@ -809,7 +809,7 @@ func (data *MSDP) addDeletedItemsXML(ctx context.Context, state MSDP, body strin
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/peer%v", predicates))
 		}
 	}
-	if !state.OriginatorId.IsNull() && data.OriginatorId.IsNull() {
+	if !state.OriginatorId.IsNull() && (data.OriginatorId.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/originator-id")
 	}
 

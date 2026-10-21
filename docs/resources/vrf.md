@@ -84,7 +84,9 @@ resource "iosxe_vrf" "example" {
 ### Optional
 
 - `address_family_ipv4` (Boolean) Address family
+  - Default value: `false`
 - `address_family_ipv6` (Boolean) Address family
+  - Default value: `false`
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `description` (String) VRF specific description
@@ -96,15 +98,21 @@ resource "iosxe_vrf" "example" {
 - `ipv4_export_map` (String) Route-map based VRF export for IPv4
 - `ipv4_import_map` (String) Route-map based VRF import for IPv4
 - `ipv4_mdt_auto_discovery_interworking_vxlan_pim` (Boolean) Enable BGP auto-discovery for VxLAN PIM interworking
+  - Default value: `false`
 - `ipv4_mdt_auto_discovery_interworking_vxlan_pim_inter_as` (Boolean) Enable Inter-AS BGP auto-discovery for VxLAN PIM interworking
+  - Default value: `false`
 - `ipv4_mdt_auto_discovery_vxlan` (Boolean) Enable BGP auto-discovery for VxLAN
+  - Default value: `false`
 - `ipv4_mdt_auto_discovery_vxlan_inter_as` (Boolean) Enable Inter-AS BGP auto-discovery for VxLAN
+  - Default value: `false`
 - `ipv4_mdt_data_multicast` (Attributes List) MDT data multicast group ranges (see [below for nested schema](#nestedatt--ipv4_mdt_data_multicast))
 - `ipv4_mdt_data_threshold` (Number) MDT switching threshold in Kbps (1-4294967)
   - Range: `1`-`4294967`
 - `ipv4_mdt_default_address` (String) MDT default group IPv4 address
 - `ipv4_mdt_overlay_use_bgp` (Boolean) Enable BGP for MDT overlay signaling
+  - Default value: `false`
 - `ipv4_mdt_overlay_use_bgp_spt_only` (Boolean) Enable Shortest path tree-only ASM mode
+  - Default value: `false`
 - `ipv4_route_replicate` (Attributes List) (see [below for nested schema](#nestedatt--ipv4_route_replicate))
 - `ipv4_route_target_export` (Attributes Set) Export Target-VPN community (see [below for nested schema](#nestedatt--ipv4_route_target_export))
 - `ipv4_route_target_export_stitching` (Attributes Set) Export Target-VPN community (see [below for nested schema](#nestedatt--ipv4_route_target_export_stitching))
@@ -122,6 +130,7 @@ resource "iosxe_vrf" "example" {
 - `ipv6_route_target_import_stitching` (Attributes Set) Import Target-VPN community (see [below for nested schema](#nestedatt--ipv6_route_target_import_stitching))
 - `rd` (String) Specify Route Distinguisher
 - `rd_auto` (Boolean) Specify to enable auto Route Distinguisher
+  - Default value: `false`
 - `route_target_export` (Attributes Set) Export Target-VPN community (see [below for nested schema](#nestedatt--route_target_export))
 - `route_target_import` (Attributes Set) Import Target-VPN community (see [below for nested schema](#nestedatt--route_target_import))
 - `vnids` (Attributes List) Specify VNID for route-target auto generation (see [below for nested schema](#nestedatt--vnids))
@@ -154,6 +163,7 @@ Required:
 Optional:
 
 - `unicast_all` (Boolean) All routes
+  - Default value: `false`
 - `unicast_all_route_map` (String) Route map reference
 
 
@@ -251,6 +261,7 @@ Required:
 Optional:
 
 - `stitching` (Boolean) VXLAN route target set
+  - Default value: `false`
 
 
 <a id="nestedatt--route_target_import"></a>
@@ -263,6 +274,7 @@ Required:
 Optional:
 
 - `stitching` (Boolean) VXLAN route target set
+  - Default value: `false`
 
 
 <a id="nestedatt--vnids"></a>

@@ -102,8 +102,10 @@ func (r *VRFResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				},
 			},
 			"rd_auto": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Specify to enable auto Route Distinguisher").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Specify to enable auto Route Distinguisher").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"rd": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Specify Route Distinguisher").String,
@@ -116,12 +118,16 @@ func (r *VRFResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				},
 			},
 			"address_family_ipv4": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Address family").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Address family").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"address_family_ipv6": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Address family").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Address family").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"vpn_id": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Configure VPN ID in rfc2685 format").String,
@@ -143,8 +149,10 @@ func (r *VRFResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 							},
 						},
 						"stitching": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("VXLAN route target set").String,
+							MarkdownDescription: helpers.NewAttributeDescription("VXLAN route target set").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 					},
 				},
@@ -162,8 +170,10 @@ func (r *VRFResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 							},
 						},
 						"stitching": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("VXLAN route target set").String,
+							MarkdownDescription: helpers.NewAttributeDescription("VXLAN route target set").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 					},
 				},
@@ -253,8 +263,10 @@ func (r *VRFResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 							},
 						},
 						"unicast_all": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("All routes").String,
+							MarkdownDescription: helpers.NewAttributeDescription("All routes").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"unicast_all_route_map": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Route map reference").String,
@@ -396,28 +408,40 @@ func (r *VRFResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				},
 			},
 			"ipv4_mdt_auto_discovery_vxlan": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable BGP auto-discovery for VxLAN").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable BGP auto-discovery for VxLAN").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ipv4_mdt_auto_discovery_vxlan_inter_as": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable Inter-AS BGP auto-discovery for VxLAN").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable Inter-AS BGP auto-discovery for VxLAN").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ipv4_mdt_auto_discovery_interworking_vxlan_pim": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable BGP auto-discovery for VxLAN PIM interworking").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable BGP auto-discovery for VxLAN PIM interworking").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ipv4_mdt_auto_discovery_interworking_vxlan_pim_inter_as": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable Inter-AS BGP auto-discovery for VxLAN PIM interworking").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable Inter-AS BGP auto-discovery for VxLAN PIM interworking").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ipv4_mdt_overlay_use_bgp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable BGP for MDT overlay signaling").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable BGP for MDT overlay signaling").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ipv4_mdt_overlay_use_bgp_spt_only": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable Shortest path tree-only ASM mode").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable Shortest path tree-only ASM mode").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ipv4_mdt_data_multicast": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("MDT data multicast group ranges").String,

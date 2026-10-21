@@ -667,88 +667,88 @@ func (data *WirelessWLANProfileData) fromBodyXML(ctx context.Context, res xmldot
 
 func (data *WirelessWLANProfile) addDeletedItemsXML(ctx context.Context, state WirelessWLANProfile, body string) string {
 	b := netconf.NewBody(body)
-	if !state.Wmm.IsNull() && data.Wmm.IsNull() {
+	if !state.Wmm.IsNull() && (data.Wmm.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/qos-wmm-status")
 	}
-	if !state.LoadBalance.IsNull() && data.LoadBalance.IsNull() {
+	if !state.LoadBalance.IsNull() && (data.LoadBalance.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/load-balance")
 	}
-	if !state.MacFiltering.IsNull() && data.MacFiltering.IsNull() {
+	if !state.MacFiltering.IsNull() && (data.MacFiltering.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/mac-filtering-list")
 	}
-	if !state.SecurityFtOverTheDs.IsNull() && data.SecurityFtOverTheDs.IsNull() {
+	if !state.SecurityFtOverTheDs.IsNull() && (data.SecurityFtOverTheDs.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ft-over-ds")
 	}
-	if !state.SecurityFt.IsNull() && data.SecurityFt.IsNull() {
+	if !state.SecurityFt.IsNull() && (data.SecurityFt.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ft-mode")
 	}
-	if !state.SecurityWebAuthParameterMap.IsNull() && data.SecurityWebAuthParameterMap.IsNull() {
+	if !state.SecurityWebAuthParameterMap.IsNull() && (data.SecurityWebAuthParameterMap.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/web-auth-parameter-map")
 	}
-	if !state.SecurityWebAuthAuthenticationList.IsNull() && data.SecurityWebAuthAuthenticationList.IsNull() {
+	if !state.SecurityWebAuthAuthenticationList.IsNull() && (data.SecurityWebAuthAuthenticationList.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/web-authc-list")
 	}
-	if !state.SecurityWebAuth.IsNull() && data.SecurityWebAuth.IsNull() {
+	if !state.SecurityWebAuth.IsNull() && (data.SecurityWebAuth.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/webauth-enabled")
 	}
-	if !state.SecurityDot1xAuthenticationList.IsNull() && data.SecurityDot1xAuthenticationList.IsNull() {
+	if !state.SecurityDot1xAuthenticationList.IsNull() && (data.SecurityDot1xAuthenticationList.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/authentication-list")
 	}
-	if !state.SecurityWpaPskKey.IsNull() && data.SecurityWpaPskKey.IsNull() {
+	if !state.SecurityWpaPskKey.IsNull() && (data.SecurityWpaPskKey.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/psk")
 	}
-	if !state.SecurityWpaPskKeyEncryption.IsNull() && data.SecurityWpaPskKeyEncryption.IsNull() {
+	if !state.SecurityWpaPskKeyEncryption.IsNull() && (data.SecurityWpaPskKeyEncryption.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/psk-type")
 	}
-	if !state.SecurityWpaPskKeyFormat.IsNull() && data.SecurityWpaPskKeyFormat.IsNull() {
+	if !state.SecurityWpaPskKeyFormat.IsNull() && (data.SecurityWpaPskKeyFormat.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/psk-key-type")
 	}
-	if !state.SecurityWpaWpa3.IsNull() && data.SecurityWpaWpa3.IsNull() {
+	if !state.SecurityWpaWpa3.IsNull() && (data.SecurityWpaWpa3.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/wpa3-enabled")
 	}
-	if !state.SecurityWpaWpa2CiphersGcmp256.IsNull() && data.SecurityWpaWpa2CiphersGcmp256.IsNull() {
+	if !state.SecurityWpaWpa2CiphersGcmp256.IsNull() && (data.SecurityWpaWpa2CiphersGcmp256.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/rsn-cipher-suite-gcmp256")
 	}
-	if !state.SecurityWpaWpa2CiphersGcmp128.IsNull() && data.SecurityWpaWpa2CiphersGcmp128.IsNull() {
+	if !state.SecurityWpaWpa2CiphersGcmp128.IsNull() && (data.SecurityWpaWpa2CiphersGcmp128.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/rsn-cipher-suite-gcmp128")
 	}
-	if !state.SecurityWpaWpa2CiphersAes.IsNull() && data.SecurityWpaWpa2CiphersAes.IsNull() {
+	if !state.SecurityWpaWpa2CiphersAes.IsNull() && (data.SecurityWpaWpa2CiphersAes.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/wpa2-aes")
 	}
-	if !state.SecurityWpaAkmFtSae.IsNull() && data.SecurityWpaAkmFtSae.IsNull() {
+	if !state.SecurityWpaAkmFtSae.IsNull() && (data.SecurityWpaAkmFtSae.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/auth-key-mgmt-ft-sae")
 	}
-	if !state.SecurityWpaAkmSae.IsNull() && data.SecurityWpaAkmSae.IsNull() {
+	if !state.SecurityWpaAkmSae.IsNull() && (data.SecurityWpaAkmSae.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/auth-key-mgmt-sae")
 	}
-	if !state.SecurityWpaAkmFtPsk.IsNull() && data.SecurityWpaAkmFtPsk.IsNull() {
+	if !state.SecurityWpaAkmFtPsk.IsNull() && (data.SecurityWpaAkmFtPsk.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/auth-key-mgmt-ft-psk")
 	}
-	if !state.SecurityWpaAkmPsk.IsNull() && data.SecurityWpaAkmPsk.IsNull() {
+	if !state.SecurityWpaAkmPsk.IsNull() && (data.SecurityWpaAkmPsk.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/auth-key-mgmt-psk")
 	}
-	if !state.SecurityWpaAkmFtDot1x.IsNull() && data.SecurityWpaAkmFtDot1x.IsNull() {
+	if !state.SecurityWpaAkmFtDot1x.IsNull() && (data.SecurityWpaAkmFtDot1x.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/auth-key-mgmt-ft-dot1x")
 	}
-	if !state.SecurityWpaAkmDot1x.IsNull() && data.SecurityWpaAkmDot1x.IsNull() {
+	if !state.SecurityWpaAkmDot1x.IsNull() && (data.SecurityWpaAkmDot1x.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/auth-key-mgmt-dot1x")
 	}
-	if !state.PeerBlocking.IsNull() && data.PeerBlocking.IsNull() {
+	if !state.PeerBlocking.IsNull() && (data.PeerBlocking.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/apf-vap-id-data/p2p-block-action")
 	}
-	if !state.CcxAironetIe.IsNull() && data.CcxAironetIe.IsNull() {
+	if !state.CcxAironetIe.IsNull() && (data.CcxAironetIe.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/apf-vap-id-data/ccx-aironet-ie")
 	}
-	if !state.BroadcastSsid.IsNull() && data.BroadcastSsid.IsNull() {
+	if !state.BroadcastSsid.IsNull() && (data.BroadcastSsid.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/apf-vap-id-data/broadcast-ssid")
 	}
-	if !state.WlanStatus.IsNull() && data.WlanStatus.IsNull() {
+	if !state.WlanStatus.IsNull() && (data.WlanStatus.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/apf-vap-id-data/wlan-status")
 	}
-	if !state.Ssid.IsNull() && data.Ssid.IsNull() {
+	if !state.Ssid.IsNull() && (data.Ssid.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/apf-vap-id-data/ssid")
 	}
-	if !state.WlanId.IsNull() && data.WlanId.IsNull() {
+	if !state.WlanId.IsNull() && (data.WlanId.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/wlan-id")
 	}
 

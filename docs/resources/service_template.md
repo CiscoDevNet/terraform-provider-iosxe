@@ -69,6 +69,7 @@ resource "iosxe_service_template" "example" {
 - `inactivity_timer` (Number) Enter a value between 1 and 65535
   - Range: `1`-`65535`
 - `inactivity_timer_probe` (Boolean) ARP probe
+  - Default value: `false`
 - `interface_templates` (Attributes List) Interface template to be applied (see [below for nested schema](#nestedatt--interface_templates))
 - `linksec_policy` (String) Set the link security policy
   - Choices: `must-not-secure`, `must-secure`, `should-secure`
@@ -88,6 +89,7 @@ resource "iosxe_service_template" "example" {
   - Range: `1`-`4094`
 - `vnid` (String) Vnid to be applied
 - `voice_vlan` (Boolean) Critical voice vlan
+  - Default value: `false`
 
 ### Read-Only
 

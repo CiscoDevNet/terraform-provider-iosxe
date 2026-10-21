@@ -86,6 +86,7 @@ Optional:
 
 - `ipv6_unicast_admin_distances` (Attributes List) (see [below for nested schema](#nestedatt--vrfs--ipv6_unicast_admin_distances))
 - `ipv6_unicast_advertise_l2vpn_evpn` (Boolean) Advertise/export prefixes to l2vpn evpn table
+  - Default value: `false`
 - `ipv6_unicast_aggregate_addresses` (Attributes List) Configure BGP aggregate entries (see [below for nested schema](#nestedatt--vrfs--ipv6_unicast_aggregate_addresses))
 - `ipv6_unicast_distance_bgp_external` (Number) Distance for routes external to the AS
   - Range: `1`-`255`
@@ -98,10 +99,12 @@ Optional:
 - `ipv6_unicast_maximum_paths_ibgp` (Number) - Range: `1`-`32`
 - `ipv6_unicast_networks` (Attributes List) Specify a network to announce via BGP (see [below for nested schema](#nestedatt--vrfs--ipv6_unicast_networks))
 - `ipv6_unicast_redistribute_connected` (Boolean) Connected
+  - Default value: `false`
 - `ipv6_unicast_redistribute_connected_metric` (Number) Metric for redistributed routes
   - Range: `0`-`4294967295`
 - `ipv6_unicast_redistribute_connected_route_map` (String) Route map reference
 - `ipv6_unicast_redistribute_static` (Boolean) Static routes
+  - Default value: `false`
 - `ipv6_unicast_redistribute_static_metric` (Number) Metric for redistributed routes
   - Range: `0`-`4294967295`
 - `ipv6_unicast_redistribute_static_route_map` (String) Route map reference
@@ -141,7 +144,9 @@ Required:
 Optional:
 
 - `backdoor` (Boolean) Specify a BGP backdoor route
+  - Default value: `false`
 - `evpn` (Boolean) Advertise or export to EVPN address-family
+  - Default value: `false`
 - `route_map` (String) Route-map to modify the attributes
 
 ## Import

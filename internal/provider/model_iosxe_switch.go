@@ -144,7 +144,7 @@ func (data *SwitchData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 func (data *Switch) addDeletedItemsXML(ctx context.Context, state Switch, body string) string {
 	b := netconf.NewBody(body)
-	if !state.Provision.IsNull() && data.Provision.IsNull() {
+	if !state.Provision.IsNull() && (data.Provision.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/provision")
 	}
 

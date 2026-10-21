@@ -66,6 +66,7 @@ resource "iosxe_interface_vrrp_v2" "example" {
 - `priority` (Number) Priority level
   - Range: `1`-`254`
 - `shutdown` (Boolean) Shutdown the VRRP group
+  - Default value: `false`
 - `timers_advertise_interval` (Number) Advertisement interval in seconds
   - Range: `1`-`255`
 - `tracks` (Attributes List) Object tracking with priority decrement (see [below for nested schema](#nestedatt--tracks))

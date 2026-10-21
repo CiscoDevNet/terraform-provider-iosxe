@@ -91,11 +91,15 @@ resource "iosxe_wireless_ap_join_profile" "example" {
 > **NOTE**: [Write-only arguments](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments) are supported in Terraform 1.11 and later.
 
 - `apphost` (Boolean) Enable IOX application hosting
+  - Default value: `false`
 - `association_limit` (Number) Maximum clients per AP configuration
   - Range: `0`-`1200`
 - `awips` (Boolean) Flag to enable AWIPS
+  - Default value: `false`
 - `awips_forensic` (Boolean) Flag to enable AWIPS forensic
+  - Default value: `false`
 - `ble_scan` (Boolean) Set the BLE scan state
+  - Default value: `false`
 - `capwap_backup_primary_ip` (String) the AP's primary controller ip address
 - `capwap_backup_primary_name` (String) the AP's primary controller name
 - `capwap_backup_secondary_ip` (String) the AP's secondary controller ip address
@@ -133,8 +137,10 @@ resource "iosxe_wireless_ap_join_profile" "example" {
 - `dot1x_password_wo_version` (Number) The write-only version of the attribute.
 - `dot1x_username` (String) AP dot1x authentication username
 - `hyperlocation` (Boolean) enable hyperlocation
+  - Default value: `false`
 - `ip_dhcp_fallback` (Boolean) Represents AP fallback to DHCP, if AP fails to join via static IP address
 - `lag` (Boolean) boolean to indicate whether ap lag enabled is used
+  - Default value: `false`
 - `led` (Boolean) True if LED state is enabled otherwise disabled.
 - `mesh_profile` (String) Specifies the mesh profile name for the AP
 - `mgmtuser_password` (String, Sensitive) AP user management password. Following criteria should be met if wireless password policy is configured. - Default passwords (cisco, Cisco, C!sco, ci$co, ..) are not allowed. - Reverse default passwords are not allowed. - At least one lower case letter is mandatory. - At least one upper case letter is mandatory. - At least one digit is mandatory. - Special characters are allowed, but not mandatory. - More than two sequential chars or digits (e.g., abc, 123) are not allowed. - More than two repeated chars or digits (e.g., 111, aaa) are not allowed. - Minimum password length is 8. Restriction: AP management password of cleartext type must contain ASCII characters only. This rule is not implemented using constraints.
@@ -156,10 +162,13 @@ resource "iosxe_wireless_ap_join_profile" "example" {
 - `rogue_detection_report_interval` (Number) time interval at which monitor mode report for AP rogue detection is generated
   - Range: `10`-`300`
 - `ssh` (Boolean) This object specifies whether SSH session can be established to the AP
+  - Default value: `false`
 - `statistics_ap_radio_monitoring_enable` (Boolean) AP radio stats collection and processing enabled
+  - Default value: `false`
 - `statistics_ap_radio_monitoring_sampling_interval` (Number) Sampling interval of radio statistics
   - Range: `720`-`3600`
 - `statistics_ap_system_monitoring_alarm_enable` (Boolean) AP stats alarms enabled
+  - Default value: `false`
 - `statistics_ap_system_monitoring_alarm_hold_time` (Number) Alarm hold time
   - Range: `0`-`3600`
 - `statistics_ap_system_monitoring_alarm_retransmit_time` (Number) Alarm trap retransmission time
@@ -167,6 +176,7 @@ resource "iosxe_wireless_ap_join_profile" "example" {
 - `statistics_ap_system_monitoring_cpu_threshold` (Number) CPU threshold
   - Range: `0`-`100`
 - `statistics_ap_system_monitoring_enable` (Boolean) AP stats collection and processing enabled
+  - Default value: `false`
 - `statistics_ap_system_monitoring_mem_threshold` (Number) Memory threshold
   - Range: `0`-`100`
 - `statistics_ap_system_monitoring_sampling_interval` (Number) Sampling interval

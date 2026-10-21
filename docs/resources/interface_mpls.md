@@ -36,6 +36,7 @@ resource "iosxe_interface_mpls" "example" {
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
 - `ip` (Boolean) Configure dynamic MPLS forwarding for IP
+  - Default value: `false`
 - `mtu` (String) Set MPLS Maximum Transmission Unit
 
 ### Read-Only

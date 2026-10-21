@@ -206,8 +206,10 @@ func (r *InterfaceVRRPV2Resource) Schema(ctx context.Context, req resource.Schem
 				},
 			},
 			"shutdown": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Shutdown the VRRP group").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Shutdown the VRRP group").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 		},
 	}

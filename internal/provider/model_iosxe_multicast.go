@@ -104,8 +104,6 @@ func (data Multicast) addToBodyXML(ctx context.Context, config Multicast, body n
 	if !data.Multipath.IsNull() && !data.Multipath.IsUnknown() {
 		if data.Multipath.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:multipath", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:multipath")
 		}
 	}
 	if !data.MultipathSGHash.IsNull() && !data.MultipathSGHash.IsUnknown() {
@@ -120,8 +118,6 @@ func (data Multicast) addToBodyXML(ctx context.Context, config Multicast, body n
 			if !item.Multipath.IsNull() && !item.Multipath.IsUnknown() {
 				if item.Multipath.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "multipath", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "multipath")
 				}
 			}
 			if !item.MultipathSGHash.IsNull() && !item.MultipathSGHash.IsUnknown() {
@@ -294,10 +290,10 @@ func (data *Multicast) addDeletedItemsXML(ctx context.Context, state Multicast, 
 				found = false
 			}
 			if found {
-				if !state.Vrfs[i].MultipathSGHash.IsNull() && data.Vrfs[j].MultipathSGHash.IsNull() {
+				if !state.Vrfs[i].MultipathSGHash.IsNull() && (data.Vrfs[j].MultipathSGHash.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-multicast:vrf%v/multipath/s-g-hash", predicates))
 				}
-				if !state.Vrfs[i].Multipath.IsNull() && data.Vrfs[j].Multipath.IsNull() {
+				if !state.Vrfs[i].Multipath.IsNull() && (data.Vrfs[j].Multipath.IsNull() || (state.Vrfs[i].Multipath.ValueBool() && !data.Vrfs[j].Multipath.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-multicast:vrf%v/multipath", predicates))
 				}
 				break
@@ -307,10 +303,10 @@ func (data *Multicast) addDeletedItemsXML(ctx context.Context, state Multicast, 
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-multicast:vrf%v", predicates))
 		}
 	}
-	if !state.MultipathSGHash.IsNull() && data.MultipathSGHash.IsNull() {
+	if !state.MultipathSGHash.IsNull() && (data.MultipathSGHash.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-multicast:multipath/s-g-hash")
 	}
-	if !state.Multipath.IsNull() && data.Multipath.IsNull() {
+	if !state.Multipath.IsNull() && (data.Multipath.IsNull() || (state.Multipath.ValueBool() && !data.Multipath.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-multicast:multipath")
 	}
 

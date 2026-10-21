@@ -53,13 +53,17 @@ Required:
 Optional:
 
 - `deny_any` (Boolean) Any source prefix
+  - Default value: `false`
 - `deny_host` (String) A single source host
 - `deny_log` (Boolean) Log matches against this entry
+  - Default value: `false`
 - `deny_prefix` (String) Network address prefix
 - `deny_prefix_mask` (String) Wildcard bits
 - `permit_any` (Boolean) Any source prefix
+  - Default value: `false`
 - `permit_host` (String) A single source host
 - `permit_log` (Boolean) Log matches against this entry
+  - Default value: `false`
 - `permit_prefix` (String) Network address prefix
 - `permit_prefix_mask` (String) Wildcard bits
 - `remark` (String) Access list entry comment

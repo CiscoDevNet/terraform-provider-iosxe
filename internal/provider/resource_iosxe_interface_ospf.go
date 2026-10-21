@@ -32,6 +32,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -132,32 +133,46 @@ func (r *InterfaceOSPFResource) Schema(ctx context.Context, req resource.SchemaR
 				Optional:            true,
 			},
 			"authentication_message_digest": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Use message-digest authentication").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Use message-digest authentication").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"authentication_null": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Use no authentication").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Use no authentication").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"mtu_ignore": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Ignores the MTU in DBD packets").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Ignores the MTU in DBD packets").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"network_type_broadcast": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Specify OSPF broadcast multi-access network").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Specify OSPF broadcast multi-access network").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"network_type_non_broadcast": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Specify OSPF NBMA network").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Specify OSPF NBMA network").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"network_type_point_to_multipoint": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Specify OSPF point-to-multipoint network").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Specify OSPF point-to-multipoint network").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"network_type_point_to_point": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Specify OSPF point-to-point network").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Specify OSPF point-to-point network").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"priority": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Router priority").AddIntegerRangeDescription(0, 255).String,

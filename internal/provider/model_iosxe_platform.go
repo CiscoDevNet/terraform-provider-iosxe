@@ -184,16 +184,16 @@ func (data *PlatformData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 func (data *Platform) addDeletedItemsXML(ctx context.Context, state Platform, body string) string {
 	b := netconf.NewBody(body)
-	if !state.PuntKeepaliveSettingsWarningCount.IsNull() && data.PuntKeepaliveSettingsWarningCount.IsNull() {
+	if !state.PuntKeepaliveSettingsWarningCount.IsNull() && (data.PuntKeepaliveSettingsWarningCount.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-platform:punt-keepalive/settings/warning-count")
 	}
-	if !state.PuntKeepaliveSettingsTransmitInterval.IsNull() && data.PuntKeepaliveSettingsTransmitInterval.IsNull() {
+	if !state.PuntKeepaliveSettingsTransmitInterval.IsNull() && (data.PuntKeepaliveSettingsTransmitInterval.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-platform:punt-keepalive/settings/transmit-interval")
 	}
-	if !state.PuntKeepaliveSettingsFatalCount.IsNull() && data.PuntKeepaliveSettingsFatalCount.IsNull() {
+	if !state.PuntKeepaliveSettingsFatalCount.IsNull() && (data.PuntKeepaliveSettingsFatalCount.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-platform:punt-keepalive/settings/fatal-count")
 	}
-	if !state.PuntKeepaliveDisableKernelCore.IsNull() && data.PuntKeepaliveDisableKernelCore.IsNull() {
+	if !state.PuntKeepaliveDisableKernelCore.IsNull() && (data.PuntKeepaliveDisableKernelCore.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-platform:punt-keepalive/disable-kernel-core")
 	}
 

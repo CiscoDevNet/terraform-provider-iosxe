@@ -155,22 +155,16 @@ func (data Radius) addToBodyXML(ctx context.Context, config Radius, body netconf
 	if !data.AutomateTesterIgnoreAcctPort.IsNull() && !data.AutomateTesterIgnoreAcctPort.IsUnknown() {
 		if data.AutomateTesterIgnoreAcctPort.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/automate-tester/ignore-acct-port", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/automate-tester/ignore-acct-port")
 		}
 	}
 	if !data.AutomateTesterIgnoreAuthPort.IsNull() && !data.AutomateTesterIgnoreAuthPort.IsUnknown() {
 		if data.AutomateTesterIgnoreAuthPort.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/automate-tester/ignore-auth-port", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/automate-tester/ignore-auth-port")
 		}
 	}
 	if !data.AutomateTesterProbeOnConfig.IsNull() && !data.AutomateTesterProbeOnConfig.IsUnknown() {
 		if data.AutomateTesterProbeOnConfig.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/automate-tester/probe-on-config", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/automate-tester/probe-on-config")
 		}
 	}
 	if !data.AutomateTesterIdleTime.IsNull() && !data.AutomateTesterIdleTime.IsUnknown() {
@@ -379,46 +373,46 @@ func (data *RadiusData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 func (data *Radius) addDeletedItemsXML(ctx context.Context, state Radius, body string) string {
 	b := netconf.NewBody(body)
-	if !state.PacKeyEncryption.IsNull() && data.PacKeyEncryption.IsNull() {
+	if !state.PacKeyEncryption.IsNull() && (data.PacKeyEncryption.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/pac/key")
 	}
-	if !state.PacKey.IsNull() && data.PacKey.IsNull() {
+	if !state.PacKey.IsNull() && (data.PacKey.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/pac/key")
 	}
-	if !state.AutomateTesterIdleTime.IsNull() && data.AutomateTesterIdleTime.IsNull() {
+	if !state.AutomateTesterIdleTime.IsNull() && (data.AutomateTesterIdleTime.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/automate-tester/idle-time-config")
 	}
-	if !state.AutomateTesterProbeOnConfig.IsNull() && data.AutomateTesterProbeOnConfig.IsNull() {
+	if !state.AutomateTesterProbeOnConfig.IsNull() && (data.AutomateTesterProbeOnConfig.IsNull() || (state.AutomateTesterProbeOnConfig.ValueBool() && !data.AutomateTesterProbeOnConfig.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/automate-tester/probe-on-config")
 	}
-	if !state.AutomateTesterIgnoreAuthPort.IsNull() && data.AutomateTesterIgnoreAuthPort.IsNull() {
+	if !state.AutomateTesterIgnoreAuthPort.IsNull() && (data.AutomateTesterIgnoreAuthPort.IsNull() || (state.AutomateTesterIgnoreAuthPort.ValueBool() && !data.AutomateTesterIgnoreAuthPort.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/automate-tester/ignore-auth-port")
 	}
-	if !state.AutomateTesterIgnoreAcctPort.IsNull() && data.AutomateTesterIgnoreAcctPort.IsNull() {
+	if !state.AutomateTesterIgnoreAcctPort.IsNull() && (data.AutomateTesterIgnoreAcctPort.IsNull() || (state.AutomateTesterIgnoreAcctPort.ValueBool() && !data.AutomateTesterIgnoreAcctPort.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/automate-tester/ignore-acct-port")
 	}
-	if !state.AutomateTesterUsername.IsNull() && data.AutomateTesterUsername.IsNull() {
+	if !state.AutomateTesterUsername.IsNull() && (data.AutomateTesterUsername.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/automate-tester/username")
 	}
-	if !state.KeyEncryption.IsNull() && data.KeyEncryption.IsNull() {
+	if !state.KeyEncryption.IsNull() && (data.KeyEncryption.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/key/encryption")
 	}
-	if !state.Key.IsNull() && data.Key.IsNull() {
+	if !state.Key.IsNull() && (data.Key.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/key")
 	}
-	if !state.Retransmit.IsNull() && data.Retransmit.IsNull() {
+	if !state.Retransmit.IsNull() && (data.Retransmit.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/retransmit")
 	}
-	if !state.Timeout.IsNull() && data.Timeout.IsNull() {
+	if !state.Timeout.IsNull() && (data.Timeout.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timeout")
 	}
-	if !state.AccountingPort.IsNull() && data.AccountingPort.IsNull() {
+	if !state.AccountingPort.IsNull() && (data.AccountingPort.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address/acct-port")
 	}
-	if !state.AuthenticationPort.IsNull() && data.AuthenticationPort.IsNull() {
+	if !state.AuthenticationPort.IsNull() && (data.AuthenticationPort.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address/auth-port")
 	}
-	if !state.Ipv4Address.IsNull() && data.Ipv4Address.IsNull() {
+	if !state.Ipv4Address.IsNull() && (data.Ipv4Address.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address/ipv4")
 	}
 

@@ -131,36 +131,26 @@ func (data SpanningTree) addToBodyXML(ctx context.Context, config SpanningTree, 
 	if !data.Logging.IsNull() && !data.Logging.IsUnknown() {
 		if data.Logging.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:logging", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:logging")
 		}
 	}
 	if !data.LoopguardDefault.IsNull() && !data.LoopguardDefault.IsUnknown() {
 		if data.LoopguardDefault.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:loopguard/default", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:loopguard/default")
 		}
 	}
 	if !data.PortfastDefault.IsNull() && !data.PortfastDefault.IsUnknown() {
 		if data.PortfastDefault.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:portfast/default", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:portfast/default")
 		}
 	}
 	if !data.PortfastBpduguardDefault.IsNull() && !data.PortfastBpduguardDefault.IsUnknown() {
 		if data.PortfastBpduguardDefault.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:portfast/bpduguard/default", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:portfast/bpduguard/default")
 		}
 	}
 	if !data.ExtendSystemId.IsNull() && !data.ExtendSystemId.IsUnknown() {
 		if data.ExtendSystemId.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:extend/system-id", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:extend/system-id")
 		}
 	}
 	if len(data.MstInstances) > 0 {

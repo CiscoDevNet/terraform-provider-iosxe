@@ -63,6 +63,7 @@ resource "iosxe_cts" "example" {
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
 - `role_based_enforcement` (Boolean) Enable Role-based Access Control enforcement
+  - Default value: `false`
 - `role_based_enforcement_logging_interval` (Number) Configure sgacl logging interval
   - Range: `5`-`86400`
 - `role_based_enforcement_vlan_lists` (List of Number) VLANs on which Role-based ACLs are enforced
@@ -76,6 +77,7 @@ resource "iosxe_cts" "example" {
 - `sxp_default_password_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
 - `sxp_default_password_wo_version` (Number) The write-only version of the attribute.
 - `sxp_enable` (Boolean) Enable CTS SXP support
+  - Default value: `false`
 - `sxp_listener_hold_max_time` (Number) Enter maximum allowed Hold Time in seconds
   - Range: `1`-`65534`
 - `sxp_listener_hold_min_time` (Number) Enter minimum allowed Hold Time in seconds

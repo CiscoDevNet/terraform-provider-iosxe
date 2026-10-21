@@ -261,13 +261,13 @@ func (data *FlowMonitorData) fromBodyXML(ctx context.Context, res xmldot.Result)
 
 func (data *FlowMonitor) addDeletedItemsXML(ctx context.Context, state FlowMonitor, body string) string {
 	b := netconf.NewBody(body)
-	if !state.Record.IsNull() && data.Record.IsNull() {
+	if !state.Record.IsNull() && (data.Record.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/record/type")
 	}
-	if !state.CacheTimeoutInactive.IsNull() && data.CacheTimeoutInactive.IsNull() {
+	if !state.CacheTimeoutInactive.IsNull() && (data.CacheTimeoutInactive.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/cache/timeout/inactive")
 	}
-	if !state.CacheTimeoutActive.IsNull() && data.CacheTimeoutActive.IsNull() {
+	if !state.CacheTimeoutActive.IsNull() && (data.CacheTimeoutActive.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/cache/timeout/active")
 	}
 	for i := range state.Exporters {
@@ -300,7 +300,7 @@ func (data *FlowMonitor) addDeletedItemsXML(ctx context.Context, state FlowMonit
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exporter%v", predicates))
 		}
 	}
-	if !state.Description.IsNull() && data.Description.IsNull() {
+	if !state.Description.IsNull() && (data.Description.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/description")
 	}
 

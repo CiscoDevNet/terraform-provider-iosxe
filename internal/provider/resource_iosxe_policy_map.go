@@ -31,6 +31,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -93,8 +94,10 @@ func (r *PolicyMapResource) Schema(ctx context.Context, req resource.SchemaReque
 				},
 			},
 			"subscriber": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Domain name of the policy map").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Domain name of the policy map").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"description": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Policy-Map description").String,
@@ -127,8 +130,10 @@ func (r *PolicyMapResource) Schema(ctx context.Context, req resource.SchemaReque
 							},
 						},
 						"policy_log": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Send logging message for drop or pass").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Send logging message for drop or pass").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"policy_parameter_map": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
@@ -245,16 +250,22 @@ func (r *PolicyMapResource) Schema(ctx context.Context, req resource.SchemaReque
 										},
 									},
 									"shape_average_ms": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("milliseconds").String,
+										MarkdownDescription: helpers.NewAttributeDescription("milliseconds").AddDefaultValueDescription("false").String,
 										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(false),
 									},
 									"police_target_bitrate_conform_transmit": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("transmit packet").String,
+										MarkdownDescription: helpers.NewAttributeDescription("transmit packet").AddDefaultValueDescription("false").String,
 										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(false),
 									},
 									"police_target_bitrate_exceed_transmit": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("transmit packet").String,
+										MarkdownDescription: helpers.NewAttributeDescription("transmit packet").AddDefaultValueDescription("false").String,
 										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(false),
 									},
 									"police_target_bitrate": schema.Int64Attribute{
 										MarkdownDescription: helpers.NewAttributeDescription("Target bit rate (bits per second) (postfix k, m, g optional),decimal point allowed").AddIntegerRangeDescription(8000, 100000000000).String,
@@ -278,8 +289,10 @@ func (r *PolicyMapResource) Schema(ctx context.Context, req resource.SchemaReque
 										},
 									},
 									"police_target_bitrate_exceed_drop": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("drop packet").String,
+										MarkdownDescription: helpers.NewAttributeDescription("drop packet").AddDefaultValueDescription("false").String,
 										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(false),
 									},
 									"police_cir": schema.Int64Attribute{
 										MarkdownDescription: helpers.NewAttributeDescription("Committed information rate").AddIntegerRangeDescription(8000, 100000000000).String,
@@ -317,16 +330,22 @@ func (r *PolicyMapResource) Schema(ctx context.Context, req resource.SchemaReque
 										},
 									},
 									"police_cir_conform_transmit": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("transmit packet").String,
+										MarkdownDescription: helpers.NewAttributeDescription("transmit packet").AddDefaultValueDescription("false").String,
 										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(false),
 									},
 									"police_cir_exceed_drop": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("drop packet").String,
+										MarkdownDescription: helpers.NewAttributeDescription("drop packet").AddDefaultValueDescription("false").String,
 										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(false),
 									},
 									"police_cir_exceed_transmit": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("transmit packet").String,
+										MarkdownDescription: helpers.NewAttributeDescription("transmit packet").AddDefaultValueDescription("false").String,
 										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(false),
 									},
 									"police_rate_percent": schema.Int64Attribute{
 										MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(0, 100).String,

@@ -95,8 +95,10 @@ func (r *CryptoGDOIResource) Schema(ctx context.Context, req resource.SchemaRequ
 				},
 			},
 			"server_local": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure GKM group server defined locally").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configure GKM group server defined locally").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"server_local_address_ipv4": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Set ipv4 address of local server").String,
@@ -106,16 +108,20 @@ func (r *CryptoGDOIResource) Schema(ctx context.Context, req resource.SchemaRequ
 				},
 			},
 			"server_local_gdoi": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable GDOI (ISAKMP) Protocol for Registration and Rekey").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable GDOI (ISAKMP) Protocol for Registration and Rekey").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"server_local_gikev2": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Enable G-IKEv2 (IKEv2) Protocol for Registration and Rekey - accepts the IKEv2 profile name").String,
 				Optional:            true,
 			},
 			"server_local_pfs": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable PFS on Key Server - requires gikev2 to be configured").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable PFS on Key Server - requires gikev2 to be configured").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"server_local_authorization_address_ipv4": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Set authorization by IPv4 address ACL").String,
@@ -166,8 +172,10 @@ func (r *CryptoGDOIResource) Schema(ctx context.Context, req resource.SchemaRequ
 				},
 			},
 			"server_local_rekey_retransmit_periodic": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Periodically send retransmit rekeys").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Periodically send retransmit rekeys").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"server_local_rekey_sig_hash_algorithm": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Set the rekey signature-hash algorithm").AddStringEnumDescription("sha", "sha256", "sha384", "sha512").String,
@@ -177,12 +185,16 @@ func (r *CryptoGDOIResource) Schema(ctx context.Context, req resource.SchemaRequ
 				},
 			},
 			"server_local_rekey_transport_unicast": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Specify unicast rekey distribution").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Specify unicast rekey distribution").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"server_local_redundancy": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enter cooperative key server configuration mode").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enter cooperative key server configuration mode").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"server_local_redundancy_local_priority": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Set local server priority").AddIntegerRangeDescription(0, 255).String,
@@ -211,8 +223,10 @@ func (r *CryptoGDOIResource) Schema(ctx context.Context, req resource.SchemaRequ
 				},
 			},
 			"server_local_sa_receive_only": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure SA to work only in inbound direction").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configure SA to work only in inbound direction").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"server_local_sa_ipsec": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Configure an IPsec SA").String,
@@ -235,8 +249,10 @@ func (r *CryptoGDOIResource) Schema(ctx context.Context, req resource.SchemaRequ
 							Optional:            true,
 						},
 						"replay_counter": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Enable anti-replay check for single source traffic by using sequence number").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Enable anti-replay check for single source traffic by using sequence number").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"replay_counter_window_size": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Set replay window size").AddStringEnumDescription("64", "128", "256", "512", "1024").String,
@@ -246,8 +262,10 @@ func (r *CryptoGDOIResource) Schema(ctx context.Context, req resource.SchemaRequ
 							},
 						},
 						"replay_time": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Enable anti-replay check for any traffic by using time").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Enable anti-replay check for any traffic by using time").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"replay_time_window_size": schema.Int64Attribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Time based replay window size").AddIntegerRangeDescription(1, 100).String,
@@ -257,8 +275,10 @@ func (r *CryptoGDOIResource) Schema(ctx context.Context, req resource.SchemaRequ
 							},
 						},
 						"tag_cts_sgt": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Cisco Trust Security - Security Group Tag").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Cisco Trust Security - Security Group Tag").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 					},
 				},
@@ -270,16 +290,22 @@ func (r *CryptoGDOIResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Default:             booldefault.StaticBool(true),
 			},
 			"client_pfs": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable/Disable PFS on Group Member - by default PFS is enabled").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable/Disable PFS on Group Member - by default PFS is enabled").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"client_fail_close_revert": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Revert to Fail-Close policy in case of Registration Failure").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Revert to Fail-Close policy in case of Registration Failure").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"client_protocol_gdoi": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Use GDOI (ISAKMP) Protocol for Registration and Rekey").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Use GDOI (ISAKMP) Protocol for Registration and Rekey").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"client_protocol_gikev2": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Use G-IKEv2 Protocol for Registration and Rekey - accepts the IKEv2 profile name").String,
@@ -297,40 +323,58 @@ func (r *CryptoGDOIResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Optional:            true,
 			},
 			"client_rekey_encryption_3des_cbc": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Accept 3DES-CBC cipher for rekey").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Accept 3DES-CBC cipher for rekey").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"client_rekey_encryption_aes_128": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Accept 128-bit AES cipher for rekey").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Accept 128-bit AES cipher for rekey").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"client_rekey_encryption_aes_192": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Accept 192-bit AES cipher for rekey").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Accept 192-bit AES cipher for rekey").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"client_rekey_encryption_aes_256": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Accept 256-bit AES cipher for rekey").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Accept 256-bit AES cipher for rekey").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"client_rekey_encryption_des_cbc": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Accept DES in CBC mode cipher for rekey").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Accept DES in CBC mode cipher for rekey").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"client_rekey_hash_sha": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Accept SHA hash for rekey").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Accept SHA hash for rekey").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"client_rekey_hash_sha256": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Accept SHA-256 hash for rekey").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Accept SHA-256 hash for rekey").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"client_rekey_hash_sha384": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Accept SHA-384 hash for rekey").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Accept SHA-384 hash for rekey").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"client_rekey_hash_sha512": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Accept SHA-512 hash for rekey").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Accept SHA-512 hash for rekey").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"client_status_active_sa_track": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Enable stub tracking object for TEK SA with positive remaining lifetime").AddIntegerRangeDescription(1, 1000).String,

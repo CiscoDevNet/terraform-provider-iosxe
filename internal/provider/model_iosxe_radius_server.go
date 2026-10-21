@@ -128,8 +128,6 @@ func (data RadiusServer) addToBodyXML(ctx context.Context, config RadiusServer, 
 			if !item.AccessRequestInclude.IsNull() && !item.AccessRequestInclude.IsUnknown() {
 				if item.AccessRequestInclude.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "access-request/include", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "access-request/include")
 				}
 			}
 			if len(item.Attribute31Parameters) > 0 {
@@ -147,15 +145,11 @@ func (data RadiusServer) addToBodyXML(ctx context.Context, config RadiusServer, 
 					if !citem.IdSendNasPortDetail.IsNull() && !citem.IdSendNasPortDetail.IsUnknown() {
 						if citem.IdSendNasPortDetail.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "id-send/nas-port-detail", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "id-send/nas-port-detail")
 						}
 					}
 					if !citem.IdSendMacOnly.IsNull() && !citem.IdSendMacOnly.IsUnknown() {
 						if citem.IdSendMacOnly.ValueBool() {
 							ccBody = helpers.SetFromXPath(ccBody, "id-send/mac-only", "")
-						} else {
-							ccBody = helpers.RemoveFromXPath(ccBody, "id-send/mac-only")
 						}
 					}
 					cBody = helpers.SetRawFromXPath(cBody, "attri31/attri31-list", ccBody.Res())
@@ -439,13 +433,13 @@ func (data *RadiusServerData) fromBodyXML(ctx context.Context, res xmldot.Result
 
 func (data *RadiusServer) addDeletedItemsXML(ctx context.Context, state RadiusServer, body string) string {
 	b := netconf.NewBody(body)
-	if !state.Deadtime.IsNull() && data.Deadtime.IsNull() {
+	if !state.Deadtime.IsNull() && (data.Deadtime.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-aaa:deadtime")
 	}
-	if !state.DeadCriteriaTries.IsNull() && data.DeadCriteriaTries.IsNull() {
+	if !state.DeadCriteriaTries.IsNull() && (data.DeadCriteriaTries.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-aaa:dead-criteria/tries")
 	}
-	if !state.DeadCriteriaTime.IsNull() && data.DeadCriteriaTime.IsNull() {
+	if !state.DeadCriteriaTime.IsNull() && (data.DeadCriteriaTime.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-aaa:dead-criteria/time")
 	}
 	for i := range state.Attributes {
@@ -519,16 +513,16 @@ func (data *RadiusServer) addDeletedItemsXML(ctx context.Context, state RadiusSe
 							found = false
 						}
 						if found {
-							if !state.Attributes[i].Attribute31Parameters[ci].IdSendMacOnly.IsNull() && data.Attributes[j].Attribute31Parameters[cj].IdSendMacOnly.IsNull() {
+							if !state.Attributes[i].Attribute31Parameters[ci].IdSendMacOnly.IsNull() && (data.Attributes[j].Attribute31Parameters[cj].IdSendMacOnly.IsNull() || (state.Attributes[i].Attribute31Parameters[ci].IdSendMacOnly.ValueBool() && !data.Attributes[j].Attribute31Parameters[cj].IdSendMacOnly.ValueBool())) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:attribute%v/attri31/attri31-list%v/id-send/mac-only", predicates, cpredicates))
 							}
-							if !state.Attributes[i].Attribute31Parameters[ci].IdSendNasPortDetail.IsNull() && data.Attributes[j].Attribute31Parameters[cj].IdSendNasPortDetail.IsNull() {
+							if !state.Attributes[i].Attribute31Parameters[ci].IdSendNasPortDetail.IsNull() && (data.Attributes[j].Attribute31Parameters[cj].IdSendNasPortDetail.IsNull() || (state.Attributes[i].Attribute31Parameters[ci].IdSendNasPortDetail.ValueBool() && !data.Attributes[j].Attribute31Parameters[cj].IdSendNasPortDetail.ValueBool())) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:attribute%v/attri31/attri31-list%v/id-send/nas-port-detail", predicates, cpredicates))
 							}
-							if !state.Attributes[i].Attribute31Parameters[ci].IdMacLuCase.IsNull() && data.Attributes[j].Attribute31Parameters[cj].IdMacLuCase.IsNull() {
+							if !state.Attributes[i].Attribute31Parameters[ci].IdMacLuCase.IsNull() && (data.Attributes[j].Attribute31Parameters[cj].IdMacLuCase.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:attribute%v/attri31/attri31-list%v/id-mac/lu-case", predicates, cpredicates))
 							}
-							if !state.Attributes[i].Attribute31Parameters[ci].IdMacFormat.IsNull() && data.Attributes[j].Attribute31Parameters[cj].IdMacFormat.IsNull() {
+							if !state.Attributes[i].Attribute31Parameters[ci].IdMacFormat.IsNull() && (data.Attributes[j].Attribute31Parameters[cj].IdMacFormat.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:attribute%v/attri31/attri31-list%v/id-mac/format", predicates, cpredicates))
 							}
 							break
@@ -538,7 +532,7 @@ func (data *RadiusServer) addDeletedItemsXML(ctx context.Context, state RadiusSe
 						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:attribute%v/attri31/attri31-list%v", predicates, cpredicates))
 					}
 				}
-				if !state.Attributes[i].AccessRequestInclude.IsNull() && data.Attributes[j].AccessRequestInclude.IsNull() {
+				if !state.Attributes[i].AccessRequestInclude.IsNull() && (data.Attributes[j].AccessRequestInclude.IsNull() || (state.Attributes[i].AccessRequestInclude.ValueBool() && !data.Attributes[j].AccessRequestInclude.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:attribute%v/access-request/include", predicates))
 				}
 				break

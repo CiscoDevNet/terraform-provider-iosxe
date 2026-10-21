@@ -32,6 +32,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -122,8 +123,10 @@ func (r *RouteMapResource) Schema(ctx context.Context, req resource.SchemaReques
 							Optional:            true,
 						},
 						"continue": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Continue on a different entry within the route-map").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Continue on a different entry within the route-map").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"continue_sequence_number": schema.Int64Attribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Route-map entry sequence number").AddIntegerRangeDescription(0, 65535).String,
@@ -180,36 +183,52 @@ func (r *RouteMapResource) Schema(ctx context.Context, req resource.SchemaReques
 							Optional:            true,
 						},
 						"match_route_type_external": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("external route (BGP, EIGRP and OSPF type 1/2)").String,
+							MarkdownDescription: helpers.NewAttributeDescription("external route (BGP, EIGRP and OSPF type 1/2)").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"match_route_type_external_type_1": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("OSPF external type 1 route").String,
+							MarkdownDescription: helpers.NewAttributeDescription("OSPF external type 1 route").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"match_route_type_external_type_2": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("OSPF external type 2 route").String,
+							MarkdownDescription: helpers.NewAttributeDescription("OSPF external type 2 route").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"match_route_type_internal": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("internal route (including OSPF intra/inter area)").String,
+							MarkdownDescription: helpers.NewAttributeDescription("internal route (including OSPF intra/inter area)").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"match_route_type_level_1": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("IS-IS level-1 route").String,
+							MarkdownDescription: helpers.NewAttributeDescription("IS-IS level-1 route").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"match_route_type_level_2": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("IS-IS level-2 route").String,
+							MarkdownDescription: helpers.NewAttributeDescription("IS-IS level-2 route").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"match_route_type_local_legacy": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("locally generated route (OBSOLETE - please use route-map configuration in Cisco-IOS-XE-bgp.yang)").String,
+							MarkdownDescription: helpers.NewAttributeDescription("locally generated route (OBSOLETE - please use route-map configuration in Cisco-IOS-XE-bgp.yang)").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"match_route_type_local": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("locally generated route").String,
+							MarkdownDescription: helpers.NewAttributeDescription("locally generated route").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"match_source_protocol_bgp": schema.ListAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Border Gateway Protocol (BGP)").String,
@@ -217,8 +236,10 @@ func (r *RouteMapResource) Schema(ctx context.Context, req resource.SchemaReques
 							Optional:            true,
 						},
 						"match_source_protocol_connected": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Connected").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Connected").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"match_source_protocol_eigrp": schema.ListAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Border Gateway Protocol (BGP)").String,
@@ -226,12 +247,16 @@ func (r *RouteMapResource) Schema(ctx context.Context, req resource.SchemaReques
 							Optional:            true,
 						},
 						"match_source_protocol_isis": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("ISO IS-IS").String,
+							MarkdownDescription: helpers.NewAttributeDescription("ISO IS-IS").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"match_source_protocol_lisp": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Locator ID Separation Protocol (LISP)").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Locator ID Separation Protocol (LISP)").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"match_source_protocol_ospf": schema.ListAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Open Shortest Path First (OSPF)").String,
@@ -244,12 +269,16 @@ func (r *RouteMapResource) Schema(ctx context.Context, req resource.SchemaReques
 							Optional:            true,
 						},
 						"match_source_protocol_rip": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Routing Information Protocol (RIP)").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Routing Information Protocol (RIP)").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"match_source_protocol_static": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Static routes").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Static routes").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"match_tags": schema.ListAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Tag value (DEPRECATED - please use tag-val)").String,
@@ -284,8 +313,10 @@ func (r *RouteMapResource) Schema(ctx context.Context, req resource.SchemaReques
 							Optional:            true,
 						},
 						"match_community_list_exact_match": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Do exact matching of communities").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Do exact matching of communities").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"match_extcommunity_lists": schema.ListAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Named Access List").String,
@@ -303,8 +334,10 @@ func (r *RouteMapResource) Schema(ctx context.Context, req resource.SchemaReques
 							Optional:            true,
 						},
 						"set_global": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							MarkdownDescription: helpers.NewAttributeDescription("").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"set_interfaces": schema.ListAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Interface specific information").String,
@@ -336,12 +369,16 @@ func (r *RouteMapResource) Schema(ctx context.Context, req resource.SchemaReques
 							Optional:            true,
 						},
 						"set_ip_next_hop_self": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Use self address (for BGP only)").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Use self address (for BGP only)").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"set_ip_next_hop_unchanged": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Propagate next hop unchanged").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Propagate next hop unchanged").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"set_ip_qos_group": schema.Int64Attribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(0, 99).String,
@@ -374,16 +411,22 @@ func (r *RouteMapResource) Schema(ctx context.Context, req resource.SchemaReques
 							Optional:            true,
 						},
 						"set_level_1": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Import into a level-1 area").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Import into a level-1 area").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"set_level_1_2": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Import into level-1 and level-2").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Import into level-1 and level-2").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"set_level_2": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Import into level-2 sub-domain").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Import into level-2 sub-domain").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"set_metric_change": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("+/-<metric>;;Add or subtract metric").String,
@@ -457,8 +500,10 @@ func (r *RouteMapResource) Schema(ctx context.Context, req resource.SchemaReques
 							},
 						},
 						"set_as_path_tag_legacy": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Set the tag as an AS-path attribute (OBSOLETE - please use route-map configuration in Cisco-IOS-XE-bgp.yang)").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Set the tag as an AS-path attribute (OBSOLETE - please use route-map configuration in Cisco-IOS-XE-bgp.yang)").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"set_extcomunity_rt_legacy": schema.ListAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
@@ -508,12 +553,16 @@ func (r *RouteMapResource) Schema(ctx context.Context, req resource.SchemaReques
 							},
 						},
 						"set_as_path_tag": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Set the tag as an AS-path attribute").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Set the tag as an AS-path attribute").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"set_as_path_replace_any": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Replace each AS number in the AS-path with the local AS").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Replace each AS number in the AS-path with the local AS").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"set_as_path_replace_as": schema.ListNestedAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
@@ -528,8 +577,10 @@ func (r *RouteMapResource) Schema(ctx context.Context, req resource.SchemaReques
 							},
 						},
 						"set_community_none": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("No community attribute").String,
+							MarkdownDescription: helpers.NewAttributeDescription("No community attribute").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"set_communities": schema.ListAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("BGP community value - can be a number (AA:NN format) or well-known value (internet, local-AS, no-advertise, no-export, gshut). Requires IOS-XE 17.15 or later").String,
@@ -537,12 +588,16 @@ func (r *RouteMapResource) Schema(ctx context.Context, req resource.SchemaReques
 							Optional:            true,
 						},
 						"set_communities_additive": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							MarkdownDescription: helpers.NewAttributeDescription("").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"set_community_list_delete": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Delete matching communities").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Delete matching communities").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"set_community_list_standard": schema.Int64Attribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 99).String,
@@ -582,8 +637,10 @@ func (r *RouteMapResource) Schema(ctx context.Context, req resource.SchemaReques
 							},
 						},
 						"set_extcomunity_vpn_distinguisher_additive": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							MarkdownDescription: helpers.NewAttributeDescription("").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"set_local_preference": schema.Int64Attribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Preference value").AddIntegerRangeDescription(0, 4294967295).String,

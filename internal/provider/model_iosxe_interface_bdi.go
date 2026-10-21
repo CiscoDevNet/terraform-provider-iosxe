@@ -176,13 +176,13 @@ func (data *InterfaceBDIData) fromBodyXML(ctx context.Context, res xmldot.Result
 
 func (data *InterfaceBDI) addDeletedItemsXML(ctx context.Context, state InterfaceBDI, body string) string {
 	b := netconf.NewBody(body)
-	if !state.ZoneMemberSecurity.IsNull() && data.ZoneMemberSecurity.IsNull() {
+	if !state.ZoneMemberSecurity.IsNull() && (data.ZoneMemberSecurity.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security")
 	}
-	if !state.IpMtu.IsNull() && data.IpMtu.IsNull() {
+	if !state.IpMtu.IsNull() && (data.IpMtu.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/mtu")
 	}
-	if !state.MacAddress.IsNull() && data.MacAddress.IsNull() {
+	if !state.MacAddress.IsNull() && (data.MacAddress.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/mac-address")
 	}
 

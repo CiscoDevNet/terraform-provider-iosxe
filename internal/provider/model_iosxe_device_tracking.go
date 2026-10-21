@@ -169,8 +169,6 @@ func (data DeviceTracking) addToBodyXML(ctx context.Context, config DeviceTracki
 	if !data.LoggingTheft.IsNull() && !data.LoggingTheft.IsUnknown() {
 		if data.LoggingTheft.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-device-tracking:logging/theft", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-device-tracking:logging/theft")
 		}
 	}
 	if !data.TrackingAutoSourceFallbackIpv4.IsNull() && !data.TrackingAutoSourceFallbackIpv4.IsUnknown() {
@@ -182,8 +180,6 @@ func (data DeviceTracking) addToBodyXML(ctx context.Context, config DeviceTracki
 	if !data.TrackingAutoSourceFallbackOverride.IsNull() && !data.TrackingAutoSourceFallbackOverride.IsUnknown() {
 		if data.TrackingAutoSourceFallbackOverride.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-device-tracking:tracking/auto-source/fallback/ipv4-subnet-type1/override", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-device-tracking:tracking/auto-source/fallback/ipv4-subnet-type1/override")
 		}
 	}
 	if !data.TrackingRetryInterval.IsNull() && !data.TrackingRetryInterval.IsUnknown() {
@@ -201,8 +197,6 @@ func (data DeviceTracking) addToBodyXML(ctx context.Context, config DeviceTracki
 			if !item.TrustedPort.IsNull() && !item.TrustedPort.IsUnknown() {
 				if item.TrustedPort.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "trusted-port", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "trusted-port")
 				}
 			}
 			if !item.DeviceRole.IsNull() && !item.DeviceRole.IsUnknown() {
@@ -214,64 +208,46 @@ func (data DeviceTracking) addToBodyXML(ctx context.Context, config DeviceTracki
 			if !item.DeviceRoleSwitchLegacy.IsNull() && !item.DeviceRoleSwitchLegacy.IsUnknown() {
 				if item.DeviceRoleSwitchLegacy.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "device-role/switch", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "device-role/switch")
 				}
 			}
 			if !item.DeviceRoleRouterLegacy.IsNull() && !item.DeviceRoleRouterLegacy.IsUnknown() {
 				if item.DeviceRoleRouterLegacy.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "device-role/router", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "device-role/router")
 				}
 			}
 			if !item.DataGleanLogOnly.IsNull() && !item.DataGleanLogOnly.IsUnknown() {
 				if item.DataGleanLogOnly.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "data-glean/log-only", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "data-glean/log-only")
 				}
 			}
 			if !item.DataGleanRecoveryDhcp.IsNull() && !item.DataGleanRecoveryDhcp.IsUnknown() {
 				if item.DataGleanRecoveryDhcp.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "data-glean/recovery/dhcp", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "data-glean/recovery/dhcp")
 				}
 			}
 			if !item.DataGleanRecoveryNdp.IsNull() && !item.DataGleanRecoveryNdp.IsUnknown() {
 				if item.DataGleanRecoveryNdp.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "data-glean/recovery/ndp", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "data-glean/recovery/ndp")
 				}
 			}
 			if !item.PrefixGlean.IsNull() && !item.PrefixGlean.IsUnknown() {
 				if item.PrefixGlean.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "prefix-glean", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "prefix-glean")
 				}
 			}
 			if !item.PrefixGleanOnly.IsNull() && !item.PrefixGleanOnly.IsUnknown() {
 				if item.PrefixGleanOnly.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "prefix-glean/only", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "prefix-glean/only")
 				}
 			}
 			if !item.DestinationGleanLogOnly.IsNull() && !item.DestinationGleanLogOnly.IsUnknown() {
 				if item.DestinationGleanLogOnly.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "destination-glean/log-only", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "destination-glean/log-only")
 				}
 			}
 			if !item.DestinationGleanRecoveryDhcp.IsNull() && !item.DestinationGleanRecoveryDhcp.IsUnknown() {
 				if item.DestinationGleanRecoveryDhcp.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "destination-glean/recovery/dhcp", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "destination-glean/recovery/dhcp")
 				}
 			}
 			if !item.ProtocolArp.IsNull() && !item.ProtocolArp.IsUnknown() {
@@ -301,8 +277,6 @@ func (data DeviceTracking) addToBodyXML(ctx context.Context, config DeviceTracki
 			if !item.TrackingEnable.IsNull() && !item.TrackingEnable.IsUnknown() {
 				if item.TrackingEnable.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "tracking/enable-tracking", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "tracking/enable-tracking")
 				}
 			}
 			if !item.TrackingEnableReachableLifetimeSeconds.IsNull() && !item.TrackingEnableReachableLifetimeSeconds.IsUnknown() {
@@ -311,15 +285,11 @@ func (data DeviceTracking) addToBodyXML(ctx context.Context, config DeviceTracki
 			if !item.TrackingEnableReachableLifetimeInfinite.IsNull() && !item.TrackingEnableReachableLifetimeInfinite.IsUnknown() {
 				if item.TrackingEnableReachableLifetimeInfinite.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "tracking/enable-tracking/reachable-lifetime/infinite", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "tracking/enable-tracking/reachable-lifetime/infinite")
 				}
 			}
 			if !item.TrackingDisable.IsNull() && !item.TrackingDisable.IsUnknown() {
 				if item.TrackingDisable.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "tracking/disable-tracking", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "tracking/disable-tracking")
 				}
 			}
 			if !item.TrackingDisableStaleLifetime.IsNull() && !item.TrackingDisableStaleLifetime.IsUnknown() {
@@ -331,29 +301,21 @@ func (data DeviceTracking) addToBodyXML(ctx context.Context, config DeviceTracki
 			if !item.SecurityLevelGlean.IsNull() && !item.SecurityLevelGlean.IsUnknown() {
 				if item.SecurityLevelGlean.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "security-level/glean", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "security-level/glean")
 				}
 			}
 			if !item.SecurityLevelGuard.IsNull() && !item.SecurityLevelGuard.IsUnknown() {
 				if item.SecurityLevelGuard.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "security-level/guard", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "security-level/guard")
 				}
 			}
 			if !item.SecurityLevelInspect.IsNull() && !item.SecurityLevelInspect.IsUnknown() {
 				if item.SecurityLevelInspect.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "security-level/inspect", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "security-level/inspect")
 				}
 			}
 			if !item.MediumTypeWireless.IsNull() && !item.MediumTypeWireless.IsUnknown() {
 				if item.MediumTypeWireless.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "medium-type-wireless", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "medium-type-wireless")
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-device-tracking:policy", cBody.Res())
@@ -1041,94 +1003,94 @@ func (data *DeviceTracking) addDeletedItemsXML(ctx context.Context, state Device
 				found = false
 			}
 			if found {
-				if !state.Policies[i].MediumTypeWireless.IsNull() && data.Policies[j].MediumTypeWireless.IsNull() {
+				if !state.Policies[i].MediumTypeWireless.IsNull() && (data.Policies[j].MediumTypeWireless.IsNull() || (state.Policies[i].MediumTypeWireless.ValueBool() && !data.Policies[j].MediumTypeWireless.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-device-tracking:policy%v/medium-type-wireless", predicates))
 				}
-				if !state.Policies[i].SecurityLevelInspect.IsNull() && data.Policies[j].SecurityLevelInspect.IsNull() {
+				if !state.Policies[i].SecurityLevelInspect.IsNull() && (data.Policies[j].SecurityLevelInspect.IsNull() || (state.Policies[i].SecurityLevelInspect.ValueBool() && !data.Policies[j].SecurityLevelInspect.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-device-tracking:policy%v/security-level/inspect", predicates))
 				}
-				if !state.Policies[i].SecurityLevelGuard.IsNull() && data.Policies[j].SecurityLevelGuard.IsNull() {
+				if !state.Policies[i].SecurityLevelGuard.IsNull() && (data.Policies[j].SecurityLevelGuard.IsNull() || (state.Policies[i].SecurityLevelGuard.ValueBool() && !data.Policies[j].SecurityLevelGuard.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-device-tracking:policy%v/security-level/guard", predicates))
 				}
-				if !state.Policies[i].SecurityLevelGlean.IsNull() && data.Policies[j].SecurityLevelGlean.IsNull() {
+				if !state.Policies[i].SecurityLevelGlean.IsNull() && (data.Policies[j].SecurityLevelGlean.IsNull() || (state.Policies[i].SecurityLevelGlean.ValueBool() && !data.Policies[j].SecurityLevelGlean.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-device-tracking:policy%v/security-level/glean", predicates))
 				}
-				if !state.Policies[i].LimitAddressCount.IsNull() && data.Policies[j].LimitAddressCount.IsNull() {
+				if !state.Policies[i].LimitAddressCount.IsNull() && (data.Policies[j].LimitAddressCount.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-device-tracking:policy%v/limit/address-count", predicates))
 				}
-				if !state.Policies[i].TrackingDisableStaleLifetime.IsNull() && data.Policies[j].TrackingDisableStaleLifetime.IsNull() {
+				if !state.Policies[i].TrackingDisableStaleLifetime.IsNull() && (data.Policies[j].TrackingDisableStaleLifetime.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-device-tracking:policy%v/tracking/disable-tracking/stale-lifetime", predicates))
 				}
-				if !state.Policies[i].TrackingDisable.IsNull() && data.Policies[j].TrackingDisable.IsNull() {
+				if !state.Policies[i].TrackingDisable.IsNull() && (data.Policies[j].TrackingDisable.IsNull() || (state.Policies[i].TrackingDisable.ValueBool() && !data.Policies[j].TrackingDisable.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-device-tracking:policy%v/tracking/disable-tracking", predicates))
 				}
-				if !state.Policies[i].TrackingEnableReachableLifetimeInfinite.IsNull() && data.Policies[j].TrackingEnableReachableLifetimeInfinite.IsNull() {
+				if !state.Policies[i].TrackingEnableReachableLifetimeInfinite.IsNull() && (data.Policies[j].TrackingEnableReachableLifetimeInfinite.IsNull() || (state.Policies[i].TrackingEnableReachableLifetimeInfinite.ValueBool() && !data.Policies[j].TrackingEnableReachableLifetimeInfinite.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-device-tracking:policy%v/tracking/enable-tracking/reachable-lifetime/infinite", predicates))
 				}
-				if !state.Policies[i].TrackingEnableReachableLifetimeSeconds.IsNull() && data.Policies[j].TrackingEnableReachableLifetimeSeconds.IsNull() {
+				if !state.Policies[i].TrackingEnableReachableLifetimeSeconds.IsNull() && (data.Policies[j].TrackingEnableReachableLifetimeSeconds.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-device-tracking:policy%v/tracking/enable-tracking/reachable-lifetime/seconds", predicates))
 				}
-				if !state.Policies[i].TrackingEnable.IsNull() && data.Policies[j].TrackingEnable.IsNull() {
+				if !state.Policies[i].TrackingEnable.IsNull() && (data.Policies[j].TrackingEnable.IsNull() || (state.Policies[i].TrackingEnable.ValueBool() && !data.Policies[j].TrackingEnable.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-device-tracking:policy%v/tracking/enable-tracking", predicates))
 				}
-				if !state.Policies[i].ProtocolNdpPrefixList.IsNull() && data.Policies[j].ProtocolNdpPrefixList.IsNull() {
+				if !state.Policies[i].ProtocolNdpPrefixList.IsNull() && (data.Policies[j].ProtocolNdpPrefixList.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-device-tracking:policy%v/protocol/proto-ndp/prefix-list", predicates))
 				}
-				if !state.Policies[i].ProtocolNdp.IsNull() && data.Policies[j].ProtocolNdp.IsNull() {
+				if !state.Policies[i].ProtocolNdp.IsNull() && (data.Policies[j].ProtocolNdp.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-device-tracking:policy%v/protocol/proto-ndp/ndp", predicates))
 				}
-				if !state.Policies[i].ProtocolDhcp6PrefixList.IsNull() && data.Policies[j].ProtocolDhcp6PrefixList.IsNull() {
+				if !state.Policies[i].ProtocolDhcp6PrefixList.IsNull() && (data.Policies[j].ProtocolDhcp6PrefixList.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-device-tracking:policy%v/protocol/proto-dhcp6/prefix-list", predicates))
 				}
-				if !state.Policies[i].ProtocolDhcp6.IsNull() && data.Policies[j].ProtocolDhcp6.IsNull() {
+				if !state.Policies[i].ProtocolDhcp6.IsNull() && (data.Policies[j].ProtocolDhcp6.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-device-tracking:policy%v/protocol/proto-dhcp6/dhcp6", predicates))
 				}
-				if !state.Policies[i].ProtocolDhcp4PrefixList.IsNull() && data.Policies[j].ProtocolDhcp4PrefixList.IsNull() {
+				if !state.Policies[i].ProtocolDhcp4PrefixList.IsNull() && (data.Policies[j].ProtocolDhcp4PrefixList.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-device-tracking:policy%v/protocol/proto-dhcp4/prefix-list", predicates))
 				}
-				if !state.Policies[i].ProtocolDhcp4.IsNull() && data.Policies[j].ProtocolDhcp4.IsNull() {
+				if !state.Policies[i].ProtocolDhcp4.IsNull() && (data.Policies[j].ProtocolDhcp4.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-device-tracking:policy%v/protocol/proto-dhcp4/dhcp4", predicates))
 				}
-				if !state.Policies[i].ProtocolArpPrefixList.IsNull() && data.Policies[j].ProtocolArpPrefixList.IsNull() {
+				if !state.Policies[i].ProtocolArpPrefixList.IsNull() && (data.Policies[j].ProtocolArpPrefixList.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-device-tracking:policy%v/protocol/proto-arp/prefix-list", predicates))
 				}
-				if !state.Policies[i].ProtocolArp.IsNull() && data.Policies[j].ProtocolArp.IsNull() {
+				if !state.Policies[i].ProtocolArp.IsNull() && (data.Policies[j].ProtocolArp.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-device-tracking:policy%v/protocol/proto-arp/arp", predicates))
 				}
-				if !state.Policies[i].DestinationGleanRecoveryDhcp.IsNull() && data.Policies[j].DestinationGleanRecoveryDhcp.IsNull() {
+				if !state.Policies[i].DestinationGleanRecoveryDhcp.IsNull() && (data.Policies[j].DestinationGleanRecoveryDhcp.IsNull() || (state.Policies[i].DestinationGleanRecoveryDhcp.ValueBool() && !data.Policies[j].DestinationGleanRecoveryDhcp.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-device-tracking:policy%v/destination-glean/recovery/dhcp", predicates))
 				}
-				if !state.Policies[i].DestinationGleanLogOnly.IsNull() && data.Policies[j].DestinationGleanLogOnly.IsNull() {
+				if !state.Policies[i].DestinationGleanLogOnly.IsNull() && (data.Policies[j].DestinationGleanLogOnly.IsNull() || (state.Policies[i].DestinationGleanLogOnly.ValueBool() && !data.Policies[j].DestinationGleanLogOnly.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-device-tracking:policy%v/destination-glean/log-only", predicates))
 				}
-				if !state.Policies[i].PrefixGleanOnly.IsNull() && data.Policies[j].PrefixGleanOnly.IsNull() {
+				if !state.Policies[i].PrefixGleanOnly.IsNull() && (data.Policies[j].PrefixGleanOnly.IsNull() || (state.Policies[i].PrefixGleanOnly.ValueBool() && !data.Policies[j].PrefixGleanOnly.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-device-tracking:policy%v/prefix-glean/only", predicates))
 				}
-				if !state.Policies[i].PrefixGlean.IsNull() && data.Policies[j].PrefixGlean.IsNull() {
+				if !state.Policies[i].PrefixGlean.IsNull() && (data.Policies[j].PrefixGlean.IsNull() || (state.Policies[i].PrefixGlean.ValueBool() && !data.Policies[j].PrefixGlean.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-device-tracking:policy%v/prefix-glean", predicates))
 				}
-				if !state.Policies[i].DataGleanRecoveryNdp.IsNull() && data.Policies[j].DataGleanRecoveryNdp.IsNull() {
+				if !state.Policies[i].DataGleanRecoveryNdp.IsNull() && (data.Policies[j].DataGleanRecoveryNdp.IsNull() || (state.Policies[i].DataGleanRecoveryNdp.ValueBool() && !data.Policies[j].DataGleanRecoveryNdp.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-device-tracking:policy%v/data-glean/recovery/ndp", predicates))
 				}
-				if !state.Policies[i].DataGleanRecoveryDhcp.IsNull() && data.Policies[j].DataGleanRecoveryDhcp.IsNull() {
+				if !state.Policies[i].DataGleanRecoveryDhcp.IsNull() && (data.Policies[j].DataGleanRecoveryDhcp.IsNull() || (state.Policies[i].DataGleanRecoveryDhcp.ValueBool() && !data.Policies[j].DataGleanRecoveryDhcp.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-device-tracking:policy%v/data-glean/recovery/dhcp", predicates))
 				}
-				if !state.Policies[i].DataGleanLogOnly.IsNull() && data.Policies[j].DataGleanLogOnly.IsNull() {
+				if !state.Policies[i].DataGleanLogOnly.IsNull() && (data.Policies[j].DataGleanLogOnly.IsNull() || (state.Policies[i].DataGleanLogOnly.ValueBool() && !data.Policies[j].DataGleanLogOnly.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-device-tracking:policy%v/data-glean/log-only", predicates))
 				}
-				if !state.Policies[i].DeviceRoleRouterLegacy.IsNull() && data.Policies[j].DeviceRoleRouterLegacy.IsNull() {
+				if !state.Policies[i].DeviceRoleRouterLegacy.IsNull() && (data.Policies[j].DeviceRoleRouterLegacy.IsNull() || (state.Policies[i].DeviceRoleRouterLegacy.ValueBool() && !data.Policies[j].DeviceRoleRouterLegacy.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-device-tracking:policy%v/device-role/router", predicates))
 				}
-				if !state.Policies[i].DeviceRoleSwitchLegacy.IsNull() && data.Policies[j].DeviceRoleSwitchLegacy.IsNull() {
+				if !state.Policies[i].DeviceRoleSwitchLegacy.IsNull() && (data.Policies[j].DeviceRoleSwitchLegacy.IsNull() || (state.Policies[i].DeviceRoleSwitchLegacy.ValueBool() && !data.Policies[j].DeviceRoleSwitchLegacy.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-device-tracking:policy%v/device-role/switch", predicates))
 				}
-				if !state.Policies[i].DeviceRoleNodeLegacy.IsNull() && data.Policies[j].DeviceRoleNodeLegacy.IsNull() {
+				if !state.Policies[i].DeviceRoleNodeLegacy.IsNull() && (data.Policies[j].DeviceRoleNodeLegacy.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-device-tracking:policy%v/device-role/node", predicates))
 				}
-				if !state.Policies[i].DeviceRole.IsNull() && data.Policies[j].DeviceRole.IsNull() {
+				if !state.Policies[i].DeviceRole.IsNull() && (data.Policies[j].DeviceRole.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-device-tracking:policy%v/device-role-config", predicates))
 				}
-				if !state.Policies[i].TrustedPort.IsNull() && data.Policies[j].TrustedPort.IsNull() {
+				if !state.Policies[i].TrustedPort.IsNull() && (data.Policies[j].TrustedPort.IsNull() || (state.Policies[i].TrustedPort.ValueBool() && !data.Policies[j].TrustedPort.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-device-tracking:policy%v/trusted-port", predicates))
 				}
 				break
@@ -1138,22 +1100,22 @@ func (data *DeviceTracking) addDeletedItemsXML(ctx context.Context, state Device
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-device-tracking:policy%v", predicates))
 		}
 	}
-	if !state.BindingReachableLifetime.IsNull() && data.BindingReachableLifetime.IsNull() {
+	if !state.BindingReachableLifetime.IsNull() && (data.BindingReachableLifetime.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-device-tracking:binding/reachable-lifetime/seconds")
 	}
-	if !state.TrackingRetryInterval.IsNull() && data.TrackingRetryInterval.IsNull() {
+	if !state.TrackingRetryInterval.IsNull() && (data.TrackingRetryInterval.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-device-tracking:tracking/retry-interval")
 	}
-	if !state.TrackingAutoSourceFallbackOverride.IsNull() && data.TrackingAutoSourceFallbackOverride.IsNull() {
+	if !state.TrackingAutoSourceFallbackOverride.IsNull() && (data.TrackingAutoSourceFallbackOverride.IsNull() || (state.TrackingAutoSourceFallbackOverride.ValueBool() && !data.TrackingAutoSourceFallbackOverride.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-device-tracking:tracking/auto-source/fallback/ipv4-subnet-type1/override")
 	}
-	if !state.TrackingAutoSourceFallbackMask.IsNull() && data.TrackingAutoSourceFallbackMask.IsNull() {
+	if !state.TrackingAutoSourceFallbackMask.IsNull() && (data.TrackingAutoSourceFallbackMask.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-device-tracking:tracking/auto-source/fallback/ipv4-subnet-type1/mask")
 	}
-	if !state.TrackingAutoSourceFallbackIpv4.IsNull() && data.TrackingAutoSourceFallbackIpv4.IsNull() {
+	if !state.TrackingAutoSourceFallbackIpv4.IsNull() && (data.TrackingAutoSourceFallbackIpv4.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-device-tracking:tracking/auto-source/fallback/ipv4-subnet-type1/ipv4")
 	}
-	if !state.LoggingTheft.IsNull() && data.LoggingTheft.IsNull() {
+	if !state.LoggingTheft.IsNull() && (data.LoggingTheft.IsNull() || (state.LoggingTheft.ValueBool() && !data.LoggingTheft.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-device-tracking:logging/theft")
 	}
 

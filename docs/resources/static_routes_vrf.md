@@ -74,8 +74,10 @@ Optional:
 
 - `distance` (Number) - Range: `1`-`255`
 - `global` (Boolean) Next hop address is global
+  - Default value: `false`
 - `name` (String) Specify name of the next hop
 - `permanent` (Boolean) permanent route
+  - Default value: `false`
 - `tag` (Number) Set tag for this route
   - Range: `1`-`4294967295`
 
@@ -92,6 +94,7 @@ Optional:
 - `distance` (Number) - Range: `1`-`255`
 - `name` (String) Specify name of the next hop
 - `permanent` (Boolean) permanent route
+  - Default value: `false`
 - `tag` (Number) Set tag for this route
   - Range: `1`-`4294967295`
 - `track_id_name` (Number) Track number

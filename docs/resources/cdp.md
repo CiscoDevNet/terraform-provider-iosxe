@@ -59,10 +59,15 @@ Required:
 Optional:
 
 - `cos` (Boolean) Select cos TLV
+  - Default value: `false`
 - `duplex` (Boolean) Select duplex TLV
+  - Default value: `false`
 - `trust` (Boolean) Select trust TLV
+  - Default value: `false`
 - `version` (Boolean) Select version TLV
+  - Default value: `false`
 - `vtp_mgmt_domain` (Boolean) Select vtp mgmt domain TLV
+  - Default value: `false`
 
 ## Import
 

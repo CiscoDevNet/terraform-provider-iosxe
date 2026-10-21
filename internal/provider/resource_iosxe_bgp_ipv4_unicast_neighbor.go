@@ -115,8 +115,10 @@ func (r *BGPIPv4UnicastNeighborResource) Schema(ctx context.Context, req resourc
 				},
 			},
 			"route_reflector_client": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure a neighbor as Route Reflector client").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configure a neighbor as Route Reflector client").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"soft_reconfiguration": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Per neighbor soft reconfiguration").AddStringEnumDescription("inbound").String,
@@ -126,8 +128,10 @@ func (r *BGPIPv4UnicastNeighborResource) Schema(ctx context.Context, req resourc
 				},
 			},
 			"default_originate": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Originate default route to this neighbor").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Originate default route to this neighbor").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"default_originate_route_map": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Route-map to specify criteria to originate default").String,

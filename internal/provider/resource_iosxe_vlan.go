@@ -32,6 +32,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
@@ -91,24 +92,32 @@ func (r *VLANResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				},
 			},
 			"remote_span": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure as Remote SPAN VLAN").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configure as Remote SPAN VLAN").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"private_vlan_primary": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure the VLAN as a primary private VLAN").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configure the VLAN as a primary private VLAN").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"private_vlan_association": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Configure association between private VLANs").String,
 				Optional:            true,
 			},
 			"private_vlan_community": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure the VLAN as a community private VLAN").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configure the VLAN as a community private VLAN").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"private_vlan_isolated": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure the VLAN as an isolated private VLAN").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configure the VLAN as an isolated private VLAN").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"name": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Ascii name of the VLAN").String,
@@ -118,8 +127,10 @@ func (r *VLANResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				},
 			},
 			"shutdown": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Shutdown VLAN switching").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Shutdown VLAN switching").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 		},
 	}

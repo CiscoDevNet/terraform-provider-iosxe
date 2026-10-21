@@ -31,6 +31,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -102,16 +103,22 @@ func (r *AAAAccountingResource) Schema(ctx context.Context, req resource.SchemaR
 							Required:            true,
 						},
 						"start_stop_broadcast": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Use Broadcast for Accounting").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Use Broadcast for Accounting").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"start_stop_group_broadcast": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Use Broadcast for Accounting").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Use Broadcast for Accounting").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"start_stop_group_logger": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Use system logger for Accounting").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Use system logger for Accounting").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"start_stop_group1": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
@@ -169,8 +176,10 @@ func (r *AAAAccountingResource) Schema(ctx context.Context, req resource.SchemaR
 				},
 			},
 			"system_guarantee_first": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Guarantee system accounting as first record.").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Guarantee system accounting as first record.").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"commands": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("For exec (shell) commands.").String,
@@ -196,16 +205,22 @@ func (r *AAAAccountingResource) Schema(ctx context.Context, req resource.SchemaR
 							},
 						},
 						"broadcast": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Use Broadcast for Accounting").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Use Broadcast for Accounting").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"group_broadcast": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Use Broadcast for Accounting").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Use Broadcast for Accounting").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"group_logger": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Use system logger for Accounting").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Use system logger for Accounting").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"group1_group": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
@@ -236,20 +251,28 @@ func (r *AAAAccountingResource) Schema(ctx context.Context, req resource.SchemaR
 							Required:            true,
 						},
 						"default": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							MarkdownDescription: helpers.NewAttributeDescription("").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"none": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("No accounting.").String,
+							MarkdownDescription: helpers.NewAttributeDescription("No accounting.").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"start_stop_broadcast": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Use Broadcast for Accounting").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Use Broadcast for Accounting").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"start_stop_logger": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Use system logger for Accounting").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Use system logger for Accounting").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"start_stop_group1": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
@@ -268,12 +291,16 @@ func (r *AAAAccountingResource) Schema(ctx context.Context, req resource.SchemaR
 							Optional:            true,
 						},
 						"stop_only_broadcast": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Use Broadcast for Accounting").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Use Broadcast for Accounting").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"stop_only_logger": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Use system logger for Accounting").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Use system logger for Accounting").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"stop_only_group1": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
@@ -304,16 +331,22 @@ func (r *AAAAccountingResource) Schema(ctx context.Context, req resource.SchemaR
 							Required:            true,
 						},
 						"none": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("No accounting.").String,
+							MarkdownDescription: helpers.NewAttributeDescription("No accounting.").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"start_stop_broadcast": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Use Broadcast for Accounting").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Use Broadcast for Accounting").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"start_stop_logger": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Use system logger for Accounting").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Use system logger for Accounting").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"start_stop_group1": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
@@ -332,12 +365,16 @@ func (r *AAAAccountingResource) Schema(ctx context.Context, req resource.SchemaR
 							Optional:            true,
 						},
 						"stop_only_broadcast": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Use Broadcast for Accounting").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Use Broadcast for Accounting").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"stop_only_logger": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Use system logger for Accounting").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Use system logger for Accounting").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"stop_only_group1": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
@@ -375,16 +412,22 @@ func (r *AAAAccountingResource) Schema(ctx context.Context, req resource.SchemaR
 				Optional:            true,
 			},
 			"dot1x_default_start_stop_broadcast": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Use Broadcast for Accounting").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Use Broadcast for Accounting").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"dot1x_default_start_stop_group_broadcast": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Use Broadcast for Accounting").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Use Broadcast for Accounting").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"dot1x_default_start_stop_group_logger": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Use system logger for Accounting").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Use system logger for Accounting").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"dot1x": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Named Accounting list (max 31 characters, longer will be rejected).").String,
@@ -412,16 +455,22 @@ func (r *AAAAccountingResource) Schema(ctx context.Context, req resource.SchemaR
 							Optional:            true,
 						},
 						"start_stop_broadcast": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Use Broadcast for Accounting").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Use Broadcast for Accounting").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"start_stop_group_broadcast": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Use Broadcast for Accounting").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Use Broadcast for Accounting").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"start_stop_group_logger": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Use system logger for Accounting").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Use system logger for Accounting").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 					},
 				},

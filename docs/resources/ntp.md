@@ -98,6 +98,7 @@ resource "iosxe_ntp" "example" {
 - `access_group_serve_acl` (String)
 - `access_group_serve_only_acl` (String)
 - `authenticate` (Boolean) Authenticate time sources
+  - Default value: `false`
 - `authentication_keys` (Attributes List) Authentication key for trusted time sources (see [below for nested schema](#nestedatt--authentication_keys))
 - `clock_period` (Number) Length of hardware clock tick
   - Range: `0`-`4294967295`
@@ -105,9 +106,12 @@ resource "iosxe_ntp" "example" {
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
 - `logging` (Boolean) Enable NTP message logging
+  - Default value: `false`
 - `master` (Boolean) Act as NTP master clock
+  - Default value: `false`
 - `master_stratum` (Number) - Range: `1`-`15`
 - `passive` (Boolean) NTP passive mode
+  - Default value: `false`
 - `peer_vrfs` (Attributes List) VPN Routing/Forwarding Information (see [below for nested schema](#nestedatt--peer_vrfs))
 - `peers` (Attributes List) (see [below for nested schema](#nestedatt--peers))
 - `server_vrfs` (Attributes List) VPN Routing/Forwarding Information (see [below for nested schema](#nestedatt--server_vrfs))
@@ -125,6 +129,7 @@ resource "iosxe_ntp" "example" {
   - Range: `0`-`65535`
 - `trusted_keys` (Attributes List) Key numbers for trusted time sources (see [below for nested schema](#nestedatt--trusted_keys))
 - `update_calendar` (Boolean) Periodically update calendar with NTP time
+  - Default value: `false`
 
 ### Read-Only
 
@@ -184,6 +189,7 @@ Optional:
 - `key` (Number) Configure peer authentication key
   - Range: `1`-`4294967295`
 - `prefer` (Boolean) Prefer this peer when possible
+  - Default value: `false`
 - `version` (Number) Configure NTP version
   - Range: `1`-`4`
 
@@ -201,6 +207,7 @@ Optional:
 - `key` (Number) Configure peer authentication key
   - Range: `1`-`4294967295`
 - `prefer` (Boolean) Prefer this peer when possible
+  - Default value: `false`
 - `source` (String) Interface for source address
 - `version` (Number) Configure NTP version
   - Range: `1`-`4`
@@ -227,11 +234,15 @@ Required:
 Optional:
 
 - `burst` (Boolean) Send a burst when peer is reachable (Default)
+  - Default value: `false`
 - `iburst` (Boolean) Send a burst when peer is unreachable (Default)
+  - Default value: `false`
 - `key` (Number) Configure peer authentication key
   - Range: `1`-`4294967295`
 - `periodic` (Boolean) Check server availability periodically and switch to a new server if required
+  - Default value: `false`
 - `prefer` (Boolean) Prefer this peer when possible
+  - Default value: `false`
 - `version` (Number) Configure NTP version
   - Range: `1`-`4`
 
@@ -247,11 +258,15 @@ Required:
 Optional:
 
 - `burst` (Boolean) Send a burst when peer is reachable (Default)
+  - Default value: `false`
 - `iburst` (Boolean) Send a burst when peer is unreachable (Default)
+  - Default value: `false`
 - `key` (Number) Configure peer authentication key
   - Range: `1`-`4294967295`
 - `periodic` (Boolean) Check server availability periodically and switch to a new server if required
+  - Default value: `false`
 - `prefer` (Boolean) Prefer this peer when possible
+  - Default value: `false`
 - `source` (String) Interface for source address
 - `version` (Number) Configure NTP version
   - Range: `1`-`4`

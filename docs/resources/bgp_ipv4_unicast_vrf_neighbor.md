@@ -72,29 +72,44 @@ resource "iosxe_bgp_ipv4_unicast_vrf_neighbor" "example" {
   - Range: `0`-`600`
 - `cluster_id` (String)
 - `default_originate` (Boolean) Originate default route to this neighbor
+  - Default value: `false`
 - `default_originate_route_map` (String) Route-map to specify criteria to originate default
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `description` (String) Neighbor specific description
 - `device` (String) A device name from the provider configuration.
 - `disable_connected_check` (Boolean) one-hop away EBGP peer using loopback address
+  - Default value: `false`
 - `ebgp_multihop` (Boolean) Allow EBGP neighbors not on directly connected networks. For single-hop ebgp peers, delete ebgp-multihop directly.
+  - Default value: `false`
 - `ebgp_multihop_max_hop` (Number) - Range: `2`-`255`
 - `fall_over_bfd` (Boolean) Use BFD to detect failure
+  - Default value: `false`
 - `fall_over_bfd_check_control_plane_failure` (Boolean) Retrieve control plane dependent failure info from BFD for BGP GR/NSR operation
+  - Default value: `false`
 - `fall_over_bfd_multi_hop` (Boolean) Force BFD multi-hop to detect failure
+  - Default value: `false`
 - `fall_over_bfd_single_hop` (Boolean) Force BFD single-hop to detect failure
+  - Default value: `false`
 - `fall_over_bfd_strict_mode` (Boolean) Enable BFD strict-mode
+  - Default value: `false`
 - `fall_over_default_route_map` (String)
 - `fall_over_maximum_metric_route_map` (String)
 - `ha_mode_graceful_restart` (Boolean) graceful-restart for this peer
+  - Default value: `false`
 - `local_as` (String)
 - `local_as_dual_as` (Boolean) Accept either real AS or local AS from the ebgp peer
+  - Default value: `false`
 - `local_as_no_prepend` (Boolean) Do not prepend local-as to updates from ebgp peers
+  - Default value: `false`
 - `local_as_replace_as` (Boolean) Replace real AS with local AS in the EBGP updates
+  - Default value: `false`
 - `log_neighbor_changes_disable` (Boolean) disable
+  - Default value: `false`
 - `next_hop_self` (Boolean) Disable the next hop calculation for this neighbor
+  - Default value: `false`
 - `next_hop_self_all` (Boolean) Enable next-hop-self for both eBGP and iBGP received paths
+  - Default value: `false`
 - `password` (String, Sensitive)
 - `password_type` (Number) Encryption type (0 to disable encryption, 7 for proprietary)
   - Range: `0`-`7`
@@ -103,8 +118,10 @@ resource "iosxe_bgp_ipv4_unicast_vrf_neighbor" "example" {
 - `remote_as` (String) Specify a BGP peer-group remote-as
 - `route_maps` (Attributes List) Apply route map to neighbor (see [below for nested schema](#nestedatt--route_maps))
 - `route_reflector_client` (Boolean) Configure a neighbor as Route Reflector client
+  - Default value: `false`
 - `send_community` (String) - Choices: `both`, `extended`, `standard`
 - `shutdown` (Boolean) Administratively shut down this neighbor
+  - Default value: `false`
 - `soft_reconfiguration` (String) Per neighbor soft reconfiguration
   - Choices: `inbound`
 - `timers_holdtime` (Number) - Range: `0`-`65535`

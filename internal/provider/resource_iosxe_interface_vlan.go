@@ -33,6 +33,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
@@ -111,16 +112,20 @@ func (r *InterfaceVLANResource) Schema(ctx context.Context, req resource.SchemaR
 				},
 			},
 			"shutdown": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Shutdown the selected interface").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Shutdown the selected interface").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ip_proxy_arp": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Enable proxy ARP").String,
 				Optional:            true,
 			},
 			"ip_local_proxy_arp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable local-proxy ARP").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable local-proxy ARP").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ip_redirects": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Enable sending ICMP Redirect messages").String,
@@ -149,8 +154,10 @@ func (r *InterfaceVLANResource) Schema(ctx context.Context, req resource.SchemaR
 				},
 			},
 			"ipv4_address_dhcp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("IP Address negotiated via DHCP").String,
+				MarkdownDescription: helpers.NewAttributeDescription("IP Address negotiated via DHCP").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"unnumbered": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Enable IP processing without an explicit address").String,
@@ -168,16 +175,20 @@ func (r *InterfaceVLANResource) Schema(ctx context.Context, req resource.SchemaR
 				},
 			},
 			"ip_access_group_in_enable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("inbound packets").String,
+				MarkdownDescription: helpers.NewAttributeDescription("inbound packets").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ip_access_group_in": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
 			},
 			"ip_access_group_out_enable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("outbound packets").String,
+				MarkdownDescription: helpers.NewAttributeDescription("outbound packets").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ip_access_group_out": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
@@ -196,8 +207,10 @@ func (r *InterfaceVLANResource) Schema(ctx context.Context, req resource.SchemaR
 							},
 						},
 						"global": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Helper-address is global").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Helper-address is global").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"vrf": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("VRF name for helper-address (if different from interface VRF)").String,
@@ -244,8 +257,10 @@ func (r *InterfaceVLANResource) Schema(ctx context.Context, req resource.SchemaR
 				Optional:            true,
 			},
 			"ipv6_enable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable IPv6 on interface").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable IPv6 on interface").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ipv6_mtu": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Set IPv6 Maximum Transmission Unit").AddIntegerRangeDescription(1280, 9976).String,
@@ -255,16 +270,22 @@ func (r *InterfaceVLANResource) Schema(ctx context.Context, req resource.SchemaR
 				},
 			},
 			"ipv6_nd_ra_suppress_all": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Suppress all IPv6 RA").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Suppress all IPv6 RA").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ipv6_address_autoconfig_default": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Insert default route").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Insert default route").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ipv6_address_dhcp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Obtain IPv6 address from DHCP server").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Obtain IPv6 address from DHCP server").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ipv6_dhcp_servers": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Act as an IPv6 DHCP server").String,
@@ -276,12 +297,16 @@ func (r *InterfaceVLANResource) Schema(ctx context.Context, req resource.SchemaR
 							Required:            true,
 						},
 						"allow_hint": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Allow hint from client").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Allow hint from client").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"rapid_commit": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Enable Rapid-Commit").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Enable Rapid-Commit").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"preference": schema.Int64Attribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Server preference value").AddIntegerRangeDescription(0, 255).String,
@@ -301,8 +326,10 @@ func (r *InterfaceVLANResource) Schema(ctx context.Context, req resource.SchemaR
 				},
 			},
 			"ipv6_dhcp_client_pd_rapid_commit": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable Rapid-Commit for prefix-delegation").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable Rapid-Commit for prefix-delegation").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ipv6_dhcp_relay_destinations": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
@@ -326,12 +353,16 @@ func (r *InterfaceVLANResource) Schema(ctx context.Context, req resource.SchemaR
 				},
 			},
 			"ipv6_dhcp_relay_trust": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Interface is trusted to process relay-replies").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Interface is trusted to process relay-replies").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ipv6_dhcp_relay_option_vpn": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Insert VSS option in Relay-Forward Messages").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Insert VSS option in Relay-Forward Messages").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ipv6_link_local_addresses": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
@@ -350,8 +381,10 @@ func (r *InterfaceVLANResource) Schema(ctx context.Context, req resource.SchemaR
 							},
 						},
 						"link_local": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Use link-local address").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Use link-local address").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 					},
 				},
@@ -373,8 +406,10 @@ func (r *InterfaceVLANResource) Schema(ctx context.Context, req resource.SchemaR
 							},
 						},
 						"eui_64": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Use eui-64 interface identifier").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Use eui-64 interface identifier").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 					},
 				},
@@ -391,8 +426,10 @@ func (r *InterfaceVLANResource) Schema(ctx context.Context, req resource.SchemaR
 				Optional:            true,
 			},
 			"ip_dhcp_relay_information_option_vpn_id": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable vpn-id support on this interface").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable vpn-id support on this interface").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ip_igmp_version": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("IGMP version").AddIntegerRangeDescription(1, 3).String,
@@ -406,12 +443,16 @@ func (r *InterfaceVLANResource) Schema(ctx context.Context, req resource.SchemaR
 				Optional:            true,
 			},
 			"ip_nat_inside": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Inside interface for address translation").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Inside interface for address translation").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ip_nat_outside": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Outside interface for address translation").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Outside interface for address translation").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ip_verify_unicast_source_reachable_via": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Specify reachability check to apply to the source address").AddStringEnumDescription("any", "rx").String,
@@ -421,12 +462,16 @@ func (r *InterfaceVLANResource) Schema(ctx context.Context, req resource.SchemaR
 				},
 			},
 			"ip_verify_unicast_source_allow_self_ping": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Allow router to ping itself (opens vulnerability in verification)").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Allow router to ping itself (opens vulnerability in verification)").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ip_verify_unicast_source_allow_default": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Allow default route to match when checking source address").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Allow default route to match when checking source address").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"zone_member_security": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Security zone").String,

@@ -98,8 +98,6 @@ func (data InterfaceMPLS) addToBodyXML(ctx context.Context, config InterfaceMPLS
 	if !data.Ip.IsNull() && !data.Ip.IsUnknown() {
 		if data.Ip.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-mpls:ip", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-mpls:ip")
 		}
 	}
 	if !data.Mtu.IsNull() && !data.Mtu.IsUnknown() {
@@ -165,10 +163,10 @@ func (data *InterfaceMPLSData) fromBodyXML(ctx context.Context, res xmldot.Resul
 
 func (data *InterfaceMPLS) addDeletedItemsXML(ctx context.Context, state InterfaceMPLS, body string) string {
 	b := netconf.NewBody(body)
-	if !state.Mtu.IsNull() && data.Mtu.IsNull() {
+	if !state.Mtu.IsNull() && (data.Mtu.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-mpls:mtu")
 	}
-	if !state.Ip.IsNull() && data.Ip.IsNull() {
+	if !state.Ip.IsNull() && (data.Ip.IsNull() || (state.Ip.ValueBool() && !data.Ip.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-mpls:ip")
 	}
 

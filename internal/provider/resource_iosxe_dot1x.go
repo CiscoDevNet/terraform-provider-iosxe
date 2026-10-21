@@ -31,6 +31,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -86,8 +87,10 @@ func (r *Dot1xResource) Schema(ctx context.Context, req resource.SchemaRequest, 
 				},
 			},
 			"auth_fail_eapol": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Send EAPOL-Success on successful auth-fail Authorization").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Send EAPOL-Success on successful auth-fail Authorization").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"credentials": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Configure 802.1X credentials profiles").String,
@@ -139,8 +142,10 @@ func (r *Dot1xResource) Schema(ctx context.Context, req resource.SchemaRequest, 
 				},
 			},
 			"critical_eapol_config_block": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Block all EAPoL transaction on Critical Authentication").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Block all EAPoL transaction on Critical Authentication").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"critical_recovery_delay": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Set 802.1x Critical Authentication Recovery Delay period").AddIntegerRangeDescription(1, 10000).String,
@@ -157,32 +162,46 @@ func (r *Dot1xResource) Schema(ctx context.Context, req resource.SchemaRequest, 
 				},
 			},
 			"logging_verbose": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Show verbose messages in system logs").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Show verbose messages in system logs").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"supplicant_controlled_transient": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Controlled access is only applied during authentication").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Controlled access is only applied during authentication").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"supplicant_force_multicast": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Force 802.1X supplicant to send multicast packets").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Force 802.1X supplicant to send multicast packets").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"system_auth_control": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable or Disable SysAuthControl").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable or Disable SysAuthControl").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"guest_vlan_supplicant": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Allow 802.1x capable supplicants to enter Guest Vlan").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Allow 802.1x capable supplicants to enter Guest Vlan").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"critical_eapol": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Send EAPOL-Success on successful Critical Authentication").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Send EAPOL-Success on successful Critical Authentication").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"critical_eapol_block": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Block all EAPoL transaction on Critical Authentication").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Block all EAPoL transaction on Critical Authentication").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 		},
 	}

@@ -106,8 +106,6 @@ func (data CryptoIPSecTransformSet) addToBodyXML(ctx context.Context, config Cry
 	if !data.ModeTunnel.IsNull() && !data.ModeTunnel.IsUnknown() {
 		if data.ModeTunnel.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/mode/tunnel-choice", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/mode/tunnel-choice")
 		}
 	}
 	return body
@@ -186,13 +184,13 @@ func (data *CryptoIPSecTransformSetData) fromBodyXML(ctx context.Context, res xm
 
 func (data *CryptoIPSecTransformSet) addDeletedItemsXML(ctx context.Context, state CryptoIPSecTransformSet, body string) string {
 	b := netconf.NewBody(body)
-	if !state.ModeTunnel.IsNull() && data.ModeTunnel.IsNull() {
+	if !state.ModeTunnel.IsNull() && (data.ModeTunnel.IsNull() || (state.ModeTunnel.ValueBool() && !data.ModeTunnel.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/mode/tunnel-choice")
 	}
-	if !state.EspHmac.IsNull() && data.EspHmac.IsNull() {
+	if !state.EspHmac.IsNull() && (data.EspHmac.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/esp-hmac")
 	}
-	if !state.Esp.IsNull() && data.Esp.IsNull() {
+	if !state.Esp.IsNull() && (data.Esp.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/esp")
 	}
 

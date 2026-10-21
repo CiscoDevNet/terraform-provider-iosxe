@@ -31,6 +31,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -93,8 +94,10 @@ func (r *StackwiseVirtualResource) Schema(ctx context.Context, req resource.Sche
 				},
 			},
 			"dual_active_detection_pagp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Dual-active detection using PAgP").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Dual-active detection using PAgP").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"dual_active_detection_pagp_trust_channel_group": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Percent range from 1 to 128.").AddIntegerRangeDescription(1, 128).String,

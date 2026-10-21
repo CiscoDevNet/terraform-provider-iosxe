@@ -114,8 +114,6 @@ func (data PIMIPv6) addToBodyXML(ctx context.Context, config PIMIPv6, body netco
 	if !data.RpAddressBidir.IsNull() && !data.RpAddressBidir.IsUnknown() {
 		if data.RpAddressBidir.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:rp-address/bidir", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:rp-address/bidir")
 		}
 	}
 	if len(data.Vrfs) > 0 {
@@ -133,8 +131,6 @@ func (data PIMIPv6) addToBodyXML(ctx context.Context, config PIMIPv6, body netco
 			if !item.RpAddressBidir.IsNull() && !item.RpAddressBidir.IsUnknown() {
 				if item.RpAddressBidir.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "rp-address/bidir", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "rp-address/bidir")
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:vrf", cBody.Res())
@@ -326,13 +322,13 @@ func (data *PIMIPv6) addDeletedItemsXML(ctx context.Context, state PIMIPv6, body
 				found = false
 			}
 			if found {
-				if !state.Vrfs[i].RpAddressBidir.IsNull() && data.Vrfs[j].RpAddressBidir.IsNull() {
+				if !state.Vrfs[i].RpAddressBidir.IsNull() && (data.Vrfs[j].RpAddressBidir.IsNull() || (state.Vrfs[i].RpAddressBidir.ValueBool() && !data.Vrfs[j].RpAddressBidir.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-multicast:vrf%v/rp-address/bidir", predicates))
 				}
-				if !state.Vrfs[i].RpAddressAccessList.IsNull() && data.Vrfs[j].RpAddressAccessList.IsNull() {
+				if !state.Vrfs[i].RpAddressAccessList.IsNull() && (data.Vrfs[j].RpAddressAccessList.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-multicast:vrf%v/rp-address/access-list", predicates))
 				}
-				if !state.Vrfs[i].RpAddress.IsNull() && data.Vrfs[j].RpAddress.IsNull() {
+				if !state.Vrfs[i].RpAddress.IsNull() && (data.Vrfs[j].RpAddress.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-multicast:vrf%v/rp-address/address", predicates))
 				}
 				break
@@ -342,13 +338,13 @@ func (data *PIMIPv6) addDeletedItemsXML(ctx context.Context, state PIMIPv6, body
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-multicast:vrf%v", predicates))
 		}
 	}
-	if !state.RpAddressBidir.IsNull() && data.RpAddressBidir.IsNull() {
+	if !state.RpAddressBidir.IsNull() && (data.RpAddressBidir.IsNull() || (state.RpAddressBidir.ValueBool() && !data.RpAddressBidir.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-multicast:rp-address/bidir")
 	}
-	if !state.RpAddressAccessList.IsNull() && data.RpAddressAccessList.IsNull() {
+	if !state.RpAddressAccessList.IsNull() && (data.RpAddressAccessList.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-multicast:rp-address/access-list")
 	}
-	if !state.RpAddress.IsNull() && data.RpAddress.IsNull() {
+	if !state.RpAddress.IsNull() && (data.RpAddress.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-multicast:rp-address/address")
 	}
 

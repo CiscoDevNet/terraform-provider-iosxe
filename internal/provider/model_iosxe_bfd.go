@@ -1060,7 +1060,7 @@ func (data *BFDData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 func (data *BFD) addDeletedItemsXML(ctx context.Context, state BFD, body string) string {
 	b := netconf.NewBody(body)
-	if !state.SlowTimers.IsNull() && data.SlowTimers.IsNull() {
+	if !state.SlowTimers.IsNull() && (data.SlowTimers.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-bfd:slow-timers")
 	}
 	for i := range state.Ipv6WithDstVrfs {
@@ -1098,7 +1098,7 @@ func (data *BFD) addDeletedItemsXML(ctx context.Context, state BFD, body string)
 				found = false
 			}
 			if found {
-				if !state.Ipv6WithDstVrfs[i].TemplateName.IsNull() && data.Ipv6WithDstVrfs[j].TemplateName.IsNull() {
+				if !state.Ipv6WithDstVrfs[i].TemplateName.IsNull() && (data.Ipv6WithDstVrfs[j].TemplateName.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv6-list-with-dst-vrf/ipv6%v/template-name", predicates))
 				}
 				break
@@ -1143,7 +1143,7 @@ func (data *BFD) addDeletedItemsXML(ctx context.Context, state BFD, body string)
 				found = false
 			}
 			if found {
-				if !state.Ipv6WithSrcVrfs[i].TemplateName.IsNull() && data.Ipv6WithSrcVrfs[j].TemplateName.IsNull() {
+				if !state.Ipv6WithSrcVrfs[i].TemplateName.IsNull() && (data.Ipv6WithSrcVrfs[j].TemplateName.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv6-list-with-src-vrf/ipv6%v/template-name", predicates))
 				}
 				break
@@ -1182,7 +1182,7 @@ func (data *BFD) addDeletedItemsXML(ctx context.Context, state BFD, body string)
 				found = false
 			}
 			if found {
-				if !state.Ipv6WithoutVrfs[i].TemplateName.IsNull() && data.Ipv6WithoutVrfs[j].TemplateName.IsNull() {
+				if !state.Ipv6WithoutVrfs[i].TemplateName.IsNull() && (data.Ipv6WithoutVrfs[j].TemplateName.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv6-list-without-vrf/ipv6%v/template-name", predicates))
 				}
 				break
@@ -1233,7 +1233,7 @@ func (data *BFD) addDeletedItemsXML(ctx context.Context, state BFD, body string)
 				found = false
 			}
 			if found {
-				if !state.Ipv6WithBothVrfs[i].TemplateName.IsNull() && data.Ipv6WithBothVrfs[j].TemplateName.IsNull() {
+				if !state.Ipv6WithBothVrfs[i].TemplateName.IsNull() && (data.Ipv6WithBothVrfs[j].TemplateName.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv6-list-with-both-vrf/ipv6%v/template-name", predicates))
 				}
 				break
@@ -1278,7 +1278,7 @@ func (data *BFD) addDeletedItemsXML(ctx context.Context, state BFD, body string)
 				found = false
 			}
 			if found {
-				if !state.Ipv4WithDstVrfs[i].TemplateName.IsNull() && data.Ipv4WithDstVrfs[j].TemplateName.IsNull() {
+				if !state.Ipv4WithDstVrfs[i].TemplateName.IsNull() && (data.Ipv4WithDstVrfs[j].TemplateName.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv4-list-with-dst-vrf/ipv4%v/template-name", predicates))
 				}
 				break
@@ -1323,7 +1323,7 @@ func (data *BFD) addDeletedItemsXML(ctx context.Context, state BFD, body string)
 				found = false
 			}
 			if found {
-				if !state.Ipv4WithSrcVrfs[i].TemplateName.IsNull() && data.Ipv4WithSrcVrfs[j].TemplateName.IsNull() {
+				if !state.Ipv4WithSrcVrfs[i].TemplateName.IsNull() && (data.Ipv4WithSrcVrfs[j].TemplateName.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv4-list-with-src-vrf/ipv4%v/template-name", predicates))
 				}
 				break
@@ -1362,7 +1362,7 @@ func (data *BFD) addDeletedItemsXML(ctx context.Context, state BFD, body string)
 				found = false
 			}
 			if found {
-				if !state.Ipv4WithoutVrfs[i].TemplateName.IsNull() && data.Ipv4WithoutVrfs[j].TemplateName.IsNull() {
+				if !state.Ipv4WithoutVrfs[i].TemplateName.IsNull() && (data.Ipv4WithoutVrfs[j].TemplateName.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv4-list-without-vrf/ipv4%v/template-name", predicates))
 				}
 				break
@@ -1413,7 +1413,7 @@ func (data *BFD) addDeletedItemsXML(ctx context.Context, state BFD, body string)
 				found = false
 			}
 			if found {
-				if !state.Ipv4BothVrfs[i].TemplateName.IsNull() && data.Ipv4BothVrfs[j].TemplateName.IsNull() {
+				if !state.Ipv4BothVrfs[i].TemplateName.IsNull() && (data.Ipv4BothVrfs[j].TemplateName.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv4-list-with-both-vrf/ipv4%v/template-name", predicates))
 				}
 				break

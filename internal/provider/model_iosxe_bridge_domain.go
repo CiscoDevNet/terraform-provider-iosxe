@@ -341,7 +341,7 @@ func (data *BridgeDomain) addDeletedItemsXML(ctx context.Context, state BridgeDo
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/member/member-interface%v", predicates))
 		}
 	}
-	if !state.MemberVni.IsNull() && data.MemberVni.IsNull() {
+	if !state.MemberVni.IsNull() && (data.MemberVni.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/member/vni")
 	}
 

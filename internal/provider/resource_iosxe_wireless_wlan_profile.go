@@ -32,6 +32,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -105,16 +106,20 @@ func (r *WirelessWLANProfileResource) Schema(ctx context.Context, req resource.S
 				},
 			},
 			"wlan_status": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Administrative Status of ESS(WLAN). By disabling an ESS the corresponding SSID is no longer broadcasted in AP beacons.").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Administrative Status of ESS(WLAN). By disabling an ESS the corresponding SSID is no longer broadcasted in AP beacons.").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"broadcast_ssid": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("broadcast SSID on a WLAN").String,
 				Optional:            true,
 			},
 			"ccx_aironet_ie": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("This object indicates the support for the Cisco Compatible Extensions Aironet information element on this WLAN.").String,
+				MarkdownDescription: helpers.NewAttributeDescription("This object indicates the support for the Cisco Compatible Extensions Aironet information element on this WLAN.").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"peer_blocking": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Represents the name of the ACL applied to this WLAN. If it is required to remove the ACL").AddStringEnumDescription("p2p-blocking-action-none", "p2p-blocking-action-drop", "p2p-blocking-action-fwdup").String,
@@ -128,40 +133,56 @@ func (r *WirelessWLANProfileResource) Schema(ctx context.Context, req resource.S
 				Optional:            true,
 			},
 			"security_wpa_akm_ft_dot1x": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Authentication key management type 802.11r dot1x").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Authentication key management type 802.11r dot1x").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"security_wpa_akm_psk": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Authentication key management PSK").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Authentication key management PSK").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"security_wpa_akm_ft_psk": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Authentication key management type 802.11r PSK").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Authentication key management type 802.11r PSK").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"security_wpa_akm_sae": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Authentication key management type SAE").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Authentication key management type SAE").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"security_wpa_akm_ft_sae": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Authentication key management type FT-SAE").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Authentication key management type FT-SAE").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"security_wpa_wpa2_ciphers_aes": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("WPA2/CCMP128 support").String,
 				Optional:            true,
 			},
 			"security_wpa_wpa2_ciphers_gcmp128": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("WPA2/GCMP128 support").String,
+				MarkdownDescription: helpers.NewAttributeDescription("WPA2/GCMP128 support").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"security_wpa_wpa2_ciphers_gcmp256": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("WPA2/GCMP256 support").String,
+				MarkdownDescription: helpers.NewAttributeDescription("WPA2/GCMP256 support").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"security_wpa_wpa3": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configures WPA3 support").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configures WPA3 support").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"security_wpa_psk_key_format": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Authentication pre-shared key type ascii/hex").AddStringEnumDescription("key-ascii", "key-hex").String,
@@ -196,8 +217,10 @@ func (r *WirelessWLANProfileResource) Schema(ctx context.Context, req resource.S
 				Optional:            true,
 			},
 			"security_web_auth": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configures Web authentication").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configures Web authentication").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"security_web_auth_authentication_list": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Enter the Authentication list name").String,
@@ -215,16 +238,20 @@ func (r *WirelessWLANProfileResource) Schema(ctx context.Context, req resource.S
 				},
 			},
 			"security_ft_over_the_ds": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configures Fast Transition over the DS").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configures Fast Transition over the DS").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"mac_filtering": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Set MAC filtering support on WLAN").String,
 				Optional:            true,
 			},
 			"load_balance": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Allow/Disallow Load Balance on a WLAN").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Allow/Disallow Load Balance on a WLAN").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"wmm": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Configures WMM (WME)").AddStringEnumDescription("apf-vap-wme-disabled", "apf-vap-wme-allowed", "apf-vap-wme-required").String,

@@ -40,8 +40,8 @@ resource "iosxe_evpn_ethernet_segment" "example" {
 - `device` (String) A device name from the provider configuration.
 - `df_election_wait_time` (Number) - Range: `1`-`10`
 - `identifier_types` (Attributes List) Ethernet Segment Identifier type (see [below for nested schema](#nestedatt--identifier_types))
-- `redundancy_all_active` (Boolean)
-- `redundancy_single_active` (Boolean)
+- `redundancy_all_active` (Boolean) - Default value: `false`
+- `redundancy_single_active` (Boolean) - Default value: `false`
 
 ### Read-Only
 

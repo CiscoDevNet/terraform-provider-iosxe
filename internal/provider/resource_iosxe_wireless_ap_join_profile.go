@@ -33,6 +33,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -109,8 +110,10 @@ func (r *WirelessAPJoinProfileResource) Schema(ctx context.Context, req resource
 				},
 			},
 			"ssh": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("This object specifies whether SSH session can be established to the AP").String,
+				MarkdownDescription: helpers.NewAttributeDescription("This object specifies whether SSH session can be established to the AP").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"mgmtuser_username": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("AP user management username").String,
@@ -184,8 +187,10 @@ func (r *WirelessAPJoinProfileResource) Schema(ctx context.Context, req resource
 				},
 			},
 			"apphost": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable IOX application hosting").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable IOX application hosting").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"association_limit": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Maximum clients per AP configuration").AddIntegerRangeDescription(0, 1200).String,
@@ -195,12 +200,16 @@ func (r *WirelessAPJoinProfileResource) Schema(ctx context.Context, req resource
 				},
 			},
 			"awips": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Flag to enable AWIPS").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Flag to enable AWIPS").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"awips_forensic": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Flag to enable AWIPS forensic").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Flag to enable AWIPS forensic").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"capwap_retransmit_count": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("retransmit timer count").AddIntegerRangeDescription(3, 8).String,
@@ -319,16 +328,20 @@ func (r *WirelessAPJoinProfileResource) Schema(ctx context.Context, req resource
 				},
 			},
 			"hyperlocation": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("enable hyperlocation").String,
+				MarkdownDescription: helpers.NewAttributeDescription("enable hyperlocation").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"ip_dhcp_fallback": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Represents AP fallback to DHCP, if AP fails to join via static IP address").String,
 				Optional:            true,
 			},
 			"lag": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("boolean to indicate whether ap lag enabled is used").String,
+				MarkdownDescription: helpers.NewAttributeDescription("boolean to indicate whether ap lag enabled is used").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"led": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("True if LED state is enabled otherwise disabled.").String,
@@ -361,12 +374,16 @@ func (r *WirelessAPJoinProfileResource) Schema(ctx context.Context, req resource
 				},
 			},
 			"statistics_ap_system_monitoring_enable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("AP stats collection and processing enabled").String,
+				MarkdownDescription: helpers.NewAttributeDescription("AP stats collection and processing enabled").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"statistics_ap_system_monitoring_alarm_enable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("AP stats alarms enabled").String,
+				MarkdownDescription: helpers.NewAttributeDescription("AP stats alarms enabled").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"statistics_ap_system_monitoring_alarm_hold_time": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Alarm hold time").AddIntegerRangeDescription(0, 3600).String,
@@ -422,8 +439,10 @@ func (r *WirelessAPJoinProfileResource) Schema(ctx context.Context, req resource
 				},
 			},
 			"statistics_ap_radio_monitoring_enable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("AP radio stats collection and processing enabled").String,
+				MarkdownDescription: helpers.NewAttributeDescription("AP radio stats collection and processing enabled").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"statistics_ap_radio_monitoring_sampling_interval": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Sampling interval of radio statistics").AddIntegerRangeDescription(720, 3600).String,
@@ -451,8 +470,10 @@ func (r *WirelessAPJoinProfileResource) Schema(ctx context.Context, req resource
 				},
 			},
 			"ble_scan": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set the BLE scan state").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Set the BLE scan state").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 		},
 	}

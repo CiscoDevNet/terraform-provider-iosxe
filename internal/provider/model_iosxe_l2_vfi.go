@@ -267,7 +267,7 @@ func (data *L2VFI) addDeletedItemsXML(ctx context.Context, state L2VFI, body str
 				found = false
 			}
 			if found {
-				if !state.Neighbors[i].Encapsulation.IsNull() && data.Neighbors[j].Encapsulation.IsNull() {
+				if !state.Neighbors[i].Encapsulation.IsNull() && (data.Neighbors[j].Encapsulation.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/neighbor%v/encapsulation", predicates))
 				}
 				break
@@ -277,10 +277,10 @@ func (data *L2VFI) addDeletedItemsXML(ctx context.Context, state L2VFI, body str
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/neighbor%v", predicates))
 		}
 	}
-	if !state.VpnId.IsNull() && data.VpnId.IsNull() {
+	if !state.VpnId.IsNull() && (data.VpnId.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/vpn/id")
 	}
-	if !state.Mode.IsNull() && data.Mode.IsNull() {
+	if !state.Mode.IsNull() && (data.Mode.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/mode")
 	}
 

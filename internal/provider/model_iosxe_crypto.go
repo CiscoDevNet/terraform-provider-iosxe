@@ -88,8 +88,6 @@ func (data Crypto) addToBodyXML(ctx context.Context, config Crypto, body netconf
 	if !data.EngineComplianceShieldDisable.IsNull() && !data.EngineComplianceShieldDisable.IsUnknown() {
 		if data.EngineComplianceShieldDisable.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-crypto:engine/compliance/shield/disable", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-crypto:engine/compliance/shield/disable")
 		}
 	}
 	return body
@@ -141,7 +139,7 @@ func (data *CryptoData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 func (data *Crypto) addDeletedItemsXML(ctx context.Context, state Crypto, body string) string {
 	b := netconf.NewBody(body)
-	if !state.EngineComplianceShieldDisable.IsNull() && data.EngineComplianceShieldDisable.IsNull() {
+	if !state.EngineComplianceShieldDisable.IsNull() && (data.EngineComplianceShieldDisable.IsNull() || (state.EngineComplianceShieldDisable.ValueBool() && !data.EngineComplianceShieldDisable.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-crypto:engine/compliance/shield/disable")
 	}
 

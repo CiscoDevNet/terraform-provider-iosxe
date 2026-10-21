@@ -40,12 +40,13 @@ resource "iosxe_bgp_peer_policy_template" "example" {
 ### Optional
 
 - `allowas_in_as_number` (Number) - Range: `1`-`10`
-- `as_override_split_horizon` (Boolean)
+- `as_override_split_horizon` (Boolean) - Default value: `false`
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
 - `route_maps` (Attributes List) Apply route map to neighbor (see [below for nested schema](#nestedatt--route_maps))
 - `route_reflector_client` (Boolean) Configure a neighbor as Route Reflector client
+  - Default value: `false`
 - `send_community` (String) - Choices: `both`, `extended`, `standard`
 
 ### Read-Only

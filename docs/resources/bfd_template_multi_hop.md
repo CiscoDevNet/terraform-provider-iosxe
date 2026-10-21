@@ -41,6 +41,7 @@ resource "iosxe_bfd_template_multi_hop" "example" {
 - `authentication_meticulous_sha_1_keychain` (String) keychain name
 - `authentication_sha_1_keychain` (String) keychain name
 - `dampening_down_monitoring` (Boolean) down monitoring
+  - Default value: `false`
 - `dampening_half_time` (Number) Half-life time for the penalty
   - Range: `1`-`30`
 - `dampening_max_suppressing_time` (Number) Maximum duration to suppress a session
@@ -53,7 +54,9 @@ resource "iosxe_bfd_template_multi_hop" "example" {
   - Range: `1`-`18000`
 - `device` (String) A device name from the provider configuration.
 - `echo` (Boolean) Use echo adjunct as bfd detection mechanism
+  - Default value: `false`
 - `interval_microseconds` (Boolean) Specify BFD timers in microseconds
+  - Default value: `false`
 - `interval_microseconds_both` (Number) Minimum transmit and receive interval capability
   - Range: `3300`-`9999000`
 - `interval_microseconds_min_rx` (Number) Minimum receive interval capability

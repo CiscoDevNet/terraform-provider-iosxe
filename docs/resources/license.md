@@ -25,13 +25,15 @@ resource "iosxe_license" "example" {
 
 ### Optional
 
-- `accept_agreement` (Boolean)
-- `accept_end` (Boolean)
-- `accept_user` (Boolean)
+- `accept_agreement` (Boolean) - Default value: `false`
+- `accept_end` (Boolean) - Default value: `false`
+- `accept_user` (Boolean) - Default value: `false`
 - `boot_level_network_advantage` (Boolean) License Level Network-Advantage
+  - Default value: `false`
 - `boot_level_network_advantage_addon` (String) select add-on to include
   - Choices: `dna-advantage`, `dna-essentials`
 - `boot_level_network_essentials` (Boolean) License Level Network-Essentials
+  - Default value: `false`
 - `boot_level_network_essentials_addon` (String) select add-on to include
   - Choices: `dna-essentials`
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.

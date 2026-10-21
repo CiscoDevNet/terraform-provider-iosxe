@@ -45,6 +45,7 @@ resource "iosxe_bgp_ipv4_unicast_neighbor" "example" {
 - `activate` (Boolean) Enable the address family for this neighbor
   - Default value: `true`
 - `default_originate` (Boolean) Originate default route to this neighbor
+  - Default value: `false`
 - `default_originate_route_map` (String) Route-map to specify criteria to originate default
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
@@ -52,6 +53,7 @@ resource "iosxe_bgp_ipv4_unicast_neighbor" "example" {
 - `inherit_peer_policy` (String) Inherit a peer-policy template
 - `route_maps` (Attributes List) Apply route map to neighbor (see [below for nested schema](#nestedatt--route_maps))
 - `route_reflector_client` (Boolean) Configure a neighbor as Route Reflector client
+  - Default value: `false`
 - `send_community` (String) - Choices: `both`, `extended`, `standard`
 - `soft_reconfiguration` (String) Per neighbor soft reconfiguration
   - Choices: `inbound`

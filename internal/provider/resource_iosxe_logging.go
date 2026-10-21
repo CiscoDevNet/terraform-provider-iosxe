@@ -32,6 +32,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -128,8 +129,10 @@ func (r *LoggingResource) Schema(ctx context.Context, req resource.SchemaRequest
 				Optional:            true,
 			},
 			"trap": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set trap server logging level").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Set trap server logging level").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"trap_severity": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
@@ -501,8 +504,10 @@ func (r *LoggingResource) Schema(ctx context.Context, req resource.SchemaRequest
 				},
 			},
 			"logging_count": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Count every log message and timestamp last occurrence").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Count every log message and timestamp last occurrence").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"persistent_url": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("URL to store logging messages").String,
@@ -541,16 +546,22 @@ func (r *LoggingResource) Schema(ctx context.Context, req resource.SchemaRequest
 				},
 			},
 			"persistent_immediate": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Write log entry to storage immediately (no buffering).").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Write log entry to storage immediately (no buffering).").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"persistent_notify": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Notify when show logging [persistent] is activated.").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Notify when show logging [persistent] is activated.").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"persistent_protected": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Eliminates manipulation on logging-persistent files").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Eliminates manipulation on logging-persistent files").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"rate_limit_all": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Messages per second").AddIntegerRangeDescription(1, 10000).String,

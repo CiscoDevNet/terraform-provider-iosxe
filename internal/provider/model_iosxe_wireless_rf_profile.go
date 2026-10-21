@@ -714,40 +714,40 @@ func (data *WirelessRFProfileData) fromBodyXML(ctx context.Context, res xmldot.R
 
 func (data *WirelessRFProfile) addDeletedItemsXML(ctx context.Context, state WirelessRFProfile, body string) string {
 	b := netconf.NewBody(body)
-	if !state.TrapThresholdNoise.IsNull() && data.TrapThresholdNoise.IsNull() {
+	if !state.TrapThresholdNoise.IsNull() && (data.TrapThresholdNoise.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/trap-threshold-noise")
 	}
-	if !state.TrapThresholdInterference.IsNull() && data.TrapThresholdInterference.IsNull() {
+	if !state.TrapThresholdInterference.IsNull() && (data.TrapThresholdInterference.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/trap-threshold-interference")
 	}
-	if !state.TrapThresholdClients.IsNull() && data.TrapThresholdClients.IsNull() {
+	if !state.TrapThresholdClients.IsNull() && (data.TrapThresholdClients.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/trap-threshold-clients")
 	}
-	if !state.TxPowerMin.IsNull() && data.TxPowerMin.IsNull() {
+	if !state.TxPowerMin.IsNull() && (data.TxPowerMin.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/tx-power-min")
 	}
-	if !state.TxPowerMax.IsNull() && data.TxPowerMax.IsNull() {
+	if !state.TxPowerMax.IsNull() && (data.TxPowerMax.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/tx-power-max")
 	}
-	if !state.TxPowerV1Threshold.IsNull() && data.TxPowerV1Threshold.IsNull() {
+	if !state.TxPowerV1Threshold.IsNull() && (data.TxPowerV1Threshold.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/tx-power-v1-threshold")
 	}
-	if !state.MaxClients.IsNull() && data.MaxClients.IsNull() {
+	if !state.MaxClients.IsNull() && (data.MaxClients.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/max-radio-clients")
 	}
-	if !state.LoadBalancingDenial.IsNull() && data.LoadBalancingDenial.IsNull() {
+	if !state.LoadBalancingDenial.IsNull() && (data.LoadBalancingDenial.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/load-balancing-denial-count")
 	}
-	if !state.LoadBalancingWindow.IsNull() && data.LoadBalancingWindow.IsNull() {
+	if !state.LoadBalancingWindow.IsNull() && (data.LoadBalancingWindow.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/load-balancing-window")
 	}
-	if !state.CoverageLevelGlobal.IsNull() && data.CoverageLevelGlobal.IsNull() {
+	if !state.CoverageLevelGlobal.IsNull() && (data.CoverageLevelGlobal.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/min-num-clients")
 	}
-	if !state.CoverageVoiceRssiThreshold.IsNull() && data.CoverageVoiceRssiThreshold.IsNull() {
+	if !state.CoverageVoiceRssiThreshold.IsNull() && (data.CoverageVoiceRssiThreshold.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/coverage-voice-packet-rssi-threshold")
 	}
-	if !state.CoverageDataRssiThreshold.IsNull() && data.CoverageDataRssiThreshold.IsNull() {
+	if !state.CoverageDataRssiThreshold.IsNull() && (data.CoverageDataRssiThreshold.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/coverage-data-packet-rssi-threshold")
 	}
 	for i := range state.DcaAllowedChannels {
@@ -780,64 +780,64 @@ func (data *WirelessRFProfile) addDeletedItemsXML(ctx context.Context, state Wir
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/rf-dca-allowed-channels/rf-dca-allowed-channel%v", predicates))
 		}
 	}
-	if !state.BandSelectExpireSuppression.IsNull() && data.BandSelectExpireSuppression.IsNull() {
+	if !state.BandSelectExpireSuppression.IsNull() && (data.BandSelectExpireSuppression.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/band-select-age-out-suppression")
 	}
-	if !state.BandSelectExpireDualBand.IsNull() && data.BandSelectExpireDualBand.IsNull() {
+	if !state.BandSelectExpireDualBand.IsNull() && (data.BandSelectExpireDualBand.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/band-select-age-out-dual-band")
 	}
-	if !state.BandSelectCycleThreshold.IsNull() && data.BandSelectCycleThreshold.IsNull() {
+	if !state.BandSelectCycleThreshold.IsNull() && (data.BandSelectCycleThreshold.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/band-select-cycle-threshold")
 	}
-	if !state.BandSelectCycleCount.IsNull() && data.BandSelectCycleCount.IsNull() {
+	if !state.BandSelectCycleCount.IsNull() && (data.BandSelectCycleCount.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/band-select-cycle-count")
 	}
-	if !state.BandSelectClientRssi.IsNull() && data.BandSelectClientRssi.IsNull() {
+	if !state.BandSelectClientRssi.IsNull() && (data.BandSelectClientRssi.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/band-select-client-rssi")
 	}
-	if !state.DataRate54m.IsNull() && data.DataRate54m.IsNull() {
+	if !state.DataRate54m.IsNull() && (data.DataRate54m.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/data-rate-54m")
 	}
-	if !state.DataRate48m.IsNull() && data.DataRate48m.IsNull() {
+	if !state.DataRate48m.IsNull() && (data.DataRate48m.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/data-rate-48m")
 	}
-	if !state.DataRate36m.IsNull() && data.DataRate36m.IsNull() {
+	if !state.DataRate36m.IsNull() && (data.DataRate36m.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/data-rate-36m")
 	}
-	if !state.DataRate24m.IsNull() && data.DataRate24m.IsNull() {
+	if !state.DataRate24m.IsNull() && (data.DataRate24m.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/data-rate-24m")
 	}
-	if !state.DataRate18m.IsNull() && data.DataRate18m.IsNull() {
+	if !state.DataRate18m.IsNull() && (data.DataRate18m.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/data-rate-18m")
 	}
-	if !state.DataRate12m.IsNull() && data.DataRate12m.IsNull() {
+	if !state.DataRate12m.IsNull() && (data.DataRate12m.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/data-rate-12m")
 	}
-	if !state.DataRate9m.IsNull() && data.DataRate9m.IsNull() {
+	if !state.DataRate9m.IsNull() && (data.DataRate9m.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/data-rate-9m")
 	}
-	if !state.DataRate6m.IsNull() && data.DataRate6m.IsNull() {
+	if !state.DataRate6m.IsNull() && (data.DataRate6m.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/data-rate-6m")
 	}
-	if !state.DataRate11m.IsNull() && data.DataRate11m.IsNull() {
+	if !state.DataRate11m.IsNull() && (data.DataRate11m.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/data-rate-11m")
 	}
-	if !state.DataRate55m.IsNull() && data.DataRate55m.IsNull() {
+	if !state.DataRate55m.IsNull() && (data.DataRate55m.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/data-rate-5-5m")
 	}
-	if !state.DataRate2m.IsNull() && data.DataRate2m.IsNull() {
+	if !state.DataRate2m.IsNull() && (data.DataRate2m.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/data-rate-2m")
 	}
-	if !state.DataRate1m.IsNull() && data.DataRate1m.IsNull() {
+	if !state.DataRate1m.IsNull() && (data.DataRate1m.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/data-rate-1m")
 	}
-	if !state.Description.IsNull() && data.Description.IsNull() {
+	if !state.Description.IsNull() && (data.Description.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/description")
 	}
-	if !state.Status.IsNull() && data.Status.IsNull() {
+	if !state.Status.IsNull() && (data.Status.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/status")
 	}
-	if !state.Band.IsNull() && data.Band.IsNull() {
+	if !state.Band.IsNull() && (data.Band.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/band")
 	}
 

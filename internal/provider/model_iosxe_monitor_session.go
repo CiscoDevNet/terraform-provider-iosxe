@@ -319,7 +319,7 @@ func (data *MonitorSession) addDeletedItemsXML(ctx context.Context, state Monito
 				found = false
 			}
 			if found {
-				if !state.SourceInterface[i].Direction.IsNull() && data.SourceInterface[j].Direction.IsNull() {
+				if !state.SourceInterface[i].Direction.IsNull() && (data.SourceInterface[j].Direction.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/source/interface%v/direction", predicates))
 				}
 				break
@@ -352,7 +352,7 @@ func (data *MonitorSession) addDeletedItemsXML(ctx context.Context, state Monito
 				found = false
 			}
 			if found {
-				if !state.DestinationInterface[i].Encapsulation.IsNull() && data.DestinationInterface[j].Encapsulation.IsNull() {
+				if !state.DestinationInterface[i].Encapsulation.IsNull() && (data.DestinationInterface[j].Encapsulation.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/destination/interface%v/encapsulation", predicates))
 				}
 				break

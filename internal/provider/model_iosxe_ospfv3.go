@@ -111,8 +111,6 @@ func (data OSPFv3) addToBodyXML(ctx context.Context, config OSPFv3, body netconf
 	if !data.BfdAllInterfaces.IsNull() && !data.BfdAllInterfaces.IsUnknown() {
 		if data.BfdAllInterfaces.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/bfd/all-interfaces", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/bfd/all-interfaces")
 		}
 	}
 	if !data.AutoCostReferenceBandwidth.IsNull() && !data.AutoCostReferenceBandwidth.IsUnknown() {
@@ -124,15 +122,11 @@ func (data OSPFv3) addToBodyXML(ctx context.Context, config OSPFv3, body netconf
 	if !data.LogAdjacencyChanges.IsNull() && !data.LogAdjacencyChanges.IsUnknown() {
 		if data.LogAdjacencyChanges.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/log-adjacency-changes", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/log-adjacency-changes")
 		}
 	}
 	if !data.LogAdjacencyChangesDetail.IsNull() && !data.LogAdjacencyChangesDetail.IsUnknown() {
 		if data.LogAdjacencyChangesDetail.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/log-adjacency-changes/detail", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/log-adjacency-changes/detail")
 		}
 	}
 	return body
@@ -266,22 +260,22 @@ func (data *OSPFv3Data) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 func (data *OSPFv3) addDeletedItemsXML(ctx context.Context, state OSPFv3, body string) string {
 	b := netconf.NewBody(body)
-	if !state.LogAdjacencyChangesDetail.IsNull() && data.LogAdjacencyChangesDetail.IsNull() {
+	if !state.LogAdjacencyChangesDetail.IsNull() && (data.LogAdjacencyChangesDetail.IsNull() || (state.LogAdjacencyChangesDetail.ValueBool() && !data.LogAdjacencyChangesDetail.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/log-adjacency-changes/detail")
 	}
-	if !state.LogAdjacencyChanges.IsNull() && data.LogAdjacencyChanges.IsNull() {
+	if !state.LogAdjacencyChanges.IsNull() && (data.LogAdjacencyChanges.IsNull() || (state.LogAdjacencyChanges.ValueBool() && !data.LogAdjacencyChanges.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/log-adjacency-changes")
 	}
-	if !state.Shutdown.IsNull() && data.Shutdown.IsNull() {
+	if !state.Shutdown.IsNull() && (data.Shutdown.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/shutdown")
 	}
-	if !state.AutoCostReferenceBandwidth.IsNull() && data.AutoCostReferenceBandwidth.IsNull() {
+	if !state.AutoCostReferenceBandwidth.IsNull() && (data.AutoCostReferenceBandwidth.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/auto-cost/reference-bandwidth")
 	}
-	if !state.BfdAllInterfaces.IsNull() && data.BfdAllInterfaces.IsNull() {
+	if !state.BfdAllInterfaces.IsNull() && (data.BfdAllInterfaces.IsNull() || (state.BfdAllInterfaces.ValueBool() && !data.BfdAllInterfaces.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/bfd/all-interfaces")
 	}
-	if !state.RouterId.IsNull() && data.RouterId.IsNull() {
+	if !state.RouterId.IsNull() && (data.RouterId.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/router-id")
 	}
 

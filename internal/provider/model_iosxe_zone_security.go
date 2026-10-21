@@ -259,10 +259,10 @@ func (data *ZoneSecurity) addDeletedItemsXML(ctx context.Context, state ZoneSecu
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vpn%v", predicates))
 		}
 	}
-	if !state.Protection.IsNull() && data.Protection.IsNull() {
+	if !state.Protection.IsNull() && (data.Protection.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/protection")
 	}
-	if !state.Description.IsNull() && data.Description.IsNull() {
+	if !state.Description.IsNull() && (data.Description.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/description")
 	}
 

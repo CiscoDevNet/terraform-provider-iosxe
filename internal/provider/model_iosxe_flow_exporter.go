@@ -197,8 +197,6 @@ func (data FlowExporter) addToBodyXML(ctx context.Context, config FlowExporter, 
 	if !data.OptionSamplerTable.IsNull() && !data.OptionSamplerTable.IsUnknown() {
 		if data.OptionSamplerTable.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/option/sampler-table", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/option/sampler-table")
 		}
 	}
 	if !data.OptionApplicationTableTimeout.IsNull() && !data.OptionApplicationTableTimeout.IsUnknown() {
@@ -492,70 +490,70 @@ func (data *FlowExporterData) fromBodyXML(ctx context.Context, res xmldot.Result
 
 func (data *FlowExporter) addDeletedItemsXML(ctx context.Context, state FlowExporter, body string) string {
 	b := netconf.NewBody(body)
-	if !state.OptionApplicationAttributesTimeout.IsNull() && data.OptionApplicationAttributesTimeout.IsNull() {
+	if !state.OptionApplicationAttributesTimeout.IsNull() && (data.OptionApplicationAttributesTimeout.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/option/application-attributes/timeout")
 	}
-	if !state.OptionApplicationTableTimeout.IsNull() && data.OptionApplicationTableTimeout.IsNull() {
+	if !state.OptionApplicationTableTimeout.IsNull() && (data.OptionApplicationTableTimeout.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/option/application-table/timeout")
 	}
-	if !state.OptionSamplerTable.IsNull() && data.OptionSamplerTable.IsNull() {
+	if !state.OptionSamplerTable.IsNull() && (data.OptionSamplerTable.IsNull() || (state.OptionSamplerTable.ValueBool() && !data.OptionSamplerTable.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/option/sampler-table")
 	}
-	if !state.OptionVrfTableTimeout.IsNull() && data.OptionVrfTableTimeout.IsNull() {
+	if !state.OptionVrfTableTimeout.IsNull() && (data.OptionVrfTableTimeout.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/option/vrf-table/timeout")
 	}
-	if !state.OptionInterfaceTableTimeout.IsNull() && data.OptionInterfaceTableTimeout.IsNull() {
+	if !state.OptionInterfaceTableTimeout.IsNull() && (data.OptionInterfaceTableTimeout.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/option/interface-table/timeout")
 	}
-	if !state.ExportProtocol.IsNull() && data.ExportProtocol.IsNull() {
+	if !state.ExportProtocol.IsNull() && (data.ExportProtocol.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/export-protocol")
 	}
-	if !state.TemplateDataTimeout.IsNull() && data.TemplateDataTimeout.IsNull() {
+	if !state.TemplateDataTimeout.IsNull() && (data.TemplateDataTimeout.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/template/data/timeout")
 	}
-	if !state.Ttl.IsNull() && data.Ttl.IsNull() {
+	if !state.Ttl.IsNull() && (data.Ttl.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ttl")
 	}
-	if !state.TransportUdp.IsNull() && data.TransportUdp.IsNull() {
+	if !state.TransportUdp.IsNull() && (data.TransportUdp.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/transport/udp")
 	}
-	if !state.SourcePortChannel.IsNull() && data.SourcePortChannel.IsNull() {
+	if !state.SourcePortChannel.IsNull() && (data.SourcePortChannel.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/source/Port-channel")
 	}
-	if !state.SourceVlan.IsNull() && data.SourceVlan.IsNull() {
+	if !state.SourceVlan.IsNull() && (data.SourceVlan.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/source/Vlan")
 	}
-	if !state.SourceHundredGigabitEthernet.IsNull() && data.SourceHundredGigabitEthernet.IsNull() {
+	if !state.SourceHundredGigabitEthernet.IsNull() && (data.SourceHundredGigabitEthernet.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/source/HundredGigE")
 	}
-	if !state.SourceFortyGigabitEthernet.IsNull() && data.SourceFortyGigabitEthernet.IsNull() {
+	if !state.SourceFortyGigabitEthernet.IsNull() && (data.SourceFortyGigabitEthernet.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/source/FortyGigabitEthernet")
 	}
-	if !state.SourceTwentyFiveGigabitEthernet.IsNull() && data.SourceTwentyFiveGigabitEthernet.IsNull() {
+	if !state.SourceTwentyFiveGigabitEthernet.IsNull() && (data.SourceTwentyFiveGigabitEthernet.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/source/TwentyFiveGigE")
 	}
-	if !state.SourceTenGigabitEthernet.IsNull() && data.SourceTenGigabitEthernet.IsNull() {
+	if !state.SourceTenGigabitEthernet.IsNull() && (data.SourceTenGigabitEthernet.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/source/TenGigabitEthernet")
 	}
-	if !state.SourceFiveGigabitEthernet.IsNull() && data.SourceFiveGigabitEthernet.IsNull() {
+	if !state.SourceFiveGigabitEthernet.IsNull() && (data.SourceFiveGigabitEthernet.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/source/FiveGigabitEthernet")
 	}
-	if !state.SourceTwoGigabitEthernet.IsNull() && data.SourceTwoGigabitEthernet.IsNull() {
+	if !state.SourceTwoGigabitEthernet.IsNull() && (data.SourceTwoGigabitEthernet.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/source/TwoGigabitEthernet")
 	}
-	if !state.SourceGigabitEthernet.IsNull() && data.SourceGigabitEthernet.IsNull() {
+	if !state.SourceGigabitEthernet.IsNull() && (data.SourceGigabitEthernet.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/source/GigabitEthernet")
 	}
-	if !state.SourceLoopback.IsNull() && data.SourceLoopback.IsNull() {
+	if !state.SourceLoopback.IsNull() && (data.SourceLoopback.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/source/Loopback")
 	}
-	if !state.DestinationIpVrf.IsNull() && data.DestinationIpVrf.IsNull() {
+	if !state.DestinationIpVrf.IsNull() && (data.DestinationIpVrf.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/destination/ipdest/vrf")
 	}
-	if !state.DestinationIp.IsNull() && data.DestinationIp.IsNull() {
+	if !state.DestinationIp.IsNull() && (data.DestinationIp.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/destination/ipdest/ip")
 	}
-	if !state.Description.IsNull() && data.Description.IsNull() {
+	if !state.Description.IsNull() && (data.Description.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/description")
 	}
 

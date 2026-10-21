@@ -54,12 +54,15 @@ resource "iosxe_aaa_accounting" "example" {
 - `device` (String) A device name from the provider configuration.
 - `dot1x` (Attributes List) Named Accounting list (max 31 characters, longer will be rejected). (see [below for nested schema](#nestedatt--dot1x))
 - `dot1x_default_start_stop_broadcast` (Boolean) Use Broadcast for Accounting
+  - Default value: `false`
 - `dot1x_default_start_stop_group1` (String) Use Server-group
 - `dot1x_default_start_stop_group2` (String) Use Server-group
 - `dot1x_default_start_stop_group3` (String) Use Server-group
 - `dot1x_default_start_stop_group4` (String) Use Server-group
 - `dot1x_default_start_stop_group_broadcast` (Boolean) Use Broadcast for Accounting
+  - Default value: `false`
 - `dot1x_default_start_stop_group_logger` (Boolean) Use system logger for Accounting
+  - Default value: `false`
 - `execs` (Attributes List) For starting an exec (shell). (see [below for nested schema](#nestedatt--execs))
 - `identities` (Attributes List) Named Accounting list (max 31 characters, longer will be rejected). (see [below for nested schema](#nestedatt--identities))
 - `identity_default_start_stop_group1` (String) Use Server-group
@@ -68,6 +71,7 @@ resource "iosxe_aaa_accounting" "example" {
 - `identity_default_start_stop_group4` (String) Use Server-group
 - `networks` (Attributes List) For network services. (PPP, SLIP, ARAP) (see [below for nested schema](#nestedatt--networks))
 - `system_guarantee_first` (Boolean) Guarantee system accounting as first record.
+  - Default value: `false`
 - `update_newinfo_periodic` (Number) Periodic intervals to send accounting update records(in minutes)
   - Range: `1`-`71582`
 
@@ -88,12 +92,15 @@ Optional:
 
 - `action_type` (String) - Choices: `start-stop`, `stop-only`
 - `broadcast` (Boolean) Use Broadcast for Accounting
+  - Default value: `false`
 - `group1_group` (String) Use Server-group
 - `group2_group` (String) Use Server-group
 - `group3_group` (String) Use Server-group
 - `group4_group` (String) Use Server-group
 - `group_broadcast` (Boolean) Use Broadcast for Accounting
+  - Default value: `false`
 - `group_logger` (Boolean) Use system logger for Accounting
+  - Default value: `false`
 
 
 <a id="nestedatt--connections"></a>
@@ -105,20 +112,25 @@ Required:
 
 Optional:
 
-- `default` (Boolean)
+- `default` (Boolean) - Default value: `false`
 - `none` (Boolean) No accounting.
+  - Default value: `false`
 - `start_stop_broadcast` (Boolean) Use Broadcast for Accounting
+  - Default value: `false`
 - `start_stop_group1` (String) Use Server-group
 - `start_stop_group2` (String) Use Server-group
 - `start_stop_group3` (String) Use Server-group
 - `start_stop_group4` (String) Use Server-group
 - `start_stop_logger` (Boolean) Use system logger for Accounting
+  - Default value: `false`
 - `stop_only_broadcast` (Boolean) Use Broadcast for Accounting
+  - Default value: `false`
 - `stop_only_group1` (String) Use Server-group
 - `stop_only_group2` (String) Use Server-group
 - `stop_only_group3` (String) Use Server-group
 - `stop_only_group4` (String) Use Server-group
 - `stop_only_logger` (Boolean) Use system logger for Accounting
+  - Default value: `false`
 
 
 <a id="nestedatt--dot1x"></a>
@@ -131,12 +143,15 @@ Required:
 Optional:
 
 - `start_stop_broadcast` (Boolean) Use Broadcast for Accounting
+  - Default value: `false`
 - `start_stop_group1` (String) Use Server-group
 - `start_stop_group2` (String) Use Server-group
 - `start_stop_group3` (String) Use Server-group
 - `start_stop_group4` (String) Use Server-group
 - `start_stop_group_broadcast` (Boolean) Use Broadcast for Accounting
+  - Default value: `false`
 - `start_stop_group_logger` (Boolean) Use system logger for Accounting
+  - Default value: `false`
 
 
 <a id="nestedatt--execs"></a>
@@ -149,18 +164,23 @@ Required:
 Optional:
 
 - `none` (Boolean) No accounting.
+  - Default value: `false`
 - `start_stop_broadcast` (Boolean) Use Broadcast for Accounting
+  - Default value: `false`
 - `start_stop_group1` (String) Use Server-group
 - `start_stop_group2` (String) Use Server-group
 - `start_stop_group3` (String) Use Server-group
 - `start_stop_group4` (String) Use Server-group
 - `start_stop_logger` (Boolean) Use system logger for Accounting
+  - Default value: `false`
 - `stop_only_broadcast` (Boolean) Use Broadcast for Accounting
+  - Default value: `false`
 - `stop_only_group1` (String) Use Server-group
 - `stop_only_group2` (String) Use Server-group
 - `stop_only_group3` (String) Use Server-group
 - `stop_only_group4` (String) Use Server-group
 - `stop_only_logger` (Boolean) Use system logger for Accounting
+  - Default value: `false`
 
 
 <a id="nestedatt--identities"></a>
@@ -173,12 +193,15 @@ Required:
 Optional:
 
 - `start_stop_broadcast` (Boolean) Use Broadcast for Accounting
+  - Default value: `false`
 - `start_stop_group1` (String) Use Server-group
 - `start_stop_group2` (String) Use Server-group
 - `start_stop_group3` (String) Use Server-group
 - `start_stop_group4` (String) Use Server-group
 - `start_stop_group_broadcast` (Boolean) Use Broadcast for Accounting
+  - Default value: `false`
 - `start_stop_group_logger` (Boolean) Use system logger for Accounting
+  - Default value: `false`
 
 
 <a id="nestedatt--networks"></a>

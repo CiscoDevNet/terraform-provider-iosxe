@@ -106,13 +106,16 @@ Optional:
 - `activate_service_template_config_precedence` (Number) Template precedence
   - Range: `1`-`254`
 - `activate_service_template_config_replace_all` (Boolean) Replace all existing authorization data and services
+  - Default value: `false`
 - `activate_service_template_config_service_template` (String) activate service template
 - `authenticate_using_aaa_authc_list_legacy` (String) Specify authentication method list. Use this for versions before `17.18`.
 - `authenticate_using_aaa_authz_list_legacy` (String) Specify authorization method list. Use this for versions before `17.18`.
 - `authenticate_using_aaa_config` (Boolean) Configure AAA method list. Required when using `authenticate_using_authc_list` or `authenticate_using_authz_list` (versions `17.18` and later).
+  - Default value: `false`
 - `authenticate_using_authc_list` (String) Specify authentication method list. Use this for versions `17.18` and later.
 - `authenticate_using_authz_list` (String) Specify authorization method list. Use this for versions `17.18` and later.
 - `authenticate_using_both` (Boolean) Enabling Dot1x Authenticator & Supplicant
+  - Default value: `false`
 - `authenticate_using_method` (String) method/protocol to be used for authentication
   - Choices: `dot1x`, `mab`, `webauth`
 - `authenticate_using_parameter_map` (String) Specify parameter map name
@@ -125,19 +128,29 @@ Optional:
 - `authentication_restart` (Number) restarts the auth sequence after the specified number of sec
   - Range: `1`-`65535`
 - `authorize` (Boolean) authorize session
+  - Default value: `false`
 - `clear_authenticated_data_hosts_on_port` (Boolean) clears authenticated data hosts on the port
+  - Default value: `false`
 - `clear_session` (Boolean) clears an active session
+  - Default value: `false`
 - `deactivate_interface_template` (String) activate interface template
 - `deactivate_policy_type_control_subscriber` (String) policy type control subscriber
 - `deactivate_service_template` (String) activate service template
 - `err_disable` (Boolean) temporarily disable port
+  - Default value: `false`
 - `map_attribute_to_service_table` (String) map identity-update attribute to a auto-conf templates
 - `notify` (Boolean) notifies the session attributes
+  - Default value: `false`
 - `pause_reauthentication` (Boolean) pause reauthentication
+  - Default value: `false`
 - `protect` (Boolean) silently drop violating packets
+  - Default value: `false`
 - `replace` (Boolean) clear existing session and create session for violating host
+  - Default value: `false`
 - `restrict` (Boolean) drop violating packets and generate a syslog
+  - Default value: `false`
 - `resume_reauthentication` (Boolean) resume reauthentication
+  - Default value: `false`
 - `set_domain` (String) set domain
   - Choices: `data`, `switch`, `voice`
 - `set_timer_name` (String) timer name
@@ -146,6 +159,7 @@ Optional:
 - `terminate_config` (String) terminate auth method
   - Choices: `dot1x`, `mab`, `webauth`
 - `unauthorize` (Boolean) unauthorize session
+  - Default value: `false`
 
 ## Import
 

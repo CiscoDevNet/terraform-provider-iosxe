@@ -135,8 +135,6 @@ func (data BFDTemplateMultiHop) addToBodyXML(ctx context.Context, config BFDTemp
 	if !data.Echo.IsNull() && !data.Echo.IsUnknown() {
 		if data.Echo.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/echo", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/echo")
 		}
 	}
 	if !data.IntervalMillisecondsBoth.IsNull() && !data.IntervalMillisecondsBoth.IsUnknown() {
@@ -154,8 +152,6 @@ func (data BFDTemplateMultiHop) addToBodyXML(ctx context.Context, config BFDTemp
 	if !data.IntervalMicroseconds.IsNull() && !data.IntervalMicroseconds.IsUnknown() {
 		if data.IntervalMicroseconds.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/interval-multihop-v2/ms-unit/microseconds", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/interval-multihop-v2/ms-unit/microseconds")
 		}
 	}
 	if !data.IntervalMicrosecondsBoth.IsNull() && !data.IntervalMicrosecondsBoth.IsUnknown() {
@@ -200,8 +196,6 @@ func (data BFDTemplateMultiHop) addToBodyXML(ctx context.Context, config BFDTemp
 	if !data.DampeningDownMonitoring.IsNull() && !data.DampeningDownMonitoring.IsUnknown() {
 		if data.DampeningDownMonitoring.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/dampening/down-monitoring", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/dampening/down-monitoring")
 		}
 	}
 	return body
@@ -483,64 +477,64 @@ func (data *BFDTemplateMultiHopData) fromBodyXML(ctx context.Context, res xmldot
 
 func (data *BFDTemplateMultiHop) addDeletedItemsXML(ctx context.Context, state BFDTemplateMultiHop, body string) string {
 	b := netconf.NewBody(body)
-	if !state.DampeningDownMonitoring.IsNull() && data.DampeningDownMonitoring.IsNull() {
+	if !state.DampeningDownMonitoring.IsNull() && (data.DampeningDownMonitoring.IsNull() || (state.DampeningDownMonitoring.ValueBool() && !data.DampeningDownMonitoring.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dampening/down-monitoring")
 	}
-	if !state.DampeningThreshold.IsNull() && data.DampeningThreshold.IsNull() {
+	if !state.DampeningThreshold.IsNull() && (data.DampeningThreshold.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dampening/threshold")
 	}
-	if !state.DampeningMaxSuppressingTime.IsNull() && data.DampeningMaxSuppressingTime.IsNull() {
+	if !state.DampeningMaxSuppressingTime.IsNull() && (data.DampeningMaxSuppressingTime.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dampening/max-suppressing-time")
 	}
-	if !state.DampeningSuppressTime.IsNull() && data.DampeningSuppressTime.IsNull() {
+	if !state.DampeningSuppressTime.IsNull() && (data.DampeningSuppressTime.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dampening/suppress-time")
 	}
-	if !state.DampeningUnsuppressTime.IsNull() && data.DampeningUnsuppressTime.IsNull() {
+	if !state.DampeningUnsuppressTime.IsNull() && (data.DampeningUnsuppressTime.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dampening/unsuppress-time")
 	}
-	if !state.DampeningHalfTime.IsNull() && data.DampeningHalfTime.IsNull() {
+	if !state.DampeningHalfTime.IsNull() && (data.DampeningHalfTime.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dampening/half-time")
 	}
-	if !state.AuthenticationSha1Keychain.IsNull() && data.AuthenticationSha1Keychain.IsNull() {
+	if !state.AuthenticationSha1Keychain.IsNull() && (data.AuthenticationSha1Keychain.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/authentication/sha-1/keychain")
 	}
-	if !state.AuthenticationMeticulousSha1Keychain.IsNull() && data.AuthenticationMeticulousSha1Keychain.IsNull() {
+	if !state.AuthenticationMeticulousSha1Keychain.IsNull() && (data.AuthenticationMeticulousSha1Keychain.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/authentication/meticulous-sha-1/keychain")
 	}
-	if !state.AuthenticationMeticulousMd5Keychain.IsNull() && data.AuthenticationMeticulousMd5Keychain.IsNull() {
+	if !state.AuthenticationMeticulousMd5Keychain.IsNull() && (data.AuthenticationMeticulousMd5Keychain.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/authentication/meticulous-md5/keychain")
 	}
-	if !state.AuthenticationMd5Keychain.IsNull() && data.AuthenticationMd5Keychain.IsNull() {
+	if !state.AuthenticationMd5Keychain.IsNull() && (data.AuthenticationMd5Keychain.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/authentication/md5/keychain")
 	}
-	if !state.IntervalMicrosecondsMultiplier.IsNull() && data.IntervalMicrosecondsMultiplier.IsNull() {
+	if !state.IntervalMicrosecondsMultiplier.IsNull() && (data.IntervalMicrosecondsMultiplier.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/interval-multihop-v2/ms-unit/multiplier")
 	}
-	if !state.IntervalMicrosecondsMinRx.IsNull() && data.IntervalMicrosecondsMinRx.IsNull() {
+	if !state.IntervalMicrosecondsMinRx.IsNull() && (data.IntervalMicrosecondsMinRx.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/interval-multihop-v2/ms-unit/min-rx")
 	}
-	if !state.IntervalMicrosecondsMinTx.IsNull() && data.IntervalMicrosecondsMinTx.IsNull() {
+	if !state.IntervalMicrosecondsMinTx.IsNull() && (data.IntervalMicrosecondsMinTx.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/interval-multihop-v2/ms-unit/min-tx")
 	}
-	if !state.IntervalMicrosecondsBoth.IsNull() && data.IntervalMicrosecondsBoth.IsNull() {
+	if !state.IntervalMicrosecondsBoth.IsNull() && (data.IntervalMicrosecondsBoth.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/interval-multihop-v2/ms-unit/both")
 	}
-	if !state.IntervalMicroseconds.IsNull() && data.IntervalMicroseconds.IsNull() {
+	if !state.IntervalMicroseconds.IsNull() && (data.IntervalMicroseconds.IsNull() || (state.IntervalMicroseconds.ValueBool() && !data.IntervalMicroseconds.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/interval-multihop-v2/ms-unit/microseconds")
 	}
-	if !state.IntervalMillisecondsMultiplier.IsNull() && data.IntervalMillisecondsMultiplier.IsNull() {
+	if !state.IntervalMillisecondsMultiplier.IsNull() && (data.IntervalMillisecondsMultiplier.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/interval-multihop-v2/mill-unit/multiplier")
 	}
-	if !state.IntervalMillisecondsMinRx.IsNull() && data.IntervalMillisecondsMinRx.IsNull() {
+	if !state.IntervalMillisecondsMinRx.IsNull() && (data.IntervalMillisecondsMinRx.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/interval-multihop-v2/mill-unit/min-rx")
 	}
-	if !state.IntervalMillisecondsMinTx.IsNull() && data.IntervalMillisecondsMinTx.IsNull() {
+	if !state.IntervalMillisecondsMinTx.IsNull() && (data.IntervalMillisecondsMinTx.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/interval-multihop-v2/mill-unit/min-tx")
 	}
-	if !state.IntervalMillisecondsBoth.IsNull() && data.IntervalMillisecondsBoth.IsNull() {
+	if !state.IntervalMillisecondsBoth.IsNull() && (data.IntervalMillisecondsBoth.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/interval-multihop-v2/mill-unit/both")
 	}
-	if !state.Echo.IsNull() && data.Echo.IsNull() {
+	if !state.Echo.IsNull() && (data.Echo.IsNull() || (state.Echo.ValueBool() && !data.Echo.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/echo")
 	}
 

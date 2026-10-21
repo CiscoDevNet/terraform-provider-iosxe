@@ -30,6 +30,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -92,52 +93,76 @@ func (r *MPLSResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				},
 			},
 			"label_mode_all_vrfs_all_afs_per_vrf": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Per VRF label for entire VRF").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Per VRF label for entire VRF").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"label_mode_all_vrfs_all_afs_per_prefix": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Per prefix label (default)").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Per prefix label (default)").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"label_mode_all_vrfs_all_afs_per_ce": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Per CE label").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Per CE label").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"label_mode_all_vrfs_all_afs_vrf_conn_aggr": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Per VRF label for connected and BGP aggregates in VRF").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Per VRF label for connected and BGP aggregates in VRF").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"label_mode_all_vrfs_bgp_vpnv4_per_vrf": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Per VRF label for entire VRF").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Per VRF label for entire VRF").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"label_mode_all_vrfs_bgp_vpnv4_per_prefix": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Per prefix label (default)").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Per prefix label (default)").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"label_mode_all_vrfs_bgp_vpnv4_per_ce": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Per CE label").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Per CE label").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"label_mode_all_vrfs_bgp_vpnv4_vrf_conn_aggr": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Per VRF label for connected and BGP aggregates in VRF").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Per VRF label for connected and BGP aggregates in VRF").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"label_mode_all_vrfs_bgp_vpnv6_per_vrf": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Per VRF label for entire VRF").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Per VRF label for entire VRF").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"label_mode_all_vrfs_bgp_vpnv6_per_prefix": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Per prefix label (default)").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Per prefix label (default)").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"label_mode_all_vrfs_bgp_vpnv6_per_ce": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Per CE label").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Per CE label").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"label_mode_all_vrfs_bgp_vpnv6_vrf_conn_aggr": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Per VRF label for connected and BGP aggregates in VRF").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Per VRF label for connected and BGP aggregates in VRF").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 		},
 	}

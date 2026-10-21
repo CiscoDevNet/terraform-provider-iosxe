@@ -32,6 +32,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -135,8 +136,10 @@ func (r *AccessListExtendedResource) Schema(ctx context.Context, req resource.Sc
 							},
 						},
 						"source_any": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Any source host").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Any source host").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"source_host": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("A single source host").String,
@@ -224,8 +227,10 @@ func (r *AccessListExtendedResource) Schema(ctx context.Context, req resource.Sc
 							},
 						},
 						"destination_any": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Any destination host").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Any destination host").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"destination_host": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("A single destination host").String,
@@ -263,40 +268,56 @@ func (r *AccessListExtendedResource) Schema(ctx context.Context, req resource.Sc
 							Optional:            true,
 						},
 						"ack": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Match on the ACK bit").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Match on the ACK bit").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"fin": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Match on the FIN bit").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Match on the FIN bit").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"psh": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Match on the PSH bit").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Match on the PSH bit").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"rst": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Match on the RST bit").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Match on the RST bit").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"syn": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Match on the SYN bit").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Match on the SYN bit").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"urg": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Match on the URG bit").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Match on the URG bit").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"established": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Match established connections").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Match established connections").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"dscp": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Match packets with given dscp value").String,
 							Optional:            true,
 						},
 						"fragments": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Check non-initial fragments").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Check non-initial fragments").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"precedence": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Match packets with given precedence value").String,
@@ -307,12 +328,16 @@ func (r *AccessListExtendedResource) Schema(ctx context.Context, req resource.Sc
 							Optional:            true,
 						},
 						"log": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Log matches against this entry").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Log matches against this entry").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"log_input": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Log matches against this entry, including input interface").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Log matches against this entry, including input interface").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"icmp_named_msg_type": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("administratively-prohibited", "alternate-address", "conversion-error", "dod-host-prohibited", "dod-net-prohibited", "echo", "echo-reply", "general-parameter-problem", "host-isolated", "host-precedence-unreachable", "host-redirect", "host-tos-redirect", "host-tos-unreachable", "host-unknown", "host-unreachable", "information-reply", "information-request", "mask-reply", "mask-request", "mobile-redirect", "net-redirect", "net-tos-redirect", "net-tos-unreachable", "net-unreachable", "network-unknown", "no-room-for-option", "option-missing", "packet-too-big", "parameter-problem", "port-unreachable", "precedence-unreachable", "protocol-unreachable", "reassembly-timeout", "redirect", "router-advertisement", "router-solicitation", "source-quench", "source-route-failed", "time-exceeded", "timestamp-reply", "timestamp-request", "traceroute", "ttl-exceeded", "unreachable").String,

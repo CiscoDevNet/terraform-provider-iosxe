@@ -38,30 +38,49 @@ resource "iosxe_vtp" "example" {
 - `file` (String) Configure IFS filesystem file where VTP configuration is stored.
 - `interface` (String) The name of the interface providing the VTP updater ID for this device
 - `interface_only` (Boolean) Use only this interface's IP address as the VTP IP updater address
+  - Default value: `false`
 - `mode_client` (Boolean) Set the device to client mode
+  - Default value: `false`
 - `mode_client_mst` (Boolean) Set the mode for MST VTP instance
+  - Default value: `false`
 - `mode_client_unknown` (Boolean) Set the mode for unknown VTP instances
+  - Default value: `false`
 - `mode_client_vlan` (Boolean) Set the mode for VLAN VTP instance
+  - Default value: `false`
 - `mode_off` (Boolean) Set the device to off mode
+  - Default value: `false`
 - `mode_off_mst` (Boolean) Set the mode for MST VTP instance
+  - Default value: `false`
 - `mode_off_unknown` (Boolean) Set the mode for unknown VTP instances
+  - Default value: `false`
 - `mode_off_vlan` (Boolean) Set the mode for VLAN VTP instance
+  - Default value: `false`
 - `mode_server` (Boolean) Set the device to server mode
+  - Default value: `false`
 - `mode_server_mst` (Boolean) Set the mode for MST VTP instance
+  - Default value: `false`
 - `mode_server_unknown` (Boolean) Set the mode for unknown VTP instances
+  - Default value: `false`
 - `mode_server_vlan` (Boolean) Set the mode for VLAN VTP instance
+  - Default value: `false`
 - `mode_transparent` (Boolean) Set the device to transparent mode
+  - Default value: `false`
 - `mode_transparent_mst` (Boolean) Set the mode for MST VTP instance
+  - Default value: `false`
 - `mode_transparent_unknown` (Boolean) Set the mode for unknown VTP instances
+  - Default value: `false`
 - `mode_transparent_vlan` (Boolean) Set the mode for VLAN VTP instance
+  - Default value: `false`
 - `password` (String, Sensitive) The ascii password for the VTP administrative domain
 - `password_hidden` (Boolean) Set the VTP password hidden option
+  - Default value: `false`
 - `password_secret` (Boolean, Sensitive) Specify the vtp password in encrypted form
 - `password_secret_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
 - `password_secret_wo_version` (Number) The write-only version of the attribute.
 - `password_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
 - `password_wo_version` (Number) The write-only version of the attribute.
 - `pruning` (Boolean) Set the administrative domain to permit pruning
+  - Default value: `false`
 - `version` (Number) Set the administrative domain to VTP version
   - Range: `1`-`3`
 

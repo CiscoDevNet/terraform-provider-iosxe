@@ -37,6 +37,7 @@ resource "iosxe_bgp_address_family_l2vpn" "example" {
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
 - `rewrite_evpn_rt_asn` (Boolean) Enable rewrite RT in the BGP EVPN address-family
+  - Default value: `false`
 
 ### Read-Only
 

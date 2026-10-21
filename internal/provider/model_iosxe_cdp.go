@@ -132,36 +132,26 @@ func (data CDP) addToBodyXML(ctx context.Context, config CDP, body netconf.Body)
 			if !item.VtpMgmtDomain.IsNull() && !item.VtpMgmtDomain.IsUnknown() {
 				if item.VtpMgmtDomain.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "vtp-mgmt-domain", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "vtp-mgmt-domain")
 				}
 			}
 			if !item.Cos.IsNull() && !item.Cos.IsUnknown() {
 				if item.Cos.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "cos", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "cos")
 				}
 			}
 			if !item.Duplex.IsNull() && !item.Duplex.IsUnknown() {
 				if item.Duplex.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "duplex", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "duplex")
 				}
 			}
 			if !item.Trust.IsNull() && !item.Trust.IsUnknown() {
 				if item.Trust.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "trust", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "trust")
 				}
 			}
 			if !item.Version.IsNull() && !item.Version.IsUnknown() {
 				if item.Version.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "version", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "version")
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-cdp:tlv-list", cBody.Res())
@@ -416,19 +406,19 @@ func (data *CDP) addDeletedItemsXML(ctx context.Context, state CDP, body string)
 				found = false
 			}
 			if found {
-				if !state.TlvLists[i].Version.IsNull() && data.TlvLists[j].Version.IsNull() {
+				if !state.TlvLists[i].Version.IsNull() && (data.TlvLists[j].Version.IsNull() || (state.TlvLists[i].Version.ValueBool() && !data.TlvLists[j].Version.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cdp:tlv-list%v/version", predicates))
 				}
-				if !state.TlvLists[i].Trust.IsNull() && data.TlvLists[j].Trust.IsNull() {
+				if !state.TlvLists[i].Trust.IsNull() && (data.TlvLists[j].Trust.IsNull() || (state.TlvLists[i].Trust.ValueBool() && !data.TlvLists[j].Trust.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cdp:tlv-list%v/trust", predicates))
 				}
-				if !state.TlvLists[i].Duplex.IsNull() && data.TlvLists[j].Duplex.IsNull() {
+				if !state.TlvLists[i].Duplex.IsNull() && (data.TlvLists[j].Duplex.IsNull() || (state.TlvLists[i].Duplex.ValueBool() && !data.TlvLists[j].Duplex.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cdp:tlv-list%v/duplex", predicates))
 				}
-				if !state.TlvLists[i].Cos.IsNull() && data.TlvLists[j].Cos.IsNull() {
+				if !state.TlvLists[i].Cos.IsNull() && (data.TlvLists[j].Cos.IsNull() || (state.TlvLists[i].Cos.ValueBool() && !data.TlvLists[j].Cos.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cdp:tlv-list%v/cos", predicates))
 				}
-				if !state.TlvLists[i].VtpMgmtDomain.IsNull() && data.TlvLists[j].VtpMgmtDomain.IsNull() {
+				if !state.TlvLists[i].VtpMgmtDomain.IsNull() && (data.TlvLists[j].VtpMgmtDomain.IsNull() || (state.TlvLists[i].VtpMgmtDomain.ValueBool() && !data.TlvLists[j].VtpMgmtDomain.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cdp:tlv-list%v/vtp-mgmt-domain", predicates))
 				}
 				break
@@ -438,16 +428,16 @@ func (data *CDP) addDeletedItemsXML(ctx context.Context, state CDP, body string)
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cdp:tlv-list%v", predicates))
 		}
 	}
-	if !state.FilterTlvList.IsNull() && data.FilterTlvList.IsNull() {
+	if !state.FilterTlvList.IsNull() && (data.FilterTlvList.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-cdp:filter-tlv-list")
 	}
-	if !state.Run.IsNull() && data.Run.IsNull() {
+	if !state.Run.IsNull() && (data.Run.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-cdp:run-enable")
 	}
-	if !state.Timer.IsNull() && data.Timer.IsNull() {
+	if !state.Timer.IsNull() && (data.Timer.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-cdp:timer")
 	}
-	if !state.Holdtime.IsNull() && data.Holdtime.IsNull() {
+	if !state.Holdtime.IsNull() && (data.Holdtime.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-cdp:holdtime")
 	}
 

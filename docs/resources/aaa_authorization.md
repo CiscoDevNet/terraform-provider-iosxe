@@ -43,8 +43,10 @@ resource "iosxe_aaa_authorization" "example" {
 
 - `commands` (Attributes List) For exec (shell) commands. (see [below for nested schema](#nestedatt--commands))
 - `config_commands` (Boolean) For configuration mode commands.
+  - Default value: `false`
 - `config_lists` (Attributes List) (see [below for nested schema](#nestedatt--config_lists))
 - `console` (Boolean) For enabling console authorization
+  - Default value: `false`
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
@@ -68,28 +70,45 @@ Optional:
 
 - `a1_group` (String) Use Server-group
 - `a1_if_authenticated` (Boolean) Succeed if user has authenticated.
+  - Default value: `false`
 - `a1_local` (Boolean) Use local database
+  - Default value: `false`
 - `a1_none` (Boolean) No authorization (always succeeds)
+  - Default value: `false`
 - `a1_radius` (Boolean) Use RADIUS data for authorization
+  - Default value: `false`
 - `a1_tacacs` (Boolean) Use TACACS+
+  - Default value: `false`
 - `a2_group` (String) Use Server-group
 - `a2_if_authenticated` (Boolean) Succeed if user has authenticated.
-- `a2_local` (Boolean)
+  - Default value: `false`
+- `a2_local` (Boolean) - Default value: `false`
 - `a2_none` (Boolean) No authorization (always succeeds)
+  - Default value: `false`
 - `a2_radius` (Boolean) Use RADIUS
+  - Default value: `false`
 - `a2_tacacs` (Boolean) Use TACACS+
+  - Default value: `false`
 - `a3_group` (String) Use Server-group
 - `a3_if_authenticated` (Boolean) Succeed if user has authenticated.
-- `a3_local` (Boolean)
+  - Default value: `false`
+- `a3_local` (Boolean) - Default value: `false`
 - `a3_none` (Boolean) No authorization (always succeeds)
+  - Default value: `false`
 - `a3_radius` (Boolean) Use RADIUS data for authorization
+  - Default value: `false`
 - `a3_tacacs` (Boolean) Use TACACS+
+  - Default value: `false`
 - `a4_group` (String) Use Server-group
 - `a4_if_authenticated` (Boolean) Succeed if user has authenticated.
-- `a4_local` (Boolean)
+  - Default value: `false`
+- `a4_local` (Boolean) - Default value: `false`
 - `a4_none` (Boolean) No authorization (always succeeds)
+  - Default value: `false`
 - `a4_radius` (Boolean) Use RADIUS data for authorization
+  - Default value: `false`
 - `a4_tacacs` (Boolean) Use TACACS+
+  - Default value: `false`
 
 
 <a id="nestedatt--config_lists"></a>
@@ -104,7 +123,9 @@ Optional:
 - `group1_cache` (String) Use Cached-group
 - `group1_group` (String) Use Server-group
 - `group1_radius` (Boolean) Use list of all Radius hosts
+  - Default value: `false`
 - `group1_tacacs` (Boolean) Use TACACS+
+  - Default value: `false`
 
 
 <a id="nestedatt--execs"></a>
@@ -118,24 +139,37 @@ Optional:
 
 - `a1_group` (String) Use Server-group
 - `a1_if_authenticated` (Boolean) Succeed if user has authenticated.
+  - Default value: `false`
 - `a1_local` (Boolean) Use local database
+  - Default value: `false`
 - `a1_radius` (Boolean) Use radius
+  - Default value: `false`
 - `a1_tacacs` (Boolean) Use TACACS+
+  - Default value: `false`
 - `a2_group` (String) Use Server-group
 - `a2_if_authenticated` (Boolean) Succeed if user has authenticated.
-- `a2_local` (Boolean)
+  - Default value: `false`
+- `a2_local` (Boolean) - Default value: `false`
 - `a2_radius` (Boolean) Use Radius
+  - Default value: `false`
 - `a2_tacacs` (Boolean) Use TACACS+
+  - Default value: `false`
 - `a3_group` (String) Use Server-group
 - `a3_if_authenticated` (Boolean) Succeed if user has authenticated.
-- `a3_local` (Boolean)
+  - Default value: `false`
+- `a3_local` (Boolean) - Default value: `false`
 - `a3_radius` (Boolean) Use Radius
+  - Default value: `false`
 - `a3_tacacs` (Boolean) Use TACACS+
+  - Default value: `false`
 - `a4_group` (String) Use Server-group
 - `a4_if_authenticated` (Boolean) Succeed if user has authenticated.
-- `a4_local` (Boolean)
+  - Default value: `false`
+- `a4_local` (Boolean) - Default value: `false`
 - `a4_radius` (Boolean) Use radius
+  - Default value: `false`
 - `a4_tacacs` (Boolean) Use TACACS+
+  - Default value: `false`
 
 
 <a id="nestedatt--networks"></a>
@@ -149,12 +183,13 @@ Optional:
 
 - `a1_group` (String) Use Server-group
 - `a1_local` (Boolean) Use local username authentication.
+  - Default value: `false`
 - `a2_group` (String) Use Server-group
-- `a2_local` (Boolean)
+- `a2_local` (Boolean) - Default value: `false`
 - `a3_group` (String) Use Server-group
-- `a3_local` (Boolean)
+- `a3_local` (Boolean) - Default value: `false`
 - `a4_group` (String) Use Server-group
-- `a4_local` (Boolean)
+- `a4_local` (Boolean) - Default value: `false`
 
 ## Import
 

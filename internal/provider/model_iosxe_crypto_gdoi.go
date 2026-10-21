@@ -209,8 +209,6 @@ func (data CryptoGDOI) addToBodyXML(ctx context.Context, config CryptoGDOI, body
 	if !data.ServerLocal.IsNull() && !data.ServerLocal.IsUnknown() {
 		if data.ServerLocal.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/server/local", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/server/local")
 		}
 	}
 	if !data.ServerLocalAddressIpv4.IsNull() && !data.ServerLocalAddressIpv4.IsUnknown() {
@@ -219,8 +217,6 @@ func (data CryptoGDOI) addToBodyXML(ctx context.Context, config CryptoGDOI, body
 	if !data.ServerLocalGdoi.IsNull() && !data.ServerLocalGdoi.IsUnknown() {
 		if data.ServerLocalGdoi.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/server/local/gdoi", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/server/local/gdoi")
 		}
 	}
 	if !data.ServerLocalGikev2.IsNull() && !data.ServerLocalGikev2.IsUnknown() {
@@ -229,8 +225,6 @@ func (data CryptoGDOI) addToBodyXML(ctx context.Context, config CryptoGDOI, body
 	if !data.ServerLocalPfs.IsNull() && !data.ServerLocalPfs.IsUnknown() {
 		if data.ServerLocalPfs.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/server/local/pfs", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/server/local/pfs")
 		}
 	}
 	if !data.ServerLocalAuthorizationAddressIpv4.IsNull() && !data.ServerLocalAuthorizationAddressIpv4.IsUnknown() {
@@ -263,8 +257,6 @@ func (data CryptoGDOI) addToBodyXML(ctx context.Context, config CryptoGDOI, body
 	if !data.ServerLocalRekeyRetransmitPeriodic.IsNull() && !data.ServerLocalRekeyRetransmitPeriodic.IsUnknown() {
 		if data.ServerLocalRekeyRetransmitPeriodic.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/server/local/rekey/retransmit/periodic", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/server/local/rekey/retransmit/periodic")
 		}
 	}
 	if !data.ServerLocalRekeySigHashAlgorithm.IsNull() && !data.ServerLocalRekeySigHashAlgorithm.IsUnknown() {
@@ -273,15 +265,11 @@ func (data CryptoGDOI) addToBodyXML(ctx context.Context, config CryptoGDOI, body
 	if !data.ServerLocalRekeyTransportUnicast.IsNull() && !data.ServerLocalRekeyTransportUnicast.IsUnknown() {
 		if data.ServerLocalRekeyTransportUnicast.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/server/local/rekey/transport/unicast", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/server/local/rekey/transport/unicast")
 		}
 	}
 	if !data.ServerLocalRedundancy.IsNull() && !data.ServerLocalRedundancy.IsUnknown() {
 		if data.ServerLocalRedundancy.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/server/local/redundancy", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/server/local/redundancy")
 		}
 	}
 	if !data.ServerLocalRedundancyLocalPriority.IsNull() && !data.ServerLocalRedundancyLocalPriority.IsUnknown() {
@@ -303,8 +291,6 @@ func (data CryptoGDOI) addToBodyXML(ctx context.Context, config CryptoGDOI, body
 	if !data.ServerLocalSaReceiveOnly.IsNull() && !data.ServerLocalSaReceiveOnly.IsUnknown() {
 		if data.ServerLocalSaReceiveOnly.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/server/local/sa/receive-only", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/server/local/sa/receive-only")
 		}
 	}
 	if len(data.ServerLocalSaIpsec) > 0 {
@@ -322,8 +308,6 @@ func (data CryptoGDOI) addToBodyXML(ctx context.Context, config CryptoGDOI, body
 			if !item.ReplayCounter.IsNull() && !item.ReplayCounter.IsUnknown() {
 				if item.ReplayCounter.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "replay/counter", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "replay/counter")
 				}
 			}
 			if !item.ReplayCounterWindowSize.IsNull() && !item.ReplayCounterWindowSize.IsUnknown() {
@@ -332,8 +316,6 @@ func (data CryptoGDOI) addToBodyXML(ctx context.Context, config CryptoGDOI, body
 			if !item.ReplayTime.IsNull() && !item.ReplayTime.IsUnknown() {
 				if item.ReplayTime.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "replay/time", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "replay/time")
 				}
 			}
 			if !item.ReplayTimeWindowSize.IsNull() && !item.ReplayTimeWindowSize.IsUnknown() {
@@ -342,8 +324,6 @@ func (data CryptoGDOI) addToBodyXML(ctx context.Context, config CryptoGDOI, body
 			if !item.TagCtsSgt.IsNull() && !item.TagCtsSgt.IsUnknown() {
 				if item.TagCtsSgt.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "tag/cts/sgt", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "tag/cts/sgt")
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/server/local/sa/ipsec", cBody.Res())
@@ -355,22 +335,16 @@ func (data CryptoGDOI) addToBodyXML(ctx context.Context, config CryptoGDOI, body
 	if !data.ClientPfs.IsNull() && !data.ClientPfs.IsUnknown() {
 		if data.ClientPfs.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/client/pfs", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/client/pfs")
 		}
 	}
 	if !data.ClientFailCloseRevert.IsNull() && !data.ClientFailCloseRevert.IsUnknown() {
 		if data.ClientFailCloseRevert.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/client/fail-close/revert", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/client/fail-close/revert")
 		}
 	}
 	if !data.ClientProtocolGdoi.IsNull() && !data.ClientProtocolGdoi.IsUnknown() {
 		if data.ClientProtocolGdoi.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/client/protocol/gdoi", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/client/protocol/gdoi")
 		}
 	}
 	if !data.ClientProtocolGikev2.IsNull() && !data.ClientProtocolGikev2.IsUnknown() {
@@ -385,64 +359,46 @@ func (data CryptoGDOI) addToBodyXML(ctx context.Context, config CryptoGDOI, body
 	if !data.ClientRekeyEncryption3desCbc.IsNull() && !data.ClientRekeyEncryption3desCbc.IsUnknown() {
 		if data.ClientRekeyEncryption3desCbc.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/client/rekey/encryption/rekey-3des-cbc", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/client/rekey/encryption/rekey-3des-cbc")
 		}
 	}
 	if !data.ClientRekeyEncryptionAes128.IsNull() && !data.ClientRekeyEncryptionAes128.IsUnknown() {
 		if data.ClientRekeyEncryptionAes128.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/client/rekey/encryption/aes-128", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/client/rekey/encryption/aes-128")
 		}
 	}
 	if !data.ClientRekeyEncryptionAes192.IsNull() && !data.ClientRekeyEncryptionAes192.IsUnknown() {
 		if data.ClientRekeyEncryptionAes192.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/client/rekey/encryption/aes-192", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/client/rekey/encryption/aes-192")
 		}
 	}
 	if !data.ClientRekeyEncryptionAes256.IsNull() && !data.ClientRekeyEncryptionAes256.IsUnknown() {
 		if data.ClientRekeyEncryptionAes256.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/client/rekey/encryption/aes-256", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/client/rekey/encryption/aes-256")
 		}
 	}
 	if !data.ClientRekeyEncryptionDesCbc.IsNull() && !data.ClientRekeyEncryptionDesCbc.IsUnknown() {
 		if data.ClientRekeyEncryptionDesCbc.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/client/rekey/encryption/des-cbc", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/client/rekey/encryption/des-cbc")
 		}
 	}
 	if !data.ClientRekeyHashSha.IsNull() && !data.ClientRekeyHashSha.IsUnknown() {
 		if data.ClientRekeyHashSha.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/client/rekey/hash/sha", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/client/rekey/hash/sha")
 		}
 	}
 	if !data.ClientRekeyHashSha256.IsNull() && !data.ClientRekeyHashSha256.IsUnknown() {
 		if data.ClientRekeyHashSha256.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/client/rekey/hash/sha256", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/client/rekey/hash/sha256")
 		}
 	}
 	if !data.ClientRekeyHashSha384.IsNull() && !data.ClientRekeyHashSha384.IsUnknown() {
 		if data.ClientRekeyHashSha384.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/client/rekey/hash/sha384", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/client/rekey/hash/sha384")
 		}
 	}
 	if !data.ClientRekeyHashSha512.IsNull() && !data.ClientRekeyHashSha512.IsUnknown() {
 		if data.ClientRekeyHashSha512.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/client/rekey/hash/sha512", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/client/rekey/hash/sha512")
 		}
 	}
 	if !data.ClientStatusActiveSaTrack.IsNull() && !data.ClientStatusActiveSaTrack.IsUnknown() {
@@ -1331,7 +1287,7 @@ func (data *CryptoGDOI) addDeletedItemsXML(ctx context.Context, state CryptoGDOI
 			}
 		}
 	}
-	if !state.ClientTransportEncryptKey.IsNull() && data.ClientTransportEncryptKey.IsNull() {
+	if !state.ClientTransportEncryptKey.IsNull() && (data.ClientTransportEncryptKey.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/client/transport-encrypt-key")
 	}
 	if !state.ClientTransformSets.IsNull() {
@@ -1359,55 +1315,55 @@ func (data *CryptoGDOI) addDeletedItemsXML(ctx context.Context, state CryptoGDOI
 			}
 		}
 	}
-	if !state.ClientStatusActiveSaTrack.IsNull() && data.ClientStatusActiveSaTrack.IsNull() {
+	if !state.ClientStatusActiveSaTrack.IsNull() && (data.ClientStatusActiveSaTrack.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/client/status/active-sa/track")
 	}
-	if !state.ClientRekeyHashSha512.IsNull() && data.ClientRekeyHashSha512.IsNull() {
+	if !state.ClientRekeyHashSha512.IsNull() && (data.ClientRekeyHashSha512.IsNull() || (state.ClientRekeyHashSha512.ValueBool() && !data.ClientRekeyHashSha512.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/client/rekey/hash/sha512")
 	}
-	if !state.ClientRekeyHashSha384.IsNull() && data.ClientRekeyHashSha384.IsNull() {
+	if !state.ClientRekeyHashSha384.IsNull() && (data.ClientRekeyHashSha384.IsNull() || (state.ClientRekeyHashSha384.ValueBool() && !data.ClientRekeyHashSha384.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/client/rekey/hash/sha384")
 	}
-	if !state.ClientRekeyHashSha256.IsNull() && data.ClientRekeyHashSha256.IsNull() {
+	if !state.ClientRekeyHashSha256.IsNull() && (data.ClientRekeyHashSha256.IsNull() || (state.ClientRekeyHashSha256.ValueBool() && !data.ClientRekeyHashSha256.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/client/rekey/hash/sha256")
 	}
-	if !state.ClientRekeyHashSha.IsNull() && data.ClientRekeyHashSha.IsNull() {
+	if !state.ClientRekeyHashSha.IsNull() && (data.ClientRekeyHashSha.IsNull() || (state.ClientRekeyHashSha.ValueBool() && !data.ClientRekeyHashSha.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/client/rekey/hash/sha")
 	}
-	if !state.ClientRekeyEncryptionDesCbc.IsNull() && data.ClientRekeyEncryptionDesCbc.IsNull() {
+	if !state.ClientRekeyEncryptionDesCbc.IsNull() && (data.ClientRekeyEncryptionDesCbc.IsNull() || (state.ClientRekeyEncryptionDesCbc.ValueBool() && !data.ClientRekeyEncryptionDesCbc.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/client/rekey/encryption/des-cbc")
 	}
-	if !state.ClientRekeyEncryptionAes256.IsNull() && data.ClientRekeyEncryptionAes256.IsNull() {
+	if !state.ClientRekeyEncryptionAes256.IsNull() && (data.ClientRekeyEncryptionAes256.IsNull() || (state.ClientRekeyEncryptionAes256.ValueBool() && !data.ClientRekeyEncryptionAes256.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/client/rekey/encryption/aes-256")
 	}
-	if !state.ClientRekeyEncryptionAes192.IsNull() && data.ClientRekeyEncryptionAes192.IsNull() {
+	if !state.ClientRekeyEncryptionAes192.IsNull() && (data.ClientRekeyEncryptionAes192.IsNull() || (state.ClientRekeyEncryptionAes192.ValueBool() && !data.ClientRekeyEncryptionAes192.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/client/rekey/encryption/aes-192")
 	}
-	if !state.ClientRekeyEncryptionAes128.IsNull() && data.ClientRekeyEncryptionAes128.IsNull() {
+	if !state.ClientRekeyEncryptionAes128.IsNull() && (data.ClientRekeyEncryptionAes128.IsNull() || (state.ClientRekeyEncryptionAes128.ValueBool() && !data.ClientRekeyEncryptionAes128.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/client/rekey/encryption/aes-128")
 	}
-	if !state.ClientRekeyEncryption3desCbc.IsNull() && data.ClientRekeyEncryption3desCbc.IsNull() {
+	if !state.ClientRekeyEncryption3desCbc.IsNull() && (data.ClientRekeyEncryption3desCbc.IsNull() || (state.ClientRekeyEncryption3desCbc.ValueBool() && !data.ClientRekeyEncryption3desCbc.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/client/rekey/encryption/rekey-3des-cbc")
 	}
-	if !state.ClientRegistrationInterface.IsNull() && data.ClientRegistrationInterface.IsNull() {
+	if !state.ClientRegistrationInterface.IsNull() && (data.ClientRegistrationInterface.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/client/registration/interface")
 	}
-	if !state.ClientRecoveryCheckInterval.IsNull() && data.ClientRecoveryCheckInterval.IsNull() {
+	if !state.ClientRecoveryCheckInterval.IsNull() && (data.ClientRecoveryCheckInterval.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/client/recovery-check/interval")
 	}
-	if !state.ClientProtocolGikev2.IsNull() && data.ClientProtocolGikev2.IsNull() {
+	if !state.ClientProtocolGikev2.IsNull() && (data.ClientProtocolGikev2.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/client/protocol/gikev2")
 	}
-	if !state.ClientProtocolGdoi.IsNull() && data.ClientProtocolGdoi.IsNull() {
+	if !state.ClientProtocolGdoi.IsNull() && (data.ClientProtocolGdoi.IsNull() || (state.ClientProtocolGdoi.ValueBool() && !data.ClientProtocolGdoi.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/client/protocol/gdoi")
 	}
-	if !state.ClientFailCloseRevert.IsNull() && data.ClientFailCloseRevert.IsNull() {
+	if !state.ClientFailCloseRevert.IsNull() && (data.ClientFailCloseRevert.IsNull() || (state.ClientFailCloseRevert.ValueBool() && !data.ClientFailCloseRevert.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/client/fail-close/revert")
 	}
-	if !state.ClientPfs.IsNull() && data.ClientPfs.IsNull() {
+	if !state.ClientPfs.IsNull() && (data.ClientPfs.IsNull() || (state.ClientPfs.ValueBool() && !data.ClientPfs.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/client/pfs")
 	}
-	if !state.ClientBypassPolicy.IsNull() && data.ClientBypassPolicy.IsNull() {
+	if !state.ClientBypassPolicy.IsNull() && (data.ClientBypassPolicy.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/client/bypass-policy-new")
 	}
 	for i := range state.ServerLocalSaIpsec {
@@ -1433,25 +1389,25 @@ func (data *CryptoGDOI) addDeletedItemsXML(ctx context.Context, state CryptoGDOI
 				found = false
 			}
 			if found {
-				if !state.ServerLocalSaIpsec[i].TagCtsSgt.IsNull() && data.ServerLocalSaIpsec[j].TagCtsSgt.IsNull() {
+				if !state.ServerLocalSaIpsec[i].TagCtsSgt.IsNull() && (data.ServerLocalSaIpsec[j].TagCtsSgt.IsNull() || (state.ServerLocalSaIpsec[i].TagCtsSgt.ValueBool() && !data.ServerLocalSaIpsec[j].TagCtsSgt.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/server/local/sa/ipsec%v/tag/cts/sgt", predicates))
 				}
-				if !state.ServerLocalSaIpsec[i].ReplayTimeWindowSize.IsNull() && data.ServerLocalSaIpsec[j].ReplayTimeWindowSize.IsNull() {
+				if !state.ServerLocalSaIpsec[i].ReplayTimeWindowSize.IsNull() && (data.ServerLocalSaIpsec[j].ReplayTimeWindowSize.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/server/local/sa/ipsec%v/replay/time/window-size", predicates))
 				}
-				if !state.ServerLocalSaIpsec[i].ReplayTime.IsNull() && data.ServerLocalSaIpsec[j].ReplayTime.IsNull() {
+				if !state.ServerLocalSaIpsec[i].ReplayTime.IsNull() && (data.ServerLocalSaIpsec[j].ReplayTime.IsNull() || (state.ServerLocalSaIpsec[i].ReplayTime.ValueBool() && !data.ServerLocalSaIpsec[j].ReplayTime.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/server/local/sa/ipsec%v/replay/time", predicates))
 				}
-				if !state.ServerLocalSaIpsec[i].ReplayCounterWindowSize.IsNull() && data.ServerLocalSaIpsec[j].ReplayCounterWindowSize.IsNull() {
+				if !state.ServerLocalSaIpsec[i].ReplayCounterWindowSize.IsNull() && (data.ServerLocalSaIpsec[j].ReplayCounterWindowSize.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/server/local/sa/ipsec%v/replay/counter/window-size", predicates))
 				}
-				if !state.ServerLocalSaIpsec[i].ReplayCounter.IsNull() && data.ServerLocalSaIpsec[j].ReplayCounter.IsNull() {
+				if !state.ServerLocalSaIpsec[i].ReplayCounter.IsNull() && (data.ServerLocalSaIpsec[j].ReplayCounter.IsNull() || (state.ServerLocalSaIpsec[i].ReplayCounter.ValueBool() && !data.ServerLocalSaIpsec[j].ReplayCounter.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/server/local/sa/ipsec%v/replay/counter", predicates))
 				}
-				if !state.ServerLocalSaIpsec[i].Profile.IsNull() && data.ServerLocalSaIpsec[j].Profile.IsNull() {
+				if !state.ServerLocalSaIpsec[i].Profile.IsNull() && (data.ServerLocalSaIpsec[j].Profile.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/server/local/sa/ipsec%v/profile", predicates))
 				}
-				if !state.ServerLocalSaIpsec[i].MatchAddressIpv4.IsNull() && data.ServerLocalSaIpsec[j].MatchAddressIpv4.IsNull() {
+				if !state.ServerLocalSaIpsec[i].MatchAddressIpv4.IsNull() && (data.ServerLocalSaIpsec[j].MatchAddressIpv4.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/server/local/sa/ipsec%v/match/address/ipv4", predicates))
 				}
 				break
@@ -1461,13 +1417,13 @@ func (data *CryptoGDOI) addDeletedItemsXML(ctx context.Context, state CryptoGDOI
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/server/local/sa/ipsec%v", predicates))
 		}
 	}
-	if !state.ServerLocalSaReceiveOnly.IsNull() && data.ServerLocalSaReceiveOnly.IsNull() {
+	if !state.ServerLocalSaReceiveOnly.IsNull() && (data.ServerLocalSaReceiveOnly.IsNull() || (state.ServerLocalSaReceiveOnly.ValueBool() && !data.ServerLocalSaReceiveOnly.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/server/local/sa/receive-only")
 	}
-	if !state.ServerLocalRedundancyProtocolVersion.IsNull() && data.ServerLocalRedundancyProtocolVersion.IsNull() {
+	if !state.ServerLocalRedundancyProtocolVersion.IsNull() && (data.ServerLocalRedundancyProtocolVersion.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/server/local/redundancy/protocol/version")
 	}
-	if !state.ServerLocalRedundancyProtocolPdu.IsNull() && data.ServerLocalRedundancyProtocolPdu.IsNull() {
+	if !state.ServerLocalRedundancyProtocolPdu.IsNull() && (data.ServerLocalRedundancyProtocolPdu.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/server/local/redundancy/protocol/pdu")
 	}
 	if !state.ServerLocalRedundancyPeerAddressIpv4.IsNull() {
@@ -1495,64 +1451,64 @@ func (data *CryptoGDOI) addDeletedItemsXML(ctx context.Context, state CryptoGDOI
 			}
 		}
 	}
-	if !state.ServerLocalRedundancyLocalPriority.IsNull() && data.ServerLocalRedundancyLocalPriority.IsNull() {
+	if !state.ServerLocalRedundancyLocalPriority.IsNull() && (data.ServerLocalRedundancyLocalPriority.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/server/local/redundancy/local/priority")
 	}
-	if !state.ServerLocalRedundancy.IsNull() && data.ServerLocalRedundancy.IsNull() {
+	if !state.ServerLocalRedundancy.IsNull() && (data.ServerLocalRedundancy.IsNull() || (state.ServerLocalRedundancy.ValueBool() && !data.ServerLocalRedundancy.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/server/local/redundancy")
 	}
-	if !state.ServerLocalRekeyTransportUnicast.IsNull() && data.ServerLocalRekeyTransportUnicast.IsNull() {
+	if !state.ServerLocalRekeyTransportUnicast.IsNull() && (data.ServerLocalRekeyTransportUnicast.IsNull() || (state.ServerLocalRekeyTransportUnicast.ValueBool() && !data.ServerLocalRekeyTransportUnicast.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/server/local/rekey/transport/unicast")
 	}
-	if !state.ServerLocalRekeySigHashAlgorithm.IsNull() && data.ServerLocalRekeySigHashAlgorithm.IsNull() {
+	if !state.ServerLocalRekeySigHashAlgorithm.IsNull() && (data.ServerLocalRekeySigHashAlgorithm.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/server/local/rekey/sig-hash/algorithm")
 	}
-	if !state.ServerLocalRekeyRetransmitPeriodic.IsNull() && data.ServerLocalRekeyRetransmitPeriodic.IsNull() {
+	if !state.ServerLocalRekeyRetransmitPeriodic.IsNull() && (data.ServerLocalRekeyRetransmitPeriodic.IsNull() || (state.ServerLocalRekeyRetransmitPeriodic.ValueBool() && !data.ServerLocalRekeyRetransmitPeriodic.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/server/local/rekey/retransmit/periodic")
 	}
-	if !state.ServerLocalRekeyRetransmitNumber.IsNull() && data.ServerLocalRekeyRetransmitNumber.IsNull() {
+	if !state.ServerLocalRekeyRetransmitNumber.IsNull() && (data.ServerLocalRekeyRetransmitNumber.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/server/local/rekey/retransmit/number")
 	}
-	if !state.ServerLocalRekeyRetransmitSeconds.IsNull() && data.ServerLocalRekeyRetransmitSeconds.IsNull() {
+	if !state.ServerLocalRekeyRetransmitSeconds.IsNull() && (data.ServerLocalRekeyRetransmitSeconds.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/server/local/rekey/retransmit/seconds")
 	}
-	if !state.ServerLocalRekeyLifetimeSeconds.IsNull() && data.ServerLocalRekeyLifetimeSeconds.IsNull() {
+	if !state.ServerLocalRekeyLifetimeSeconds.IsNull() && (data.ServerLocalRekeyLifetimeSeconds.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/server/local/rekey/lifetime/seconds")
 	}
-	if !state.ServerLocalRekeyAuthenticationMypubkeyRsa.IsNull() && data.ServerLocalRekeyAuthenticationMypubkeyRsa.IsNull() {
+	if !state.ServerLocalRekeyAuthenticationMypubkeyRsa.IsNull() && (data.ServerLocalRekeyAuthenticationMypubkeyRsa.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/server/local/rekey/authentication/mypubkey/rsa")
 	}
-	if !state.ServerLocalRekeyAddressIpv4.IsNull() && data.ServerLocalRekeyAddressIpv4.IsNull() {
+	if !state.ServerLocalRekeyAddressIpv4.IsNull() && (data.ServerLocalRekeyAddressIpv4.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/server/local/rekey/address/ipv4")
 	}
-	if !state.ServerLocalRekeyAcknowledgement.IsNull() && data.ServerLocalRekeyAcknowledgement.IsNull() {
+	if !state.ServerLocalRekeyAcknowledgement.IsNull() && (data.ServerLocalRekeyAcknowledgement.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/server/local/rekey/acknowledgement")
 	}
-	if !state.ServerLocalRegistrationInterface.IsNull() && data.ServerLocalRegistrationInterface.IsNull() {
+	if !state.ServerLocalRegistrationInterface.IsNull() && (data.ServerLocalRegistrationInterface.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/server/local/registration/interface")
 	}
-	if !state.ServerLocalAuthorizationIdentity.IsNull() && data.ServerLocalAuthorizationIdentity.IsNull() {
+	if !state.ServerLocalAuthorizationIdentity.IsNull() && (data.ServerLocalAuthorizationIdentity.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/server/local/authorization/identity")
 	}
-	if !state.ServerLocalAuthorizationAddressIpv4.IsNull() && data.ServerLocalAuthorizationAddressIpv4.IsNull() {
+	if !state.ServerLocalAuthorizationAddressIpv4.IsNull() && (data.ServerLocalAuthorizationAddressIpv4.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/server/local/authorization/address/ipv4")
 	}
-	if !state.ServerLocalPfs.IsNull() && data.ServerLocalPfs.IsNull() {
+	if !state.ServerLocalPfs.IsNull() && (data.ServerLocalPfs.IsNull() || (state.ServerLocalPfs.ValueBool() && !data.ServerLocalPfs.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/server/local/pfs")
 	}
-	if !state.ServerLocalGikev2.IsNull() && data.ServerLocalGikev2.IsNull() {
+	if !state.ServerLocalGikev2.IsNull() && (data.ServerLocalGikev2.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/server/local/gikev2")
 	}
-	if !state.ServerLocalGdoi.IsNull() && data.ServerLocalGdoi.IsNull() {
+	if !state.ServerLocalGdoi.IsNull() && (data.ServerLocalGdoi.IsNull() || (state.ServerLocalGdoi.ValueBool() && !data.ServerLocalGdoi.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/server/local/gdoi")
 	}
-	if !state.ServerLocalAddressIpv4.IsNull() && data.ServerLocalAddressIpv4.IsNull() {
+	if !state.ServerLocalAddressIpv4.IsNull() && (data.ServerLocalAddressIpv4.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/server/local/address/ipv4")
 	}
-	if !state.ServerLocal.IsNull() && data.ServerLocal.IsNull() {
+	if !state.ServerLocal.IsNull() && (data.ServerLocal.IsNull() || (state.ServerLocal.ValueBool() && !data.ServerLocal.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/server/local")
 	}
-	if !state.IdentityNumber.IsNull() && data.IdentityNumber.IsNull() {
+	if !state.IdentityNumber.IsNull() && (data.IdentityNumber.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/identity/number")
 	}
 

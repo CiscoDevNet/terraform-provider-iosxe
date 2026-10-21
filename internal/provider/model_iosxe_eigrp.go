@@ -169,15 +169,11 @@ func (data EIGRP) addToBodyXML(ctx context.Context, config EIGRP, body netconf.B
 	if !data.StubConnected.IsNull() && !data.StubConnected.IsUnknown() {
 		if data.StubConnected.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/eigrp/stub/advertise/connected", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/eigrp/stub/advertise/connected")
 		}
 	}
 	if !data.StubSummary.IsNull() && !data.StubSummary.IsUnknown() {
 		if data.StubSummary.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/eigrp/stub/advertise/summary", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/eigrp/stub/advertise/summary")
 		}
 	}
 	if !data.Shutdown.IsNull() && !data.Shutdown.IsUnknown() {
@@ -465,13 +461,13 @@ func (data *EIGRPData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 func (data *EIGRP) addDeletedItemsXML(ctx context.Context, state EIGRP, body string) string {
 	b := netconf.NewBody(body)
-	if !state.Shutdown.IsNull() && data.Shutdown.IsNull() {
+	if !state.Shutdown.IsNull() && (data.Shutdown.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/shutdown")
 	}
-	if !state.StubSummary.IsNull() && data.StubSummary.IsNull() {
+	if !state.StubSummary.IsNull() && (data.StubSummary.IsNull() || (state.StubSummary.ValueBool() && !data.StubSummary.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/eigrp/stub/advertise/summary")
 	}
-	if !state.StubConnected.IsNull() && data.StubConnected.IsNull() {
+	if !state.StubConnected.IsNull() && (data.StubConnected.IsNull() || (state.StubConnected.ValueBool() && !data.StubConnected.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/eigrp/stub/advertise/connected")
 	}
 	for i := range state.AfInterfaces {
@@ -497,10 +493,10 @@ func (data *EIGRP) addDeletedItemsXML(ctx context.Context, state EIGRP, body str
 				found = false
 			}
 			if found {
-				if !state.AfInterfaces[i].SplitHorizon.IsNull() && data.AfInterfaces[j].SplitHorizon.IsNull() {
+				if !state.AfInterfaces[i].SplitHorizon.IsNull() && (data.AfInterfaces[j].SplitHorizon.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/af-interface%v/split-horizon", predicates))
 				}
-				if !state.AfInterfaces[i].PassiveInterface.IsNull() && data.AfInterfaces[j].PassiveInterface.IsNull() {
+				if !state.AfInterfaces[i].PassiveInterface.IsNull() && (data.AfInterfaces[j].PassiveInterface.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/af-interface%v/passive-interface", predicates))
 				}
 				break
@@ -546,7 +542,7 @@ func (data *EIGRP) addDeletedItemsXML(ctx context.Context, state EIGRP, body str
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/network/address-wildcard%v", predicates))
 		}
 	}
-	if !state.RouterId.IsNull() && data.RouterId.IsNull() {
+	if !state.RouterId.IsNull() && (data.RouterId.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/eigrp/router-id")
 	}
 

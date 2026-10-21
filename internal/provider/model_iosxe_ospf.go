@@ -401,22 +401,16 @@ func (data OSPF) addToBodyXML(ctx context.Context, config OSPF, body netconf.Bod
 	if !data.BfdAllInterfaces.IsNull() && !data.BfdAllInterfaces.IsUnknown() {
 		if data.BfdAllInterfaces.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/bfd/all-interfaces", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/bfd/all-interfaces")
 		}
 	}
 	if !data.DefaultInformationOriginate.IsNull() && !data.DefaultInformationOriginate.IsUnknown() {
 		if data.DefaultInformationOriginate.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/default-information/originate", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/default-information/originate")
 		}
 	}
 	if !data.DefaultInformationOriginateAlways.IsNull() && !data.DefaultInformationOriginateAlways.IsUnknown() {
 		if data.DefaultInformationOriginateAlways.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/default-information/originate/always", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/default-information/originate/always")
 		}
 	}
 	if !data.DefaultInformationOriginateMetric.IsNull() && !data.DefaultInformationOriginateMetric.IsUnknown() {
@@ -440,15 +434,11 @@ func (data OSPF) addToBodyXML(ctx context.Context, config OSPF, body netconf.Bod
 	if !data.MplsLdpAutoconfig.IsNull() && !data.MplsLdpAutoconfig.IsUnknown() {
 		if data.MplsLdpAutoconfig.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/mpls/ldp/autoconfig", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/mpls/ldp/autoconfig")
 		}
 	}
 	if !data.MplsLdpSync.IsNull() && !data.MplsLdpSync.IsUnknown() {
 		if data.MplsLdpSync.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/mpls/ldp/sync", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/mpls/ldp/sync")
 		}
 	}
 	if len(data.Neighbors) > 0 {
@@ -511,22 +501,16 @@ func (data OSPF) addToBodyXML(ctx context.Context, config OSPF, body netconf.Bod
 			if !item.AuthenticationMessageDigest.IsNull() && !item.AuthenticationMessageDigest.IsUnknown() {
 				if item.AuthenticationMessageDigest.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "authentication/message-digest", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "authentication/message-digest")
 				}
 			}
 			if !item.Nssa.IsNull() && !item.Nssa.IsUnknown() {
 				if item.Nssa.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "nssa", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "nssa")
 				}
 			}
 			if !item.NssaDefaultInformationOriginate.IsNull() && !item.NssaDefaultInformationOriginate.IsUnknown() {
 				if item.NssaDefaultInformationOriginate.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "nssa/nssa-options/default-information-originate", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "nssa/nssa-options/default-information-originate")
 				}
 			}
 			if !item.NssaDefaultInformationOriginateMetric.IsNull() && !item.NssaDefaultInformationOriginateMetric.IsUnknown() {
@@ -538,15 +522,11 @@ func (data OSPF) addToBodyXML(ctx context.Context, config OSPF, body netconf.Bod
 			if !item.NssaNoSummary.IsNull() && !item.NssaNoSummary.IsUnknown() {
 				if item.NssaNoSummary.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "nssa/nssa-options/no-summary", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "nssa/nssa-options/no-summary")
 				}
 			}
 			if !item.NssaNoRedistribution.IsNull() && !item.NssaNoRedistribution.IsUnknown() {
 				if item.NssaNoRedistribution.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "nssa/nssa-options/no-redistribution", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "nssa/nssa-options/no-redistribution")
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/area", cBody.Res())
@@ -571,29 +551,21 @@ func (data OSPF) addToBodyXML(ctx context.Context, config OSPF, body netconf.Bod
 	if !data.LogAdjacencyChangesDetail.IsNull() && !data.LogAdjacencyChangesDetail.IsUnknown() {
 		if data.LogAdjacencyChangesDetail.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/log-adjacency-changes-detail/log-adjacency-changes/detail", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/log-adjacency-changes-detail/log-adjacency-changes/detail")
 		}
 	}
 	if !data.NsfCisco.IsNull() && !data.NsfCisco.IsUnknown() {
 		if data.NsfCisco.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/nsf/nsf-cisco", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/nsf/nsf-cisco")
 		}
 	}
 	if !data.NsfCiscoEnforceGlobal.IsNull() && !data.NsfCiscoEnforceGlobal.IsUnknown() {
 		if data.NsfCiscoEnforceGlobal.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/nsf/nsf-cisco/enforce/global", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/nsf/nsf-cisco/enforce/global")
 		}
 	}
 	if !data.NsfIetf.IsNull() && !data.NsfIetf.IsUnknown() {
 		if data.NsfIetf.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/nsf/nsf-ietf", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/nsf/nsf-ietf")
 		}
 	}
 	if !data.NsfIetfRestartInterval.IsNull() && !data.NsfIetfRestartInterval.IsUnknown() {
@@ -602,8 +574,6 @@ func (data OSPF) addToBodyXML(ctx context.Context, config OSPF, body netconf.Bod
 	if !data.MaxMetricRouterLsa.IsNull() && !data.MaxMetricRouterLsa.IsUnknown() {
 		if data.MaxMetricRouterLsa.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/max-metric/router-lsa", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/max-metric/router-lsa")
 		}
 	}
 	if !data.MaxMetricRouterLsaSummaryLsaMetric.IsNull() && !data.MaxMetricRouterLsaSummaryLsaMetric.IsUnknown() {
@@ -615,8 +585,6 @@ func (data OSPF) addToBodyXML(ctx context.Context, config OSPF, body netconf.Bod
 	if !data.MaxMetricRouterLsaIncludeStub.IsNull() && !data.MaxMetricRouterLsaIncludeStub.IsUnknown() {
 		if data.MaxMetricRouterLsaIncludeStub.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/max-metric/router-lsa/include-stub", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/max-metric/router-lsa/include-stub")
 		}
 	}
 	if !data.MaxMetricRouterLsaOnStartupTime.IsNull() && !data.MaxMetricRouterLsaOnStartupTime.IsUnknown() {
@@ -625,8 +593,6 @@ func (data OSPF) addToBodyXML(ctx context.Context, config OSPF, body netconf.Bod
 	if !data.MaxMetricRouterLsaOnStartupWaitForBgp.IsNull() && !data.MaxMetricRouterLsaOnStartupWaitForBgp.IsUnknown() {
 		if data.MaxMetricRouterLsaOnStartupWaitForBgp.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/max-metric/router-lsa/on-startup/wait-for-bgp", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/max-metric/router-lsa/on-startup/wait-for-bgp")
 		}
 	}
 	if !data.FastReroutePerPrefixEnablePrefixPriority.IsNull() && !data.FastReroutePerPrefixEnablePrefixPriority.IsUnknown() {
@@ -635,8 +601,6 @@ func (data OSPF) addToBodyXML(ctx context.Context, config OSPF, body netconf.Bod
 	if !data.RedistributeStaticSubnets.IsNull() && !data.RedistributeStaticSubnets.IsUnknown() {
 		if data.RedistributeStaticSubnets.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/redistribute/static/subnets", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/redistribute/static/subnets")
 		}
 	}
 	if !data.RedistributeStaticMetric.IsNull() && !data.RedistributeStaticMetric.IsUnknown() {
@@ -654,15 +618,11 @@ func (data OSPF) addToBodyXML(ctx context.Context, config OSPF, body netconf.Bod
 	if !data.RedistributeStaticNssaOnly.IsNull() && !data.RedistributeStaticNssaOnly.IsUnknown() {
 		if data.RedistributeStaticNssaOnly.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/redistribute/static/nssa-only", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/redistribute/static/nssa-only")
 		}
 	}
 	if !data.RedistributeConnectedSubnets.IsNull() && !data.RedistributeConnectedSubnets.IsUnknown() {
 		if data.RedistributeConnectedSubnets.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/redistribute/connected/subnets", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/redistribute/connected/subnets")
 		}
 	}
 	if !data.RedistributeConnectedMetric.IsNull() && !data.RedistributeConnectedMetric.IsUnknown() {
@@ -680,8 +640,6 @@ func (data OSPF) addToBodyXML(ctx context.Context, config OSPF, body netconf.Bod
 	if !data.RedistributeConnectedNssaOnly.IsNull() && !data.RedistributeConnectedNssaOnly.IsUnknown() {
 		if data.RedistributeConnectedNssaOnly.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/redistribute/connected/nssa-only", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/redistribute/connected/nssa-only")
 		}
 	}
 	if len(data.RedistributeOspf) > 0 {
@@ -693,8 +651,6 @@ func (data OSPF) addToBodyXML(ctx context.Context, config OSPF, body netconf.Bod
 			if !item.MatchInternal.IsNull() && !item.MatchInternal.IsUnknown() {
 				if item.MatchInternal.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "match/internal", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "match/internal")
 				}
 			}
 			if !item.MatchExternal1.IsNull() && !item.MatchExternal1.IsUnknown() {
@@ -718,8 +674,6 @@ func (data OSPF) addToBodyXML(ctx context.Context, config OSPF, body netconf.Bod
 			if !item.Subnets.IsNull() && !item.Subnets.IsUnknown() {
 				if item.Subnets.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "subnets", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "subnets")
 				}
 			}
 			if !item.RouteMap.IsNull() && !item.RouteMap.IsUnknown() {
@@ -731,8 +685,6 @@ func (data OSPF) addToBodyXML(ctx context.Context, config OSPF, body netconf.Bod
 			if !item.NssaOnly.IsNull() && !item.NssaOnly.IsUnknown() {
 				if item.NssaOnly.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "nssa-only", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "nssa-only")
 				}
 			}
 			if !item.Vrf.IsNull() && !item.Vrf.IsUnknown() {
@@ -3402,7 +3354,7 @@ func (data *OSPF) addDeletedItemsXML(ctx context.Context, state OSPF, body strin
 				found = false
 			}
 			if found {
-				if !state.DistributeListOutAccessLists[i].AccessList.IsNull() && data.DistributeListOutAccessLists[j].AccessList.IsNull() {
+				if !state.DistributeListOutAccessLists[i].AccessList.IsNull() && (data.DistributeListOutAccessLists[j].AccessList.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/distribute-list/access-list/access-list-out%v/ex-access-list", predicates))
 				}
 				break
@@ -3435,7 +3387,7 @@ func (data *OSPF) addDeletedItemsXML(ctx context.Context, state OSPF, body strin
 				found = false
 			}
 			if found {
-				if !state.DistributeListInAccessLists[i].AccessList.IsNull() && data.DistributeListInAccessLists[j].AccessList.IsNull() {
+				if !state.DistributeListInAccessLists[i].AccessList.IsNull() && (data.DistributeListInAccessLists[j].AccessList.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/distribute-list/access-list/access-list-in%v/ex-access-list", predicates))
 				}
 				break
@@ -3468,40 +3420,40 @@ func (data *OSPF) addDeletedItemsXML(ctx context.Context, state OSPF, body strin
 				found = false
 			}
 			if found {
-				if !state.RedistributeOspf[i].Vrf.IsNull() && data.RedistributeOspf[j].Vrf.IsNull() {
+				if !state.RedistributeOspf[i].Vrf.IsNull() && (data.RedistributeOspf[j].Vrf.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/redistribute/ospf%v/vrf", predicates))
 				}
-				if !state.RedistributeOspf[i].NssaOnly.IsNull() && data.RedistributeOspf[j].NssaOnly.IsNull() {
+				if !state.RedistributeOspf[i].NssaOnly.IsNull() && (data.RedistributeOspf[j].NssaOnly.IsNull() || (state.RedistributeOspf[i].NssaOnly.ValueBool() && !data.RedistributeOspf[j].NssaOnly.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/redistribute/ospf%v/nssa-only", predicates))
 				}
-				if !state.RedistributeOspf[i].Tag.IsNull() && data.RedistributeOspf[j].Tag.IsNull() {
+				if !state.RedistributeOspf[i].Tag.IsNull() && (data.RedistributeOspf[j].Tag.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/redistribute/ospf%v/tag", predicates))
 				}
-				if !state.RedistributeOspf[i].RouteMap.IsNull() && data.RedistributeOspf[j].RouteMap.IsNull() {
+				if !state.RedistributeOspf[i].RouteMap.IsNull() && (data.RedistributeOspf[j].RouteMap.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/redistribute/ospf%v/route-map", predicates))
 				}
-				if !state.RedistributeOspf[i].Subnets.IsNull() && data.RedistributeOspf[j].Subnets.IsNull() {
+				if !state.RedistributeOspf[i].Subnets.IsNull() && (data.RedistributeOspf[j].Subnets.IsNull() || (state.RedistributeOspf[i].Subnets.ValueBool() && !data.RedistributeOspf[j].Subnets.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/redistribute/ospf%v/subnets", predicates))
 				}
-				if !state.RedistributeOspf[i].MetricType.IsNull() && data.RedistributeOspf[j].MetricType.IsNull() {
+				if !state.RedistributeOspf[i].MetricType.IsNull() && (data.RedistributeOspf[j].MetricType.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/redistribute/ospf%v/metric-type", predicates))
 				}
-				if !state.RedistributeOspf[i].Metric.IsNull() && data.RedistributeOspf[j].Metric.IsNull() {
+				if !state.RedistributeOspf[i].Metric.IsNull() && (data.RedistributeOspf[j].Metric.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/redistribute/ospf%v/metric", predicates))
 				}
-				if !state.RedistributeOspf[i].MatchNssaExternal2.IsNull() && data.RedistributeOspf[j].MatchNssaExternal2.IsNull() {
+				if !state.RedistributeOspf[i].MatchNssaExternal2.IsNull() && (data.RedistributeOspf[j].MatchNssaExternal2.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/redistribute/ospf%v/match/nssa-external-2", predicates))
 				}
-				if !state.RedistributeOspf[i].MatchNssaExternal1.IsNull() && data.RedistributeOspf[j].MatchNssaExternal1.IsNull() {
+				if !state.RedistributeOspf[i].MatchNssaExternal1.IsNull() && (data.RedistributeOspf[j].MatchNssaExternal1.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/redistribute/ospf%v/match/nssa-external-1", predicates))
 				}
-				if !state.RedistributeOspf[i].MatchExternal2.IsNull() && data.RedistributeOspf[j].MatchExternal2.IsNull() {
+				if !state.RedistributeOspf[i].MatchExternal2.IsNull() && (data.RedistributeOspf[j].MatchExternal2.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/redistribute/ospf%v/match/external-2", predicates))
 				}
-				if !state.RedistributeOspf[i].MatchExternal1.IsNull() && data.RedistributeOspf[j].MatchExternal1.IsNull() {
+				if !state.RedistributeOspf[i].MatchExternal1.IsNull() && (data.RedistributeOspf[j].MatchExternal1.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/redistribute/ospf%v/match/external-1", predicates))
 				}
-				if !state.RedistributeOspf[i].MatchInternal.IsNull() && data.RedistributeOspf[j].MatchInternal.IsNull() {
+				if !state.RedistributeOspf[i].MatchInternal.IsNull() && (data.RedistributeOspf[j].MatchInternal.IsNull() || (state.RedistributeOspf[i].MatchInternal.ValueBool() && !data.RedistributeOspf[j].MatchInternal.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/redistribute/ospf%v/match/internal", predicates))
 				}
 				break
@@ -3511,79 +3463,79 @@ func (data *OSPF) addDeletedItemsXML(ctx context.Context, state OSPF, body strin
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/redistribute/ospf%v", predicates))
 		}
 	}
-	if !state.RedistributeConnectedNssaOnly.IsNull() && data.RedistributeConnectedNssaOnly.IsNull() {
+	if !state.RedistributeConnectedNssaOnly.IsNull() && (data.RedistributeConnectedNssaOnly.IsNull() || (state.RedistributeConnectedNssaOnly.ValueBool() && !data.RedistributeConnectedNssaOnly.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/redistribute/connected/nssa-only")
 	}
-	if !state.RedistributeConnectedTag.IsNull() && data.RedistributeConnectedTag.IsNull() {
+	if !state.RedistributeConnectedTag.IsNull() && (data.RedistributeConnectedTag.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/redistribute/connected/tag")
 	}
-	if !state.RedistributeConnectedRouteMap.IsNull() && data.RedistributeConnectedRouteMap.IsNull() {
+	if !state.RedistributeConnectedRouteMap.IsNull() && (data.RedistributeConnectedRouteMap.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/redistribute/connected/route-map")
 	}
-	if !state.RedistributeConnectedMetricType.IsNull() && data.RedistributeConnectedMetricType.IsNull() {
+	if !state.RedistributeConnectedMetricType.IsNull() && (data.RedistributeConnectedMetricType.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/redistribute/connected/metric-type")
 	}
-	if !state.RedistributeConnectedMetric.IsNull() && data.RedistributeConnectedMetric.IsNull() {
+	if !state.RedistributeConnectedMetric.IsNull() && (data.RedistributeConnectedMetric.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/redistribute/connected/metric")
 	}
-	if !state.RedistributeConnectedSubnets.IsNull() && data.RedistributeConnectedSubnets.IsNull() {
+	if !state.RedistributeConnectedSubnets.IsNull() && (data.RedistributeConnectedSubnets.IsNull() || (state.RedistributeConnectedSubnets.ValueBool() && !data.RedistributeConnectedSubnets.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/redistribute/connected/subnets")
 	}
-	if !state.RedistributeStaticNssaOnly.IsNull() && data.RedistributeStaticNssaOnly.IsNull() {
+	if !state.RedistributeStaticNssaOnly.IsNull() && (data.RedistributeStaticNssaOnly.IsNull() || (state.RedistributeStaticNssaOnly.ValueBool() && !data.RedistributeStaticNssaOnly.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/redistribute/static/nssa-only")
 	}
-	if !state.RedistributeStaticTag.IsNull() && data.RedistributeStaticTag.IsNull() {
+	if !state.RedistributeStaticTag.IsNull() && (data.RedistributeStaticTag.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/redistribute/static/tag")
 	}
-	if !state.RedistributeStaticRouteMap.IsNull() && data.RedistributeStaticRouteMap.IsNull() {
+	if !state.RedistributeStaticRouteMap.IsNull() && (data.RedistributeStaticRouteMap.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/redistribute/static/route-map")
 	}
-	if !state.RedistributeStaticMetricType.IsNull() && data.RedistributeStaticMetricType.IsNull() {
+	if !state.RedistributeStaticMetricType.IsNull() && (data.RedistributeStaticMetricType.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/redistribute/static/metric-type")
 	}
-	if !state.RedistributeStaticMetric.IsNull() && data.RedistributeStaticMetric.IsNull() {
+	if !state.RedistributeStaticMetric.IsNull() && (data.RedistributeStaticMetric.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/redistribute/static/metric")
 	}
-	if !state.RedistributeStaticSubnets.IsNull() && data.RedistributeStaticSubnets.IsNull() {
+	if !state.RedistributeStaticSubnets.IsNull() && (data.RedistributeStaticSubnets.IsNull() || (state.RedistributeStaticSubnets.ValueBool() && !data.RedistributeStaticSubnets.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/redistribute/static/subnets")
 	}
-	if !state.FastReroutePerPrefixEnablePrefixPriority.IsNull() && data.FastReroutePerPrefixEnablePrefixPriority.IsNull() {
+	if !state.FastReroutePerPrefixEnablePrefixPriority.IsNull() && (data.FastReroutePerPrefixEnablePrefixPriority.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/fast-reroute/per-prefix/enable/prefix-priority")
 	}
-	if !state.MaxMetricRouterLsaOnStartupWaitForBgp.IsNull() && data.MaxMetricRouterLsaOnStartupWaitForBgp.IsNull() {
+	if !state.MaxMetricRouterLsaOnStartupWaitForBgp.IsNull() && (data.MaxMetricRouterLsaOnStartupWaitForBgp.IsNull() || (state.MaxMetricRouterLsaOnStartupWaitForBgp.ValueBool() && !data.MaxMetricRouterLsaOnStartupWaitForBgp.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/max-metric/router-lsa/on-startup/wait-for-bgp")
 	}
-	if !state.MaxMetricRouterLsaOnStartupTime.IsNull() && data.MaxMetricRouterLsaOnStartupTime.IsNull() {
+	if !state.MaxMetricRouterLsaOnStartupTime.IsNull() && (data.MaxMetricRouterLsaOnStartupTime.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/max-metric/router-lsa/on-startup/time")
 	}
-	if !state.MaxMetricRouterLsaIncludeStub.IsNull() && data.MaxMetricRouterLsaIncludeStub.IsNull() {
+	if !state.MaxMetricRouterLsaIncludeStub.IsNull() && (data.MaxMetricRouterLsaIncludeStub.IsNull() || (state.MaxMetricRouterLsaIncludeStub.ValueBool() && !data.MaxMetricRouterLsaIncludeStub.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/max-metric/router-lsa/include-stub")
 	}
-	if !state.MaxMetricRouterLsaExternalLsaMetric.IsNull() && data.MaxMetricRouterLsaExternalLsaMetric.IsNull() {
+	if !state.MaxMetricRouterLsaExternalLsaMetric.IsNull() && (data.MaxMetricRouterLsaExternalLsaMetric.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/max-metric/router-lsa/external-lsa/metric")
 	}
-	if !state.MaxMetricRouterLsaSummaryLsaMetric.IsNull() && data.MaxMetricRouterLsaSummaryLsaMetric.IsNull() {
+	if !state.MaxMetricRouterLsaSummaryLsaMetric.IsNull() && (data.MaxMetricRouterLsaSummaryLsaMetric.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/max-metric/router-lsa/summary-lsa/metric")
 	}
-	if !state.MaxMetricRouterLsa.IsNull() && data.MaxMetricRouterLsa.IsNull() {
+	if !state.MaxMetricRouterLsa.IsNull() && (data.MaxMetricRouterLsa.IsNull() || (state.MaxMetricRouterLsa.ValueBool() && !data.MaxMetricRouterLsa.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/max-metric/router-lsa")
 	}
-	if !state.NsfIetfRestartInterval.IsNull() && data.NsfIetfRestartInterval.IsNull() {
+	if !state.NsfIetfRestartInterval.IsNull() && (data.NsfIetfRestartInterval.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/nsf/nsf-ietf/restart-interval")
 	}
-	if !state.NsfIetf.IsNull() && data.NsfIetf.IsNull() {
+	if !state.NsfIetf.IsNull() && (data.NsfIetf.IsNull() || (state.NsfIetf.ValueBool() && !data.NsfIetf.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/nsf/nsf-ietf")
 	}
-	if !state.NsfCiscoEnforceGlobal.IsNull() && data.NsfCiscoEnforceGlobal.IsNull() {
+	if !state.NsfCiscoEnforceGlobal.IsNull() && (data.NsfCiscoEnforceGlobal.IsNull() || (state.NsfCiscoEnforceGlobal.ValueBool() && !data.NsfCiscoEnforceGlobal.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/nsf/nsf-cisco/enforce/global")
 	}
-	if !state.NsfCisco.IsNull() && data.NsfCisco.IsNull() {
+	if !state.NsfCisco.IsNull() && (data.NsfCisco.IsNull() || (state.NsfCisco.ValueBool() && !data.NsfCisco.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/nsf/nsf-cisco")
 	}
-	if !state.LogAdjacencyChangesDetail.IsNull() && data.LogAdjacencyChangesDetail.IsNull() {
+	if !state.LogAdjacencyChangesDetail.IsNull() && (data.LogAdjacencyChangesDetail.IsNull() || (state.LogAdjacencyChangesDetail.ValueBool() && !data.LogAdjacencyChangesDetail.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/log-adjacency-changes-detail/log-adjacency-changes/detail")
 	}
-	if !state.LogAdjacencyChanges.IsNull() && data.LogAdjacencyChanges.IsNull() {
+	if !state.LogAdjacencyChanges.IsNull() && (data.LogAdjacencyChanges.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/log-adjacency-changes")
 	}
 	if !state.PassiveInterface.IsNull() {
@@ -3611,10 +3563,10 @@ func (data *OSPF) addDeletedItemsXML(ctx context.Context, state OSPF, body strin
 			}
 		}
 	}
-	if !state.PassiveInterfaceDefault.IsNull() && data.PassiveInterfaceDefault.IsNull() {
+	if !state.PassiveInterfaceDefault.IsNull() && (data.PassiveInterfaceDefault.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/passive-interface/default")
 	}
-	if !state.AutoCostReferenceBandwidth.IsNull() && data.AutoCostReferenceBandwidth.IsNull() {
+	if !state.AutoCostReferenceBandwidth.IsNull() && (data.AutoCostReferenceBandwidth.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/auto-cost/reference-bandwidth")
 	}
 	for i := range state.Areas {
@@ -3640,25 +3592,25 @@ func (data *OSPF) addDeletedItemsXML(ctx context.Context, state OSPF, body strin
 				found = false
 			}
 			if found {
-				if !state.Areas[i].NssaNoRedistribution.IsNull() && data.Areas[j].NssaNoRedistribution.IsNull() {
+				if !state.Areas[i].NssaNoRedistribution.IsNull() && (data.Areas[j].NssaNoRedistribution.IsNull() || (state.Areas[i].NssaNoRedistribution.ValueBool() && !data.Areas[j].NssaNoRedistribution.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/area%v/nssa/nssa-options/no-redistribution", predicates))
 				}
-				if !state.Areas[i].NssaNoSummary.IsNull() && data.Areas[j].NssaNoSummary.IsNull() {
+				if !state.Areas[i].NssaNoSummary.IsNull() && (data.Areas[j].NssaNoSummary.IsNull() || (state.Areas[i].NssaNoSummary.ValueBool() && !data.Areas[j].NssaNoSummary.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/area%v/nssa/nssa-options/no-summary", predicates))
 				}
-				if !state.Areas[i].NssaDefaultInformationOriginateMetricType.IsNull() && data.Areas[j].NssaDefaultInformationOriginateMetricType.IsNull() {
+				if !state.Areas[i].NssaDefaultInformationOriginateMetricType.IsNull() && (data.Areas[j].NssaDefaultInformationOriginateMetricType.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/area%v/nssa/nssa-options/default-information-originate/metric-type", predicates))
 				}
-				if !state.Areas[i].NssaDefaultInformationOriginateMetric.IsNull() && data.Areas[j].NssaDefaultInformationOriginateMetric.IsNull() {
+				if !state.Areas[i].NssaDefaultInformationOriginateMetric.IsNull() && (data.Areas[j].NssaDefaultInformationOriginateMetric.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/area%v/nssa/nssa-options/default-information-originate/metric", predicates))
 				}
-				if !state.Areas[i].NssaDefaultInformationOriginate.IsNull() && data.Areas[j].NssaDefaultInformationOriginate.IsNull() {
+				if !state.Areas[i].NssaDefaultInformationOriginate.IsNull() && (data.Areas[j].NssaDefaultInformationOriginate.IsNull() || (state.Areas[i].NssaDefaultInformationOriginate.ValueBool() && !data.Areas[j].NssaDefaultInformationOriginate.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/area%v/nssa/nssa-options/default-information-originate", predicates))
 				}
-				if !state.Areas[i].Nssa.IsNull() && data.Areas[j].Nssa.IsNull() {
+				if !state.Areas[i].Nssa.IsNull() && (data.Areas[j].Nssa.IsNull() || (state.Areas[i].Nssa.ValueBool() && !data.Areas[j].Nssa.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/area%v/nssa", predicates))
 				}
-				if !state.Areas[i].AuthenticationMessageDigest.IsNull() && data.Areas[j].AuthenticationMessageDigest.IsNull() {
+				if !state.Areas[i].AuthenticationMessageDigest.IsNull() && (data.Areas[j].AuthenticationMessageDigest.IsNull() || (state.Areas[i].AuthenticationMessageDigest.ValueBool() && !data.Areas[j].AuthenticationMessageDigest.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/area%v/authentication/message-digest", predicates))
 				}
 				break
@@ -3704,13 +3656,13 @@ func (data *OSPF) addDeletedItemsXML(ctx context.Context, state OSPF, body strin
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/summary-address%v", predicates))
 		}
 	}
-	if !state.Shutdown.IsNull() && data.Shutdown.IsNull() {
+	if !state.Shutdown.IsNull() && (data.Shutdown.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/shutdown")
 	}
-	if !state.RouterId.IsNull() && data.RouterId.IsNull() {
+	if !state.RouterId.IsNull() && (data.RouterId.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/router-id")
 	}
-	if !state.Priority.IsNull() && data.Priority.IsNull() {
+	if !state.Priority.IsNull() && (data.Priority.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/priority")
 	}
 	for i := range state.Networks {
@@ -3742,7 +3694,7 @@ func (data *OSPF) addDeletedItemsXML(ctx context.Context, state OSPF, body strin
 				found = false
 			}
 			if found {
-				if !state.Networks[i].Area.IsNull() && data.Networks[j].Area.IsNull() {
+				if !state.Networks[i].Area.IsNull() && (data.Networks[j].Area.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/network%v/area", predicates))
 				}
 				break
@@ -3775,10 +3727,10 @@ func (data *OSPF) addDeletedItemsXML(ctx context.Context, state OSPF, body strin
 				found = false
 			}
 			if found {
-				if !state.Neighbors[i].Cost.IsNull() && data.Neighbors[j].Cost.IsNull() {
+				if !state.Neighbors[i].Cost.IsNull() && (data.Neighbors[j].Cost.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/neighbor%v/cost", predicates))
 				}
-				if !state.Neighbors[i].Priority.IsNull() && data.Neighbors[j].Priority.IsNull() {
+				if !state.Neighbors[i].Priority.IsNull() && (data.Neighbors[j].Priority.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/neighbor%v/priority", predicates))
 				}
 				break
@@ -3788,37 +3740,37 @@ func (data *OSPF) addDeletedItemsXML(ctx context.Context, state OSPF, body strin
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/neighbor%v", predicates))
 		}
 	}
-	if !state.MplsLdpSync.IsNull() && data.MplsLdpSync.IsNull() {
+	if !state.MplsLdpSync.IsNull() && (data.MplsLdpSync.IsNull() || (state.MplsLdpSync.ValueBool() && !data.MplsLdpSync.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/mpls/ldp/sync")
 	}
-	if !state.MplsLdpAutoconfig.IsNull() && data.MplsLdpAutoconfig.IsNull() {
+	if !state.MplsLdpAutoconfig.IsNull() && (data.MplsLdpAutoconfig.IsNull() || (state.MplsLdpAutoconfig.ValueBool() && !data.MplsLdpAutoconfig.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/mpls/ldp/autoconfig")
 	}
-	if !state.DomainTag.IsNull() && data.DomainTag.IsNull() {
+	if !state.DomainTag.IsNull() && (data.DomainTag.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/domain-tag")
 	}
-	if !state.Distance.IsNull() && data.Distance.IsNull() {
+	if !state.Distance.IsNull() && (data.Distance.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/distance/distance")
 	}
-	if !state.DefaultMetric.IsNull() && data.DefaultMetric.IsNull() {
+	if !state.DefaultMetric.IsNull() && (data.DefaultMetric.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/default-metric")
 	}
-	if !state.DefaultInformationOriginateRouteMap.IsNull() && data.DefaultInformationOriginateRouteMap.IsNull() {
+	if !state.DefaultInformationOriginateRouteMap.IsNull() && (data.DefaultInformationOriginateRouteMap.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/default-information/originate/route-map")
 	}
-	if !state.DefaultInformationOriginateMetricType.IsNull() && data.DefaultInformationOriginateMetricType.IsNull() {
+	if !state.DefaultInformationOriginateMetricType.IsNull() && (data.DefaultInformationOriginateMetricType.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/default-information/originate/metric-type")
 	}
-	if !state.DefaultInformationOriginateMetric.IsNull() && data.DefaultInformationOriginateMetric.IsNull() {
+	if !state.DefaultInformationOriginateMetric.IsNull() && (data.DefaultInformationOriginateMetric.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/default-information/originate/metric")
 	}
-	if !state.DefaultInformationOriginateAlways.IsNull() && data.DefaultInformationOriginateAlways.IsNull() {
+	if !state.DefaultInformationOriginateAlways.IsNull() && (data.DefaultInformationOriginateAlways.IsNull() || (state.DefaultInformationOriginateAlways.ValueBool() && !data.DefaultInformationOriginateAlways.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/default-information/originate/always")
 	}
-	if !state.DefaultInformationOriginate.IsNull() && data.DefaultInformationOriginate.IsNull() {
+	if !state.DefaultInformationOriginate.IsNull() && (data.DefaultInformationOriginate.IsNull() || (state.DefaultInformationOriginate.ValueBool() && !data.DefaultInformationOriginate.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/default-information/originate")
 	}
-	if !state.BfdAllInterfaces.IsNull() && data.BfdAllInterfaces.IsNull() {
+	if !state.BfdAllInterfaces.IsNull() && (data.BfdAllInterfaces.IsNull() || (state.BfdAllInterfaces.ValueBool() && !data.BfdAllInterfaces.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/bfd/all-interfaces")
 	}
 

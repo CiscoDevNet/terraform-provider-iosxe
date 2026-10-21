@@ -109,15 +109,11 @@ func (data VLAN) addToBodyXML(ctx context.Context, config VLAN, body netconf.Bod
 	if !data.RemoteSpan.IsNull() && !data.RemoteSpan.IsUnknown() {
 		if data.RemoteSpan.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/remote-span", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/remote-span")
 		}
 	}
 	if !data.PrivateVlanPrimary.IsNull() && !data.PrivateVlanPrimary.IsUnknown() {
 		if data.PrivateVlanPrimary.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/private-vlan/primary", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/private-vlan/primary")
 		}
 	}
 	if !data.PrivateVlanAssociation.IsNull() && !data.PrivateVlanAssociation.IsUnknown() {
@@ -126,15 +122,11 @@ func (data VLAN) addToBodyXML(ctx context.Context, config VLAN, body netconf.Bod
 	if !data.PrivateVlanCommunity.IsNull() && !data.PrivateVlanCommunity.IsUnknown() {
 		if data.PrivateVlanCommunity.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/private-vlan/community", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/private-vlan/community")
 		}
 	}
 	if !data.PrivateVlanIsolated.IsNull() && !data.PrivateVlanIsolated.IsUnknown() {
 		if data.PrivateVlanIsolated.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/private-vlan/isolated", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/private-vlan/isolated")
 		}
 	}
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
@@ -143,8 +135,6 @@ func (data VLAN) addToBodyXML(ctx context.Context, config VLAN, body netconf.Bod
 	if !data.Shutdown.IsNull() && !data.Shutdown.IsUnknown() {
 		if data.Shutdown.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/shutdown", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/shutdown")
 		}
 	}
 	return body
@@ -299,25 +289,25 @@ func (data *VLANData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 func (data *VLAN) addDeletedItemsXML(ctx context.Context, state VLAN, body string) string {
 	b := netconf.NewBody(body)
-	if !state.Shutdown.IsNull() && data.Shutdown.IsNull() {
+	if !state.Shutdown.IsNull() && (data.Shutdown.IsNull() || (state.Shutdown.ValueBool() && !data.Shutdown.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/shutdown")
 	}
-	if !state.Name.IsNull() && data.Name.IsNull() {
+	if !state.Name.IsNull() && (data.Name.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/name")
 	}
-	if !state.PrivateVlanIsolated.IsNull() && data.PrivateVlanIsolated.IsNull() {
+	if !state.PrivateVlanIsolated.IsNull() && (data.PrivateVlanIsolated.IsNull() || (state.PrivateVlanIsolated.ValueBool() && !data.PrivateVlanIsolated.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/private-vlan/isolated")
 	}
-	if !state.PrivateVlanCommunity.IsNull() && data.PrivateVlanCommunity.IsNull() {
+	if !state.PrivateVlanCommunity.IsNull() && (data.PrivateVlanCommunity.IsNull() || (state.PrivateVlanCommunity.ValueBool() && !data.PrivateVlanCommunity.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/private-vlan/community")
 	}
-	if !state.PrivateVlanAssociation.IsNull() && data.PrivateVlanAssociation.IsNull() {
+	if !state.PrivateVlanAssociation.IsNull() && (data.PrivateVlanAssociation.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/private-vlan/association")
 	}
-	if !state.PrivateVlanPrimary.IsNull() && data.PrivateVlanPrimary.IsNull() {
+	if !state.PrivateVlanPrimary.IsNull() && (data.PrivateVlanPrimary.IsNull() || (state.PrivateVlanPrimary.ValueBool() && !data.PrivateVlanPrimary.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/private-vlan/primary")
 	}
-	if !state.RemoteSpan.IsNull() && data.RemoteSpan.IsNull() {
+	if !state.RemoteSpan.IsNull() && (data.RemoteSpan.IsNull() || (state.RemoteSpan.ValueBool() && !data.RemoteSpan.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/remote-span")
 	}
 

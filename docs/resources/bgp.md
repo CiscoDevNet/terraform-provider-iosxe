@@ -33,7 +33,9 @@ resource "iosxe_bgp" "example" {
 ### Optional
 
 - `asnotation_dot` (Boolean) AS dot notation
+  - Default value: `false`
 - `bgp_graceful_restart` (Boolean) Graceful restart capability parameters
+  - Default value: `false`
 - `bgp_update_delay` (Number) Set the max initial delay for sending update
   - Range: `1`-`3600`
 - `default_ipv4_unicast` (Boolean) Activate ipv4-unicast for a peer by default

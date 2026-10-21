@@ -48,6 +48,7 @@ resource "iosxe_flow_exporter" "example" {
 - `option_interface_table_timeout` (Number) Option resend time
   - Range: `1`-`86400`
 - `option_sampler_table` (Boolean) Export Sampler Option
+  - Default value: `false`
 - `option_vrf_table_timeout` (Number) Option resend time
   - Range: `1`-`86400`
 - `source_five_gigabit_ethernet` (String) Five GigabitEthernet

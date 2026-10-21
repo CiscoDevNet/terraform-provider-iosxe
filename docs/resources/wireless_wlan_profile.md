@@ -55,8 +55,10 @@ resource "iosxe_wireless_wlan_profile" "example" {
 
 - `broadcast_ssid` (Boolean) broadcast SSID on a WLAN
 - `ccx_aironet_ie` (Boolean) This object indicates the support for the Cisco Compatible Extensions Aironet information element on this WLAN.
+  - Default value: `false`
 - `device` (String) A device name from the provider configuration.
 - `load_balance` (Boolean) Allow/Disallow Load Balance on a WLAN
+  - Default value: `false`
 - `mac_filtering` (String) Set MAC filtering support on WLAN
 - `peer_blocking` (String) Represents the name of the ACL applied to this WLAN. If it is required to remove the ACL
   - Choices: `p2p-blocking-action-none`, `p2p-blocking-action-drop`, `p2p-blocking-action-fwdup`
@@ -64,15 +66,22 @@ resource "iosxe_wireless_wlan_profile" "example" {
 - `security_ft` (String) Configures Fast Transition Adaptive support
   - Choices: `dot11r-disabled`, `dot11r-enabled`, `dot11r-adaptive-enabled`
 - `security_ft_over_the_ds` (Boolean) Configures Fast Transition over the DS
+  - Default value: `false`
 - `security_web_auth` (Boolean) Configures Web authentication
+  - Default value: `false`
 - `security_web_auth_authentication_list` (String) Enter the Authentication list name
 - `security_web_auth_parameter_map` (String) Enter the parameter-map name
 - `security_wpa_akm_dot1x` (Boolean) Authentication key management type 802.1x
 - `security_wpa_akm_ft_dot1x` (Boolean) Authentication key management type 802.11r dot1x
+  - Default value: `false`
 - `security_wpa_akm_ft_psk` (Boolean) Authentication key management type 802.11r PSK
+  - Default value: `false`
 - `security_wpa_akm_ft_sae` (Boolean) Authentication key management type FT-SAE
+  - Default value: `false`
 - `security_wpa_akm_psk` (Boolean) Authentication key management PSK
+  - Default value: `false`
 - `security_wpa_akm_sae` (Boolean) Authentication key management type SAE
+  - Default value: `false`
 - `security_wpa_psk_key` (String, Sensitive) Authentication pre-shared key. For hexadecimal key format, PSK length must be exactly 64 characters and for ASCII key format, PSK length must be in the range of 8 and 63
 - `security_wpa_psk_key_encryption` (String) Pre-shared key encryption type
   - Choices: `clear`
@@ -82,10 +91,14 @@ resource "iosxe_wireless_wlan_profile" "example" {
 - `security_wpa_psk_key_wo_version` (Number) The write-only version of the attribute.
 - `security_wpa_wpa2_ciphers_aes` (Boolean) WPA2/CCMP128 support
 - `security_wpa_wpa2_ciphers_gcmp128` (Boolean) WPA2/GCMP128 support
+  - Default value: `false`
 - `security_wpa_wpa2_ciphers_gcmp256` (Boolean) WPA2/GCMP256 support
+  - Default value: `false`
 - `security_wpa_wpa3` (Boolean) Configures WPA3 support
+  - Default value: `false`
 - `ssid` (String) Represents the SSID assigned to this WLAN. The access points will broadcast this SSID on this WLAN. SSID is restricted to non control characters.
 - `wlan_status` (Boolean) Administrative Status of ESS(WLAN). By disabling an ESS the corresponding SSID is no longer broadcasted in AP beacons.
+  - Default value: `false`
 - `wmm` (String) Configures WMM (WME)
   - Choices: `apf-vap-wme-disabled`, `apf-vap-wme-allowed`, `apf-vap-wme-required`
 

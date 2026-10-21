@@ -68,7 +68,9 @@ Optional:
 - `ace_rule_action` (String) - Choices: `deny`, `permit`
 - `ace_rule_protocol` (String)
 - `ack` (Boolean) Match on the ACK bit
+  - Default value: `false`
 - `destination_any` (Boolean) Any destination host
+  - Default value: `false`
 - `destination_fqdn_group` (String) Destination FQDN group
 - `destination_host` (String) A single destination host
 - `destination_object_group` (String) Destination network object group
@@ -90,19 +92,27 @@ Optional:
 - `destination_prefix_mask` (String) Destination wildcard bits
 - `dscp` (String) Match packets with given dscp value
 - `established` (Boolean) Match established connections
+  - Default value: `false`
 - `fin` (Boolean) Match on the FIN bit
+  - Default value: `false`
 - `fragments` (Boolean) Check non-initial fragments
+  - Default value: `false`
 - `icmp_msg_code` (Number) - Range: `0`-`255`
 - `icmp_msg_type` (Number) - Range: `0`-`255`
 - `icmp_named_msg_type` (String) - Choices: `administratively-prohibited`, `alternate-address`, `conversion-error`, `dod-host-prohibited`, `dod-net-prohibited`, `echo`, `echo-reply`, `general-parameter-problem`, `host-isolated`, `host-precedence-unreachable`, `host-redirect`, `host-tos-redirect`, `host-tos-unreachable`, `host-unknown`, `host-unreachable`, `information-reply`, `information-request`, `mask-reply`, `mask-request`, `mobile-redirect`, `net-redirect`, `net-tos-redirect`, `net-tos-unreachable`, `net-unreachable`, `network-unknown`, `no-room-for-option`, `option-missing`, `packet-too-big`, `parameter-problem`, `port-unreachable`, `precedence-unreachable`, `protocol-unreachable`, `reassembly-timeout`, `redirect`, `router-advertisement`, `router-solicitation`, `source-quench`, `source-route-failed`, `time-exceeded`, `timestamp-reply`, `timestamp-request`, `traceroute`, `ttl-exceeded`, `unreachable`
 - `log` (Boolean) Log matches against this entry
+  - Default value: `false`
 - `log_input` (Boolean) Log matches against this entry, including input interface
+  - Default value: `false`
 - `precedence` (String) Match packets with given precedence value
 - `psh` (Boolean) Match on the PSH bit
+  - Default value: `false`
 - `remark` (String) Access list entry comment
 - `rst` (Boolean) Match on the RST bit
+  - Default value: `false`
 - `service_object_group` (String) Service object group name
 - `source_any` (Boolean) Any source host
+  - Default value: `false`
 - `source_fqdn_group` (String) Source FQDN group
 - `source_host` (String) A single source host
 - `source_object_group` (String) Source network object group
@@ -123,8 +133,10 @@ Optional:
 - `source_prefix` (String)
 - `source_prefix_mask` (String) Source wildcard bits
 - `syn` (Boolean) Match on the SYN bit
+  - Default value: `false`
 - `tos` (String) Match packets with given TOS value
 - `urg` (Boolean) Match on the URG bit
+  - Default value: `false`
 
 ## Import
 

@@ -181,10 +181,10 @@ func (data *CryptoMapGDOIData) fromBodyXML(ctx context.Context, res xmldot.Resul
 
 func (data *CryptoMapGDOI) addDeletedItemsXML(ctx context.Context, state CryptoMapGDOI, body string) string {
 	b := netconf.NewBody(body)
-	if !state.SetGroup.IsNull() && data.SetGroup.IsNull() {
+	if !state.SetGroup.IsNull() && (data.SetGroup.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/set/group")
 	}
-	if !state.Gdoi.IsNull() && data.Gdoi.IsNull() {
+	if !state.Gdoi.IsNull() && (data.Gdoi.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/gdoi")
 	}
 

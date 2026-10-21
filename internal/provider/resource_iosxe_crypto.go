@@ -29,6 +29,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -76,8 +77,10 @@ func (r *CryptoResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				},
 			},
 			"engine_compliance_shield_disable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Allow weak crypto to be configured").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Allow weak crypto to be configured").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 		},
 	}

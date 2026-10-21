@@ -32,6 +32,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -120,8 +121,10 @@ func (r *AccessListStandardResource) Schema(ctx context.Context, req resource.Sc
 							},
 						},
 						"deny_any": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Any source prefix").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Any source prefix").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"deny_host": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("A single source host").String,
@@ -131,8 +134,10 @@ func (r *AccessListStandardResource) Schema(ctx context.Context, req resource.Sc
 							},
 						},
 						"deny_log": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Log matches against this entry").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Log matches against this entry").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"permit_prefix": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Network address prefix").String,
@@ -149,8 +154,10 @@ func (r *AccessListStandardResource) Schema(ctx context.Context, req resource.Sc
 							},
 						},
 						"permit_any": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Any source prefix").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Any source prefix").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"permit_host": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("A single source host").String,
@@ -160,8 +167,10 @@ func (r *AccessListStandardResource) Schema(ctx context.Context, req resource.Sc
 							},
 						},
 						"permit_log": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Log matches against this entry").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Log matches against this entry").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 					},
 				},

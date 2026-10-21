@@ -304,36 +304,26 @@ func (data DHCP) addToBodyXML(ctx context.Context, config DHCP, body netconf.Bod
 	if !data.RelayInformationTrustAll.IsNull() && !data.RelayInformationTrustAll.IsUnknown() {
 		if data.RelayInformationTrustAll.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/trust-all", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/trust-all")
 		}
 	}
 	if !data.RelayInformationOptionDefault.IsNull() && !data.RelayInformationOptionDefault.IsUnknown() {
 		if data.RelayInformationOptionDefault.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/option-default", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/option-default")
 		}
 	}
 	if !data.RelayInformationOptionVpn.IsNull() && !data.RelayInformationOptionVpn.IsUnknown() {
 		if data.RelayInformationOptionVpn.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn")
 		}
 	}
 	if !data.RelayBootpIgnore.IsNull() && !data.RelayBootpIgnore.IsUnknown() {
 		if data.RelayBootpIgnore.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/bootp/ignore", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/bootp/ignore")
 		}
 	}
 	if !data.Snooping.IsNull() && !data.Snooping.IsUnknown() {
 		if data.Snooping.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping")
 		}
 	}
 	if !data.SnoopingInformationOption.IsNull() && !data.SnoopingInformationOption.IsUnknown() {
@@ -342,8 +332,6 @@ func (data DHCP) addToBodyXML(ctx context.Context, config DHCP, body netconf.Bod
 	if !data.SnoopingInformationOptionAllowUntrusted.IsNull() && !data.SnoopingInformationOptionAllowUntrusted.IsUnknown() {
 		if data.SnoopingInformationOptionAllowUntrusted.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/allow-untrusted", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/allow-untrusted")
 		}
 	}
 	if !data.SnoopingInformationOptionFormatRemoteIdString.IsNull() && !data.SnoopingInformationOptionFormatRemoteIdString.IsUnknown() {
@@ -352,8 +340,6 @@ func (data DHCP) addToBodyXML(ctx context.Context, config DHCP, body netconf.Bod
 	if !data.SnoopingInformationOptionFormatRemoteIdHostname.IsNull() && !data.SnoopingInformationOptionFormatRemoteIdHostname.IsUnknown() {
 		if data.SnoopingInformationOptionFormatRemoteIdHostname.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/format/remote-id/hostname", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/format/remote-id/hostname")
 		}
 	}
 	if len(data.SnoopingVlansLegacy) > 0 {
@@ -456,8 +442,6 @@ func (data DHCP) addToBodyXML(ctx context.Context, config DHCP, body netconf.Bod
 			if !item.LeaseInfinite.IsNull() && !item.LeaseInfinite.IsUnknown() {
 				if item.LeaseInfinite.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "lease/infinite", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "lease/infinite")
 				}
 			}
 			if !item.UtilizationMarkHigh.IsNull() && !item.UtilizationMarkHigh.IsUnknown() {
@@ -466,8 +450,6 @@ func (data DHCP) addToBodyXML(ctx context.Context, config DHCP, body netconf.Bod
 			if !item.UtilizationMarkHighLog.IsNull() && !item.UtilizationMarkHighLog.IsUnknown() {
 				if item.UtilizationMarkHighLog.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "utilization/mark/high/log", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "utilization/mark/high/log")
 				}
 			}
 			if !item.UtilizationMarkLow.IsNull() && !item.UtilizationMarkLow.IsUnknown() {
@@ -476,8 +458,6 @@ func (data DHCP) addToBodyXML(ctx context.Context, config DHCP, body netconf.Bod
 			if !item.UtilizationMarkLowLog.IsNull() && !item.UtilizationMarkLowLog.IsUnknown() {
 				if item.UtilizationMarkLowLog.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "utilization/mark/low/log", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "utilization/mark/low/log")
 				}
 			}
 			if !item.SubnetPrefixLength.IsNull() && !item.SubnetPrefixLength.IsUnknown() {
@@ -598,8 +578,6 @@ func (data DHCP) addToBodyXML(ctx context.Context, config DHCP, body netconf.Bod
 			if !item.OptionIncludeAll.IsNull() && !item.OptionIncludeAll.IsUnknown() {
 				if item.OptionIncludeAll.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "option/include-all", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "option/include-all")
 				}
 			}
 			if len(item.VendorSpecifics) > 0 {
@@ -632,15 +610,11 @@ func (data DHCP) addToBodyXML(ctx context.Context, config DHCP, body netconf.Bod
 			if !item.ImportDnsServer.IsNull() && !item.ImportDnsServer.IsUnknown() {
 				if item.ImportDnsServer.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "import/dns-server", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "import/dns-server")
 				}
 			}
 			if !item.ImportDomainName.IsNull() && !item.ImportDomainName.IsUnknown() {
 				if item.ImportDomainName.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "import/domain-name", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "import/domain-name")
 				}
 			}
 			if !item.SntpAddresses.IsNull() && !item.SntpAddresses.IsUnknown() {
@@ -662,8 +636,6 @@ func (data DHCP) addToBodyXML(ctx context.Context, config DHCP, body netconf.Bod
 			if !item.InformationRefreshInfinite.IsNull() && !item.InformationRefreshInfinite.IsUnknown() {
 				if item.InformationRefreshInfinite.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "information/refresh/infinite", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "information/refresh/infinite")
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool", cBody.Res())
@@ -2028,16 +2000,16 @@ func (data *DHCP) addDeletedItemsXML(ctx context.Context, state DHCP, body strin
 				found = false
 			}
 			if found {
-				if !state.Ipv6Pools[i].InformationRefreshInfinite.IsNull() && data.Ipv6Pools[j].InformationRefreshInfinite.IsNull() {
+				if !state.Ipv6Pools[i].InformationRefreshInfinite.IsNull() && (data.Ipv6Pools[j].InformationRefreshInfinite.IsNull() || (state.Ipv6Pools[i].InformationRefreshInfinite.ValueBool() && !data.Ipv6Pools[j].InformationRefreshInfinite.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v/information/refresh/infinite", predicates))
 				}
-				if !state.Ipv6Pools[i].InformationRefreshMinutes.IsNull() && data.Ipv6Pools[j].InformationRefreshMinutes.IsNull() {
+				if !state.Ipv6Pools[i].InformationRefreshMinutes.IsNull() && (data.Ipv6Pools[j].InformationRefreshMinutes.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v/information/refresh/refresh-value/minutes", predicates))
 				}
-				if !state.Ipv6Pools[i].InformationRefreshHours.IsNull() && data.Ipv6Pools[j].InformationRefreshHours.IsNull() {
+				if !state.Ipv6Pools[i].InformationRefreshHours.IsNull() && (data.Ipv6Pools[j].InformationRefreshHours.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v/information/refresh/refresh-value/hours", predicates))
 				}
-				if !state.Ipv6Pools[i].InformationRefreshDays.IsNull() && data.Ipv6Pools[j].InformationRefreshDays.IsNull() {
+				if !state.Ipv6Pools[i].InformationRefreshDays.IsNull() && (data.Ipv6Pools[j].InformationRefreshDays.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v/information/refresh/refresh-value/days", predicates))
 				}
 				if !state.Ipv6Pools[i].SntpAddresses.IsNull() {
@@ -2065,10 +2037,10 @@ func (data *DHCP) addDeletedItemsXML(ctx context.Context, state DHCP, body strin
 						}
 					}
 				}
-				if !state.Ipv6Pools[i].ImportDomainName.IsNull() && data.Ipv6Pools[j].ImportDomainName.IsNull() {
+				if !state.Ipv6Pools[i].ImportDomainName.IsNull() && (data.Ipv6Pools[j].ImportDomainName.IsNull() || (state.Ipv6Pools[i].ImportDomainName.ValueBool() && !data.Ipv6Pools[j].ImportDomainName.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v/import/domain-name", predicates))
 				}
-				if !state.Ipv6Pools[i].ImportDnsServer.IsNull() && data.Ipv6Pools[j].ImportDnsServer.IsNull() {
+				if !state.Ipv6Pools[i].ImportDnsServer.IsNull() && (data.Ipv6Pools[j].ImportDnsServer.IsNull() || (state.Ipv6Pools[i].ImportDnsServer.ValueBool() && !data.Ipv6Pools[j].ImportDnsServer.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v/import/dns-server", predicates))
 				}
 				for ci := range state.Ipv6Pools[i].VendorSpecifics {
@@ -2101,10 +2073,10 @@ func (data *DHCP) addDeletedItemsXML(ctx context.Context, state DHCP, body strin
 						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v/vendor-specific%v", predicates, cpredicates))
 					}
 				}
-				if !state.Ipv6Pools[i].OptionIncludeAll.IsNull() && data.Ipv6Pools[j].OptionIncludeAll.IsNull() {
+				if !state.Ipv6Pools[i].OptionIncludeAll.IsNull() && (data.Ipv6Pools[j].OptionIncludeAll.IsNull() || (state.Ipv6Pools[i].OptionIncludeAll.ValueBool() && !data.Ipv6Pools[j].OptionIncludeAll.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v/option/include-all", predicates))
 				}
-				if !state.Ipv6Pools[i].BootfileUrl.IsNull() && data.Ipv6Pools[j].BootfileUrl.IsNull() {
+				if !state.Ipv6Pools[i].BootfileUrl.IsNull() && (data.Ipv6Pools[j].BootfileUrl.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v/bootfile-url", predicates))
 				}
 				for ci := range state.Ipv6Pools[i].LinkAddresses {
@@ -2210,16 +2182,16 @@ func (data *DHCP) addDeletedItemsXML(ctx context.Context, state DHCP, body strin
 							found = false
 						}
 						if found {
-							if !state.Ipv6Pools[i].PrefixDelegationPrefixes[ci].PreferredLifetime.IsNull() && data.Ipv6Pools[j].PrefixDelegationPrefixes[cj].PreferredLifetime.IsNull() {
+							if !state.Ipv6Pools[i].PrefixDelegationPrefixes[ci].PreferredLifetime.IsNull() && (data.Ipv6Pools[j].PrefixDelegationPrefixes[cj].PreferredLifetime.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v/prefix-delegation/pd-prefix%v/lifetime/preferred-lifetime", predicates, cpredicates))
 							}
-							if !state.Ipv6Pools[i].PrefixDelegationPrefixes[ci].ValidLifetime.IsNull() && data.Ipv6Pools[j].PrefixDelegationPrefixes[cj].ValidLifetime.IsNull() {
+							if !state.Ipv6Pools[i].PrefixDelegationPrefixes[ci].ValidLifetime.IsNull() && (data.Ipv6Pools[j].PrefixDelegationPrefixes[cj].ValidLifetime.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v/prefix-delegation/pd-prefix%v/lifetime/valid-lifetime", predicates, cpredicates))
 							}
-							if !state.Ipv6Pools[i].PrefixDelegationPrefixes[ci].Iaid.IsNull() && data.Ipv6Pools[j].PrefixDelegationPrefixes[cj].Iaid.IsNull() {
+							if !state.Ipv6Pools[i].PrefixDelegationPrefixes[ci].Iaid.IsNull() && (data.Ipv6Pools[j].PrefixDelegationPrefixes[cj].Iaid.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v/prefix-delegation/pd-prefix%v/iaid", predicates, cpredicates))
 							}
-							if !state.Ipv6Pools[i].PrefixDelegationPrefixes[ci].HexString.IsNull() && data.Ipv6Pools[j].PrefixDelegationPrefixes[cj].HexString.IsNull() {
+							if !state.Ipv6Pools[i].PrefixDelegationPrefixes[ci].HexString.IsNull() && (data.Ipv6Pools[j].PrefixDelegationPrefixes[cj].HexString.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v/prefix-delegation/pd-prefix%v/Hex-string", predicates, cpredicates))
 							}
 							break
@@ -2229,13 +2201,13 @@ func (data *DHCP) addDeletedItemsXML(ctx context.Context, state DHCP, body strin
 						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v/prefix-delegation/pd-prefix%v", predicates, cpredicates))
 					}
 				}
-				if !state.Ipv6Pools[i].PrefixDelegationPoolPreferredLifetime.IsNull() && data.Ipv6Pools[j].PrefixDelegationPoolPreferredLifetime.IsNull() {
+				if !state.Ipv6Pools[i].PrefixDelegationPoolPreferredLifetime.IsNull() && (data.Ipv6Pools[j].PrefixDelegationPoolPreferredLifetime.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v/prefix-delegation/pool/lifetime/preferred-lifetime", predicates))
 				}
-				if !state.Ipv6Pools[i].PrefixDelegationPoolValidLifetime.IsNull() && data.Ipv6Pools[j].PrefixDelegationPoolValidLifetime.IsNull() {
+				if !state.Ipv6Pools[i].PrefixDelegationPoolValidLifetime.IsNull() && (data.Ipv6Pools[j].PrefixDelegationPoolValidLifetime.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v/prefix-delegation/pool/lifetime/valid-lifetime", predicates))
 				}
-				if !state.Ipv6Pools[i].PrefixDelegationPoolName.IsNull() && data.Ipv6Pools[j].PrefixDelegationPoolName.IsNull() {
+				if !state.Ipv6Pools[i].PrefixDelegationPoolName.IsNull() && (data.Ipv6Pools[j].PrefixDelegationPoolName.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v/prefix-delegation/pool/pool-name", predicates))
 				}
 				for ci := range state.Ipv6Pools[i].AddressPrefixes {
@@ -2261,10 +2233,10 @@ func (data *DHCP) addDeletedItemsXML(ctx context.Context, state DHCP, body strin
 							found = false
 						}
 						if found {
-							if !state.Ipv6Pools[i].AddressPrefixes[ci].PreferredLifetime.IsNull() && data.Ipv6Pools[j].AddressPrefixes[cj].PreferredLifetime.IsNull() {
+							if !state.Ipv6Pools[i].AddressPrefixes[ci].PreferredLifetime.IsNull() && (data.Ipv6Pools[j].AddressPrefixes[cj].PreferredLifetime.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v/address/prefix%v/lifetime/preferred-lifetime", predicates, cpredicates))
 							}
-							if !state.Ipv6Pools[i].AddressPrefixes[ci].ValidLifetime.IsNull() && data.Ipv6Pools[j].AddressPrefixes[cj].ValidLifetime.IsNull() {
+							if !state.Ipv6Pools[i].AddressPrefixes[ci].ValidLifetime.IsNull() && (data.Ipv6Pools[j].AddressPrefixes[cj].ValidLifetime.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v/address/prefix%v/lifetime/valid-lifetime", predicates, cpredicates))
 							}
 							break
@@ -2274,7 +2246,7 @@ func (data *DHCP) addDeletedItemsXML(ctx context.Context, state DHCP, body strin
 						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v/address/prefix%v", predicates, cpredicates))
 					}
 				}
-				if !state.Ipv6Pools[i].Vrf.IsNull() && data.Ipv6Pools[j].Vrf.IsNull() {
+				if !state.Ipv6Pools[i].Vrf.IsNull() && (data.Ipv6Pools[j].Vrf.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v/vrf", predicates))
 				}
 				break
@@ -2380,10 +2352,10 @@ func (data *DHCP) addDeletedItemsXML(ctx context.Context, state DHCP, body strin
 									}
 								}
 							}
-							if !state.Pools[i].Options[ci].Hex.IsNull() && data.Pools[j].Options[cj].Hex.IsNull() {
+							if !state.Pools[i].Options[ci].Hex.IsNull() && (data.Pools[j].Options[cj].Hex.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/option/option-range%v/hex-new/hex-line", predicates, cpredicates))
 							}
-							if !state.Pools[i].Options[ci].Ascii.IsNull() && data.Pools[j].Options[cj].Ascii.IsNull() {
+							if !state.Pools[i].Options[ci].Ascii.IsNull() && (data.Pools[j].Options[cj].Ascii.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/option/option-range%v/ascii-new", predicates, cpredicates))
 							}
 							break
@@ -2393,31 +2365,31 @@ func (data *DHCP) addDeletedItemsXML(ctx context.Context, state DHCP, body strin
 						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/option/option-range%v", predicates, cpredicates))
 					}
 				}
-				if !state.Pools[i].SubnetPrefixLength.IsNull() && data.Pools[j].SubnetPrefixLength.IsNull() {
+				if !state.Pools[i].SubnetPrefixLength.IsNull() && (data.Pools[j].SubnetPrefixLength.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/subnet/prefix-length", predicates))
 				}
-				if !state.Pools[i].UtilizationMarkLowLog.IsNull() && data.Pools[j].UtilizationMarkLowLog.IsNull() {
+				if !state.Pools[i].UtilizationMarkLowLog.IsNull() && (data.Pools[j].UtilizationMarkLowLog.IsNull() || (state.Pools[i].UtilizationMarkLowLog.ValueBool() && !data.Pools[j].UtilizationMarkLowLog.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/utilization/mark/low/log", predicates))
 				}
-				if !state.Pools[i].UtilizationMarkLow.IsNull() && data.Pools[j].UtilizationMarkLow.IsNull() {
+				if !state.Pools[i].UtilizationMarkLow.IsNull() && (data.Pools[j].UtilizationMarkLow.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/utilization/mark/low/low-value", predicates))
 				}
-				if !state.Pools[i].UtilizationMarkHighLog.IsNull() && data.Pools[j].UtilizationMarkHighLog.IsNull() {
+				if !state.Pools[i].UtilizationMarkHighLog.IsNull() && (data.Pools[j].UtilizationMarkHighLog.IsNull() || (state.Pools[i].UtilizationMarkHighLog.ValueBool() && !data.Pools[j].UtilizationMarkHighLog.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/utilization/mark/high/log", predicates))
 				}
-				if !state.Pools[i].UtilizationMarkHigh.IsNull() && data.Pools[j].UtilizationMarkHigh.IsNull() {
+				if !state.Pools[i].UtilizationMarkHigh.IsNull() && (data.Pools[j].UtilizationMarkHigh.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/utilization/mark/high/high-value", predicates))
 				}
-				if !state.Pools[i].LeaseInfinite.IsNull() && data.Pools[j].LeaseInfinite.IsNull() {
+				if !state.Pools[i].LeaseInfinite.IsNull() && (data.Pools[j].LeaseInfinite.IsNull() || (state.Pools[i].LeaseInfinite.ValueBool() && !data.Pools[j].LeaseInfinite.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/lease/infinite", predicates))
 				}
-				if !state.Pools[i].LeaseMinutes.IsNull() && data.Pools[j].LeaseMinutes.IsNull() {
+				if !state.Pools[i].LeaseMinutes.IsNull() && (data.Pools[j].LeaseMinutes.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/lease/lease-value/minutes", predicates))
 				}
-				if !state.Pools[i].LeaseHours.IsNull() && data.Pools[j].LeaseHours.IsNull() {
+				if !state.Pools[i].LeaseHours.IsNull() && (data.Pools[j].LeaseHours.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/lease/lease-value/hours", predicates))
 				}
-				if !state.Pools[i].LeaseDays.IsNull() && data.Pools[j].LeaseDays.IsNull() {
+				if !state.Pools[i].LeaseDays.IsNull() && (data.Pools[j].LeaseDays.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/lease/lease-value/days", predicates))
 				}
 				if !state.Pools[i].NextServers.IsNull() {
@@ -2495,10 +2467,10 @@ func (data *DHCP) addDeletedItemsXML(ctx context.Context, state DHCP, body strin
 						}
 					}
 				}
-				if !state.Pools[i].HostMask.IsNull() && data.Pools[j].HostMask.IsNull() {
+				if !state.Pools[i].HostMask.IsNull() && (data.Pools[j].HostMask.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/host/mask", predicates))
 				}
-				if !state.Pools[i].HostNumber.IsNull() && data.Pools[j].HostNumber.IsNull() {
+				if !state.Pools[i].HostNumber.IsNull() && (data.Pools[j].HostNumber.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/host/number", predicates))
 				}
 				for ci := range state.Pools[i].SecondaryNetworks {
@@ -2524,10 +2496,10 @@ func (data *DHCP) addDeletedItemsXML(ctx context.Context, state DHCP, body strin
 							found = false
 						}
 						if found {
-							if !state.Pools[i].SecondaryNetworks[ci].Secondary.IsNull() && data.Pools[j].SecondaryNetworks[cj].Secondary.IsNull() {
+							if !state.Pools[i].SecondaryNetworks[ci].Secondary.IsNull() && (data.Pools[j].SecondaryNetworks[cj].Secondary.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/network/secondary-network%v/secondary", predicates, cpredicates))
 							}
-							if !state.Pools[i].SecondaryNetworks[ci].Mask.IsNull() && data.Pools[j].SecondaryNetworks[cj].Mask.IsNull() {
+							if !state.Pools[i].SecondaryNetworks[ci].Mask.IsNull() && (data.Pools[j].SecondaryNetworks[cj].Mask.IsNull()) {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/network/secondary-network%v/mask", predicates, cpredicates))
 							}
 							break
@@ -2537,22 +2509,22 @@ func (data *DHCP) addDeletedItemsXML(ctx context.Context, state DHCP, body strin
 						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/network/secondary-network%v", predicates, cpredicates))
 					}
 				}
-				if !state.Pools[i].NetworkMask.IsNull() && data.Pools[j].NetworkMask.IsNull() {
+				if !state.Pools[i].NetworkMask.IsNull() && (data.Pools[j].NetworkMask.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/network/primary-network/mask", predicates))
 				}
-				if !state.Pools[i].NetworkNumber.IsNull() && data.Pools[j].NetworkNumber.IsNull() {
+				if !state.Pools[i].NetworkNumber.IsNull() && (data.Pools[j].NetworkNumber.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/network/primary-network/number", predicates))
 				}
-				if !state.Pools[i].ClientName.IsNull() && data.Pools[j].ClientName.IsNull() {
+				if !state.Pools[i].ClientName.IsNull() && (data.Pools[j].ClientName.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/client-name", predicates))
 				}
-				if !state.Pools[i].Bootfile.IsNull() && data.Pools[j].Bootfile.IsNull() {
+				if !state.Pools[i].Bootfile.IsNull() && (data.Pools[j].Bootfile.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/bootfile", predicates))
 				}
-				if !state.Pools[i].DomainName.IsNull() && data.Pools[j].DomainName.IsNull() {
+				if !state.Pools[i].DomainName.IsNull() && (data.Pools[j].DomainName.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/domain-name", predicates))
 				}
-				if !state.Pools[i].Vrf.IsNull() && data.Pools[j].Vrf.IsNull() {
+				if !state.Pools[i].Vrf.IsNull() && (data.Pools[j].Vrf.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/vrf", predicates))
 				}
 				break
@@ -2622,37 +2594,37 @@ func (data *DHCP) addDeletedItemsXML(ctx context.Context, state DHCP, body strin
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/vlan-list%v", predicates))
 		}
 	}
-	if !state.SnoopingInformationOptionFormatRemoteIdHostname.IsNull() && data.SnoopingInformationOptionFormatRemoteIdHostname.IsNull() {
+	if !state.SnoopingInformationOptionFormatRemoteIdHostname.IsNull() && (data.SnoopingInformationOptionFormatRemoteIdHostname.IsNull() || (state.SnoopingInformationOptionFormatRemoteIdHostname.ValueBool() && !data.SnoopingInformationOptionFormatRemoteIdHostname.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/format/remote-id/hostname")
 	}
-	if !state.SnoopingInformationOptionFormatRemoteIdString.IsNull() && data.SnoopingInformationOptionFormatRemoteIdString.IsNull() {
+	if !state.SnoopingInformationOptionFormatRemoteIdString.IsNull() && (data.SnoopingInformationOptionFormatRemoteIdString.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/format/remote-id/string")
 	}
-	if !state.SnoopingInformationOptionAllowUntrusted.IsNull() && data.SnoopingInformationOptionAllowUntrusted.IsNull() {
+	if !state.SnoopingInformationOptionAllowUntrusted.IsNull() && (data.SnoopingInformationOptionAllowUntrusted.IsNull() || (state.SnoopingInformationOptionAllowUntrusted.ValueBool() && !data.SnoopingInformationOptionAllowUntrusted.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/allow-untrusted")
 	}
-	if !state.SnoopingInformationOption.IsNull() && data.SnoopingInformationOption.IsNull() {
+	if !state.SnoopingInformationOption.IsNull() && (data.SnoopingInformationOption.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/option")
 	}
-	if !state.Snooping.IsNull() && data.Snooping.IsNull() {
+	if !state.Snooping.IsNull() && (data.Snooping.IsNull() || (state.Snooping.ValueBool() && !data.Snooping.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping")
 	}
-	if !state.RelayBootpIgnore.IsNull() && data.RelayBootpIgnore.IsNull() {
+	if !state.RelayBootpIgnore.IsNull() && (data.RelayBootpIgnore.IsNull() || (state.RelayBootpIgnore.ValueBool() && !data.RelayBootpIgnore.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/bootp/ignore")
 	}
-	if !state.RelayInformationOptionVpn.IsNull() && data.RelayInformationOptionVpn.IsNull() {
+	if !state.RelayInformationOptionVpn.IsNull() && (data.RelayInformationOptionVpn.IsNull() || (state.RelayInformationOptionVpn.ValueBool() && !data.RelayInformationOptionVpn.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn")
 	}
-	if !state.RelayInformationOptionDefault.IsNull() && data.RelayInformationOptionDefault.IsNull() {
+	if !state.RelayInformationOptionDefault.IsNull() && (data.RelayInformationOptionDefault.IsNull() || (state.RelayInformationOptionDefault.ValueBool() && !data.RelayInformationOptionDefault.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/option-default")
 	}
-	if !state.RelayInformationTrustAll.IsNull() && data.RelayInformationTrustAll.IsNull() {
+	if !state.RelayInformationTrustAll.IsNull() && (data.RelayInformationTrustAll.IsNull() || (state.RelayInformationTrustAll.ValueBool() && !data.RelayInformationTrustAll.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/trust-all")
 	}
-	if !state.CompatibilitySuboptionServerOverride.IsNull() && data.CompatibilitySuboptionServerOverride.IsNull() {
+	if !state.CompatibilitySuboptionServerOverride.IsNull() && (data.CompatibilitySuboptionServerOverride.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:compatibility/suboption/server-override")
 	}
-	if !state.CompatibilitySuboptionLinkSelection.IsNull() && data.CompatibilitySuboptionLinkSelection.IsNull() {
+	if !state.CompatibilitySuboptionLinkSelection.IsNull() && (data.CompatibilitySuboptionLinkSelection.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:compatibility/suboption/link-selection")
 	}
 

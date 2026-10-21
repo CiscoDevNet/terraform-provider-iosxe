@@ -110,50 +110,36 @@ func (data InterfacePIM) addToBodyXML(ctx context.Context, config InterfacePIM, 
 	if !data.Passive.IsNull() && !data.Passive.IsUnknown() {
 		if data.Passive.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:pim-mode-choice-cfg/passive", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:pim-mode-choice-cfg/passive")
 		}
 	}
 	if !data.DenseMode.IsNull() && !data.DenseMode.IsUnknown() {
 		if data.DenseMode.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:pim-mode-choice-cfg/dense-mode", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:pim-mode-choice-cfg/dense-mode")
 		}
 	}
 	if !data.SparseMode.IsNull() && !data.SparseMode.IsUnknown() {
 		if data.SparseMode.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:pim-mode-choice-cfg/sparse-mode", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:pim-mode-choice-cfg/sparse-mode")
 		}
 	}
 	if !data.SparseDenseMode.IsNull() && !data.SparseDenseMode.IsUnknown() {
 		if data.SparseDenseMode.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:pim-mode-choice-cfg/sparse-dense-mode", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:pim-mode-choice-cfg/sparse-dense-mode")
 		}
 	}
 	if !data.Bfd.IsNull() && !data.Bfd.IsUnknown() {
 		if data.Bfd.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:bfd", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:bfd")
 		}
 	}
 	if !data.Border.IsNull() && !data.Border.IsUnknown() {
 		if data.Border.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:border", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:border")
 		}
 	}
 	if !data.BsrBorder.IsNull() && !data.BsrBorder.IsUnknown() {
 		if data.BsrBorder.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:bsr-border", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:bsr-border")
 		}
 	}
 	if !data.DrPriority.IsNull() && !data.DrPriority.IsUnknown() {
@@ -333,28 +319,28 @@ func (data *InterfacePIMData) fromBodyXML(ctx context.Context, res xmldot.Result
 
 func (data *InterfacePIM) addDeletedItemsXML(ctx context.Context, state InterfacePIM, body string) string {
 	b := netconf.NewBody(body)
-	if !state.DrPriority.IsNull() && data.DrPriority.IsNull() {
+	if !state.DrPriority.IsNull() && (data.DrPriority.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-multicast:dr-priority")
 	}
-	if !state.BsrBorder.IsNull() && data.BsrBorder.IsNull() {
+	if !state.BsrBorder.IsNull() && (data.BsrBorder.IsNull() || (state.BsrBorder.ValueBool() && !data.BsrBorder.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-multicast:bsr-border")
 	}
-	if !state.Border.IsNull() && data.Border.IsNull() {
+	if !state.Border.IsNull() && (data.Border.IsNull() || (state.Border.ValueBool() && !data.Border.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-multicast:border")
 	}
-	if !state.Bfd.IsNull() && data.Bfd.IsNull() {
+	if !state.Bfd.IsNull() && (data.Bfd.IsNull() || (state.Bfd.ValueBool() && !data.Bfd.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-multicast:bfd")
 	}
-	if !state.SparseDenseMode.IsNull() && data.SparseDenseMode.IsNull() {
+	if !state.SparseDenseMode.IsNull() && (data.SparseDenseMode.IsNull() || (state.SparseDenseMode.ValueBool() && !data.SparseDenseMode.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-multicast:pim-mode-choice-cfg/sparse-dense-mode")
 	}
-	if !state.SparseMode.IsNull() && data.SparseMode.IsNull() {
+	if !state.SparseMode.IsNull() && (data.SparseMode.IsNull() || (state.SparseMode.ValueBool() && !data.SparseMode.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-multicast:pim-mode-choice-cfg/sparse-mode")
 	}
-	if !state.DenseMode.IsNull() && data.DenseMode.IsNull() {
+	if !state.DenseMode.IsNull() && (data.DenseMode.IsNull() || (state.DenseMode.ValueBool() && !data.DenseMode.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-multicast:pim-mode-choice-cfg/dense-mode")
 	}
-	if !state.Passive.IsNull() && data.Passive.IsNull() {
+	if !state.Passive.IsNull() && (data.Passive.IsNull() || (state.Passive.ValueBool() && !data.Passive.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-multicast:pim-mode-choice-cfg/passive")
 	}
 

@@ -215,22 +215,22 @@ func (data *UsernameData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 func (data *Username) addDeletedItemsXML(ctx context.Context, state Username, body string) string {
 	b := netconf.NewBody(body)
-	if !state.Secret.IsNull() && data.Secret.IsNull() {
+	if !state.Secret.IsNull() && (data.Secret.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/secret/secret")
 	}
-	if !state.SecretEncryption.IsNull() && data.SecretEncryption.IsNull() {
+	if !state.SecretEncryption.IsNull() && (data.SecretEncryption.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/secret/encryption")
 	}
-	if !state.Password.IsNull() && data.Password.IsNull() {
+	if !state.Password.IsNull() && (data.Password.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/password/password")
 	}
-	if !state.PasswordEncryption.IsNull() && data.PasswordEncryption.IsNull() {
+	if !state.PasswordEncryption.IsNull() && (data.PasswordEncryption.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/password/encryption")
 	}
-	if !state.Description.IsNull() && data.Description.IsNull() {
+	if !state.Description.IsNull() && (data.Description.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/description")
 	}
-	if !state.Privilege.IsNull() && data.Privilege.IsNull() {
+	if !state.Privilege.IsNull() && (data.Privilege.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/privilege")
 	}
 

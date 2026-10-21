@@ -148,12 +148,16 @@ func (r *InterfaceHSRPResource) Schema(ctx context.Context, req resource.SchemaR
 				Default: int64default.StaticInt64(10),
 			},
 			"use_bia": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("HSRP uses interface's burned in address").String,
+				MarkdownDescription: helpers.NewAttributeDescription("HSRP uses interface's burned in address").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"use_bia_scope_interface": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Use-bia applies to all groups on this interface or sub-interface").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Use-bia applies to all groups on this interface or sub-interface").AddDefaultValueDescription("false").String,
 				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"redirect_timers_advertisement": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Redirect advertisement timer in seconds").AddIntegerRangeDescription(10, 180).String,
@@ -220,8 +224,10 @@ func (r *InterfaceHSRPResource) Schema(ctx context.Context, req resource.SchemaR
 							Optional:            true,
 						},
 						"ip": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Enable HSRP and set the virtual IP address").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Enable HSRP and set the virtual IP address").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"ip_address": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Virtual IPv4 address").String,
@@ -280,8 +286,10 @@ func (r *InterfaceHSRPResource) Schema(ctx context.Context, req resource.SchemaR
 							Optional:            true,
 						},
 						"preempt": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Overthrow lower priority Active routers").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Overthrow lower priority Active routers").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"preempt_delay_minimum": schema.Int64Attribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Minimum preempt delay in seconds").AddIntegerRangeDescription(0, 3600).String,
@@ -363,8 +371,10 @@ func (r *InterfaceHSRPResource) Schema(ctx context.Context, req resource.SchemaR
 										Default: int64default.StaticInt64(10),
 									},
 									"shutdown": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Shutdown group when tracked object goes down").String,
+										MarkdownDescription: helpers.NewAttributeDescription("Shutdown group when tracked object goes down").AddDefaultValueDescription("false").String,
 										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(false),
 									},
 								},
 							},

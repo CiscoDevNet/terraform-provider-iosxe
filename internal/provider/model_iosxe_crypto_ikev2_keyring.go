@@ -486,55 +486,55 @@ func (data *CryptoIKEv2Keyring) addDeletedItemsXML(ctx context.Context, state Cr
 				found = false
 			}
 			if found {
-				if !state.Peers[i].PreSharedKey.IsNull() && data.Peers[j].PreSharedKey.IsNull() {
+				if !state.Peers[i].PreSharedKey.IsNull() && (data.Peers[j].PreSharedKey.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/peer%v/pre-shared-key/key", predicates))
 				}
-				if !state.Peers[i].PreSharedKeyEncryption.IsNull() && data.Peers[j].PreSharedKeyEncryption.IsNull() {
+				if !state.Peers[i].PreSharedKeyEncryption.IsNull() && (data.Peers[j].PreSharedKeyEncryption.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/peer%v/pre-shared-key/encryption", predicates))
 				}
-				if !state.Peers[i].PreSharedKeyRemote.IsNull() && data.Peers[j].PreSharedKeyRemote.IsNull() {
+				if !state.Peers[i].PreSharedKeyRemote.IsNull() && (data.Peers[j].PreSharedKeyRemote.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/peer%v/pre-shared-key/remote-option/key", predicates))
 				}
-				if !state.Peers[i].PreSharedKeyRemoteEncryption.IsNull() && data.Peers[j].PreSharedKeyRemoteEncryption.IsNull() {
+				if !state.Peers[i].PreSharedKeyRemoteEncryption.IsNull() && (data.Peers[j].PreSharedKeyRemoteEncryption.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/peer%v/pre-shared-key/remote-option/encryption", predicates))
 				}
-				if !state.Peers[i].PreSharedKeyLocal.IsNull() && data.Peers[j].PreSharedKeyLocal.IsNull() {
+				if !state.Peers[i].PreSharedKeyLocal.IsNull() && (data.Peers[j].PreSharedKeyLocal.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/peer%v/pre-shared-key/local-option/key", predicates))
 				}
-				if !state.Peers[i].PreSharedKeyLocalEncryption.IsNull() && data.Peers[j].PreSharedKeyLocalEncryption.IsNull() {
+				if !state.Peers[i].PreSharedKeyLocalEncryption.IsNull() && (data.Peers[j].PreSharedKeyLocalEncryption.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/peer%v/pre-shared-key/local-option/encryption", predicates))
 				}
-				if !state.Peers[i].IdentityFqdnDomain.IsNull() && data.Peers[j].IdentityFqdnDomain.IsNull() {
+				if !state.Peers[i].IdentityFqdnDomain.IsNull() && (data.Peers[j].IdentityFqdnDomain.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/peer%v/identity/fqdn-option/domain", predicates))
 				}
-				if !state.Peers[i].IdentityFqdnName.IsNull() && data.Peers[j].IdentityFqdnName.IsNull() {
+				if !state.Peers[i].IdentityFqdnName.IsNull() && (data.Peers[j].IdentityFqdnName.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/peer%v/identity/fqdn-option/name", predicates))
 				}
-				if !state.Peers[i].IdentityEmailDomain.IsNull() && data.Peers[j].IdentityEmailDomain.IsNull() {
+				if !state.Peers[i].IdentityEmailDomain.IsNull() && (data.Peers[j].IdentityEmailDomain.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/peer%v/identity/email-option/domain", predicates))
 				}
-				if !state.Peers[i].IdentityEmailName.IsNull() && data.Peers[j].IdentityEmailName.IsNull() {
+				if !state.Peers[i].IdentityEmailName.IsNull() && (data.Peers[j].IdentityEmailName.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/peer%v/identity/email-option/name", predicates))
 				}
-				if !state.Peers[i].IdentityAddress.IsNull() && data.Peers[j].IdentityAddress.IsNull() {
+				if !state.Peers[i].IdentityAddress.IsNull() && (data.Peers[j].IdentityAddress.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/peer%v/identity/address-type", predicates))
 				}
-				if !state.Peers[i].IdentityKeyId.IsNull() && data.Peers[j].IdentityKeyId.IsNull() {
+				if !state.Peers[i].IdentityKeyId.IsNull() && (data.Peers[j].IdentityKeyId.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/peer%v/identity/key-id-number", predicates))
 				}
-				if !state.Peers[i].Ipv6Prefix.IsNull() && data.Peers[j].Ipv6Prefix.IsNull() {
+				if !state.Peers[i].Ipv6Prefix.IsNull() && (data.Peers[j].Ipv6Prefix.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/peer%v/address/ipv6-prefix", predicates))
 				}
-				if !state.Peers[i].Ipv4Mask.IsNull() && data.Peers[j].Ipv4Mask.IsNull() {
+				if !state.Peers[i].Ipv4Mask.IsNull() && (data.Peers[j].Ipv4Mask.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/peer%v/address/ipv4/ipv4-mask", predicates))
 				}
-				if !state.Peers[i].Ipv4Address.IsNull() && data.Peers[j].Ipv4Address.IsNull() {
+				if !state.Peers[i].Ipv4Address.IsNull() && (data.Peers[j].Ipv4Address.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/peer%v/address/ipv4/ipv4-address", predicates))
 				}
-				if !state.Peers[i].Hostname.IsNull() && data.Peers[j].Hostname.IsNull() {
+				if !state.Peers[i].Hostname.IsNull() && (data.Peers[j].Hostname.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/peer%v/hostname", predicates))
 				}
-				if !state.Peers[i].Description.IsNull() && data.Peers[j].Description.IsNull() {
+				if !state.Peers[i].Description.IsNull() && (data.Peers[j].Description.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/peer%v/description", predicates))
 				}
 				break

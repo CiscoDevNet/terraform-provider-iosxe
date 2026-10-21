@@ -49,6 +49,7 @@ resource "iosxe_mdt_subscription" "example" {
 - `source_vrf` (String) Network instance name for the VRF
 - `stream` (String) The name of the event stream being subscribed to
 - `update_policy_on_change` (Boolean) If true, there is no initial update notification with the current value of all the data. NOT CURRENTLY SUPPORTED. If specified, must be false
+  - Default value: `false`
 - `update_policy_periodic` (Number) Period of update notifications in hundredths of a second
   - Range: `0`-`4294967295`
 

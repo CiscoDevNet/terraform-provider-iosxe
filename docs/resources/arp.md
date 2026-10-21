@@ -39,11 +39,16 @@ resource "iosxe_arp" "example" {
 - `inspection_log_buffer_logs_interval` (Number) Interval for controlling logging rate
   - Range: `0`-`86400`
 - `inspection_validate_allow_zeros` (Boolean) Allow 0.0.0.0 sender IP address
+  - Default value: `false`
 - `inspection_validate_dst_mac` (Boolean) Validate destination MAC address
+  - Default value: `false`
 - `inspection_validate_ip` (Boolean) Validate IP addresses
+  - Default value: `false`
 - `inspection_validate_src_mac` (Boolean) Validate source MAC address
+  - Default value: `false`
 - `inspection_vlan` (String) Enable/Disable ARP Inspection on vlans(Deprecated)
 - `proxy_disable` (Boolean) Disable proxy ARP on all interfaces
+  - Default value: `false`
 
 ### Read-Only
 
@@ -70,6 +75,7 @@ Required:
 Optional:
 
 - `static` (Boolean) Apply the ACL statically
+  - Default value: `false`
 
 ## Import
 

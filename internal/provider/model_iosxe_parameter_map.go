@@ -202,8 +202,6 @@ func (data ParameterMap) addToBodyXML(ctx context.Context, config ParameterMap, 
 	if !data.Alert.IsNull() && !data.Alert.IsUnknown() {
 		if data.Alert.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/alert/on", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/alert/on")
 		}
 	}
 	if !data.ApplicationInspectDns.IsNull() && !data.ApplicationInspectDns.IsUnknown() {
@@ -263,8 +261,6 @@ func (data ParameterMap) addToBodyXML(ctx context.Context, config ParameterMap, 
 	if !data.AuditTrail.IsNull() && !data.AuditTrail.IsUnknown() {
 		if data.AuditTrail.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/audit-trail/on", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/audit-trail/on")
 		}
 	}
 	if !data.DnsTimeout.IsNull() && !data.DnsTimeout.IsUnknown() {
@@ -279,22 +275,16 @@ func (data ParameterMap) addToBodyXML(ctx context.Context, config ParameterMap, 
 	if !data.IcmpUnreachableAllow.IsNull() && !data.IcmpUnreachableAllow.IsUnknown() {
 		if data.IcmpUnreachableAllow.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/icmp-unreachable-allow", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/icmp-unreachable-allow")
 		}
 	}
 	if !data.LogDroppedPackets.IsNull() && !data.LogDroppedPackets.IsUnknown() {
 		if data.LogDroppedPackets.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/log/dropped-packets", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/log/dropped-packets")
 		}
 	}
 	if !data.LogFlow.IsNull() && !data.LogFlow.IsUnknown() {
 		if data.LogFlow.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/log/flow", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/log/flow")
 		}
 	}
 	if !data.MaxIncompleteHigh.IsNull() && !data.MaxIncompleteHigh.IsUnknown() {
@@ -336,22 +326,16 @@ func (data ParameterMap) addToBodyXML(ctx context.Context, config ParameterMap, 
 	if !data.TcpHalfCloseResetOff.IsNull() && !data.TcpHalfCloseResetOff.IsUnknown() {
 		if data.TcpHalfCloseResetOff.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/tcp/half-close/reset/off", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/tcp/half-close/reset/off")
 		}
 	}
 	if !data.TcpHalfOpenResetOff.IsNull() && !data.TcpHalfOpenResetOff.IsUnknown() {
 		if data.TcpHalfOpenResetOff.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/tcp/half-open/reset/off", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/tcp/half-open/reset/off")
 		}
 	}
 	if !data.TcpIdleResetOff.IsNull() && !data.TcpIdleResetOff.IsUnknown() {
 		if data.TcpIdleResetOff.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/tcp/idle/reset/off", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/tcp/idle/reset/off")
 		}
 	}
 	if !data.TcpIdleTime.IsNull() && !data.TcpIdleTime.IsUnknown() {
@@ -375,8 +359,6 @@ func (data ParameterMap) addToBodyXML(ctx context.Context, config ParameterMap, 
 	if !data.TcpWindowScaleEnforcementLoose.IsNull() && !data.TcpWindowScaleEnforcementLoose.IsUnknown() {
 		if data.TcpWindowScaleEnforcementLoose.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/tcp/window-scale-enforcement/loose", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/tcp/window-scale-enforcement/loose")
 		}
 	}
 	if !data.UdpHalfOpenIdleTime.IsNull() && !data.UdpHalfOpenIdleTime.IsUnknown() {
@@ -394,8 +376,6 @@ func (data ParameterMap) addToBodyXML(ctx context.Context, config ParameterMap, 
 	if !data.ZoneMismatchDrop.IsNull() && !data.ZoneMismatchDrop.IsUnknown() {
 		if data.ZoneMismatchDrop.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/zone-mismatch/drop", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/zone-mismatch/drop")
 		}
 	}
 	return body
@@ -1204,163 +1184,163 @@ func (data *ParameterMapData) fromBodyXML(ctx context.Context, res xmldot.Result
 
 func (data *ParameterMap) addDeletedItemsXML(ctx context.Context, state ParameterMap, body string) string {
 	b := netconf.NewBody(body)
-	if !state.ZoneMismatchDrop.IsNull() && data.ZoneMismatchDrop.IsNull() {
+	if !state.ZoneMismatchDrop.IsNull() && (data.ZoneMismatchDrop.IsNull() || (state.ZoneMismatchDrop.ValueBool() && !data.ZoneMismatchDrop.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/zone-mismatch/drop")
 	}
-	if !state.UdpIdleTimeAgeout.IsNull() && data.UdpIdleTimeAgeout.IsNull() {
+	if !state.UdpIdleTimeAgeout.IsNull() && (data.UdpIdleTimeAgeout.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/udp/idle-time/ageout-time")
 	}
-	if !state.UdpIdleTime.IsNull() && data.UdpIdleTime.IsNull() {
+	if !state.UdpIdleTime.IsNull() && (data.UdpIdleTime.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/udp/idle-time/timeout")
 	}
-	if !state.UdpHalfOpenIdleTimeAgeout.IsNull() && data.UdpHalfOpenIdleTimeAgeout.IsNull() {
+	if !state.UdpHalfOpenIdleTimeAgeout.IsNull() && (data.UdpHalfOpenIdleTimeAgeout.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/udp/half-open/idle-time/ageout-time")
 	}
-	if !state.UdpHalfOpenIdleTime.IsNull() && data.UdpHalfOpenIdleTime.IsNull() {
+	if !state.UdpHalfOpenIdleTime.IsNull() && (data.UdpHalfOpenIdleTime.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/udp/half-open/idle-time/timeout")
 	}
-	if !state.TcpWindowScaleEnforcementLoose.IsNull() && data.TcpWindowScaleEnforcementLoose.IsNull() {
+	if !state.TcpWindowScaleEnforcementLoose.IsNull() && (data.TcpWindowScaleEnforcementLoose.IsNull() || (state.TcpWindowScaleEnforcementLoose.ValueBool() && !data.TcpWindowScaleEnforcementLoose.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/tcp/window-scale-enforcement/loose")
 	}
-	if !state.TcpSynwaitTimeAgeout.IsNull() && data.TcpSynwaitTimeAgeout.IsNull() {
+	if !state.TcpSynwaitTimeAgeout.IsNull() && (data.TcpSynwaitTimeAgeout.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/tcp/synwait-time/ageout-time")
 	}
-	if !state.TcpSynwaitTime.IsNull() && data.TcpSynwaitTime.IsNull() {
+	if !state.TcpSynwaitTime.IsNull() && (data.TcpSynwaitTime.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/tcp/synwait-time/timeout")
 	}
-	if !state.TcpMaxIncompleteHostBlockTime.IsNull() && data.TcpMaxIncompleteHostBlockTime.IsNull() {
+	if !state.TcpMaxIncompleteHostBlockTime.IsNull() && (data.TcpMaxIncompleteHostBlockTime.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/tcp/max-incomplete/host/block-time")
 	}
-	if !state.TcpMaxIncompleteHost.IsNull() && data.TcpMaxIncompleteHost.IsNull() {
+	if !state.TcpMaxIncompleteHost.IsNull() && (data.TcpMaxIncompleteHost.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/tcp/max-incomplete/host/value")
 	}
-	if !state.TcpIdleTimeAgeout.IsNull() && data.TcpIdleTimeAgeout.IsNull() {
+	if !state.TcpIdleTimeAgeout.IsNull() && (data.TcpIdleTimeAgeout.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/tcp/idle-time/ageout-time")
 	}
-	if !state.TcpIdleTime.IsNull() && data.TcpIdleTime.IsNull() {
+	if !state.TcpIdleTime.IsNull() && (data.TcpIdleTime.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/tcp/idle-time/timeout")
 	}
-	if !state.TcpIdleResetOff.IsNull() && data.TcpIdleResetOff.IsNull() {
+	if !state.TcpIdleResetOff.IsNull() && (data.TcpIdleResetOff.IsNull() || (state.TcpIdleResetOff.ValueBool() && !data.TcpIdleResetOff.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/tcp/idle/reset/off")
 	}
-	if !state.TcpHalfOpenResetOff.IsNull() && data.TcpHalfOpenResetOff.IsNull() {
+	if !state.TcpHalfOpenResetOff.IsNull() && (data.TcpHalfOpenResetOff.IsNull() || (state.TcpHalfOpenResetOff.ValueBool() && !data.TcpHalfOpenResetOff.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/tcp/half-open/reset/off")
 	}
-	if !state.TcpHalfCloseResetOff.IsNull() && data.TcpHalfCloseResetOff.IsNull() {
+	if !state.TcpHalfCloseResetOff.IsNull() && (data.TcpHalfCloseResetOff.IsNull() || (state.TcpHalfCloseResetOff.ValueBool() && !data.TcpHalfCloseResetOff.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/tcp/half-close/reset/off")
 	}
-	if !state.TcpFinwaitTimeAgeout.IsNull() && data.TcpFinwaitTimeAgeout.IsNull() {
+	if !state.TcpFinwaitTimeAgeout.IsNull() && (data.TcpFinwaitTimeAgeout.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/tcp/finwait-time/ageout-time")
 	}
-	if !state.TcpFinwaitTime.IsNull() && data.TcpFinwaitTime.IsNull() {
+	if !state.TcpFinwaitTime.IsNull() && (data.TcpFinwaitTime.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/tcp/finwait-time/timeout")
 	}
-	if !state.SessionsRateLowTime.IsNull() && data.SessionsRateLowTime.IsNull() {
+	if !state.SessionsRateLowTime.IsNull() && (data.SessionsRateLowTime.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/sessions/rate/low/time")
 	}
-	if !state.SessionsRateLow.IsNull() && data.SessionsRateLow.IsNull() {
+	if !state.SessionsRateLow.IsNull() && (data.SessionsRateLow.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/sessions/rate/low/value")
 	}
-	if !state.SessionsRateHighTime.IsNull() && data.SessionsRateHighTime.IsNull() {
+	if !state.SessionsRateHighTime.IsNull() && (data.SessionsRateHighTime.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/sessions/rate/high/time")
 	}
-	if !state.SessionsRateHigh.IsNull() && data.SessionsRateHigh.IsNull() {
+	if !state.SessionsRateHigh.IsNull() && (data.SessionsRateHigh.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/sessions/rate/high/value")
 	}
-	if !state.SessionsPacket.IsNull() && data.SessionsPacket.IsNull() {
+	if !state.SessionsPacket.IsNull() && (data.SessionsPacket.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/sessions/packet")
 	}
-	if !state.SessionsMaximum.IsNull() && data.SessionsMaximum.IsNull() {
+	if !state.SessionsMaximum.IsNull() && (data.SessionsMaximum.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/sessions/maximum")
 	}
-	if !state.OneMinuteLow.IsNull() && data.OneMinuteLow.IsNull() {
+	if !state.OneMinuteLow.IsNull() && (data.OneMinuteLow.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/one-minute/low")
 	}
-	if !state.OneMinuteHigh.IsNull() && data.OneMinuteHigh.IsNull() {
+	if !state.OneMinuteHigh.IsNull() && (data.OneMinuteHigh.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/one-minute/high")
 	}
-	if !state.MaxIncompleteLow.IsNull() && data.MaxIncompleteLow.IsNull() {
+	if !state.MaxIncompleteLow.IsNull() && (data.MaxIncompleteLow.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/max-incomplete/low")
 	}
-	if !state.MaxIncompleteHigh.IsNull() && data.MaxIncompleteHigh.IsNull() {
+	if !state.MaxIncompleteHigh.IsNull() && (data.MaxIncompleteHigh.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/max-incomplete/high")
 	}
-	if !state.LogFlow.IsNull() && data.LogFlow.IsNull() {
+	if !state.LogFlow.IsNull() && (data.LogFlow.IsNull() || (state.LogFlow.ValueBool() && !data.LogFlow.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/log/flow")
 	}
-	if !state.LogDroppedPackets.IsNull() && data.LogDroppedPackets.IsNull() {
+	if !state.LogDroppedPackets.IsNull() && (data.LogDroppedPackets.IsNull() || (state.LogDroppedPackets.ValueBool() && !data.LogDroppedPackets.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/log/dropped-packets")
 	}
-	if !state.IcmpUnreachableAllow.IsNull() && data.IcmpUnreachableAllow.IsNull() {
+	if !state.IcmpUnreachableAllow.IsNull() && (data.IcmpUnreachableAllow.IsNull() || (state.IcmpUnreachableAllow.ValueBool() && !data.IcmpUnreachableAllow.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/icmp-unreachable-allow")
 	}
-	if !state.IcmpIdleTimeAgeout.IsNull() && data.IcmpIdleTimeAgeout.IsNull() {
+	if !state.IcmpIdleTimeAgeout.IsNull() && (data.IcmpIdleTimeAgeout.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/icmp/idle-time/ageout-time")
 	}
-	if !state.IcmpIdleTime.IsNull() && data.IcmpIdleTime.IsNull() {
+	if !state.IcmpIdleTime.IsNull() && (data.IcmpIdleTime.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/icmp/idle-time/timeout")
 	}
-	if !state.DnsTimeout.IsNull() && data.DnsTimeout.IsNull() {
+	if !state.DnsTimeout.IsNull() && (data.DnsTimeout.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dns-timeout")
 	}
-	if !state.AuditTrail.IsNull() && data.AuditTrail.IsNull() {
+	if !state.AuditTrail.IsNull() && (data.AuditTrail.IsNull() || (state.AuditTrail.ValueBool() && !data.AuditTrail.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/audit-trail/on")
 	}
-	if !state.ApplicationInspectTftp.IsNull() && data.ApplicationInspectTftp.IsNull() {
+	if !state.ApplicationInspectTftp.IsNull() && (data.ApplicationInspectTftp.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/application-inspect/tftp")
 	}
-	if !state.ApplicationInspectSunrpc.IsNull() && data.ApplicationInspectSunrpc.IsNull() {
+	if !state.ApplicationInspectSunrpc.IsNull() && (data.ApplicationInspectSunrpc.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/application-inspect/sunrpc")
 	}
-	if !state.ApplicationInspectSmtp.IsNull() && data.ApplicationInspectSmtp.IsNull() {
+	if !state.ApplicationInspectSmtp.IsNull() && (data.ApplicationInspectSmtp.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/application-inspect/smtp")
 	}
-	if !state.ApplicationInspectSkinny.IsNull() && data.ApplicationInspectSkinny.IsNull() {
+	if !state.ApplicationInspectSkinny.IsNull() && (data.ApplicationInspectSkinny.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/application-inspect/skinny")
 	}
-	if !state.ApplicationInspectSip.IsNull() && data.ApplicationInspectSip.IsNull() {
+	if !state.ApplicationInspectSip.IsNull() && (data.ApplicationInspectSip.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/application-inspect/sip")
 	}
-	if !state.ApplicationInspectShell.IsNull() && data.ApplicationInspectShell.IsNull() {
+	if !state.ApplicationInspectShell.IsNull() && (data.ApplicationInspectShell.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/application-inspect/shell")
 	}
-	if !state.ApplicationInspectRtsp.IsNull() && data.ApplicationInspectRtsp.IsNull() {
+	if !state.ApplicationInspectRtsp.IsNull() && (data.ApplicationInspectRtsp.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/application-inspect/rtsp")
 	}
-	if !state.ApplicationInspectPop3.IsNull() && data.ApplicationInspectPop3.IsNull() {
+	if !state.ApplicationInspectPop3.IsNull() && (data.ApplicationInspectPop3.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/application-inspect/pop3")
 	}
-	if !state.ApplicationInspectNetbios.IsNull() && data.ApplicationInspectNetbios.IsNull() {
+	if !state.ApplicationInspectNetbios.IsNull() && (data.ApplicationInspectNetbios.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/application-inspect/netbios")
 	}
-	if !state.ApplicationInspectMsrpc.IsNull() && data.ApplicationInspectMsrpc.IsNull() {
+	if !state.ApplicationInspectMsrpc.IsNull() && (data.ApplicationInspectMsrpc.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/application-inspect/msrpc")
 	}
-	if !state.ApplicationInspectLogin.IsNull() && data.ApplicationInspectLogin.IsNull() {
+	if !state.ApplicationInspectLogin.IsNull() && (data.ApplicationInspectLogin.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/application-inspect/login")
 	}
-	if !state.ApplicationInspectImap.IsNull() && data.ApplicationInspectImap.IsNull() {
+	if !state.ApplicationInspectImap.IsNull() && (data.ApplicationInspectImap.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/application-inspect/imap")
 	}
-	if !state.ApplicationInspectHttp.IsNull() && data.ApplicationInspectHttp.IsNull() {
+	if !state.ApplicationInspectHttp.IsNull() && (data.ApplicationInspectHttp.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/application-inspect/http")
 	}
-	if !state.ApplicationInspectH323.IsNull() && data.ApplicationInspectH323.IsNull() {
+	if !state.ApplicationInspectH323.IsNull() && (data.ApplicationInspectH323.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/application-inspect/h323")
 	}
-	if !state.ApplicationInspectGtp.IsNull() && data.ApplicationInspectGtp.IsNull() {
+	if !state.ApplicationInspectGtp.IsNull() && (data.ApplicationInspectGtp.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/application-inspect/gtp")
 	}
-	if !state.ApplicationInspectFtp.IsNull() && data.ApplicationInspectFtp.IsNull() {
+	if !state.ApplicationInspectFtp.IsNull() && (data.ApplicationInspectFtp.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/application-inspect/ftp")
 	}
-	if !state.ApplicationInspectExec.IsNull() && data.ApplicationInspectExec.IsNull() {
+	if !state.ApplicationInspectExec.IsNull() && (data.ApplicationInspectExec.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/application-inspect/exec")
 	}
-	if !state.ApplicationInspectDns.IsNull() && data.ApplicationInspectDns.IsNull() {
+	if !state.ApplicationInspectDns.IsNull() && (data.ApplicationInspectDns.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/application-inspect/dns")
 	}
-	if !state.Alert.IsNull() && data.Alert.IsNull() {
+	if !state.Alert.IsNull() && (data.Alert.IsNull() || (state.Alert.ValueBool() && !data.Alert.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/alert/on")
 	}
 

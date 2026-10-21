@@ -176,15 +176,11 @@ func (data CryptoIKEv2Profile) addToBodyXML(ctx context.Context, config CryptoIK
 	if !data.AuthenticationRemotePreShare.IsNull() && !data.AuthenticationRemotePreShare.IsUnknown() {
 		if data.AuthenticationRemotePreShare.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/authentication/remote/pre-share", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/authentication/remote/pre-share")
 		}
 	}
 	if !data.AuthenticationLocalPreShare.IsNull() && !data.AuthenticationLocalPreShare.IsUnknown() {
 		if data.AuthenticationLocalPreShare.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/authentication/local/pre-share", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/authentication/local/pre-share")
 		}
 	}
 	if !data.IdentityLocalAddress.IsNull() && !data.IdentityLocalAddress.IsUnknown() {
@@ -196,8 +192,6 @@ func (data CryptoIKEv2Profile) addToBodyXML(ctx context.Context, config CryptoIK
 	if !data.MatchInboundOnly.IsNull() && !data.MatchInboundOnly.IsUnknown() {
 		if data.MatchInboundOnly.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/match/inbound-only", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/inbound-only")
 		}
 	}
 	if !data.MatchAddressLocalIp.IsNull() && !data.MatchAddressLocalIp.IsUnknown() {
@@ -209,8 +203,6 @@ func (data CryptoIKEv2Profile) addToBodyXML(ctx context.Context, config CryptoIK
 	if !data.MatchFvrfAny.IsNull() && !data.MatchFvrfAny.IsUnknown() {
 		if data.MatchFvrfAny.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/match/fvrf/any", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/fvrf/any")
 		}
 	}
 	if len(data.MatchIdentityRemoteIpv4Addresses) > 0 {
@@ -272,29 +264,21 @@ func (data CryptoIKEv2Profile) addToBodyXML(ctx context.Context, config CryptoIK
 	if !data.AuthenticationLocalEcdsaSig.IsNull() && !data.AuthenticationLocalEcdsaSig.IsUnknown() {
 		if data.AuthenticationLocalEcdsaSig.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/authentication/local/ecdsa-sig", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/authentication/local/ecdsa-sig")
 		}
 	}
 	if !data.AuthenticationLocalRsaSig.IsNull() && !data.AuthenticationLocalRsaSig.IsUnknown() {
 		if data.AuthenticationLocalRsaSig.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/authentication/local/rsa-sig", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/authentication/local/rsa-sig")
 		}
 	}
 	if !data.AuthenticationRemoteEcdsaSig.IsNull() && !data.AuthenticationRemoteEcdsaSig.IsUnknown() {
 		if data.AuthenticationRemoteEcdsaSig.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/authentication/remote/ecdsa-sig", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/authentication/remote/ecdsa-sig")
 		}
 	}
 	if !data.AuthenticationRemoteRsaSig.IsNull() && !data.AuthenticationRemoteRsaSig.IsUnknown() {
 		if data.AuthenticationRemoteRsaSig.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/authentication/remote/rsa-sig", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/authentication/remote/rsa-sig")
 		}
 	}
 	if !data.MatchCertificateMaps.IsNull() && !data.MatchCertificateMaps.IsUnknown() {
@@ -875,7 +859,7 @@ func (data *CryptoIKEv2ProfileData) fromBodyXML(ctx context.Context, res xmldot.
 
 func (data *CryptoIKEv2Profile) addDeletedItemsXML(ctx context.Context, state CryptoIKEv2Profile, body string) string {
 	b := netconf.NewBody(body)
-	if !state.ConfigExchangeRequest.IsNull() && data.ConfigExchangeRequest.IsNull() {
+	if !state.ConfigExchangeRequest.IsNull() && (data.ConfigExchangeRequest.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/config-exchange/request-1")
 	}
 	for i := range state.PkiTrustpoints {
@@ -901,7 +885,7 @@ func (data *CryptoIKEv2Profile) addDeletedItemsXML(ctx context.Context, state Cr
 				found = false
 			}
 			if found {
-				if !state.PkiTrustpoints[i].Uses.IsNull() && data.PkiTrustpoints[j].Uses.IsNull() {
+				if !state.PkiTrustpoints[i].Uses.IsNull() && (data.PkiTrustpoints[j].Uses.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/pki/trust-points%v/uses", predicates))
 				}
 				break
@@ -936,16 +920,16 @@ func (data *CryptoIKEv2Profile) addDeletedItemsXML(ctx context.Context, state Cr
 			}
 		}
 	}
-	if !state.AuthenticationRemoteRsaSig.IsNull() && data.AuthenticationRemoteRsaSig.IsNull() {
+	if !state.AuthenticationRemoteRsaSig.IsNull() && (data.AuthenticationRemoteRsaSig.IsNull() || (state.AuthenticationRemoteRsaSig.ValueBool() && !data.AuthenticationRemoteRsaSig.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/authentication/remote/rsa-sig")
 	}
-	if !state.AuthenticationRemoteEcdsaSig.IsNull() && data.AuthenticationRemoteEcdsaSig.IsNull() {
+	if !state.AuthenticationRemoteEcdsaSig.IsNull() && (data.AuthenticationRemoteEcdsaSig.IsNull() || (state.AuthenticationRemoteEcdsaSig.ValueBool() && !data.AuthenticationRemoteEcdsaSig.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/authentication/remote/ecdsa-sig")
 	}
-	if !state.AuthenticationLocalRsaSig.IsNull() && data.AuthenticationLocalRsaSig.IsNull() {
+	if !state.AuthenticationLocalRsaSig.IsNull() && (data.AuthenticationLocalRsaSig.IsNull() || (state.AuthenticationLocalRsaSig.ValueBool() && !data.AuthenticationLocalRsaSig.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/authentication/local/rsa-sig")
 	}
-	if !state.AuthenticationLocalEcdsaSig.IsNull() && data.AuthenticationLocalEcdsaSig.IsNull() {
+	if !state.AuthenticationLocalEcdsaSig.IsNull() && (data.AuthenticationLocalEcdsaSig.IsNull() || (state.AuthenticationLocalEcdsaSig.ValueBool() && !data.AuthenticationLocalEcdsaSig.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/authentication/local/ecdsa-sig")
 	}
 	for i := range state.MatchAddressLocalInterfaceLoopback {
@@ -978,25 +962,25 @@ func (data *CryptoIKEv2Profile) addDeletedItemsXML(ctx context.Context, state Cr
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/match/address/local/interface-options-local/Loopback%v", predicates))
 		}
 	}
-	if !state.MatchAddressLocalInterfaceLoopbackLegacy.IsNull() && data.MatchAddressLocalInterfaceLoopbackLegacy.IsNull() {
+	if !state.MatchAddressLocalInterfaceLoopbackLegacy.IsNull() && (data.MatchAddressLocalInterfaceLoopbackLegacy.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/address/local/interface-options/Loopback")
 	}
-	if !state.Lifetime.IsNull() && data.Lifetime.IsNull() {
+	if !state.Lifetime.IsNull() && (data.Lifetime.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/lifetime/seconds")
 	}
-	if !state.DpdQuery.IsNull() && data.DpdQuery.IsNull() {
+	if !state.DpdQuery.IsNull() && (data.DpdQuery.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dpd")
 	}
-	if !state.DpdRetry.IsNull() && data.DpdRetry.IsNull() {
+	if !state.DpdRetry.IsNull() && (data.DpdRetry.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dpd")
 	}
-	if !state.DpdInterval.IsNull() && data.DpdInterval.IsNull() {
+	if !state.DpdInterval.IsNull() && (data.DpdInterval.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dpd")
 	}
-	if !state.Ivrf.IsNull() && data.Ivrf.IsNull() {
+	if !state.Ivrf.IsNull() && (data.Ivrf.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ivrf")
 	}
-	if !state.KeyringLocal.IsNull() && data.KeyringLocal.IsNull() {
+	if !state.KeyringLocal.IsNull() && (data.KeyringLocal.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/keyring/local/name")
 	}
 	if !state.MatchIdentityRemoteKeys.IsNull() {
@@ -1072,7 +1056,7 @@ func (data *CryptoIKEv2Profile) addDeletedItemsXML(ctx context.Context, state Cr
 				found = false
 			}
 			if found {
-				if !state.MatchIdentityRemoteIpv4Addresses[i].Mask.IsNull() && data.MatchIdentityRemoteIpv4Addresses[j].Mask.IsNull() {
+				if !state.MatchIdentityRemoteIpv4Addresses[i].Mask.IsNull() && (data.MatchIdentityRemoteIpv4Addresses[j].Mask.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/match/identity/remote/address/ipv4%v/ipv4-mask", predicates))
 				}
 				break
@@ -1082,31 +1066,31 @@ func (data *CryptoIKEv2Profile) addDeletedItemsXML(ctx context.Context, state Cr
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/match/identity/remote/address/ipv4%v", predicates))
 		}
 	}
-	if !state.MatchFvrfAny.IsNull() && data.MatchFvrfAny.IsNull() {
+	if !state.MatchFvrfAny.IsNull() && (data.MatchFvrfAny.IsNull() || (state.MatchFvrfAny.ValueBool() && !data.MatchFvrfAny.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/fvrf/any")
 	}
-	if !state.MatchFvrf.IsNull() && data.MatchFvrf.IsNull() {
+	if !state.MatchFvrf.IsNull() && (data.MatchFvrf.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/fvrf/name")
 	}
-	if !state.MatchAddressLocalIp.IsNull() && data.MatchAddressLocalIp.IsNull() {
+	if !state.MatchAddressLocalIp.IsNull() && (data.MatchAddressLocalIp.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/address/local/ip")
 	}
-	if !state.MatchInboundOnly.IsNull() && data.MatchInboundOnly.IsNull() {
+	if !state.MatchInboundOnly.IsNull() && (data.MatchInboundOnly.IsNull() || (state.MatchInboundOnly.ValueBool() && !data.MatchInboundOnly.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/inbound-only")
 	}
-	if !state.IdentityLocalKeyId.IsNull() && data.IdentityLocalKeyId.IsNull() {
+	if !state.IdentityLocalKeyId.IsNull() && (data.IdentityLocalKeyId.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/identity/local/key-id")
 	}
-	if !state.IdentityLocalAddress.IsNull() && data.IdentityLocalAddress.IsNull() {
+	if !state.IdentityLocalAddress.IsNull() && (data.IdentityLocalAddress.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/identity/local/address")
 	}
-	if !state.AuthenticationLocalPreShare.IsNull() && data.AuthenticationLocalPreShare.IsNull() {
+	if !state.AuthenticationLocalPreShare.IsNull() && (data.AuthenticationLocalPreShare.IsNull() || (state.AuthenticationLocalPreShare.ValueBool() && !data.AuthenticationLocalPreShare.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/authentication/local/pre-share")
 	}
-	if !state.AuthenticationRemotePreShare.IsNull() && data.AuthenticationRemotePreShare.IsNull() {
+	if !state.AuthenticationRemotePreShare.IsNull() && (data.AuthenticationRemotePreShare.IsNull() || (state.AuthenticationRemotePreShare.ValueBool() && !data.AuthenticationRemotePreShare.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/authentication/remote/pre-share")
 	}
-	if !state.Description.IsNull() && data.Description.IsNull() {
+	if !state.Description.IsNull() && (data.Description.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/description")
 	}
 

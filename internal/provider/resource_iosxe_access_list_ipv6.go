@@ -32,6 +32,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -121,8 +122,10 @@ func (r *AccessListIPv6Resource) Schema(ctx context.Context, req resource.Schema
 							Optional:            true,
 						},
 						"source_any": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							MarkdownDescription: helpers.NewAttributeDescription("").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"source_host": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
@@ -217,8 +220,10 @@ func (r *AccessListIPv6Resource) Schema(ctx context.Context, req resource.Schema
 							Optional:            true,
 						},
 						"destination_any": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							MarkdownDescription: helpers.NewAttributeDescription("").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"destination_host": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
@@ -334,48 +339,68 @@ func (r *AccessListIPv6Resource) Schema(ctx context.Context, req resource.Schema
 							},
 						},
 						"ack": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Match on the ACK bit").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Match on the ACK bit").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"fin": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Match on the FIN bit").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Match on the FIN bit").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"psh": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Match on the PSH bit").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Match on the PSH bit").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"rst": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Match on the RST bit").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Match on the RST bit").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"syn": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Match on the SYN bit").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Match on the SYN bit").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"urg": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Match on the URG bit").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Match on the URG bit").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"established": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Match established connections").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Match established connections").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"dscp": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Match packets with given dscp value").String,
 							Optional:            true,
 						},
 						"fragments": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Check non-initial fragments").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Check non-initial fragments").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"log": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Log matches against this entry").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Log matches against this entry").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 						"log_input": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Log matches against this entry, including input").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Log matches against this entry, including input").AddDefaultValueDescription("false").String,
 							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
 						},
 					},
 				},

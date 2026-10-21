@@ -366,10 +366,10 @@ func (data *SLA) addDeletedItemsXML(ctx context.Context, state SLA, body string)
 				found = false
 			}
 			if found {
-				if !state.Schedules[i].StartTimeNow.IsNull() && data.Schedules[j].StartTimeNow.IsNull() {
+				if !state.Schedules[i].StartTimeNow.IsNull() && (data.Schedules[j].StartTimeNow.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/schedule%v/start-time/now-config", predicates))
 				}
-				if !state.Schedules[i].Life.IsNull() && data.Schedules[j].Life.IsNull() {
+				if !state.Schedules[i].Life.IsNull() && (data.Schedules[j].Life.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/schedule%v/life", predicates))
 				}
 				break
@@ -402,13 +402,13 @@ func (data *SLA) addDeletedItemsXML(ctx context.Context, state SLA, body string)
 				found = false
 			}
 			if found {
-				if !state.Entries[i].IcmpEchoFrequency.IsNull() && data.Entries[j].IcmpEchoFrequency.IsNull() {
+				if !state.Entries[i].IcmpEchoFrequency.IsNull() && (data.Entries[j].IcmpEchoFrequency.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/entry%v/icmp-echo/frequency", predicates))
 				}
-				if !state.Entries[i].IcmpEchoSourceIp.IsNull() && data.Entries[j].IcmpEchoSourceIp.IsNull() {
+				if !state.Entries[i].IcmpEchoSourceIp.IsNull() && (data.Entries[j].IcmpEchoSourceIp.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/entry%v/icmp-echo/source-ip", predicates))
 				}
-				if !state.Entries[i].IcmpEchoDestination.IsNull() && data.Entries[j].IcmpEchoDestination.IsNull() {
+				if !state.Entries[i].IcmpEchoDestination.IsNull() && (data.Entries[j].IcmpEchoDestination.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/entry%v/icmp-echo/destination", predicates))
 				}
 				break

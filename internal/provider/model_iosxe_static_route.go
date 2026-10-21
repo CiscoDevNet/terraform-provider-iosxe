@@ -146,8 +146,6 @@ func (data StaticRoute) addToBodyXML(ctx context.Context, config StaticRoute, bo
 			if !item.Global.IsNull() && !item.Global.IsUnknown() {
 				if item.Global.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "global", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "global")
 				}
 			}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
@@ -156,8 +154,6 @@ func (data StaticRoute) addToBodyXML(ctx context.Context, config StaticRoute, bo
 			if !item.Permanent.IsNull() && !item.Permanent.IsUnknown() {
 				if item.Permanent.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "permanent", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "permanent")
 				}
 			}
 			if !item.Tag.IsNull() && !item.Tag.IsUnknown() {
@@ -187,8 +183,6 @@ func (data StaticRoute) addToBodyXML(ctx context.Context, config StaticRoute, bo
 			if !item.Permanent.IsNull() && !item.Permanent.IsUnknown() {
 				if item.Permanent.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "permanent", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "permanent")
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/fwd-list-with-track", cBody.Res())
@@ -493,19 +487,19 @@ func (data *StaticRoute) addDeletedItemsXML(ctx context.Context, state StaticRou
 				found = false
 			}
 			if found {
-				if !state.NextHopsWithTrack[i].Permanent.IsNull() && data.NextHopsWithTrack[j].Permanent.IsNull() {
+				if !state.NextHopsWithTrack[i].Permanent.IsNull() && (data.NextHopsWithTrack[j].Permanent.IsNull() || (state.NextHopsWithTrack[i].Permanent.ValueBool() && !data.NextHopsWithTrack[j].Permanent.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/fwd-list-with-track%v/permanent", predicates))
 				}
-				if !state.NextHopsWithTrack[i].Tag.IsNull() && data.NextHopsWithTrack[j].Tag.IsNull() {
+				if !state.NextHopsWithTrack[i].Tag.IsNull() && (data.NextHopsWithTrack[j].Tag.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/fwd-list-with-track%v/tag", predicates))
 				}
-				if !state.NextHopsWithTrack[i].Distance.IsNull() && data.NextHopsWithTrack[j].Distance.IsNull() {
+				if !state.NextHopsWithTrack[i].Distance.IsNull() && (data.NextHopsWithTrack[j].Distance.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/fwd-list-with-track%v/metric", predicates))
 				}
-				if !state.NextHopsWithTrack[i].TrackIdName.IsNull() && data.NextHopsWithTrack[j].TrackIdName.IsNull() {
+				if !state.NextHopsWithTrack[i].TrackIdName.IsNull() && (data.NextHopsWithTrack[j].TrackIdName.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/fwd-list-with-track%v/track-id-name/id", predicates))
 				}
-				if !state.NextHopsWithTrack[i].Name.IsNull() && data.NextHopsWithTrack[j].Name.IsNull() {
+				if !state.NextHopsWithTrack[i].Name.IsNull() && (data.NextHopsWithTrack[j].Name.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/fwd-list-with-track%v/name", predicates))
 				}
 				break
@@ -538,19 +532,19 @@ func (data *StaticRoute) addDeletedItemsXML(ctx context.Context, state StaticRou
 				found = false
 			}
 			if found {
-				if !state.NextHops[i].Tag.IsNull() && data.NextHops[j].Tag.IsNull() {
+				if !state.NextHops[i].Tag.IsNull() && (data.NextHops[j].Tag.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/fwd-list%v/tag", predicates))
 				}
-				if !state.NextHops[i].Permanent.IsNull() && data.NextHops[j].Permanent.IsNull() {
+				if !state.NextHops[i].Permanent.IsNull() && (data.NextHops[j].Permanent.IsNull() || (state.NextHops[i].Permanent.ValueBool() && !data.NextHops[j].Permanent.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/fwd-list%v/permanent", predicates))
 				}
-				if !state.NextHops[i].Name.IsNull() && data.NextHops[j].Name.IsNull() {
+				if !state.NextHops[i].Name.IsNull() && (data.NextHops[j].Name.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/fwd-list%v/name", predicates))
 				}
-				if !state.NextHops[i].Global.IsNull() && data.NextHops[j].Global.IsNull() {
+				if !state.NextHops[i].Global.IsNull() && (data.NextHops[j].Global.IsNull() || (state.NextHops[i].Global.ValueBool() && !data.NextHops[j].Global.ValueBool())) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/fwd-list%v/global", predicates))
 				}
-				if !state.NextHops[i].Distance.IsNull() && data.NextHops[j].Distance.IsNull() {
+				if !state.NextHops[i].Distance.IsNull() && (data.NextHops[j].Distance.IsNull()) {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/fwd-list%v/metric", predicates))
 				}
 				break

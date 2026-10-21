@@ -39,15 +39,22 @@ resource "iosxe_interface_pim" "example" {
 ### Optional
 
 - `bfd` (Boolean) Configure BFD
+  - Default value: `false`
 - `border` (Boolean) Border of PIM domain
+  - Default value: `false`
 - `bsr_border` (Boolean) Border of PIM domain
+  - Default value: `false`
 - `dense_mode` (Boolean) Enable PIM dense-mode operation
+  - Default value: `false`
 - `device` (String) A device name from the provider configuration.
 - `dr_priority` (Number) PIM router DR priority
   - Range: `0`-`4294967294`
 - `passive` (Boolean) Enable PIM passive interface operation
+  - Default value: `false`
 - `sparse_dense_mode` (Boolean) Enable PIM sparse-dense-mode operation
+  - Default value: `false`
 - `sparse_mode` (Boolean) Enable PIM sparse-mode operation
+  - Default value: `false`
 
 ### Read-Only
 

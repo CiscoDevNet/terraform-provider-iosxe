@@ -96,15 +96,11 @@ func (data UDLD) addToBodyXML(ctx context.Context, config UDLD, body netconf.Bod
 	if !data.Aggressive.IsNull() && !data.Aggressive.IsUnknown() {
 		if data.Aggressive.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-udld:aggressive", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-udld:aggressive")
 		}
 	}
 	if !data.Enable.IsNull() && !data.Enable.IsUnknown() {
 		if data.Enable.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-udld:enable", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-udld:enable")
 		}
 	}
 	if !data.MessageTime.IsNull() && !data.MessageTime.IsUnknown() {
@@ -203,16 +199,16 @@ func (data *UDLDData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 func (data *UDLD) addDeletedItemsXML(ctx context.Context, state UDLD, body string) string {
 	b := netconf.NewBody(body)
-	if !state.RecoveryInterval.IsNull() && data.RecoveryInterval.IsNull() {
+	if !state.RecoveryInterval.IsNull() && (data.RecoveryInterval.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-udld:recovery/interval")
 	}
-	if !state.MessageTime.IsNull() && data.MessageTime.IsNull() {
+	if !state.MessageTime.IsNull() && (data.MessageTime.IsNull()) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-udld:message/time")
 	}
-	if !state.Enable.IsNull() && data.Enable.IsNull() {
+	if !state.Enable.IsNull() && (data.Enable.IsNull() || (state.Enable.ValueBool() && !data.Enable.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-udld:enable")
 	}
-	if !state.Aggressive.IsNull() && data.Aggressive.IsNull() {
+	if !state.Aggressive.IsNull() && (data.Aggressive.IsNull() || (state.Aggressive.ValueBool() && !data.Aggressive.ValueBool())) {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-udld:aggressive")
 	}
 

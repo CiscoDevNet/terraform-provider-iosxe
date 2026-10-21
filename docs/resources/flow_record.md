@@ -50,55 +50,99 @@ resource "iosxe_flow_record" "example" {
 ### Optional
 
 - `collect_connection_initiator` (Boolean) The direction of the flow
+  - Default value: `false`
 - `collect_connection_new_connections` (Boolean) The number of connection initiations observed
+  - Default value: `false`
 - `collect_connection_server_counter_bytes_network_long` (Boolean) Total number of bytes transmitted by the server
+  - Default value: `false`
 - `collect_connection_server_counter_packets_long` (Boolean) 64 bits counter
+  - Default value: `false`
 - `collect_counter_bytes_long` (Boolean) Total number of bytes (64 bit counter)
+  - Default value: `false`
 - `collect_counter_packets_long` (Boolean) Total number of packets (64 bit counter)
+  - Default value: `false`
 - `collect_datalink_mac_source_address_input` (Boolean) Source MAC address from packet at input
+  - Default value: `false`
 - `collect_flow_direction` (Boolean) Direction the flow was monitored in
+  - Default value: `false`
 - `collect_interface_input` (Boolean) The input interface
+  - Default value: `false`
 - `collect_interface_output` (Boolean) The output interface
+  - Default value: `false`
 - `collect_timestamp_absolute_first` (Boolean) Absolute time the first packet was seen (milliseconds)
+  - Default value: `false`
 - `collect_timestamp_absolute_last` (Boolean) Absolute time the most recent packet was seen (milliseconds)
+  - Default value: `false`
 - `collect_transport_tcp_flags` (Boolean) TCP flags
+  - Default value: `false`
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `description` (String) Provide a description for this Flow Record
 - `device` (String) A device name from the provider configuration.
 - `match_application_name` (Boolean) Application name
+  - Default value: `false`
 - `match_connection_client_ipv4_address` (Boolean) IPv4 address of the flow initiator
+  - Default value: `false`
 - `match_connection_client_ipv6_address` (Boolean) IPv6 address of the flow initiator
+  - Default value: `false`
 - `match_connection_server_ipv4_address` (Boolean) IPv4 address of the flow responder
+  - Default value: `false`
 - `match_connection_server_ipv6_address` (Boolean) IPv6 address of the flow responder
+  - Default value: `false`
 - `match_connection_server_transport_port` (Boolean) Transport port of the flow responder
+  - Default value: `false`
 - `match_datalink_destination_vlan_id` (Boolean) Match destination VLAN ID, available on router platforms (C8K, CSR1K)
+  - Default value: `false`
 - `match_datalink_mac_destination_address_input` (Boolean) Destination MAC address from packet at input
+  - Default value: `false`
 - `match_datalink_mac_source_address_input` (Boolean) Source MAC address from packet at input
+  - Default value: `false`
 - `match_datalink_source_vlan_id` (Boolean) Match source VLAN ID, available on router platforms (C8K, CSR1K)
+  - Default value: `false`
 - `match_datalink_vlan` (String) Match VLAN input/output, available on switch platforms (C9K)
   - Choices: `input`, `output`
 - `match_flow_cts_destination_group_tag` (Boolean) destination group-tag
+  - Default value: `false`
 - `match_flow_cts_source_group_tag` (Boolean) source group-tag
+  - Default value: `false`
 - `match_flow_direction` (Boolean) Direction the flow was monitored in
+  - Default value: `false`
 - `match_flow_observation_point` (Boolean) Observation point ID
+  - Default value: `false`
 - `match_interface_input` (Boolean) The input interface
+  - Default value: `false`
 - `match_ipv4_destination_address` (Boolean) IPv4 destination address
+  - Default value: `false`
 - `match_ipv4_protocol` (Boolean) IPv4 protocol
+  - Default value: `false`
 - `match_ipv4_source_address` (Boolean) IPv4 source address
+  - Default value: `false`
 - `match_ipv4_tos` (Boolean) IPv4 type of service
+  - Default value: `false`
 - `match_ipv4_ttl` (Boolean) IPv4 TTL
+  - Default value: `false`
 - `match_ipv4_version` (Boolean) IP version from IPv4 header
+  - Default value: `false`
 - `match_ipv6_destination_address` (Boolean) IPv6 destination address
+  - Default value: `false`
 - `match_ipv6_protocol` (Boolean) IPv6 payload protocol
+  - Default value: `false`
 - `match_ipv6_source_address` (Boolean) IPv6 source address
+  - Default value: `false`
 - `match_ipv6_version` (Boolean) IP version from IPv6 header
+  - Default value: `false`
 - `match_routing_vrf_input` (Boolean) Match VRF ID for incoming packet for VXLAN-aware NetFlow
+  - Default value: `false`
 - `match_transport_destination_port` (Boolean) Transport destination port
+  - Default value: `false`
 - `match_transport_source_port` (Boolean) Transport source port
+  - Default value: `false`
 - `match_vxlan_vnid` (Boolean) Match VXLAN Network Identifier (VNID) for VXLAN-aware NetFlow
+  - Default value: `false`
 - `match_vxlan_vtep_input` (Boolean) Match VXLAN Tunnel Endpoint (VTEP) input field for VXLAN-aware NetFlow
+  - Default value: `false`
 - `match_vxlan_vtep_output` (Boolean) Match VXLAN Tunnel Endpoint (VTEP) output field for VXLAN-aware NetFlow
+  - Default value: `false`
 
 ### Read-Only
 

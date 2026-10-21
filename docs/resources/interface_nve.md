@@ -41,8 +41,9 @@ resource "iosxe_interface_nve" "example" {
   - Choices: `all`, `attributes`
 - `description` (String) Interface specific description
 - `device` (String) A device name from the provider configuration.
-- `host_reachability_protocol_bgp` (Boolean)
+- `host_reachability_protocol_bgp` (Boolean) - Default value: `false`
 - `shutdown` (Boolean) Shutdown the selected interface
+  - Default value: `false`
 - `source_interface_loopback` (Number) Loopback interface
   - Range: `0`-`2147483647`
 - `vni_vrfs` (Attributes List) Configure VNI information (see [below for nested schema](#nestedatt--vni_vrfs))
@@ -74,8 +75,10 @@ Required:
 Optional:
 
 - `ingress_replication` (Boolean) Ingress Replication control-plane (BGP) signaling
+  - Default value: `false`
 - `ipv4_multicast_group` (String) Starting Multicast Group IPv4 Address
 - `local_routing` (Boolean) Enable vxlan centralized gateway forwarding for routed traffic
+  - Default value: `false`
 
 ## Import
 
