@@ -53,6 +53,7 @@ resource "iosxe_sip_ua" "example" {
 - `authentication_password_wo_version` (Number) The write-only version of the attribute.
 - `authentication_realm` (String) Realm at which the credentials are applicable
 - `authentication_realm_password` (String, Sensitive)
+- `authentication_realm_password_type` (String) - Choices: `0`, `6`, `7`
 - `authentication_realm_password_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
 - `authentication_realm_password_wo_version` (Number) The write-only version of the attribute.
 - `authentication_realm_username` (String) name of the user authenticating

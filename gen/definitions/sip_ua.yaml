@@ -106,6 +106,10 @@ attributes:
     tf_name: authentication_realm_username
     exclude_test: true
     example: cube-auth
+  - yang_name: authentication/auth-with-realm/password/encryption
+    tf_name: authentication_realm_password_type
+    exclude_test: true
+    example: "0"
   - yang_name: authentication/auth-with-realm/password/password-string
     tf_name: authentication_realm_password
     sensitive: true
