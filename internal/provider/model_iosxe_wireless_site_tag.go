@@ -236,4 +236,25 @@ func (data *WirelessSiteTag) addDeletePathsXML(ctx context.Context, body string)
 	return b.Res()
 }
 
+// addBuiltinDeletePathsXML is addDeletePathsXML for the device's built-in objects, which cannot be
+// deleted: it skips attributes marked builtin_keep so destroying one never disables it.
+func (data *WirelessSiteTag) addBuiltinDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	if !data.FlexProfile.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/flex-profile")
+	}
+	if !data.LocalSite.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/is-local-site")
+	}
+	if !data.ApJoinProfile.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ap-join-profile")
+	}
+	if !data.Description.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/description")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
 // End of section. //template:end addDeletePathsXML

@@ -17,6 +17,7 @@ resource "iosxe_bgp" "example" {
   asn                  = "65000"
   default_ipv4_unicast = false
   log_neighbor_changes = true
+  asnotation_dot       = true
   bgp_graceful_restart = true
   bgp_update_delay     = 200
 }
@@ -31,6 +32,7 @@ resource "iosxe_bgp" "example" {
 
 ### Optional
 
+- `asnotation_dot` (Boolean) AS dot notation
 - `bgp_graceful_restart` (Boolean) Graceful restart capability parameters
 - `bgp_update_delay` (Number) Set the max initial delay for sending update
   - Range: `1`-`3600`

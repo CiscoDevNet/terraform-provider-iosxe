@@ -116,6 +116,10 @@ func (r *BGPResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 					stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
 				},
 			},
+			"asnotation_dot": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("AS dot notation").String,
+				Optional:            true,
+			},
 			"bgp_graceful_restart": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Graceful restart capability parameters").String,
 				Optional:            true,
@@ -176,7 +180,15 @@ func (r *BGPResource) Create(ctx context.Context, req resource.CreateRequest, re
 		}
 		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
 
-		body := plan.toBodyXML(ctx, config)
+		// Write under the key the device stores; state keeps the configured notation.
+		write, err := r.resolveAsnKey(ctx, device, plan)
+		if err != nil {
+			resp.Diagnostics.AddError("Client Error", err.Error())
+			return
+		}
+		writeConfig := config
+		writeConfig.Asn = write.Asn
+		body := write.toBodyXML(ctx, writeConfig)
 
 		if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
 			resp.Diagnostics.AddError("Client Error", err.Error())
@@ -236,6 +248,27 @@ func (r *BGPResource) Read(ctx context.Context, req resource.ReadRequest, resp *
 			return
 		}
 
+		// IOS-XE keys the BGP process by the AS number in the notation `bgp asnotation dot` selects, so
+		// toggling it renames the list entry (1.1 <-> 65537). If the stored key is not found, retry with
+		// the other notation and keep that key, so the change is an update rather than a missing resource.
+		if helpers.IsGetConfigResponseEmpty(&res) {
+			if alt := helpers.AlternateASN(state.Asn.ValueString()); alt != state.Asn.ValueString() {
+				altState := state
+				altState.Asn = types.StringValue(alt)
+				altRes, err := device.NetconfClient.GetConfig(ctx, "running", helpers.GetXpathFilter(altState.getXPath()))
+				if err != nil {
+					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", altState.getPath(), err))
+					return
+				}
+				if !helpers.IsGetConfigResponseEmpty(&altRes) {
+					tflog.Debug(ctx, fmt.Sprintf("%s: Found under alternate AS notation %s", state.Id.ValueString(), alt))
+					state.Asn = altState.Asn
+					state.Id = types.StringValue(state.getPath())
+					res = altRes
+				}
+			}
+		}
+
 		if helpers.IsGetConfigResponseEmpty(&res) && helpers.IsListPath(state.getXPath()) {
 			tflog.Debug(ctx, fmt.Sprintf("%s: Resource does not exist", state.Id.ValueString()))
 			resp.State.RemoveResource(ctx)
@@ -256,6 +289,35 @@ func (r *BGPResource) Read(ctx context.Context, req resource.ReadRequest, resp *
 	resp.Diagnostics.Append(diags...)
 
 	helpers.SetFlagImporting(ctx, false, resp.Private, &resp.Diagnostics)
+}
+
+// resolveAsnKey returns data with its AS key replaced by the notation the device stores, if the
+// process already exists under the other notation. IOS-XE keeps the key a BGP process was created
+// with, whatever `bgp asnotation dot` now displays, and treats a write under the other notation as a
+// second process ("too many /native/router/ios-bgp:bgp"). Returns data unchanged if neither exists.
+func (r *BGPResource) resolveAsnKey(ctx context.Context, device *IosxeProviderDataDevice, data BGP) (BGP, error) {
+	res, err := device.NetconfClient.GetConfig(ctx, "running", helpers.GetXpathFilter(data.getXPath()))
+	if err != nil {
+		return data, fmt.Errorf("failed to retrieve object (%s), got error: %s", data.getPath(), err)
+	}
+	if !helpers.IsGetConfigResponseEmpty(&res) {
+		return data, nil
+	}
+	alt := helpers.AlternateASN(data.Asn.ValueString())
+	if alt == data.Asn.ValueString() {
+		return data, nil
+	}
+	altData := data
+	altData.Asn = types.StringValue(alt)
+	altRes, err := device.NetconfClient.GetConfig(ctx, "running", helpers.GetXpathFilter(altData.getXPath()))
+	if err != nil {
+		return data, fmt.Errorf("failed to retrieve object (%s), got error: %s", altData.getPath(), err)
+	}
+	if helpers.IsGetConfigResponseEmpty(&altRes) {
+		return data, nil
+	}
+	tflog.Debug(ctx, fmt.Sprintf("%s: Device stores the AS key as %s", data.getPath(), alt))
+	return altData, nil
 }
 
 // End of section. //template:end read
@@ -301,9 +363,17 @@ func (r *BGPResource) Update(ctx context.Context, req resource.UpdateRequest, re
 			defer device.NetconfOpMutex.Unlock()
 		}
 		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
-
-		body := plan.toBodyXML(ctx, config)
-		body = plan.addDeletedItemsXML(ctx, state, body)
+		// Write under the key the device stores; state keeps the configured notation.
+		write, err := r.resolveAsnKey(ctx, device, plan)
+		if err != nil {
+			resp.Diagnostics.AddError("Client Error", err.Error())
+			return
+		}
+		writeConfig, writeState := config, state
+		writeConfig.Asn = write.Asn
+		writeState.Asn = write.Asn
+		body := write.toBodyXML(ctx, writeConfig)
+		body = write.addDeletedItemsXML(ctx, writeState, body)
 
 		if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
 			resp.Diagnostics.AddError("Client Error", err.Error())
@@ -353,6 +423,12 @@ func (r *BGPResource) Delete(ctx context.Context, req resource.DeleteRequest, re
 			defer device.NetconfOpMutex.Unlock()
 		}
 		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+		resolved, err := r.resolveAsnKey(ctx, device, state)
+		if err != nil {
+			resp.Diagnostics.AddError("Client Error", err.Error())
+			return
+		}
+		state.Asn = resolved.Asn
 
 		if deleteMode == "all" {
 			body := netconf.Body{}
