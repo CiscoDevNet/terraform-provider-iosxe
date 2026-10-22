@@ -35,6 +35,7 @@ attributes:
       - yang_name: rule-response-request/rule-choice/request-case/request/request-response-choice/sip-header-choice/sip-header/header
         xpath: rule-response-request/request/sip-header/header
         tf_name: request_sip_header
+        description: SIP header name the request rule applies to
         example: Contact
       - yang_name: rule-response-request/rule-choice/request-case/request/request-response-choice/sip-header-choice/sip-header/header-choice/modify-case/MODIFY/pattern
         xpath: rule-response-request/request/sip-header/MODIFY/pattern
@@ -48,11 +49,13 @@ attributes:
       - yang_name: rule-response-request/rule-choice/response-case/response/sip-responses
         xpath: rule-response-request/response/sip-responses
         tf_name: response_code
+        description: SIP response code the rule matches (a code or `ANY`)
         exclude_test: true
         example: ANY
       - yang_name: rule-response-request/rule-choice/response-case/response/response-method-choice/sip-header-case/sip-header/header
         xpath: rule-response-request/response/sip-header/header
         tf_name: response_sip_header
+        description: SIP header name the response rule applies to
         exclude_test: true
         example: Server
       - yang_name: rule-response-request/rule-choice/response-case/response/response-method-choice/sip-header-case/sip-header/header-choice/modify-case/MODIFY/pattern
@@ -80,6 +83,7 @@ attributes:
       - yang_name: rule-response-request/rule-choice/request-case/request/request-response-choice/sdp-header-choice/sdp-header/sdp-header-choice/header/header
         xpath: rule-response-request/request/sdp-header/header
         tf_name: request_sdp_header
+        description: SDP header the request rule applies to
         exclude_test: true
         example: Audio-Attribute
       - yang_name: rule-response-request/rule-choice/request-case/request/request-response-choice/sdp-header-choice/sdp-header/header-choice/modify-case/MODIFY/pattern
@@ -96,6 +100,7 @@ attributes:
       - yang_name: rule-response-request/rule-choice/response-case/response/response-method-choice/sdp-header-case/sdp-header/sdp-header-choice/header/header
         xpath: rule-response-request/response/sdp-header/header
         tf_name: response_sdp_header
+        description: SDP header the response rule applies to
         exclude_test: true
         example: Audio-Attribute
       - yang_name: rule-response-request/rule-choice/response-case/response/response-method-choice/sdp-header-case/sdp-header/header-choice/modify-case/MODIFY/pattern

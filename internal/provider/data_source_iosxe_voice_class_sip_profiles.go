@@ -90,7 +90,7 @@ func (d *VoiceClassSIPProfilesDataSource) Schema(ctx context.Context, req dataso
 							Computed:            true,
 						},
 						"request_sip_header": schema.StringAttribute{
-							MarkdownDescription: "",
+							MarkdownDescription: "SIP header name the request rule applies to",
 							Computed:            true,
 						},
 						"request_sip_header_modify_pattern": schema.StringAttribute{
@@ -102,11 +102,11 @@ func (d *VoiceClassSIPProfilesDataSource) Schema(ctx context.Context, req dataso
 							Computed:            true,
 						},
 						"response_code": schema.StringAttribute{
-							MarkdownDescription: "",
+							MarkdownDescription: "SIP response code the rule matches (a code or `ANY`)",
 							Computed:            true,
 						},
 						"response_sip_header": schema.StringAttribute{
-							MarkdownDescription: "",
+							MarkdownDescription: "SIP header name the response rule applies to",
 							Computed:            true,
 						},
 						"response_sip_header_modify_pattern": schema.StringAttribute{
@@ -126,7 +126,7 @@ func (d *VoiceClassSIPProfilesDataSource) Schema(ctx context.Context, req dataso
 							Computed:            true,
 						},
 						"request_sdp_header": schema.StringAttribute{
-							MarkdownDescription: "",
+							MarkdownDescription: "SDP header the request rule applies to",
 							Computed:            true,
 						},
 						"request_sdp_header_modify_pattern": schema.StringAttribute{
@@ -138,7 +138,7 @@ func (d *VoiceClassSIPProfilesDataSource) Schema(ctx context.Context, req dataso
 							Computed:            true,
 						},
 						"response_sdp_header": schema.StringAttribute{
-							MarkdownDescription: "",
+							MarkdownDescription: "SDP header the response rule applies to",
 							Computed:            true,
 						},
 						"response_sdp_header_modify_pattern": schema.StringAttribute{

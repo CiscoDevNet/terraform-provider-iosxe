@@ -122,7 +122,7 @@ func (r *VoiceClassSIPProfilesResource) Schema(ctx context.Context, req resource
 							},
 						},
 						"request_sip_header": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							MarkdownDescription: helpers.NewAttributeDescription("SIP header name the request rule applies to").String,
 							Optional:            true,
 						},
 						"request_sip_header_modify_pattern": schema.StringAttribute{
@@ -134,14 +134,14 @@ func (r *VoiceClassSIPProfilesResource) Schema(ctx context.Context, req resource
 							Optional:            true,
 						},
 						"response_code": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("100", "180", "181", "183", "200", "202", "300", "301", "302", "305", "380", "400", "401", "402", "403", "404", "405", "406", "407", "408", "409", "410", "412", "413", "414", "415", "416", "417", "420", "421", "422", "423", "480", "481", "482", "483", "484", "485", "486", "487", "488", "489", "491", "493", "500", "501", "502", "503", "504", "505", "513", "580", "600", "603", "604", "606", "ANY").String,
+							MarkdownDescription: helpers.NewAttributeDescription("SIP response code the rule matches (a code or `ANY`)").AddStringEnumDescription("100", "180", "181", "183", "200", "202", "300", "301", "302", "305", "380", "400", "401", "402", "403", "404", "405", "406", "407", "408", "409", "410", "412", "413", "414", "415", "416", "417", "420", "421", "422", "423", "480", "481", "482", "483", "484", "485", "486", "487", "488", "489", "491", "493", "500", "501", "502", "503", "504", "505", "513", "580", "600", "603", "604", "606", "ANY").String,
 							Optional:            true,
 							Validators: []validator.String{
 								stringvalidator.OneOf("100", "180", "181", "183", "200", "202", "300", "301", "302", "305", "380", "400", "401", "402", "403", "404", "405", "406", "407", "408", "409", "410", "412", "413", "414", "415", "416", "417", "420", "421", "422", "423", "480", "481", "482", "483", "484", "485", "486", "487", "488", "489", "491", "493", "500", "501", "502", "503", "504", "505", "513", "580", "600", "603", "604", "606", "ANY"),
 							},
 						},
 						"response_sip_header": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							MarkdownDescription: helpers.NewAttributeDescription("SIP header name the response rule applies to").String,
 							Optional:            true,
 						},
 						"response_sip_header_modify_pattern": schema.StringAttribute{
@@ -161,7 +161,7 @@ func (r *VoiceClassSIPProfilesResource) Schema(ctx context.Context, req resource
 							Optional:            true,
 						},
 						"request_sdp_header": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("Attribute", "Audio-Attribute", "Audio-Bandwidth-Info", "Audio-Connection-Info", "Audio-Encryption-Key", "Audio-Media", "Audio-Session-Info", "Bandwidth-Key", "Connection-Info", "Email-Address", "Encrypt-Key", "Phone-Number", "Repeat-Times", "Session-Info", "Session-Name", "Session-Owner", "Time-Adjust-Keyr", "Time-Header", "Url-Descriptor", "Version", "Video-Attribute", "Video-Bandwidth-Info", "Video-Connection-Info", "Video-Encryption-Key", "Video-Media", "Video-Session-Info").String,
+							MarkdownDescription: helpers.NewAttributeDescription("SDP header the request rule applies to").AddStringEnumDescription("Attribute", "Audio-Attribute", "Audio-Bandwidth-Info", "Audio-Connection-Info", "Audio-Encryption-Key", "Audio-Media", "Audio-Session-Info", "Bandwidth-Key", "Connection-Info", "Email-Address", "Encrypt-Key", "Phone-Number", "Repeat-Times", "Session-Info", "Session-Name", "Session-Owner", "Time-Adjust-Keyr", "Time-Header", "Url-Descriptor", "Version", "Video-Attribute", "Video-Bandwidth-Info", "Video-Connection-Info", "Video-Encryption-Key", "Video-Media", "Video-Session-Info").String,
 							Optional:            true,
 							Validators: []validator.String{
 								stringvalidator.OneOf("Attribute", "Audio-Attribute", "Audio-Bandwidth-Info", "Audio-Connection-Info", "Audio-Encryption-Key", "Audio-Media", "Audio-Session-Info", "Bandwidth-Key", "Connection-Info", "Email-Address", "Encrypt-Key", "Phone-Number", "Repeat-Times", "Session-Info", "Session-Name", "Session-Owner", "Time-Adjust-Keyr", "Time-Header", "Url-Descriptor", "Version", "Video-Attribute", "Video-Bandwidth-Info", "Video-Connection-Info", "Video-Encryption-Key", "Video-Media", "Video-Session-Info"),
@@ -176,7 +176,7 @@ func (r *VoiceClassSIPProfilesResource) Schema(ctx context.Context, req resource
 							Optional:            true,
 						},
 						"response_sdp_header": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("Attribute", "Audio-Attribute", "Audio-Bandwidth-Info", "Audio-Connection-Info", "Audio-Encryption-Key", "Audio-Media", "Audio-Session-Info", "Bandwidth-Key", "Connection-Info", "Email-Address", "Encrypt-Key", "Phone-Number", "Repeat-Times", "Session-Info", "Session-Name", "Session-Owner", "Time-Adjust-Keyr", "Time-Header", "Url-Descriptor", "Version", "Video-Attribute", "Video-Bandwidth-Info", "Video-Connection-Info", "Video-Encryption-Key", "Video-Media", "Video-Session-Info").String,
+							MarkdownDescription: helpers.NewAttributeDescription("SDP header the response rule applies to").AddStringEnumDescription("Attribute", "Audio-Attribute", "Audio-Bandwidth-Info", "Audio-Connection-Info", "Audio-Encryption-Key", "Audio-Media", "Audio-Session-Info", "Bandwidth-Key", "Connection-Info", "Email-Address", "Encrypt-Key", "Phone-Number", "Repeat-Times", "Session-Info", "Session-Name", "Session-Owner", "Time-Adjust-Keyr", "Time-Header", "Url-Descriptor", "Version", "Video-Attribute", "Video-Bandwidth-Info", "Video-Connection-Info", "Video-Encryption-Key", "Video-Media", "Video-Session-Info").String,
 							Optional:            true,
 							Validators: []validator.String{
 								stringvalidator.OneOf("Attribute", "Audio-Attribute", "Audio-Bandwidth-Info", "Audio-Connection-Info", "Audio-Encryption-Key", "Audio-Media", "Audio-Session-Info", "Bandwidth-Key", "Connection-Info", "Email-Address", "Encrypt-Key", "Phone-Number", "Repeat-Times", "Session-Info", "Session-Name", "Session-Owner", "Time-Adjust-Keyr", "Time-Header", "Url-Descriptor", "Version", "Video-Attribute", "Video-Bandwidth-Info", "Video-Connection-Info", "Video-Encryption-Key", "Video-Media", "Video-Session-Info"),

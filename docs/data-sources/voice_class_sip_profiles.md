@@ -46,21 +46,21 @@ Read-Only:
 - `request_peer_header_sip_copy_variable` (String) Copy variable <u01-u99>
 - `request_peer_header_sip_requri_copy_pattern` (String) Match pattern
 - `request_peer_header_sip_requri_copy_variable` (String) Copy variable <u01-u99>
-- `request_sdp_header` (String)
+- `request_sdp_header` (String) SDP header the request rule applies to
 - `request_sdp_header_add` (String) addition of the header
 - `request_sdp_header_modify_pattern` (String) Match pattern
 - `request_sdp_header_modify_replace` (String) Replace pattern
 - `request_sdp_header_remove` (Boolean) Removal of a header
-- `request_sip_header` (String)
+- `request_sip_header` (String) SIP header name the request rule applies to
 - `request_sip_header_add` (String) addition of the header
 - `request_sip_header_modify_pattern` (String) Match pattern
 - `request_sip_header_modify_replace` (String) Replace pattern
 - `request_sip_header_remove` (Boolean) Removal of a header
-- `response_code` (String)
-- `response_sdp_header` (String)
+- `response_code` (String) SIP response code the rule matches (a code or `ANY`)
+- `response_sdp_header` (String) SDP header the response rule applies to
 - `response_sdp_header_modify_pattern` (String) Match pattern
 - `response_sdp_header_modify_replace` (String) Replace pattern
-- `response_sip_header` (String)
+- `response_sip_header` (String) SIP header name the response rule applies to
 - `response_sip_header_modify_pattern` (String) Match pattern
 - `response_sip_header_modify_replace` (String) Replace pattern
 - `rule` (Number) Specify the rule tag

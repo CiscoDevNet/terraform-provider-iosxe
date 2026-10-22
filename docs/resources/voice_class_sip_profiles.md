@@ -65,21 +65,24 @@ Optional:
 - `request_peer_header_sip_copy_variable` (String) Copy variable <u01-u99>
 - `request_peer_header_sip_requri_copy_pattern` (String) Match pattern
 - `request_peer_header_sip_requri_copy_variable` (String) Copy variable <u01-u99>
-- `request_sdp_header` (String) - Choices: `Attribute`, `Audio-Attribute`, `Audio-Bandwidth-Info`, `Audio-Connection-Info`, `Audio-Encryption-Key`, `Audio-Media`, `Audio-Session-Info`, `Bandwidth-Key`, `Connection-Info`, `Email-Address`, `Encrypt-Key`, `Phone-Number`, `Repeat-Times`, `Session-Info`, `Session-Name`, `Session-Owner`, `Time-Adjust-Keyr`, `Time-Header`, `Url-Descriptor`, `Version`, `Video-Attribute`, `Video-Bandwidth-Info`, `Video-Connection-Info`, `Video-Encryption-Key`, `Video-Media`, `Video-Session-Info`
+- `request_sdp_header` (String) SDP header the request rule applies to
+  - Choices: `Attribute`, `Audio-Attribute`, `Audio-Bandwidth-Info`, `Audio-Connection-Info`, `Audio-Encryption-Key`, `Audio-Media`, `Audio-Session-Info`, `Bandwidth-Key`, `Connection-Info`, `Email-Address`, `Encrypt-Key`, `Phone-Number`, `Repeat-Times`, `Session-Info`, `Session-Name`, `Session-Owner`, `Time-Adjust-Keyr`, `Time-Header`, `Url-Descriptor`, `Version`, `Video-Attribute`, `Video-Bandwidth-Info`, `Video-Connection-Info`, `Video-Encryption-Key`, `Video-Media`, `Video-Session-Info`
 - `request_sdp_header_add` (String) addition of the header
 - `request_sdp_header_modify_pattern` (String) Match pattern
 - `request_sdp_header_modify_replace` (String) Replace pattern
 - `request_sdp_header_remove` (Boolean) Removal of a header
-- `request_sip_header` (String)
+- `request_sip_header` (String) SIP header name the request rule applies to
 - `request_sip_header_add` (String) addition of the header
 - `request_sip_header_modify_pattern` (String) Match pattern
 - `request_sip_header_modify_replace` (String) Replace pattern
 - `request_sip_header_remove` (Boolean) Removal of a header
-- `response_code` (String) - Choices: `100`, `180`, `181`, `183`, `200`, `202`, `300`, `301`, `302`, `305`, `380`, `400`, `401`, `402`, `403`, `404`, `405`, `406`, `407`, `408`, `409`, `410`, `412`, `413`, `414`, `415`, `416`, `417`, `420`, `421`, `422`, `423`, `480`, `481`, `482`, `483`, `484`, `485`, `486`, `487`, `488`, `489`, `491`, `493`, `500`, `501`, `502`, `503`, `504`, `505`, `513`, `580`, `600`, `603`, `604`, `606`, `ANY`
-- `response_sdp_header` (String) - Choices: `Attribute`, `Audio-Attribute`, `Audio-Bandwidth-Info`, `Audio-Connection-Info`, `Audio-Encryption-Key`, `Audio-Media`, `Audio-Session-Info`, `Bandwidth-Key`, `Connection-Info`, `Email-Address`, `Encrypt-Key`, `Phone-Number`, `Repeat-Times`, `Session-Info`, `Session-Name`, `Session-Owner`, `Time-Adjust-Keyr`, `Time-Header`, `Url-Descriptor`, `Version`, `Video-Attribute`, `Video-Bandwidth-Info`, `Video-Connection-Info`, `Video-Encryption-Key`, `Video-Media`, `Video-Session-Info`
+- `response_code` (String) SIP response code the rule matches (a code or `ANY`)
+  - Choices: `100`, `180`, `181`, `183`, `200`, `202`, `300`, `301`, `302`, `305`, `380`, `400`, `401`, `402`, `403`, `404`, `405`, `406`, `407`, `408`, `409`, `410`, `412`, `413`, `414`, `415`, `416`, `417`, `420`, `421`, `422`, `423`, `480`, `481`, `482`, `483`, `484`, `485`, `486`, `487`, `488`, `489`, `491`, `493`, `500`, `501`, `502`, `503`, `504`, `505`, `513`, `580`, `600`, `603`, `604`, `606`, `ANY`
+- `response_sdp_header` (String) SDP header the response rule applies to
+  - Choices: `Attribute`, `Audio-Attribute`, `Audio-Bandwidth-Info`, `Audio-Connection-Info`, `Audio-Encryption-Key`, `Audio-Media`, `Audio-Session-Info`, `Bandwidth-Key`, `Connection-Info`, `Email-Address`, `Encrypt-Key`, `Phone-Number`, `Repeat-Times`, `Session-Info`, `Session-Name`, `Session-Owner`, `Time-Adjust-Keyr`, `Time-Header`, `Url-Descriptor`, `Version`, `Video-Attribute`, `Video-Bandwidth-Info`, `Video-Connection-Info`, `Video-Encryption-Key`, `Video-Media`, `Video-Session-Info`
 - `response_sdp_header_modify_pattern` (String) Match pattern
 - `response_sdp_header_modify_replace` (String) Replace pattern
-- `response_sip_header` (String)
+- `response_sip_header` (String) SIP header name the response rule applies to
 - `response_sip_header_modify_pattern` (String) Match pattern
 - `response_sip_header_modify_replace` (String) Replace pattern
 
