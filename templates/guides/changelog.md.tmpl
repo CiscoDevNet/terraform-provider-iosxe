@@ -9,6 +9,10 @@ description: |-
 
 ## Unreleased
 
+- Add `iosxe_voice_class_sip_profiles` resource and data source for `voice class sip-profiles` SIP/SDP header normalization rules (request/response header modify, add, remove, copy)
+- Add `iosxe_voice_class_sip_hdr_passthrulist` resource and data source for `voice class sip-hdr-passthrulist` pass-through header lists
+- Add `iosxe_voice_class_sip_copylist` resource and data source for `voice class sip-copylist` header copy lists
+- Add `iosxe_voice_class_sip_event_list` resource and data source for `voice class sip-event-list` SIP event lists
 - Add `iosxe_voice_class_tls_profile` resource and data source for `voice class tls-profile` (trustpoint, cipher list, SNI, CN/SAN validation) used by CUBE SIP-TLS
 - Add `iosxe_voice_class_srtp_crypto` resource and data source for `voice class srtp-crypto` cipher-suite preference lists
 - Add `iosxe_voice_class_tls_cipher` resource and data source for `voice class tls-cipher` cipher lists referenced by `voice class tls-profile`
