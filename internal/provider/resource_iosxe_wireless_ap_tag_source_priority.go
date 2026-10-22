@@ -114,7 +114,7 @@ func (r *WirelessAPTagSourcePriorityResource) Configure(_ context.Context, req r
 // End of section. //template:end model
 
 // CUSTOMIZED: Template markers removed, the device needs the two-step tag source write in
-// wireless_ap_tag_source_priority.go. See: https://github.com/CiscoDevNet/terraform-provider-iosxe/pull/XXX
+// wireless_ap_tag_source_priority.go. See: https://github.com/CiscoDevNet/terraform-provider-iosxe/pull/699
 
 func (r *WirelessAPTagSourcePriorityResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	var plan, config WirelessAPTagSourcePriority
@@ -168,7 +168,7 @@ func (r *WirelessAPTagSourcePriorityResource) Create(ctx context.Context, req re
 // End of Create section (customized).
 
 // CUSTOMIZED: Template markers removed, the device needs the two-step tag source write in
-// wireless_ap_tag_source_priority.go. See: https://github.com/CiscoDevNet/terraform-provider-iosxe/pull/XXX
+// wireless_ap_tag_source_priority.go. See: https://github.com/CiscoDevNet/terraform-provider-iosxe/pull/699
 
 func (r *WirelessAPTagSourcePriorityResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
 	var state WirelessAPTagSourcePriority
@@ -235,7 +235,7 @@ func (r *WirelessAPTagSourcePriorityResource) Read(ctx context.Context, req reso
 // End of Read section (customized).
 
 // CUSTOMIZED: Template markers removed, the device needs the two-step tag source write in
-// wireless_ap_tag_source_priority.go. See: https://github.com/CiscoDevNet/terraform-provider-iosxe/pull/XXX
+// wireless_ap_tag_source_priority.go. See: https://github.com/CiscoDevNet/terraform-provider-iosxe/pull/699
 
 func (r *WirelessAPTagSourcePriorityResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	var plan, state, config WirelessAPTagSourcePriority
@@ -292,7 +292,7 @@ func (r *WirelessAPTagSourcePriorityResource) Update(ctx context.Context, req re
 // End of Update section (customized).
 
 // CUSTOMIZED: Template markers removed, the device needs the two-step tag source write in
-// wireless_ap_tag_source_priority.go. See: https://github.com/CiscoDevNet/terraform-provider-iosxe/pull/XXX
+// wireless_ap_tag_source_priority.go. See: https://github.com/CiscoDevNet/terraform-provider-iosxe/pull/699
 
 func (r *WirelessAPTagSourcePriorityResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
 	var state WirelessAPTagSourcePriority
