@@ -31,7 +31,7 @@ data "iosxe_voice_class_uri" "example" {
 
 ### Read-Only
 
-- `hosts` (List of String) Match the Host portion of the URI
+- `hosts` (Set of String) Match the Host portion of the URI
 - `id` (String) The path of the retrieved object.
 - `pattern` (String) Match the entire URI
 - `phone_context` (String) Match the phone-context attribute of the URI

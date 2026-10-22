@@ -42,7 +42,7 @@ type VoiceClassURI struct {
 	Tag          types.String `tfsdk:"tag"`
 	Type         types.String `tfsdk:"type"`
 	Pattern      types.String `tfsdk:"pattern"`
-	Hosts        types.List   `tfsdk:"hosts"`
+	Hosts        types.Set    `tfsdk:"hosts"`
 	UserId       types.String `tfsdk:"user_id"`
 	PhoneContext types.String `tfsdk:"phone_context"`
 	PhoneNumber  types.String `tfsdk:"phone_number"`
@@ -54,7 +54,7 @@ type VoiceClassURIData struct {
 	Tag          types.String `tfsdk:"tag"`
 	Type         types.String `tfsdk:"type"`
 	Pattern      types.String `tfsdk:"pattern"`
-	Hosts        types.List   `tfsdk:"hosts"`
+	Hosts        types.Set    `tfsdk:"hosts"`
 	UserId       types.String `tfsdk:"user_id"`
 	PhoneContext types.String `tfsdk:"phone_context"`
 	PhoneNumber  types.String `tfsdk:"phone_number"`
@@ -150,9 +150,9 @@ func (data *VoiceClassURI) updateFromBodyXML(ctx context.Context, res xmldot.Res
 		data.Pattern = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/host"); value.Exists() && !data.Hosts.IsNull() {
-		data.Hosts = helpers.GetStringListXML(value.Array())
+		data.Hosts = helpers.GetStringSetXML(value.Array())
 	} else {
-		data.Hosts = types.ListNull(types.StringType)
+		data.Hosts = types.SetNull(types.StringType)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/user-id"); value.Exists() && !data.UserId.IsNull() {
 		data.UserId = types.StringValue(value.String())
@@ -183,9 +183,9 @@ func (data *VoiceClassURI) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.Pattern = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/host"); value.Exists() {
-		data.Hosts = helpers.GetStringListXML(value.Array())
+		data.Hosts = helpers.GetStringSetXML(value.Array())
 	} else {
-		data.Hosts = types.ListNull(types.StringType)
+		data.Hosts = types.SetNull(types.StringType)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/user-id"); value.Exists() {
 		data.UserId = types.StringValue(value.String())
@@ -210,9 +210,9 @@ func (data *VoiceClassURIData) fromBodyXML(ctx context.Context, res xmldot.Resul
 		data.Pattern = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/host"); value.Exists() {
-		data.Hosts = helpers.GetStringListXML(value.Array())
+		data.Hosts = helpers.GetStringSetXML(value.Array())
 	} else {
-		data.Hosts = types.ListNull(types.StringType)
+		data.Hosts = types.SetNull(types.StringType)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/user-id"); value.Exists() {
 		data.UserId = types.StringValue(value.String())

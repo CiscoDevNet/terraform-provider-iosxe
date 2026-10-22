@@ -80,7 +80,7 @@ func (d *VoiceClassURIDataSource) Schema(ctx context.Context, req datasource.Sch
 				MarkdownDescription: "Match the entire URI",
 				Computed:            true,
 			},
-			"hosts": schema.ListAttribute{
+			"hosts": schema.SetAttribute{
 				MarkdownDescription: "Match the Host portion of the URI",
 				ElementType:         types.StringType,
 				Computed:            true,

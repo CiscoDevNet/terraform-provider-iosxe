@@ -111,7 +111,7 @@ func (r *VoiceClassURIResource) Schema(ctx context.Context, req resource.SchemaR
 					stringvalidator.RegexMatches(regexp.MustCompile(`(((\[)[(\^)0-9,a-z,A-Z#*.@:;~!?+%()-]*(\])|[(\^)0-9,a-z,A-Z#*.@;:~!?+%()-]*)*T?($)?)`), ""),
 				},
 			},
-			"hosts": schema.ListAttribute{
+			"hosts": schema.SetAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Match the Host portion of the URI").String,
 				ElementType:         types.StringType,
 				Optional:            true,

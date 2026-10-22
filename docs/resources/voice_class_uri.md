@@ -32,7 +32,7 @@ resource "iosxe_voice_class_uri" "example" {
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
-- `hosts` (List of String) Match the Host portion of the URI
+- `hosts` (Set of String) Match the Host portion of the URI
 - `pattern` (String) Match the entire URI
 - `phone_context` (String) Match the phone-context attribute of the URI
 - `phone_number` (String) Match the phone-number attribute of the URI

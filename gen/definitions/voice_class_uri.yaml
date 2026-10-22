@@ -15,6 +15,7 @@ attributes:
     example: cube.example.com
   - yang_name: host
     tf_name: hosts
+    type: StringSet
     exclude_test: true
     example: ipv4:10.0.0.1
   - yang_name: user-id
