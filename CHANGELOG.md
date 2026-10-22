@@ -1,5 +1,8 @@
 ## Unreleased
 
+- Add `iosxe_voice_class_tls_profile` resource and data source for `voice class tls-profile` (trustpoint, cipher list, SNI, CN/SAN validation) used by CUBE SIP-TLS
+- Add `iosxe_voice_class_srtp_crypto` resource and data source for `voice class srtp-crypto` cipher-suite preference lists
+- Add `iosxe_voice_class_tls_cipher` resource and data source for `voice class tls-cipher` cipher lists referenced by `voice class tls-profile`
 - BREAKING CHANGE: Replace `ip_nhrp_maps.nbma_ipv4` with the nested list `ip_nhrp_maps.nbma_ipv4s` (keyed on `ipv4`, matching `ip_nhrp_nhs.nbma_ipv4s`) in `iosxe_interface_tunnel` resource and data source. In YANG, `map/dest-ipv4/nbma-ipv4` is a list keyed on `nbma-ipv4`; modelling it as a single value meant changing the NBMA address left the old entry on the device (causing perpetual plan drift) and removing it failed with `invalid-value`. `nbma_ipv4s` is required on each `ip_nhrp_maps` entry because IOS-XE rejects a map without an NBMA address. Existing configurations must change `nbma_ipv4 = "X"` to `nbma_ipv4s = [{ ipv4 = "X" }]`
 - Fix `iosxe_bgp_neighbor`, `iosxe_bgp_ipv6_unicast_neighbor`, and the other BGP neighbor resources when the neighbor IPv6 address is not in canonical lowercase form (e.g. `2001:DB8::1`). IOS-XE stores the key in lowercase and NETCONF key matching is case-sensitive, so import failed with "Cannot import non-existent remote object" and a created neighbor was planned for creation again on the next run. The key is now normalized in the resource path, ID, and import
 - Add `pqc_mlkem512`, `pqc_mlkem768`, `pqc_mlkem1024`, and `pqc_optional` attributes to `iosxe_crypto_ikev2_proposal` resource and data source
