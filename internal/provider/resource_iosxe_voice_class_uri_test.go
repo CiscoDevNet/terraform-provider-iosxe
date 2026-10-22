@@ -87,6 +87,7 @@ func iosxeVoiceClassURIImportStateIdFunc(resourceName string) resource.ImportSta
 func testAccIosxeVoiceClassURIConfig_minimum() string {
 	config := `resource "iosxe_voice_class_uri" "test" {` + "\n"
 	config += `	tag = "200"` + "\n"
+	config += `	type = "sip"` + "\n"
 	config += `}` + "\n"
 	return config
 }

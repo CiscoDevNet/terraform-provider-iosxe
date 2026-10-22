@@ -98,7 +98,7 @@ func (r *VoiceClassURIResource) Schema(ctx context.Context, req resource.SchemaR
 			},
 			"type": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("sip: URI class").AddStringEnumDescription("sip", "tel").String,
-				Optional:            true,
+				Required:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("sip", "tel"),
 				},

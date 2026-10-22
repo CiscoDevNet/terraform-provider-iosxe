@@ -10,6 +10,8 @@ attributes:
     id: true
     example: "200"
   - yang_name: type
+    mandatory: true
+    enum_values: [sip, tel]
     example: sip
   - yang_name: pattern
     example: cube.example.com

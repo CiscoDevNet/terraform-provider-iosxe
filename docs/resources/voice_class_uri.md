@@ -26,6 +26,8 @@ resource "iosxe_voice_class_uri" "example" {
 ### Required
 
 - `tag` (String) Voice URI Class tag
+- `type` (String) sip: URI class
+  - Choices: `sip`, `tel`
 
 ### Optional
 
@@ -36,8 +38,6 @@ resource "iosxe_voice_class_uri" "example" {
 - `pattern` (String) Match the entire URI
 - `phone_context` (String) Match the phone-context attribute of the URI
 - `phone_number` (String) Match the phone-number attribute of the URI
-- `type` (String) sip: URI class
-  - Choices: `sip`, `tel`
 - `user_id` (String) Match the User ID portion of the URI
 
 ### Read-Only
