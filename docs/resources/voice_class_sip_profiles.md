@@ -58,7 +58,8 @@ Required:
 
 Optional:
 
-- `request_method` (String)
+- `request_method` (String) SIP request method the rule matches (a method name or `ANY`)
+  - Choices: `ACK`, `BYE`, `CANCEL`, `COMET`, `INFO`, `INVITE`, `NOTIFY`, `OPTIONS`, `PRACK`, `PUBLISH`, `REFER`, `REGISTER`, `REINVITE`, `SUBSCRIBE`, `UPDATE`, `ANY`
 - `request_peer_header_sip` (String) Header name from which the values needs to be copied
 - `request_peer_header_sip_copy_pattern` (String) Match pattern
 - `request_peer_header_sip_copy_variable` (String) Copy variable <u01-u99>

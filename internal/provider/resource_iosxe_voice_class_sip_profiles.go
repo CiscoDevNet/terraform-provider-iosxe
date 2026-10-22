@@ -115,8 +115,11 @@ func (r *VoiceClassSIPProfilesResource) Schema(ctx context.Context, req resource
 							},
 						},
 						"request_method": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							MarkdownDescription: helpers.NewAttributeDescription("SIP request method the rule matches (a method name or `ANY`)").AddStringEnumDescription("ACK", "BYE", "CANCEL", "COMET", "INFO", "INVITE", "NOTIFY", "OPTIONS", "PRACK", "PUBLISH", "REFER", "REGISTER", "REINVITE", "SUBSCRIBE", "UPDATE", "ANY").String,
 							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("ACK", "BYE", "CANCEL", "COMET", "INFO", "INVITE", "NOTIFY", "OPTIONS", "PRACK", "PUBLISH", "REFER", "REGISTER", "REINVITE", "SUBSCRIBE", "UPDATE", "ANY"),
+							},
 						},
 						"request_sip_header": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,

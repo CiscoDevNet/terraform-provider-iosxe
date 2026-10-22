@@ -86,7 +86,7 @@ func (d *VoiceClassSIPProfilesDataSource) Schema(ctx context.Context, req dataso
 							Computed:            true,
 						},
 						"request_method": schema.StringAttribute{
-							MarkdownDescription: "",
+							MarkdownDescription: "SIP request method the rule matches (a method name or `ANY`)",
 							Computed:            true,
 						},
 						"request_sip_header": schema.StringAttribute{

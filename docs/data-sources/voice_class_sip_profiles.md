@@ -40,7 +40,7 @@ data "iosxe_voice_class_sip_profiles" "example" {
 
 Read-Only:
 
-- `request_method` (String)
+- `request_method` (String) SIP request method the rule matches (a method name or `ANY`)
 - `request_peer_header_sip` (String) Header name from which the values needs to be copied
 - `request_peer_header_sip_copy_pattern` (String) Match pattern
 - `request_peer_header_sip_copy_variable` (String) Copy variable <u01-u99>

@@ -29,6 +29,8 @@ attributes:
       - yang_name: rule-response-request/rule-choice/request-case/request/sip-requests
         xpath: rule-response-request/request/sip-requests
         tf_name: request_method
+        description: SIP request method the rule matches (a method name or `ANY`)
+        enum_values: [ACK, BYE, CANCEL, COMET, INFO, INVITE, NOTIFY, OPTIONS, PRACK, PUBLISH, REFER, REGISTER, REINVITE, SUBSCRIBE, UPDATE, ANY]
         example: ANY
       - yang_name: rule-response-request/rule-choice/request-case/request/request-response-choice/sip-header-choice/sip-header/header
         xpath: rule-response-request/request/sip-header/header
