@@ -21,6 +21,7 @@ package provider
 
 // Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
+	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -33,6 +34,18 @@ import (
 func TestAccDataSourceIosxeCryptoIKEv2Proposal(t *testing.T) {
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_ikev2_proposal.test", "encryption_aes_cbc_256", "true"))
+	if os.Getenv("IOSXE2611_C8000G2") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_ikev2_proposal.test", "pqc_mlkem512", "true"))
+	}
+	if os.Getenv("IOSXE2611_C8000G2") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_ikev2_proposal.test", "pqc_mlkem768", "true"))
+	}
+	if os.Getenv("IOSXE2611_C8000G2") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_ikev2_proposal.test", "pqc_mlkem1024", "true"))
+	}
+	if os.Getenv("IOSXE2611_C8000G2") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_ikev2_proposal.test", "pqc_optional", "true"))
+	}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_ikev2_proposal.test", "group_sixteen", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_ikev2_proposal.test", "integrity_sha256", "true"))
 	resource.Test(t, resource.TestCase{
@@ -58,6 +71,18 @@ func testAccDataSourceIosxeCryptoIKEv2ProposalConfig() string {
 	config := `resource "iosxe_crypto_ikev2_proposal" "test" {` + "\n"
 	config += `	name = "PROPOSAL1"` + "\n"
 	config += `	encryption_aes_cbc_256 = true` + "\n"
+	if os.Getenv("IOSXE2611_C8000G2") != "" {
+		config += `	pqc_mlkem512 = true` + "\n"
+	}
+	if os.Getenv("IOSXE2611_C8000G2") != "" {
+		config += `	pqc_mlkem768 = true` + "\n"
+	}
+	if os.Getenv("IOSXE2611_C8000G2") != "" {
+		config += `	pqc_mlkem1024 = true` + "\n"
+	}
+	if os.Getenv("IOSXE2611_C8000G2") != "" {
+		config += `	pqc_optional = true` + "\n"
+	}
 	config += `	group_sixteen = true` + "\n"
 	config += `	integrity_sha256 = true` + "\n"
 	config += `}` + "\n"
