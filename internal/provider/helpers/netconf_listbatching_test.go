@@ -265,7 +265,7 @@ func TestCollectListItemsXML_MatchesForEachScan(t *testing.T) {
 // GetFromXPath collects for ForEach was capped at 1000 elements, so every item
 // past the 1000th was silently absent, its state was dropped and the resource
 // reported a perpetual diff (#619). This pins that CollectListItemsXML returns
-// every item regardless of the xmldot version.
+// every item, and fails if xmldot is moved back below v0.6.0.
 func TestCollectListItemsXML_PastWildcardCap(t *testing.T) {
 	for _, n := range []int{999, 1000, 1001, 1500, 4094} {
 		parent := vlanParentResult(n)

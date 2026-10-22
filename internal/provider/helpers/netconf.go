@@ -1980,24 +1980,16 @@ func CompositeKey(values ...string) string {
 
 // CollectListItemsXML walks rawXML exactly once, collecting every
 // occurrence of a repeated element into a map keyed by CompositeKey of its
-// key value(s), without going through xmldot's array/count/index queries.
+// key value(s).
 //
-// GetFromXPath (and the wildcard/count/indexed forms of xmldot.Get it uses
-// to detect and return repeated siblings) has to collect every matching
-// element into an array before it can count or index into them. Generated
-// read code used to do that once per declared item, rescanning the whole
-// list each time. Before xmldot v0.6.0 that collection was also capped at
-// 1000 elements, so state for every item past the 1000th was silently
+// Generated read code used to look up each declared item with its own
+// GetFromXPath(...).ForEach scan over the whole list, which is quadratic in
+// the list length. Collecting the list once and reusing the result via O(1)
+// map lookups keeps the total cost to a single pass.
+//
+// This relies on xmldot v0.6.0 or later. Earlier versions capped array
+// queries at 1000 elements, so every item past the 1000th was silently
 // dropped (#619).
-//
-// This walks the raw XML directly instead of collecting an array: for the
-// final (repeated) path segment, it repeatedly asks xmldot for just the
-// first element with that name (a single-match lookup), records it,
-// deletes that one element from a scratch copy, and asks again.
-// Doing this once for the whole list and reusing the result via O(1) map
-// lookups (rather than repeating the walk once per item being looked up)
-// keeps the total cost to one pass over the list rather than compounding
-// per-lookup costs into quadratic or worse behavior for large lists.
 func CollectListItemsXML(rawXML string, elementPath string, keyNames []string) map[string]xmldot.Result {
 	result := make(map[string]xmldot.Result)
 
@@ -2024,24 +2016,16 @@ func CollectListItemsXML(rawXML string, elementPath string, keyNames []string) m
 	elementName, _ := parseXPathSegment(finalSegment)
 	elementName = removeNamespacePrefix(elementName)
 
-	for {
-		match := xmldot.Get(remaining, elementName)
-		if !match.Exists() {
-			break
-		}
-		keyParts := make([]string, len(keyNames))
-		for i, kn := range keyNames {
-			keyParts[i] = match.Get(removeNamespacePrefix(kn)).String()
-		}
-		result[CompositeKey(keyParts...)] = match
-
-		next, err := xmldot.Delete(remaining, elementName)
-		if err != nil || next == remaining {
-			// Can't make progress - stop rather than loop forever.
-			break
-		}
-		remaining = next
-	}
+	GetFromXPath(xmldot.Get("<root>"+remaining+"</root>", "root"), elementName).ForEach(
+		func(_ int, match xmldot.Result) bool {
+			keyParts := make([]string, len(keyNames))
+			for i, kn := range keyNames {
+				keyParts[i] = match.Get(removeNamespacePrefix(kn)).String()
+			}
+			result[CompositeKey(keyParts...)] = match
+			return true
+		},
+	)
 
 	return result
 }
