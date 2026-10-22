@@ -88,6 +88,10 @@ func (d *BGPDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 				MarkdownDescription: "Manually configured router identifier",
 				Computed:            true,
 			},
+			"asnotation_dot": schema.BoolAttribute{
+				MarkdownDescription: "AS dot notation",
+				Computed:            true,
+			},
 			"bgp_graceful_restart": schema.BoolAttribute{
 				MarkdownDescription: "Graceful restart capability parameters",
 				Computed:            true,
