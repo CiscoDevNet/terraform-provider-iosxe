@@ -54,8 +54,8 @@ func sequentialDeletePathsXML(data *SpanningTree) string {
 }
 
 // TestAddDeletePathsXML_MatchesSequential pins byte-for-byte equivalence with
-// the per-item path at sizes below xmldot's MaxWildcardResults (1000) cap,
-// where that path is still correct. Kept small because it is quadratic.
+// the per-item path at sizes below 1000, where that path is correct on every
+// xmldot version. Kept small because it is quadratic.
 func TestAddDeletePathsXML_MatchesSequential(t *testing.T) {
 	ctx := context.Background()
 	for _, n := range []int{1, 2, 50} {

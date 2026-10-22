@@ -131,11 +131,12 @@ func TestRemoveFromXPathMulti_MixedShapes(t *testing.T) {
 }
 
 // TestRemoveFromXPathMulti_NamespacesPastWildcardCap is a regression test for a
-// device-rejecting bug: xmldot's counted/indexed sibling queries cap at
-// MaxWildcardResults (1000), so backfilling xmlns via augmentNamespaces left
-// every list element past the 1000th without a namespace. IOS-XE then resolved
-// those against the parent (native) namespace and failed the whole edit-config
-// with "unknown-element" on <vlan>. Fragments now carry an inline xmlns.
+// device-rejecting bug: xmldot's counted/indexed sibling queries capped at
+// 1000 results before xmldot v0.6.0, so backfilling xmlns via
+// augmentNamespaces left every list element past the 1000th without a
+// namespace. IOS-XE then resolved those against the parent (native) namespace
+// and failed the whole edit-config with "unknown-element" on <vlan>. Fragments
+// now carry an inline xmlns.
 //
 // Note this only reproduces with namespace-prefixed xPaths, which is why the
 // bare-path tests above did not catch it.

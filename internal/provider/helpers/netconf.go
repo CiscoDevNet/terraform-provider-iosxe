@@ -1026,9 +1026,9 @@ func RemoveFromXPathMulti(body netconf.Body, xPaths []string) netconf.Body {
 		// "native"). Those are singletons, so augmentNamespaces' counted lookup
 		// is safe there. Everything from the list segment down already carries
 		// an inline xmlns from buildRemoveFragment -- deliberately, because
-		// augmentNamespaces would silently skip siblings past xmldot's
-		// MaxWildcardResults (1000) cap and produce elements the device rejects
-		// as unknown-element.
+		// augmentNamespaces re-scans every sibling by index, which is quadratic
+		// per call. Before xmldot v0.6.0 it also silently skipped siblings past
+		// the 1000th, producing elements the device rejects as unknown-element.
 		if len(prefixSegments) > 0 {
 			ancestorDotPath := strings.Join(prefixSegments, ".")
 			body = augmentNamespaces(body, ancestorDotPath)
@@ -1049,12 +1049,13 @@ func RemoveFromXPathMulti(body netconf.Body, xPaths []string) netconf.Body {
 // Any segment carrying a namespace prefix gets its xmlns written directly into
 // the emitted element. This is deliberate and must not be deferred to
 // augmentNamespaces: that function discovers repeated siblings through xmldot's
-// counted/indexed queries, which cap out at MaxWildcardResults (1000), so for a
-// list longer than 1000 it silently leaves every element past the 1000th
-// without an xmlns. The device then resolves those elements against the parent
-// (native) namespace and rejects the whole edit-config with unknown-element.
-// Baking the attribute in here is also cheaper: it is O(1) per fragment with no
-// re-scan of the growing document.
+// counted/indexed queries, and each indexed lookup re-scans the document, so
+// backfilling a list of n elements costs O(n^2) per call. Baking the attribute
+// in here is O(1) per fragment with no re-scan of the growing document.
+//
+// Before xmldot v0.6.0 those queries also capped at 1000 results, so for a
+// longer list every element past the 1000th was left without an xmlns and the
+// device rejected the whole edit-config with unknown-element (#619).
 func buildRemoveFragment(segments []string) string {
 	if len(segments) == 0 {
 		return ""
@@ -1979,24 +1980,20 @@ func CompositeKey(values ...string) string {
 
 // CollectListItemsXML walks rawXML exactly once, collecting every
 // occurrence of a repeated element into a map keyed by CompositeKey of its
-// key value(s), without going through xmldot's capped array/count/index
-// queries.
+// key value(s), without going through xmldot's array/count/index queries.
 //
 // GetFromXPath (and the wildcard/count/indexed forms of xmldot.Get it uses
 // to detect and return repeated siblings) has to collect every matching
-// element into an array before it can count or index into them, and xmldot
-// caps that collection at MaxWildcardResults (1000) as a DoS protection.
-// For a list with more than 1000 items, every element past that limit
-// becomes invisible to those queries - not an error, just silently absent -
-// so relying on GetFromXPath to locate items in a list bigger than 1000
-// silently drops state for anything past the 1000th.
+// element into an array before it can count or index into them. Generated
+// read code used to do that once per declared item, rescanning the whole
+// list each time. Before xmldot v0.6.0 that collection was also capped at
+// 1000 elements, so state for every item past the 1000th was silently
+// dropped (#619).
 //
 // This walks the raw XML directly instead of collecting an array: for the
 // final (repeated) path segment, it repeatedly asks xmldot for just the
-// first element with that name (an uncapped, single-match lookup - the cap
-// only applies to "how many"/"which index" queries, not "give me the first
-// one"), records it, deletes that one element from a scratch copy, and asks
-// again. There's no array to cap, so it can walk arbitrarily many siblings.
+// first element with that name (a single-match lookup), records it,
+// deletes that one element from a scratch copy, and asks again.
 // Doing this once for the whole list and reusing the result via O(1) map
 // lookups (rather than repeating the walk once per item being looked up)
 // keeps the total cost to one pass over the list rather than compounding

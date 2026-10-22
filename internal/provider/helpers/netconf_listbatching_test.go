@@ -56,8 +56,8 @@ func TestSetRawFromXPathMulti_MatchesSequential(t *testing.T) {
 }
 
 // TestSetRawFromXPathMulti_MatchesSequentialWithNamespaces does the same on
-// namespace-prefixed paths, at sizes below xmldot's MaxWildcardResults cap
-// where the sequential path still produces correct output.
+// namespace-prefixed paths, at sizes below 1000 where the sequential path
+// produces correct output on every xmldot version.
 func TestSetRawFromXPathMulti_MatchesSequentialWithNamespaces(t *testing.T) {
 	const xPath = "/Cisco-IOS-XE-native:native/spanning-tree/Cisco-IOS-XE-spanning-tree:vlan"
 
@@ -172,8 +172,8 @@ func TestSetRawFromXPathMulti_SingleSegmentFallback(t *testing.T) {
 
 // TestSetRawFromXPathMulti_NamespacesPastWildcardCap is a regression test for
 // the device-rejecting bug described in #619: augmentNamespaces discovers
-// siblings through xmldot's counted/indexed queries, which cap at
-// MaxWildcardResults (1000), so backfilling left every element past the
+// siblings through xmldot's counted/indexed queries, which capped at 1000
+// results before xmldot v0.6.0, so backfilling left every element past the
 // 1000th without an xmlns. IOS-XE resolved those against the parent (native)
 // namespace and failed the whole edit-config with "unknown-element".
 // SetRawFromXPathMulti embeds the xmlns into each fragment instead.
@@ -261,21 +261,14 @@ func TestCollectListItemsXML_MatchesForEachScan(t *testing.T) {
 }
 
 // TestCollectListItemsXML_PastWildcardCap is the read-path counterpart to the
-// namespace regression on the write path. GetFromXPath has to collect matching
-// siblings into an array before ForEach can iterate them, and that collection
-// caps at MaxWildcardResults (1000). For a list longer than 1000, every item
-// past the 1000th is invisible to the scan — not an error, just silently
-// absent — so state for those entries is dropped and the resource reports a
-// perpetual diff. Walking the document directly has no array to cap.
+// namespace regression on the write path. Before xmldot v0.6.0, the array
+// GetFromXPath collects for ForEach was capped at 1000 elements, so every item
+// past the 1000th was silently absent, its state was dropped and the resource
+// reported a perpetual diff (#619). This pins that CollectListItemsXML returns
+// every item regardless of the xmldot version.
 func TestCollectListItemsXML_PastWildcardCap(t *testing.T) {
 	for _, n := range []int{999, 1000, 1001, 1500, 4094} {
 		parent := vlanParentResult(n)
-
-		legacyCount := 0
-		GetFromXPath(parent, "vlan").ForEach(func(_ int, v xmldot.Result) bool {
-			legacyCount++
-			return true
-		})
 
 		items := CollectListItemsXML(parent.Raw, "vlan", []string{"id"})
 		if len(items) != n {
@@ -287,17 +280,8 @@ func TestCollectListItemsXML_PastWildcardCap(t *testing.T) {
 		if got := items[CompositeKey(last)].Get("id").String(); got != last {
 			t.Errorf("n=%d: last item id = %q, want %q", n, got, last)
 		}
-
-		if n > MaxLegacyScanResults && legacyCount >= n {
-			t.Errorf("n=%d: legacy scan saw %d items; expected it to be capped, "+
-				"so this test no longer demonstrates the regression", n, legacyCount)
-		}
 	}
 }
-
-// MaxLegacyScanResults mirrors xmldot's MaxWildcardResults, restated here so
-// the assertion above documents the threshold it depends on.
-const MaxLegacyScanResults = 1000
 
 // TestCollectListItemsXML_CompositeKeys verifies that lists keyed on more than
 // one leaf are indexed on the combination, not just the first key.
