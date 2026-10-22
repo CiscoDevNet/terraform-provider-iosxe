@@ -1,0 +1,26 @@
+---
+name: Wireless AP Tag Source Priority
+path: /Cisco-IOS-XE-wireless-ap-cfg:ap-cfg-data/tag-source-priority-configs
+no_delete: true
+test_tags: [C9800]
+doc_category: Wireless
+res_description: This resource can manage the configurable AP tag source priorities (`ap tag-source-priority <2-3> source <filter|ap>`), which decide whether AP filters or the AP itself (PnP) take precedence. Priorities 0 (static), 1 (location) and 4 (default) are fixed by the device and cannot be managed. The device rejects any single change that assigns one source to two priorities at once, so swapping the sources of priorities 2 and 3 is applied in two steps (the priority whose source changes is removed first, then both priorities are written). Destroying this resource restores the factory order (2 = `tag-source-filter`, 3 = `tag-source-ap-pnp`).
+attributes:
+  - yang_name: tag-source-priority-config
+    tf_name: priorities
+    type: List
+    allow_import_changes: true
+    attributes:
+      - yang_name: priority
+        tf_name: priority
+        type: Int64
+        id: true
+        min_int: 2
+        max_int: 3
+        example: 2
+      - yang_name: tag-src
+        tf_name: source
+        type: String
+        enum_values: [tag-source-filter, tag-source-ap-pnp]
+        mandatory: true
+        example: tag-source-ap-pnp
