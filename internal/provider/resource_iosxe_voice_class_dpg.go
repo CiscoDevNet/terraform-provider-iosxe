@@ -106,7 +106,7 @@ func (r *VoiceClassDPGResource) Schema(ctx context.Context, req resource.SchemaR
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"dial_peer_id": schema.StringAttribute{
+						"dial_peer_id": schema.Int64Attribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Voice dial-peer tag").String,
 							Required:            true,
 						},

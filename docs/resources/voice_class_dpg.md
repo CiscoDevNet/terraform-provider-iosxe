@@ -44,7 +44,7 @@ resource "iosxe_voice_class_dpg" "example" {
 
 Required:
 
-- `dial_peer_id` (String) Voice dial-peer tag
+- `dial_peer_id` (Number) Voice dial-peer tag
 
 Optional:
 

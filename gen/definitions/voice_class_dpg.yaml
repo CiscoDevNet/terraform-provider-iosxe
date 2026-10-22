@@ -20,6 +20,7 @@ attributes:
     attributes:
       - yang_name: id
         tf_name: dial_peer_id
+        type: Int64
         id: true
         example: 100
       - yang_name: preference

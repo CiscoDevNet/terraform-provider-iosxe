@@ -81,7 +81,7 @@ func (d *VoiceClassDPGDataSource) Schema(ctx context.Context, req datasource.Sch
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"dial_peer_id": schema.StringAttribute{
+						"dial_peer_id": schema.Int64Attribute{
 							MarkdownDescription: "Voice dial-peer tag",
 							Computed:            true,
 						},

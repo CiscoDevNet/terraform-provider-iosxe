@@ -46,8 +46,8 @@ type VoiceClassDPG struct {
 	DialPeers  []VoiceClassDPGDialPeers `tfsdk:"dial_peers"`
 }
 type VoiceClassDPGDialPeers struct {
-	DialPeerId types.String `tfsdk:"dial_peer_id"`
-	Preference types.Int64  `tfsdk:"preference"`
+	DialPeerId types.Int64 `tfsdk:"dial_peer_id"`
+	Preference types.Int64 `tfsdk:"preference"`
 }
 
 type VoiceClassDPGData struct {
@@ -58,8 +58,8 @@ type VoiceClassDPGData struct {
 	DialPeers []VoiceClassDPGDialPeersData `tfsdk:"dial_peers"`
 }
 type VoiceClassDPGDialPeersData struct {
-	DialPeerId types.String `tfsdk:"dial_peer_id"`
-	Preference types.Int64  `tfsdk:"preference"`
+	DialPeerId types.Int64 `tfsdk:"dial_peer_id"`
+	Preference types.Int64 `tfsdk:"preference"`
 }
 
 // End of section. //template:end types
@@ -117,7 +117,7 @@ func (data VoiceClassDPG) addToBodyXML(ctx context.Context, config VoiceClassDPG
 		for _, item := range data.DialPeers {
 			cBody := netconf.Body{}
 			if !item.DialPeerId.IsNull() && !item.DialPeerId.IsUnknown() {
-				cBody = helpers.SetFromXPath(cBody, "id", item.DialPeerId.ValueString())
+				cBody = helpers.SetFromXPath(cBody, "id", strconv.FormatInt(item.DialPeerId.ValueInt64(), 10))
 			}
 			if !item.Preference.IsNull() && !item.Preference.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "preference", strconv.FormatInt(item.Preference.ValueInt64(), 10))
@@ -149,7 +149,7 @@ func (data *VoiceClassDPG) updateFromBodyXML(ctx context.Context, res xmldot.Res
 	}
 	for i := range data.DialPeers {
 		keys := [...]string{"id"}
-		keyValues := [...]string{data.DialPeers[i].DialPeerId.ValueString()}
+		keyValues := [...]string{strconv.FormatInt(data.DialPeers[i].DialPeerId.ValueInt64(), 10)}
 
 		var r xmldot.Result
 		helpers.GetFromXPath(res, "data"+data.getXPath()+"/dial-peer").ForEach(
@@ -171,9 +171,9 @@ func (data *VoiceClassDPG) updateFromBodyXML(ctx context.Context, res xmldot.Res
 			},
 		)
 		if value := helpers.GetFromXPath(r, "id"); value.Exists() && !data.DialPeers[i].DialPeerId.IsNull() {
-			data.DialPeers[i].DialPeerId = types.StringValue(value.String())
+			data.DialPeers[i].DialPeerId = types.Int64Value(value.Int())
 		} else {
-			data.DialPeers[i].DialPeerId = types.StringNull()
+			data.DialPeers[i].DialPeerId = types.Int64Null()
 		}
 		if value := helpers.GetFromXPath(r, "preference"); value.Exists() && !data.DialPeers[i].Preference.IsNull() {
 			data.DialPeers[i].Preference = types.Int64Value(value.Int())
@@ -198,7 +198,7 @@ func (data *VoiceClassDPG) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := VoiceClassDPGDialPeers{}
 			if cValue := helpers.GetFromXPath(v, "id"); cValue.Exists() {
-				item.DialPeerId = types.StringValue(cValue.String())
+				item.DialPeerId = types.Int64Value(cValue.Int())
 			}
 			if cValue := helpers.GetFromXPath(v, "preference"); cValue.Exists() {
 				item.Preference = types.Int64Value(cValue.Int())
@@ -224,7 +224,7 @@ func (data *VoiceClassDPGData) fromBodyXML(ctx context.Context, res xmldot.Resul
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := VoiceClassDPGDialPeersData{}
 			if cValue := helpers.GetFromXPath(v, "id"); cValue.Exists() {
-				item.DialPeerId = types.StringValue(cValue.String())
+				item.DialPeerId = types.Int64Value(cValue.Int())
 			}
 			if cValue := helpers.GetFromXPath(v, "preference"); cValue.Exists() {
 				item.Preference = types.Int64Value(cValue.Int())
@@ -243,14 +243,14 @@ func (data *VoiceClassDPG) addDeletedItemsXML(ctx context.Context, state VoiceCl
 	b := netconf.NewBody(body)
 	for i := range state.DialPeers {
 		stateKeys := [...]string{"id"}
-		stateKeyValues := [...]string{state.DialPeers[i].DialPeerId.ValueString()}
+		stateKeyValues := [...]string{strconv.FormatInt(state.DialPeers[i].DialPeerId.ValueInt64(), 10)}
 		predicates := ""
 		for i := range stateKeys {
 			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
 		}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.DialPeers[i].DialPeerId.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.DialPeers[i].DialPeerId.ValueInt64()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -260,7 +260,7 @@ func (data *VoiceClassDPG) addDeletedItemsXML(ctx context.Context, state VoiceCl
 		found := false
 		for j := range data.DialPeers {
 			found = true
-			if state.DialPeers[i].DialPeerId.ValueString() != data.DialPeers[j].DialPeerId.ValueString() {
+			if state.DialPeers[i].DialPeerId.ValueInt64() != data.DialPeers[j].DialPeerId.ValueInt64() {
 				found = false
 			}
 			if found {
@@ -290,7 +290,7 @@ func (data *VoiceClassDPG) addDeletePathsXML(ctx context.Context, body string) s
 	b := netconf.NewBody(body)
 	for i := range data.DialPeers {
 		keys := [...]string{"id"}
-		keyValues := [...]string{data.DialPeers[i].DialPeerId.ValueString()}
+		keyValues := [...]string{strconv.FormatInt(data.DialPeers[i].DialPeerId.ValueInt64(), 10)}
 		predicates := ""
 		for i := range keys {
 			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])

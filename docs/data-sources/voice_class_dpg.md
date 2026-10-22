@@ -40,5 +40,5 @@ data "iosxe_voice_class_dpg" "example" {
 
 Read-Only:
 
-- `dial_peer_id` (String) Voice dial-peer tag
+- `dial_peer_id` (Number) Voice dial-peer tag
 - `preference` (Number) Preference order of this dialpeer in a group
