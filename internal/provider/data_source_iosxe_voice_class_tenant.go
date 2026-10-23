@@ -341,6 +341,10 @@ func (d *VoiceClassTenantDataSource) Schema(ctx context.Context, req datasource.
 				MarkdownDescription: "name of the user authenticating",
 				Computed:            true,
 			},
+			"authentication_realm_password_type": schema.StringAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
 			"authentication_realm_password": schema.StringAttribute{
 				MarkdownDescription: "",
 				Computed:            true,

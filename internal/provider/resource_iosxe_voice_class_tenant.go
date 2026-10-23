@@ -451,6 +451,13 @@ func (r *VoiceClassTenantResource) Schema(ctx context.Context, req resource.Sche
 					stringvalidator.LengthBetween(4, 70),
 				},
 			},
+			"authentication_realm_password_type": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("0", "6", "7").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("0", "6", "7"),
+				},
+			},
 			"authentication_realm_password": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,

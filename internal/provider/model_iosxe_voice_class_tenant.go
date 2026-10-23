@@ -111,6 +111,7 @@ type VoiceClassTenant struct {
 	AuthenticationPasswordWO                     types.String                         `tfsdk:"authentication_password_wo"`
 	AuthenticationPasswordWOVersion              types.Int64                          `tfsdk:"authentication_password_wo_version"`
 	AuthenticationRealmUsername                  types.String                         `tfsdk:"authentication_realm_username"`
+	AuthenticationRealmPasswordType              types.String                         `tfsdk:"authentication_realm_password_type"`
 	AuthenticationRealmPassword                  types.String                         `tfsdk:"authentication_realm_password"`
 	AuthenticationRealmPasswordWO                types.String                         `tfsdk:"authentication_realm_password_wo"`
 	AuthenticationRealmPasswordWOVersion         types.Int64                          `tfsdk:"authentication_realm_password_wo_version"`
@@ -208,6 +209,7 @@ type VoiceClassTenantData struct {
 	AuthenticationPasswordType                   types.String                             `tfsdk:"authentication_password_type"`
 	AuthenticationPassword                       types.String                             `tfsdk:"authentication_password"`
 	AuthenticationRealmUsername                  types.String                             `tfsdk:"authentication_realm_username"`
+	AuthenticationRealmPasswordType              types.String                             `tfsdk:"authentication_realm_password_type"`
 	AuthenticationRealmPassword                  types.String                             `tfsdk:"authentication_realm_password"`
 	AuthenticationRealm                          types.String                             `tfsdk:"authentication_realm"`
 	CredentialsNumbers                           []VoiceClassTenantCredentialsNumbersData `tfsdk:"credentials_numbers"`
@@ -606,6 +608,9 @@ func (data VoiceClassTenant) addToBodyXML(ctx context.Context, config VoiceClass
 	}
 	if !data.AuthenticationRealmUsername.IsNull() && !data.AuthenticationRealmUsername.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/authentication/auth-with-realm/username", data.AuthenticationRealmUsername.ValueString())
+	}
+	if !data.AuthenticationRealmPasswordType.IsNull() && !data.AuthenticationRealmPasswordType.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/authentication/auth-with-realm/password/encryption", data.AuthenticationRealmPasswordType.ValueString())
 	}
 	if !data.AuthenticationRealmPassword.IsNull() && !data.AuthenticationRealmPassword.IsUnknown() {
 		if !config.AuthenticationRealmPasswordWO.IsNull() {
@@ -1165,6 +1170,11 @@ func (data *VoiceClassTenant) updateFromBodyXML(ctx context.Context, res xmldot.
 	} else {
 		data.AuthenticationRealmUsername = types.StringNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/auth-with-realm/password/encryption"); value.Exists() && !data.AuthenticationRealmPasswordType.IsNull() {
+		data.AuthenticationRealmPasswordType = types.StringValue(value.String())
+	} else {
+		data.AuthenticationRealmPasswordType = types.StringNull()
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/auth-with-realm/realm"); value.Exists() && !data.AuthenticationRealm.IsNull() {
 		data.AuthenticationRealm = types.StringValue(value.String())
 	} else {
@@ -1550,6 +1560,9 @@ func (data *VoiceClassTenant) fromBodyXML(ctx context.Context, res xmldot.Result
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/auth-with-realm/username"); value.Exists() {
 		data.AuthenticationRealmUsername = types.StringValue(value.String())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/auth-with-realm/password/encryption"); value.Exists() {
+		data.AuthenticationRealmPasswordType = types.StringValue(value.String())
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/auth-with-realm/password/password-string"); value.Exists() {
 		data.AuthenticationRealmPassword = types.StringValue(value.String())
 	}
@@ -1891,6 +1904,9 @@ func (data *VoiceClassTenantData) fromBodyXML(ctx context.Context, res xmldot.Re
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/auth-with-realm/username"); value.Exists() {
 		data.AuthenticationRealmUsername = types.StringValue(value.String())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/auth-with-realm/password/encryption"); value.Exists() {
+		data.AuthenticationRealmPasswordType = types.StringValue(value.String())
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/auth-with-realm/password/password-string"); value.Exists() {
 		data.AuthenticationRealmPassword = types.StringValue(value.String())
 	}
@@ -2039,6 +2055,9 @@ func (data *VoiceClassTenant) addDeletedItemsXML(ctx context.Context, state Voic
 	}
 	if !state.AuthenticationRealmPassword.IsNull() && data.AuthenticationRealmPassword.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/authentication/auth-with-realm/password/password-string")
+	}
+	if !state.AuthenticationRealmPasswordType.IsNull() && data.AuthenticationRealmPasswordType.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/authentication/auth-with-realm/password/encryption")
 	}
 	if !state.AuthenticationRealmUsername.IsNull() && data.AuthenticationRealmUsername.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/authentication/auth-with-realm/username")
@@ -2297,6 +2316,9 @@ func (data *VoiceClassTenant) addDeletePathsXML(ctx context.Context, body string
 	}
 	if !data.AuthenticationRealmPassword.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/authentication/auth-with-realm/password/password-string")
+	}
+	if !data.AuthenticationRealmPasswordType.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/authentication/auth-with-realm/password/encryption")
 	}
 	if !data.AuthenticationRealmUsername.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/authentication/auth-with-realm/username")

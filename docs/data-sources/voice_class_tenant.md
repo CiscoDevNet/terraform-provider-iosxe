@@ -41,6 +41,7 @@ data "iosxe_voice_class_tenant" "example" {
 - `authentication_password_type` (String)
 - `authentication_realm` (String) Realm at which the credentials are applicable
 - `authentication_realm_password` (String, Sensitive)
+- `authentication_realm_password_type` (String)
 - `authentication_realm_username` (String) name of the user authenticating
 - `authentication_username` (String) name of the user authenticating
 - `bind_control_source_interface` (String) GigabitEthernet IEEE 802.3z
