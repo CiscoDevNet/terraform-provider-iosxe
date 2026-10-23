@@ -90,7 +90,7 @@ func TestAccIosxeVoiceClassTenant(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeVoiceClassTenantImportStateIdFunc("iosxe_voice_class_tenant.test"),
-				ImportStateVerifyIgnore: []string{"session_transport_tcp", "session_transport_udp", "url_sip", "sip_profiles_inbound"},
+				ImportStateVerifyIgnore: []string{"session_transport_tcp", "session_transport_udp", "url_sip", "sip_profiles_inbound", "early_media_update_block", "early_media_update_block_re_negotiate"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -123,18 +123,6 @@ resource "iosxe_yang" "PreReq0" {
 	}
 }
 
-resource "iosxe_yang" "PreReq1" {
-	path = ""
-	attributes = {
-	}
-}
-
-resource "iosxe_yang" "PreReq2" {
-	path = ""
-	attributes = {
-	}
-}
-
 `
 
 // End of section. //template:end testPrerequisites
@@ -144,7 +132,7 @@ resource "iosxe_yang" "PreReq2" {
 func testAccIosxeVoiceClassTenantConfig_minimum() string {
 	config := `resource "iosxe_voice_class_tenant" "test" {` + "\n"
 	config += `	tag = 100` + "\n"
-	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -191,7 +179,7 @@ func testAccIosxeVoiceClassTenantConfig_all() string {
 	config += `	options_ping_interval = 60` + "\n"
 	config += `	pass_thru_headers_unsupp = true` + "\n"
 	config += `	pass_thru_content_unsupp = true` + "\n"
-	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

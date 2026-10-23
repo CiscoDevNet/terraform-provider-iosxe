@@ -574,6 +574,14 @@ func (r *VoiceClassTenantResource) Schema(ctx context.Context, req resource.Sche
 					int64validator.Between(1, 1073741823),
 				},
 			},
+			"early_media_update_block": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Consume SIP Update request with SDP in early-dialog").String,
+				Optional:            true,
+			},
+			"early_media_update_block_re_negotiate": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enables end-to-end re-negotiation.").String,
+				Optional:            true,
+			},
 		},
 	}
 }

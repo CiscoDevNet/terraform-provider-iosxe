@@ -334,6 +334,17 @@ attributes:
     tf_name: analog_dn_dial_peer_tag
     exclude_test: true
     example: 100
+  # --- Early-media update handling ---
+  - yang_name: early-media/update/block
+    tf_name: early_media_update_block
+    type: Bool
+    type_yang_bool: presence
+    exclude_test: true
+    example: true
+  - yang_name: early-media/update/block/re-negotiate
+    tf_name: early_media_update_block_re_negotiate
+    exclude_test: true
+    example: true
 
 test_prerequisites:
   # The tenant `early-offer` leaf has a `when` on voice service voip
@@ -345,12 +356,3 @@ test_prerequisites:
         value: voip
       - name: allow-connections/sip/to/sip
         value: ""
-  # --- Early-media update handling ---
-  - yang_name: early-media/update/block
-    tf_name: early_media_update_block
-    exclude_test: true
-    example: true
-  - yang_name: early-media/update/block/re-negotiate
-    tf_name: early_media_update_block_re_negotiate
-    exclude_test: true
-    example: true

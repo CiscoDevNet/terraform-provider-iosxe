@@ -411,6 +411,14 @@ func (d *VoiceClassTenantDataSource) Schema(ctx context.Context, req datasource.
 				MarkdownDescription: "POTS dial peer tag",
 				Computed:            true,
 			},
+			"early_media_update_block": schema.BoolAttribute{
+				MarkdownDescription: "Consume SIP Update request with SDP in early-dialog",
+				Computed:            true,
+			},
+			"early_media_update_block_re_negotiate": schema.BoolAttribute{
+				MarkdownDescription: "Enables end-to-end re-negotiation.",
+				Computed:            true,
+			},
 		},
 	}
 }

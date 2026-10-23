@@ -59,6 +59,8 @@ data "iosxe_voice_class_tenant" "example" {
 - `copy_list` (String) Configure list of entities to be sent to peer leg
 - `credentials_numbers` (Attributes List) (see [below for nested schema](#nestedatt--credentials_numbers))
 - `disable_early_media` (String) Disable early-media cut through
+- `early_media_update_block` (Boolean) Consume SIP Update request with SDP in early-dialog
+- `early_media_update_block_re_negotiate` (Boolean) Enables end-to-end re-negotiation.
 - `early_offer_forced` (Boolean) Forcefully Send Early-Offer
 - `error_passthru` (Boolean) SIP error response pass-thru functionality
 - `g729_annexb_override` (Boolean) Override default value, yes, if annexb attribute is not present

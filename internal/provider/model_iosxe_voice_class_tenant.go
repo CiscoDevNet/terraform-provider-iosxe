@@ -124,6 +124,8 @@ type VoiceClassTenant struct {
 	RegistrarSecondaryRefreshRatio               types.Int64                          `tfsdk:"registrar_secondary_refresh_ratio"`
 	AnalogDn                                     types.String                         `tfsdk:"analog_dn"`
 	AnalogDnDialPeerTag                          types.Int64                          `tfsdk:"analog_dn_dial_peer_tag"`
+	EarlyMediaUpdateBlock                        types.Bool                           `tfsdk:"early_media_update_block"`
+	EarlyMediaUpdateBlockReNegotiate             types.Bool                           `tfsdk:"early_media_update_block_re_negotiate"`
 }
 type VoiceClassTenantCredentialsNumbers struct {
 	Number            types.String `tfsdk:"number"`
@@ -217,6 +219,8 @@ type VoiceClassTenantData struct {
 	RegistrarSecondaryRefreshRatio               types.Int64                              `tfsdk:"registrar_secondary_refresh_ratio"`
 	AnalogDn                                     types.String                             `tfsdk:"analog_dn"`
 	AnalogDnDialPeerTag                          types.Int64                              `tfsdk:"analog_dn_dial_peer_tag"`
+	EarlyMediaUpdateBlock                        types.Bool                               `tfsdk:"early_media_update_block"`
+	EarlyMediaUpdateBlockReNegotiate             types.Bool                               `tfsdk:"early_media_update_block_re_negotiate"`
 }
 type VoiceClassTenantCredentialsNumbersData struct {
 	Number       types.String `tfsdk:"number"`
@@ -669,6 +673,20 @@ func (data VoiceClassTenant) addToBodyXML(ctx context.Context, config VoiceClass
 	}
 	if !data.AnalogDnDialPeerTag.IsNull() && !data.AnalogDnDialPeerTag.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/analog-dn/dial-peer-tag", strconv.FormatInt(data.AnalogDnDialPeerTag.ValueInt64(), 10))
+	}
+	if !data.EarlyMediaUpdateBlock.IsNull() && !data.EarlyMediaUpdateBlock.IsUnknown() {
+		if data.EarlyMediaUpdateBlock.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/early-media/update/block", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/early-media/update/block")
+		}
+	}
+	if !data.EarlyMediaUpdateBlockReNegotiate.IsNull() && !data.EarlyMediaUpdateBlockReNegotiate.IsUnknown() {
+		if data.EarlyMediaUpdateBlockReNegotiate.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/early-media/update/block/re-negotiate", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/early-media/update/block/re-negotiate")
+		}
 	}
 	return body
 }
@@ -1236,6 +1254,24 @@ func (data *VoiceClassTenant) updateFromBodyXML(ctx context.Context, res xmldot.
 	} else {
 		data.AnalogDnDialPeerTag = types.Int64Null()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/early-media/update/block"); !data.EarlyMediaUpdateBlock.IsNull() {
+		if value.Exists() {
+			data.EarlyMediaUpdateBlock = types.BoolValue(true)
+		} else {
+			data.EarlyMediaUpdateBlock = types.BoolValue(false)
+		}
+	} else {
+		data.EarlyMediaUpdateBlock = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/early-media/update/block/re-negotiate"); !data.EarlyMediaUpdateBlockReNegotiate.IsNull() {
+		if value.Exists() {
+			data.EarlyMediaUpdateBlockReNegotiate = types.BoolValue(true)
+		} else {
+			data.EarlyMediaUpdateBlockReNegotiate = types.BoolValue(false)
+		}
+	} else {
+		data.EarlyMediaUpdateBlockReNegotiate = types.BoolNull()
+	}
 }
 
 // End of section. //template:end updateFromBodyXML
@@ -1566,6 +1602,16 @@ func (data *VoiceClassTenant) fromBodyXML(ctx context.Context, res xmldot.Result
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/analog-dn/dial-peer-tag"); value.Exists() {
 		data.AnalogDnDialPeerTag = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/early-media/update/block"); value.Exists() {
+		data.EarlyMediaUpdateBlock = types.BoolValue(true)
+	} else {
+		data.EarlyMediaUpdateBlock = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/early-media/update/block/re-negotiate"); value.Exists() {
+		data.EarlyMediaUpdateBlockReNegotiate = types.BoolValue(true)
+	} else {
+		data.EarlyMediaUpdateBlockReNegotiate = types.BoolValue(false)
 	}
 }
 
@@ -1898,6 +1944,16 @@ func (data *VoiceClassTenantData) fromBodyXML(ctx context.Context, res xmldot.Re
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/analog-dn/dial-peer-tag"); value.Exists() {
 		data.AnalogDnDialPeerTag = types.Int64Value(value.Int())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/early-media/update/block"); value.Exists() {
+		data.EarlyMediaUpdateBlock = types.BoolValue(true)
+	} else {
+		data.EarlyMediaUpdateBlock = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/early-media/update/block/re-negotiate"); value.Exists() {
+		data.EarlyMediaUpdateBlockReNegotiate = types.BoolValue(true)
+	} else {
+		data.EarlyMediaUpdateBlockReNegotiate = types.BoolValue(false)
+	}
 }
 
 // End of section. //template:end fromBodyDataXML
@@ -1906,6 +1962,12 @@ func (data *VoiceClassTenantData) fromBodyXML(ctx context.Context, res xmldot.Re
 
 func (data *VoiceClassTenant) addDeletedItemsXML(ctx context.Context, state VoiceClassTenant, body string) string {
 	b := netconf.NewBody(body)
+	if !state.EarlyMediaUpdateBlockReNegotiate.IsNull() && data.EarlyMediaUpdateBlockReNegotiate.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/early-media/update/block/re-negotiate")
+	}
+	if !state.EarlyMediaUpdateBlock.IsNull() && data.EarlyMediaUpdateBlock.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/early-media/update/block")
+	}
 	if !state.AnalogDnDialPeerTag.IsNull() && data.AnalogDnDialPeerTag.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/analog-dn/dial-peer-tag")
 	}
@@ -2190,6 +2252,12 @@ func (data *VoiceClassTenant) addDeletedItemsXML(ctx context.Context, state Voic
 
 func (data *VoiceClassTenant) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	if !data.EarlyMediaUpdateBlockReNegotiate.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/early-media/update/block/re-negotiate")
+	}
+	if !data.EarlyMediaUpdateBlock.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/early-media/update/block")
+	}
 	if !data.AnalogDnDialPeerTag.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/analog-dn/dial-peer-tag")
 	}

@@ -96,18 +96,6 @@ resource "iosxe_yang" "PreReq0" {
 	}
 }
 
-resource "iosxe_yang" "PreReq1" {
-	path = ""
-	attributes = {
-	}
-}
-
-resource "iosxe_yang" "PreReq2" {
-	path = ""
-	attributes = {
-	}
-}
-
 `
 
 // End of section. //template:end testPrerequisites
@@ -153,7 +141,7 @@ func testAccDataSourceIosxeVoiceClassTenantConfig() string {
 	config += `	options_ping_interval = 60` + "\n"
 	config += `	pass_thru_headers_unsupp = true` + "\n"
 	config += `	pass_thru_content_unsupp = true` + "\n"
-	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `
