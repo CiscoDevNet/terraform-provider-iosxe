@@ -141,6 +141,7 @@ func (data CryptoIKEv2Keyring) addToBodyXML(ctx context.Context, config CryptoIK
 		body = helpers.SetFromXPath(body, data.getXPath()+"/name", data.Name.ValueString())
 	}
 	if len(data.Peers) > 0 {
+		PeersFragments := make([]string, 0, len(data.Peers))
 		for _, item := range data.Peers {
 			var configItem CryptoIKEv2KeyringPeers
 			for _, ci := range config.Peers {
@@ -217,8 +218,9 @@ func (data CryptoIKEv2Keyring) addToBodyXML(ctx context.Context, config CryptoIK
 					cBody = helpers.SetFromXPath(cBody, "pre-shared-key/key", item.PreSharedKey.ValueString())
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/peer", cBody.Res())
+			PeersFragments = append(PeersFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/peer", PeersFragments)
 	}
 	return body
 }
@@ -233,29 +235,12 @@ func (data *CryptoIKEv2Keyring) updateFromBodyXML(ctx context.Context, res xmldo
 	} else {
 		data.Name = types.StringNull()
 	}
+	PeersParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	PeersKeys := [...]string{"name"}
+	PeersItems := helpers.CollectListItemsXML(PeersParentScope.Raw, "peer", PeersKeys[:])
 	for i := range data.Peers {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.Peers[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/peer").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		PeersKeyValues := [...]string{data.Peers[i].Name.ValueString()}
+		r := PeersItems[helpers.CompositeKey(PeersKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.Peers[i].Name.IsNull() {
 			data.Peers[i].Name = types.StringValue(value.String())
 		} else {
