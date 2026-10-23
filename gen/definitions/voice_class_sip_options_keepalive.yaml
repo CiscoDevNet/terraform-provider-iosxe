@@ -1,0 +1,46 @@
+---
+name: Voice Class SIP Options Keepalive
+path: /Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:voice/class/sip-options-keepalive[id=%v]
+doc_category: Voice
+# CUBE is a router feature; a switch rejects these voice class resources.
+test_tags: [C8000V]
+attributes:
+  - yang_name: id
+    tf_name: tag
+    id: true
+    example: 200
+  - yang_name: description
+    example: ITSP keepalive profile
+  - yang_name: shutdown
+    exclude_test: true
+    example: false
+  - yang_name: up-interval
+    example: 60
+  - yang_name: down-interval
+    example: 30
+  - yang_name: retry
+    example: 5
+  - yang_name: sip-profiles
+    exclude_test: true
+    example: 100
+  - yang_name: transport/transport-choice/udp/udp
+    xpath: transport/udp
+    tf_name: transport_udp
+    type: Bool
+    type_yang_bool: empty
+    # Mutually exclusive with the tcp case (YANG choice); the test exercises the
+    # tcp/tls case, so udp stays out of the `_all` config.
+    exclude_test: true
+    example: true
+  - yang_name: transport/transport-choice/tcp/tcp
+    xpath: transport/tcp
+    tf_name: transport_tcp
+    type: Bool
+    type_yang_bool: presence
+    example: true
+  - yang_name: transport/transport-choice/tcp/tcp/tls
+    xpath: transport/tcp/tls
+    tf_name: transport_tcp_tls
+    type: Bool
+    type_yang_bool: empty
+    example: true

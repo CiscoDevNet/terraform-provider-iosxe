@@ -1,0 +1,25 @@
+---
+name: Voice Class E164 Pattern Map
+path: /Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:voice/class/e164-pattern-map[id=%v]
+doc_category: Voice
+# CUBE is a router feature; a switch rejects these voice class resources.
+test_tags: [C8000V]
+attributes:
+  - yang_name: id
+    tf_name: tag
+    id: true
+    example: 200
+  - yang_name: description
+    exclude_test: true
+    example: North America E164 patterns
+  - yang_name: url
+    exclude_test: true
+    example: flash:e164-patterns.cfg
+  - yang_name: e164
+    tf_name: patterns
+    type: List
+    attributes:
+      - yang_name: WORD
+        tf_name: pattern
+        id: true
+        example: "+1408.......T"

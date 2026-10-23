@@ -1,0 +1,16 @@
+---
+name: Voice Class SIP Event List
+path: /Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:voice/class/sip-event-list[id=%v]
+doc_category: Voice
+# CUBE is a router feature; a switch rejects these voice class resources.
+test_tags: [C8000V]
+attributes:
+  - yang_name: id
+    tf_name: tag
+    id: true
+    example: 100
+  - yang_name: event
+    tf_name: events
+    # Unordered leaf-list (no `ordered-by user`); StringSet avoids spurious diffs.
+    type: StringSet
+    example: refer
