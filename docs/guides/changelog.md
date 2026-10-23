@@ -45,6 +45,7 @@ description: |-
 - Add `iosxe_wireless_policy_tag` resource and data source for C9800 wireless policy tag configuration, mapping WLAN profiles to policy profiles
 - Add `iosxe_wireless_rf_tag` resource and data source for C9800 RF tags mapping 2.4 GHz, 5 GHz, and 6 GHz RF profiles
 - Add `iosxe_wireless_site_tag` resource and data source
+- Add `iosxe_wireless_flex_profile` resource and data source for C9800 FlexConnect profiles, including description, native VLAN, ARP caching, fallback radio shut, AP image predownload, VLAN name to VLAN ID mappings and policy ACLs. `default-flex-profile` is treated as a built-in object: destroying it removes only the configured attributes and leaves the profile in place
 - Add wireless YANG model support (wlan, rf, site, flex, mesh, general, ap profiles)
 - Add `iosxe_wireless_wlan_profile` resource and data source for managing C9800 WLAN profiles
 - Add `iosxe_wireless_rf_profile` resource and data source
