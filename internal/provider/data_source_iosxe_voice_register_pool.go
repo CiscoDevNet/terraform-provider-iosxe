@@ -100,11 +100,11 @@ func (d *VoiceRegisterPoolDataSource) Schema(ctx context.Context, req datasource
 				MarkdownDescription: "Ringing no answer timeout duration",
 				Computed:            true,
 			},
-			"voice_class_codec": schema.StringAttribute{
+			"voice_class_codec": schema.Int64Attribute{
 				MarkdownDescription: "Set Global Codec parameters",
 				Computed:            true,
 			},
-			"voice_class_srtp_crypto": schema.StringAttribute{
+			"voice_class_srtp_crypto": schema.Int64Attribute{
 				MarkdownDescription: "Associates an SRTP cipher list with this pool",
 				Computed:            true,
 			},

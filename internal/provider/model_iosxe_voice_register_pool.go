@@ -49,8 +49,8 @@ type VoiceRegisterPool struct {
 	CallForwardB2buaMailbox     types.String                   `tfsdk:"call_forward_b2bua_mailbox"`
 	CallForwardB2buaNoan        types.String                   `tfsdk:"call_forward_b2bua_noan"`
 	CallForwardB2buaNoanTimeout types.Int64                    `tfsdk:"call_forward_b2bua_noan_timeout"`
-	VoiceClassCodec             types.String                   `tfsdk:"voice_class_codec"`
-	VoiceClassSrtpCrypto        types.String                   `tfsdk:"voice_class_srtp_crypto"`
+	VoiceClassCodec             types.Int64                    `tfsdk:"voice_class_codec"`
+	VoiceClassSrtpCrypto        types.Int64                    `tfsdk:"voice_class_srtp_crypto"`
 	DtmfRelayRtpNte             types.Bool                     `tfsdk:"dtmf_relay_rtp_nte"`
 	DtmfRelaySipKpml            types.Bool                     `tfsdk:"dtmf_relay_sip_kpml"`
 	DtmfRelaySipNotify          types.Bool                     `tfsdk:"dtmf_relay_sip_notify"`
@@ -85,8 +85,8 @@ type VoiceRegisterPoolData struct {
 	CallForwardB2buaMailbox     types.String                       `tfsdk:"call_forward_b2bua_mailbox"`
 	CallForwardB2buaNoan        types.String                       `tfsdk:"call_forward_b2bua_noan"`
 	CallForwardB2buaNoanTimeout types.Int64                        `tfsdk:"call_forward_b2bua_noan_timeout"`
-	VoiceClassCodec             types.String                       `tfsdk:"voice_class_codec"`
-	VoiceClassSrtpCrypto        types.String                       `tfsdk:"voice_class_srtp_crypto"`
+	VoiceClassCodec             types.Int64                        `tfsdk:"voice_class_codec"`
+	VoiceClassSrtpCrypto        types.Int64                        `tfsdk:"voice_class_srtp_crypto"`
 	DtmfRelayRtpNte             types.Bool                         `tfsdk:"dtmf_relay_rtp_nte"`
 	DtmfRelaySipKpml            types.Bool                         `tfsdk:"dtmf_relay_sip_kpml"`
 	DtmfRelaySipNotify          types.Bool                         `tfsdk:"dtmf_relay_sip_notify"`
@@ -176,10 +176,10 @@ func (data VoiceRegisterPool) addToBodyXML(ctx context.Context, config VoiceRegi
 		body = helpers.SetFromXPath(body, data.getXPath()+"/call-forward/b2bua/noan-config/timeout", strconv.FormatInt(data.CallForwardB2buaNoanTimeout.ValueInt64(), 10))
 	}
 	if !data.VoiceClassCodec.IsNull() && !data.VoiceClassCodec.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/voice-class/codec", data.VoiceClassCodec.ValueString())
+		body = helpers.SetFromXPath(body, data.getXPath()+"/voice-class/codec", strconv.FormatInt(data.VoiceClassCodec.ValueInt64(), 10))
 	}
 	if !data.VoiceClassSrtpCrypto.IsNull() && !data.VoiceClassSrtpCrypto.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/voice-class/srtp-crypto", data.VoiceClassSrtpCrypto.ValueString())
+		body = helpers.SetFromXPath(body, data.getXPath()+"/voice-class/srtp-crypto", strconv.FormatInt(data.VoiceClassSrtpCrypto.ValueInt64(), 10))
 	}
 	if !data.DtmfRelayRtpNte.IsNull() && !data.DtmfRelayRtpNte.IsUnknown() {
 		if data.DtmfRelayRtpNte.ValueBool() {
@@ -299,14 +299,14 @@ func (data *VoiceRegisterPool) updateFromBodyXML(ctx context.Context, res xmldot
 		data.CallForwardB2buaNoanTimeout = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/voice-class/codec"); value.Exists() && !data.VoiceClassCodec.IsNull() {
-		data.VoiceClassCodec = types.StringValue(value.String())
+		data.VoiceClassCodec = types.Int64Value(value.Int())
 	} else {
-		data.VoiceClassCodec = types.StringNull()
+		data.VoiceClassCodec = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/voice-class/srtp-crypto"); value.Exists() && !data.VoiceClassSrtpCrypto.IsNull() {
-		data.VoiceClassSrtpCrypto = types.StringValue(value.String())
+		data.VoiceClassSrtpCrypto = types.Int64Value(value.Int())
 	} else {
-		data.VoiceClassSrtpCrypto = types.StringNull()
+		data.VoiceClassSrtpCrypto = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dtmf-relay/rtp-nte"); !data.DtmfRelayRtpNte.IsNull() {
 		if value.Exists() {
@@ -472,10 +472,10 @@ func (data *VoiceRegisterPool) fromBodyXML(ctx context.Context, res xmldot.Resul
 		data.CallForwardB2buaNoanTimeout = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/voice-class/codec"); value.Exists() {
-		data.VoiceClassCodec = types.StringValue(value.String())
+		data.VoiceClassCodec = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/voice-class/srtp-crypto"); value.Exists() {
-		data.VoiceClassSrtpCrypto = types.StringValue(value.String())
+		data.VoiceClassSrtpCrypto = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dtmf-relay/rtp-nte"); value.Exists() {
 		data.DtmfRelayRtpNte = types.BoolValue(true)
@@ -573,10 +573,10 @@ func (data *VoiceRegisterPoolData) fromBodyXML(ctx context.Context, res xmldot.R
 		data.CallForwardB2buaNoanTimeout = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/voice-class/codec"); value.Exists() {
-		data.VoiceClassCodec = types.StringValue(value.String())
+		data.VoiceClassCodec = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/voice-class/srtp-crypto"); value.Exists() {
-		data.VoiceClassSrtpCrypto = types.StringValue(value.String())
+		data.VoiceClassSrtpCrypto = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dtmf-relay/rtp-nte"); value.Exists() {
 		data.DtmfRelayRtpNte = types.BoolValue(true)

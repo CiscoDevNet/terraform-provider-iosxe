@@ -46,10 +46,12 @@ attributes:
   # a separate change); excluded here so this resource's test is self-contained.
   - yang_name: voice-class/codec
     tf_name: voice_class_codec
+    type: Int64
     exclude_test: true
     example: 1
   - yang_name: voice-class/srtp-crypto
     tf_name: voice_class_srtp_crypto
+    type: Int64
     exclude_test: true
     example: 1
   # --- DTMF relay ---

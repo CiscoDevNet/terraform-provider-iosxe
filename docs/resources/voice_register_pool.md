@@ -56,8 +56,8 @@ resource "iosxe_voice_register_pool" "example" {
 - `id_network_mask` (String) IPv4 Address Mask
 - `translation_profile_incoming` (String) Translation Profile for incoming call leg
 - `translation_profile_outgoing` (String) Translation Profile for outgoing call leg
-- `voice_class_codec` (String) Set Global Codec parameters
-- `voice_class_srtp_crypto` (String) Associates an SRTP cipher list with this pool
+- `voice_class_codec` (Number) Set Global Codec parameters
+- `voice_class_srtp_crypto` (Number) Associates an SRTP cipher list with this pool
 
 ### Read-Only
 

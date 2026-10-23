@@ -147,11 +147,11 @@ func (r *VoiceRegisterPoolResource) Schema(ctx context.Context, req resource.Sch
 					int64validator.Between(3, 60000),
 				},
 			},
-			"voice_class_codec": schema.StringAttribute{
+			"voice_class_codec": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Set Global Codec parameters").String,
 				Optional:            true,
 			},
-			"voice_class_srtp_crypto": schema.StringAttribute{
+			"voice_class_srtp_crypto": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Associates an SRTP cipher list with this pool").String,
 				Optional:            true,
 			},
