@@ -1,0 +1,34 @@
+---
+name: Wireless AP Filter Priority
+path: /Cisco-IOS-XE-wireless-ap-cfg:ap-cfg-data/ap-rule-priority-cfg-entries
+no_delete_attributes: true
+default_delete_attributes: true
+test_tags: [C9800]
+doc_category: Wireless
+res_description: This resource can manage the AP filter priorities (`ap filter priority <priority> filter-name <name>`), which decide the order in which AP filters are evaluated. Only the priorities present in `priorities` are managed; destroying the resource removes only those priorities and leaves priorities configured outside Terraform untouched. A priority can only reference a filter that has a regular expression (`ap_name_regex`), and such a filter cannot be deleted while a priority references it.
+attributes:
+  - yang_name: ap-rule-priority-cfg-entry
+    tf_name: priorities
+    type: List
+    attributes:
+      - yang_name: priority
+        tf_name: priority
+        type: Int64
+        id: true
+        min_int: 0
+        max_int: 1023
+        example: 1000
+      - yang_name: filter-name
+        tf_name: filter_name
+        type: String
+        example: S3-AF-TEST
+
+test_prerequisites:
+  - path: /Cisco-IOS-XE-wireless-ap-cfg:ap-cfg-data/ap-filter-configs/ap-filter-config[filter-name=S3-AF-TEST]
+    attributes:
+      - name: filter-name
+        value: S3-AF-TEST
+      - name: filter-string
+        value: ^S3-AP-TEST-.*
+      - name: filter-type
+        value: ap-filter-type-tag

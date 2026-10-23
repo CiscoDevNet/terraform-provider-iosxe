@@ -21,6 +21,10 @@ description: |-
 - Add `iosxe_voice_class_sip_hdr_passthrulist` resource and data source for `voice class sip-hdr-passthrulist` pass-through header lists
 - Add `iosxe_voice_class_sip_copylist` resource and data source for `voice class sip-copylist` header copy lists
 - Add `iosxe_voice_class_sip_event_list` resource and data source for `voice class sip-event-list` SIP event lists
+- Add `iosxe_wireless_ap_tag` resource and data source, and the bulk `iosxe_wireless_ap_tags` resource, for C9800 static per-AP tag assignment (`ap <mac>` with `policy-tag`, `site-tag` and `rf-tag`). `iosxe_wireless_ap_tags` is the first bulk resource outside `native`: it manages only the AP MAC addresses in `items` and leaves entries configured outside Terraform untouched
+- Add `iosxe_wireless_ap_filter` resource and data source for C9800 AP filters (`ap filter name` with `ap name-regex` and `tag policy|site|rf`)
+- Add `iosxe_wireless_ap_filter_priority` resource and data source for C9800 AP filter priorities (`ap filter priority <0-1023> filter-name <name>`), backed by `ap-rule-priority-cfg-entries`. Destroy removes only the managed priorities
+- Add `iosxe_wireless_ap_tag_source_priority` resource and data source for the configurable C9800 AP tag source priorities 2 and 3 (`ap tag-source-priority <2-3> source <filter|ap>`). Priorities 0, 1 and 4 are fixed by the device and not exposed. Because the controller rejects any single edit that assigns one source to two priorities, swapping the two sources is applied in two edit-config operations (with a best-effort restore of the previous table if the second one fails), a duplicate priority or source is rejected at plan time, and destroy restores the factory order
 - Add `iosxe_voice_class_tls_profile` resource and data source for `voice class tls-profile` (trustpoint, cipher list, SNI, CN/SAN validation) used by CUBE SIP-TLS
 - Add `iosxe_voice_class_srtp_crypto` resource and data source for `voice class srtp-crypto` cipher-suite preference lists
 - Add `iosxe_voice_class_tls_cipher` resource and data source for `voice class tls-cipher` cipher lists referenced by `voice class tls-profile`

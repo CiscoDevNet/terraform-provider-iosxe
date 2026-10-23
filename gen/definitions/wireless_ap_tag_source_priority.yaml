@@ -1,0 +1,30 @@
+# Manual code: Create, Read, Update and Delete in resource_iosxe_wireless_ap_tag_source_priority.go and Read in
+# data_source_iosxe_wireless_ap_tag_source_priority.go have template markers removed (two-step write, factory restore on
+# destroy, only priorities 2 and 3 exposed). ValidateConfig and the write/restore helpers live in the hand-written
+# wireless_ap_tag_source_priority.go. See: https://github.com/CiscoDevNet/terraform-provider-iosxe/pull/699
+---
+name: Wireless AP Tag Source Priority
+path: /Cisco-IOS-XE-wireless-ap-cfg:ap-cfg-data/tag-source-priority-configs
+no_delete: true
+test_tags: [C9800]
+doc_category: Wireless
+res_description: This resource can manage the configurable AP tag source priorities (`ap tag-source-priority <2-3> source <filter|ap>`), which decide whether AP filters or the AP itself (PnP) take precedence. Priorities 0 (static), 1 (location) and 4 (default) are fixed by the device and cannot be managed. The device rejects any single change that assigns one source to two priorities at once, so swapping the sources of priorities 2 and 3 is applied in two steps (the priority whose source changes is removed first, then both priorities are written). The device needs both priorities to hold a source and each source to be used once, so a priority or a source may appear only once in `priorities` (checked at plan time), and when only one of the two priorities is configured, the other one is written with the remaining source (for example, configuring only 2 = `tag-source-ap-pnp` also writes 3 = `tag-source-filter`). Configure both priorities to make the complete table explicit. If the second step fails, the provider attempts to restore the previous table and reports whether it succeeded. Destroying this resource restores the factory order (2 = `tag-source-filter`, 3 = `tag-source-ap-pnp`).
+attributes:
+  - yang_name: tag-source-priority-config
+    tf_name: priorities
+    type: List
+    allow_import_changes: true
+    attributes:
+      - yang_name: priority
+        tf_name: priority
+        type: Int64
+        id: true
+        min_int: 2
+        max_int: 3
+        example: 2
+      - yang_name: tag-src
+        tf_name: source
+        type: String
+        enum_values: [tag-source-filter, tag-source-ap-pnp]
+        mandatory: true
+        example: tag-source-ap-pnp

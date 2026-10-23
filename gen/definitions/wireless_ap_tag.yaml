@@ -1,0 +1,26 @@
+---
+name: Wireless AP Tag
+path: /Cisco-IOS-XE-wireless-ap-cfg:ap-cfg-data/ap-tags/ap-tag[ap-mac=%s]
+test_tags: [C9800]
+bulk_resource: true
+doc_category: Wireless
+res_description: This resource can manage the static tag assignment of a single access point (`ap <mac>`). The `mac` must be in lowercase colon form (e.g. `00:53:00:03:00:01`), as the device stores and returns it that way. Tags left unset fall back to `default-policy-tag`, `default-site-tag` and `default-rf-tag`; the device does not return a tag that is explicitly set to its default name, so leave such tags unset instead.
+res_bulk_description: This resource can manage the static tag assignment of multiple access points (`ap <mac>`) in a single resource. The map key is a single AP MAC address in lowercase colon form (e.g. `00:53:00:03:00:01`), with no `;` separator, as the device stores and returns it that way; a key with uppercase letters is never matched on read and causes a perpetual diff. Only the MAC addresses present in `items` are managed; entries configured outside Terraform are left untouched. Very large AP counts are subject to the known limitation for lists over 1000 entries ([#619](https://github.com/CiscoDevNet/terraform-provider-iosxe/issues/619)). An import reads at most the first 1000 entries, and processing time grows quickly with the number of entries, so split very large AP inventories across several resources. Tags left unset fall back to `default-policy-tag`, `default-site-tag` and `default-rf-tag`; the device does not return a tag that is explicitly set to its default name, so leave such tags unset instead.
+attributes:
+  - yang_name: ap-mac
+    tf_name: mac
+    type: String
+    id: true
+    example: 00:53:00:03:00:01
+  - yang_name: policy-tag
+    tf_name: policy_tag
+    type: String
+    example: S3-PT-TEST
+  - yang_name: site-tag
+    tf_name: site_tag
+    type: String
+    example: S3-ST-TEST
+  - yang_name: rf-tag
+    tf_name: rf_tag
+    type: String
+    example: S3-RT-TEST
