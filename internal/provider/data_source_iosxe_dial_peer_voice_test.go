@@ -43,12 +43,21 @@ func TestAccDataSourceIosxeDialPeerVoice(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dial_peer_voice.test", "huntstop", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dial_peer_voice.test", "shutdown", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dial_peer_voice.test", "vad", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dial_peer_voice.test", "srtp", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dial_peer_voice.test", "session_protocol", "sipv2"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dial_peer_voice.test", "session_server_group", "10"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dial_peer_voice.test", "voice_class_sip_options_keepalive_profile", "100"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dial_peer_voice.test", "incoming_called_number", "+1.*"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dial_peer_voice.test", "destination_dpg", "100"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dial_peer_voice.test", "voice_class_sip_tenant", "100"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dial_peer_voice.test", "voice_class_sip_profiles", "100"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dial_peer_voice.test", "voice_class_sip_early_offer_forced", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dial_peer_voice.test", "dtmf_relay_rtp_nte", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dial_peer_voice.test", "ip_qos_dscp_signaling", "cs3"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dial_peer_voice.test", "ip_qos_dscp_signaling_enable", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dial_peer_voice.test", "max_conn", "100"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dial_peer_voice.test", "max_conn_exempt_local_media", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dial_peer_voice.test", "answer_address", "+15551234567"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -126,12 +135,21 @@ func testAccDataSourceIosxeDialPeerVoiceConfig() string {
 	config += `	huntstop = false` + "\n"
 	config += `	shutdown = false` + "\n"
 	config += `	vad = true` + "\n"
+	config += `	srtp = true` + "\n"
 	config += `	session_protocol = "sipv2"` + "\n"
 	config += `	session_server_group = 10` + "\n"
 	config += `	voice_class_sip_options_keepalive_profile = 100` + "\n"
+	config += `	incoming_called_number = "+1.*"` + "\n"
 	config += `	destination_dpg = 100` + "\n"
 	config += `	voice_class_sip_tenant = 100` + "\n"
 	config += `	voice_class_sip_profiles = 100` + "\n"
+	config += `	voice_class_sip_early_offer_forced = true` + "\n"
+	config += `	dtmf_relay_rtp_nte = true` + "\n"
+	config += `	ip_qos_dscp_signaling = "cs3"` + "\n"
+	config += `	ip_qos_dscp_signaling_enable = true` + "\n"
+	config += `	max_conn = 100` + "\n"
+	config += `	max_conn_exempt_local_media = true` + "\n"
+	config += `	answer_address = "+15551234567"` + "\n"
 	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, iosxe_yang.PreReq3, iosxe_yang.PreReq4, iosxe_yang.PreReq5, ]` + "\n"
 	config += `}` + "\n"
 

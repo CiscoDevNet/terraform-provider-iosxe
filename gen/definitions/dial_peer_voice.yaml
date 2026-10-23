@@ -31,7 +31,6 @@ attributes:
     example: true
   - yang_name: srtp
     tf_name: srtp
-    exclude_test: true
     example: true
   # --- Session ---
   - yang_name: session/protocol
@@ -68,7 +67,6 @@ attributes:
     example: 100
   - yang_name: incoming/called-number
     tf_name: incoming_called_number
-    exclude_test: true
     example: "+1.*"
   - yang_name: incoming/called/e164-pattern-map
     tf_name: incoming_called_e164_pattern_map
@@ -166,7 +164,6 @@ attributes:
     example: 1
   - yang_name: voice-class/sip/early-offer/forced
     tf_name: voice_class_sip_early_offer_forced
-    exclude_test: true
     example: true
   # --- voice-class codec / stun ---
   - yang_name: voice-class/codec/codectag
@@ -186,7 +183,6 @@ attributes:
   # --- DTMF relay ---
   - yang_name: dtmf-relay/rtp-nte
     tf_name: dtmf_relay_rtp_nte
-    exclude_test: true
     example: true
   - yang_name: dtmf-relay/sip-info
     tf_name: dtmf_relay_sip_info
@@ -203,24 +199,19 @@ attributes:
   # --- IP QoS ---
   - yang_name: ip/qos/dscp-signaling/dscp
     tf_name: ip_qos_dscp_signaling
-    exclude_test: true
     example: cs3
   - yang_name: ip/qos/dscp-signaling/signaling
     tf_name: ip_qos_dscp_signaling_enable
-    exclude_test: true
     example: true
   # --- Call admission / answer / media / Class-of-Restriction ---
   - yang_name: max-conn/range
     tf_name: max_conn
-    exclude_test: true
     example: 100
   - yang_name: max-conn/exempt-local-media
     tf_name: max_conn_exempt_local_media
-    exclude_test: true
     example: true
   - yang_name: answer-address
     tf_name: answer_address
-    exclude_test: true
     example: "+15551234567"
   - yang_name: codec/transparent
     tf_name: codec_transparent
