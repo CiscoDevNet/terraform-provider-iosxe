@@ -709,7 +709,7 @@ func (data *EEM) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/session/cli/username/privilege_set"); value.Exists() && !data.SessionCliUsernamePrivilege.IsNull() {
 		data.SessionCliUsernamePrivilege = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.SessionCliUsernamePrivilege.IsNull() || data.SessionCliUsernamePrivilege.ValueInt64() != 1 {
 		data.SessionCliUsernamePrivilege = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/history/size/events"); value.Exists() && !data.HistorySizeEvents.IsNull() {
@@ -738,7 +738,7 @@ func (data *EEM) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/scheduler/applet/thread/class/number"); value.Exists() && !data.SchedulerAppletThreadClassNumber.IsNull() {
 		data.SchedulerAppletThreadClassNumber = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.SchedulerAppletThreadClassNumber.IsNull() || data.SchedulerAppletThreadClassNumber.ValueInt64() != 5 {
 		data.SchedulerAppletThreadClassNumber = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/detector/routing/bootup-delay"); value.Exists() && !data.DetectorRoutingBootupDelay.IsNull() {

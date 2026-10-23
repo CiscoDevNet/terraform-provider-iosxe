@@ -201,7 +201,7 @@ func (data SpanningTree) addToBodyXML(ctx context.Context, config SpanningTree, 
 func (data *SpanningTree) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:mode"); value.Exists() && !data.Mode.IsNull() {
 		data.Mode = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.Mode.ValueString() != "rapid-pvst" {
 		data.Mode = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:logging"); !data.Logging.IsNull() {

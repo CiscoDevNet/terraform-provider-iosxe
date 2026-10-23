@@ -177,7 +177,7 @@ func (data *VoiceClassDPG) updateFromBodyXML(ctx context.Context, res xmldot.Res
 		}
 		if value := helpers.GetFromXPath(r, "preference"); value.Exists() && !data.DialPeers[i].Preference.IsNull() {
 			data.DialPeers[i].Preference = types.Int64Value(value.Int())
-		} else {
+		} else if value.Exists() || !r.Exists() || data.DialPeers[i].Preference.IsNull() || data.DialPeers[i].Preference.ValueInt64() != 0 {
 			data.DialPeers[i].Preference = types.Int64Null()
 		}
 	}

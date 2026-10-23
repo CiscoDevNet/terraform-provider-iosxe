@@ -390,12 +390,12 @@ func (data *EVPN) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		}
 		if value := helpers.GetFromXPath(r, "evi-base"); value.Exists() && !data.Profiles[i].EviBase.IsNull() {
 			data.Profiles[i].EviBase = types.Int64Value(value.Int())
-		} else {
+		} else if value.Exists() || !r.Exists() || data.Profiles[i].EviBase.IsNull() || data.Profiles[i].EviBase.ValueInt64() != 0 {
 			data.Profiles[i].EviBase = types.Int64Null()
 		}
 		if value := helpers.GetFromXPath(r, "l2vni-base"); value.Exists() && !data.Profiles[i].L2vniBase.IsNull() {
 			data.Profiles[i].L2vniBase = types.Int64Value(value.Int())
-		} else {
+		} else if value.Exists() || !r.Exists() || data.Profiles[i].L2vniBase.IsNull() || data.Profiles[i].L2vniBase.ValueInt64() != 20000 {
 			data.Profiles[i].L2vniBase = types.Int64Null()
 		}
 		if value := helpers.GetFromXPath(r, "re-originate/route-type5"); !data.Profiles[i].ReOriginateRouteType5.IsNull() {

@@ -158,7 +158,7 @@ func (data *EVPNEthernetSegment) updateFromBodyXML(ctx context.Context, res xmld
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/df-election/wait-time"); value.Exists() && !data.DfElectionWaitTime.IsNull() {
 		data.DfElectionWaitTime = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.DfElectionWaitTime.IsNull() || data.DfElectionWaitTime.ValueInt64() != 3 {
 		data.DfElectionWaitTime = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redundancy/all-active"); !data.RedundancyAllActive.IsNull() {

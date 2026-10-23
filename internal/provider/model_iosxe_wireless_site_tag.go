@@ -131,7 +131,7 @@ func (data *WirelessSiteTag) updateFromBodyXML(ctx context.Context, res xmldot.R
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ap-join-profile"); value.Exists() && !data.ApJoinProfile.IsNull() {
 		data.ApJoinProfile = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.ApJoinProfile.ValueString() != "default-ap-profile" {
 		data.ApJoinProfile = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/is-local-site"); !data.LocalSite.IsNull() {
@@ -143,7 +143,7 @@ func (data *WirelessSiteTag) updateFromBodyXML(ctx context.Context, res xmldot.R
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/flex-profile"); value.Exists() && !data.FlexProfile.IsNull() {
 		data.FlexProfile = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.FlexProfile.ValueString() != "default-flex-profile" {
 		data.FlexProfile = types.StringNull()
 	}
 }

@@ -150,7 +150,7 @@ func (data *VLANAccessMap) updateFromBodyXML(ctx context.Context, res xmldot.Res
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/action"); value.Exists() && !data.Action.IsNull() {
 		data.Action = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.Action.ValueString() != "forward" {
 		data.Action = types.StringNull()
 	}
 }

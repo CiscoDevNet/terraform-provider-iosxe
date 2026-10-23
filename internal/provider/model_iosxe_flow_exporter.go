@@ -287,22 +287,22 @@ func (data *FlowExporter) updateFromBodyXML(ctx context.Context, res xmldot.Resu
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/transport/udp"); value.Exists() && !data.TransportUdp.IsNull() {
 		data.TransportUdp = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.TransportUdp.IsNull() || data.TransportUdp.ValueInt64() != 9995 {
 		data.TransportUdp = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ttl"); value.Exists() && !data.Ttl.IsNull() {
 		data.Ttl = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.Ttl.IsNull() || data.Ttl.ValueInt64() != 255 {
 		data.Ttl = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/template/data/timeout"); value.Exists() && !data.TemplateDataTimeout.IsNull() {
 		data.TemplateDataTimeout = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.TemplateDataTimeout.IsNull() || data.TemplateDataTimeout.ValueInt64() != 600 {
 		data.TemplateDataTimeout = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/export-protocol"); value.Exists() && !data.ExportProtocol.IsNull() {
 		data.ExportProtocol = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.ExportProtocol.ValueString() != "netflow-v9" {
 		data.ExportProtocol = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/option/interface-table/timeout"); value.Exists() && !data.OptionInterfaceTableTimeout.IsNull() {

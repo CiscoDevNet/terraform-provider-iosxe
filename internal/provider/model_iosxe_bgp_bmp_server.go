@@ -203,17 +203,17 @@ func (data *BGPBMPServer) updateFromBodyXML(ctx context.Context, res xmldot.Resu
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/failure-retry-delay"); value.Exists() && !data.FailureRetryDelay.IsNull() {
 		data.FailureRetryDelay = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.FailureRetryDelay.IsNull() || data.FailureRetryDelay.ValueInt64() != 600 {
 		data.FailureRetryDelay = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/flapping-delay"); value.Exists() && !data.FlappingDelay.IsNull() {
 		data.FlappingDelay = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.FlappingDelay.IsNull() || data.FlappingDelay.ValueInt64() != 1800 {
 		data.FlappingDelay = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/initial-delay"); value.Exists() && !data.InitialDelay.IsNull() {
 		data.InitialDelay = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.InitialDelay.IsNull() || data.InitialDelay.ValueInt64() != 600 {
 		data.InitialDelay = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/stats-reporting-period"); value.Exists() && !data.StatsReportingPeriod.IsNull() {

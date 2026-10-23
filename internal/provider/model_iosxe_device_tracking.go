@@ -444,7 +444,7 @@ func (data *DeviceTracking) updateFromBodyXML(ctx context.Context, res xmldot.Re
 		}
 		if value := helpers.GetFromXPath(r, "device-role-config"); value.Exists() && !data.Policies[i].DeviceRole.IsNull() {
 			data.Policies[i].DeviceRole = types.StringValue(value.String())
-		} else {
+		} else if value.Exists() || !r.Exists() || data.Policies[i].DeviceRole.ValueString() != "node" {
 			data.Policies[i].DeviceRole = types.StringNull()
 		}
 		if value := helpers.GetFromXPath(r, "device-role/node"); !data.Policies[i].DeviceRoleNodeLegacy.IsNull() {

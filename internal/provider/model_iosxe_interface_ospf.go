@@ -284,17 +284,17 @@ func (data InterfaceOSPF) addToBodyXML(ctx context.Context, config InterfaceOSPF
 func (data *InterfaceOSPF) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/cost"); value.Exists() && !data.Cost.IsNull() {
 		data.Cost = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.Cost.IsNull() || data.Cost.ValueInt64() != 1 {
 		data.Cost = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dead-interval"); value.Exists() && !data.DeadInterval.IsNull() {
 		data.DeadInterval = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.DeadInterval.IsNull() || data.DeadInterval.ValueInt64() != 40 {
 		data.DeadInterval = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/hello-interval"); value.Exists() && !data.HelloInterval.IsNull() {
 		data.HelloInterval = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.HelloInterval.IsNull() || data.HelloInterval.ValueInt64() != 10 {
 		data.HelloInterval = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/key-chain"); value.Exists() && !data.AuthenticationKeyChain.IsNull() {
@@ -365,7 +365,7 @@ func (data *InterfaceOSPF) updateFromBodyXML(ctx context.Context, res xmldot.Res
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/priority"); value.Exists() && !data.Priority.IsNull() {
 		data.Priority = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.Priority.IsNull() || data.Priority.ValueInt64() != 1 {
 		data.Priority = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ttl-security/hops"); value.Exists() && !data.TtlSecurityHops.IsNull() {

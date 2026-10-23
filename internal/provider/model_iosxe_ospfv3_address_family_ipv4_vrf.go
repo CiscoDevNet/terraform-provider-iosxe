@@ -463,7 +463,7 @@ func (data *OSPFv3AddressFamilyIPv4VRF) updateFromBodyXML(ctx context.Context, r
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/distance-ipv4/distance"); value.Exists() && !data.Distance.IsNull() {
 		data.Distance = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.Distance.IsNull() || data.Distance.ValueInt64() != 110 {
 		data.Distance = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/log-adjacency-changes"); !data.LogAdjacencyChanges.IsNull() {

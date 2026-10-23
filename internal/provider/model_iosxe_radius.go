@@ -206,12 +206,12 @@ func (data *Radius) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address/auth-port"); value.Exists() && !data.AuthenticationPort.IsNull() {
 		data.AuthenticationPort = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.AuthenticationPort.IsNull() || data.AuthenticationPort.ValueInt64() != 1812 {
 		data.AuthenticationPort = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address/acct-port"); value.Exists() && !data.AccountingPort.IsNull() {
 		data.AccountingPort = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.AccountingPort.IsNull() || data.AccountingPort.ValueInt64() != 1813 {
 		data.AccountingPort = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timeout"); value.Exists() && !data.Timeout.IsNull() {
