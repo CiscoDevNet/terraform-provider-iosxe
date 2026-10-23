@@ -1,0 +1,33 @@
+---
+name: Voice Class URI
+path: /Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:voice/class/uri/uri[uritag=%v]
+doc_category: Voice
+# CUBE is a router feature; a switch rejects these voice class resources.
+test_tags: [C8000V]
+attributes:
+  - yang_name: uritag
+    tf_name: tag
+    id: true
+    example: "200"
+  - yang_name: type
+    mandatory: true
+    enum_values: [sip, tel]
+    example: sip
+  - yang_name: pattern
+    example: cube.example.com
+  - yang_name: host
+    tf_name: hosts
+    type: StringSet
+    exclude_test: true
+    example: ipv4:10.0.0.1
+  - yang_name: user-id
+    exclude_test: true
+    example: "1234"
+  - yang_name: phone/context
+    tf_name: phone_context
+    exclude_test: true
+    example: cube.example.com
+  - yang_name: phone/number
+    tf_name: phone_number
+    exclude_test: true
+    example: "+15551234567"

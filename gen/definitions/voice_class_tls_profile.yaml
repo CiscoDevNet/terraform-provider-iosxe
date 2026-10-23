@@ -1,0 +1,69 @@
+---
+name: Voice Class TLS Profile
+path: /Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:voice/class/tls-profile[id=%v]
+doc_category: Voice
+# CUBE is a router feature; a switch rejects `voice class tls-profile`.
+test_tags: [C8000V]
+attributes:
+  - yang_name: id
+    tf_name: tag
+    id: true
+    description: Voice class tls-profile tag
+    example: 100
+  - yang_name: description
+    example: CUBE TLS Profile
+  - yang_name: trustpoint
+    example: CUBE-CERT
+  - yang_name: client-vtp
+    exclude_test: true
+    example: CUBE-CERT
+  - yang_name: cn-san/validate/certificate-choice/case-server/server-config
+    xpath: cn-san/validate/server-config
+    tf_name: cn_san_validate_server
+    example: true
+  - yang_name: cn-san/validate/certificate-choice/case-client/client
+    xpath: cn-san/validate/client
+    tf_name: cn_san_validate_client
+    exclude_test: true
+    example: true
+  - yang_name: cn-san/validate/certificate-choice/case-bidirectional/bidirectional
+    xpath: cn-san/validate/bidirectional
+    tf_name: cn_san_validate_bidirectional
+    exclude_test: true
+    example: true
+  - yang_name: cn-san/tag
+    tf_name: cn_san_names
+    type: List
+    attributes:
+      - yang_name: id
+        tf_name: tag
+        id: true
+        example: 1
+      - yang_name: cn-san-name
+        tf_name: name
+        example: cube.example.com
+  - yang_name: cipher/cipher-choice/ecdsa-cipher/ecdsa-cipher
+    xpath: cipher/ecdsa-cipher
+    tf_name: ecdsa_cipher
+    type: Bool
+    type_yang_bool: presence
+    exclude_test: true
+    example: true
+  - yang_name: cipher/cipher-choice/ecdsa-cipher/ecdsa-cipher/curve-size
+    xpath: cipher/ecdsa-cipher/curve-size
+    tf_name: ecdsa_cipher_curve_size
+    exclude_test: true
+    example: 384
+  - yang_name: cipher/cipher-choice/strict-cipher/strict-cipher
+    xpath: cipher/strict-cipher
+    tf_name: strict_cipher
+    example: true
+  - yang_name: cipher/cipher-choice/tls-cipher/cipher-id
+    xpath: cipher/cipher-id
+    tf_name: tls_cipher_id
+    type: Int64
+    exclude_test: true
+    example: 1
+  - yang_name: sni/send
+    tf_name: sni_send
+    example: true
