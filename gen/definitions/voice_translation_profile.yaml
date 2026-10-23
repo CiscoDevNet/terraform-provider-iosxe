@@ -11,9 +11,11 @@ attributes:
     example: TP_INBOUND
   - yang_name: translate/called
     tf_name: translate_called
+    type: Int64
     exclude_test: true
     example: 200
   - yang_name: translate/calling
     tf_name: translate_calling
+    type: Int64
     exclude_test: true
     example: 200

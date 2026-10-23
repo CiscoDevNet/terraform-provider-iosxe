@@ -32,5 +32,5 @@ data "iosxe_voice_translation_profile" "example" {
 ### Read-Only
 
 - `id` (String) The path of the retrieved object.
-- `translate_called` (String) Translation rule for the called-number
-- `translate_calling` (String) Translation rule for the calling-number
+- `translate_called` (Number) Translation rule for the called-number
+- `translate_calling` (Number) Translation rule for the calling-number

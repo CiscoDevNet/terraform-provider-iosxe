@@ -94,11 +94,11 @@ func (r *VoiceTranslationProfileResource) Schema(ctx context.Context, req resour
 					stringplanmodifier.RequiresReplace(),
 				},
 			},
-			"translate_called": schema.StringAttribute{
+			"translate_called": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Translation rule for the called-number").String,
 				Optional:            true,
 			},
-			"translate_calling": schema.StringAttribute{
+			"translate_calling": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Translation rule for the calling-number").String,
 				Optional:            true,
 			},

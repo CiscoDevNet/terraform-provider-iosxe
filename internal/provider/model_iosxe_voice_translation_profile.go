@@ -24,6 +24,7 @@ import (
 	"context"
 	"fmt"
 	"net/url"
+	"strconv"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -40,16 +41,16 @@ type VoiceTranslationProfile struct {
 	Id               types.String `tfsdk:"id"`
 	DeleteMode       types.String `tfsdk:"delete_mode"`
 	Tag              types.String `tfsdk:"tag"`
-	TranslateCalled  types.String `tfsdk:"translate_called"`
-	TranslateCalling types.String `tfsdk:"translate_calling"`
+	TranslateCalled  types.Int64  `tfsdk:"translate_called"`
+	TranslateCalling types.Int64  `tfsdk:"translate_calling"`
 }
 
 type VoiceTranslationProfileData struct {
 	Device           types.String `tfsdk:"device"`
 	Id               types.String `tfsdk:"id"`
 	Tag              types.String `tfsdk:"tag"`
-	TranslateCalled  types.String `tfsdk:"translate_called"`
-	TranslateCalling types.String `tfsdk:"translate_calling"`
+	TranslateCalled  types.Int64  `tfsdk:"translate_called"`
+	TranslateCalling types.Int64  `tfsdk:"translate_calling"`
 }
 
 // End of section. //template:end types
@@ -97,10 +98,10 @@ func (data VoiceTranslationProfile) addToBodyXML(ctx context.Context, config Voi
 		body = helpers.SetFromXPath(body, data.getXPath()+"/id", data.Tag.ValueString())
 	}
 	if !data.TranslateCalled.IsNull() && !data.TranslateCalled.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/translate/called", data.TranslateCalled.ValueString())
+		body = helpers.SetFromXPath(body, data.getXPath()+"/translate/called", strconv.FormatInt(data.TranslateCalled.ValueInt64(), 10))
 	}
 	if !data.TranslateCalling.IsNull() && !data.TranslateCalling.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/translate/calling", data.TranslateCalling.ValueString())
+		body = helpers.SetFromXPath(body, data.getXPath()+"/translate/calling", strconv.FormatInt(data.TranslateCalling.ValueInt64(), 10))
 	}
 	return body
 }
@@ -116,14 +117,14 @@ func (data *VoiceTranslationProfile) updateFromBodyXML(ctx context.Context, res 
 		data.Tag = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/translate/called"); value.Exists() && !data.TranslateCalled.IsNull() {
-		data.TranslateCalled = types.StringValue(value.String())
+		data.TranslateCalled = types.Int64Value(value.Int())
 	} else {
-		data.TranslateCalled = types.StringNull()
+		data.TranslateCalled = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/translate/calling"); value.Exists() && !data.TranslateCalling.IsNull() {
-		data.TranslateCalling = types.StringValue(value.String())
+		data.TranslateCalling = types.Int64Value(value.Int())
 	} else {
-		data.TranslateCalling = types.StringNull()
+		data.TranslateCalling = types.Int64Null()
 	}
 }
 
@@ -133,10 +134,10 @@ func (data *VoiceTranslationProfile) updateFromBodyXML(ctx context.Context, res 
 
 func (data *VoiceTranslationProfile) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/translate/called"); value.Exists() {
-		data.TranslateCalled = types.StringValue(value.String())
+		data.TranslateCalled = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/translate/calling"); value.Exists() {
-		data.TranslateCalling = types.StringValue(value.String())
+		data.TranslateCalling = types.Int64Value(value.Int())
 	}
 }
 
@@ -146,10 +147,10 @@ func (data *VoiceTranslationProfile) fromBodyXML(ctx context.Context, res xmldot
 
 func (data *VoiceTranslationProfileData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/translate/called"); value.Exists() {
-		data.TranslateCalled = types.StringValue(value.String())
+		data.TranslateCalled = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/translate/calling"); value.Exists() {
-		data.TranslateCalling = types.StringValue(value.String())
+		data.TranslateCalling = types.Int64Value(value.Int())
 	}
 }
 

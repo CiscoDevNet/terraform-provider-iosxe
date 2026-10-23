@@ -72,11 +72,11 @@ func (d *VoiceTranslationProfileDataSource) Schema(ctx context.Context, req data
 				MarkdownDescription: "",
 				Required:            true,
 			},
-			"translate_called": schema.StringAttribute{
+			"translate_called": schema.Int64Attribute{
 				MarkdownDescription: "Translation rule for the called-number",
 				Computed:            true,
 			},
-			"translate_calling": schema.StringAttribute{
+			"translate_calling": schema.Int64Attribute{
 				MarkdownDescription: "Translation rule for the calling-number",
 				Computed:            true,
 			},
