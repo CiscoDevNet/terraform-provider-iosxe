@@ -1,0 +1,46 @@
+---
+name: Voice Class Server Group
+path: /Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:voice/class/server-group[id=%v]
+doc_category: Voice
+# CUBE is a router feature; a switch rejects these voice class resources.
+test_tags: [C8000V]
+attributes:
+  - yang_name: id
+    tf_name: tag
+    id: true
+    example: 200
+  - yang_name: description
+    exclude_test: true
+    example: ITSP SBC pool
+  - yang_name: shutdown
+    exclude_test: true
+    example: false
+  - yang_name: hunt-scheme/round-robin
+    tf_name: hunt_scheme_round_robin
+    type: Bool
+    type_yang_bool: empty
+    exclude_test: true
+    example: true
+  - yang_name: ipv4-address/ipv4
+    tf_name: ipv4
+    type: List
+    attributes:
+      - yang_name: address
+        id: true
+        example: 192.0.2.10
+      - yang_name: preference
+        exclude_test: true
+        example: 1
+  - yang_name: ipv4-address/ipv4-addr-port/ipv4
+    tf_name: ipv4_with_port
+    type: List
+    attributes:
+      - yang_name: address
+        id: true
+        example: 192.0.2.20
+      - yang_name: port
+        id: true
+        example: 5061
+      - yang_name: preference
+        exclude_test: true
+        example: 2

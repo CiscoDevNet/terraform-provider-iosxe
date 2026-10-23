@@ -1,0 +1,22 @@
+---
+name: Voice Class Codec
+path: /Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:voice/class/codec[codec-tag=%v]
+doc_category: Voice
+# CUBE is a router feature; a switch rejects these voice class resources.
+test_tags: [C8000V]
+attributes:
+  - yang_name: codec-tag
+    tf_name: tag
+    id: true
+    example: 1
+  - yang_name: codec/preference
+    tf_name: preferences
+    type: List
+    attributes:
+      - yang_name: preference-tag
+        tf_name: preference
+        id: true
+        example: 1
+      - yang_name: codec-type
+        tf_name: codec
+        example: g711ulaw
