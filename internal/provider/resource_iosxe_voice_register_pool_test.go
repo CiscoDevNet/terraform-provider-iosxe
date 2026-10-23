@@ -46,9 +46,19 @@ func TestAccIosxeVoiceRegisterPool(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_register_pool.test", "call_forward_b2bua_mailbox", "1001"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_register_pool.test", "call_forward_b2bua_noan", "1001"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_register_pool.test", "call_forward_b2bua_noan_timeout", "20"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_register_pool.test", "voice_class_srtp_crypto", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_register_pool.test", "dtmf_relay_rtp_nte", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_register_pool.test", "dtmf_relay_sip_kpml", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_register_pool.test", "dtmf_relay_sip_notify", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_register_pool.test", "cor_incoming.0.id", "default"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_register_pool.test", "cor_incoming.0.name", "WxC-DefaultPermissions"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_register_pool.test", "cor_outgoing.0.id", "1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_register_pool.test", "cor_outgoing.0.name", "WxC-DefaultPermissions"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_register_pool.test", "cor_outgoing.0.lowerbound", "1000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_register_pool.test", "cor_outgoing.0.hyphen", "-"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_register_pool.test", "cor_outgoing.0.upperbound", "1999"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_register_pool.test", "translation_profile_incoming", "PSTN-IN"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_register_pool.test", "translation_profile_outgoing", "PSTN-OUT"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -96,6 +106,34 @@ resource "iosxe_yang" "PreReq0" {
 	}
 }
 
+resource "iosxe_yang" "PreReq1" {
+	path = "/Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:dial-peer/cor/list[id=WxC-DefaultPermissions]"
+	attributes = {
+		"id" = "WxC-DefaultPermissions"
+	}
+}
+
+resource "iosxe_yang" "PreReq2" {
+	path = "/Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:voice/class/srtp-crypto[id=1]"
+	attributes = {
+		"id" = "1"
+	}
+}
+
+resource "iosxe_yang" "PreReq3" {
+	path = "/Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:voice/translation-profile[id=PSTN-IN]"
+	attributes = {
+		"id" = "PSTN-IN"
+	}
+}
+
+resource "iosxe_yang" "PreReq4" {
+	path = "/Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:voice/translation-profile[id=PSTN-OUT]"
+	attributes = {
+		"id" = "PSTN-OUT"
+	}
+}
+
 `
 
 // End of section. //template:end testPrerequisites
@@ -105,7 +143,7 @@ resource "iosxe_yang" "PreReq0" {
 func testAccIosxeVoiceRegisterPoolConfig_minimum() string {
 	config := `resource "iosxe_voice_register_pool" "test" {` + "\n"
 	config += `	tag = 1` + "\n"
-	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, iosxe_yang.PreReq3, iosxe_yang.PreReq4, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -124,10 +162,24 @@ func testAccIosxeVoiceRegisterPoolConfig_all() string {
 	config += `	call_forward_b2bua_mailbox = "1001"` + "\n"
 	config += `	call_forward_b2bua_noan = "1001"` + "\n"
 	config += `	call_forward_b2bua_noan_timeout = 20` + "\n"
+	config += `	voice_class_srtp_crypto = 1` + "\n"
 	config += `	dtmf_relay_rtp_nte = true` + "\n"
 	config += `	dtmf_relay_sip_kpml = true` + "\n"
 	config += `	dtmf_relay_sip_notify = true` + "\n"
-	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
+	config += `	cor_incoming = [{` + "\n"
+	config += `		id = "default"` + "\n"
+	config += `		name = "WxC-DefaultPermissions"` + "\n"
+	config += `	}]` + "\n"
+	config += `	cor_outgoing = [{` + "\n"
+	config += `		id = "1"` + "\n"
+	config += `		name = "WxC-DefaultPermissions"` + "\n"
+	config += `		lowerbound = "1000"` + "\n"
+	config += `		hyphen = "-"` + "\n"
+	config += `		upperbound = "1999"` + "\n"
+	config += `	}]` + "\n"
+	config += `	translation_profile_incoming = "PSTN-IN"` + "\n"
+	config += `	translation_profile_outgoing = "PSTN-OUT"` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, iosxe_yang.PreReq3, iosxe_yang.PreReq4, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

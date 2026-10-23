@@ -11,6 +11,22 @@ test_prerequisites:
     attributes:
       - name: max-pool
         value: 10
+  - path: /Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:dial-peer/cor/list[id=WxC-DefaultPermissions]
+    attributes:
+      - name: id
+        value: WxC-DefaultPermissions
+  - path: /Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:voice/class/srtp-crypto[id=1]
+    attributes:
+      - name: id
+        value: 1
+  - path: /Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:voice/translation-profile[id=PSTN-IN]
+    attributes:
+      - name: id
+        value: PSTN-IN
+  - path: /Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:voice/translation-profile[id=PSTN-OUT]
+    attributes:
+      - name: id
+        value: PSTN-OUT
 attributes:
   - yang_name: pool-tag
     tf_name: tag
@@ -52,7 +68,6 @@ attributes:
   - yang_name: voice-class/srtp-crypto
     tf_name: voice_class_srtp_crypto
     type: Int64
-    exclude_test: true
     example: 1
   # --- DTMF relay ---
   - yang_name: dtmf-relay/rtp-nte
@@ -65,13 +80,13 @@ attributes:
     tf_name: dtmf_relay_sip_notify
     example: true
   # --- Class of Restriction (references dial-peer cor lists) ---
-  # `name` is a leafref to a `dial-peer cor list`; full testing needs that list
-  # as a prerequisite, so the cor lists stay excluded from this resource's test.
-  # lowerbound/hyphen/upperbound express a number range (`when id != 'default'`).
+  # `name` is a leafref to a `dial-peer cor list` (test prerequisite).
+  # lowerbound/hyphen/upperbound express a number range (`when id != 'default'`),
+  # so the test uses `default` for incoming and a 1..20 tag with a range for
+  # outgoing. The device only keeps cor entries once the pool has an `id`.
   - yang_name: cor/incoming
     tf_name: cor_incoming
     type: List
-    exclude_test: true
     attributes:
       - yang_name: id
         id: true
@@ -79,19 +94,21 @@ attributes:
       - yang_name: name
         example: WxC-DefaultPermissions
       - yang_name: lowerbound
+        exclude_test: true
         example: "1000"
       - yang_name: hyphen
+        exclude_test: true
         example: "-"
       - yang_name: upperbound
+        exclude_test: true
         example: "1999"
   - yang_name: cor/outgoing
     tf_name: cor_outgoing
     type: List
-    exclude_test: true
     attributes:
       - yang_name: id
         id: true
-        example: default
+        example: "1"
       - yang_name: name
         example: WxC-DefaultPermissions
       - yang_name: lowerbound
@@ -103,9 +120,7 @@ attributes:
   # --- Translation profiles ---
   - yang_name: translation-profile/incoming
     tf_name: translation_profile_incoming
-    exclude_test: true
     example: PSTN-IN
   - yang_name: translation-profile/outgoing
     tf_name: translation_profile_outgoing
-    exclude_test: true
     example: PSTN-OUT
