@@ -43,6 +43,7 @@ func TestAccDataSourceIosxeVoiceRegisterPool(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_voice_register_pool.test", "call_forward_b2bua_mailbox", "1001"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_voice_register_pool.test", "call_forward_b2bua_noan", "1001"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_voice_register_pool.test", "call_forward_b2bua_noan_timeout", "20"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_voice_register_pool.test", "voice_class_codec", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_voice_register_pool.test", "voice_class_srtp_crypto", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_voice_register_pool.test", "dtmf_relay_rtp_nte", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_voice_register_pool.test", "dtmf_relay_sip_kpml", "true"))
@@ -87,20 +88,39 @@ resource "iosxe_yang" "PreReq1" {
 }
 
 resource "iosxe_yang" "PreReq2" {
+	path = "/Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:voice/class/codec[codec-tag=1]"
+	attributes = {
+		"codec-tag" = "1"
+	}
+	lists = [
+		{
+			name = "codec/preference"
+			key = "preference-tag"
+			items = [
+				{
+					"preference-tag" = "1"
+					"codec-type" = "g711ulaw"
+				},
+			]
+		},
+	]
+}
+
+resource "iosxe_yang" "PreReq3" {
 	path = "/Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:voice/class/srtp-crypto[id=1]"
 	attributes = {
 		"id" = "1"
 	}
 }
 
-resource "iosxe_yang" "PreReq3" {
+resource "iosxe_yang" "PreReq4" {
 	path = "/Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:voice/translation-profile[id=PSTN-IN]"
 	attributes = {
 		"id" = "PSTN-IN"
 	}
 }
 
-resource "iosxe_yang" "PreReq4" {
+resource "iosxe_yang" "PreReq5" {
 	path = "/Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:voice/translation-profile[id=PSTN-OUT]"
 	attributes = {
 		"id" = "PSTN-OUT"
@@ -124,6 +144,7 @@ func testAccDataSourceIosxeVoiceRegisterPoolConfig() string {
 	config += `	call_forward_b2bua_mailbox = "1001"` + "\n"
 	config += `	call_forward_b2bua_noan = "1001"` + "\n"
 	config += `	call_forward_b2bua_noan_timeout = 20` + "\n"
+	config += `	voice_class_codec = 1` + "\n"
 	config += `	voice_class_srtp_crypto = 1` + "\n"
 	config += `	dtmf_relay_rtp_nte = true` + "\n"
 	config += `	dtmf_relay_sip_kpml = true` + "\n"
@@ -141,7 +162,7 @@ func testAccDataSourceIosxeVoiceRegisterPoolConfig() string {
 	config += `	}]` + "\n"
 	config += `	translation_profile_incoming = "PSTN-IN"` + "\n"
 	config += `	translation_profile_outgoing = "PSTN-OUT"` + "\n"
-	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, iosxe_yang.PreReq3, iosxe_yang.PreReq4, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, iosxe_yang.PreReq3, iosxe_yang.PreReq4, iosxe_yang.PreReq5, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `

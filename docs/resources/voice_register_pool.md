@@ -22,6 +22,7 @@ resource "iosxe_voice_register_pool" "example" {
   call_forward_b2bua_mailbox      = "1001"
   call_forward_b2bua_noan         = "1001"
   call_forward_b2bua_noan_timeout = 20
+  voice_class_codec               = 1
   voice_class_srtp_crypto         = 1
   dtmf_relay_rtp_nte              = true
   dtmf_relay_sip_kpml             = true
