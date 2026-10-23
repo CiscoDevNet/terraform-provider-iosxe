@@ -51,6 +51,7 @@ func TestAccIosxeVoiceClassTenant(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_class_tenant.test", "random_contact", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_class_tenant.test", "anat", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_class_tenant.test", "override_hostname", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_class_tenant.test", "remote_party_id", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_class_tenant.test", "url_sips", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_class_tenant.test", "rel1xx_disable", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_class_tenant.test", "early_offer_forced", "true"))
@@ -58,8 +59,11 @@ func TestAccIosxeVoiceClassTenant(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_class_tenant.test", "block_183_sdp", "present"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_class_tenant.test", "pass_thru_content_custom_sdp", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_class_tenant.test", "audio_forced", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_class_tenant.test", "tls_profile", "100"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_class_tenant.test", "connection_reuse", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_class_tenant.test", "connection_reuse_via_port", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_class_tenant.test", "sip_server", "ipv4:10.0.0.1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_class_tenant.test", "outbound_proxy", "dns:sip.example.com"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_class_tenant.test", "handle_replaces", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_class_tenant.test", "reason_header_override", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_class_tenant.test", "host_registrar", "true"))
@@ -74,6 +78,17 @@ func TestAccIosxeVoiceClassTenant(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_class_tenant.test", "options_ping_interval", "60"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_class_tenant.test", "pass_thru_headers_unsupp", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_class_tenant.test", "pass_thru_content_unsupp", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_class_tenant.test", "retry_invite", "6"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_class_tenant.test", "retry_register", "6"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_class_tenant.test", "retry_rel1xx", "6"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_class_tenant.test", "retry_response", "6"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_class_tenant.test", "timers_expires", "180000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_class_tenant.test", "timers_connect", "500"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_class_tenant.test", "timers_trying", "500"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_class_tenant.test", "registrar_primary", "ipv4:10.0.0.100"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_class_tenant.test", "registrar_primary_expires", "3600"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_class_tenant.test", "registrar_primary_scheme", "sip"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_class_tenant.test", "registrar_primary_refresh_ratio", "80"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -156,6 +171,7 @@ func testAccIosxeVoiceClassTenantConfig_all() string {
 	config += `	random_contact = true` + "\n"
 	config += `	anat = false` + "\n"
 	config += `	override_hostname = false` + "\n"
+	config += `	remote_party_id = true` + "\n"
 	config += `	url_sips = true` + "\n"
 	config += `	rel1xx_disable = true` + "\n"
 	config += `	early_offer_forced = true` + "\n"
@@ -163,8 +179,11 @@ func testAccIosxeVoiceClassTenantConfig_all() string {
 	config += `	block_183_sdp = "present"` + "\n"
 	config += `	pass_thru_content_custom_sdp = true` + "\n"
 	config += `	audio_forced = true` + "\n"
+	config += `	tls_profile = 100` + "\n"
 	config += `	connection_reuse = true` + "\n"
 	config += `	connection_reuse_via_port = true` + "\n"
+	config += `	sip_server = "ipv4:10.0.0.1"` + "\n"
+	config += `	outbound_proxy = "dns:sip.example.com"` + "\n"
 	config += `	handle_replaces = true` + "\n"
 	config += `	reason_header_override = true` + "\n"
 	config += `	host_registrar = true` + "\n"
@@ -179,6 +198,17 @@ func testAccIosxeVoiceClassTenantConfig_all() string {
 	config += `	options_ping_interval = 60` + "\n"
 	config += `	pass_thru_headers_unsupp = true` + "\n"
 	config += `	pass_thru_content_unsupp = true` + "\n"
+	config += `	retry_invite = 6` + "\n"
+	config += `	retry_register = 6` + "\n"
+	config += `	retry_rel1xx = 6` + "\n"
+	config += `	retry_response = 6` + "\n"
+	config += `	timers_expires = 180000` + "\n"
+	config += `	timers_connect = 500` + "\n"
+	config += `	timers_trying = 500` + "\n"
+	config += `	registrar_primary = "ipv4:10.0.0.100"` + "\n"
+	config += `	registrar_primary_expires = 3600` + "\n"
+	config += `	registrar_primary_scheme = "sip"` + "\n"
+	config += `	registrar_primary_refresh_ratio = 80` + "\n"
 	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config

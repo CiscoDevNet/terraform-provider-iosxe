@@ -89,7 +89,6 @@ attributes:
   - yang_name: override-hostname
     example: false
   - yang_name: remote-party-id
-    exclude_test: true
     example: true
   # --- Request-URI scheme / reliable provisional responses ---
   - yang_name: url/url-type/url-type-sip/sip
@@ -129,7 +128,6 @@ attributes:
     example: 200
   - yang_name: tls-profile
     tf_name: tls_profile
-    exclude_test: true
     example: 100
   - yang_name: sip-profiles/id
     tf_name: sip_profiles
@@ -153,12 +151,10 @@ attributes:
   # --- SIP server / outbound-proxy ---
   - yang_name: sip-server
     tf_name: sip_server
-    exclude_test: true
     example: ipv4:10.0.0.1
   - yang_name: outbound-proxy/outbound-proxy-choice/address-choice/address
     xpath: outbound-proxy/address
     tf_name: outbound_proxy
-    exclude_test: true
     example: dns:sip.example.com
   # --- SIP UA common options ---
   - yang_name: handle-replaces
@@ -220,32 +216,25 @@ attributes:
   # --- Retries ---
   - yang_name: retry/invite
     tf_name: retry_invite
-    exclude_test: true
     example: 6
   - yang_name: retry/register
     tf_name: retry_register
-    exclude_test: true
     example: 6
   - yang_name: retry/rel1xx
     tf_name: retry_rel1xx
-    exclude_test: true
     example: 6
   - yang_name: retry/response
     tf_name: retry_response
-    exclude_test: true
     example: 6
   # --- Timers ---
   - yang_name: timers/expires
     tf_name: timers_expires
-    exclude_test: true
     example: 180000
   - yang_name: timers/connect
     tf_name: timers_connect
-    exclude_test: true
     example: 500
   - yang_name: timers/trying
     tf_name: timers_trying
-    exclude_test: true
     example: 500
   # --- Digest authentication ---
   # Two separate YANG containers: `username-password` (no realm) and
@@ -310,19 +299,15 @@ attributes:
   # --- SIP registrar ---
   - yang_name: registrar/primary-registrar/registrar-config
     tf_name: registrar_primary
-    exclude_test: true
     example: ipv4:10.0.0.100
   - yang_name: registrar/primary-registrar/expires
     tf_name: registrar_primary_expires
-    exclude_test: true
     example: 3600
   - yang_name: registrar/primary-registrar/scheme
     tf_name: registrar_primary_scheme
-    exclude_test: true
     example: sip
   - yang_name: registrar/primary-registrar/refresh-ratio
     tf_name: registrar_primary_refresh_ratio
-    exclude_test: true
     example: 80
   - yang_name: registrar/secondary-registrar/registrar-config
     tf_name: registrar_secondary
