@@ -99,7 +99,7 @@ func (d *WirelessAPTagSourcePriorityDataSource) Configure(_ context.Context, req
 // End of section. //template:end model
 
 // CUSTOMIZED: Template markers removed to expose only the configurable priorities 2 and 3.
-// See wireless_ap_tag_source_priority.go.
+// See wireless_ap_tag_source_priority.go and https://github.com/CiscoDevNet/terraform-provider-iosxe/pull/699
 
 func (d *WirelessAPTagSourcePriorityDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
 	var config WirelessAPTagSourcePriorityData

@@ -63,7 +63,7 @@ func (r *WirelessAPFilterPriorityResource) Metadata(_ context.Context, req resou
 func (r *WirelessAPFilterPriorityResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This resource can manage the AP filter priorities (`ap filter priority <priority> filter-name <name>`), which decide the order in which AP filters are evaluated. Only the priorities present in `priorities` are managed. A priority can only reference a filter that has a regular expression (`ap_name_regex`), and such a filter cannot be deleted while a priority references it.",
+		MarkdownDescription: "This resource can manage the AP filter priorities (`ap filter priority <priority> filter-name <name>`), which decide the order in which AP filters are evaluated. Only the priorities present in `priorities` are managed; destroying the resource removes only those priorities and leaves priorities configured outside Terraform untouched. A priority can only reference a filter that has a regular expression (`ap_name_regex`), and such a filter cannot be deleted while a priority references it.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -309,7 +309,7 @@ func (r *WirelessAPFilterPriorityResource) Delete(ctx context.Context, req resou
 	}
 
 	if device.Managed {
-		deleteMode := "all"
+		deleteMode := "attributes"
 
 		// NETCONF - Serialize write operations
 		locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, true)

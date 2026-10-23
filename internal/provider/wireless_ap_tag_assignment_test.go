@@ -24,6 +24,8 @@ import (
 	"fmt"
 	"os"
 	"reflect"
+	"regexp"
+	"strings"
 	"testing"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
@@ -323,6 +325,174 @@ func TestWirelessAPTagSourcePrioritiesToRemove(t *testing.T) {
 	}
 	if got := tagSourcePrioritiesToRemove(map[int64]string{2: "tag-source-filter"}, swapped); !reflect.DeepEqual(got, []int64{2}) {
 		t.Errorf("partial: got %v", got)
+	}
+}
+
+func TestWirelessAPTagSourcePriorityConfigErrors(t *testing.T) {
+	item := func(p int64, s string) WirelessAPTagSourcePriorityPriorities {
+		return WirelessAPTagSourcePriorityPriorities{Priority: types.Int64Value(p), Source: types.StringValue(s)}
+	}
+	cases := []struct {
+		name  string
+		items []WirelessAPTagSourcePriorityPriorities
+		want  int
+	}{
+		{"empty", nil, 0},
+		{"factory", []WirelessAPTagSourcePriorityPriorities{item(2, "tag-source-filter"), item(3, "tag-source-ap-pnp")}, 0},
+		{"swapped", []WirelessAPTagSourcePriorityPriorities{item(2, "tag-source-ap-pnp"), item(3, "tag-source-filter")}, 0},
+		{"single", []WirelessAPTagSourcePriorityPriorities{item(2, "tag-source-ap-pnp")}, 0},
+		{"duplicate source", []WirelessAPTagSourcePriorityPriorities{item(2, "tag-source-filter"), item(3, "tag-source-filter")}, 1},
+		{"duplicate priority", []WirelessAPTagSourcePriorityPriorities{item(2, "tag-source-filter"), item(2, "tag-source-ap-pnp")}, 1},
+		{"duplicate both", []WirelessAPTagSourcePriorityPriorities{item(2, "tag-source-filter"), item(2, "tag-source-filter")}, 2},
+		{"unknown skipped", []WirelessAPTagSourcePriorityPriorities{
+			{Priority: types.Int64Value(2), Source: types.StringUnknown()},
+			{Priority: types.Int64Unknown(), Source: types.StringUnknown()},
+		}, 0},
+	}
+	for _, c := range cases {
+		if got := tagSourcePriorityConfigErrors(c.items); len(got) != c.want {
+			t.Errorf("%s: got %d errors %v, want %d", c.name, len(got), got, c.want)
+		}
+	}
+}
+
+// TestAccIosxeWirelessAPTagSourcePriorityDuplicate checks that a duplicate source or priority is
+// rejected at plan time, before any edit-config is sent. It needs no device.
+func TestAccIosxeWirelessAPTagSourcePriorityDuplicate(t *testing.T) {
+	if os.Getenv("C9800") == "" {
+		t.Skip("skipping test, set environment variable C9800")
+	}
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config:      testAccIosxeWirelessAPTagSourcePriorityOrderConfig("tag-source-filter", "tag-source-filter"),
+				PlanOnly:    true,
+				ExpectError: regexp.MustCompile(`assigned to more than one priority`),
+			},
+			{
+				Config: `
+resource "iosxe_wireless_ap_tag_source_priority" "test" {
+  priorities = [
+    { priority = 2, source = "tag-source-filter" },
+    { priority = 2, source = "tag-source-ap-pnp" },
+  ]
+}
+`,
+				PlanOnly:    true,
+				ExpectError: regexp.MustCompile(`Priority 2 is configured more than once`),
+			},
+		},
+	})
+}
+
+// TestWirelessAPTagsListKeysOver1000 documents how the bulk import read enumerates more than 1000
+// ap-tag entries. ListXPathKeys counts siblings with xmldot, whose match collection is capped at
+// 1000 results, so only the first 1000 entries are returned. This is the known bulk limitation
+// tracked in https://github.com/CiscoDevNet/terraform-provider-iosxe/issues/619; update the
+// expectation when it is fixed.
+func TestWirelessAPTagsListKeysOver1000(t *testing.T) {
+	const n = 1001
+	var sb strings.Builder
+	sb.WriteString(`<root><data><ap-cfg-data xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-wireless-ap-cfg"><ap-tags>`)
+	for i := 0; i < n; i++ {
+		fmt.Fprintf(&sb, "<ap-tag><ap-mac>00:53:00:%02x:%02x:01</ap-mac><site-tag>S3-ST</site-tag></ap-tag>", i/256, i%256)
+	}
+	sb.WriteString(`</ap-tags></ap-cfg-data></data></root>`)
+	res := xmldot.Get(sb.String(), "root")
+	var data WirelessAPTags
+	keys := helpers.ListXPathKeys(res, "data"+data.getXPath(), "ap-tag", []string{"ap-mac"})
+	if len(keys) != 1000 {
+		t.Fatalf("got %d of %d keys; the 1000-entry cap (issue 619) changed, update this test and the iosxe_wireless_ap_tags description", len(keys), n)
+	}
+}
+
+// testAccIosxeWirelessAPFilterPriorityOOBConfig configures two filters and, through iosxe_yang, a
+// filter priority standing in for one configured outside Terraform. With managed set, the
+// iosxe_wireless_ap_filter_priority resource manages a second priority.
+func testAccIosxeWirelessAPFilterPriorityOOBConfig(managed bool) string {
+	config := `
+resource "iosxe_wireless_ap_filter" "managed" {
+  name          = "S3-AF-PRIO-MANAGED"
+  ap_name_regex = "^S3-AP-PRIO-M-.*"
+  tag_site      = "default-site-tag"
+}
+
+resource "iosxe_wireless_ap_filter" "oob" {
+  name          = "S3-AF-PRIO-OOB"
+  ap_name_regex = "^S3-AP-PRIO-O-.*"
+  tag_site      = "default-site-tag"
+}
+
+resource "iosxe_yang" "oob_priority" {
+  path = "/Cisco-IOS-XE-wireless-ap-cfg:ap-cfg-data/ap-rule-priority-cfg-entries/ap-rule-priority-cfg-entry[priority=1011]"
+  attributes = {
+    priority    = "1011"
+    filter-name = "S3-AF-PRIO-OOB"
+  }
+  depends_on = [iosxe_wireless_ap_filter.oob]
+}
+`
+	if managed {
+		config += `
+resource "iosxe_wireless_ap_filter_priority" "test" {
+  priorities = [{ priority = 1010, filter_name = "S3-AF-PRIO-MANAGED" }]
+  depends_on = [iosxe_wireless_ap_filter.managed, iosxe_yang.oob_priority]
+}
+`
+	}
+	return config
+}
+
+// TestAccIosxeWirelessAPFilterPriorityKeepsUnmanaged checks that destroying
+// iosxe_wireless_ap_filter_priority removes only its own priorities and leaves a priority configured
+// outside Terraform in place.
+func TestAccIosxeWirelessAPFilterPriorityKeepsUnmanaged(t *testing.T) {
+	if os.Getenv("C9800") == "" {
+		t.Skip("skipping test, set environment variable C9800")
+	}
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: testAccIosxeWirelessAPFilterPriorityOOBConfig(true),
+				Check: resource.ComposeTestCheckFunc(
+					testAccCheckWirelessAPFilterPriority(1010, "S3-AF-PRIO-MANAGED"),
+					testAccCheckWirelessAPFilterPriority(1011, "S3-AF-PRIO-OOB"),
+				),
+			},
+			// Destroy only iosxe_wireless_ap_filter_priority.
+			{
+				Config: testAccIosxeWirelessAPFilterPriorityOOBConfig(false),
+				Check: resource.ComposeTestCheckFunc(
+					testAccCheckWirelessAPFilterPriority(1010, ""),
+					testAccCheckWirelessAPFilterPriority(1011, "S3-AF-PRIO-OOB"),
+				),
+			},
+		},
+	})
+}
+
+// testAccCheckWirelessAPFilterPriority checks the filter of an AP filter priority on the device. An
+// empty filter means the priority must not exist.
+func testAccCheckWirelessAPFilterPriority(priority int64, filter string) resource.TestCheckFunc {
+	return func(s *terraform.State) error {
+		r, err := testAccWirelessAPCfgGet(fmt.Sprintf("/Cisco-IOS-XE-wireless-ap-cfg:ap-cfg-data/ap-rule-priority-cfg-entries/ap-rule-priority-cfg-entry[priority=%d]", priority))
+		if err != nil {
+			return err
+		}
+		if filter == "" {
+			if r.Exists() {
+				return fmt.Errorf("AP filter priority %d still exists", priority)
+			}
+			return nil
+		}
+		if got := r.Get("filter-name").String(); got != filter {
+			return fmt.Errorf("AP filter priority %d: expected filter %q, got %q", priority, filter, got)
+		}
+		return nil
 	}
 }
 
