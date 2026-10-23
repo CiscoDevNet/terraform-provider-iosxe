@@ -1,5 +1,26 @@
 ## Unreleased
 
+- Add `iosxe_voice_register_global` resource and data source for `voice register global` (max-dn, max-pool, system message, secure security-policy).
+- Add `iosxe_voice_register_pool` resource and data source for `voice register pool`, covering network device identity, call-forward (B2BUA), DTMF relay, CoR lists, and translation-profile bindings.
+- Add `iosxe_voice_class_tenant` resource and data source for `voice class tenant`, including SIP registrar options (primary/secondary registrar, expires, scheme and `refresh-ratio`), registration credentials, and digest authentication. Password attributes expose the companion encryption-type (`0`/`6`/`7`) so type-6 secrets import and re-apply correctly.
+- Add `iosxe_dial_peer_voice` resource and data source for `dial-peer voice`, covering session protocol/target, codec, destination pattern, VAD, SRTP, and translation-profile bindings.
+- Add `iosxe_voice_translation_rule` resource and data source for `voice translation-rule`.
+- Add `iosxe_voice_translation_profile` resource and data source for `voice translation-profile`.
+- Add `iosxe_voice_class_codec` resource and data source for `voice class codec` codec preference lists
+- Add `iosxe_voice_class_dpg` resource and data source for `voice class dpg` dial-peer groups
+- Add `iosxe_voice_class_server_group` resource and data source for `voice class server-group` SIP server groups
+- Add `iosxe_voice_class_e164_pattern_map` resource and data source for `voice class e164-pattern-map` E.164 pattern maps
+- Add `iosxe_voice_class_uri` resource and data source for `voice class uri` inbound/outbound URI classification
+- Add `iosxe_voice_class_media` resource and data source for `voice class media` media policies
+- Add `iosxe_voice_class_stun_usage` resource and data source for `voice class stun-usage` (ICE / firewall-traversal)
+- Add `iosxe_voice_class_sip_options_keepalive` resource and data source for `voice class sip-options-keepalive` dial-peer monitoring
+- Add `iosxe_voice_class_sip_profiles` resource and data source for `voice class sip-profiles` SIP/SDP header normalization rules (request/response header modify, add, remove, copy)
+- Add `iosxe_voice_class_sip_hdr_passthrulist` resource and data source for `voice class sip-hdr-passthrulist` pass-through header lists
+- Add `iosxe_voice_class_sip_copylist` resource and data source for `voice class sip-copylist` header copy lists
+- Add `iosxe_voice_class_sip_event_list` resource and data source for `voice class sip-event-list` SIP event lists
+- Add `iosxe_voice_class_tls_profile` resource and data source for `voice class tls-profile` (trustpoint, cipher list, SNI, CN/SAN validation) used by CUBE SIP-TLS
+- Add `iosxe_voice_class_srtp_crypto` resource and data source for `voice class srtp-crypto` cipher-suite preference lists
+- Add `iosxe_voice_class_tls_cipher` resource and data source for `voice class tls-cipher` cipher lists referenced by `voice class tls-profile`
 - BREAKING CHANGE: Replace `ip_nhrp_maps.nbma_ipv4` with the nested list `ip_nhrp_maps.nbma_ipv4s` (keyed on `ipv4`, matching `ip_nhrp_nhs.nbma_ipv4s`) in `iosxe_interface_tunnel` resource and data source. In YANG, `map/dest-ipv4/nbma-ipv4` is a list keyed on `nbma-ipv4`; modelling it as a single value meant changing the NBMA address left the old entry on the device (causing perpetual plan drift) and removing it failed with `invalid-value`. `nbma_ipv4s` is required on each `ip_nhrp_maps` entry because IOS-XE rejects a map without an NBMA address. Existing configurations must change `nbma_ipv4 = "X"` to `nbma_ipv4s = [{ ipv4 = "X" }]`
 - Fix `iosxe_bgp_neighbor`, `iosxe_bgp_ipv6_unicast_neighbor`, and the other BGP neighbor resources when the neighbor IPv6 address is not in canonical lowercase form (e.g. `2001:DB8::1`). IOS-XE stores the key in lowercase and NETCONF key matching is case-sensitive, so import failed with "Cannot import non-existent remote object" and a created neighbor was planned for creation again on the next run. The key is now normalized in the resource path, ID, and import
 - Add `pqc_mlkem512`, `pqc_mlkem768`, `pqc_mlkem1024`, and `pqc_optional` attributes to `iosxe_crypto_ikev2_proposal` resource and data source

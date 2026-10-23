@@ -1,0 +1,153 @@
+---
+name: Voice Class SIP Profiles
+path: /Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:voice/class/sip-profiles[id=%v]
+doc_category: Voice
+# CUBE is a router feature; a switch rejects these voice class resources.
+test_tags: [C8000V]
+# NOTE: SIP-profile rules are a very deep, choice-heavy YANG tree
+# (rule -> rule-response-request -> rule-choice -> request/response-case -> ...
+#  -> sip-header -> header-choice -> modify-case -> MODIFY -> pattern/replace).
+# This models the common "request/response sip-header modify" form (what CUBE/Webex/DISA
+# header normalization uses). add / remove / copy and sdp-header / peer-header variants
+# can be added later as additional flattened leaves in the same rule list.
+attributes:
+  - yang_name: id
+    tf_name: tag
+    id: true
+    example: 100
+  - yang_name: description
+    example: Header normalization
+  - yang_name: rule
+    tf_name: rules
+    type: List
+    attributes:
+      - yang_name: id
+        tf_name: rule
+        id: true
+        example: 10
+      # --- request <method> sip-header <name> modify "<match>" "<replace>" ---
+      - yang_name: rule-response-request/rule-choice/request-case/request/sip-requests
+        xpath: rule-response-request/request/sip-requests
+        tf_name: request_method
+        description: SIP request method the rule matches (a method name or `ANY`)
+        enum_values: [ACK, BYE, CANCEL, COMET, INFO, INVITE, NOTIFY, OPTIONS, PRACK, PUBLISH, REFER, REGISTER, REINVITE, SUBSCRIBE, UPDATE, ANY]
+        example: ANY
+      - yang_name: rule-response-request/rule-choice/request-case/request/request-response-choice/sip-header-choice/sip-header/header
+        xpath: rule-response-request/request/sip-header/header
+        tf_name: request_sip_header
+        description: SIP header name the request rule applies to
+        example: Contact
+      - yang_name: rule-response-request/rule-choice/request-case/request/request-response-choice/sip-header-choice/sip-header/header-choice/modify-case/MODIFY/pattern
+        xpath: rule-response-request/request/sip-header/MODIFY/pattern
+        tf_name: request_sip_header_modify_pattern
+        example: "@.*:"
+      - yang_name: rule-response-request/rule-choice/request-case/request/request-response-choice/sip-header-choice/sip-header/header-choice/modify-case/MODIFY/replace-pattern
+        xpath: rule-response-request/request/sip-header/MODIFY/replace-pattern
+        tf_name: request_sip_header_modify_replace
+        example: "@cube.example.com:"
+      # --- response <code> sip-header <name> modify "<match>" "<replace>" ---
+      - yang_name: rule-response-request/rule-choice/response-case/response/sip-responses
+        xpath: rule-response-request/response/sip-responses
+        tf_name: response_code
+        description: SIP response code the rule matches (a code or `ANY`)
+        exclude_test: true
+        example: ANY
+      - yang_name: rule-response-request/rule-choice/response-case/response/response-method-choice/sip-header-case/sip-header/header
+        xpath: rule-response-request/response/sip-header/header
+        tf_name: response_sip_header
+        description: SIP header name the response rule applies to
+        exclude_test: true
+        example: Server
+      - yang_name: rule-response-request/rule-choice/response-case/response/response-method-choice/sip-header-case/sip-header/header-choice/modify-case/MODIFY/pattern
+        xpath: rule-response-request/response/sip-header/MODIFY/pattern
+        tf_name: response_sip_header_modify_pattern
+        exclude_test: true
+        example: "(IOS.*)"
+      - yang_name: rule-response-request/rule-choice/response-case/response/response-method-choice/sip-header-case/sip-header/header-choice/modify-case/MODIFY/replace-pattern
+        xpath: rule-response-request/response/sip-header/MODIFY/replace-pattern
+        tf_name: response_sip_header_modify_replace
+        exclude_test: true
+        example: "CUBE"
+      # --- request sip-header add / remove ---
+      - yang_name: rule-response-request/rule-choice/request-case/request/request-response-choice/sip-header-choice/sip-header/header-choice/add-case/ADD
+        xpath: rule-response-request/request/sip-header/ADD
+        tf_name: request_sip_header_add
+        exclude_test: true
+        example: "Route: <sip:198.51.100.1;lr>"
+      - yang_name: rule-response-request/rule-choice/request-case/request/request-response-choice/sip-header-choice/sip-header/header-choice/remove-case/REMOVE
+        xpath: rule-response-request/request/sip-header/REMOVE
+        tf_name: request_sip_header_remove
+        exclude_test: true
+        example: true
+      # --- request sdp-header modify (Teams/Webex SRTP crypto rewrites) ---
+      - yang_name: rule-response-request/rule-choice/request-case/request/request-response-choice/sdp-header-choice/sdp-header/sdp-header-choice/header/header
+        xpath: rule-response-request/request/sdp-header/header
+        tf_name: request_sdp_header
+        description: SDP header the request rule applies to
+        exclude_test: true
+        example: Audio-Attribute
+      - yang_name: rule-response-request/rule-choice/request-case/request/request-response-choice/sdp-header-choice/sdp-header/header-choice/modify-case/MODIFY/pattern
+        xpath: rule-response-request/request/sdp-header/MODIFY/pattern
+        tf_name: request_sdp_header_modify_pattern
+        exclude_test: true
+        example: "a=crypto:.*"
+      - yang_name: rule-response-request/rule-choice/request-case/request/request-response-choice/sdp-header-choice/sdp-header/header-choice/modify-case/MODIFY/replace-pattern
+        xpath: rule-response-request/request/sdp-header/MODIFY/replace-pattern
+        tf_name: request_sdp_header_modify_replace
+        exclude_test: true
+        example: "a=crypto:1 AEAD_AES_256_GCM"
+      # --- response sdp-header modify ---
+      - yang_name: rule-response-request/rule-choice/response-case/response/response-method-choice/sdp-header-case/sdp-header/sdp-header-choice/header/header
+        xpath: rule-response-request/response/sdp-header/header
+        tf_name: response_sdp_header
+        description: SDP header the response rule applies to
+        exclude_test: true
+        example: Audio-Attribute
+      - yang_name: rule-response-request/rule-choice/response-case/response/response-method-choice/sdp-header-case/sdp-header/header-choice/modify-case/MODIFY/pattern
+        xpath: rule-response-request/response/sdp-header/MODIFY/pattern
+        tf_name: response_sdp_header_modify_pattern
+        exclude_test: true
+        example: "a=crypto:.*"
+      - yang_name: rule-response-request/rule-choice/response-case/response/response-method-choice/sdp-header-case/sdp-header/header-choice/modify-case/MODIFY/replace-pattern
+        xpath: rule-response-request/response/sdp-header/MODIFY/replace-pattern
+        tf_name: response_sdp_header_modify_replace
+        exclude_test: true
+        example: "a=crypto:1 AEAD_AES_256_GCM"
+      # --- request sdp-header add / remove ---
+      - yang_name: rule-response-request/rule-choice/request-case/request/request-response-choice/sdp-header-choice/sdp-header/header-choice/add-case/ADD
+        xpath: rule-response-request/request/sdp-header/ADD
+        tf_name: request_sdp_header_add
+        exclude_test: true
+        example: "a=label:main-audio"
+      - yang_name: rule-response-request/rule-choice/request-case/request/request-response-choice/sdp-header-choice/sdp-header/header-choice/remove-case/REMOVE
+        xpath: rule-response-request/request/sdp-header/REMOVE
+        tf_name: request_sdp_header_remove
+        exclude_test: true
+        example: true
+      # --- request peer-header sip <named-header> copy (e.g. DISA Refer-To) ---
+      - yang_name: rule-response-request/rule-choice/request-case/request/request-response-choice/peer-header-choice/peer-header/peer-header-choice/sip-case/sip/peer-header-sip-choice/header-name-case/header-name-copy/header
+        xpath: rule-response-request/request/peer-header/sip/header-name-copy/header
+        tf_name: request_peer_header_sip
+        exclude_test: true
+        example: Refer-To
+      - yang_name: rule-response-request/rule-choice/request-case/request/request-response-choice/peer-header-choice/peer-header/peer-header-choice/sip-case/sip/peer-header-sip-choice/header-name-case/header-name-copy/COPY/pattern
+        xpath: rule-response-request/request/peer-header/sip/header-name-copy/COPY/pattern
+        tf_name: request_peer_header_sip_copy_pattern
+        exclude_test: true
+        example: "<sip:(.*)>"
+      - yang_name: rule-response-request/rule-choice/request-case/request/request-response-choice/peer-header-choice/peer-header/peer-header-choice/sip-case/sip/peer-header-sip-choice/header-name-case/header-name-copy/COPY/variable
+        xpath: rule-response-request/request/peer-header/sip/header-name-copy/COPY/variable
+        tf_name: request_peer_header_sip_copy_variable
+        exclude_test: true
+        example: u01
+      # --- request peer-header sip SIP-Req-URI copy (DISA) ---
+      - yang_name: rule-response-request/rule-choice/request-case/request/request-response-choice/peer-header-choice/peer-header/peer-header-choice/sip-case/sip/peer-header-sip-choice/SIPReqURI-case/SIP-Req-URI/COPY/pattern
+        xpath: rule-response-request/request/peer-header/sip/SIP-Req-URI/COPY/pattern
+        tf_name: request_peer_header_sip_requri_copy_pattern
+        exclude_test: true
+        example: "(;rfrid=[0-9]+)@"
+      - yang_name: rule-response-request/rule-choice/request-case/request/request-response-choice/peer-header-choice/peer-header/peer-header-choice/sip-case/sip/peer-header-sip-choice/SIPReqURI-case/SIP-Req-URI/COPY/variable
+        xpath: rule-response-request/request/peer-header/sip/SIP-Req-URI/COPY/variable
+        tf_name: request_peer_header_sip_requri_copy_variable
+        exclude_test: true
+        example: u02
