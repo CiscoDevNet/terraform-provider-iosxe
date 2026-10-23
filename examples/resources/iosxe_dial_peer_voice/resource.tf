@@ -2,6 +2,7 @@ resource "iosxe_dial_peer_voice" "example" {
   tag                                       = 100
   type                                      = "voip"
   description                               = "Outbound to CUCM"
+  destination_pattern                       = "+1408......."
   preference                                = 1
   huntstop                                  = false
   shutdown                                  = false

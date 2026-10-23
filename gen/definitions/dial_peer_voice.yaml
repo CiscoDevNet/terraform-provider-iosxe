@@ -17,7 +17,6 @@ attributes:
   - yang_name: description
     example: Outbound to CUCM
   - yang_name: destination-pattern
-    exclude_test: true
     example: "+1408......."
   - yang_name: preference
     example: 1

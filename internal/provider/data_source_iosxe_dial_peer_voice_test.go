@@ -38,6 +38,7 @@ func TestAccDataSourceIosxeDialPeerVoice(t *testing.T) {
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dial_peer_voice.test", "type", "voip"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dial_peer_voice.test", "description", "Outbound to CUCM"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dial_peer_voice.test", "destination_pattern", "+1408......."))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dial_peer_voice.test", "preference", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dial_peer_voice.test", "huntstop", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dial_peer_voice.test", "shutdown", "false"))
@@ -120,6 +121,7 @@ func testAccDataSourceIosxeDialPeerVoiceConfig() string {
 	config += `	tag = 100` + "\n"
 	config += `	type = "voip"` + "\n"
 	config += `	description = "Outbound to CUCM"` + "\n"
+	config += `	destination_pattern = "+1408......."` + "\n"
 	config += `	preference = 1` + "\n"
 	config += `	huntstop = false` + "\n"
 	config += `	shutdown = false` + "\n"
