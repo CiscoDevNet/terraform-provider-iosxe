@@ -100,7 +100,7 @@ resource "iosxe_voice_class_tenant" "example" {
 - `connection_reuse` (Boolean) Use listener port for sending requests over UDP
 - `connection_reuse_via_port` (Boolean) Send responses to port present in Via header
 - `contact_passing` (Boolean) 302 contact needs to be passed through for CFWD
-- `copy_list` (String) Configure list of entities to be sent to peer leg
+- `copy_list` (Number) Configure list of entities to be sent to peer leg
 - `credentials_numbers` (Attributes List) (see [below for nested schema](#nestedatt--credentials_numbers))
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
@@ -159,10 +159,10 @@ resource "iosxe_voice_class_tenant" "example" {
 - `session_transport_tcp` (Boolean) Transport Layer Protocol - TCP
 - `session_transport_tcp_tls` (Boolean) Transport Layer Protocol - TLS over TCP
 - `session_transport_udp` (Boolean) Transport Layer Protocol - UDP
-- `sip_profiles` (String) The sip profiles tag number to be linked as global
+- `sip_profiles` (Number) The sip profiles tag number to be linked as global
 - `sip_profiles_inbound` (Boolean) Set this as inbound SIP Profile
 - `sip_server` (String) Configure a SIP Server Interface
-- `srtp_crypto` (String) Configure the voice class srtp-crypto tag
+- `srtp_crypto` (Number) Configure the voice class srtp-crypto tag
 - `srtp_negotiate_cisco` (Boolean) allow RTP answer to SRTP offer
 - `timers_connect` (Number) Time to wait for confirmation a session connected
   - Range: `100`-`1000`

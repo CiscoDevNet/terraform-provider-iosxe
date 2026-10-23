@@ -196,7 +196,7 @@ func (d *VoiceClassTenantDataSource) Schema(ctx context.Context, req datasource.
 				MarkdownDescription: "Allow only audio/fax, drop all other",
 				Computed:            true,
 			},
-			"srtp_crypto": schema.StringAttribute{
+			"srtp_crypto": schema.Int64Attribute{
 				MarkdownDescription: "Configure the voice class srtp-crypto tag",
 				Computed:            true,
 			},
@@ -204,7 +204,7 @@ func (d *VoiceClassTenantDataSource) Schema(ctx context.Context, req datasource.
 				MarkdownDescription: "Specify the tls-profile tag number",
 				Computed:            true,
 			},
-			"sip_profiles": schema.StringAttribute{
+			"sip_profiles": schema.Int64Attribute{
 				MarkdownDescription: "The sip profiles tag number to be linked as global",
 				Computed:            true,
 			},
@@ -212,7 +212,7 @@ func (d *VoiceClassTenantDataSource) Schema(ctx context.Context, req datasource.
 				MarkdownDescription: "Set this as inbound SIP Profile",
 				Computed:            true,
 			},
-			"copy_list": schema.StringAttribute{
+			"copy_list": schema.Int64Attribute{
 				MarkdownDescription: "Configure list of entities to be sent to peer leg",
 				Computed:            true,
 			},

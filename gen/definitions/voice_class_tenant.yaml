@@ -124,6 +124,7 @@ attributes:
   # --- References to other voice classes ---
   - yang_name: srtp-crypto
     tf_name: srtp_crypto
+    type: Int64
     exclude_test: true
     example: 200
   - yang_name: tls-profile
@@ -132,6 +133,7 @@ attributes:
     example: 100
   - yang_name: sip-profiles/id
     tf_name: sip_profiles
+    type: Int64
     exclude_test: true
     example: 100
   - yang_name: sip-profiles/inbound
@@ -140,6 +142,7 @@ attributes:
     example: true
   - yang_name: copy-list
     tf_name: copy_list
+    type: Int64
     exclude_test: true
     example: 1
   # --- Connection reuse ---

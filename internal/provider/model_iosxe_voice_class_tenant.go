@@ -73,11 +73,11 @@ type VoiceClassTenant struct {
 	Block183Sdp                                  types.String                         `tfsdk:"block_183_sdp"`
 	PassThruContentCustomSdp                     types.Bool                           `tfsdk:"pass_thru_content_custom_sdp"`
 	AudioForced                                  types.Bool                           `tfsdk:"audio_forced"`
-	SrtpCrypto                                   types.String                         `tfsdk:"srtp_crypto"`
+	SrtpCrypto                                   types.Int64                          `tfsdk:"srtp_crypto"`
 	TlsProfile                                   types.Int64                          `tfsdk:"tls_profile"`
-	SipProfiles                                  types.String                         `tfsdk:"sip_profiles"`
+	SipProfiles                                  types.Int64                          `tfsdk:"sip_profiles"`
 	SipProfilesInbound                           types.Bool                           `tfsdk:"sip_profiles_inbound"`
-	CopyList                                     types.String                         `tfsdk:"copy_list"`
+	CopyList                                     types.Int64                          `tfsdk:"copy_list"`
 	ConnectionReuse                              types.Bool                           `tfsdk:"connection_reuse"`
 	ConnectionReuseViaPort                       types.Bool                           `tfsdk:"connection_reuse_via_port"`
 	SipServer                                    types.String                         `tfsdk:"sip_server"`
@@ -172,11 +172,11 @@ type VoiceClassTenantData struct {
 	Block183Sdp                                  types.String                             `tfsdk:"block_183_sdp"`
 	PassThruContentCustomSdp                     types.Bool                               `tfsdk:"pass_thru_content_custom_sdp"`
 	AudioForced                                  types.Bool                               `tfsdk:"audio_forced"`
-	SrtpCrypto                                   types.String                             `tfsdk:"srtp_crypto"`
+	SrtpCrypto                                   types.Int64                              `tfsdk:"srtp_crypto"`
 	TlsProfile                                   types.Int64                              `tfsdk:"tls_profile"`
-	SipProfiles                                  types.String                             `tfsdk:"sip_profiles"`
+	SipProfiles                                  types.Int64                              `tfsdk:"sip_profiles"`
 	SipProfilesInbound                           types.Bool                               `tfsdk:"sip_profiles_inbound"`
-	CopyList                                     types.String                             `tfsdk:"copy_list"`
+	CopyList                                     types.Int64                              `tfsdk:"copy_list"`
 	ConnectionReuse                              types.Bool                               `tfsdk:"connection_reuse"`
 	ConnectionReuseViaPort                       types.Bool                               `tfsdk:"connection_reuse_via_port"`
 	SipServer                                    types.String                             `tfsdk:"sip_server"`
@@ -440,13 +440,13 @@ func (data VoiceClassTenant) addToBodyXML(ctx context.Context, config VoiceClass
 		}
 	}
 	if !data.SrtpCrypto.IsNull() && !data.SrtpCrypto.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/srtp-crypto", data.SrtpCrypto.ValueString())
+		body = helpers.SetFromXPath(body, data.getXPath()+"/srtp-crypto", strconv.FormatInt(data.SrtpCrypto.ValueInt64(), 10))
 	}
 	if !data.TlsProfile.IsNull() && !data.TlsProfile.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/tls-profile", strconv.FormatInt(data.TlsProfile.ValueInt64(), 10))
 	}
 	if !data.SipProfiles.IsNull() && !data.SipProfiles.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/sip-profiles/id", data.SipProfiles.ValueString())
+		body = helpers.SetFromXPath(body, data.getXPath()+"/sip-profiles/id", strconv.FormatInt(data.SipProfiles.ValueInt64(), 10))
 	}
 	if !data.SipProfilesInbound.IsNull() && !data.SipProfilesInbound.IsUnknown() {
 		if data.SipProfilesInbound.ValueBool() {
@@ -456,7 +456,7 @@ func (data VoiceClassTenant) addToBodyXML(ctx context.Context, config VoiceClass
 		}
 	}
 	if !data.CopyList.IsNull() && !data.CopyList.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/copy-list", data.CopyList.ValueString())
+		body = helpers.SetFromXPath(body, data.getXPath()+"/copy-list", strconv.FormatInt(data.CopyList.ValueInt64(), 10))
 	}
 	if !data.ConnectionReuse.IsNull() && !data.ConnectionReuse.IsUnknown() {
 		if data.ConnectionReuse.ValueBool() {
@@ -935,9 +935,9 @@ func (data *VoiceClassTenant) updateFromBodyXML(ctx context.Context, res xmldot.
 		data.AudioForced = types.BoolNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/srtp-crypto"); value.Exists() && !data.SrtpCrypto.IsNull() {
-		data.SrtpCrypto = types.StringValue(value.String())
+		data.SrtpCrypto = types.Int64Value(value.Int())
 	} else {
-		data.SrtpCrypto = types.StringNull()
+		data.SrtpCrypto = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/tls-profile"); value.Exists() && !data.TlsProfile.IsNull() {
 		data.TlsProfile = types.Int64Value(value.Int())
@@ -945,9 +945,9 @@ func (data *VoiceClassTenant) updateFromBodyXML(ctx context.Context, res xmldot.
 		data.TlsProfile = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/sip-profiles/id"); value.Exists() && !data.SipProfiles.IsNull() {
-		data.SipProfiles = types.StringValue(value.String())
+		data.SipProfiles = types.Int64Value(value.Int())
 	} else {
-		data.SipProfiles = types.StringNull()
+		data.SipProfiles = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/sip-profiles/inbound"); !data.SipProfilesInbound.IsNull() {
 		if value.Exists() {
@@ -959,9 +959,9 @@ func (data *VoiceClassTenant) updateFromBodyXML(ctx context.Context, res xmldot.
 		data.SipProfilesInbound = types.BoolNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/copy-list"); value.Exists() && !data.CopyList.IsNull() {
-		data.CopyList = types.StringValue(value.String())
+		data.CopyList = types.Int64Value(value.Int())
 	} else {
-		data.CopyList = types.StringNull()
+		data.CopyList = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/connection-reuse"); !data.ConnectionReuse.IsNull() {
 		if value.Exists() {
@@ -1415,13 +1415,13 @@ func (data *VoiceClassTenant) fromBodyXML(ctx context.Context, res xmldot.Result
 		data.AudioForced = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/srtp-crypto"); value.Exists() {
-		data.SrtpCrypto = types.StringValue(value.String())
+		data.SrtpCrypto = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/tls-profile"); value.Exists() {
 		data.TlsProfile = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/sip-profiles/id"); value.Exists() {
-		data.SipProfiles = types.StringValue(value.String())
+		data.SipProfiles = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/sip-profiles/inbound"); value.Exists() {
 		data.SipProfilesInbound = types.BoolValue(true)
@@ -1429,7 +1429,7 @@ func (data *VoiceClassTenant) fromBodyXML(ctx context.Context, res xmldot.Result
 		data.SipProfilesInbound = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/copy-list"); value.Exists() {
-		data.CopyList = types.StringValue(value.String())
+		data.CopyList = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/connection-reuse"); value.Exists() {
 		data.ConnectionReuse = types.BoolValue(true)
@@ -1756,13 +1756,13 @@ func (data *VoiceClassTenantData) fromBodyXML(ctx context.Context, res xmldot.Re
 		data.AudioForced = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/srtp-crypto"); value.Exists() {
-		data.SrtpCrypto = types.StringValue(value.String())
+		data.SrtpCrypto = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/tls-profile"); value.Exists() {
 		data.TlsProfile = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/sip-profiles/id"); value.Exists() {
-		data.SipProfiles = types.StringValue(value.String())
+		data.SipProfiles = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/sip-profiles/inbound"); value.Exists() {
 		data.SipProfilesInbound = types.BoolValue(true)
@@ -1770,7 +1770,7 @@ func (data *VoiceClassTenantData) fromBodyXML(ctx context.Context, res xmldot.Re
 		data.SipProfilesInbound = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/copy-list"); value.Exists() {
-		data.CopyList = types.StringValue(value.String())
+		data.CopyList = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/connection-reuse"); value.Exists() {
 		data.ConnectionReuse = types.BoolValue(true)
