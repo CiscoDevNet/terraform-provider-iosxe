@@ -150,7 +150,7 @@ func (r *DialPeerVoiceResource) Schema(ctx context.Context, req resource.SchemaR
 					stringvalidator.OneOf("cisco", "multicast", "sipv2"),
 				},
 			},
-			"session_server_group": schema.StringAttribute{
+			"session_server_group": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Configure voice class server-group").String,
 				Optional:            true,
 			},
@@ -173,7 +173,7 @@ func (r *DialPeerVoiceResource) Schema(ctx context.Context, req resource.SchemaR
 				MarkdownDescription: helpers.NewAttributeDescription("Transport Layer Protocol - UDP").String,
 				Optional:            true,
 			},
-			"voice_class_sip_options_keepalive_profile": schema.StringAttribute{
+			"voice_class_sip_options_keepalive_profile": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Consolidate Options Keepalive profile setup").String,
 				Optional:            true,
 			},
@@ -184,7 +184,7 @@ func (r *DialPeerVoiceResource) Schema(ctx context.Context, req resource.SchemaR
 					stringvalidator.RegexMatches(regexp.MustCompile(`(((\[)[(\^)0-9,A-F#*.?+%()-]*(\])|[(\^)0-9,A-F#*.?+%()-]*)*T?($)?)`), ""),
 				},
 			},
-			"incoming_called_e164_pattern_map": schema.StringAttribute{
+			"incoming_called_e164_pattern_map": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Configure voice class to match destination e164-pattern-map").String,
 				Optional:            true,
 			},
@@ -196,11 +196,11 @@ func (r *DialPeerVoiceResource) Schema(ctx context.Context, req resource.SchemaR
 				MarkdownDescription: helpers.NewAttributeDescription("Match incoming Request-URI").String,
 				Optional:            true,
 			},
-			"destination_dpg": schema.StringAttribute{
+			"destination_dpg": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Configure voice class dpg").String,
 				Optional:            true,
 			},
-			"destination_e164_pattern_map": schema.StringAttribute{
+			"destination_e164_pattern_map": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Configure voice class to match destination e164-pattern-map").String,
 				Optional:            true,
 			},
@@ -216,15 +216,15 @@ func (r *DialPeerVoiceResource) Schema(ctx context.Context, req resource.SchemaR
 				MarkdownDescription: helpers.NewAttributeDescription("Translation Profile for outgoing call leg").String,
 				Optional:            true,
 			},
-			"voice_class_sip_tenant": schema.StringAttribute{
+			"voice_class_sip_tenant": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Set SIP-Tenant parameters").String,
 				Optional:            true,
 			},
-			"voice_class_sip_profiles": schema.StringAttribute{
+			"voice_class_sip_profiles": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("The sip profiles tag number to be linked as global").String,
 				Optional:            true,
 			},
-			"voice_class_sip_profiles_inbound": schema.StringAttribute{
+			"voice_class_sip_profiles_inbound": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("The sip profiles tag number to be linked as global").String,
 				Optional:            true,
 			},
@@ -280,7 +280,7 @@ func (r *DialPeerVoiceResource) Schema(ctx context.Context, req resource.SchemaR
 				MarkdownDescription: helpers.NewAttributeDescription("Forcefully Send Early-Offer").String,
 				Optional:            true,
 			},
-			"voice_class_codec": schema.StringAttribute{
+			"voice_class_codec": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
 			},
@@ -288,7 +288,7 @@ func (r *DialPeerVoiceResource) Schema(ctx context.Context, req resource.SchemaR
 				MarkdownDescription: helpers.NewAttributeDescription("Offer All the codec configured in this voice-class codec").String,
 				Optional:            true,
 			},
-			"voice_class_stun_usage": schema.StringAttribute{
+			"voice_class_stun_usage": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Set stun usage tag").String,
 				Optional:            true,
 			},
@@ -338,11 +338,11 @@ func (r *DialPeerVoiceResource) Schema(ctx context.Context, req resource.SchemaR
 				MarkdownDescription: helpers.NewAttributeDescription("Uses the endpoint codec").String,
 				Optional:            true,
 			},
-			"media_class": schema.StringAttribute{
+			"media_class": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Set Dial-peer media class").String,
 				Optional:            true,
 			},
-			"voice_class_media": schema.StringAttribute{
+			"voice_class_media": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Set media parameters for call").String,
 				Optional:            true,
 			},

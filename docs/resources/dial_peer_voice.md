@@ -23,11 +23,11 @@ resource "iosxe_dial_peer_voice" "example" {
   shutdown                                  = false
   vad                                       = true
   session_protocol                          = "sipv2"
-  session_server_group                      = "10"
-  voice_class_sip_options_keepalive_profile = "100"
-  destination_dpg                           = "100"
-  voice_class_sip_tenant                    = "100"
-  voice_class_sip_profiles                  = "100"
+  session_server_group                      = 10
+  voice_class_sip_options_keepalive_profile = 100
+  destination_dpg                           = 100
+  voice_class_sip_tenant                    = 100
+  voice_class_sip_profiles                  = 100
 }
 ```
 
@@ -50,8 +50,8 @@ resource "iosxe_dial_peer_voice" "example" {
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `description` (String) Dial peer specific description
-- `destination_dpg` (String) Configure voice class dpg
-- `destination_e164_pattern_map` (String) Configure voice class to match destination e164-pattern-map
+- `destination_dpg` (Number) Configure voice class dpg
+- `destination_e164_pattern_map` (Number) Configure voice class to match destination e164-pattern-map
 - `destination_pattern` (String) A full E.164 telephone number prefix
 - `destination_uri` (String) Configure voice class to match destination URI
 - `device` (String) A device name from the provider configuration.
@@ -64,7 +64,7 @@ resource "iosxe_dial_peer_voice" "example" {
 - `forward_digits_num` (Number) Number of right-justified dial digits to be forwarded
   - Range: `0`-`32`
 - `huntstop` (Boolean) Stop hunting on Dial-Peers
-- `incoming_called_e164_pattern_map` (String) Configure voice class to match destination e164-pattern-map
+- `incoming_called_e164_pattern_map` (Number) Configure voice class to match destination e164-pattern-map
 - `incoming_called_number` (String) An incoming called number pattern
 - `incoming_uri_request` (String) Match incoming Request-URI
 - `incoming_uri_via` (String) Match incoming topmost Via header
@@ -73,14 +73,14 @@ resource "iosxe_dial_peer_voice" "example" {
 - `max_conn` (Number) Maximum connections, negation sets to unlimited
   - Range: `1`-`2147483647`
 - `max_conn_exempt_local_media` (Boolean) max-conn value will not be updated for local media calls
-- `media_class` (String) Set Dial-peer media class
+- `media_class` (Number) Set Dial-peer media class
 - `port` (String) Voice port associated with this peer
 - `preference` (Number) Configure the preference order of this dial-peer
   - Range: `0`-`10`
 - `prefix` (String) The pattern to be appended before the dial num
 - `session_protocol` (String) The session protocol to be used in getting to this peer
   - Choices: `cisco`, `multicast`, `sipv2`
-- `session_server_group` (String) Configure voice class server-group
+- `session_server_group` (Number) Configure voice class server-group
 - `session_target` (String) WORD A string specifying the session target
 - `session_transport_tcp` (Boolean) Transport Layer Protocol - TCP
 - `session_transport_tcp_tls` (Boolean) Transport Layer Protocol - TLS over TCP
@@ -91,9 +91,9 @@ resource "iosxe_dial_peer_voice" "example" {
 - `translation_profile_outgoing` (String) Translation Profile for outgoing call leg
 - `trunk_groups` (Attributes List) trunk groups associated with this peer (see [below for nested schema](#nestedatt--trunk_groups))
 - `vad` (Boolean) Use vad as necessary option
-- `voice_class_codec` (String)
+- `voice_class_codec` (Number)
 - `voice_class_codec_offer_all` (Boolean) Offer All the codec configured in this voice-class codec
-- `voice_class_media` (String) Set media parameters for call
+- `voice_class_media` (Number) Set media parameters for call
 - `voice_class_sip_bind_control_source_interface` (String) GigabitEthernet IEEE 802.3z
 - `voice_class_sip_bind_control_source_interface_loopback` (Number) Loopback interface
   - Range: `0`-`2147483647`
@@ -107,12 +107,12 @@ resource "iosxe_dial_peer_voice" "example" {
   - Range: `0`-`4294967295`
 - `voice_class_sip_bind_media_source_interface_ten_gigabit_ethernet` (String) Ten Gigabit Ethernet
 - `voice_class_sip_early_offer_forced` (Boolean) Forcefully Send Early-Offer
-- `voice_class_sip_options_keepalive_profile` (String) Consolidate Options Keepalive profile setup
-- `voice_class_sip_profiles` (String) The sip profiles tag number to be linked as global
-- `voice_class_sip_profiles_inbound` (String) The sip profiles tag number to be linked as global
+- `voice_class_sip_options_keepalive_profile` (Number) Consolidate Options Keepalive profile setup
+- `voice_class_sip_profiles` (Number) The sip profiles tag number to be linked as global
+- `voice_class_sip_profiles_inbound` (Number) The sip profiles tag number to be linked as global
 - `voice_class_sip_profiles_inbound_enable` (Boolean) Turn on inbound SIP profiles feature
-- `voice_class_sip_tenant` (String) Set SIP-Tenant parameters
-- `voice_class_stun_usage` (String) Set stun usage tag
+- `voice_class_sip_tenant` (Number) Set SIP-Tenant parameters
+- `voice_class_stun_usage` (Number) Set stun usage tag
 
 ### Read-Only
 

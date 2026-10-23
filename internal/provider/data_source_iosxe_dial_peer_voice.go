@@ -108,7 +108,7 @@ func (d *DialPeerVoiceDataSource) Schema(ctx context.Context, req datasource.Sch
 				MarkdownDescription: "The session protocol to be used in getting to this peer",
 				Computed:            true,
 			},
-			"session_server_group": schema.StringAttribute{
+			"session_server_group": schema.Int64Attribute{
 				MarkdownDescription: "Configure voice class server-group",
 				Computed:            true,
 			},
@@ -128,7 +128,7 @@ func (d *DialPeerVoiceDataSource) Schema(ctx context.Context, req datasource.Sch
 				MarkdownDescription: "Transport Layer Protocol - UDP",
 				Computed:            true,
 			},
-			"voice_class_sip_options_keepalive_profile": schema.StringAttribute{
+			"voice_class_sip_options_keepalive_profile": schema.Int64Attribute{
 				MarkdownDescription: "Consolidate Options Keepalive profile setup",
 				Computed:            true,
 			},
@@ -136,7 +136,7 @@ func (d *DialPeerVoiceDataSource) Schema(ctx context.Context, req datasource.Sch
 				MarkdownDescription: "An incoming called number pattern",
 				Computed:            true,
 			},
-			"incoming_called_e164_pattern_map": schema.StringAttribute{
+			"incoming_called_e164_pattern_map": schema.Int64Attribute{
 				MarkdownDescription: "Configure voice class to match destination e164-pattern-map",
 				Computed:            true,
 			},
@@ -148,11 +148,11 @@ func (d *DialPeerVoiceDataSource) Schema(ctx context.Context, req datasource.Sch
 				MarkdownDescription: "Match incoming Request-URI",
 				Computed:            true,
 			},
-			"destination_dpg": schema.StringAttribute{
+			"destination_dpg": schema.Int64Attribute{
 				MarkdownDescription: "Configure voice class dpg",
 				Computed:            true,
 			},
-			"destination_e164_pattern_map": schema.StringAttribute{
+			"destination_e164_pattern_map": schema.Int64Attribute{
 				MarkdownDescription: "Configure voice class to match destination e164-pattern-map",
 				Computed:            true,
 			},
@@ -168,15 +168,15 @@ func (d *DialPeerVoiceDataSource) Schema(ctx context.Context, req datasource.Sch
 				MarkdownDescription: "Translation Profile for outgoing call leg",
 				Computed:            true,
 			},
-			"voice_class_sip_tenant": schema.StringAttribute{
+			"voice_class_sip_tenant": schema.Int64Attribute{
 				MarkdownDescription: "Set SIP-Tenant parameters",
 				Computed:            true,
 			},
-			"voice_class_sip_profiles": schema.StringAttribute{
+			"voice_class_sip_profiles": schema.Int64Attribute{
 				MarkdownDescription: "The sip profiles tag number to be linked as global",
 				Computed:            true,
 			},
-			"voice_class_sip_profiles_inbound": schema.StringAttribute{
+			"voice_class_sip_profiles_inbound": schema.Int64Attribute{
 				MarkdownDescription: "The sip profiles tag number to be linked as global",
 				Computed:            true,
 			},
@@ -220,7 +220,7 @@ func (d *DialPeerVoiceDataSource) Schema(ctx context.Context, req datasource.Sch
 				MarkdownDescription: "Forcefully Send Early-Offer",
 				Computed:            true,
 			},
-			"voice_class_codec": schema.StringAttribute{
+			"voice_class_codec": schema.Int64Attribute{
 				MarkdownDescription: "",
 				Computed:            true,
 			},
@@ -228,7 +228,7 @@ func (d *DialPeerVoiceDataSource) Schema(ctx context.Context, req datasource.Sch
 				MarkdownDescription: "Offer All the codec configured in this voice-class codec",
 				Computed:            true,
 			},
-			"voice_class_stun_usage": schema.StringAttribute{
+			"voice_class_stun_usage": schema.Int64Attribute{
 				MarkdownDescription: "Set stun usage tag",
 				Computed:            true,
 			},
@@ -272,11 +272,11 @@ func (d *DialPeerVoiceDataSource) Schema(ctx context.Context, req datasource.Sch
 				MarkdownDescription: "Uses the endpoint codec",
 				Computed:            true,
 			},
-			"media_class": schema.StringAttribute{
+			"media_class": schema.Int64Attribute{
 				MarkdownDescription: "Set Dial-peer media class",
 				Computed:            true,
 			},
-			"voice_class_media": schema.StringAttribute{
+			"voice_class_media": schema.Int64Attribute{
 				MarkdownDescription: "Set media parameters for call",
 				Computed:            true,
 			},

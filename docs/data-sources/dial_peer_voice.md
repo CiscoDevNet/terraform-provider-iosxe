@@ -36,8 +36,8 @@ data "iosxe_dial_peer_voice" "example" {
 - `corlist_incoming` (String) set the incoming Class of Restriction lists
 - `corlist_outgoing` (String) set the outgoing Class of Restriction lists
 - `description` (String) Dial peer specific description
-- `destination_dpg` (String) Configure voice class dpg
-- `destination_e164_pattern_map` (String) Configure voice class to match destination e164-pattern-map
+- `destination_dpg` (Number) Configure voice class dpg
+- `destination_e164_pattern_map` (Number) Configure voice class to match destination e164-pattern-map
 - `destination_pattern` (String) A full E.164 telephone number prefix
 - `destination_uri` (String) Configure voice class to match destination URI
 - `direct_inward_dial` (Boolean) Use Called Number as final call destination
@@ -49,7 +49,7 @@ data "iosxe_dial_peer_voice" "example" {
 - `forward_digits_num` (Number) Number of right-justified dial digits to be forwarded
 - `huntstop` (Boolean) Stop hunting on Dial-Peers
 - `id` (String) The path of the retrieved object.
-- `incoming_called_e164_pattern_map` (String) Configure voice class to match destination e164-pattern-map
+- `incoming_called_e164_pattern_map` (Number) Configure voice class to match destination e164-pattern-map
 - `incoming_called_number` (String) An incoming called number pattern
 - `incoming_uri_request` (String) Match incoming Request-URI
 - `incoming_uri_via` (String) Match incoming topmost Via header
@@ -57,12 +57,12 @@ data "iosxe_dial_peer_voice" "example" {
 - `ip_qos_dscp_signaling_enable` (Boolean) Apply DSCP to signaling packets
 - `max_conn` (Number) Maximum connections, negation sets to unlimited
 - `max_conn_exempt_local_media` (Boolean) max-conn value will not be updated for local media calls
-- `media_class` (String) Set Dial-peer media class
+- `media_class` (Number) Set Dial-peer media class
 - `port` (String) Voice port associated with this peer
 - `preference` (Number) Configure the preference order of this dial-peer
 - `prefix` (String) The pattern to be appended before the dial num
 - `session_protocol` (String) The session protocol to be used in getting to this peer
-- `session_server_group` (String) Configure voice class server-group
+- `session_server_group` (Number) Configure voice class server-group
 - `session_target` (String) WORD A string specifying the session target
 - `session_transport_tcp` (Boolean) Transport Layer Protocol - TCP
 - `session_transport_tcp_tls` (Boolean) Transport Layer Protocol - TLS over TCP
@@ -74,9 +74,9 @@ data "iosxe_dial_peer_voice" "example" {
 - `trunk_groups` (Attributes List) trunk groups associated with this peer (see [below for nested schema](#nestedatt--trunk_groups))
 - `type` (String) Dial peer type
 - `vad` (Boolean) Use vad as necessary option
-- `voice_class_codec` (String)
+- `voice_class_codec` (Number)
 - `voice_class_codec_offer_all` (Boolean) Offer All the codec configured in this voice-class codec
-- `voice_class_media` (String) Set media parameters for call
+- `voice_class_media` (Number) Set media parameters for call
 - `voice_class_sip_bind_control_source_interface` (String) GigabitEthernet IEEE 802.3z
 - `voice_class_sip_bind_control_source_interface_loopback` (Number) Loopback interface
 - `voice_class_sip_bind_control_source_interface_port_channel` (Number) Ethernet Channel of interfaces
@@ -86,12 +86,12 @@ data "iosxe_dial_peer_voice" "example" {
 - `voice_class_sip_bind_media_source_interface_port_channel` (Number) Ethernet Channel of interfaces
 - `voice_class_sip_bind_media_source_interface_ten_gigabit_ethernet` (String) Ten Gigabit Ethernet
 - `voice_class_sip_early_offer_forced` (Boolean) Forcefully Send Early-Offer
-- `voice_class_sip_options_keepalive_profile` (String) Consolidate Options Keepalive profile setup
-- `voice_class_sip_profiles` (String) The sip profiles tag number to be linked as global
-- `voice_class_sip_profiles_inbound` (String) The sip profiles tag number to be linked as global
+- `voice_class_sip_options_keepalive_profile` (Number) Consolidate Options Keepalive profile setup
+- `voice_class_sip_profiles` (Number) The sip profiles tag number to be linked as global
+- `voice_class_sip_profiles_inbound` (Number) The sip profiles tag number to be linked as global
 - `voice_class_sip_profiles_inbound_enable` (Boolean) Turn on inbound SIP profiles feature
-- `voice_class_sip_tenant` (String) Set SIP-Tenant parameters
-- `voice_class_stun_usage` (String) Set stun usage tag
+- `voice_class_sip_tenant` (Number) Set SIP-Tenant parameters
+- `voice_class_stun_usage` (Number) Set stun usage tag
 
 <a id="nestedatt--trunk_groups"></a>
 ### Nested Schema for `trunk_groups`

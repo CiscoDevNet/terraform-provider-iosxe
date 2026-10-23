@@ -36,6 +36,7 @@ attributes:
     example: sipv2
   - yang_name: session/server-group
     tf_name: session_server_group
+    type: Int64
     example: 10
   - yang_name: session/target/target-choice/address-choice/address
     xpath: session/target/address
@@ -60,6 +61,7 @@ attributes:
   - yang_name: voice-class/sip/options-keepalive/keepalive-options/profile-config/profile-config
     xpath: voice-class/sip/options-keepalive/profile-config
     tf_name: voice_class_sip_options_keepalive_profile
+    type: Int64
     example: 100
   - yang_name: incoming/called-number
     tf_name: incoming_called_number
@@ -67,6 +69,7 @@ attributes:
     example: "+1.*"
   - yang_name: incoming/called/e164-pattern-map
     tf_name: incoming_called_e164_pattern_map
+    type: Int64
     exclude_test: true
     example: 2222
   - yang_name: incoming/uri/via
@@ -80,9 +83,11 @@ attributes:
   # --- Destination routing ---
   - yang_name: destination/dpg
     tf_name: destination_dpg
+    type: Int64
     example: 100
   - yang_name: destination/e164-pattern-map
     tf_name: destination_e164_pattern_map
+    type: Int64
     exclude_test: true
     example: 1002
   - yang_name: destination/uri
@@ -101,12 +106,15 @@ attributes:
   # --- voice-class sip ---
   - yang_name: voice-class/sip/tenant
     tf_name: voice_class_sip_tenant
+    type: Int64
     example: 100
   - yang_name: voice-class/sip/profiles/outbound-id/id
     tf_name: voice_class_sip_profiles
+    type: Int64
     example: 100
   - yang_name: voice-class/sip/profiles/sip-profiles-inbound/id
     tf_name: voice_class_sip_profiles_inbound
+    type: Int64
     exclude_test: true
     example: 100
   - yang_name: voice-class/sip/profiles/sip-profiles-inbound/inbound
@@ -160,6 +168,7 @@ attributes:
   # --- voice-class codec / stun ---
   - yang_name: voice-class/codec/codectag
     tf_name: voice_class_codec
+    type: Int64
     exclude_test: true
     example: 1
   - yang_name: voice-class/codec/offer-all
@@ -168,6 +177,7 @@ attributes:
     example: true
   - yang_name: voice-class/stun-usage
     tf_name: voice_class_stun_usage
+    type: Int64
     exclude_test: true
     example: 1
   # --- DTMF relay ---
@@ -215,10 +225,12 @@ attributes:
     example: true
   - yang_name: media-class
     tf_name: media_class
+    type: Int64
     exclude_test: true
     example: 1
   - yang_name: voice-class/media
     tf_name: voice_class_media
+    type: Int64
     exclude_test: true
     example: 1
   - yang_name: corlist/incoming

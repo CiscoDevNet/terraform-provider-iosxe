@@ -8,9 +8,9 @@ resource "iosxe_dial_peer_voice" "example" {
   shutdown                                  = false
   vad                                       = true
   session_protocol                          = "sipv2"
-  session_server_group                      = "10"
-  voice_class_sip_options_keepalive_profile = "100"
-  destination_dpg                           = "100"
-  voice_class_sip_tenant                    = "100"
-  voice_class_sip_profiles                  = "100"
+  session_server_group                      = 10
+  voice_class_sip_options_keepalive_profile = 100
+  destination_dpg                           = 100
+  voice_class_sip_tenant                    = 100
+  voice_class_sip_profiles                  = 100
 }

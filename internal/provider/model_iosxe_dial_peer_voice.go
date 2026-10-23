@@ -51,24 +51,24 @@ type DialPeerVoice struct {
 	Vad                                                       types.Bool                 `tfsdk:"vad"`
 	Srtp                                                      types.Bool                 `tfsdk:"srtp"`
 	SessionProtocol                                           types.String               `tfsdk:"session_protocol"`
-	SessionServerGroup                                        types.String               `tfsdk:"session_server_group"`
+	SessionServerGroup                                        types.Int64                `tfsdk:"session_server_group"`
 	SessionTarget                                             types.String               `tfsdk:"session_target"`
 	SessionTransportTcpTls                                    types.Bool                 `tfsdk:"session_transport_tcp_tls"`
 	SessionTransportTcp                                       types.Bool                 `tfsdk:"session_transport_tcp"`
 	SessionTransportUdp                                       types.Bool                 `tfsdk:"session_transport_udp"`
-	VoiceClassSipOptionsKeepaliveProfile                      types.String               `tfsdk:"voice_class_sip_options_keepalive_profile"`
+	VoiceClassSipOptionsKeepaliveProfile                      types.Int64                `tfsdk:"voice_class_sip_options_keepalive_profile"`
 	IncomingCalledNumber                                      types.String               `tfsdk:"incoming_called_number"`
-	IncomingCalledE164PatternMap                              types.String               `tfsdk:"incoming_called_e164_pattern_map"`
+	IncomingCalledE164PatternMap                              types.Int64                `tfsdk:"incoming_called_e164_pattern_map"`
 	IncomingUriVia                                            types.String               `tfsdk:"incoming_uri_via"`
 	IncomingUriRequest                                        types.String               `tfsdk:"incoming_uri_request"`
-	DestinationDpg                                            types.String               `tfsdk:"destination_dpg"`
-	DestinationE164PatternMap                                 types.String               `tfsdk:"destination_e164_pattern_map"`
+	DestinationDpg                                            types.Int64                `tfsdk:"destination_dpg"`
+	DestinationE164PatternMap                                 types.Int64                `tfsdk:"destination_e164_pattern_map"`
 	DestinationUri                                            types.String               `tfsdk:"destination_uri"`
 	TranslationProfileIncoming                                types.String               `tfsdk:"translation_profile_incoming"`
 	TranslationProfileOutgoing                                types.String               `tfsdk:"translation_profile_outgoing"`
-	VoiceClassSipTenant                                       types.String               `tfsdk:"voice_class_sip_tenant"`
-	VoiceClassSipProfiles                                     types.String               `tfsdk:"voice_class_sip_profiles"`
-	VoiceClassSipProfilesInbound                              types.String               `tfsdk:"voice_class_sip_profiles_inbound"`
+	VoiceClassSipTenant                                       types.Int64                `tfsdk:"voice_class_sip_tenant"`
+	VoiceClassSipProfiles                                     types.Int64                `tfsdk:"voice_class_sip_profiles"`
+	VoiceClassSipProfilesInbound                              types.Int64                `tfsdk:"voice_class_sip_profiles_inbound"`
 	VoiceClassSipProfilesInboundEnable                        types.Bool                 `tfsdk:"voice_class_sip_profiles_inbound_enable"`
 	VoiceClassSipBindControlSourceInterface                   types.String               `tfsdk:"voice_class_sip_bind_control_source_interface"`
 	VoiceClassSipBindMediaSourceInterface                     types.String               `tfsdk:"voice_class_sip_bind_media_source_interface"`
@@ -79,9 +79,9 @@ type DialPeerVoice struct {
 	VoiceClassSipBindControlSourceInterfacePortChannel        types.Int64                `tfsdk:"voice_class_sip_bind_control_source_interface_port_channel"`
 	VoiceClassSipBindMediaSourceInterfacePortChannel          types.Int64                `tfsdk:"voice_class_sip_bind_media_source_interface_port_channel"`
 	VoiceClassSipEarlyOfferForced                             types.Bool                 `tfsdk:"voice_class_sip_early_offer_forced"`
-	VoiceClassCodec                                           types.String               `tfsdk:"voice_class_codec"`
+	VoiceClassCodec                                           types.Int64                `tfsdk:"voice_class_codec"`
 	VoiceClassCodecOfferAll                                   types.Bool                 `tfsdk:"voice_class_codec_offer_all"`
-	VoiceClassStunUsage                                       types.String               `tfsdk:"voice_class_stun_usage"`
+	VoiceClassStunUsage                                       types.Int64                `tfsdk:"voice_class_stun_usage"`
 	DtmfRelayRtpNte                                           types.Bool                 `tfsdk:"dtmf_relay_rtp_nte"`
 	DtmfRelaySipInfo                                          types.Bool                 `tfsdk:"dtmf_relay_sip_info"`
 	DtmfRelaySipKpml                                          types.Bool                 `tfsdk:"dtmf_relay_sip_kpml"`
@@ -92,8 +92,8 @@ type DialPeerVoice struct {
 	MaxConnExemptLocalMedia                                   types.Bool                 `tfsdk:"max_conn_exempt_local_media"`
 	AnswerAddress                                             types.String               `tfsdk:"answer_address"`
 	CodecTransparent                                          types.Bool                 `tfsdk:"codec_transparent"`
-	MediaClass                                                types.String               `tfsdk:"media_class"`
-	VoiceClassMedia                                           types.String               `tfsdk:"voice_class_media"`
+	MediaClass                                                types.Int64                `tfsdk:"media_class"`
+	VoiceClassMedia                                           types.Int64                `tfsdk:"voice_class_media"`
 	CorlistIncoming                                           types.String               `tfsdk:"corlist_incoming"`
 	CorlistOutgoing                                           types.String               `tfsdk:"corlist_outgoing"`
 	DirectInwardDial                                          types.Bool                 `tfsdk:"direct_inward_dial"`
@@ -121,24 +121,24 @@ type DialPeerVoiceData struct {
 	Vad                                                       types.Bool                     `tfsdk:"vad"`
 	Srtp                                                      types.Bool                     `tfsdk:"srtp"`
 	SessionProtocol                                           types.String                   `tfsdk:"session_protocol"`
-	SessionServerGroup                                        types.String                   `tfsdk:"session_server_group"`
+	SessionServerGroup                                        types.Int64                    `tfsdk:"session_server_group"`
 	SessionTarget                                             types.String                   `tfsdk:"session_target"`
 	SessionTransportTcpTls                                    types.Bool                     `tfsdk:"session_transport_tcp_tls"`
 	SessionTransportTcp                                       types.Bool                     `tfsdk:"session_transport_tcp"`
 	SessionTransportUdp                                       types.Bool                     `tfsdk:"session_transport_udp"`
-	VoiceClassSipOptionsKeepaliveProfile                      types.String                   `tfsdk:"voice_class_sip_options_keepalive_profile"`
+	VoiceClassSipOptionsKeepaliveProfile                      types.Int64                    `tfsdk:"voice_class_sip_options_keepalive_profile"`
 	IncomingCalledNumber                                      types.String                   `tfsdk:"incoming_called_number"`
-	IncomingCalledE164PatternMap                              types.String                   `tfsdk:"incoming_called_e164_pattern_map"`
+	IncomingCalledE164PatternMap                              types.Int64                    `tfsdk:"incoming_called_e164_pattern_map"`
 	IncomingUriVia                                            types.String                   `tfsdk:"incoming_uri_via"`
 	IncomingUriRequest                                        types.String                   `tfsdk:"incoming_uri_request"`
-	DestinationDpg                                            types.String                   `tfsdk:"destination_dpg"`
-	DestinationE164PatternMap                                 types.String                   `tfsdk:"destination_e164_pattern_map"`
+	DestinationDpg                                            types.Int64                    `tfsdk:"destination_dpg"`
+	DestinationE164PatternMap                                 types.Int64                    `tfsdk:"destination_e164_pattern_map"`
 	DestinationUri                                            types.String                   `tfsdk:"destination_uri"`
 	TranslationProfileIncoming                                types.String                   `tfsdk:"translation_profile_incoming"`
 	TranslationProfileOutgoing                                types.String                   `tfsdk:"translation_profile_outgoing"`
-	VoiceClassSipTenant                                       types.String                   `tfsdk:"voice_class_sip_tenant"`
-	VoiceClassSipProfiles                                     types.String                   `tfsdk:"voice_class_sip_profiles"`
-	VoiceClassSipProfilesInbound                              types.String                   `tfsdk:"voice_class_sip_profiles_inbound"`
+	VoiceClassSipTenant                                       types.Int64                    `tfsdk:"voice_class_sip_tenant"`
+	VoiceClassSipProfiles                                     types.Int64                    `tfsdk:"voice_class_sip_profiles"`
+	VoiceClassSipProfilesInbound                              types.Int64                    `tfsdk:"voice_class_sip_profiles_inbound"`
 	VoiceClassSipProfilesInboundEnable                        types.Bool                     `tfsdk:"voice_class_sip_profiles_inbound_enable"`
 	VoiceClassSipBindControlSourceInterface                   types.String                   `tfsdk:"voice_class_sip_bind_control_source_interface"`
 	VoiceClassSipBindMediaSourceInterface                     types.String                   `tfsdk:"voice_class_sip_bind_media_source_interface"`
@@ -149,9 +149,9 @@ type DialPeerVoiceData struct {
 	VoiceClassSipBindControlSourceInterfacePortChannel        types.Int64                    `tfsdk:"voice_class_sip_bind_control_source_interface_port_channel"`
 	VoiceClassSipBindMediaSourceInterfacePortChannel          types.Int64                    `tfsdk:"voice_class_sip_bind_media_source_interface_port_channel"`
 	VoiceClassSipEarlyOfferForced                             types.Bool                     `tfsdk:"voice_class_sip_early_offer_forced"`
-	VoiceClassCodec                                           types.String                   `tfsdk:"voice_class_codec"`
+	VoiceClassCodec                                           types.Int64                    `tfsdk:"voice_class_codec"`
 	VoiceClassCodecOfferAll                                   types.Bool                     `tfsdk:"voice_class_codec_offer_all"`
-	VoiceClassStunUsage                                       types.String                   `tfsdk:"voice_class_stun_usage"`
+	VoiceClassStunUsage                                       types.Int64                    `tfsdk:"voice_class_stun_usage"`
 	DtmfRelayRtpNte                                           types.Bool                     `tfsdk:"dtmf_relay_rtp_nte"`
 	DtmfRelaySipInfo                                          types.Bool                     `tfsdk:"dtmf_relay_sip_info"`
 	DtmfRelaySipKpml                                          types.Bool                     `tfsdk:"dtmf_relay_sip_kpml"`
@@ -162,8 +162,8 @@ type DialPeerVoiceData struct {
 	MaxConnExemptLocalMedia                                   types.Bool                     `tfsdk:"max_conn_exempt_local_media"`
 	AnswerAddress                                             types.String                   `tfsdk:"answer_address"`
 	CodecTransparent                                          types.Bool                     `tfsdk:"codec_transparent"`
-	MediaClass                                                types.String                   `tfsdk:"media_class"`
-	VoiceClassMedia                                           types.String                   `tfsdk:"voice_class_media"`
+	MediaClass                                                types.Int64                    `tfsdk:"media_class"`
+	VoiceClassMedia                                           types.Int64                    `tfsdk:"voice_class_media"`
 	CorlistIncoming                                           types.String                   `tfsdk:"corlist_incoming"`
 	CorlistOutgoing                                           types.String                   `tfsdk:"corlist_outgoing"`
 	DirectInwardDial                                          types.Bool                     `tfsdk:"direct_inward_dial"`
@@ -254,7 +254,7 @@ func (data DialPeerVoice) addToBodyXML(ctx context.Context, config DialPeerVoice
 		body = helpers.SetFromXPath(body, data.getXPath()+"/session/protocol", data.SessionProtocol.ValueString())
 	}
 	if !data.SessionServerGroup.IsNull() && !data.SessionServerGroup.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/session/server-group", data.SessionServerGroup.ValueString())
+		body = helpers.SetFromXPath(body, data.getXPath()+"/session/server-group", strconv.FormatInt(data.SessionServerGroup.ValueInt64(), 10))
 	}
 	if !data.SessionTarget.IsNull() && !data.SessionTarget.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/session/target/address", data.SessionTarget.ValueString())
@@ -281,13 +281,13 @@ func (data DialPeerVoice) addToBodyXML(ctx context.Context, config DialPeerVoice
 		}
 	}
 	if !data.VoiceClassSipOptionsKeepaliveProfile.IsNull() && !data.VoiceClassSipOptionsKeepaliveProfile.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/voice-class/sip/options-keepalive/profile-config", data.VoiceClassSipOptionsKeepaliveProfile.ValueString())
+		body = helpers.SetFromXPath(body, data.getXPath()+"/voice-class/sip/options-keepalive/profile-config", strconv.FormatInt(data.VoiceClassSipOptionsKeepaliveProfile.ValueInt64(), 10))
 	}
 	if !data.IncomingCalledNumber.IsNull() && !data.IncomingCalledNumber.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/incoming/called-number", data.IncomingCalledNumber.ValueString())
 	}
 	if !data.IncomingCalledE164PatternMap.IsNull() && !data.IncomingCalledE164PatternMap.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/incoming/called/e164-pattern-map", data.IncomingCalledE164PatternMap.ValueString())
+		body = helpers.SetFromXPath(body, data.getXPath()+"/incoming/called/e164-pattern-map", strconv.FormatInt(data.IncomingCalledE164PatternMap.ValueInt64(), 10))
 	}
 	if !data.IncomingUriVia.IsNull() && !data.IncomingUriVia.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/incoming/uri/via", data.IncomingUriVia.ValueString())
@@ -296,10 +296,10 @@ func (data DialPeerVoice) addToBodyXML(ctx context.Context, config DialPeerVoice
 		body = helpers.SetFromXPath(body, data.getXPath()+"/incoming/uri/request", data.IncomingUriRequest.ValueString())
 	}
 	if !data.DestinationDpg.IsNull() && !data.DestinationDpg.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/destination/dpg", data.DestinationDpg.ValueString())
+		body = helpers.SetFromXPath(body, data.getXPath()+"/destination/dpg", strconv.FormatInt(data.DestinationDpg.ValueInt64(), 10))
 	}
 	if !data.DestinationE164PatternMap.IsNull() && !data.DestinationE164PatternMap.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/destination/e164-pattern-map", data.DestinationE164PatternMap.ValueString())
+		body = helpers.SetFromXPath(body, data.getXPath()+"/destination/e164-pattern-map", strconv.FormatInt(data.DestinationE164PatternMap.ValueInt64(), 10))
 	}
 	if !data.DestinationUri.IsNull() && !data.DestinationUri.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/destination/uri", data.DestinationUri.ValueString())
@@ -311,13 +311,13 @@ func (data DialPeerVoice) addToBodyXML(ctx context.Context, config DialPeerVoice
 		body = helpers.SetFromXPath(body, data.getXPath()+"/translation-profile/outgoing", data.TranslationProfileOutgoing.ValueString())
 	}
 	if !data.VoiceClassSipTenant.IsNull() && !data.VoiceClassSipTenant.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/voice-class/sip/tenant", data.VoiceClassSipTenant.ValueString())
+		body = helpers.SetFromXPath(body, data.getXPath()+"/voice-class/sip/tenant", strconv.FormatInt(data.VoiceClassSipTenant.ValueInt64(), 10))
 	}
 	if !data.VoiceClassSipProfiles.IsNull() && !data.VoiceClassSipProfiles.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/voice-class/sip/profiles/outbound-id/id", data.VoiceClassSipProfiles.ValueString())
+		body = helpers.SetFromXPath(body, data.getXPath()+"/voice-class/sip/profiles/outbound-id/id", strconv.FormatInt(data.VoiceClassSipProfiles.ValueInt64(), 10))
 	}
 	if !data.VoiceClassSipProfilesInbound.IsNull() && !data.VoiceClassSipProfilesInbound.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/voice-class/sip/profiles/sip-profiles-inbound/id", data.VoiceClassSipProfilesInbound.ValueString())
+		body = helpers.SetFromXPath(body, data.getXPath()+"/voice-class/sip/profiles/sip-profiles-inbound/id", strconv.FormatInt(data.VoiceClassSipProfilesInbound.ValueInt64(), 10))
 	}
 	if !data.VoiceClassSipProfilesInboundEnable.IsNull() && !data.VoiceClassSipProfilesInboundEnable.IsUnknown() {
 		if data.VoiceClassSipProfilesInboundEnable.ValueBool() {
@@ -358,7 +358,7 @@ func (data DialPeerVoice) addToBodyXML(ctx context.Context, config DialPeerVoice
 		}
 	}
 	if !data.VoiceClassCodec.IsNull() && !data.VoiceClassCodec.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/voice-class/codec/codectag", data.VoiceClassCodec.ValueString())
+		body = helpers.SetFromXPath(body, data.getXPath()+"/voice-class/codec/codectag", strconv.FormatInt(data.VoiceClassCodec.ValueInt64(), 10))
 	}
 	if !data.VoiceClassCodecOfferAll.IsNull() && !data.VoiceClassCodecOfferAll.IsUnknown() {
 		if data.VoiceClassCodecOfferAll.ValueBool() {
@@ -368,7 +368,7 @@ func (data DialPeerVoice) addToBodyXML(ctx context.Context, config DialPeerVoice
 		}
 	}
 	if !data.VoiceClassStunUsage.IsNull() && !data.VoiceClassStunUsage.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/voice-class/stun-usage", data.VoiceClassStunUsage.ValueString())
+		body = helpers.SetFromXPath(body, data.getXPath()+"/voice-class/stun-usage", strconv.FormatInt(data.VoiceClassStunUsage.ValueInt64(), 10))
 	}
 	if !data.DtmfRelayRtpNte.IsNull() && !data.DtmfRelayRtpNte.IsUnknown() {
 		if data.DtmfRelayRtpNte.ValueBool() {
@@ -429,10 +429,10 @@ func (data DialPeerVoice) addToBodyXML(ctx context.Context, config DialPeerVoice
 		}
 	}
 	if !data.MediaClass.IsNull() && !data.MediaClass.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/media-class", data.MediaClass.ValueString())
+		body = helpers.SetFromXPath(body, data.getXPath()+"/media-class", strconv.FormatInt(data.MediaClass.ValueInt64(), 10))
 	}
 	if !data.VoiceClassMedia.IsNull() && !data.VoiceClassMedia.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/voice-class/media", data.VoiceClassMedia.ValueString())
+		body = helpers.SetFromXPath(body, data.getXPath()+"/voice-class/media", strconv.FormatInt(data.VoiceClassMedia.ValueInt64(), 10))
 	}
 	if !data.CorlistIncoming.IsNull() && !data.CorlistIncoming.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/corlist/incoming", data.CorlistIncoming.ValueString())
@@ -544,9 +544,9 @@ func (data *DialPeerVoice) updateFromBodyXML(ctx context.Context, res xmldot.Res
 		data.SessionProtocol = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/session/server-group"); value.Exists() && !data.SessionServerGroup.IsNull() {
-		data.SessionServerGroup = types.StringValue(value.String())
+		data.SessionServerGroup = types.Int64Value(value.Int())
 	} else {
-		data.SessionServerGroup = types.StringNull()
+		data.SessionServerGroup = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/session/target/address"); value.Exists() && !data.SessionTarget.IsNull() {
 		data.SessionTarget = types.StringValue(value.String())
@@ -581,9 +581,9 @@ func (data *DialPeerVoice) updateFromBodyXML(ctx context.Context, res xmldot.Res
 		data.SessionTransportUdp = types.BoolNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/voice-class/sip/options-keepalive/profile-config"); value.Exists() && !data.VoiceClassSipOptionsKeepaliveProfile.IsNull() {
-		data.VoiceClassSipOptionsKeepaliveProfile = types.StringValue(value.String())
+		data.VoiceClassSipOptionsKeepaliveProfile = types.Int64Value(value.Int())
 	} else {
-		data.VoiceClassSipOptionsKeepaliveProfile = types.StringNull()
+		data.VoiceClassSipOptionsKeepaliveProfile = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/incoming/called-number"); value.Exists() && !data.IncomingCalledNumber.IsNull() {
 		data.IncomingCalledNumber = types.StringValue(value.String())
@@ -591,9 +591,9 @@ func (data *DialPeerVoice) updateFromBodyXML(ctx context.Context, res xmldot.Res
 		data.IncomingCalledNumber = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/incoming/called/e164-pattern-map"); value.Exists() && !data.IncomingCalledE164PatternMap.IsNull() {
-		data.IncomingCalledE164PatternMap = types.StringValue(value.String())
+		data.IncomingCalledE164PatternMap = types.Int64Value(value.Int())
 	} else {
-		data.IncomingCalledE164PatternMap = types.StringNull()
+		data.IncomingCalledE164PatternMap = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/incoming/uri/via"); value.Exists() && !data.IncomingUriVia.IsNull() {
 		data.IncomingUriVia = types.StringValue(value.String())
@@ -606,14 +606,14 @@ func (data *DialPeerVoice) updateFromBodyXML(ctx context.Context, res xmldot.Res
 		data.IncomingUriRequest = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/destination/dpg"); value.Exists() && !data.DestinationDpg.IsNull() {
-		data.DestinationDpg = types.StringValue(value.String())
+		data.DestinationDpg = types.Int64Value(value.Int())
 	} else {
-		data.DestinationDpg = types.StringNull()
+		data.DestinationDpg = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/destination/e164-pattern-map"); value.Exists() && !data.DestinationE164PatternMap.IsNull() {
-		data.DestinationE164PatternMap = types.StringValue(value.String())
+		data.DestinationE164PatternMap = types.Int64Value(value.Int())
 	} else {
-		data.DestinationE164PatternMap = types.StringNull()
+		data.DestinationE164PatternMap = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/destination/uri"); value.Exists() && !data.DestinationUri.IsNull() {
 		data.DestinationUri = types.StringValue(value.String())
@@ -631,19 +631,19 @@ func (data *DialPeerVoice) updateFromBodyXML(ctx context.Context, res xmldot.Res
 		data.TranslationProfileOutgoing = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/voice-class/sip/tenant"); value.Exists() && !data.VoiceClassSipTenant.IsNull() {
-		data.VoiceClassSipTenant = types.StringValue(value.String())
+		data.VoiceClassSipTenant = types.Int64Value(value.Int())
 	} else {
-		data.VoiceClassSipTenant = types.StringNull()
+		data.VoiceClassSipTenant = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/voice-class/sip/profiles/outbound-id/id"); value.Exists() && !data.VoiceClassSipProfiles.IsNull() {
-		data.VoiceClassSipProfiles = types.StringValue(value.String())
+		data.VoiceClassSipProfiles = types.Int64Value(value.Int())
 	} else {
-		data.VoiceClassSipProfiles = types.StringNull()
+		data.VoiceClassSipProfiles = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/voice-class/sip/profiles/sip-profiles-inbound/id"); value.Exists() && !data.VoiceClassSipProfilesInbound.IsNull() {
-		data.VoiceClassSipProfilesInbound = types.StringValue(value.String())
+		data.VoiceClassSipProfilesInbound = types.Int64Value(value.Int())
 	} else {
-		data.VoiceClassSipProfilesInbound = types.StringNull()
+		data.VoiceClassSipProfilesInbound = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/voice-class/sip/profiles/sip-profiles-inbound/inbound"); !data.VoiceClassSipProfilesInboundEnable.IsNull() {
 		if value.Exists() {
@@ -704,9 +704,9 @@ func (data *DialPeerVoice) updateFromBodyXML(ctx context.Context, res xmldot.Res
 		data.VoiceClassSipEarlyOfferForced = types.BoolNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/voice-class/codec/codectag"); value.Exists() && !data.VoiceClassCodec.IsNull() {
-		data.VoiceClassCodec = types.StringValue(value.String())
+		data.VoiceClassCodec = types.Int64Value(value.Int())
 	} else {
-		data.VoiceClassCodec = types.StringNull()
+		data.VoiceClassCodec = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/voice-class/codec/offer-all"); !data.VoiceClassCodecOfferAll.IsNull() {
 		if value.Exists() {
@@ -718,9 +718,9 @@ func (data *DialPeerVoice) updateFromBodyXML(ctx context.Context, res xmldot.Res
 		data.VoiceClassCodecOfferAll = types.BoolNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/voice-class/stun-usage"); value.Exists() && !data.VoiceClassStunUsage.IsNull() {
-		data.VoiceClassStunUsage = types.StringValue(value.String())
+		data.VoiceClassStunUsage = types.Int64Value(value.Int())
 	} else {
-		data.VoiceClassStunUsage = types.StringNull()
+		data.VoiceClassStunUsage = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dtmf-relay/rtp-nte"); !data.DtmfRelayRtpNte.IsNull() {
 		if value.Exists() {
@@ -801,14 +801,14 @@ func (data *DialPeerVoice) updateFromBodyXML(ctx context.Context, res xmldot.Res
 		data.CodecTransparent = types.BoolNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/media-class"); value.Exists() && !data.MediaClass.IsNull() {
-		data.MediaClass = types.StringValue(value.String())
+		data.MediaClass = types.Int64Value(value.Int())
 	} else {
-		data.MediaClass = types.StringNull()
+		data.MediaClass = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/voice-class/media"); value.Exists() && !data.VoiceClassMedia.IsNull() {
-		data.VoiceClassMedia = types.StringValue(value.String())
+		data.VoiceClassMedia = types.Int64Value(value.Int())
 	} else {
-		data.VoiceClassMedia = types.StringNull()
+		data.VoiceClassMedia = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/corlist/incoming"); value.Exists() && !data.CorlistIncoming.IsNull() {
 		data.CorlistIncoming = types.StringValue(value.String())
@@ -930,7 +930,7 @@ func (data *DialPeerVoice) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.SessionProtocol = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/session/server-group"); value.Exists() {
-		data.SessionServerGroup = types.StringValue(value.String())
+		data.SessionServerGroup = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/session/target/address"); value.Exists() {
 		data.SessionTarget = types.StringValue(value.String())
@@ -951,13 +951,13 @@ func (data *DialPeerVoice) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.SessionTransportUdp = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/voice-class/sip/options-keepalive/profile-config"); value.Exists() {
-		data.VoiceClassSipOptionsKeepaliveProfile = types.StringValue(value.String())
+		data.VoiceClassSipOptionsKeepaliveProfile = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/incoming/called-number"); value.Exists() {
 		data.IncomingCalledNumber = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/incoming/called/e164-pattern-map"); value.Exists() {
-		data.IncomingCalledE164PatternMap = types.StringValue(value.String())
+		data.IncomingCalledE164PatternMap = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/incoming/uri/via"); value.Exists() {
 		data.IncomingUriVia = types.StringValue(value.String())
@@ -966,10 +966,10 @@ func (data *DialPeerVoice) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.IncomingUriRequest = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/destination/dpg"); value.Exists() {
-		data.DestinationDpg = types.StringValue(value.String())
+		data.DestinationDpg = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/destination/e164-pattern-map"); value.Exists() {
-		data.DestinationE164PatternMap = types.StringValue(value.String())
+		data.DestinationE164PatternMap = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/destination/uri"); value.Exists() {
 		data.DestinationUri = types.StringValue(value.String())
@@ -981,13 +981,13 @@ func (data *DialPeerVoice) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.TranslationProfileOutgoing = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/voice-class/sip/tenant"); value.Exists() {
-		data.VoiceClassSipTenant = types.StringValue(value.String())
+		data.VoiceClassSipTenant = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/voice-class/sip/profiles/outbound-id/id"); value.Exists() {
-		data.VoiceClassSipProfiles = types.StringValue(value.String())
+		data.VoiceClassSipProfiles = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/voice-class/sip/profiles/sip-profiles-inbound/id"); value.Exists() {
-		data.VoiceClassSipProfilesInbound = types.StringValue(value.String())
+		data.VoiceClassSipProfilesInbound = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/voice-class/sip/profiles/sip-profiles-inbound/inbound"); value.Exists() {
 		data.VoiceClassSipProfilesInboundEnable = types.BoolValue(true)
@@ -1024,7 +1024,7 @@ func (data *DialPeerVoice) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.VoiceClassSipEarlyOfferForced = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/voice-class/codec/codectag"); value.Exists() {
-		data.VoiceClassCodec = types.StringValue(value.String())
+		data.VoiceClassCodec = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/voice-class/codec/offer-all"); value.Exists() {
 		data.VoiceClassCodecOfferAll = types.BoolValue(true)
@@ -1032,7 +1032,7 @@ func (data *DialPeerVoice) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.VoiceClassCodecOfferAll = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/voice-class/stun-usage"); value.Exists() {
-		data.VoiceClassStunUsage = types.StringValue(value.String())
+		data.VoiceClassStunUsage = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dtmf-relay/rtp-nte"); value.Exists() {
 		data.DtmfRelayRtpNte = types.BoolValue(true)
@@ -1079,10 +1079,10 @@ func (data *DialPeerVoice) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.CodecTransparent = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/media-class"); value.Exists() {
-		data.MediaClass = types.StringValue(value.String())
+		data.MediaClass = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/voice-class/media"); value.Exists() {
-		data.VoiceClassMedia = types.StringValue(value.String())
+		data.VoiceClassMedia = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/corlist/incoming"); value.Exists() {
 		data.CorlistIncoming = types.StringValue(value.String())
@@ -1166,7 +1166,7 @@ func (data *DialPeerVoiceData) fromBodyXML(ctx context.Context, res xmldot.Resul
 		data.SessionProtocol = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/session/server-group"); value.Exists() {
-		data.SessionServerGroup = types.StringValue(value.String())
+		data.SessionServerGroup = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/session/target/address"); value.Exists() {
 		data.SessionTarget = types.StringValue(value.String())
@@ -1187,13 +1187,13 @@ func (data *DialPeerVoiceData) fromBodyXML(ctx context.Context, res xmldot.Resul
 		data.SessionTransportUdp = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/voice-class/sip/options-keepalive/profile-config"); value.Exists() {
-		data.VoiceClassSipOptionsKeepaliveProfile = types.StringValue(value.String())
+		data.VoiceClassSipOptionsKeepaliveProfile = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/incoming/called-number"); value.Exists() {
 		data.IncomingCalledNumber = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/incoming/called/e164-pattern-map"); value.Exists() {
-		data.IncomingCalledE164PatternMap = types.StringValue(value.String())
+		data.IncomingCalledE164PatternMap = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/incoming/uri/via"); value.Exists() {
 		data.IncomingUriVia = types.StringValue(value.String())
@@ -1202,10 +1202,10 @@ func (data *DialPeerVoiceData) fromBodyXML(ctx context.Context, res xmldot.Resul
 		data.IncomingUriRequest = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/destination/dpg"); value.Exists() {
-		data.DestinationDpg = types.StringValue(value.String())
+		data.DestinationDpg = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/destination/e164-pattern-map"); value.Exists() {
-		data.DestinationE164PatternMap = types.StringValue(value.String())
+		data.DestinationE164PatternMap = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/destination/uri"); value.Exists() {
 		data.DestinationUri = types.StringValue(value.String())
@@ -1217,13 +1217,13 @@ func (data *DialPeerVoiceData) fromBodyXML(ctx context.Context, res xmldot.Resul
 		data.TranslationProfileOutgoing = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/voice-class/sip/tenant"); value.Exists() {
-		data.VoiceClassSipTenant = types.StringValue(value.String())
+		data.VoiceClassSipTenant = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/voice-class/sip/profiles/outbound-id/id"); value.Exists() {
-		data.VoiceClassSipProfiles = types.StringValue(value.String())
+		data.VoiceClassSipProfiles = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/voice-class/sip/profiles/sip-profiles-inbound/id"); value.Exists() {
-		data.VoiceClassSipProfilesInbound = types.StringValue(value.String())
+		data.VoiceClassSipProfilesInbound = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/voice-class/sip/profiles/sip-profiles-inbound/inbound"); value.Exists() {
 		data.VoiceClassSipProfilesInboundEnable = types.BoolValue(true)
@@ -1260,7 +1260,7 @@ func (data *DialPeerVoiceData) fromBodyXML(ctx context.Context, res xmldot.Resul
 		data.VoiceClassSipEarlyOfferForced = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/voice-class/codec/codectag"); value.Exists() {
-		data.VoiceClassCodec = types.StringValue(value.String())
+		data.VoiceClassCodec = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/voice-class/codec/offer-all"); value.Exists() {
 		data.VoiceClassCodecOfferAll = types.BoolValue(true)
@@ -1268,7 +1268,7 @@ func (data *DialPeerVoiceData) fromBodyXML(ctx context.Context, res xmldot.Resul
 		data.VoiceClassCodecOfferAll = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/voice-class/stun-usage"); value.Exists() {
-		data.VoiceClassStunUsage = types.StringValue(value.String())
+		data.VoiceClassStunUsage = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dtmf-relay/rtp-nte"); value.Exists() {
 		data.DtmfRelayRtpNte = types.BoolValue(true)
@@ -1315,10 +1315,10 @@ func (data *DialPeerVoiceData) fromBodyXML(ctx context.Context, res xmldot.Resul
 		data.CodecTransparent = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/media-class"); value.Exists() {
-		data.MediaClass = types.StringValue(value.String())
+		data.MediaClass = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/voice-class/media"); value.Exists() {
-		data.VoiceClassMedia = types.StringValue(value.String())
+		data.VoiceClassMedia = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/corlist/incoming"); value.Exists() {
 		data.CorlistIncoming = types.StringValue(value.String())
