@@ -109,7 +109,7 @@ func (r *WirelessFlexProfileResource) Schema(ctx context.Context, req resource.S
 				MarkdownDescription: helpers.NewAttributeDescription("Whether Fallback Radio Shut feature is enabled for the flexconnect Access Points connected to the Wireless LAN Controller").String,
 				Optional:            true,
 			},
-			"efficient_image_upgrade": schema.BoolAttribute{
+			"predownload": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Efficient AP image upgrade is enabled").String,
 				Optional:            true,
 			},

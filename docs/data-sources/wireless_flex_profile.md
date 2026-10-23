@@ -34,10 +34,10 @@ data "iosxe_wireless_flex_profile" "example" {
 - `acl_policies` (Attributes List) List of Policy ACLs (see [below for nested schema](#nestedatt--acl_policies))
 - `arp_caching` (Boolean) Whether ARP cache feature is enabled for the flexconnect Access Points connected to the Wireless LAN Controller
 - `description` (String) Description for the flex profile
-- `efficient_image_upgrade` (Boolean) Efficient AP image upgrade is enabled
 - `fallback_radio_shut` (Boolean) Whether Fallback Radio Shut feature is enabled for the flexconnect Access Points connected to the Wireless LAN Controller
 - `id` (String) The path of the retrieved object.
 - `native_vlan_id` (Number) Native VLAN ID for the particular AP
+- `predownload` (Boolean) Efficient AP image upgrade is enabled
 - `vlan_names` (Attributes List) Interface name VLAN ID list (see [below for nested schema](#nestedatt--vlan_names))
 
 <a id="nestedatt--acl_policies"></a>

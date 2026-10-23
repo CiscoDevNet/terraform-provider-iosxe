@@ -14,12 +14,12 @@ This resource can manage the Wireless Flex Profile configuration. The device's b
 
 ```terraform
 resource "iosxe_wireless_flex_profile" "example" {
-  name                    = "S2-BRANCH-FLEX"
-  description             = "Branch FlexConnect profile"
-  native_vlan_id          = 10
-  arp_caching             = false
-  fallback_radio_shut     = true
-  efficient_image_upgrade = false
+  name                = "S2-BRANCH-FLEX"
+  description         = "Branch FlexConnect profile"
+  native_vlan_id      = 10
+  arp_caching         = false
+  fallback_radio_shut = true
+  predownload         = false
   vlan_names = [
     {
       name    = "data"
@@ -47,10 +47,10 @@ resource "iosxe_wireless_flex_profile" "example" {
 - `arp_caching` (Boolean) Whether ARP cache feature is enabled for the flexconnect Access Points connected to the Wireless LAN Controller
 - `description` (String) Description for the flex profile
 - `device` (String) A device name from the provider configuration.
-- `efficient_image_upgrade` (Boolean) Efficient AP image upgrade is enabled
 - `fallback_radio_shut` (Boolean) Whether Fallback Radio Shut feature is enabled for the flexconnect Access Points connected to the Wireless LAN Controller
 - `native_vlan_id` (Number) Native VLAN ID for the particular AP
   - Range: `1`-`4094`
+- `predownload` (Boolean) Efficient AP image upgrade is enabled
 - `vlan_names` (Attributes List) Interface name VLAN ID list (see [below for nested schema](#nestedatt--vlan_names))
 
 ### Read-Only

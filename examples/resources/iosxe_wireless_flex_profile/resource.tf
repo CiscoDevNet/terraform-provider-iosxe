@@ -1,10 +1,10 @@
 resource "iosxe_wireless_flex_profile" "example" {
-  name                    = "S2-BRANCH-FLEX"
-  description             = "Branch FlexConnect profile"
-  native_vlan_id          = 10
-  arp_caching             = false
-  fallback_radio_shut     = true
-  efficient_image_upgrade = false
+  name                = "S2-BRANCH-FLEX"
+  description         = "Branch FlexConnect profile"
+  native_vlan_id      = 10
+  arp_caching         = false
+  fallback_radio_shut = true
+  predownload         = false
   vlan_names = [
     {
       name    = "data"

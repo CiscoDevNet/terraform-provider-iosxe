@@ -38,16 +38,16 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin types
 type WirelessFlexProfile struct {
-	Device                types.String                     `tfsdk:"device"`
-	Id                    types.String                     `tfsdk:"id"`
-	Name                  types.String                     `tfsdk:"name"`
-	Description           types.String                     `tfsdk:"description"`
-	NativeVlanId          types.Int64                      `tfsdk:"native_vlan_id"`
-	ArpCaching            types.Bool                       `tfsdk:"arp_caching"`
-	FallbackRadioShut     types.Bool                       `tfsdk:"fallback_radio_shut"`
-	EfficientImageUpgrade types.Bool                       `tfsdk:"efficient_image_upgrade"`
-	VlanNames             []WirelessFlexProfileVlanNames   `tfsdk:"vlan_names"`
-	AclPolicies           []WirelessFlexProfileAclPolicies `tfsdk:"acl_policies"`
+	Device            types.String                     `tfsdk:"device"`
+	Id                types.String                     `tfsdk:"id"`
+	Name              types.String                     `tfsdk:"name"`
+	Description       types.String                     `tfsdk:"description"`
+	NativeVlanId      types.Int64                      `tfsdk:"native_vlan_id"`
+	ArpCaching        types.Bool                       `tfsdk:"arp_caching"`
+	FallbackRadioShut types.Bool                       `tfsdk:"fallback_radio_shut"`
+	Predownload       types.Bool                       `tfsdk:"predownload"`
+	VlanNames         []WirelessFlexProfileVlanNames   `tfsdk:"vlan_names"`
+	AclPolicies       []WirelessFlexProfileAclPolicies `tfsdk:"acl_policies"`
 }
 type WirelessFlexProfileVlanNames struct {
 	Name   types.String `tfsdk:"name"`
@@ -58,16 +58,16 @@ type WirelessFlexProfileAclPolicies struct {
 }
 
 type WirelessFlexProfileData struct {
-	Device                types.String                         `tfsdk:"device"`
-	Id                    types.String                         `tfsdk:"id"`
-	Name                  types.String                         `tfsdk:"name"`
-	Description           types.String                         `tfsdk:"description"`
-	NativeVlanId          types.Int64                          `tfsdk:"native_vlan_id"`
-	ArpCaching            types.Bool                           `tfsdk:"arp_caching"`
-	FallbackRadioShut     types.Bool                           `tfsdk:"fallback_radio_shut"`
-	EfficientImageUpgrade types.Bool                           `tfsdk:"efficient_image_upgrade"`
-	VlanNames             []WirelessFlexProfileVlanNamesData   `tfsdk:"vlan_names"`
-	AclPolicies           []WirelessFlexProfileAclPoliciesData `tfsdk:"acl_policies"`
+	Device            types.String                         `tfsdk:"device"`
+	Id                types.String                         `tfsdk:"id"`
+	Name              types.String                         `tfsdk:"name"`
+	Description       types.String                         `tfsdk:"description"`
+	NativeVlanId      types.Int64                          `tfsdk:"native_vlan_id"`
+	ArpCaching        types.Bool                           `tfsdk:"arp_caching"`
+	FallbackRadioShut types.Bool                           `tfsdk:"fallback_radio_shut"`
+	Predownload       types.Bool                           `tfsdk:"predownload"`
+	VlanNames         []WirelessFlexProfileVlanNamesData   `tfsdk:"vlan_names"`
+	AclPolicies       []WirelessFlexProfileAclPoliciesData `tfsdk:"acl_policies"`
 }
 type WirelessFlexProfileVlanNamesData struct {
 	Name   types.String `tfsdk:"name"`
@@ -133,8 +133,8 @@ func (data WirelessFlexProfile) addToBodyXML(ctx context.Context, config Wireles
 	if !data.FallbackRadioShut.IsNull() && !data.FallbackRadioShut.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/fallback-radio-shut", data.FallbackRadioShut.ValueBool())
 	}
-	if !data.EfficientImageUpgrade.IsNull() && !data.EfficientImageUpgrade.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/efficient-ap-upgrade-enable", data.EfficientImageUpgrade.ValueBool())
+	if !data.Predownload.IsNull() && !data.Predownload.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/efficient-ap-upgrade-enable", data.Predownload.ValueBool())
 	}
 	if len(data.VlanNames) > 0 {
 		for _, item := range data.VlanNames {
@@ -194,12 +194,12 @@ func (data *WirelessFlexProfile) updateFromBodyXML(ctx context.Context, res xmld
 	} else {
 		data.FallbackRadioShut = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/efficient-ap-upgrade-enable"); !data.EfficientImageUpgrade.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/efficient-ap-upgrade-enable"); !data.Predownload.IsNull() {
 		if value.Exists() {
-			data.EfficientImageUpgrade = types.BoolValue(value.Bool())
+			data.Predownload = types.BoolValue(value.Bool())
 		}
 	} else {
-		data.EfficientImageUpgrade = types.BoolNull()
+		data.Predownload = types.BoolNull()
 	}
 	for i := range data.VlanNames {
 		keys := [...]string{"interface-name"}
@@ -288,9 +288,9 @@ func (data *WirelessFlexProfile) fromBodyXML(ctx context.Context, res xmldot.Res
 		data.FallbackRadioShut = types.BoolNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/efficient-ap-upgrade-enable"); value.Exists() {
-		data.EfficientImageUpgrade = types.BoolValue(value.Bool())
+		data.Predownload = types.BoolValue(value.Bool())
 	} else {
-		data.EfficientImageUpgrade = types.BoolNull()
+		data.Predownload = types.BoolNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/if-name-vlan-ids/if-name-vlan-id"); value.Exists() {
 		data.VlanNames = make([]WirelessFlexProfileVlanNames, 0)
@@ -341,9 +341,9 @@ func (data *WirelessFlexProfileData) fromBodyXML(ctx context.Context, res xmldot
 		data.FallbackRadioShut = types.BoolNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/efficient-ap-upgrade-enable"); value.Exists() {
-		data.EfficientImageUpgrade = types.BoolValue(value.Bool())
+		data.Predownload = types.BoolValue(value.Bool())
 	} else {
-		data.EfficientImageUpgrade = types.BoolNull()
+		data.Predownload = types.BoolNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/if-name-vlan-ids/if-name-vlan-id"); value.Exists() {
 		data.VlanNames = make([]WirelessFlexProfileVlanNamesData, 0)
@@ -441,7 +441,7 @@ func (data *WirelessFlexProfile) addDeletedItemsXML(ctx context.Context, state W
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/if-name-vlan-ids/if-name-vlan-id%v", predicates))
 		}
 	}
-	if !state.EfficientImageUpgrade.IsNull() && data.EfficientImageUpgrade.IsNull() {
+	if !state.Predownload.IsNull() && data.Predownload.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/efficient-ap-upgrade-enable")
 	}
 	if !state.FallbackRadioShut.IsNull() && data.FallbackRadioShut.IsNull() {
@@ -487,7 +487,7 @@ func (data *WirelessFlexProfile) addDeletePathsXML(ctx context.Context, body str
 
 		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/if-name-vlan-ids/if-name-vlan-id%v", predicates))
 	}
-	if !data.EfficientImageUpgrade.IsNull() {
+	if !data.Predownload.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/efficient-ap-upgrade-enable")
 	}
 	if !data.FallbackRadioShut.IsNull() {
@@ -531,7 +531,7 @@ func (data *WirelessFlexProfile) addBuiltinDeletePathsXML(ctx context.Context, b
 
 		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/if-name-vlan-ids/if-name-vlan-id%v", predicates))
 	}
-	if !data.EfficientImageUpgrade.IsNull() {
+	if !data.Predownload.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/efficient-ap-upgrade-enable")
 	}
 	if !data.FallbackRadioShut.IsNull() {

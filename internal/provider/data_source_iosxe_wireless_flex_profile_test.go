@@ -40,7 +40,7 @@ func TestAccDataSourceIosxeWirelessFlexProfile(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_flex_profile.test", "native_vlan_id", "10"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_flex_profile.test", "arp_caching", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_flex_profile.test", "fallback_radio_shut", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_flex_profile.test", "efficient_image_upgrade", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_flex_profile.test", "predownload", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_flex_profile.test", "vlan_names.0.name", "data"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_flex_profile.test", "vlan_names.0.vlan_id", "20"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_flex_profile.test", "acl_policies.0.name", "S2-FLEX-ACL"))
@@ -70,7 +70,7 @@ func testAccDataSourceIosxeWirelessFlexProfileConfig() string {
 	config += `	native_vlan_id = 10` + "\n"
 	config += `	arp_caching = false` + "\n"
 	config += `	fallback_radio_shut = true` + "\n"
-	config += `	efficient_image_upgrade = false` + "\n"
+	config += `	predownload = false` + "\n"
 	config += `	vlan_names = [{` + "\n"
 	config += `		name = "data"` + "\n"
 	config += `		vlan_id = 20` + "\n"

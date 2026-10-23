@@ -31,7 +31,7 @@ attributes:
     type: Bool
     example: true
   - yang_name: efficient-ap-upgrade-enable
-    tf_name: efficient_image_upgrade
+    tf_name: predownload
     type: Bool
     example: false
   - yang_name: if-name-vlan-ids/if-name-vlan-id
