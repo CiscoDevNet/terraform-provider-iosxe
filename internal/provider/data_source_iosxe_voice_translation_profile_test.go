@@ -36,12 +36,14 @@ func TestAccDataSourceIosxeVoiceTranslationProfile(t *testing.T) {
 		t.Skip("skipping test, set environment variable C8000V")
 	}
 	var checks []resource.TestCheckFunc
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_voice_translation_profile.test", "translate_called", "200"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_voice_translation_profile.test", "translate_calling", "200"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccDataSourceIosxeVoiceTranslationProfileConfig(),
+				Config: testAccDataSourceIosxeVoiceTranslationProfilePrerequisitesConfig + testAccDataSourceIosxeVoiceTranslationProfileConfig(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -51,6 +53,28 @@ func TestAccDataSourceIosxeVoiceTranslationProfile(t *testing.T) {
 // End of section. //template:end testAccDataSource
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+const testAccDataSourceIosxeVoiceTranslationProfilePrerequisitesConfig = `
+resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:voice/translation-rule[id=200]"
+	attributes = {
+		"id" = "200"
+	}
+	lists = [
+		{
+			name = "rule"
+			key = "id"
+			items = [
+				{
+					"id" = "1"
+					"matching-replacement-pattern" = "/408/ /555/"
+				},
+			]
+		},
+	]
+}
+
+`
+
 // End of section. //template:end testPrerequisites
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSourceConfig
@@ -59,6 +83,9 @@ func testAccDataSourceIosxeVoiceTranslationProfileConfig() string {
 	config := `resource "iosxe_voice_translation_profile" "test" {` + "\n"
 	config += `	delete_mode = "attributes"` + "\n"
 	config += `	tag = "TP_INBOUND"` + "\n"
+	config += `	translate_called = 200` + "\n"
+	config += `	translate_calling = 200` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `

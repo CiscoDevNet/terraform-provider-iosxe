@@ -14,7 +14,9 @@ This resource can manage the Voice Translation Profile configuration.
 
 ```terraform
 resource "iosxe_voice_translation_profile" "example" {
-  tag = "TP_INBOUND"
+  tag               = "TP_INBOUND"
+  translate_called  = 200
+  translate_calling = 200
 }
 ```
 

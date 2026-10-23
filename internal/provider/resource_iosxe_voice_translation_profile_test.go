@@ -39,15 +39,17 @@ func TestAccIosxeVoiceTranslationProfile(t *testing.T) {
 	}
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_translation_profile.test", "tag", "TP_INBOUND"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_translation_profile.test", "translate_called", "200"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_voice_translation_profile.test", "translate_calling", "200"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccIosxeVoiceTranslationProfileConfig_minimum(),
+				Config: testAccIosxeVoiceTranslationProfilePrerequisitesConfig + testAccIosxeVoiceTranslationProfileConfig_minimum(),
 			},
 			{
-				Config: testAccIosxeVoiceTranslationProfileConfig_all(),
+				Config: testAccIosxeVoiceTranslationProfilePrerequisitesConfig + testAccIosxeVoiceTranslationProfileConfig_all(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
@@ -78,6 +80,28 @@ func iosxeVoiceTranslationProfileImportStateIdFunc(resourceName string) resource
 // End of section. //template:end importStateIdFunc
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+const testAccIosxeVoiceTranslationProfilePrerequisitesConfig = `
+resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:voice/translation-rule[id=200]"
+	attributes = {
+		"id" = "200"
+	}
+	lists = [
+		{
+			name = "rule"
+			key = "id"
+			items = [
+				{
+					"id" = "1"
+					"matching-replacement-pattern" = "/408/ /555/"
+				},
+			] 
+		},
+	]
+}
+
+`
+
 // End of section. //template:end testPrerequisites
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
@@ -85,6 +109,7 @@ func iosxeVoiceTranslationProfileImportStateIdFunc(resourceName string) resource
 func testAccIosxeVoiceTranslationProfileConfig_minimum() string {
 	config := `resource "iosxe_voice_translation_profile" "test" {` + "\n"
 	config += `	tag = "TP_INBOUND"` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -96,6 +121,9 @@ func testAccIosxeVoiceTranslationProfileConfig_minimum() string {
 func testAccIosxeVoiceTranslationProfileConfig_all() string {
 	config := `resource "iosxe_voice_translation_profile" "test" {` + "\n"
 	config += `	tag = "TP_INBOUND"` + "\n"
+	config += `	translate_called = 200` + "\n"
+	config += `	translate_calling = 200` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

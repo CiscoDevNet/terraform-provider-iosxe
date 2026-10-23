@@ -12,10 +12,23 @@ attributes:
   - yang_name: translate/called
     tf_name: translate_called
     type: Int64
-    exclude_test: true
     example: 200
   - yang_name: translate/calling
     tf_name: translate_calling
     type: Int64
-    exclude_test: true
     example: 200
+
+test_prerequisites:
+  - path: /Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:voice/translation-rule[id=200]
+    attributes:
+      - name: id
+        value: 200
+    lists:
+      - name: rule
+        key: id
+        items:
+          - attributes:
+              - name: id
+                value: 1
+              - name: matching-replacement-pattern
+                value: /408/ /555/
