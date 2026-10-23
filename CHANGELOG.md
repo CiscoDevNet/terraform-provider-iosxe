@@ -1,5 +1,7 @@
 ## Unreleased
 
+- Add `iosxe_voice_register_global` resource and data source for `voice register global` (max-dn, max-pool, system message, secure security-policy).
+- Add `iosxe_voice_register_pool` resource and data source for `voice register pool`, covering network device identity, call-forward (B2BUA), DTMF relay, CoR lists, and translation-profile bindings.
 - Add `iosxe_voice_class_tenant` resource and data source for `voice class tenant`, including SIP registrar options (primary/secondary registrar, expires, scheme and `refresh-ratio`), registration credentials, and digest authentication. Password attributes expose the companion encryption-type (`0`/`6`/`7`) so type-6 secrets import and re-apply correctly.
 - Add `iosxe_dial_peer_voice` resource and data source for `dial-peer voice`, covering session protocol/target, codec, destination pattern, VAD, SRTP, and translation-profile bindings.
 - Add `iosxe_voice_translation_rule` resource and data source for `voice translation-rule`.
