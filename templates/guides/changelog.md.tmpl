@@ -9,6 +9,10 @@ description: |-
 
 ## Unreleased
 
+- Add `iosxe_voice_class_tenant` resource and data source for `voice class tenant`, including SIP registrar options (primary/secondary registrar, expires, scheme and `refresh-ratio`), registration credentials, and digest authentication. Password attributes expose the companion encryption-type (`0`/`6`/`7`) so type-6 secrets import and re-apply correctly.
+- Add `iosxe_dial_peer_voice` resource and data source for `dial-peer voice`, covering session protocol/target, codec, destination pattern, VAD, SRTP, and translation-profile bindings.
+- Add `iosxe_voice_translation_rule` resource and data source for `voice translation-rule`.
+- Add `iosxe_voice_translation_profile` resource and data source for `voice translation-profile`.
 - Add `iosxe_voice_class_codec` resource and data source for `voice class codec` codec preference lists
 - Add `iosxe_voice_class_dpg` resource and data source for `voice class dpg` dial-peer groups
 - Add `iosxe_voice_class_server_group` resource and data source for `voice class server-group` SIP server groups
