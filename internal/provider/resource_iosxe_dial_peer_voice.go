@@ -104,6 +104,9 @@ func (r *DialPeerVoiceResource) Schema(ctx context.Context, req resource.SchemaR
 				Validators: []validator.String{
 					stringvalidator.OneOf("pots", "voip"),
 				},
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
 			},
 			"description": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Dial peer specific description").String,

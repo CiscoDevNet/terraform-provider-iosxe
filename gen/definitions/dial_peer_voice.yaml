@@ -11,8 +11,11 @@ attributes:
     example: 100
   # `dial-peer voice <tag> <type>` requires the type at creation; mark mandatory
   # so the list entry is created with it rather than a bare (invalid) dial-peer.
+  # The device refuses changing the type of an existing dial-peer, so a change
+  # recreates it.
   - yang_name: type
     mandatory: true
+    requires_replace: true
     example: voip
   - yang_name: description
     example: Outbound to CUCM
