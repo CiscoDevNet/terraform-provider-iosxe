@@ -540,7 +540,7 @@ func (data *DialPeerVoice) updateFromBodyXML(ctx context.Context, res xmldot.Res
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/session/protocol"); value.Exists() && !data.SessionProtocol.IsNull() {
 		data.SessionProtocol = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.SessionProtocol.ValueString() != "cisco" {
 		data.SessionProtocol = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/session/server-group"); value.Exists() && !data.SessionServerGroup.IsNull() {

@@ -948,12 +948,12 @@ func (data *OSPF) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/default-metric"); value.Exists() && !data.DefaultMetric.IsNull() {
 		data.DefaultMetric = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.DefaultMetric.IsNull() || data.DefaultMetric.ValueInt64() != 20 {
 		data.DefaultMetric = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/distance/distance"); value.Exists() && !data.Distance.IsNull() {
 		data.Distance = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.Distance.IsNull() || data.Distance.ValueInt64() != 110 {
 		data.Distance = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/domain-tag"); value.Exists() && !data.DomainTag.IsNull() {
@@ -1059,7 +1059,7 @@ func (data *OSPF) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/priority"); value.Exists() && !data.Priority.IsNull() {
 		data.Priority = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.Priority.IsNull() || data.Priority.ValueInt64() != 64 {
 		data.Priority = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/router-id"); value.Exists() && !data.RouterId.IsNull() {
@@ -1194,7 +1194,7 @@ func (data *OSPF) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/auto-cost/reference-bandwidth"); value.Exists() && !data.AutoCostReferenceBandwidth.IsNull() {
 		data.AutoCostReferenceBandwidth = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.AutoCostReferenceBandwidth.IsNull() || data.AutoCostReferenceBandwidth.ValueInt64() != 100 {
 		data.AutoCostReferenceBandwidth = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface/default"); !data.PassiveInterfaceDefault.IsNull() {

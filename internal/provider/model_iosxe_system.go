@@ -1652,7 +1652,7 @@ func (data *System) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-http:http/secure-active-session-modules"); value.Exists() && !data.IpHttpSecureActiveSessionModules.IsNull() {
 		data.IpHttpSecureActiveSessionModules = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.IpHttpSecureActiveSessionModules.ValueString() != "all" {
 		data.IpHttpSecureActiveSessionModules = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-http:http/max-connections"); value.Exists() && !data.IpHttpMaxConnections.IsNull() {
@@ -1662,7 +1662,7 @@ func (data *System) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-http:http/active-session-modules"); value.Exists() && !data.IpHttpActiveSessionModules.IsNull() {
 		data.IpHttpActiveSessionModules = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.IpHttpActiveSessionModules.ValueString() != "all" {
 		data.IpHttpActiveSessionModules = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/name-server/no-vrf-ordered"); value.Exists() && !data.IpNameServers.IsNull() {
@@ -1962,7 +1962,7 @@ func (data *System) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/ssh/ssh-version"); value.Exists() && !data.IpSshVersion.IsNull() {
 		data.IpSshVersion = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.IpSshVersion.ValueString() != "2" {
 		data.IpSshVersion = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/ssh/version"); value.Exists() && !data.IpSshVersionLegacy.IsNull() {
@@ -1972,7 +1972,7 @@ func (data *System) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/ssh/time-out"); value.Exists() && !data.IpSshTimeOut.IsNull() {
 		data.IpSshTimeOut = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.IpSshTimeOut.IsNull() || data.IpSshTimeOut.ValueInt64() != 120 {
 		data.IpSshTimeOut = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/ssh/authentication-retries"); value.Exists() && !data.IpSshAuthenticationRetries.IsNull() {
@@ -2371,7 +2371,7 @@ func (data *System) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/call-home/Cisco-IOS-XE-call-home:tac-profile/profile/CiscoTAC-1/destination/transport-method"); value.Exists() && !data.CallHomeCiscoTac1DestinationTransportMethod.IsNull() {
 		data.CallHomeCiscoTac1DestinationTransportMethod = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.CallHomeCiscoTac1DestinationTransportMethod.ValueString() != "email" {
 		data.CallHomeCiscoTac1DestinationTransportMethod = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/tcp/path-mtu-discovery"); !data.IpTcpPathMtuDiscovery.IsNull() {
@@ -2390,7 +2390,7 @@ func (data *System) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/tcp/window-size"); value.Exists() && !data.IpTcpWindowSize.IsNull() {
 		data.IpTcpWindowSize = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.IpTcpWindowSize.IsNull() || data.IpTcpWindowSize.ValueInt64() != 131072 {
 		data.IpTcpWindowSize = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/ftp/passive-enable"); !data.IpFtpPassive.IsNull() {
@@ -2526,7 +2526,7 @@ func (data *System) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/multicast/Cisco-IOS-XE-multicast:route-limit-container/routelimit"); value.Exists() && !data.IpMulticastRouteLimit.IsNull() {
 		data.IpMulticastRouteLimit = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.IpMulticastRouteLimit.IsNull() || data.IpMulticastRouteLimit.ValueInt64() != 2147483647 {
 		data.IpMulticastRouteLimit = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/snooping-entry/snooping/querier-conf/querier"); !data.IgmpSnoopingQuerier.IsNull() {
@@ -2555,7 +2555,7 @@ func (data *System) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-aaa:security/passwords/min-length"); value.Exists() && !data.SecurityPasswordsMinLength.IsNull() {
 		data.SecurityPasswordsMinLength = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.SecurityPasswordsMinLength.IsNull() || data.SecurityPasswordsMinLength.ValueInt64() != 1 {
 		data.SecurityPasswordsMinLength = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/domain/list/domain-name"); value.Exists() && !data.IpDomainListNames.IsNull() {
@@ -2575,12 +2575,12 @@ func (data *System) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ethernet/Cisco-IOS-XE-ethernet:cfm/alarm-config/delay"); value.Exists() && !data.EthernetCfmAlarmConfigDelay.IsNull() {
 		data.EthernetCfmAlarmConfigDelay = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.EthernetCfmAlarmConfigDelay.IsNull() || data.EthernetCfmAlarmConfigDelay.ValueInt64() != 2500 {
 		data.EthernetCfmAlarmConfigDelay = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ethernet/Cisco-IOS-XE-ethernet:cfm/alarm-config/reset"); value.Exists() && !data.EthernetCfmAlarmConfigReset.IsNull() {
 		data.EthernetCfmAlarmConfigReset = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.EthernetCfmAlarmConfigReset.IsNull() || data.EthernetCfmAlarmConfigReset.ValueInt64() != 10000 {
 		data.EthernetCfmAlarmConfigReset = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/standby/redirects-config/redirects"); !data.StandbyRedirects.IsNull() {

@@ -313,7 +313,7 @@ func (data *VTP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:version"); value.Exists() && !data.Version.IsNull() {
 		data.Version = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.Version.IsNull() || data.Version.ValueInt64() != 1 {
 		data.Version = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:interface/interface-name"); value.Exists() && !data.Interface.IsNull() {

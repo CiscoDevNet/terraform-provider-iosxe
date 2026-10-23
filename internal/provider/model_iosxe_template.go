@@ -685,27 +685,27 @@ func (data *Template) updateFromBodyXML(ctx context.Context, res xmldot.Result) 
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/max-reauth-req"); value.Exists() && !data.Dot1xMaxReauthReq.IsNull() {
 		data.Dot1xMaxReauthReq = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.Dot1xMaxReauthReq.IsNull() || data.Dot1xMaxReauthReq.ValueInt64() != 2 {
 		data.Dot1xMaxReauthReq = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/max-req"); value.Exists() && !data.Dot1xMaxReq.IsNull() {
 		data.Dot1xMaxReq = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.Dot1xMaxReq.IsNull() || data.Dot1xMaxReq.ValueInt64() != 2 {
 		data.Dot1xMaxReq = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/timeout/tx-period"); value.Exists() && !data.Dot1xTimeoutTxPeriod.IsNull() {
 		data.Dot1xTimeoutTxPeriod = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.Dot1xTimeoutTxPeriod.IsNull() || data.Dot1xTimeoutTxPeriod.ValueInt64() != 30 {
 		data.Dot1xTimeoutTxPeriod = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/timeout/quiet-period"); value.Exists() && !data.Dot1xTimeoutQuietPeriod.IsNull() {
 		data.Dot1xTimeoutQuietPeriod = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.Dot1xTimeoutQuietPeriod.IsNull() || data.Dot1xTimeoutQuietPeriod.ValueInt64() != 60 {
 		data.Dot1xTimeoutQuietPeriod = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/timeout/supp-timeout"); value.Exists() && !data.Dot1xTimeoutSuppTimeout.IsNull() {
 		data.Dot1xTimeoutSuppTimeout = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.Dot1xTimeoutSuppTimeout.IsNull() || data.Dot1xTimeoutSuppTimeout.ValueInt64() != 30 {
 		data.Dot1xTimeoutSuppTimeout = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/timeout/ratelimit-period"); value.Exists() && !data.Dot1xTimeoutRatelimitPeriod.IsNull() {
@@ -980,17 +980,17 @@ func (data *Template) updateFromBodyXML(ctx context.Context, res xmldot.Result) 
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/access-session/port-control"); value.Exists() && !data.AccessSessionPortControl.IsNull() {
 		data.AccessSessionPortControl = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.AccessSessionPortControl.ValueString() != "force-authorized" {
 		data.AccessSessionPortControl = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/access-session/control-direction"); value.Exists() && !data.AccessSessionControlDirection.IsNull() {
 		data.AccessSessionControlDirection = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.AccessSessionControlDirection.ValueString() != "both" {
 		data.AccessSessionControlDirection = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/access-session/host-mode"); value.Exists() && !data.AccessSessionHostMode.IsNull() {
 		data.AccessSessionHostMode = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.AccessSessionHostMode.ValueString() != "multi-auth" {
 		data.AccessSessionHostMode = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/access-session/interface-template/sticky"); !data.AccessSessionInterfaceTemplateSticky.IsNull() {

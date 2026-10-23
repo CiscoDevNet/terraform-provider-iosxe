@@ -447,7 +447,7 @@ func (data *KeyChain) updateFromBodyXML(ctx context.Context, res xmldot.Result) 
 		}
 		if value := helpers.GetFromXPath(r, "cryptographic-algorithm-choice/macsec"); value.Exists() && !data.Keys[i].CryptographicAlgorithmMacsec.IsNull() {
 			data.Keys[i].CryptographicAlgorithmMacsec = types.StringValue(value.String())
-		} else {
+		} else if value.Exists() || !r.Exists() || data.Keys[i].CryptographicAlgorithmMacsec.ValueString() != "aes-128-cmac" {
 			data.Keys[i].CryptographicAlgorithmMacsec = types.StringNull()
 		}
 		if value := helpers.GetFromXPath(r, "accept-lifetime/lifetime-group-v1/local"); !data.Keys[i].AcceptLifetimeLocal.IsNull() {

@@ -290,12 +290,12 @@ func (data *RadiusServer) updateFromBodyXML(ctx context.Context, res xmldot.Resu
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-aaa:dead-criteria/time"); value.Exists() && !data.DeadCriteriaTime.IsNull() {
 		data.DeadCriteriaTime = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.DeadCriteriaTime.IsNull() || data.DeadCriteriaTime.ValueInt64() != 10 {
 		data.DeadCriteriaTime = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-aaa:dead-criteria/tries"); value.Exists() && !data.DeadCriteriaTries.IsNull() {
 		data.DeadCriteriaTries = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.DeadCriteriaTries.IsNull() || data.DeadCriteriaTries.ValueInt64() != 10 {
 		data.DeadCriteriaTries = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-aaa:deadtime"); value.Exists() && !data.Deadtime.IsNull() {

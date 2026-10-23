@@ -461,7 +461,7 @@ func (data *{{camelCase .Name}}) updateFromBodyXML(ctx context.Context, res xmld
 	{{- if eq .Type "Int64"}}
 	if value := helpers.GetFromXPath(res, "data" + data.getXPath() + "/{{.XPath}}"); value.Exists() && !data.{{toGoName .TfName}}.IsNull() {
 		data.{{toGoName .TfName}} = types.Int64Value(value.Int())
-	} else {
+	}{{- if .YangDefault}} else if value.Exists() || data.{{toGoName .TfName}}.IsNull() || data.{{toGoName .TfName}}.ValueInt64() != {{.YangDefault}} {{- else}} else {{- end}} {
 		data.{{toGoName .TfName}} = types.Int64Null()
 	}
 	{{- else if eq .Type "Float64"}}
@@ -489,7 +489,7 @@ func (data *{{camelCase .Name}}) updateFromBodyXML(ctx context.Context, res xmld
 	{{- else if eq .Type "String"}}
 	if value := helpers.GetFromXPath(res, "data" + data.getXPath() + "/{{.XPath}}"); value.Exists() && !data.{{toGoName .TfName}}.IsNull() {
 		data.{{toGoName .TfName}} = types.StringValue(value.String())
-	} else {
+	}{{- if .YangDefault}} else if value.Exists() || data.{{toGoName .TfName}}.ValueString() != {{printf "%q" .YangDefault}} {{- else}} else {{- end}} {
 		data.{{toGoName .TfName}} = types.StringNull()
 	}
 	{{- else if eq .Type "StringList"}}
@@ -548,7 +548,7 @@ func (data *{{camelCase .Name}}) updateFromBodyXML(ctx context.Context, res xmld
 		{{- if eq .Type "Int64"}}
 		if value := helpers.GetFromXPath(r, "{{.XPath}}"); value.Exists() && !data.{{$list}}[i].{{toGoName .TfName}}.IsNull() {
 			data.{{$list}}[i].{{toGoName .TfName}} = types.Int64Value(value.Int())
-		} else {
+		}{{- if .YangDefault}} else if value.Exists() || !r.Exists() || data.{{$list}}[i].{{toGoName .TfName}}.IsNull() || data.{{$list}}[i].{{toGoName .TfName}}.ValueInt64() != {{.YangDefault}} {{- else}} else {{- end}} {
 			data.{{$list}}[i].{{toGoName .TfName}} = types.Int64Null()
 		}
 		{{- else if eq .Type "Float64"}}
@@ -576,7 +576,7 @@ func (data *{{camelCase .Name}}) updateFromBodyXML(ctx context.Context, res xmld
 		{{- else if eq .Type "String"}}
 		if value := helpers.GetFromXPath(r, "{{.XPath}}"); value.Exists() && !data.{{$list}}[i].{{toGoName .TfName}}.IsNull() {
 			data.{{$list}}[i].{{toGoName .TfName}} = types.StringValue(value.String())
-		} else {
+		}{{- if .YangDefault}} else if value.Exists() || !r.Exists() || data.{{$list}}[i].{{toGoName .TfName}}.ValueString() != {{printf "%q" .YangDefault}} {{- else}} else {{- end}} {
 			data.{{$list}}[i].{{toGoName .TfName}} = types.StringNull()
 		}
 		{{- else if eq .Type "StringList"}}
@@ -635,7 +635,7 @@ func (data *{{camelCase .Name}}) updateFromBodyXML(ctx context.Context, res xmld
 			{{- if eq .Type "Int64"}}
 			if value := helpers.GetFromXPath(cr, "{{.XPath}}"); value.Exists() && !data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.IsNull() {
 				data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}} = types.Int64Value(value.Int())
-			} else {
+			}{{- if .YangDefault}} else if value.Exists() || !cr.Exists() || data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.IsNull() || data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.ValueInt64() != {{.YangDefault}} {{- else}} else {{- end}} {
 				data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}} = types.Int64Null()
 			}
 			{{- else if eq .Type "Float64"}}
@@ -663,7 +663,7 @@ func (data *{{camelCase .Name}}) updateFromBodyXML(ctx context.Context, res xmld
 			{{- else if eq .Type "String"}}
 			if value := helpers.GetFromXPath(cr, "{{.XPath}}"); value.Exists() && !data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.IsNull() {
 				data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}} = types.StringValue(value.String())
-			} else {
+			}{{- if .YangDefault}} else if value.Exists() || !cr.Exists() || data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.ValueString() != {{printf "%q" .YangDefault}} {{- else}} else {{- end}} {
 				data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}} = types.StringNull()
 			}
 			{{- else if eq .Type "StringList"}}

@@ -541,12 +541,12 @@ func (data *Line) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		}
 		if value := helpers.GetFromXPath(r, "exec-timeout/minutes"); value.Exists() && !data.Console[i].ExecTimeoutMinutes.IsNull() {
 			data.Console[i].ExecTimeoutMinutes = types.Int64Value(value.Int())
-		} else {
+		} else if value.Exists() || !r.Exists() || data.Console[i].ExecTimeoutMinutes.IsNull() || data.Console[i].ExecTimeoutMinutes.ValueInt64() != 10 {
 			data.Console[i].ExecTimeoutMinutes = types.Int64Null()
 		}
 		if value := helpers.GetFromXPath(r, "exec-timeout/seconds"); value.Exists() && !data.Console[i].ExecTimeoutSeconds.IsNull() {
 			data.Console[i].ExecTimeoutSeconds = types.Int64Value(value.Int())
-		} else {
+		} else if value.Exists() || !r.Exists() || data.Console[i].ExecTimeoutSeconds.IsNull() || data.Console[i].ExecTimeoutSeconds.ValueInt64() != 0 {
 			data.Console[i].ExecTimeoutSeconds = types.Int64Null()
 		}
 		if value := helpers.GetFromXPath(r, "login/local"); !data.Console[i].LoginLocal.IsNull() {
@@ -560,7 +560,7 @@ func (data *Line) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		}
 		if value := helpers.GetFromXPath(r, "login/authentication"); value.Exists() && !data.Console[i].LoginAuthentication.IsNull() {
 			data.Console[i].LoginAuthentication = types.StringValue(value.String())
-		} else {
+		} else if value.Exists() || !r.Exists() || data.Console[i].LoginAuthentication.ValueString() != "default" {
 			data.Console[i].LoginAuthentication = types.StringNull()
 		}
 		if value := helpers.GetFromXPath(r, "privilege/level/number"); value.Exists() && !data.Console[i].PrivilegeLevel.IsNull() {
@@ -694,12 +694,12 @@ func (data *Line) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		}
 		if value := helpers.GetFromXPath(r, "exec-timeout/minutes"); value.Exists() && !data.Vty[i].ExecTimeoutMinutes.IsNull() {
 			data.Vty[i].ExecTimeoutMinutes = types.Int64Value(value.Int())
-		} else {
+		} else if value.Exists() || !r.Exists() || data.Vty[i].ExecTimeoutMinutes.IsNull() || data.Vty[i].ExecTimeoutMinutes.ValueInt64() != 10 {
 			data.Vty[i].ExecTimeoutMinutes = types.Int64Null()
 		}
 		if value := helpers.GetFromXPath(r, "exec-timeout/seconds"); value.Exists() && !data.Vty[i].ExecTimeoutSeconds.IsNull() {
 			data.Vty[i].ExecTimeoutSeconds = types.Int64Value(value.Int())
-		} else {
+		} else if value.Exists() || !r.Exists() || data.Vty[i].ExecTimeoutSeconds.IsNull() || data.Vty[i].ExecTimeoutSeconds.ValueInt64() != 0 {
 			data.Vty[i].ExecTimeoutSeconds = types.Int64Null()
 		}
 		if value := helpers.GetFromXPath(r, "password/level"); value.Exists() && !data.Vty[i].PasswordLevel.IsNull() {
@@ -709,7 +709,7 @@ func (data *Line) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		}
 		if value := helpers.GetFromXPath(r, "login/authentication"); value.Exists() && !data.Vty[i].LoginAuthentication.IsNull() {
 			data.Vty[i].LoginAuthentication = types.StringValue(value.String())
-		} else {
+		} else if value.Exists() || !r.Exists() || data.Vty[i].LoginAuthentication.ValueString() != "default" {
 			data.Vty[i].LoginAuthentication = types.StringNull()
 		}
 		if value := helpers.GetFromXPath(r, "transport/preferred/protocol"); value.Exists() && !data.Vty[i].TransportPreferredProtocol.IsNull() {
@@ -724,7 +724,7 @@ func (data *Line) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		}
 		if value := helpers.GetFromXPath(r, "authorization/exec/authorization-name"); value.Exists() && !data.Vty[i].AuthorizationExec.IsNull() {
 			data.Vty[i].AuthorizationExec = types.StringValue(value.String())
-		} else {
+		} else if value.Exists() || !r.Exists() || data.Vty[i].AuthorizationExec.ValueString() != "default" {
 			data.Vty[i].AuthorizationExec = types.StringNull()
 		}
 		if value := helpers.GetFromXPath(r, "authorization/exec/default"); !data.Vty[i].AuthorizationExecDefault.IsNull() {
@@ -855,12 +855,12 @@ func (data *Line) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		}
 		if value := helpers.GetFromXPath(r, "exec-timeout/minutes"); value.Exists() && !data.Aux[i].ExecTimeoutMinutes.IsNull() {
 			data.Aux[i].ExecTimeoutMinutes = types.Int64Value(value.Int())
-		} else {
+		} else if value.Exists() || !r.Exists() || data.Aux[i].ExecTimeoutMinutes.IsNull() || data.Aux[i].ExecTimeoutMinutes.ValueInt64() != 10 {
 			data.Aux[i].ExecTimeoutMinutes = types.Int64Null()
 		}
 		if value := helpers.GetFromXPath(r, "exec-timeout/seconds"); value.Exists() && !data.Aux[i].ExecTimeoutSeconds.IsNull() {
 			data.Aux[i].ExecTimeoutSeconds = types.Int64Value(value.Int())
-		} else {
+		} else if value.Exists() || !r.Exists() || data.Aux[i].ExecTimeoutSeconds.IsNull() || data.Aux[i].ExecTimeoutSeconds.ValueInt64() != 0 {
 			data.Aux[i].ExecTimeoutSeconds = types.Int64Null()
 		}
 		if value := helpers.GetFromXPath(r, "monitor"); !data.Aux[i].Monitor.IsNull() {

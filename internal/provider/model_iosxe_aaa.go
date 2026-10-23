@@ -360,7 +360,7 @@ func (data *AAA) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-aaa:session-id"); value.Exists() && !data.SessionId.IsNull() {
 		data.SessionId = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.SessionId.ValueString() != "common" {
 		data.SessionId = types.StringNull()
 	}
 	for i := range data.ServerRadiusDynamicAuthorClients {

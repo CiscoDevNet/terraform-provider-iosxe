@@ -169,7 +169,7 @@ func (data *LLDP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/holdtime"); value.Exists() && !data.Holdtime.IsNull() {
 		data.Holdtime = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.Holdtime.IsNull() || data.Holdtime.ValueInt64() != 120 {
 		data.Holdtime = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/management-vlan"); value.Exists() && !data.ManagementVlan.IsNull() {
@@ -179,7 +179,7 @@ func (data *LLDP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timer"); value.Exists() && !data.Timer.IsNull() {
 		data.Timer = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.Timer.IsNull() || data.Timer.ValueInt64() != 30 {
 		data.Timer = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/management-address/ipv4"); value.Exists() && !data.Ipv4ManagementAddresses.IsNull() {

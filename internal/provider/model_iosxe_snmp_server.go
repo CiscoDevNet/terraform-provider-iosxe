@@ -4180,12 +4180,12 @@ func (data *SNMPServer) updateFromBodyXML(ctx context.Context, res xmldot.Result
 			}
 			if value := helpers.GetFromXPath(cr, "match-node"); value.Exists() && !data.Groups[i].V3Security[ci].MatchNode.IsNull() {
 				data.Groups[i].V3Security[ci].MatchNode = types.StringValue(value.String())
-			} else {
+			} else if value.Exists() || !cr.Exists() || data.Groups[i].V3Security[ci].MatchNode.ValueString() != "exact" {
 				data.Groups[i].V3Security[ci].MatchNode = types.StringNull()
 			}
 			if value := helpers.GetFromXPath(cr, "read-node"); value.Exists() && !data.Groups[i].V3Security[ci].ReadNode.IsNull() {
 				data.Groups[i].V3Security[ci].ReadNode = types.StringValue(value.String())
-			} else {
+			} else if value.Exists() || !cr.Exists() || data.Groups[i].V3Security[ci].ReadNode.ValueString() != "v1default" {
 				data.Groups[i].V3Security[ci].ReadNode = types.StringNull()
 			}
 			if value := helpers.GetFromXPath(cr, "write-node"); value.Exists() && !data.Groups[i].V3Security[ci].WriteNode.IsNull() {

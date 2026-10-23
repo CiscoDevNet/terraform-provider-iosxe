@@ -679,12 +679,12 @@ func (data DHCP) addToBodyXML(ctx context.Context, config DHCP, body netconf.Bod
 func (data *DHCP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:compatibility/suboption/link-selection"); value.Exists() && !data.CompatibilitySuboptionLinkSelection.IsNull() {
 		data.CompatibilitySuboptionLinkSelection = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.CompatibilitySuboptionLinkSelection.ValueString() != "cisco" {
 		data.CompatibilitySuboptionLinkSelection = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:compatibility/suboption/server-override"); value.Exists() && !data.CompatibilitySuboptionServerOverride.IsNull() {
 		data.CompatibilitySuboptionServerOverride = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.CompatibilitySuboptionServerOverride.ValueString() != "cisco" {
 		data.CompatibilitySuboptionServerOverride = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/trust-all"); !data.RelayInformationTrustAll.IsNull() {
@@ -928,7 +928,7 @@ func (data *DHCP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		}
 		if value := helpers.GetFromXPath(r, "host/mask"); value.Exists() && !data.Pools[i].HostMask.IsNull() {
 			data.Pools[i].HostMask = types.StringValue(value.String())
-		} else {
+		} else if value.Exists() || !r.Exists() || data.Pools[i].HostMask.ValueString() != "255.0.0.0" {
 			data.Pools[i].HostMask = types.StringNull()
 		}
 		if value := helpers.GetFromXPath(r, "default-router/default-router-list"); value.Exists() && !data.Pools[i].DefaultRouters.IsNull() {

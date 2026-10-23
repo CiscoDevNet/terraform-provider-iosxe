@@ -149,7 +149,7 @@ func (data *TACACS) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/port"); value.Exists() && !data.Port.IsNull() {
 		data.Port = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.Port.IsNull() || data.Port.ValueInt64() != 49 {
 		data.Port = types.Int64Null()
 	}
 }

@@ -757,7 +757,7 @@ func (data *NTP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		}
 		if value := helpers.GetFromXPath(r, "version"); value.Exists() && !data.Servers[i].Version.IsNull() {
 			data.Servers[i].Version = types.Int64Value(value.Int())
-		} else {
+		} else if value.Exists() || !r.Exists() || data.Servers[i].Version.IsNull() || data.Servers[i].Version.ValueInt64() != 4 {
 			data.Servers[i].Version = types.Int64Null()
 		}
 		if value := helpers.GetFromXPath(r, "burst-opt"); !data.Servers[i].Burst.IsNull() {
@@ -860,7 +860,7 @@ func (data *NTP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 			}
 			if value := helpers.GetFromXPath(cr, "version"); value.Exists() && !data.ServerVrfs[i].Servers[ci].Version.IsNull() {
 				data.ServerVrfs[i].Servers[ci].Version = types.Int64Value(value.Int())
-			} else {
+			} else if value.Exists() || !cr.Exists() || data.ServerVrfs[i].Servers[ci].Version.IsNull() || data.ServerVrfs[i].Servers[ci].Version.ValueInt64() != 4 {
 				data.ServerVrfs[i].Servers[ci].Version = types.Int64Null()
 			}
 			if value := helpers.GetFromXPath(cr, "burst-opt"); !data.ServerVrfs[i].Servers[ci].Burst.IsNull() {
@@ -941,7 +941,7 @@ func (data *NTP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		}
 		if value := helpers.GetFromXPath(r, "version"); value.Exists() && !data.Peers[i].Version.IsNull() {
 			data.Peers[i].Version = types.Int64Value(value.Int())
-		} else {
+		} else if value.Exists() || !r.Exists() || data.Peers[i].Version.IsNull() || data.Peers[i].Version.ValueInt64() != 4 {
 			data.Peers[i].Version = types.Int64Null()
 		}
 	}
@@ -1017,7 +1017,7 @@ func (data *NTP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 			}
 			if value := helpers.GetFromXPath(cr, "version"); value.Exists() && !data.PeerVrfs[i].Peers[ci].Version.IsNull() {
 				data.PeerVrfs[i].Peers[ci].Version = types.Int64Value(value.Int())
-			} else {
+			} else if value.Exists() || !cr.Exists() || data.PeerVrfs[i].Peers[ci].Version.IsNull() || data.PeerVrfs[i].Peers[ci].Version.ValueInt64() != 4 {
 				data.PeerVrfs[i].Peers[ci].Version = types.Int64Null()
 			}
 		}

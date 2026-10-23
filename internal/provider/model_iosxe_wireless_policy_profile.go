@@ -261,7 +261,7 @@ func (data *WirelessPolicyProfile) updateFromBodyXML(ctx context.Context, res xm
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interface-name"); value.Exists() && !data.Vlan.IsNull() {
 		data.Vlan = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.Vlan.ValueString() != "1" {
 		data.Vlan = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/accounting-list"); value.Exists() && !data.AccountingList.IsNull() {
@@ -290,17 +290,17 @@ func (data *WirelessPolicyProfile) updateFromBodyXML(ctx context.Context, res xm
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/wlan-timeout/session-timeout"); value.Exists() && !data.SessionTimeout.IsNull() {
 		data.SessionTimeout = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.SessionTimeout.IsNull() || data.SessionTimeout.ValueInt64() != 28800 {
 		data.SessionTimeout = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/wlan-timeout/idle-timeout"); value.Exists() && !data.IdleTimeout.IsNull() {
 		data.IdleTimeout = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.IdleTimeout.IsNull() || data.IdleTimeout.ValueInt64() != 300 {
 		data.IdleTimeout = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/blacklist-params/blacklist-timeout"); value.Exists() && !data.ExclusionlistTimeout.IsNull() {
 		data.ExclusionlistTimeout = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.ExclusionlistTimeout.IsNull() || data.ExclusionlistTimeout.ValueInt64() != 60 {
 		data.ExclusionlistTimeout = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/wlan-acl/ipv4-acl"); value.Exists() && !data.Ipv4Acl.IsNull() {
@@ -432,7 +432,7 @@ func (data *WirelessPolicyProfile) updateFromBodyXML(ctx context.Context, res xm
 		}
 		if value := helpers.GetFromXPath(r, "anchor-priority"); value.Exists() && !data.MobilityAnchors[i].Priority.IsNull() {
 			data.MobilityAnchors[i].Priority = types.StringValue(value.String())
-		} else {
+		} else if value.Exists() || !r.Exists() || data.MobilityAnchors[i].Priority.ValueString() != "export-anchor-tertiary" {
 			data.MobilityAnchors[i].Priority = types.StringNull()
 		}
 	}

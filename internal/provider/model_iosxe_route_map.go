@@ -866,7 +866,7 @@ func (data *RouteMap) updateFromBodyXML(ctx context.Context, res xmldot.Result) 
 		}
 		if value := helpers.GetFromXPath(r, "operation"); value.Exists() && !data.Entries[i].Operation.IsNull() {
 			data.Entries[i].Operation = types.StringValue(value.String())
-		} else {
+		} else if value.Exists() || !r.Exists() || data.Entries[i].Operation.ValueString() != "permit" {
 			data.Entries[i].Operation = types.StringNull()
 		}
 		for ci := range data.Entries[i].Descriptions {

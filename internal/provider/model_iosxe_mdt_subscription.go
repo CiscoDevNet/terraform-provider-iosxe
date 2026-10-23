@@ -170,12 +170,12 @@ func (data *MDTSubscription) updateFromBodyXML(ctx context.Context, res xmldot.R
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/base/stream"); value.Exists() && !data.Stream.IsNull() {
 		data.Stream = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.Stream.ValueString() != "NETCONF" {
 		data.Stream = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/base/encoding"); value.Exists() && !data.Encoding.IsNull() {
 		data.Encoding = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.Encoding.ValueString() != "encode-xml" {
 		data.Encoding = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/base/source-vrf"); value.Exists() && !data.SourceVrf.IsNull() {

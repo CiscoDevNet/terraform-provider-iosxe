@@ -177,12 +177,12 @@ func (data CDP) addToBodyXML(ctx context.Context, config CDP, body netconf.Body)
 func (data *CDP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-cdp:holdtime"); value.Exists() && !data.Holdtime.IsNull() {
 		data.Holdtime = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.Holdtime.IsNull() || data.Holdtime.ValueInt64() != 180 {
 		data.Holdtime = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-cdp:timer"); value.Exists() && !data.Timer.IsNull() {
 		data.Timer = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.Timer.IsNull() || data.Timer.ValueInt64() != 60 {
 		data.Timer = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-cdp:run-enable"); !data.Run.IsNull() {

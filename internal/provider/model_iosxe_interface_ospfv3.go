@@ -288,12 +288,12 @@ func (data *InterfaceOSPFv3) updateFromBodyXML(ctx context.Context, res xmldot.R
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dead-interval"); value.Exists() && !data.DeadInterval.IsNull() {
 		data.DeadInterval = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.DeadInterval.IsNull() || data.DeadInterval.ValueInt64() != 40 {
 		data.DeadInterval = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/hello-interval"); value.Exists() && !data.HelloInterval.IsNull() {
 		data.HelloInterval = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.HelloInterval.IsNull() || data.HelloInterval.ValueInt64() != 10 {
 		data.HelloInterval = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mtu-ignore"); !data.MtuIgnore.IsNull() {
@@ -307,7 +307,7 @@ func (data *InterfaceOSPFv3) updateFromBodyXML(ctx context.Context, res xmldot.R
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/priority"); value.Exists() && !data.Priority.IsNull() {
 		data.Priority = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.Priority.IsNull() || data.Priority.ValueInt64() != 1 {
 		data.Priority = types.Int64Null()
 	}
 	for i := range data.ProcessIds {
@@ -368,7 +368,7 @@ func (data *InterfaceOSPFv3) updateFromBodyXML(ctx context.Context, res xmldot.R
 			}
 			if value := helpers.GetFromXPath(cr, "instance"); value.Exists() && !data.ProcessIds[i].Ipv4Areas[ci].Instance.IsNull() {
 				data.ProcessIds[i].Ipv4Areas[ci].Instance = types.Int64Value(value.Int())
-			} else {
+			} else if value.Exists() || !cr.Exists() || data.ProcessIds[i].Ipv4Areas[ci].Instance.IsNull() || data.ProcessIds[i].Ipv4Areas[ci].Instance.ValueInt64() != 64 {
 				data.ProcessIds[i].Ipv4Areas[ci].Instance = types.Int64Null()
 			}
 		}
@@ -402,7 +402,7 @@ func (data *InterfaceOSPFv3) updateFromBodyXML(ctx context.Context, res xmldot.R
 			}
 			if value := helpers.GetFromXPath(cr, "instance"); value.Exists() && !data.ProcessIds[i].Ipv6Areas[ci].Instance.IsNull() {
 				data.ProcessIds[i].Ipv6Areas[ci].Instance = types.Int64Value(value.Int())
-			} else {
+			} else if value.Exists() || !cr.Exists() || data.ProcessIds[i].Ipv6Areas[ci].Instance.IsNull() || data.ProcessIds[i].Ipv6Areas[ci].Instance.ValueInt64() != 0 {
 				data.ProcessIds[i].Ipv6Areas[ci].Instance = types.Int64Null()
 			}
 		}

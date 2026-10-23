@@ -133,7 +133,7 @@ func (data *BGPAddressFamilyL2VPN) updateFromBodyXML(ctx context.Context, res xm
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/l2vpn-evpn/bgp/nexthop/trigger/delay"); value.Exists() && !data.BgpNexthopTriggerDelay.IsNull() {
 		data.BgpNexthopTriggerDelay = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.BgpNexthopTriggerDelay.IsNull() || data.BgpNexthopTriggerDelay.ValueInt64() != 5 {
 		data.BgpNexthopTriggerDelay = types.Int64Null()
 	}
 }
