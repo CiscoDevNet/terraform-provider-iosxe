@@ -52,48 +52,47 @@ func TestAccIosxeWirelessAPJoinProfile(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "association_limit", "200"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "awips", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "awips_forensic", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "capwap_retransmit_count", "5"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "capwap_retransmit_interval", "3"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "capwap_timers_discovery_timeout", "10"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "capwap_retransmit_count", "6"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "capwap_retransmit_interval", "4"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "capwap_timers_discovery_timeout", "5"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "capwap_timers_fast_heartbeat_timeout", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "capwap_timers_heartbeat_timeout", "10"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "capwap_timers_primary_discovery_timeout", "60"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "capwap_timers_primed_join_timeout", "0"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "capwap_timers_primed_join_timeout", "120"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "capwap_backup_primary_name", "wlc-dc1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "capwap_backup_primary_ip", "10.10.10.11"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "capwap_backup_secondary_name", "wlc-dc2"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "capwap_backup_secondary_ip", "10.20.20.11"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "capwap_fallback", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "capwap_discovery_private", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "capwap_fallback", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "capwap_discovery_private", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "capwap_discovery_public", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "cdp", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "cdp", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "dot1x_eap_type", "dot1x-eap-tls"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "dot1x_username", "apuser"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "hyperlocation", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "ip_dhcp_fallback", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "lag", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "led", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "mesh_profile", "default-mesh-profile"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "rogue_detection_enable", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "hyperlocation", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "ip_dhcp_fallback", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "lag", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "led", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "rogue_detection_enable", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "rogue_detection_min_rssi", "-80"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "rogue_detection_min_transient_time", "0"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "rogue_detection_report_interval", "10"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "rogue_detection_min_transient_time", "120"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "rogue_detection_report_interval", "30"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "statistics_ap_system_monitoring_enable", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "statistics_ap_system_monitoring_alarm_enable", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "statistics_ap_system_monitoring_alarm_hold_time", "6"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "statistics_ap_system_monitoring_alarm_retransmit_time", "0"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "statistics_ap_system_monitoring_alarm_hold_time", "10"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "statistics_ap_system_monitoring_alarm_retransmit_time", "5"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "statistics_ap_system_monitoring_cpu_threshold", "90"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "statistics_ap_system_monitoring_mem_threshold", "90"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "statistics_ap_system_monitoring_sampling_interval", "30"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "statistics_ap_system_monitoring_stats_interval", "300"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "statistics_traffic_distribution", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "statistics_traffic_distribution_interval", "300"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "statistics_ap_radio_monitoring_enable", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "statistics_ap_radio_monitoring_sampling_interval", "720"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "stats_timer", "180"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "tcp_adjust_mss_enable", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "tcp_adjust_mss_size", "1250"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "ble_scan", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "statistics_ap_system_monitoring_sampling_interval", "60"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "statistics_ap_system_monitoring_stats_interval", "600"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "statistics_traffic_distribution", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "statistics_traffic_distribution_interval", "600"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "statistics_ap_radio_monitoring_enable", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "statistics_ap_radio_monitoring_sampling_interval", "900"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "stats_timer", "120"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "tcp_adjust_mss_enable", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "tcp_adjust_mss_size", "1200"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_ap_join_profile.test", "ble_scan", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -110,7 +109,7 @@ func TestAccIosxeWirelessAPJoinProfile(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeWirelessAPJoinProfileImportStateIdFunc("iosxe_wireless_ap_join_profile.test"),
-				ImportStateVerifyIgnore: []string{},
+				ImportStateVerifyIgnore: []string{"mgmtuser_password_type", "mgmtuser_secret_type", "dot1x_password_type"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -168,50 +167,49 @@ func testAccIosxeWirelessAPJoinProfileConfig_all() string {
 	config += `	association_limit = 200` + "\n"
 	config += `	awips = true` + "\n"
 	config += `	awips_forensic = true` + "\n"
-	config += `	capwap_retransmit_count = 5` + "\n"
-	config += `	capwap_retransmit_interval = 3` + "\n"
-	config += `	capwap_timers_discovery_timeout = 10` + "\n"
+	config += `	capwap_retransmit_count = 6` + "\n"
+	config += `	capwap_retransmit_interval = 4` + "\n"
+	config += `	capwap_timers_discovery_timeout = 5` + "\n"
 	config += `	capwap_timers_fast_heartbeat_timeout = 1` + "\n"
 	config += `	capwap_timers_heartbeat_timeout = 10` + "\n"
 	config += `	capwap_timers_primary_discovery_timeout = 60` + "\n"
-	config += `	capwap_timers_primed_join_timeout = 0` + "\n"
+	config += `	capwap_timers_primed_join_timeout = 120` + "\n"
 	config += `	capwap_backup_primary_name = "wlc-dc1"` + "\n"
 	config += `	capwap_backup_primary_ip = "10.10.10.11"` + "\n"
 	config += `	capwap_backup_secondary_name = "wlc-dc2"` + "\n"
 	config += `	capwap_backup_secondary_ip = "10.20.20.11"` + "\n"
-	config += `	capwap_fallback = true` + "\n"
-	config += `	capwap_discovery_private = true` + "\n"
+	config += `	capwap_fallback = false` + "\n"
+	config += `	capwap_discovery_private = false` + "\n"
 	config += `	capwap_discovery_public = false` + "\n"
-	config += `	cdp = true` + "\n"
+	config += `	cdp = false` + "\n"
 	config += `	dot1x_eap_type = "dot1x-eap-tls"` + "\n"
 	config += `	dot1x_username = "apuser"` + "\n"
 	config += `	dot1x_password = "Dt1xPw8kzQ!"` + "\n"
 	config += `	dot1x_password_type = "clear"` + "\n"
-	config += `	hyperlocation = false` + "\n"
-	config += `	ip_dhcp_fallback = true` + "\n"
-	config += `	lag = false` + "\n"
-	config += `	led = true` + "\n"
-	config += `	mesh_profile = "default-mesh-profile"` + "\n"
-	config += `	rogue_detection_enable = true` + "\n"
+	config += `	hyperlocation = true` + "\n"
+	config += `	ip_dhcp_fallback = false` + "\n"
+	config += `	lag = true` + "\n"
+	config += `	led = false` + "\n"
+	config += `	rogue_detection_enable = false` + "\n"
 	config += `	rogue_detection_min_rssi = -80` + "\n"
-	config += `	rogue_detection_min_transient_time = 0` + "\n"
-	config += `	rogue_detection_report_interval = 10` + "\n"
+	config += `	rogue_detection_min_transient_time = 120` + "\n"
+	config += `	rogue_detection_report_interval = 30` + "\n"
 	config += `	statistics_ap_system_monitoring_enable = true` + "\n"
 	config += `	statistics_ap_system_monitoring_alarm_enable = true` + "\n"
-	config += `	statistics_ap_system_monitoring_alarm_hold_time = 6` + "\n"
-	config += `	statistics_ap_system_monitoring_alarm_retransmit_time = 0` + "\n"
+	config += `	statistics_ap_system_monitoring_alarm_hold_time = 10` + "\n"
+	config += `	statistics_ap_system_monitoring_alarm_retransmit_time = 5` + "\n"
 	config += `	statistics_ap_system_monitoring_cpu_threshold = 90` + "\n"
 	config += `	statistics_ap_system_monitoring_mem_threshold = 90` + "\n"
-	config += `	statistics_ap_system_monitoring_sampling_interval = 30` + "\n"
-	config += `	statistics_ap_system_monitoring_stats_interval = 300` + "\n"
-	config += `	statistics_traffic_distribution = true` + "\n"
-	config += `	statistics_traffic_distribution_interval = 300` + "\n"
-	config += `	statistics_ap_radio_monitoring_enable = false` + "\n"
-	config += `	statistics_ap_radio_monitoring_sampling_interval = 720` + "\n"
-	config += `	stats_timer = 180` + "\n"
-	config += `	tcp_adjust_mss_enable = true` + "\n"
-	config += `	tcp_adjust_mss_size = 1250` + "\n"
-	config += `	ble_scan = false` + "\n"
+	config += `	statistics_ap_system_monitoring_sampling_interval = 60` + "\n"
+	config += `	statistics_ap_system_monitoring_stats_interval = 600` + "\n"
+	config += `	statistics_traffic_distribution = false` + "\n"
+	config += `	statistics_traffic_distribution_interval = 600` + "\n"
+	config += `	statistics_ap_radio_monitoring_enable = true` + "\n"
+	config += `	statistics_ap_radio_monitoring_sampling_interval = 900` + "\n"
+	config += `	stats_timer = 120` + "\n"
+	config += `	tcp_adjust_mss_enable = false` + "\n"
+	config += `	tcp_adjust_mss_size = 1200` + "\n"
+	config += `	ble_scan = true` + "\n"
 	config += `}` + "\n"
 	return config
 }
