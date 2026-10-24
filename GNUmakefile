@@ -8,7 +8,7 @@ endif
 
 # Run all acceptance tests across all devices and versions
 .PHONY: test
-test: test-1715-router test-1715-switch
+test: test-1715-router test-1715-switch test-1718-router test-1718-switch
 	@echo ""
 	@echo "All multi-device tests completed!"
 
@@ -65,6 +65,60 @@ test-1715-switch:
 test-1715: test-1715-router test-1715-switch
 	@echo ""
 	@echo "All 17.15.x tests completed!"
+
+# Test against 17.18.x Router (C8000V)
+# Usage: make test-1718-router [NAME=TestName] [DEBUG=1]
+.PHONY: test-1718-router
+test-1718-router:
+	@echo "========================================="
+	@echo "Testing against 17.18.x Router..."
+	@echo "========================================="
+	@if [ -z "$(IOSXE_1718_ROUTER_HOST)" ]; then \
+		echo "SKIPPED: IOSXE_1718_ROUTER_HOST is not configured"; \
+		echo "To enable this test, configure IOSXE_1718_ROUTER_HOST in your .env file"; \
+	else \
+		$(if $(DEBUG),echo "Debug mode enabled - logs will be written to test-output-1718-router.log";) \
+		$(if $(NAME),echo "Running tests matching: $(NAME)";) \
+		TF_ACC=1 \
+		IOSXE_HOST=$(IOSXE_1718_ROUTER_HOST) \
+		IOSXE_USERNAME=$(or $(IOSXE_1718_ROUTER_USERNAME),$(IOSXE_USERNAME)) \
+		IOSXE_PASSWORD=$(or $(IOSXE_1718_ROUTER_PASSWORD),$(IOSXE_PASSWORD)) \
+		IOSXE_PROTOCOL=netconf \
+		IOSXE1718=1 \
+		C8000V=1 \
+		$(if $(DEBUG),TF_LOG=Trace) \
+		go test -v $(if $(NAME),-run $(NAME)) $(TESTARGS) -count 1 -timeout 60m ./internal/provider/ $(if $(DEBUG),2>&1 | tee test-output-1718-router.log); \
+	fi
+
+# Test against 17.18.x Switch (C9000V)
+# Usage: make test-1718-switch [NAME=TestName] [DEBUG=1]
+.PHONY: test-1718-switch
+test-1718-switch:
+	@echo "========================================="
+	@echo "Testing against 17.18.x Switch..."
+	@echo "========================================="
+	@if [ -z "$(IOSXE_1718_SWITCH_HOST)" ]; then \
+		echo "SKIPPED: IOSXE_1718_SWITCH_HOST is not configured"; \
+		echo "To enable this test, configure IOSXE_1718_SWITCH_HOST in your .env file"; \
+	else \
+		$(if $(DEBUG),echo "Debug mode enabled - logs will be written to test-output-1718-switch.log";) \
+		$(if $(NAME),echo "Running tests matching: $(NAME)";) \
+		TF_ACC=1 \
+		IOSXE_HOST=$(IOSXE_1718_SWITCH_HOST) \
+		IOSXE_USERNAME=$(or $(IOSXE_1718_SWITCH_USERNAME),$(IOSXE_USERNAME)) \
+		IOSXE_PASSWORD=$(or $(IOSXE_1718_SWITCH_PASSWORD),$(IOSXE_PASSWORD)) \
+		IOSXE_PROTOCOL=netconf \
+		IOSXE1718=1 \
+		C9000V=1 \
+		$(if $(DEBUG),TF_LOG=Trace) \
+		go test -v $(if $(NAME),-run $(NAME)) $(TESTARGS) -count 1 -timeout 60m ./internal/provider/ $(if $(DEBUG),2>&1 | tee test-output-1718-switch.log); \
+	fi
+
+# Test all 17.18.x devices (router and switch)
+.PHONY: test-1718
+test-1718: test-1718-router test-1718-switch
+	@echo ""
+	@echo "All 17.18.x tests completed!"
 
 # Update a files from a single definition
 # Usage: make gen NAME="Logging"

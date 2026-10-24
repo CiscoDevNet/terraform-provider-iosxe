@@ -103,6 +103,10 @@ IOSXE_PASSWORD=password
 # 17.15.x Router and Switch
 IOSXE_1715_ROUTER_HOST=192.0.2.10
 IOSXE_1715_SWITCH_HOST=192.0.2.11
+
+# 17.18.x Router and Switch (optional)
+IOSXE_1718_ROUTER_HOST=192.0.2.20
+IOSXE_1718_SWITCH_HOST=192.0.2.21
 ```
 
 #### Running Tests
@@ -119,6 +123,7 @@ This will run tests against all configured devices.
 
 ```shell
 make test-1715  # Test all 17.15.x devices
+make test-1718  # Test all 17.18.x devices
 ```
 
 **Run tests for a specific device:**
@@ -126,6 +131,8 @@ make test-1715  # Test all 17.15.x devices
 ```shell
 make test-1715-router   # Test 17.15.x router only
 make test-1715-switch   # Test 17.15.x switch only
+make test-1718-router   # Test 17.18.x router only
+make test-1718-switch   # Test 17.18.x switch only
 ```
 
 **Run specific tests by name:**
@@ -142,6 +149,33 @@ make test-1715-switch DEBUG=1  # Enable debug logging (writes to test-output-*.l
 ```
 
 > **Note**: Acceptance tests create real resources on the target devices.
+
+#### Test Tags
+
+Definitions in `gen/definitions/` can set `test_tags` at the resource level or on individual attributes. A tagged
+resource test is skipped unless an environment variable is set for one of its tags, and a tagged attribute is only configured
+and checked when one of its tags is set. Tags are free-form strings, so a new tag only needs to be set by the test
+environment; the `make test-*` targets set the version and platform tags for each device.
+
+| Tag | Meaning |
+| --- | --- |
+| `C8000V` | Device is a Catalyst 8000V router |
+| `C9000V` | Device is a Catalyst 9000V switch |
+| `C9500` | Device is a Catalyst 9500 switch (StackWise Virtual and switch features) |
+| `C9800` | Device is a Catalyst 9800 wireless controller |
+| `ISR` | Device is an ISR router |
+| `IOSXE1712` | Device runs IOS-XE 17.12.x |
+| `IOSXE1715` | Device runs IOS-XE 17.15.x |
+| `IOSXE1718` | Device runs IOS-XE 17.18.x |
+| `IOSXE2611_C8000G2` | Device is a Cisco Secure Router G2 running IOS-XE 26.1.1 or later |
+| `AAA` | Opt in to AAA tests, which can affect device access |
+| `CRYPTO_PKI` | Opt in to crypto PKI tests |
+| `LICENSE` | Opt in to license tests |
+| `LINE` | Opt in to line tests, which can affect device access |
+| `VTP` | Opt in to VTP tests |
+
+Use a version tag such as `IOSXE1718` for an attribute or resource that only works on, or behaves differently on, one
+IOS-XE release.
 
 ## Sending Pull Requests
 
