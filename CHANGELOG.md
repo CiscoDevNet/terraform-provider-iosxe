@@ -1,5 +1,7 @@
 ## Unreleased
 
+- Add `iosxe_eap_profile` resource and data source for `eap profile` (description, allowed EAP methods and PKI trustpoint). `method_fast` maps to `method/fast-config`, not the obsolete `method/fast` leaf
+- Add `iosxe_parameter_map_webauth_global` resource and data source for the global web authentication parameter map (`parameter-map type webauth global`) and its `virtual-ip ipv4` / `virtual-ip ipv6` addresses. Configuring it converts the device to IBNS 2.0 session management, which cannot be undone from the CLI
 - Add `iosxe_voice_register_global` resource and data source for `voice register global` (max-dn, max-pool, system message, secure security-policy).
 - Add `iosxe_voice_register_pool` resource and data source for `voice register pool`, covering network device identity, call-forward (B2BUA), DTMF relay, CoR lists, and translation-profile bindings.
 - Add `iosxe_voice_class_tenant` resource and data source for `voice class tenant`, including SIP registrar options (primary/secondary registrar, expires, scheme and `refresh-ratio`), registration credentials, and digest authentication. Password attributes expose the companion encryption-type (`0`/`6`/`7`) so type-6 secrets import and re-apply correctly.
