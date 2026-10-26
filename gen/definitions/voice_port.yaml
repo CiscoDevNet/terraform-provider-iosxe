@@ -1,0 +1,29 @@
+---
+name: Voice Port
+path: /Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice-port:voice-port[id=%v]
+doc_category: Voice
+# Requires a physical TDM voice port; gate tests behind the TDM env var. A digital
+# voice-port (e.g. 0/1/0:23) exists only once its controller and pri-group are
+# provisioned, so configure `card` + `controller` first.
+test_tags: [TDM]
+attributes:
+  - yang_name: id
+    tf_name: port
+    id: true
+    example: "0/1/0:23"
+  - yang_name: description
+    example: PSTN PRI trunk
+  - yang_name: vad
+    exclude_test: true
+    example: true
+  - yang_name: shutdown
+    exclude_test: true
+    example: false
+  - yang_name: translation-profile/incoming
+    tf_name: translation_profile_incoming
+    exclude_test: true
+    example: PSTN-IN
+  - yang_name: translation-profile/outgoing
+    tf_name: translation_profile_outgoing
+    exclude_test: true
+    example: PSTN-OUT

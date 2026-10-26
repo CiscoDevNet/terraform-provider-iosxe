@@ -1,5 +1,12 @@
 ## Unreleased
 
+- Add `iosxe_voice_dspfarm_profile` resource and data source for `dspfarm profile`.
+- Add `iosxe_sccp` resource and data source for `sccp` (DSPfarm control protocol).
+- Add `iosxe_voice_card` resource and data source for `voice-card`.
+- Add `iosxe_voice_port` resource and data source for `voice-port`.
+- Add `iosxe_voice_trunk_group` resource and data source for `voice class trunk group`.
+- Add `iosxe_card` resource and data source for `card type` (NIM/module provisioning).
+- Add `iosxe_controller` resource and data source for `controller` T1/E1, including T1 `tx-framing` and E1 `e1-framing` and PRI group timeslots.
 - Add `iosxe_redundancy_application_group` resource and data source for `redundancy application redundancy group` (RG inter-chassis HA), including priority/failover, timers, control/data interfaces, preempt, and tracked-object decrements.
 - Add RG redundancy attributes (`redundancy rii` and `redundancy group` virtual-IP) to the `iosxe_interface_ethernet` resource and data source.
 - Add `iosxe_voice_register_global` resource and data source for `voice register global` (max-dn, max-pool, system message, secure security-policy).
