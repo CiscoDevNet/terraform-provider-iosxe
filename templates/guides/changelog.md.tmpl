@@ -9,6 +9,8 @@ description: |-
 
 ## Unreleased
 
+- Add `iosxe_redundancy_application_group` resource and data source for `redundancy application redundancy group` (RG inter-chassis HA), including priority/failover, timers, control/data interfaces, preempt, and tracked-object decrements.
+- Add RG redundancy attributes (`redundancy rii` and `redundancy group` virtual-IP) to the `iosxe_interface_ethernet` resource and data source.
 - Add `iosxe_voice_register_global` resource and data source for `voice register global` (max-dn, max-pool, system message, secure security-policy).
 - Add `iosxe_voice_register_pool` resource and data source for `voice register pool`, covering network device identity, call-forward (B2BUA), DTMF relay, CoR lists, and translation-profile bindings.
 - Add `iosxe_voice_class_tenant` resource and data source for `voice class tenant`, including SIP registrar options (primary/secondary registrar, expires, scheme and `refresh-ratio`), registration credentials, and digest authentication. Password attributes expose the companion encryption-type (`0`/`6`/`7`) so type-6 secrets import and re-apply correctly.
