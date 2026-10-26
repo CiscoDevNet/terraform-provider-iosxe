@@ -648,12 +648,16 @@ attributes:
         example: true
       - yang_name: track-type/interface-case/interface/name
         xpath: interface/name
-        tf_name: interface_name
+        description: Interface name to track
         example: GigabitEthernet1
       - yang_name: track-type/interface-case/interface/protocol
         xpath: interface/protocol
-        tf_name: interface_protocol
+        description: Tracking protocol. `ip` and `ipv6` require `interface_routing = true`; IOS-XE rejects them on their own.
         example: line-protocol
+      - yang_name: track-type/interface-case/interface/routing
+        xpath: interface/routing
+        description: Track interface IP or IPv6 routing capability. Only valid when `interface_protocol` is `ip` or `ipv6`.
+        example: true
   - yang_name: ip/Cisco-IOS-XE-nbar:nbar/classification/dns/classify-by-domain-with-default
     tf_name: ip_nbar_classification_dns_classify_by_domain
     example: true

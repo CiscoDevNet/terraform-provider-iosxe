@@ -925,15 +925,19 @@ func (r *SystemResource) Schema(ctx context.Context, req resource.SchemaRequest,
 							Optional:            true,
 						},
 						"interface_name": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Interface name").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Interface name to track").String,
 							Optional:            true,
 						},
 						"interface_protocol": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Protocol").AddStringEnumDescription("ip", "ipv6", "line-protocol").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Tracking protocol. `ip` and `ipv6` require `interface_routing = true`; IOS-XE rejects them on their own.").AddStringEnumDescription("ip", "ipv6", "line-protocol").String,
 							Optional:            true,
 							Validators: []validator.String{
 								stringvalidator.OneOf("ip", "ipv6", "line-protocol"),
 							},
+						},
+						"interface_routing": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Track interface IP or IPv6 routing capability. Only valid when `interface_protocol` is `ip` or `ipv6`.").String,
+							Optional:            true,
 						},
 					},
 				},

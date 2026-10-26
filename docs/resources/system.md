@@ -433,9 +433,10 @@ Required:
 
 Optional:
 
-- `interface_name` (String) Interface name
-- `interface_protocol` (String) Protocol
+- `interface_name` (String) Interface name to track
+- `interface_protocol` (String) Tracking protocol. `ip` and `ipv6` require `interface_routing = true`; IOS-XE rejects them on their own.
   - Choices: `ip`, `ipv6`, `line-protocol`
+- `interface_routing` (Boolean) Track interface IP or IPv6 routing capability. Only valid when `interface_protocol` is `ip` or `ipv6`.
 - `ip_sla_number` (Number) Entry number
   - Range: `0`-`4294967295`
 - `ip_sla_reachability` (Boolean) Reachability

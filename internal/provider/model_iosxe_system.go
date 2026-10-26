@@ -255,6 +255,7 @@ type SystemTrackObjects struct {
 	IpSlaReachability types.Bool   `tfsdk:"ip_sla_reachability"`
 	InterfaceName     types.String `tfsdk:"interface_name"`
 	InterfaceProtocol types.String `tfsdk:"interface_protocol"`
+	InterfaceRouting  types.Bool   `tfsdk:"interface_routing"`
 }
 type SystemTableMaps struct {
 	Name     types.String              `tfsdk:"name"`
@@ -485,6 +486,7 @@ type SystemTrackObjectsData struct {
 	IpSlaReachability types.Bool   `tfsdk:"ip_sla_reachability"`
 	InterfaceName     types.String `tfsdk:"interface_name"`
 	InterfaceProtocol types.String `tfsdk:"interface_protocol"`
+	InterfaceRouting  types.Bool   `tfsdk:"interface_routing"`
 }
 type SystemTableMapsData struct {
 	Name     types.String                  `tfsdk:"name"`
@@ -1189,6 +1191,13 @@ func (data System) addToBodyXML(ctx context.Context, config System, body netconf
 			}
 			if !item.InterfaceProtocol.IsNull() && !item.InterfaceProtocol.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "interface/protocol", item.InterfaceProtocol.ValueString())
+			}
+			if !item.InterfaceRouting.IsNull() && !item.InterfaceRouting.IsUnknown() {
+				if item.InterfaceRouting.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "interface/routing", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "interface/routing")
+				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/track/Cisco-IOS-XE-track:tracked-object-v2", cBody.Res())
 		}
@@ -2498,6 +2507,15 @@ func (data *System) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		} else {
 			data.TrackObjects[i].InterfaceProtocol = types.StringNull()
 		}
+		if value := helpers.GetFromXPath(r, "interface/routing"); !data.TrackObjects[i].InterfaceRouting.IsNull() {
+			if value.Exists() {
+				data.TrackObjects[i].InterfaceRouting = types.BoolValue(true)
+			} else {
+				data.TrackObjects[i].InterfaceRouting = types.BoolValue(false)
+			}
+		} else {
+			data.TrackObjects[i].InterfaceRouting = types.BoolNull()
+		}
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-nbar:nbar/classification/dns/classify-by-domain-with-default"); !data.IpNbarClassificationDnsClassifyByDomain.IsNull() {
 		if value.Exists() {
@@ -3396,6 +3414,11 @@ func (data *System) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			if cValue := helpers.GetFromXPath(v, "interface/protocol"); cValue.Exists() {
 				item.InterfaceProtocol = types.StringValue(cValue.String())
 			}
+			if cValue := helpers.GetFromXPath(v, "interface/routing"); cValue.Exists() {
+				item.InterfaceRouting = types.BoolValue(true)
+			} else {
+				item.InterfaceRouting = types.BoolValue(false)
+			}
 			data.TrackObjects = append(data.TrackObjects, item)
 			return true
 		})
@@ -4177,6 +4200,11 @@ func (data *SystemData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			if cValue := helpers.GetFromXPath(v, "interface/protocol"); cValue.Exists() {
 				item.InterfaceProtocol = types.StringValue(cValue.String())
 			}
+			if cValue := helpers.GetFromXPath(v, "interface/routing"); cValue.Exists() {
+				item.InterfaceRouting = types.BoolValue(true)
+			} else {
+				item.InterfaceRouting = types.BoolValue(false)
+			}
 			data.TrackObjects = append(data.TrackObjects, item)
 			return true
 		})
@@ -4564,6 +4592,9 @@ func (data *System) addDeletedItemsXML(ctx context.Context, state System, body s
 				found = false
 			}
 			if found {
+				if !state.TrackObjects[i].InterfaceRouting.IsNull() && data.TrackObjects[j].InterfaceRouting.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/track/Cisco-IOS-XE-track:tracked-object-v2%v/interface/routing", predicates))
+				}
 				if !state.TrackObjects[i].InterfaceProtocol.IsNull() && data.TrackObjects[j].InterfaceProtocol.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/track/Cisco-IOS-XE-track:tracked-object-v2%v/interface/protocol", predicates))
 				}

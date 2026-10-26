@@ -104,6 +104,34 @@ func (d *EIGRPDataSource) Schema(ctx context.Context, req datasource.SchemaReque
 				MarkdownDescription: "Enable automatic network number summarization",
 				Computed:            true,
 			},
+			"af_interfaces": schema.ListNestedAttribute{
+				MarkdownDescription: "Enter Address Family interface configuration",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"interface": schema.StringAttribute{
+							MarkdownDescription: "Interface name or default for the default AF interface",
+							Computed:            true,
+						},
+						"passive_interface": schema.BoolAttribute{
+							MarkdownDescription: "Suppress address updates on an interface",
+							Computed:            true,
+						},
+						"split_horizon": schema.BoolAttribute{
+							MarkdownDescription: "Perform split horizon",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"stub_connected": schema.BoolAttribute{
+				MarkdownDescription: "Enable EIGRP stub routing and advertise connected routes (`eigrp stub connected`)",
+				Computed:            true,
+			},
+			"stub_summary": schema.BoolAttribute{
+				MarkdownDescription: "Enable EIGRP stub routing and advertise summary routes (`eigrp stub summary`)",
+				Computed:            true,
+			},
 			"shutdown": schema.BoolAttribute{
 				MarkdownDescription: "Shutdown address family",
 				Computed:            true,
