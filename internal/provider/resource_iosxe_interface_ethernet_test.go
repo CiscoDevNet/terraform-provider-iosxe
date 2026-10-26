@@ -38,6 +38,8 @@ func TestAccIosxeInterfaceEthernet(t *testing.T) {
 		t.Skip("skipping test, set environment variable C8000V")
 	}
 	var checks []resource.TestCheckFunc
+	// normalize_ipv6 attributes are imported in the device form, so they are compared normalized
+	importIPv6Checks := map[string]string{}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "name", "3"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "mtu", "1600"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "bandwidth", "1000000"))
@@ -63,8 +65,10 @@ func TestAccIosxeInterfaceEthernet(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "ipv6_nd_ra_suppress_all", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "ipv6_address_dhcp", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "ipv6_link_local_addresses.0.address", "fe80::9656:d028:8652:66b6"))
+	importIPv6Checks["ipv6_link_local_addresses.0.address"] = "fe80::9656:d028:8652:66b6"
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "ipv6_link_local_addresses.0.link_local", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "ipv6_addresses.0.prefix", "2001:DB8::/32"))
+	importIPv6Checks["ipv6_addresses.0.prefix"] = "2001:DB8::/32"
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "ipv6_addresses.0.eui_64", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "arp_timeout", "300"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "spanning_tree_link_type", "point-to-point"))
@@ -122,7 +126,8 @@ func TestAccIosxeInterfaceEthernet(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeInterfaceEthernetImportStateIdFunc("iosxe_interface_ethernet.test"),
-				ImportStateVerifyIgnore: []string{"ipv4_address_dhcp", "auto_qos_classify", "auto_qos_classify_police", "auto_qos_trust", "auto_qos_trust_cos", "auto_qos_trust_dscp", "auto_qos_video_cts", "auto_qos_video_ip_camera", "auto_qos_video_media_player", "auto_qos_voip_cisco_phone", "auto_qos_voip_cisco_softphone", "auto_qos_voip_trust", "ipv6_address_autoconfig_default", "ipv6_dhcp_client_pd_rapid_commit", "ipv6_dhcp_relay_trust", "ipv6_dhcp_relay_option_vpn", "ip_arp_inspection_trust", "ip_dhcp_relay_information_option_vpn_id", "ip_dhcp_snooping_trust", "speed_100", "speed_1000", "speed_2500", "speed_5000", "speed_10000", "speed_25000", "speed_40000", "speed_100000", "speed_nonegotiate", "authentication_order_dot1x", "authentication_order_dot1x_mab", "authentication_order_dot1x_webauth", "authentication_order_mab", "authentication_order_mab_dot1x", "authentication_order_mab_webauth", "authentication_order_webauth", "authentication_priority_dot1x", "authentication_priority_dot1x_mab", "authentication_priority_dot1x_webauth", "authentication_priority_mab", "authentication_priority_mab_dot1x", "authentication_priority_mab_webauth", "authentication_priority_webauth", "authentication_periodic", "authentication_timer_reauthenticate_server", "authentication_event_server_alive_action_reinitialize", "authentication_event_server_dead_action_authorize", "authentication_event_server_dead_action_authorize_voice", "authentication_event_fail_action_next_method", "authentication_event_linksec_fail_action_next_method", "mab", "mab_eap", "ip_nbar_protocol_discovery", "device_tracking", "ip_nat_outside"},
+				ImportStateVerifyIgnore: []string{"ipv4_address_dhcp", "auto_qos_classify", "auto_qos_classify_police", "auto_qos_trust", "auto_qos_trust_cos", "auto_qos_trust_dscp", "auto_qos_video_cts", "auto_qos_video_ip_camera", "auto_qos_video_media_player", "auto_qos_voip_cisco_phone", "auto_qos_voip_cisco_softphone", "auto_qos_voip_trust", "ipv6_address_autoconfig_default", "ipv6_dhcp_client_pd_rapid_commit", "ipv6_dhcp_relay_trust", "ipv6_dhcp_relay_option_vpn", "ipv6_link_local_addresses.0.address", "ipv6_addresses.0.prefix", "ip_arp_inspection_trust", "ip_dhcp_relay_information_option_vpn_id", "ip_dhcp_snooping_trust", "speed_100", "speed_1000", "speed_2500", "speed_5000", "speed_10000", "speed_25000", "speed_40000", "speed_100000", "speed_nonegotiate", "authentication_order_dot1x", "authentication_order_dot1x_mab", "authentication_order_dot1x_webauth", "authentication_order_mab", "authentication_order_mab_dot1x", "authentication_order_mab_webauth", "authentication_order_webauth", "authentication_priority_dot1x", "authentication_priority_dot1x_mab", "authentication_priority_dot1x_webauth", "authentication_priority_mab", "authentication_priority_mab_dot1x", "authentication_priority_mab_webauth", "authentication_priority_webauth", "authentication_periodic", "authentication_timer_reauthenticate_server", "authentication_event_server_alive_action_reinitialize", "authentication_event_server_dead_action_authorize", "authentication_event_server_dead_action_authorize_voice", "authentication_event_fail_action_next_method", "authentication_event_linksec_fail_action_next_method", "mab", "mab_eap", "ip_nbar_protocol_discovery", "device_tracking", "ip_nat_outside"},
+				ImportStateCheck:        testAccCheckImportStateIPv6("iosxe_interface_ethernet", importIPv6Checks),
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},

@@ -488,7 +488,14 @@ func (data *{{camelCase .Name}}) updateFromBodyXML(ctx context.Context, res xmld
 	}
 	{{- else if eq .Type "String"}}
 	if value := helpers.GetFromXPath(res, "data" + data.getXPath() + "/{{.XPath}}"); value.Exists() && !data.{{toGoName .TfName}}.IsNull() {
+		{{- if .NormalizeIPv6}}
+		// Keep the configured form if the device returns the same IPv6 address in a different case or compression
+		if helpers.NormalizeIPv6Address(value.String()) != helpers.NormalizeIPv6Address(data.{{toGoName .TfName}}.ValueString()) {
+			data.{{toGoName .TfName}} = types.StringValue(value.String())
+		}
+		{{- else}}
 		data.{{toGoName .TfName}} = types.StringValue(value.String())
+		{{- end}}
 	} else {
 		data.{{toGoName .TfName}} = types.StringNull()
 	}
@@ -522,13 +529,21 @@ func (data *{{camelCase .Name}}) updateFromBodyXML(ctx context.Context, res xmld
 	for i := range data.{{$list}} {
 		keys := [...]string{ {{range .Attributes}}{{if .Id}}"{{.XPath}}", {{end}}{{end}} }
 		keyValues := [...]string{ {{range .Attributes}}{{if .Id}}{{if eq .Type "Int64"}}strconv.FormatInt(data.{{$list}}[i].{{toGoName .TfName}}.ValueInt64(), 10), {{else if eq .Type "Bool"}}strconv.FormatBool(data.{{$list}}[i].{{toGoName .TfName}}.ValueBool()), {{else}}data.{{$list}}[i].{{toGoName .TfName}}.Value{{.Type}}(), {{end}}{{end}}{{end}} }
+		{{- if hasNormalizeIPv6Id .Attributes}}
+		keyNormalizeIPv6 := [...]bool{ {{range .Attributes}}{{if .Id}}{{.NormalizeIPv6}}, {{end}}{{end}} }
+		{{- end}}
 
 		var r xmldot.Result
 		helpers.GetFromXPath(res, "data" + data.getXPath() + "/{{.XPath}}").ForEach(
 			func(_ int, v xmldot.Result) bool {
 				found := false
 				for ik := range keys {
+					{{- if hasNormalizeIPv6Id .Attributes}}
+					// normalize_ipv6 keys match when they are the same IPv6 address in a different case or compression
+					if v.Get(keys[ik]).String() == keyValues[ik] || (keyNormalizeIPv6[ik] && helpers.NormalizeIPv6Address(v.Get(keys[ik]).String()) == helpers.NormalizeIPv6Address(keyValues[ik])) {
+					{{- else}}
 					if v.Get(keys[ik]).String() == keyValues[ik] {
+					{{- end}}
 						found = true
 						continue
 					}
@@ -575,7 +590,14 @@ func (data *{{camelCase .Name}}) updateFromBodyXML(ctx context.Context, res xmld
 		}
 		{{- else if eq .Type "String"}}
 		if value := helpers.GetFromXPath(r, "{{.XPath}}"); value.Exists() && !data.{{$list}}[i].{{toGoName .TfName}}.IsNull() {
+			{{- if .NormalizeIPv6}}
+			// Keep the configured form if the device returns the same IPv6 address in a different case or compression
+			if helpers.NormalizeIPv6Address(value.String()) != helpers.NormalizeIPv6Address(data.{{$list}}[i].{{toGoName .TfName}}.ValueString()) {
+				data.{{$list}}[i].{{toGoName .TfName}} = types.StringValue(value.String())
+			}
+			{{- else}}
 			data.{{$list}}[i].{{toGoName .TfName}} = types.StringValue(value.String())
+			{{- end}}
 		} else {
 			data.{{$list}}[i].{{toGoName .TfName}} = types.StringNull()
 		}
@@ -609,13 +631,21 @@ func (data *{{camelCase .Name}}) updateFromBodyXML(ctx context.Context, res xmld
 		for ci := range data.{{$list}}[i].{{$clist}} {
 			keys := [...]string{ {{range .Attributes}}{{if .Id}}"{{.XPath}}", {{end}}{{end}} }
 			keyValues := [...]string{ {{range .Attributes}}{{if .Id}}{{if eq .Type "Int64"}}strconv.FormatInt(data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.ValueInt64(), 10), {{else if eq .Type "Bool"}}strconv.FormatBool(data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.ValueBool()), {{else}}data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.Value{{.Type}}(), {{end}}{{end}}{{end}} }
+			{{- if hasNormalizeIPv6Id .Attributes}}
+			keyNormalizeIPv6 := [...]bool{ {{range .Attributes}}{{if .Id}}{{.NormalizeIPv6}}, {{end}}{{end}} }
+			{{- end}}
 
 			var cr xmldot.Result
 			helpers.GetFromXPath(r, "{{.XPath}}").ForEach(
 				func(_ int, v xmldot.Result) bool {
 					found := false
 					for ik := range keys {
+						{{- if hasNormalizeIPv6Id .Attributes}}
+						// normalize_ipv6 keys match when they are the same IPv6 address in a different case or compression
+						if v.Get(keys[ik]).String() == keyValues[ik] || (keyNormalizeIPv6[ik] && helpers.NormalizeIPv6Address(v.Get(keys[ik]).String()) == helpers.NormalizeIPv6Address(keyValues[ik])) {
+						{{- else}}
 						if v.Get(keys[ik]).String() == keyValues[ik] {
+						{{- end}}
 							found = true
 							continue
 						}
@@ -662,7 +692,14 @@ func (data *{{camelCase .Name}}) updateFromBodyXML(ctx context.Context, res xmld
 			}
 			{{- else if eq .Type "String"}}
 			if value := helpers.GetFromXPath(cr, "{{.XPath}}"); value.Exists() && !data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.IsNull() {
+				{{- if .NormalizeIPv6}}
+				// Keep the configured form if the device returns the same IPv6 address in a different case or compression
+				if helpers.NormalizeIPv6Address(value.String()) != helpers.NormalizeIPv6Address(data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.ValueString()) {
+					data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}} = types.StringValue(value.String())
+				}
+				{{- else}}
 				data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}} = types.StringValue(value.String())
+				{{- end}}
 			} else {
 				data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}} = types.StringNull()
 			}

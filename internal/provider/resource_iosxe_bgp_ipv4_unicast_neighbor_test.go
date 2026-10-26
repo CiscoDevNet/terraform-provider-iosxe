@@ -34,7 +34,10 @@ import (
 
 func TestAccIosxeBGPIPv4UnicastNeighbor(t *testing.T) {
 	var checks []resource.TestCheckFunc
+	// normalize_ipv6 attributes are imported in the device form, so they are compared normalized
+	importIPv6Checks := map[string]string{}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_ipv4_unicast_neighbor.test", "ip", "3.3.3.3"))
+	importIPv6Checks["ip"] = "3.3.3.3"
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_ipv4_unicast_neighbor.test", "activate", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_ipv4_unicast_neighbor.test", "send_community", "both"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_ipv4_unicast_neighbor.test", "route_reflector_client", "false"))
@@ -60,7 +63,8 @@ func TestAccIosxeBGPIPv4UnicastNeighbor(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeBGPIPv4UnicastNeighborImportStateIdFunc("iosxe_bgp_ipv4_unicast_neighbor.test"),
-				ImportStateVerifyIgnore: []string{},
+				ImportStateVerifyIgnore: []string{"ip"},
+				ImportStateCheck:        testAccCheckImportStateIPv6("iosxe_bgp_ipv4_unicast_neighbor", importIPv6Checks),
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},

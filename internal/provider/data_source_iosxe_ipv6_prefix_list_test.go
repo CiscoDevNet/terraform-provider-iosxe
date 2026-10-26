@@ -35,7 +35,7 @@ func TestAccDataSourceIosxeIPv6PrefixList(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ipv6_prefix_list.test", "prefixes.0.name", "PREFIX_LIST_1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ipv6_prefix_list.test", "prefixes.0.seq", "10"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ipv6_prefix_list.test", "prefixes.0.action", "permit"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ipv6_prefix_list.test", "prefixes.0.ip", "2001:db8::/32"))
+	checks = append(checks, testAccCheckResourceAttrIPv6("data.iosxe_ipv6_prefix_list.test", "prefixes.0.ip", "2001:db8::/32"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ipv6_prefix_list.test", "prefixes.0.ge", "48"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ipv6_prefix_list.test", "prefixes.0.le", "128"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ipv6_prefix_list.test", "prefix_list_description.0.name", "PREFIX_LIST_1"))

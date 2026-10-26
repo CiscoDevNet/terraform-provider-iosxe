@@ -34,7 +34,10 @@ import (
 
 func TestAccIosxeBGPNeighbor(t *testing.T) {
 	var checks []resource.TestCheckFunc
+	// normalize_ipv6 attributes are imported in the device form, so they are compared normalized
+	importIPv6Checks := map[string]string{}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_neighbor.test", "ip", "3.3.3.3"))
+	importIPv6Checks["ip"] = "3.3.3.3"
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_neighbor.test", "remote_as", "65000"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_neighbor.test", "description", "BGP Neighbor Description"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_neighbor.test", "shutdown", "false"))
@@ -66,7 +69,8 @@ func TestAccIosxeBGPNeighbor(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeBGPNeighborImportStateIdFunc("iosxe_bgp_neighbor.test"),
-				ImportStateVerifyIgnore: []string{"fall_over_bfd_multi_hop", "local_as_no_prepend", "local_as_replace_as", "local_as_dual_as", "ebgp_multihop", "ao_include_tcp_options", "ao_accept_mismatch_connections"},
+				ImportStateVerifyIgnore: []string{"ip", "fall_over_bfd_multi_hop", "local_as_no_prepend", "local_as_replace_as", "local_as_dual_as", "ebgp_multihop", "ao_include_tcp_options", "ao_accept_mismatch_connections"},
+				ImportStateCheck:        testAccCheckImportStateIPv6("iosxe_bgp_neighbor", importIPv6Checks),
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},

@@ -38,6 +38,8 @@ func TestAccIosxeInterfacePortChannel(t *testing.T) {
 		t.Skip("skipping test, set environment variable C9000V")
 	}
 	var checks []resource.TestCheckFunc
+	// normalize_ipv6 attributes are imported in the device form, so they are compared normalized
+	importIPv6Checks := map[string]string{}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "name", "10"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "description", "My Interface Description"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "shutdown", "false"))
@@ -65,8 +67,10 @@ func TestAccIosxeInterfacePortChannel(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ipv6_mtu", "1300"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ipv6_address_dhcp", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ipv6_link_local_addresses.0.address", "fe80::64"))
+	importIPv6Checks["ipv6_link_local_addresses.0.address"] = "fe80::64"
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ipv6_link_local_addresses.0.link_local", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ipv6_addresses.0.prefix", "2224:DB8::/32"))
+	importIPv6Checks["ipv6_addresses.0.prefix"] = "2224:DB8::/32"
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ipv6_addresses.0.eui_64", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "arp_timeout", "2147"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ip_arp_inspection_trust", "true"))
@@ -98,7 +102,8 @@ func TestAccIosxeInterfacePortChannel(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeInterfacePortChannelImportStateIdFunc("iosxe_interface_port_channel.test"),
-				ImportStateVerifyIgnore: []string{"ipv4_address_dhcp", "auto_qos_classify", "auto_qos_classify_police", "auto_qos_trust", "auto_qos_trust_cos", "auto_qos_trust_dscp", "auto_qos_video_cts", "auto_qos_video_ip_camera", "auto_qos_video_media_player", "auto_qos_voip_cisco_phone", "auto_qos_voip_cisco_softphone", "auto_qos_voip_trust", "ipv6_nd_ra_suppress_all", "ipv6_address_autoconfig_default", "ipv6_dhcp_client_pd_rapid_commit", "ipv6_dhcp_relay_trust", "ipv6_dhcp_relay_option_vpn", "bpduguard_enable", "bpduguard_disable", "spanning_tree_portfast", "spanning_tree_portfast_disable", "spanning_tree_portfast_trunk", "spanning_tree_portfast_edge", "ip_dhcp_snooping_trust", "device_tracking", "ip_nat_inside", "ip_nat_outside", "delete_mode"},
+				ImportStateVerifyIgnore: []string{"ipv4_address_dhcp", "auto_qos_classify", "auto_qos_classify_police", "auto_qos_trust", "auto_qos_trust_cos", "auto_qos_trust_dscp", "auto_qos_video_cts", "auto_qos_video_ip_camera", "auto_qos_video_media_player", "auto_qos_voip_cisco_phone", "auto_qos_voip_cisco_softphone", "auto_qos_voip_trust", "ipv6_nd_ra_suppress_all", "ipv6_address_autoconfig_default", "ipv6_dhcp_client_pd_rapid_commit", "ipv6_dhcp_relay_trust", "ipv6_dhcp_relay_option_vpn", "ipv6_link_local_addresses.0.address", "ipv6_addresses.0.prefix", "bpduguard_enable", "bpduguard_disable", "spanning_tree_portfast", "spanning_tree_portfast_disable", "spanning_tree_portfast_trunk", "spanning_tree_portfast_edge", "ip_dhcp_snooping_trust", "device_tracking", "ip_nat_inside", "ip_nat_outside", "delete_mode"},
+				ImportStateCheck:        testAccCheckImportStateIPv6("iosxe_interface_port_channel", importIPv6Checks),
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},

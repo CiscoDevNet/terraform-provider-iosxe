@@ -298,6 +298,26 @@ func AsnKeyAttribute(attributes []YamlConfigAttribute) string {
 	return ""
 }
 
+// Templating helper function to return true if any id attribute has normalize_ipv6 set
+func HasNormalizeIPv6Id(attributes []YamlConfigAttribute) bool {
+	for _, attr := range attributes {
+		if attr.Id && attr.NormalizeIPv6 {
+			return true
+		}
+	}
+	return false
+}
+
+// Templating helper function to return true if any attribute (recursive) has normalize_ipv6 set
+func HasNormalizeIPv6(attributes []YamlConfigAttribute) bool {
+	for _, attr := range attributes {
+		if attr.NormalizeIPv6 || HasNormalizeIPv6(attr.Attributes) {
+			return true
+		}
+	}
+	return false
+}
+
 // Templating helper function to return true if any id attribute is write-only
 func HasWriteOnlyId(attributes []YamlConfigAttribute) bool {
 	for _, attr := range attributes {
@@ -338,7 +358,9 @@ func Add(a, b int) int {
 func GetImportExcludes(attributes []YamlConfigAttribute) []string {
 	var excludes []string
 	for _, attr := range attributes {
-		if ((attr.TypeYangBool == "empty" || attr.TypeYangBool == "presence") && (attr.ExcludeTest || len(attr.TestTags) > 0)) || attr.AllowImportChanges {
+		// normalize_ipv6 attributes are imported in the device form, which can differ from the
+		// configured form in case or compression. They are verified by a normalized ImportStateCheck instead.
+		if ((attr.TypeYangBool == "empty" || attr.TypeYangBool == "presence") && (attr.ExcludeTest || len(attr.TestTags) > 0)) || attr.AllowImportChanges || attr.NormalizeIPv6 {
 			excludes = append(excludes, attr.TfName)
 		}
 		if len(attr.Attributes) > 0 {
@@ -643,6 +665,8 @@ var functions = template.FuncMap{
 	"hasId":                    HasId,
 	"asnKeyAttribute":          AsnKeyAttribute,
 	"hasWriteOnlyId":           HasWriteOnlyId,
+	"hasNormalizeIPv6Id":       HasNormalizeIPv6Id,
+	"hasNormalizeIPv6":         HasNormalizeIPv6,
 	"hasSensitiveAttr":         HasSensitiveAttr,
 	"add":                      Add,
 	"getImportExcludes":        GetImportExcludes,

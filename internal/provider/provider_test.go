@@ -18,11 +18,15 @@
 package provider
 
 import (
+	"fmt"
 	"os"
 	"testing"
 
+	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
 	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
+	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 // testAccProtoV6ProviderFactories are used to instantiate a provider during
@@ -47,5 +51,45 @@ func testAccPreCheck(t *testing.T) {
 		if v := os.Getenv("IOSXE_URL"); v == "" {
 			t.Fatal("IOSXE_HOST or IOSXE_URL env variable must be set for acceptance tests")
 		}
+	}
+}
+
+// testAccCheckResourceAttrIPv6 checks that an attribute holds the expected IPv6 address or prefix,
+// ignoring differences in case or compression (used for attributes with normalize_ipv6).
+func testAccCheckResourceAttrIPv6(name, key, expected string) resource.TestCheckFunc {
+	return resource.TestCheckResourceAttrWith(name, key, func(value string) error {
+		if helpers.NormalizeIPv6Address(value) != helpers.NormalizeIPv6Address(expected) {
+			return fmt.Errorf("attribute '%s' expected %q (normalized %q), got %q", key, expected, helpers.NormalizeIPv6Address(expected), value)
+		}
+		return nil
+	})
+}
+
+// testAccCheckImportStateIPv6 returns an ImportStateCheckFunc that verifies the imported
+// normalize_ipv6 attributes of resources of type resourceType against their expected values,
+// ignoring differences in case or compression. These attributes are excluded from
+// ImportStateVerify, as import stores the device form of the value.
+func testAccCheckImportStateIPv6(resourceType string, expected map[string]string) resource.ImportStateCheckFunc {
+	return func(states []*terraform.InstanceState) error {
+		found := false
+		for _, s := range states {
+			if s.Ephemeral.Type != resourceType {
+				continue
+			}
+			found = true
+			for key, want := range expected {
+				got, ok := s.Attributes[key]
+				if !ok {
+					return fmt.Errorf("imported %s: attribute '%s' not found", resourceType, key)
+				}
+				if helpers.NormalizeIPv6Address(got) != helpers.NormalizeIPv6Address(want) {
+					return fmt.Errorf("imported %s: attribute '%s' expected %q (normalized %q), got %q", resourceType, key, want, helpers.NormalizeIPv6Address(want), got)
+				}
+			}
+		}
+		if !found {
+			return fmt.Errorf("no imported resource of type %s found", resourceType)
+		}
+		return nil
 	}
 }

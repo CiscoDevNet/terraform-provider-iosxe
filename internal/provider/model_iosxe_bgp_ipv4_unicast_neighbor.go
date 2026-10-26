@@ -173,7 +173,10 @@ func (data BGPIPv4UnicastNeighbor) addToBodyXML(ctx context.Context, config BGPI
 
 func (data *BGPIPv4UnicastNeighbor) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/id"); value.Exists() && !data.Ip.IsNull() {
-		data.Ip = types.StringValue(value.String())
+		// Keep the configured form if the device returns the same IPv6 address in a different case or compression
+		if helpers.NormalizeIPv6Address(value.String()) != helpers.NormalizeIPv6Address(data.Ip.ValueString()) {
+			data.Ip = types.StringValue(value.String())
+		}
 	} else {
 		data.Ip = types.StringNull()
 	}
