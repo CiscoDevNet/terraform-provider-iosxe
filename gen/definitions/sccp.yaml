@@ -2,13 +2,13 @@
 name: SCCP
 path: /Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:sccp-config
 doc_category: Voice
-# SCCP is the control protocol for DSPfarm; `sccp local` needs the DSP
-# subsystem, so gate acceptance tests behind the TDM env var.
-test_tags: [TDM]
+# SCCP is the control protocol for DSPfarm. The global sccp config applies on a
+# C8000V without DSP hardware, so the test runs on the router testbed.
+test_tags: [C8000V]
 attributes:
   - yang_name: sccp/local
     tf_name: local_interface
-    example: GigabitEthernet0/0/0
+    example: GigabitEthernet1
   - yang_name: sccp/ip/precedence
     tf_name: ip_precedence
     exclude_test: true

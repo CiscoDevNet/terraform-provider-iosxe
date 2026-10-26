@@ -34,11 +34,11 @@ import (
 // Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
 func TestAccIosxeSCCP(t *testing.T) {
-	if os.Getenv("TDM") == "" {
-		t.Skip("skipping test, set environment variable TDM")
+	if os.Getenv("C8000V") == "" {
+		t.Skip("skipping test, set environment variable C8000V")
 	}
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_sccp.test", "local_interface", "GigabitEthernet0/0/0"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_sccp.test", "local_interface", "GigabitEthernet1"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -92,7 +92,7 @@ func testAccIosxeSCCPConfig_minimum() string {
 
 func testAccIosxeSCCPConfig_all() string {
 	config := `resource "iosxe_sccp" "test" {` + "\n"
-	config += `	local_interface = "GigabitEthernet0/0/0"` + "\n"
+	config += `	local_interface = "GigabitEthernet1"` + "\n"
 	config += `}` + "\n"
 	return config
 }

@@ -14,7 +14,7 @@ This resource can manage the SCCP configuration.
 
 ```terraform
 resource "iosxe_sccp" "example" {
-  local_interface = "GigabitEthernet0/0/0"
+  local_interface = "GigabitEthernet1"
 }
 ```
 
