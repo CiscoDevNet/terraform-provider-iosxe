@@ -95,21 +95,21 @@ func (r *ControllerResource) Schema(ctx context.Context, req resource.SchemaRequ
 				},
 			},
 			"framing": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("esf", "sf").String,
+				MarkdownDescription: helpers.NewAttributeDescription("T1/T3 framing. Only valid when `type` is `T1` or `T3`.").AddStringEnumDescription("esf", "sf").String,
 				Optional:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("esf", "sf"),
 				},
 			},
 			"e1_framing": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("crc4", "no-crc4").String,
+				MarkdownDescription: helpers.NewAttributeDescription("E1 framing. Only valid when `type` is `E1`. The device rejects setting the default `crc4`; use `no-crc4` to change it.").AddStringEnumDescription("crc4", "no-crc4").String,
 				Optional:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("crc4", "no-crc4"),
 				},
 			},
 			"pri_group_timeslots": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("List of timeslots in the pri-group").String,
+				MarkdownDescription: helpers.NewAttributeDescription("PRI group timeslots. Only valid when `type` is `T1` or `E1`.").String,
 				Optional:            true,
 			},
 		},

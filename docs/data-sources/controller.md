@@ -33,7 +33,7 @@ data "iosxe_controller" "example" {
 
 ### Read-Only
 
-- `e1_framing` (String)
-- `framing` (String)
+- `e1_framing` (String) E1 framing. Only valid when `type` is `E1`. The device rejects setting the default `crc4`; use `no-crc4` to change it.
+- `framing` (String) T1/T3 framing. Only valid when `type` is `T1` or `T3`.
 - `id` (String) The path of the retrieved object.
-- `pri_group_timeslots` (String) List of timeslots in the pri-group
+- `pri_group_timeslots` (String) PRI group timeslots. Only valid when `type` is `T1` or `E1`.

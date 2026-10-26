@@ -19,6 +19,7 @@ attributes:
     example: "0/1/0"
   - yang_name: framing-config/tx-framing
     tf_name: framing
+    description: T1/T3 framing. Only valid when `type` is `T1` or `T3`.
     exclude_test: true
     example: esf
   # E1 framing (`when ../../name = 'E1'`); excluded from the T1 example test.
@@ -26,9 +27,11 @@ attributes:
   # real change (verified on a C8300 with a NIM-4MFT-T1/E1).
   - yang_name: framing-config/e1-framing
     tf_name: e1_framing
+    description: E1 framing. Only valid when `type` is `E1`. The device rejects setting the default `crc4`; use `no-crc4` to change it.
     exclude_test: true
     example: no-crc4
   - yang_name: pri-group/timeslots
     tf_name: pri_group_timeslots
+    description: PRI group timeslots. Only valid when `type` is `T1` or `E1`.
     exclude_test: true
     example: "1-24"

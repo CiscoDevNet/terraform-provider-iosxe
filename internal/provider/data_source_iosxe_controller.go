@@ -77,15 +77,15 @@ func (d *ControllerDataSource) Schema(ctx context.Context, req datasource.Schema
 				Required:            true,
 			},
 			"framing": schema.StringAttribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "T1/T3 framing. Only valid when `type` is `T1` or `T3`.",
 				Computed:            true,
 			},
 			"e1_framing": schema.StringAttribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "E1 framing. Only valid when `type` is `E1`. The device rejects setting the default `crc4`; use `no-crc4` to change it.",
 				Computed:            true,
 			},
 			"pri_group_timeslots": schema.StringAttribute{
-				MarkdownDescription: "List of timeslots in the pri-group",
+				MarkdownDescription: "PRI group timeslots. Only valid when `type` is `T1` or `E1`.",
 				Computed:            true,
 			},
 		},

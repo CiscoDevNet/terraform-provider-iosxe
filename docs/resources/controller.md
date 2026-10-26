@@ -30,9 +30,11 @@ resource "iosxe_controller" "example" {
 ### Optional
 
 - `device` (String) A device name from the provider configuration.
-- `e1_framing` (String) - Choices: `crc4`, `no-crc4`
-- `framing` (String) - Choices: `esf`, `sf`
-- `pri_group_timeslots` (String) List of timeslots in the pri-group
+- `e1_framing` (String) E1 framing. Only valid when `type` is `E1`. The device rejects setting the default `crc4`; use `no-crc4` to change it.
+  - Choices: `crc4`, `no-crc4`
+- `framing` (String) T1/T3 framing. Only valid when `type` is `T1` or `T3`.
+  - Choices: `esf`, `sf`
+- `pri_group_timeslots` (String) PRI group timeslots. Only valid when `type` is `T1` or `E1`.
 
 ### Read-Only
 
