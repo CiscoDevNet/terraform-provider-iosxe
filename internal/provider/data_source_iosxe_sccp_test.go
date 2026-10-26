@@ -37,6 +37,11 @@ func TestAccDataSourceIosxeSCCP(t *testing.T) {
 	}
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_sccp.test", "local_interface", "GigabitEthernet1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_sccp.test", "ccm_servers.0.host", "192.0.2.50"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_sccp.test", "ccm_servers.0.identifier", "1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_sccp.test", "ccm_groups.0.group_id", "1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_sccp.test", "ccm_groups.0.associate_ccm.0.ccm_id", "1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_sccp.test", "ccm_groups.0.associate_ccm.0.priority", "1"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -60,6 +65,17 @@ func testAccDataSourceIosxeSCCPConfig() string {
 	config := `resource "iosxe_sccp" "test" {` + "\n"
 	config += `	delete_mode = "attributes"` + "\n"
 	config += `	local_interface = "GigabitEthernet1"` + "\n"
+	config += `	ccm_servers = [{` + "\n"
+	config += `		host = "192.0.2.50"` + "\n"
+	config += `		identifier = 1` + "\n"
+	config += `	}]` + "\n"
+	config += `	ccm_groups = [{` + "\n"
+	config += `		group_id = 1` + "\n"
+	config += `		associate_ccm = [{` + "\n"
+	config += `			ccm_id = 1` + "\n"
+	config += `			priority = 1` + "\n"
+	config += `		}]` + "\n"
+	config += `	}]` + "\n"
 	config += `}` + "\n"
 
 	config += `

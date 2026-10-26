@@ -16,11 +16,10 @@ attributes:
   - yang_name: sccp/sccp-ccm-list/ccm
     tf_name: ccm_servers
     type: List
-    exclude_test: true
     attributes:
       - yang_name: host
         id: true
-        example: 10.1.1.1
+        example: 192.0.2.50
       - yang_name: identifier
         example: 1
       - yang_name: version
@@ -29,7 +28,6 @@ attributes:
   - yang_name: sccp/sccp-ccm-group-list/ccm/group
     tf_name: ccm_groups
     type: List
-    exclude_test: true
     attributes:
       - yang_name: id
         tf_name: group_id
@@ -51,6 +49,9 @@ attributes:
       - yang_name: associate/profile
         tf_name: associate_profiles
         type: List
+        # The profile id is a leafref to a dspfarm profile, which needs DSP
+        # resources to be usable; kept out of the C8000V test.
+        exclude_test: true
         attributes:
           - yang_name: id
             tf_name: profile_id
