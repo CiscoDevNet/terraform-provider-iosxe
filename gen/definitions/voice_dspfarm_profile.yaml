@@ -13,9 +13,12 @@ attributes:
     example: 1
   # The device refuses changing the type of an existing profile (CLI keeps the
   # old type; NETCONF returns "Device refused one or more commands"), so a
-  # change recreates the profile.
+  # change recreates the profile. `type` is mandatory, so the device also
+  # refuses removing it on its own (`/type is not configured`); no_delete keeps
+  # it out of the attribute-mode delete.
   - yang_name: type
     requires_replace: true
+    no_delete: true
     example: transcode
   - yang_name: universal
     exclude_test: true

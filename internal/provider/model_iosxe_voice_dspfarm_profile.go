@@ -686,9 +686,6 @@ func (data *VoiceDSPFarmProfile) addDeletedItemsXML(ctx context.Context, state V
 	if !state.Universal.IsNull() && data.Universal.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/universal")
 	}
-	if !state.Type.IsNull() && data.Type.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/type")
-	}
 
 	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
@@ -759,9 +756,6 @@ func (data *VoiceDSPFarmProfile) addDeletePathsXML(ctx context.Context, body str
 	}
 	if !data.Universal.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/universal")
-	}
-	if !data.Type.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/type")
 	}
 
 	b = helpers.CleanupRedundantRemoveOperations(b)
