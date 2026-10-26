@@ -1122,37 +1122,37 @@ func (data *VoiceClassTenant) updateFromBodyXML(ctx context.Context, res xmldot.
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/retry/invite"); value.Exists() && !data.RetryInvite.IsNull() {
 		data.RetryInvite = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.RetryInvite.IsNull() || data.RetryInvite.ValueInt64() != 6 {
 		data.RetryInvite = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/retry/register"); value.Exists() && !data.RetryRegister.IsNull() {
 		data.RetryRegister = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.RetryRegister.IsNull() || data.RetryRegister.ValueInt64() != 6 {
 		data.RetryRegister = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/retry/rel1xx"); value.Exists() && !data.RetryRel1xx.IsNull() {
 		data.RetryRel1xx = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.RetryRel1xx.IsNull() || data.RetryRel1xx.ValueInt64() != 6 {
 		data.RetryRel1xx = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/retry/response"); value.Exists() && !data.RetryResponse.IsNull() {
 		data.RetryResponse = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.RetryResponse.IsNull() || data.RetryResponse.ValueInt64() != 6 {
 		data.RetryResponse = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timers/expires"); value.Exists() && !data.TimersExpires.IsNull() {
 		data.TimersExpires = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.TimersExpires.IsNull() || data.TimersExpires.ValueInt64() != 180000 {
 		data.TimersExpires = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timers/connect"); value.Exists() && !data.TimersConnect.IsNull() {
 		data.TimersConnect = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.TimersConnect.IsNull() || data.TimersConnect.ValueInt64() != 500 {
 		data.TimersConnect = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timers/trying"); value.Exists() && !data.TimersTrying.IsNull() {
 		data.TimersTrying = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.TimersTrying.IsNull() || data.TimersTrying.ValueInt64() != 500 {
 		data.TimersTrying = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/username-password/username"); value.Exists() && !data.AuthenticationUsername.IsNull() {
@@ -1231,12 +1231,12 @@ func (data *VoiceClassTenant) updateFromBodyXML(ctx context.Context, res xmldot.
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/registrar/primary-registrar/expires"); value.Exists() && !data.RegistrarPrimaryExpires.IsNull() {
 		data.RegistrarPrimaryExpires = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.RegistrarPrimaryExpires.IsNull() || data.RegistrarPrimaryExpires.ValueInt64() != 3600 {
 		data.RegistrarPrimaryExpires = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/registrar/primary-registrar/scheme"); value.Exists() && !data.RegistrarPrimaryScheme.IsNull() {
 		data.RegistrarPrimaryScheme = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.RegistrarPrimaryScheme.ValueString() != "sip" {
 		data.RegistrarPrimaryScheme = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/registrar/primary-registrar/refresh-ratio"); value.Exists() && !data.RegistrarPrimaryRefreshRatio.IsNull() {

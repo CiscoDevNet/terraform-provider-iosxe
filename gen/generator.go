@@ -30,6 +30,7 @@ import (
 	"path"
 	"path/filepath"
 	"regexp"
+	"strconv"
 	"strings"
 	"text/template"
 
@@ -202,6 +203,9 @@ type YamlConfigAttribute struct {
 	NormalizeASN       bool                  `yaml:"normalize_asn"`
 	TestTags           []string              `yaml:"test_tags"`
 	Attributes         []YamlConfigAttribute `yaml:"attributes"`
+	// YangDefault is the YANG default of a String or Int64 leaf (derived from the models, not configurable),
+	// normalized to the representation the provider stores. Empty when the leaf has no usable default.
+	YangDefault string `yaml:"-"`
 }
 
 type YamlTest struct {
@@ -858,6 +862,46 @@ func parseAttribute(e *yang.Entry, attr *YamlConfigAttribute) {
 			attr.Mandatory = leaf.Mandatory.Value()
 		}
 	}
+	attr.YangDefault = yangDefault(e, leaf, attr)
+}
+
+// yangDefault returns the YANG default of a String or Int64 leaf in the representation the provider stores
+// in state, or "" if the leaf has none. Devices omit leaves equal to their default from get-config, so the
+// read logic keeps a state value equal to this default instead of clearing it. Attributes that are not read
+// back normally (write-only, keys, references, sensitive) are excluded, as are leaves whose default only
+// applies conditionally: below a presence container, or in a choice case that is not the default case.
+func yangDefault(base, leaf *yang.Entry, attr *YamlConfigAttribute) string {
+	if leaf.Kind != yang.LeafEntry || leaf.ListAttr != nil {
+		return ""
+	}
+	if attr.WriteOnly || attr.Id || attr.Reference || attr.Sensitive {
+		return ""
+	}
+	for p := leaf.Parent; p != nil && p != base; p = p.Parent {
+		if _, ok := p.Extra["presence"]; ok {
+			return ""
+		}
+		if p.IsCase() && (p.Parent == nil || len(p.Parent.Default) == 0 || p.Parent.Default[0] != p.Name) {
+			return ""
+		}
+	}
+	def, ok := leaf.SingleDefaultValue()
+	if !ok {
+		return ""
+	}
+	def = strings.TrimSpace(def)
+	switch attr.Type {
+	case "String":
+		return def
+	case "Int64":
+		// Normalize (e.g. "+5", "007") and skip defaults that do not fit an int64.
+		v, err := strconv.ParseInt(def, 10, 64)
+		if err != nil {
+			return ""
+		}
+		return strconv.FormatInt(v, 10)
+	}
+	return ""
 }
 
 func augmentConfig(config *YamlConfig, yangModules *yang.Modules) {

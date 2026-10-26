@@ -2229,7 +2229,7 @@ func (data *InterfaceEthernet) updateFromBodyXML(ctx context.Context, res xmldot
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-sanet:authentication/host-mode"); value.Exists() && !data.AuthenticationHostMode.IsNull() {
 		data.AuthenticationHostMode = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.AuthenticationHostMode.ValueString() != "single-host" {
 		data.AuthenticationHostMode = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-sanet:authentication/order-config/dot1x-config"); !data.AuthenticationOrderDot1x.IsNull() {
@@ -2360,7 +2360,7 @@ func (data *InterfaceEthernet) updateFromBodyXML(ctx context.Context, res xmldot
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-sanet:authentication/port-control"); value.Exists() && !data.AuthenticationPortControl.IsNull() {
 		data.AuthenticationPortControl = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.AuthenticationPortControl.ValueString() != "force-authorized" {
 		data.AuthenticationPortControl = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-sanet:authentication/periodic"); !data.AuthenticationPeriodic.IsNull() {
@@ -2476,17 +2476,17 @@ func (data *InterfaceEthernet) updateFromBodyXML(ctx context.Context, res xmldot
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-dot1x:dot1x/timeout/auth-period"); value.Exists() && !data.Dot1xTimeoutAuthPeriod.IsNull() {
 		data.Dot1xTimeoutAuthPeriod = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.Dot1xTimeoutAuthPeriod.IsNull() || data.Dot1xTimeoutAuthPeriod.ValueInt64() != 30 {
 		data.Dot1xTimeoutAuthPeriod = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-dot1x:dot1x/timeout/held-period"); value.Exists() && !data.Dot1xTimeoutHeldPeriod.IsNull() {
 		data.Dot1xTimeoutHeldPeriod = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.Dot1xTimeoutHeldPeriod.IsNull() || data.Dot1xTimeoutHeldPeriod.ValueInt64() != 60 {
 		data.Dot1xTimeoutHeldPeriod = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-dot1x:dot1x/timeout/quiet-period"); value.Exists() && !data.Dot1xTimeoutQuietPeriod.IsNull() {
 		data.Dot1xTimeoutQuietPeriod = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.Dot1xTimeoutQuietPeriod.IsNull() || data.Dot1xTimeoutQuietPeriod.ValueInt64() != 60 {
 		data.Dot1xTimeoutQuietPeriod = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-dot1x:dot1x/timeout/ratelimit-period"); value.Exists() && !data.Dot1xTimeoutRatelimitPeriod.IsNull() {
@@ -2501,17 +2501,17 @@ func (data *InterfaceEthernet) updateFromBodyXML(ctx context.Context, res xmldot
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-dot1x:dot1x/timeout/start-period"); value.Exists() && !data.Dot1xTimeoutStartPeriod.IsNull() {
 		data.Dot1xTimeoutStartPeriod = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.Dot1xTimeoutStartPeriod.IsNull() || data.Dot1xTimeoutStartPeriod.ValueInt64() != 30 {
 		data.Dot1xTimeoutStartPeriod = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-dot1x:dot1x/timeout/supp-timeout"); value.Exists() && !data.Dot1xTimeoutSuppTimeout.IsNull() {
 		data.Dot1xTimeoutSuppTimeout = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.Dot1xTimeoutSuppTimeout.IsNull() || data.Dot1xTimeoutSuppTimeout.ValueInt64() != 30 {
 		data.Dot1xTimeoutSuppTimeout = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-dot1x:dot1x/timeout/tx-period"); value.Exists() && !data.Dot1xTimeoutTxPeriod.IsNull() {
 		data.Dot1xTimeoutTxPeriod = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.Dot1xTimeoutTxPeriod.IsNull() || data.Dot1xTimeoutTxPeriod.ValueInt64() != 30 {
 		data.Dot1xTimeoutTxPeriod = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-dot1x:dot1x/max-req"); value.Exists() && !data.Dot1xMaxReq.IsNull() {
@@ -2570,7 +2570,7 @@ func (data *InterfaceEthernet) updateFromBodyXML(ctx context.Context, res xmldot
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/load-interval"); value.Exists() && !data.LoadInterval.IsNull() {
 		data.LoadInterval = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.LoadInterval.IsNull() || data.LoadInterval.ValueInt64() != 300 {
 		data.LoadInterval = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-snmp:snmp/trap/link-status"); !data.SnmpTrapLinkStatus.IsNull() {
@@ -2773,7 +2773,7 @@ func (data *InterfaceEthernet) updateFromBodyXML(ctx context.Context, res xmldot
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/version"); value.Exists() && !data.IpIgmpVersion.IsNull() {
 		data.IpIgmpVersion = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.IpIgmpVersion.IsNull() || data.IpIgmpVersion.ValueInt64() != 2 {
 		data.IpIgmpVersion = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/router/Cisco-IOS-XE-isis:isis/tag"); value.Exists() && !data.IpRouterIsis.IsNull() {

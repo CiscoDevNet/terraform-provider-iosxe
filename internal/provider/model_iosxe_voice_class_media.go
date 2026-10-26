@@ -185,7 +185,7 @@ func (data *VoiceClassMedia) updateFromBodyXML(ctx context.Context, res xmldot.R
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/media/flow-through-or-around"); value.Exists() && !data.Flow.IsNull() {
 		data.Flow = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.Flow.ValueString() != "flow-through" {
 		data.Flow = types.StringNull()
 	}
 }

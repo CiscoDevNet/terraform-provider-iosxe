@@ -131,17 +131,17 @@ func (data *WirelessRFTag) updateFromBodyXML(ctx context.Context, res xmldot.Res
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot11b-rf-profile-name"); value.Exists() && !data.RfPolicy24ghz.IsNull() {
 		data.RfPolicy24ghz = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.RfPolicy24ghz.ValueString() != "default_rf_24gh" {
 		data.RfPolicy24ghz = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot11a-rf-profile-name"); value.Exists() && !data.RfPolicy5ghz.IsNull() {
 		data.RfPolicy5ghz = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.RfPolicy5ghz.ValueString() != "default_rf_5gh" {
 		data.RfPolicy5ghz = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot11-6ghz-rf-prof-name"); value.Exists() && !data.RfPolicy6ghz.IsNull() {
 		data.RfPolicy6ghz = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.RfPolicy6ghz.ValueString() != "default-rf-profile-6ghz" {
 		data.RfPolicy6ghz = types.StringNull()
 	}
 }

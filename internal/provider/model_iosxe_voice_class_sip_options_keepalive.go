@@ -177,17 +177,17 @@ func (data *VoiceClassSIPOptionsKeepalive) updateFromBodyXML(ctx context.Context
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/up-interval"); value.Exists() && !data.UpInterval.IsNull() {
 		data.UpInterval = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.UpInterval.IsNull() || data.UpInterval.ValueInt64() != 60 {
 		data.UpInterval = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/down-interval"); value.Exists() && !data.DownInterval.IsNull() {
 		data.DownInterval = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.DownInterval.IsNull() || data.DownInterval.ValueInt64() != 30 {
 		data.DownInterval = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/retry"); value.Exists() && !data.Retry.IsNull() {
 		data.Retry = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.Retry.IsNull() || data.Retry.ValueInt64() != 5 {
 		data.Retry = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/sip-profiles"); value.Exists() && !data.SipProfiles.IsNull() {

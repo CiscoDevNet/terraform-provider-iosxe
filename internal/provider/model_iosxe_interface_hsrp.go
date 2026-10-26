@@ -365,7 +365,7 @@ func (data InterfaceHSRP) addToBodyXML(ctx context.Context, config InterfaceHSRP
 func (data *InterfaceHSRP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/version"); value.Exists() && !data.Version.IsNull() {
 		data.Version = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.Version.ValueString() != "1" {
 		data.Version = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/bfd-config"); !data.Bfd.IsNull() {
@@ -387,7 +387,7 @@ func (data *InterfaceHSRP) updateFromBodyXML(ctx context.Context, res xmldot.Res
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mac-refresh"); value.Exists() && !data.MacRefresh.IsNull() {
 		data.MacRefresh = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.MacRefresh.IsNull() || data.MacRefresh.ValueInt64() != 10 {
 		data.MacRefresh = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/use-bia"); !data.UseBia.IsNull() {
@@ -590,7 +590,7 @@ func (data *InterfaceHSRP) updateFromBodyXML(ctx context.Context, res xmldot.Res
 		}
 		if value := helpers.GetFromXPath(r, "priority"); value.Exists() && !data.StandbyList[i].Priority.IsNull() {
 			data.StandbyList[i].Priority = types.Int64Value(value.Int())
-		} else {
+		} else if value.Exists() || !r.Exists() || data.StandbyList[i].Priority.IsNull() || data.StandbyList[i].Priority.ValueInt64() != 100 {
 			data.StandbyList[i].Priority = types.Int64Null()
 		}
 		if value := helpers.GetFromXPath(r, "timers/hello-interval/seconds"); value.Exists() && !data.StandbyList[i].TimersHelloIntervalSeconds.IsNull() {
@@ -643,7 +643,7 @@ func (data *InterfaceHSRP) updateFromBodyXML(ctx context.Context, res xmldot.Res
 			}
 			if value := helpers.GetFromXPath(cr, "decrement"); value.Exists() && !data.StandbyList[i].Tracks[ci].Decrement.IsNull() {
 				data.StandbyList[i].Tracks[ci].Decrement = types.Int64Value(value.Int())
-			} else {
+			} else if value.Exists() || !cr.Exists() || data.StandbyList[i].Tracks[ci].Decrement.IsNull() || data.StandbyList[i].Tracks[ci].Decrement.ValueInt64() != 10 {
 				data.StandbyList[i].Tracks[ci].Decrement = types.Int64Null()
 			}
 			if value := helpers.GetFromXPath(cr, "shutdown"); !data.StandbyList[i].Tracks[ci].Shutdown.IsNull() {

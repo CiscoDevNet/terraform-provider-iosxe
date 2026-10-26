@@ -284,7 +284,7 @@ func (data *WirelessWLANProfile) updateFromBodyXML(ctx context.Context, res xmld
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/apf-vap-id-data/p2p-block-action"); value.Exists() && !data.PeerBlocking.IsNull() {
 		data.PeerBlocking = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.PeerBlocking.ValueString() != "p2p-blocking-action-none" {
 		data.PeerBlocking = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/auth-key-mgmt-dot1x"); !data.SecurityWpaAkmDot1x.IsNull() {
@@ -359,7 +359,7 @@ func (data *WirelessWLANProfile) updateFromBodyXML(ctx context.Context, res xmld
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/psk-key-type"); value.Exists() && !data.SecurityWpaPskKeyFormat.IsNull() {
 		data.SecurityWpaPskKeyFormat = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.SecurityWpaPskKeyFormat.ValueString() != "key-ascii" {
 		data.SecurityWpaPskKeyFormat = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication-list"); value.Exists() && !data.SecurityDot1xAuthenticationList.IsNull() {
@@ -386,7 +386,7 @@ func (data *WirelessWLANProfile) updateFromBodyXML(ctx context.Context, res xmld
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ft-mode"); value.Exists() && !data.SecurityFt.IsNull() {
 		data.SecurityFt = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.SecurityFt.ValueString() != "dot11r-adaptive-enabled" {
 		data.SecurityFt = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ft-over-ds"); !data.SecurityFtOverTheDs.IsNull() {
@@ -410,7 +410,7 @@ func (data *WirelessWLANProfile) updateFromBodyXML(ctx context.Context, res xmld
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/qos-wmm-status"); value.Exists() && !data.Wmm.IsNull() {
 		data.Wmm = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.Wmm.ValueString() != "apf-vap-wme-allowed" {
 		data.Wmm = types.StringNull()
 	}
 }

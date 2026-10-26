@@ -302,87 +302,87 @@ func (data *WirelessRFProfile) updateFromBodyXML(ctx context.Context, res xmldot
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/data-rate-1m"); value.Exists() && !data.DataRate1m.IsNull() {
 		data.DataRate1m = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.DataRate1m.ValueString() != "apf-tx-rate-basic" {
 		data.DataRate1m = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/data-rate-2m"); value.Exists() && !data.DataRate2m.IsNull() {
 		data.DataRate2m = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.DataRate2m.ValueString() != "apf-tx-rate-basic" {
 		data.DataRate2m = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/data-rate-5-5m"); value.Exists() && !data.DataRate55m.IsNull() {
 		data.DataRate55m = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.DataRate55m.ValueString() != "apf-tx-rate-basic" {
 		data.DataRate55m = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/data-rate-11m"); value.Exists() && !data.DataRate11m.IsNull() {
 		data.DataRate11m = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.DataRate11m.ValueString() != "apf-tx-rate-basic" {
 		data.DataRate11m = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/data-rate-6m"); value.Exists() && !data.DataRate6m.IsNull() {
 		data.DataRate6m = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.DataRate6m.ValueString() != "apf-tx-rate-not-applicable" {
 		data.DataRate6m = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/data-rate-9m"); value.Exists() && !data.DataRate9m.IsNull() {
 		data.DataRate9m = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.DataRate9m.ValueString() != "apf-tx-rate-supported" {
 		data.DataRate9m = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/data-rate-12m"); value.Exists() && !data.DataRate12m.IsNull() {
 		data.DataRate12m = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.DataRate12m.ValueString() != "apf-tx-rate-not-applicable" {
 		data.DataRate12m = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/data-rate-18m"); value.Exists() && !data.DataRate18m.IsNull() {
 		data.DataRate18m = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.DataRate18m.ValueString() != "apf-tx-rate-supported" {
 		data.DataRate18m = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/data-rate-24m"); value.Exists() && !data.DataRate24m.IsNull() {
 		data.DataRate24m = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.DataRate24m.ValueString() != "apf-tx-rate-not-applicable" {
 		data.DataRate24m = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/data-rate-36m"); value.Exists() && !data.DataRate36m.IsNull() {
 		data.DataRate36m = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.DataRate36m.ValueString() != "apf-tx-rate-supported" {
 		data.DataRate36m = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/data-rate-48m"); value.Exists() && !data.DataRate48m.IsNull() {
 		data.DataRate48m = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.DataRate48m.ValueString() != "apf-tx-rate-supported" {
 		data.DataRate48m = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/data-rate-54m"); value.Exists() && !data.DataRate54m.IsNull() {
 		data.DataRate54m = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.DataRate54m.ValueString() != "apf-tx-rate-supported" {
 		data.DataRate54m = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/band-select-client-rssi"); value.Exists() && !data.BandSelectClientRssi.IsNull() {
 		data.BandSelectClientRssi = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.BandSelectClientRssi.IsNull() || data.BandSelectClientRssi.ValueInt64() != -80 {
 		data.BandSelectClientRssi = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/band-select-cycle-count"); value.Exists() && !data.BandSelectCycleCount.IsNull() {
 		data.BandSelectCycleCount = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.BandSelectCycleCount.IsNull() || data.BandSelectCycleCount.ValueInt64() != 2 {
 		data.BandSelectCycleCount = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/band-select-cycle-threshold"); value.Exists() && !data.BandSelectCycleThreshold.IsNull() {
 		data.BandSelectCycleThreshold = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.BandSelectCycleThreshold.IsNull() || data.BandSelectCycleThreshold.ValueInt64() != 200 {
 		data.BandSelectCycleThreshold = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/band-select-age-out-dual-band"); value.Exists() && !data.BandSelectExpireDualBand.IsNull() {
 		data.BandSelectExpireDualBand = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.BandSelectExpireDualBand.IsNull() || data.BandSelectExpireDualBand.ValueInt64() != 60 {
 		data.BandSelectExpireDualBand = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/band-select-age-out-suppression"); value.Exists() && !data.BandSelectExpireSuppression.IsNull() {
 		data.BandSelectExpireSuppression = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.BandSelectExpireSuppression.IsNull() || data.BandSelectExpireSuppression.ValueInt64() != 20 {
 		data.BandSelectExpireSuppression = types.Int64Null()
 	}
 	for i := range data.DcaAllowedChannels {
@@ -416,62 +416,62 @@ func (data *WirelessRFProfile) updateFromBodyXML(ctx context.Context, res xmldot
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/coverage-data-packet-rssi-threshold"); value.Exists() && !data.CoverageDataRssiThreshold.IsNull() {
 		data.CoverageDataRssiThreshold = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.CoverageDataRssiThreshold.IsNull() || data.CoverageDataRssiThreshold.ValueInt64() != -80 {
 		data.CoverageDataRssiThreshold = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/coverage-voice-packet-rssi-threshold"); value.Exists() && !data.CoverageVoiceRssiThreshold.IsNull() {
 		data.CoverageVoiceRssiThreshold = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.CoverageVoiceRssiThreshold.IsNull() || data.CoverageVoiceRssiThreshold.ValueInt64() != -80 {
 		data.CoverageVoiceRssiThreshold = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/min-num-clients"); value.Exists() && !data.CoverageLevelGlobal.IsNull() {
 		data.CoverageLevelGlobal = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.CoverageLevelGlobal.IsNull() || data.CoverageLevelGlobal.ValueInt64() != 3 {
 		data.CoverageLevelGlobal = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/load-balancing-window"); value.Exists() && !data.LoadBalancingWindow.IsNull() {
 		data.LoadBalancingWindow = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.LoadBalancingWindow.IsNull() || data.LoadBalancingWindow.ValueInt64() != 5 {
 		data.LoadBalancingWindow = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/load-balancing-denial-count"); value.Exists() && !data.LoadBalancingDenial.IsNull() {
 		data.LoadBalancingDenial = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.LoadBalancingDenial.IsNull() || data.LoadBalancingDenial.ValueInt64() != 3 {
 		data.LoadBalancingDenial = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/max-radio-clients"); value.Exists() && !data.MaxClients.IsNull() {
 		data.MaxClients = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.MaxClients.IsNull() || data.MaxClients.ValueInt64() != 200 {
 		data.MaxClients = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/tx-power-v1-threshold"); value.Exists() && !data.TxPowerV1Threshold.IsNull() {
 		data.TxPowerV1Threshold = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.TxPowerV1Threshold.IsNull() || data.TxPowerV1Threshold.ValueInt64() != -70 {
 		data.TxPowerV1Threshold = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/tx-power-max"); value.Exists() && !data.TxPowerMax.IsNull() {
 		data.TxPowerMax = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.TxPowerMax.IsNull() || data.TxPowerMax.ValueInt64() != 30 {
 		data.TxPowerMax = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/tx-power-min"); value.Exists() && !data.TxPowerMin.IsNull() {
 		data.TxPowerMin = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.TxPowerMin.IsNull() || data.TxPowerMin.ValueInt64() != -10 {
 		data.TxPowerMin = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/trap-threshold-clients"); value.Exists() && !data.TrapThresholdClients.IsNull() {
 		data.TrapThresholdClients = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.TrapThresholdClients.IsNull() || data.TrapThresholdClients.ValueInt64() != 12 {
 		data.TrapThresholdClients = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/trap-threshold-interference"); value.Exists() && !data.TrapThresholdInterference.IsNull() {
 		data.TrapThresholdInterference = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.TrapThresholdInterference.IsNull() || data.TrapThresholdInterference.ValueInt64() != 10 {
 		data.TrapThresholdInterference = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/trap-threshold-noise"); value.Exists() && !data.TrapThresholdNoise.IsNull() {
 		data.TrapThresholdNoise = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.TrapThresholdNoise.IsNull() || data.TrapThresholdNoise.ValueInt64() != -70 {
 		data.TrapThresholdNoise = types.Int64Null()
 	}
 }

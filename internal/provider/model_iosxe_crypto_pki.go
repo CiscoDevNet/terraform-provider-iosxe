@@ -271,7 +271,7 @@ func (data *CryptoPKI) updateFromBodyXML(ctx context.Context, res xmldot.Result)
 		}
 		if value := helpers.GetFromXPath(r, "hash"); value.Exists() && !data.Trustpoints[i].Hash.IsNull() {
 			data.Trustpoints[i].Hash = types.StringValue(value.String())
-		} else {
+		} else if value.Exists() || !r.Exists() || data.Trustpoints[i].Hash.ValueString() != "sha512" {
 			data.Trustpoints[i].Hash = types.StringNull()
 		}
 	}

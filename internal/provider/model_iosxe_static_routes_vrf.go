@@ -287,7 +287,7 @@ func (data *StaticRoutesVRF) updateFromBodyXML(ctx context.Context, res xmldot.R
 			}
 			if value := helpers.GetFromXPath(cr, "metric"); value.Exists() && !data.Routes[i].NextHops[ci].Distance.IsNull() {
 				data.Routes[i].NextHops[ci].Distance = types.Int64Value(value.Int())
-			} else {
+			} else if value.Exists() || !cr.Exists() || data.Routes[i].NextHops[ci].Distance.IsNull() || data.Routes[i].NextHops[ci].Distance.ValueInt64() != 1 {
 				data.Routes[i].NextHops[ci].Distance = types.Int64Null()
 			}
 			if value := helpers.GetFromXPath(cr, "global"); !data.Routes[i].NextHops[ci].Global.IsNull() {
@@ -359,7 +359,7 @@ func (data *StaticRoutesVRF) updateFromBodyXML(ctx context.Context, res xmldot.R
 			}
 			if value := helpers.GetFromXPath(cr, "metric"); value.Exists() && !data.Routes[i].NextHopsWithTrack[ci].Distance.IsNull() {
 				data.Routes[i].NextHopsWithTrack[ci].Distance = types.Int64Value(value.Int())
-			} else {
+			} else if value.Exists() || !cr.Exists() || data.Routes[i].NextHopsWithTrack[ci].Distance.IsNull() || data.Routes[i].NextHopsWithTrack[ci].Distance.ValueInt64() != 1 {
 				data.Routes[i].NextHopsWithTrack[ci].Distance = types.Int64Null()
 			}
 			if value := helpers.GetFromXPath(cr, "tag"); value.Exists() && !data.Routes[i].NextHopsWithTrack[ci].Tag.IsNull() {

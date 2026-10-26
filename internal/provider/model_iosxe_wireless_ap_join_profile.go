@@ -439,12 +439,12 @@ func (data *WirelessAPJoinProfile) updateFromBodyXML(ctx context.Context, res xm
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/capwap-window/window-size"); value.Exists() && !data.CapwapWindowSize.IsNull() {
 		data.CapwapWindowSize = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.CapwapWindowSize.IsNull() || data.CapwapWindowSize.ValueInt64() != 1 {
 		data.CapwapWindowSize = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ap-country/country-code"); value.Exists() && !data.Country.IsNull() {
 		data.Country = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.Country.ValueString() != "unconfigured" {
 		data.Country = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/device-mgmt/ssh"); !data.Ssh.IsNull() {
@@ -461,22 +461,22 @@ func (data *WirelessAPJoinProfile) updateFromBodyXML(ctx context.Context, res xm
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ntp-server-info/ntp-address"); value.Exists() && !data.NtpIp.IsNull() {
 		data.NtpIp = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.NtpIp.ValueString() != "0.0.0.0" {
 		data.NtpIp = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/syslog/host"); value.Exists() && !data.SyslogHost.IsNull() {
 		data.SyslogHost = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.SyslogHost.ValueString() != "255.255.255.255" {
 		data.SyslogHost = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/syslog/facility-value"); value.Exists() && !data.SyslogFacility.IsNull() {
 		data.SyslogFacility = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.SyslogFacility.ValueString() != "facility-kern" {
 		data.SyslogFacility = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/syslog/log-level"); value.Exists() && !data.SyslogLevel.IsNull() {
 		data.SyslogLevel = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.SyslogLevel.ValueString() != "syslog-level-information" {
 		data.SyslogLevel = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/apphost/enable"); !data.Apphost.IsNull() {
@@ -488,7 +488,7 @@ func (data *WirelessAPJoinProfile) updateFromBodyXML(ctx context.Context, res xm
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client-limit/max-cfg-clients"); value.Exists() && !data.AssociationLimit.IsNull() {
 		data.AssociationLimit = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.AssociationLimit.IsNull() || data.AssociationLimit.ValueInt64() != 0 {
 		data.AssociationLimit = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/awips-enabled"); !data.Awips.IsNull() {
@@ -507,37 +507,37 @@ func (data *WirelessAPJoinProfile) updateFromBodyXML(ctx context.Context, res xm
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/retransmit-timer/count"); value.Exists() && !data.CapwapRetransmitCount.IsNull() {
 		data.CapwapRetransmitCount = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.CapwapRetransmitCount.IsNull() || data.CapwapRetransmitCount.ValueInt64() != 5 {
 		data.CapwapRetransmitCount = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/retransmit-timer/interval"); value.Exists() && !data.CapwapRetransmitInterval.IsNull() {
 		data.CapwapRetransmitInterval = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.CapwapRetransmitInterval.IsNull() || data.CapwapRetransmitInterval.ValueInt64() != 3 {
 		data.CapwapRetransmitInterval = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/capwap-timer/discovery-timeout"); value.Exists() && !data.CapwapTimersDiscoveryTimeout.IsNull() {
 		data.CapwapTimersDiscoveryTimeout = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.CapwapTimersDiscoveryTimeout.IsNull() || data.CapwapTimersDiscoveryTimeout.ValueInt64() != 10 {
 		data.CapwapTimersDiscoveryTimeout = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/capwap-timer/fast-heart-beat-timeout"); value.Exists() && !data.CapwapTimersFastHeartbeatTimeout.IsNull() {
 		data.CapwapTimersFastHeartbeatTimeout = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.CapwapTimersFastHeartbeatTimeout.IsNull() || data.CapwapTimersFastHeartbeatTimeout.ValueInt64() != 0 {
 		data.CapwapTimersFastHeartbeatTimeout = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/capwap-timer/heart-beat-timeout"); value.Exists() && !data.CapwapTimersHeartbeatTimeout.IsNull() {
 		data.CapwapTimersHeartbeatTimeout = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.CapwapTimersHeartbeatTimeout.IsNull() || data.CapwapTimersHeartbeatTimeout.ValueInt64() != 30 {
 		data.CapwapTimersHeartbeatTimeout = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/capwap-timer/primary-discovery-timeout"); value.Exists() && !data.CapwapTimersPrimaryDiscoveryTimeout.IsNull() {
 		data.CapwapTimersPrimaryDiscoveryTimeout = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.CapwapTimersPrimaryDiscoveryTimeout.IsNull() || data.CapwapTimersPrimaryDiscoveryTimeout.ValueInt64() != 120 {
 		data.CapwapTimersPrimaryDiscoveryTimeout = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/capwap-timer/primed-join-timeout"); value.Exists() && !data.CapwapTimersPrimedJoinTimeout.IsNull() {
 		data.CapwapTimersPrimedJoinTimeout = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.CapwapTimersPrimedJoinTimeout.IsNull() || data.CapwapTimersPrimedJoinTimeout.ValueInt64() != 0 {
 		data.CapwapTimersPrimedJoinTimeout = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/backup-controllers/primary-controller-name"); value.Exists() && !data.CapwapBackupPrimaryName.IsNull() {
@@ -547,7 +547,7 @@ func (data *WirelessAPJoinProfile) updateFromBodyXML(ctx context.Context, res xm
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/backup-controllers/primary-controller-ip"); value.Exists() && !data.CapwapBackupPrimaryIp.IsNull() {
 		data.CapwapBackupPrimaryIp = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.CapwapBackupPrimaryIp.ValueString() != "0.0.0.0" {
 		data.CapwapBackupPrimaryIp = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/backup-controllers/secondary-controller-name"); value.Exists() && !data.CapwapBackupSecondaryName.IsNull() {
@@ -557,7 +557,7 @@ func (data *WirelessAPJoinProfile) updateFromBodyXML(ctx context.Context, res xm
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/backup-controllers/secondary-controller-ip"); value.Exists() && !data.CapwapBackupSecondaryIp.IsNull() {
 		data.CapwapBackupSecondaryIp = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.CapwapBackupSecondaryIp.ValueString() != "0.0.0.0" {
 		data.CapwapBackupSecondaryIp = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/backup-controllers/fallback-enabled"); !data.CapwapFallback.IsNull() {
@@ -590,7 +590,7 @@ func (data *WirelessAPJoinProfile) updateFromBodyXML(ctx context.Context, res xm
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x-eap-type-info/dot1x-eap-type"); value.Exists() && !data.Dot1xEapType.IsNull() {
 		data.Dot1xEapType = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.Dot1xEapType.ValueString() != "dot1x-eap-fast" {
 		data.Dot1xEapType = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/login-credentials/dot1x-username"); value.Exists() && !data.Dot1xUsername.IsNull() {
@@ -628,7 +628,7 @@ func (data *WirelessAPJoinProfile) updateFromBodyXML(ctx context.Context, res xm
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mesh/mesh-profile-name"); value.Exists() && !data.MeshProfile.IsNull() {
 		data.MeshProfile = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.MeshProfile.ValueString() != "default-mesh-profile" {
 		data.MeshProfile = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rogue-detection/ap-rogue-detection"); !data.RogueDetectionEnable.IsNull() {
@@ -640,17 +640,17 @@ func (data *WirelessAPJoinProfile) updateFromBodyXML(ctx context.Context, res xm
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rogue-detection/ap-rogue-detection-min-rssi"); value.Exists() && !data.RogueDetectionMinRssi.IsNull() {
 		data.RogueDetectionMinRssi = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.RogueDetectionMinRssi.IsNull() || data.RogueDetectionMinRssi.ValueInt64() != -90 {
 		data.RogueDetectionMinRssi = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rogue-detection/ap-rogue-detection-transient-interval"); value.Exists() && !data.RogueDetectionMinTransientTime.IsNull() {
 		data.RogueDetectionMinTransientTime = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.RogueDetectionMinTransientTime.IsNull() || data.RogueDetectionMinTransientTime.ValueInt64() != 0 {
 		data.RogueDetectionMinTransientTime = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rogue-detection/rogue-detection-monitor-mode-report-interval"); value.Exists() && !data.RogueDetectionReportInterval.IsNull() {
 		data.RogueDetectionReportInterval = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.RogueDetectionReportInterval.IsNull() || data.RogueDetectionReportInterval.ValueInt64() != 10 {
 		data.RogueDetectionReportInterval = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/stats-monitor/enable"); !data.StatisticsApSystemMonitoringEnable.IsNull() {
@@ -671,32 +671,32 @@ func (data *WirelessAPJoinProfile) updateFromBodyXML(ctx context.Context, res xm
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/stats-monitor/alarm-hold-time"); value.Exists() && !data.StatisticsApSystemMonitoringAlarmHoldTime.IsNull() {
 		data.StatisticsApSystemMonitoringAlarmHoldTime = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.StatisticsApSystemMonitoringAlarmHoldTime.IsNull() || data.StatisticsApSystemMonitoringAlarmHoldTime.ValueInt64() != 6 {
 		data.StatisticsApSystemMonitoringAlarmHoldTime = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/stats-monitor/trap-retx-time"); value.Exists() && !data.StatisticsApSystemMonitoringAlarmRetransmitTime.IsNull() {
 		data.StatisticsApSystemMonitoringAlarmRetransmitTime = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.StatisticsApSystemMonitoringAlarmRetransmitTime.IsNull() || data.StatisticsApSystemMonitoringAlarmRetransmitTime.ValueInt64() != 0 {
 		data.StatisticsApSystemMonitoringAlarmRetransmitTime = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/stats-monitor/cpu-threshold"); value.Exists() && !data.StatisticsApSystemMonitoringCpuThreshold.IsNull() {
 		data.StatisticsApSystemMonitoringCpuThreshold = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.StatisticsApSystemMonitoringCpuThreshold.IsNull() || data.StatisticsApSystemMonitoringCpuThreshold.ValueInt64() != 0 {
 		data.StatisticsApSystemMonitoringCpuThreshold = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/stats-monitor/mem-threshold"); value.Exists() && !data.StatisticsApSystemMonitoringMemThreshold.IsNull() {
 		data.StatisticsApSystemMonitoringMemThreshold = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.StatisticsApSystemMonitoringMemThreshold.IsNull() || data.StatisticsApSystemMonitoringMemThreshold.ValueInt64() != 0 {
 		data.StatisticsApSystemMonitoringMemThreshold = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/stats-monitor/sample-intvl"); value.Exists() && !data.StatisticsApSystemMonitoringSamplingInterval.IsNull() {
 		data.StatisticsApSystemMonitoringSamplingInterval = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.StatisticsApSystemMonitoringSamplingInterval.IsNull() || data.StatisticsApSystemMonitoringSamplingInterval.ValueInt64() != 30 {
 		data.StatisticsApSystemMonitoringSamplingInterval = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/stats-monitor/stats-intvl"); value.Exists() && !data.StatisticsApSystemMonitoringStatsInterval.IsNull() {
 		data.StatisticsApSystemMonitoringStatsInterval = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.StatisticsApSystemMonitoringStatsInterval.IsNull() || data.StatisticsApSystemMonitoringStatsInterval.ValueInt64() != 300 {
 		data.StatisticsApSystemMonitoringStatsInterval = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/traffic-distribution/status"); !data.StatisticsTrafficDistribution.IsNull() {
@@ -708,7 +708,7 @@ func (data *WirelessAPJoinProfile) updateFromBodyXML(ctx context.Context, res xm
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/traffic-distribution/interval"); value.Exists() && !data.StatisticsTrafficDistributionInterval.IsNull() {
 		data.StatisticsTrafficDistributionInterval = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.StatisticsTrafficDistributionInterval.IsNull() || data.StatisticsTrafficDistributionInterval.ValueInt64() != 300 {
 		data.StatisticsTrafficDistributionInterval = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/radio-stats-monitor/enable"); !data.StatisticsApRadioMonitoringEnable.IsNull() {
@@ -720,12 +720,12 @@ func (data *WirelessAPJoinProfile) updateFromBodyXML(ctx context.Context, res xm
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/radio-stats-monitor/sample-intvl"); value.Exists() && !data.StatisticsApRadioMonitoringSamplingInterval.IsNull() {
 		data.StatisticsApRadioMonitoringSamplingInterval = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.StatisticsApRadioMonitoringSamplingInterval.IsNull() || data.StatisticsApRadioMonitoringSamplingInterval.ValueInt64() != 720 {
 		data.StatisticsApRadioMonitoringSamplingInterval = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/stats-timer/stats-timer"); value.Exists() && !data.StatsTimer.IsNull() {
 		data.StatsTimer = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.StatsTimer.IsNull() || data.StatsTimer.ValueInt64() != 180 {
 		data.StatsTimer = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/tcp-mss/adjust-mss"); !data.TcpAdjustMssEnable.IsNull() {
@@ -737,7 +737,7 @@ func (data *WirelessAPJoinProfile) updateFromBodyXML(ctx context.Context, res xm
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/tcp-mss/tcp-adjust-mss"); value.Exists() && !data.TcpAdjustMssSize.IsNull() {
 		data.TcpAdjustMssSize = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.TcpAdjustMssSize.IsNull() || data.TcpAdjustMssSize.ValueInt64() != 1250 {
 		data.TcpAdjustMssSize = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ble/scan-state"); !data.BleScan.IsNull() {

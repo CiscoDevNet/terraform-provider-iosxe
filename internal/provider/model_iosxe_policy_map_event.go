@@ -400,7 +400,7 @@ func (data *PolicyMapEvent) updateFromBodyXML(ctx context.Context, res xmldot.Re
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match-type"); value.Exists() && !data.MatchType.IsNull() {
 		data.MatchType = types.StringValue(value.String())
-	} else {
+	} else if value.Exists() || data.MatchType.ValueString() != "match-all" {
 		data.MatchType = types.StringNull()
 	}
 	for i := range data.ClassNumbers {
@@ -438,7 +438,7 @@ func (data *PolicyMapEvent) updateFromBodyXML(ctx context.Context, res xmldot.Re
 		}
 		if value := helpers.GetFromXPath(r, "execution-type"); value.Exists() && !data.ClassNumbers[i].ExecutionType.IsNull() {
 			data.ClassNumbers[i].ExecutionType = types.StringValue(value.String())
-		} else {
+		} else if value.Exists() || !r.Exists() || data.ClassNumbers[i].ExecutionType.ValueString() != "do-until-failure" {
 			data.ClassNumbers[i].ExecutionType = types.StringNull()
 		}
 		for ci := range data.ClassNumbers[i].ActionNumbers {

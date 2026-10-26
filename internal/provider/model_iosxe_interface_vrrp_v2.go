@@ -248,7 +248,7 @@ func (data *InterfaceVRRPV2) updateFromBodyXML(ctx context.Context, res xmldot.R
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/priority"); value.Exists() && !data.Priority.IsNull() {
 		data.Priority = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.Priority.IsNull() || data.Priority.ValueInt64() != 100 {
 		data.Priority = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/preempt-config/preempt"); !data.Preempt.IsNull() {

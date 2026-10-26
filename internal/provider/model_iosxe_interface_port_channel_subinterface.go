@@ -1012,7 +1012,7 @@ func (data *InterfacePortChannelSubinterface) updateFromBodyXML(ctx context.Cont
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/version"); value.Exists() && !data.IpIgmpVersion.IsNull() {
 		data.IpIgmpVersion = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.IpIgmpVersion.IsNull() || data.IpIgmpVersion.ValueInt64() != 2 {
 		data.IpIgmpVersion = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/router/Cisco-IOS-XE-isis:isis/tag"); value.Exists() && !data.IpRouterIsis.IsNull() {

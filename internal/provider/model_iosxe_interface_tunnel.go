@@ -1219,7 +1219,7 @@ func (data *InterfaceTunnel) updateFromBodyXML(ctx context.Context, res xmldot.R
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/load-interval"); value.Exists() && !data.LoadInterval.IsNull() {
 		data.LoadInterval = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.LoadInterval.IsNull() || data.LoadInterval.ValueInt64() != 300 {
 		data.LoadInterval = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-snmp:snmp/trap/link-status"); !data.SnmpTrapLinkStatus.IsNull() {
@@ -1243,7 +1243,7 @@ func (data *InterfaceTunnel) updateFromBodyXML(ctx context.Context, res xmldot.R
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/version"); value.Exists() && !data.IpIgmpVersion.IsNull() {
 		data.IpIgmpVersion = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.IpIgmpVersion.IsNull() || data.IpIgmpVersion.ValueInt64() != 2 {
 		data.IpIgmpVersion = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/router/Cisco-IOS-XE-isis:isis/tag"); value.Exists() && !data.IpRouterIsis.IsNull() {
@@ -1349,12 +1349,12 @@ func (data *InterfaceTunnel) updateFromBodyXML(ctx context.Context, res xmldot.R
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-tunnel:tunnel/bandwidth/transmit"); value.Exists() && !data.TunnelBandwidthTransmit.IsNull() {
 		data.TunnelBandwidthTransmit = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.TunnelBandwidthTransmit.IsNull() || data.TunnelBandwidthTransmit.ValueInt64() != 8000 {
 		data.TunnelBandwidthTransmit = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-tunnel:tunnel/bandwidth/receive"); value.Exists() && !data.TunnelBandwidthReceive.IsNull() {
 		data.TunnelBandwidthReceive = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.TunnelBandwidthReceive.IsNull() || data.TunnelBandwidthReceive.ValueInt64() != 8000 {
 		data.TunnelBandwidthReceive = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-policy:service-policy/input"); value.Exists() && !data.ServicePolicyInput.IsNull() {

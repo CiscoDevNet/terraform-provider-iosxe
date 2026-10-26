@@ -154,7 +154,7 @@ func (data *InterfacePIMIPv6) updateFromBodyXML(ctx context.Context, res xmldot.
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:pim-container/dr-priority"); value.Exists() && !data.DrPriority.IsNull() {
 		data.DrPriority = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.DrPriority.IsNull() || data.DrPriority.ValueInt64() != 1 {
 		data.DrPriority = types.Int64Null()
 	}
 }

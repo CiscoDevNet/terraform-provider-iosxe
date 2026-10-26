@@ -326,7 +326,7 @@ func (data *CTS) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-cts:sxp/retry/period"); value.Exists() && !data.SxpRetryPeriod.IsNull() {
 		data.SxpRetryPeriod = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.SxpRetryPeriod.IsNull() || data.SxpRetryPeriod.ValueInt64() != 120 {
 		data.SxpRetryPeriod = types.Int64Null()
 	}
 	for i := range data.SxpConnectionPeersIpv4 {
@@ -369,17 +369,17 @@ func (data *CTS) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		}
 		if value := helpers.GetFromXPath(r, "option"); value.Exists() && !data.SxpConnectionPeersIpv4[i].Option.IsNull() {
 			data.SxpConnectionPeersIpv4[i].Option = types.StringValue(value.String())
-		} else {
+		} else if value.Exists() || !r.Exists() || data.SxpConnectionPeersIpv4[i].Option.ValueString() != "speaker" {
 			data.SxpConnectionPeersIpv4[i].Option = types.StringNull()
 		}
 		if value := helpers.GetFromXPath(r, "hold-time"); value.Exists() && !data.SxpConnectionPeersIpv4[i].HoldTime.IsNull() {
 			data.SxpConnectionPeersIpv4[i].HoldTime = types.Int64Value(value.Int())
-		} else {
+		} else if value.Exists() || !r.Exists() || data.SxpConnectionPeersIpv4[i].HoldTime.IsNull() || data.SxpConnectionPeersIpv4[i].HoldTime.ValueInt64() != 0 {
 			data.SxpConnectionPeersIpv4[i].HoldTime = types.Int64Null()
 		}
 		if value := helpers.GetFromXPath(r, "max-time"); value.Exists() && !data.SxpConnectionPeersIpv4[i].MaxTime.IsNull() {
 			data.SxpConnectionPeersIpv4[i].MaxTime = types.Int64Value(value.Int())
-		} else {
+		} else if value.Exists() || !r.Exists() || data.SxpConnectionPeersIpv4[i].MaxTime.IsNull() || data.SxpConnectionPeersIpv4[i].MaxTime.ValueInt64() != 0 {
 			data.SxpConnectionPeersIpv4[i].MaxTime = types.Int64Null()
 		}
 	}
@@ -428,33 +428,33 @@ func (data *CTS) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		}
 		if value := helpers.GetFromXPath(r, "option"); value.Exists() && !data.SxpConnectionPeersIpv4Vrf[i].Option.IsNull() {
 			data.SxpConnectionPeersIpv4Vrf[i].Option = types.StringValue(value.String())
-		} else {
+		} else if value.Exists() || !r.Exists() || data.SxpConnectionPeersIpv4Vrf[i].Option.ValueString() != "speaker" {
 			data.SxpConnectionPeersIpv4Vrf[i].Option = types.StringNull()
 		}
 		if value := helpers.GetFromXPath(r, "hold-time"); value.Exists() && !data.SxpConnectionPeersIpv4Vrf[i].HoldTime.IsNull() {
 			data.SxpConnectionPeersIpv4Vrf[i].HoldTime = types.Int64Value(value.Int())
-		} else {
+		} else if value.Exists() || !r.Exists() || data.SxpConnectionPeersIpv4Vrf[i].HoldTime.IsNull() || data.SxpConnectionPeersIpv4Vrf[i].HoldTime.ValueInt64() != 0 {
 			data.SxpConnectionPeersIpv4Vrf[i].HoldTime = types.Int64Null()
 		}
 		if value := helpers.GetFromXPath(r, "max-time"); value.Exists() && !data.SxpConnectionPeersIpv4Vrf[i].MaxTime.IsNull() {
 			data.SxpConnectionPeersIpv4Vrf[i].MaxTime = types.Int64Value(value.Int())
-		} else {
+		} else if value.Exists() || !r.Exists() || data.SxpConnectionPeersIpv4Vrf[i].MaxTime.IsNull() || data.SxpConnectionPeersIpv4Vrf[i].MaxTime.ValueInt64() != 0 {
 			data.SxpConnectionPeersIpv4Vrf[i].MaxTime = types.Int64Null()
 		}
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-cts:sxp/speaker/hold-time"); value.Exists() && !data.SxpSpeakerHoldTime.IsNull() {
 		data.SxpSpeakerHoldTime = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.SxpSpeakerHoldTime.IsNull() || data.SxpSpeakerHoldTime.ValueInt64() != 120 {
 		data.SxpSpeakerHoldTime = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-cts:sxp/listener/hold-time/min-time"); value.Exists() && !data.SxpListenerHoldMinTime.IsNull() {
 		data.SxpListenerHoldMinTime = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.SxpListenerHoldMinTime.IsNull() || data.SxpListenerHoldMinTime.ValueInt64() != 90 {
 		data.SxpListenerHoldMinTime = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-cts:sxp/listener/hold-time/max-time"); value.Exists() && !data.SxpListenerHoldMaxTime.IsNull() {
 		data.SxpListenerHoldMaxTime = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.SxpListenerHoldMaxTime.IsNull() || data.SxpListenerHoldMaxTime.ValueInt64() != 180 {
 		data.SxpListenerHoldMaxTime = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-cts:role-based/enforcement-only/enforcement"); !data.RoleBasedEnforcement.IsNull() {

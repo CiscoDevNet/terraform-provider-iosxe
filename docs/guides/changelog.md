@@ -9,6 +9,7 @@ description: |-
 
 ## Unreleased
 
+- Fix perpetual diffs on String and Int64 attributes explicitly configured to their YANG default value: devices omit such leaves from get-config, which previously cleared the attribute from state on every refresh. When a leaf is absent and the value in state equals the leaf's YANG default, the state value is now kept (applies provider-wide, including nested list items; import is unchanged)
 - Add `iosxe_voice_register_global` resource and data source for `voice register global` (max-dn, max-pool, system message, secure security-policy).
 - Add `iosxe_voice_register_pool` resource and data source for `voice register pool`, covering network device identity, call-forward (B2BUA), DTMF relay, CoR lists, and translation-profile bindings.
 - Add `iosxe_voice_class_tenant` resource and data source for `voice class tenant`, including SIP registrar options (primary/secondary registrar, expires, scheme and `refresh-ratio`), registration credentials, and digest authentication. Password attributes expose the companion encryption-type (`0`/`6`/`7`) so type-6 secrets import and re-apply correctly.

@@ -193,7 +193,7 @@ func (data *BGP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/bgp/update-delay"); value.Exists() && !data.BgpUpdateDelay.IsNull() {
 		data.BgpUpdateDelay = types.Int64Value(value.Int())
-	} else {
+	} else if value.Exists() || data.BgpUpdateDelay.IsNull() || data.BgpUpdateDelay.ValueInt64() != 120 {
 		data.BgpUpdateDelay = types.Int64Null()
 	}
 }
