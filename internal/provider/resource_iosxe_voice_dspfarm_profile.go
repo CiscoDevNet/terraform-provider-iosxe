@@ -103,6 +103,9 @@ func (r *VoiceDSPFarmProfileResource) Schema(ctx context.Context, req resource.S
 				Validators: []validator.String{
 					stringvalidator.OneOf("conference", "mtp", "transcode"),
 				},
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
 			},
 			"universal": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Configure the transcode universal profile type").String,
