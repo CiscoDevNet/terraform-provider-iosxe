@@ -4,8 +4,9 @@ path: /Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:dspfarm/profile[id=%v]
 doc_category: Voice
 res_description: "This resource can manage the DSPFarm Profile configuration. Note: IOS-XE refuses to delete a dspfarm profile that is active; set `shutdown = true` before destroying the resource (or remove `no shutdown` on the device first), otherwise the delete fails with `inconsistent value: Device refused one or more commands`. Verified on a C8300 (17.18.03a) with a PVDM4 DSP module."
 ds_description: "This data source can read the DSPFarm Profile configuration."
-# Requires DSP resources; gate acceptance tests behind the TDM env var.
-test_tags: [TDM]
+# A profile can be created (left in shutdown) without DSP resources, so the test
+# runs on the C8000V; activating it (`shutdown = false`) needs DSPs.
+test_tags: [C8000V]
 attributes:
   - yang_name: id
     tf_name: tag

@@ -32,8 +32,8 @@ import (
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSource
 
 func TestAccDataSourceIosxeVoiceDSPFarmProfile(t *testing.T) {
-	if os.Getenv("TDM") == "" {
-		t.Skip("skipping test, set environment variable TDM")
+	if os.Getenv("C8000V") == "" {
+		t.Skip("skipping test, set environment variable C8000V")
 	}
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_voice_dspfarm_profile.test", "type", "transcode"))
