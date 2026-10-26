@@ -1,0 +1,136 @@
+---
+name: Voice Register Pool
+path: /Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:voice/register/pool[pool-tag=%v]
+doc_category: Voice
+# CUBE/SRST is a router feature; a switch rejects voice register config.
+test_tags: [C8000V]
+# A pool has a YANG `when "../global and ../global/max-pool"`, so
+# `voice register global` with `max-pool` must exist before any pool.
+test_prerequisites:
+  - path: /Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:voice/register/global
+    attributes:
+      - name: max-pool
+        value: 10
+  - path: /Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:dial-peer/cor/list[id=WxC-DefaultPermissions]
+    attributes:
+      - name: id
+        value: WxC-DefaultPermissions
+  - path: /Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:voice/class/codec[codec-tag=1]
+    attributes:
+      - name: codec-tag
+        value: 1
+    lists:
+      - name: codec/preference
+        key: preference-tag
+        items:
+          - attributes:
+              - name: preference-tag
+                value: 1
+              - name: codec-type
+                value: g711ulaw
+  - path: /Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:voice/class/srtp-crypto[id=1]
+    attributes:
+      - name: id
+        value: 1
+  - path: /Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:voice/translation-profile[id=PSTN-IN]
+    attributes:
+      - name: id
+        value: PSTN-IN
+  - path: /Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:voice/translation-profile[id=PSTN-OUT]
+    attributes:
+      - name: id
+        value: PSTN-OUT
+attributes:
+  - yang_name: pool-tag
+    tf_name: tag
+    id: true
+    example: 1
+  # --- Device / phone identity (network match) ---
+  - yang_name: id/network/ipaddress/ipv4/ipv4address/address
+    xpath: id/network/ipv4address/address
+    tf_name: id_network_address
+    example: 192.0.2.0
+  - yang_name: id/network/ipaddress/ipv4/ipv4address/mask
+    xpath: id/network/ipv4address/mask
+    tf_name: id_network_mask
+    example: 255.255.255.0
+  # --- Call forward (B2BUA) ---
+  - yang_name: call-forward/b2bua/all
+    tf_name: call_forward_b2bua_all
+    example: "1001"
+  - yang_name: call-forward/b2bua/busy
+    tf_name: call_forward_b2bua_busy
+    example: "1001"
+  - yang_name: call-forward/b2bua/mailbox
+    tf_name: call_forward_b2bua_mailbox
+    example: "1001"
+  - yang_name: call-forward/b2bua/noan-config/noan
+    tf_name: call_forward_b2bua_noan
+    example: "1001"
+  - yang_name: call-forward/b2bua/noan-config/timeout
+    tf_name: call_forward_b2bua_noan_timeout
+    example: 20
+  # --- Voice class references ---
+  - yang_name: voice-class/codec
+    tf_name: voice_class_codec
+    type: Int64
+    example: 1
+  - yang_name: voice-class/srtp-crypto
+    tf_name: voice_class_srtp_crypto
+    type: Int64
+    example: 1
+  # --- DTMF relay ---
+  - yang_name: dtmf-relay/rtp-nte
+    tf_name: dtmf_relay_rtp_nte
+    example: true
+  - yang_name: dtmf-relay/sip-kpml
+    tf_name: dtmf_relay_sip_kpml
+    example: true
+  - yang_name: dtmf-relay/sip-notify
+    tf_name: dtmf_relay_sip_notify
+    example: true
+  # --- Class of Restriction (references dial-peer cor lists) ---
+  # `name` is a leafref to a `dial-peer cor list` (test prerequisite).
+  # lowerbound/hyphen/upperbound express a number range (`when id != 'default'`),
+  # so the test uses `default` for incoming and a 1..20 tag with a range for
+  # outgoing. The device only keeps cor entries once the pool has an `id`.
+  - yang_name: cor/incoming
+    tf_name: cor_incoming
+    type: List
+    attributes:
+      - yang_name: id
+        id: true
+        example: default
+      - yang_name: name
+        example: WxC-DefaultPermissions
+      - yang_name: lowerbound
+        exclude_test: true
+        example: "1000"
+      - yang_name: hyphen
+        exclude_test: true
+        example: "-"
+      - yang_name: upperbound
+        exclude_test: true
+        example: "1999"
+  - yang_name: cor/outgoing
+    tf_name: cor_outgoing
+    type: List
+    attributes:
+      - yang_name: id
+        id: true
+        example: "1"
+      - yang_name: name
+        example: WxC-DefaultPermissions
+      - yang_name: lowerbound
+        example: "1000"
+      - yang_name: hyphen
+        example: "-"
+      - yang_name: upperbound
+        example: "1999"
+  # --- Translation profiles ---
+  - yang_name: translation-profile/incoming
+    tf_name: translation_profile_incoming
+    example: PSTN-IN
+  - yang_name: translation-profile/outgoing
+    tf_name: translation_profile_outgoing
+    example: PSTN-OUT

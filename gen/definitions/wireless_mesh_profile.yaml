@@ -1,0 +1,46 @@
+---
+name: Wireless Mesh Profile
+path: /Cisco-IOS-XE-wireless-mesh-cfg:mesh-cfg-data/mesh-profiles/mesh-profile[profile-name=%s]
+no_delete_attributes: true
+doc_category: Wireless
+test_tags: [C9800]
+builtin_objects:
+  - default-mesh-profile
+attributes:
+  - yang_name: profile-name
+    tf_name: profile_name
+    id: true
+    example: S1-MESH-OUTDOOR
+    type: String
+  - yang_name: description
+    tf_name: description
+    type: String
+    example: Outdoor mesh profile
+  - yang_name: conv-method
+    tf_name: convergence_method
+    type: String
+    enum_values:
+      - mesh-convergence-standard
+      - mesh-convergence-fast
+      - mesh-convergence-veryfast
+      - mesh-convergence-noise-tolerant-fast
+    example: mesh-convergence-fast
+  - yang_name: multicast-mode
+    tf_name: multicast_mode
+    type: String
+    enum_values:
+      - mesh-multicast-mode-regular
+      - mesh-multicast-mode-in
+      - mesh-multicast-mode-inout
+    example: mesh-multicast-mode-in
+  - yang_name: range
+    tf_name: range
+    type: Int64
+    example: 20000
+  - yang_name: security-mode
+    tf_name: security_mode
+    type: String
+    enum_values:
+      - mesh-security-mode-eap
+      - mesh-security-mode-psk
+    example: mesh-security-mode-psk

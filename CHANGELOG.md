@@ -1,5 +1,23 @@
 ## Unreleased
 
+- Add `iosxe_voice_register_global` resource and data source for `voice register global` (max-dn, max-pool, system message, secure security-policy).
+- Add `iosxe_voice_register_pool` resource and data source for `voice register pool`, covering network device identity, call-forward (B2BUA), DTMF relay, CoR lists, and translation-profile bindings.
+- Add `iosxe_voice_class_tenant` resource and data source for `voice class tenant`, including SIP registrar options (primary/secondary registrar, expires, scheme and `refresh-ratio`), registration credentials, and digest authentication. Password attributes expose the companion encryption-type (`0`/`6`/`7`) so type-6 secrets import and re-apply correctly.
+- Add `iosxe_dial_peer_voice` resource and data source for `dial-peer voice`, covering session protocol/target, codec, destination pattern, VAD, SRTP, and translation-profile bindings.
+- Add `iosxe_voice_translation_rule` resource and data source for `voice translation-rule`.
+- Add `iosxe_voice_translation_profile` resource and data source for `voice translation-profile`.
+- Add `iosxe_voice_class_codec` resource and data source for `voice class codec` codec preference lists
+- Add `iosxe_voice_class_dpg` resource and data source for `voice class dpg` dial-peer groups
+- Add `iosxe_voice_class_server_group` resource and data source for `voice class server-group` SIP server groups
+- Add `iosxe_voice_class_e164_pattern_map` resource and data source for `voice class e164-pattern-map` E.164 pattern maps
+- Add `iosxe_voice_class_uri` resource and data source for `voice class uri` inbound/outbound URI classification
+- Add `iosxe_voice_class_media` resource and data source for `voice class media` media policies
+- Add `iosxe_voice_class_stun_usage` resource and data source for `voice class stun-usage` (ICE / firewall-traversal)
+- Add `iosxe_voice_class_sip_options_keepalive` resource and data source for `voice class sip-options-keepalive` dial-peer monitoring
+- Add `iosxe_voice_class_sip_profiles` resource and data source for `voice class sip-profiles` SIP/SDP header normalization rules (request/response header modify, add, remove, copy)
+- Add `iosxe_voice_class_sip_hdr_passthrulist` resource and data source for `voice class sip-hdr-passthrulist` pass-through header lists
+- Add `iosxe_voice_class_sip_copylist` resource and data source for `voice class sip-copylist` header copy lists
+- Add `iosxe_voice_class_sip_event_list` resource and data source for `voice class sip-event-list` SIP event lists
 - Add `iosxe_voice_class_tls_profile` resource and data source for `voice class tls-profile` (trustpoint, cipher list, SNI, CN/SAN validation) used by CUBE SIP-TLS
 - Add `iosxe_voice_class_srtp_crypto` resource and data source for `voice class srtp-crypto` cipher-suite preference lists
 - Add `iosxe_voice_class_tls_cipher` resource and data source for `voice class tls-cipher` cipher lists referenced by `voice class tls-profile`
@@ -19,6 +37,7 @@
 - Add `iosxe_wireless_rf_tag` resource and data source for C9800 RF tags mapping 2.4 GHz, 5 GHz, and 6 GHz RF profiles
 - Add `iosxe_wireless_site_tag` resource and data source
 - Add `iosxe_wireless_flex_profile` resource and data source for C9800 FlexConnect profiles, including description, native VLAN, ARP caching, fallback radio shut, AP image predownload, VLAN name to VLAN ID mappings and policy ACLs. `default-flex-profile` is treated as a built-in object: destroying it removes only the configured attributes and leaves the profile in place
+- Add `iosxe_wireless_mesh_profile` resource and data source for C9800 mesh profiles, including description, convergence method, multicast mode, range and security mode. `default-mesh-profile` is treated as a built-in object: destroying it removes only the configured attributes and leaves the profile in place
 - Add wireless YANG model support (wlan, rf, site, flex, mesh, general, ap profiles)
 - Add `iosxe_wireless_wlan_profile` resource and data source for managing C9800 WLAN profiles
 - Add `iosxe_wireless_rf_profile` resource and data source
