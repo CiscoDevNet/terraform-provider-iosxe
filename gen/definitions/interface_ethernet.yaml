@@ -655,6 +655,45 @@ attributes:
     tf_name: zone_member_security
     example: INSIDE
     exclude_test: true
+  # --- RG redundancy (CUBE HA: redundancy rii / group ip <VIP> exclusive) ---
+  # Single-interface settings, but they can't run inside the combined interface
+  # acceptance test: the virtual IP must sit in the interface subnet, which
+  # collides with the ipv4_address the _all config already sets, and exercising
+  # a box-to-box RG virtual IP on the shared test interface destabilizes it.
+  # Validated out of band over NETCONF instead (see PR notes).
+  - yang_name: redundancy/rii/id
+    tf_name: redundancy_rii_id
+    exclude_test: true
+    example: 1
+  - yang_name: redundancy/group
+    tf_name: redundancy_groups
+    type: List
+    exclude_test: true
+    attributes:
+      - yang_name: id
+        tf_name: group_id
+        id: true
+        example: 1
+      - yang_name: rg-choice/ip-case/virtual-ip
+        xpath: virtual-ip
+        tf_name: virtual_ips
+        type: List
+        attributes:
+          # The YANG key allows ip or ipv6, each with its own when-gated address
+          # container. Only the IPv4 VIP is modeled, so restrict the key to ip
+          # until the ipv6-address leaves are added.
+          - yang_name: ip-family
+            tf_name: ip_family
+            id: true
+            enum_values:
+              - ip
+            example: ip
+          - yang_name: ipv4-address/ip
+            tf_name: ipv4_address
+            example: 192.0.2.10
+          - yang_name: ipv4-address/exclusive
+            tf_name: exclusive
+            example: true
 
 test_prerequisites:
   - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]

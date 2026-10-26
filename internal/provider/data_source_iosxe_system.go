@@ -759,6 +759,18 @@ func (d *SystemDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 							MarkdownDescription: "Reachability",
 							Computed:            true,
 						},
+						"interface_name": schema.StringAttribute{
+							MarkdownDescription: "Interface name to track",
+							Computed:            true,
+						},
+						"interface_protocol": schema.StringAttribute{
+							MarkdownDescription: "Tracking protocol. `ip` and `ipv6` require `interface_routing = true`; IOS-XE rejects them on their own.",
+							Computed:            true,
+						},
+						"interface_routing": schema.BoolAttribute{
+							MarkdownDescription: "Track interface IP or IPv6 routing capability. Only valid when `interface_protocol` is `ip` or `ipv6`.",
+							Computed:            true,
+						},
 					},
 				},
 			},

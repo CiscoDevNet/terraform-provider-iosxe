@@ -6,12 +6,14 @@ skip_minimum_test: true
 attributes:
   - yang_name: id
     tf_name: asn
+    normalize_asn: true
     example: 65000
   - yang_name: name
     yang_scope: peer-session
     tf_name: template_name
     example: PEER_SESSION_TEMPLATE_1
   - yang_name: remote-as
+    normalize_asn: true
     example: 65001
   - yang_name: description
     example: Peer Session Template Description
