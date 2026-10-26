@@ -69,7 +69,7 @@ Optional:
 
 Required:
 
-- `profile_id` (String) Set the profile ID to be associated with this CCM group
+- `profile_id` (Number) Set the profile ID to be associated with this CCM group
 
 Optional:
 

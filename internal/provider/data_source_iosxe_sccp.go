@@ -130,7 +130,7 @@ func (d *SCCPDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 							Computed:            true,
 							NestedObject: schema.NestedAttributeObject{
 								Attributes: map[string]schema.Attribute{
-									"profile_id": schema.StringAttribute{
+									"profile_id": schema.Int64Attribute{
 										MarkdownDescription: "Set the profile ID to be associated with this CCM group",
 										Computed:            true,
 									},

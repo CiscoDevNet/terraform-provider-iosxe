@@ -61,7 +61,7 @@ type SCCPCcmGroupsAssociateCcm struct {
 	Priority types.Int64 `tfsdk:"priority"`
 }
 type SCCPCcmGroupsAssociateProfiles struct {
-	ProfileId types.String `tfsdk:"profile_id"`
+	ProfileId types.Int64  `tfsdk:"profile_id"`
 	Register  types.String `tfsdk:"register"`
 }
 
@@ -89,7 +89,7 @@ type SCCPCcmGroupsAssociateCcmData struct {
 	Priority types.Int64 `tfsdk:"priority"`
 }
 type SCCPCcmGroupsAssociateProfilesData struct {
-	ProfileId types.String `tfsdk:"profile_id"`
+	ProfileId types.Int64  `tfsdk:"profile_id"`
 	Register  types.String `tfsdk:"register"`
 }
 
@@ -178,7 +178,7 @@ func (data SCCP) addToBodyXML(ctx context.Context, config SCCP, body netconf.Bod
 				for _, citem := range item.AssociateProfiles {
 					ccBody := netconf.Body{}
 					if !citem.ProfileId.IsNull() && !citem.ProfileId.IsUnknown() {
-						ccBody = helpers.SetFromXPath(ccBody, "id", citem.ProfileId.ValueString())
+						ccBody = helpers.SetFromXPath(ccBody, "id", strconv.FormatInt(citem.ProfileId.ValueInt64(), 10))
 					}
 					if !citem.Register.IsNull() && !citem.Register.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "register", citem.Register.ValueString())
@@ -315,7 +315,7 @@ func (data *SCCP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		}
 		for ci := range data.CcmGroups[i].AssociateProfiles {
 			keys := [...]string{"id"}
-			keyValues := [...]string{data.CcmGroups[i].AssociateProfiles[ci].ProfileId.ValueString()}
+			keyValues := [...]string{strconv.FormatInt(data.CcmGroups[i].AssociateProfiles[ci].ProfileId.ValueInt64(), 10)}
 
 			var cr xmldot.Result
 			helpers.GetFromXPath(r, "associate/profile").ForEach(
@@ -337,9 +337,9 @@ func (data *SCCP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 				},
 			)
 			if value := helpers.GetFromXPath(cr, "id"); value.Exists() && !data.CcmGroups[i].AssociateProfiles[ci].ProfileId.IsNull() {
-				data.CcmGroups[i].AssociateProfiles[ci].ProfileId = types.StringValue(value.String())
+				data.CcmGroups[i].AssociateProfiles[ci].ProfileId = types.Int64Value(value.Int())
 			} else {
-				data.CcmGroups[i].AssociateProfiles[ci].ProfileId = types.StringNull()
+				data.CcmGroups[i].AssociateProfiles[ci].ProfileId = types.Int64Null()
 			}
 			if value := helpers.GetFromXPath(cr, "register"); value.Exists() && !data.CcmGroups[i].AssociateProfiles[ci].Register.IsNull() {
 				data.CcmGroups[i].AssociateProfiles[ci].Register = types.StringValue(value.String())
@@ -407,7 +407,7 @@ func (data *SCCP) fromBodyXML(ctx context.Context, res xmldot.Result) {
 				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
 					cItem := SCCPCcmGroupsAssociateProfiles{}
 					if ccValue := helpers.GetFromXPath(cv, "id"); ccValue.Exists() {
-						cItem.ProfileId = types.StringValue(ccValue.String())
+						cItem.ProfileId = types.Int64Value(ccValue.Int())
 					}
 					if ccValue := helpers.GetFromXPath(cv, "register"); ccValue.Exists() {
 						cItem.Register = types.StringValue(ccValue.String())
@@ -479,7 +479,7 @@ func (data *SCCPData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
 					cItem := SCCPCcmGroupsAssociateProfilesData{}
 					if ccValue := helpers.GetFromXPath(cv, "id"); ccValue.Exists() {
-						cItem.ProfileId = types.StringValue(ccValue.String())
+						cItem.ProfileId = types.Int64Value(ccValue.Int())
 					}
 					if ccValue := helpers.GetFromXPath(cv, "register"); ccValue.Exists() {
 						cItem.Register = types.StringValue(ccValue.String())
@@ -525,14 +525,14 @@ func (data *SCCP) addDeletedItemsXML(ctx context.Context, state SCCP, body strin
 			if found {
 				for ci := range state.CcmGroups[i].AssociateProfiles {
 					cstateKeys := [...]string{"id"}
-					cstateKeyValues := [...]string{state.CcmGroups[i].AssociateProfiles[ci].ProfileId.ValueString()}
+					cstateKeyValues := [...]string{strconv.FormatInt(state.CcmGroups[i].AssociateProfiles[ci].ProfileId.ValueInt64(), 10)}
 					cpredicates := ""
 					for i := range cstateKeys {
 						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
 					}
 
 					cemptyKeys := true
-					if !reflect.ValueOf(state.CcmGroups[i].AssociateProfiles[ci].ProfileId.ValueString()).IsZero() {
+					if !reflect.ValueOf(state.CcmGroups[i].AssociateProfiles[ci].ProfileId.ValueInt64()).IsZero() {
 						cemptyKeys = false
 					}
 					if cemptyKeys {
@@ -542,7 +542,7 @@ func (data *SCCP) addDeletedItemsXML(ctx context.Context, state SCCP, body strin
 					found := false
 					for cj := range data.CcmGroups[j].AssociateProfiles {
 						found = true
-						if state.CcmGroups[i].AssociateProfiles[ci].ProfileId.ValueString() != data.CcmGroups[j].AssociateProfiles[cj].ProfileId.ValueString() {
+						if state.CcmGroups[i].AssociateProfiles[ci].ProfileId.ValueInt64() != data.CcmGroups[j].AssociateProfiles[cj].ProfileId.ValueInt64() {
 							found = false
 						}
 						if found {

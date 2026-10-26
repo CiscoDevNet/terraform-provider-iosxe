@@ -54,6 +54,7 @@ attributes:
         attributes:
           - yang_name: id
             tf_name: profile_id
+            type: Int64
             id: true
             example: 1
           - yang_name: register

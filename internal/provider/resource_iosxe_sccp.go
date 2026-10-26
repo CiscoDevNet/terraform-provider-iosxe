@@ -165,7 +165,7 @@ func (r *SCCPResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 							Optional:            true,
 							NestedObject: schema.NestedAttributeObject{
 								Attributes: map[string]schema.Attribute{
-									"profile_id": schema.StringAttribute{
+									"profile_id": schema.Int64Attribute{
 										MarkdownDescription: helpers.NewAttributeDescription("Set the profile ID to be associated with this CCM group").String,
 										Required:            true,
 									},

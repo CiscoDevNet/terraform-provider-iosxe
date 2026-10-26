@@ -56,7 +56,7 @@ Read-Only:
 
 Read-Only:
 
-- `profile_id` (String) Set the profile ID to be associated with this CCM group
+- `profile_id` (Number) Set the profile ID to be associated with this CCM group
 - `register` (String) Configure the name of this profile to be registered
 
 
