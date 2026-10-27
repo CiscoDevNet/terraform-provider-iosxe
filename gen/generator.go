@@ -354,17 +354,41 @@ func Add(a, b int) int {
 	return a + b
 }
 
+// isTestChecked reports whether the generated resource test asserts the value of attr (and, for
+// a List or Set, descends into its children). It mirrors the attribute filter in
+// gen/templates/resource_test.go; at nested levels the template does not filter on reference, so
+// this is at least as strict as the template at every level.
+func isTestChecked(attr YamlConfigAttribute) bool {
+	return !attr.Reference && !attr.WriteOnly && !attr.ExcludeTest && attr.XPath != "" &&
+		attr.Type != "StringSet" && attr.Type != "Int64Set"
+}
+
+// NormalizeIPv6ImportCheck reports whether attr is verified after import by the normalized
+// ImportStateCheck rather than by ImportStateVerify. normalize_ipv6 attributes are imported in
+// the device form, which can differ from the configured form in case or compression. Both the
+// importIPv6Checks entries in gen/templates/resource_test.go and the normalize_ipv6 exclusions in
+// GetImportExcludes are gated on this function, so an attribute is never excluded from
+// ImportStateVerify without also being checked. An attribute for which it returns false stays in
+// ImportStateVerify.
+func NormalizeIPv6ImportCheck(attr YamlConfigAttribute) bool {
+	return attr.NormalizeIPv6 && isTestChecked(attr)
+}
+
 // GetImportExcludes returns a list of attributes to exclude from import testing
 func GetImportExcludes(attributes []YamlConfigAttribute) []string {
+	return getImportExcludes(attributes, true)
+}
+
+// getImportExcludes implements GetImportExcludes. parentChecked is false below a List or Set the
+// resource test does not check, where no normalized import check is emitted either.
+func getImportExcludes(attributes []YamlConfigAttribute, parentChecked bool) []string {
 	var excludes []string
 	for _, attr := range attributes {
-		// normalize_ipv6 attributes are imported in the device form, which can differ from the
-		// configured form in case or compression. They are verified by a normalized ImportStateCheck instead.
-		if ((attr.TypeYangBool == "empty" || attr.TypeYangBool == "presence") && (attr.ExcludeTest || len(attr.TestTags) > 0)) || attr.AllowImportChanges || attr.NormalizeIPv6 {
+		if ((attr.TypeYangBool == "empty" || attr.TypeYangBool == "presence") && (attr.ExcludeTest || len(attr.TestTags) > 0)) || attr.AllowImportChanges || (parentChecked && NormalizeIPv6ImportCheck(attr)) {
 			excludes = append(excludes, attr.TfName)
 		}
 		if len(attr.Attributes) > 0 {
-			ca := GetImportExcludes(attr.Attributes)
+			ca := getImportExcludes(attr.Attributes, parentChecked && isTestChecked(attr))
 			for _, c := range ca {
 				excludes = append(excludes, attr.TfName+".0."+c)
 			}
@@ -670,6 +694,7 @@ var functions = template.FuncMap{
 	"hasSensitiveAttr":         HasSensitiveAttr,
 	"add":                      Add,
 	"getImportExcludes":        GetImportExcludes,
+	"normalizeIPv6ImportCheck": NormalizeIPv6ImportCheck,
 	"importAttributes":         ImportAttributes,
 	"getDeletePath":            GetDeletePath,
 	"reverseAttributes":        ReverseAttributes,

@@ -63,13 +63,13 @@ func TestAccIosxe{{camelCase .Name}}(t *testing.T) {
 	{{- if len .TestTags}}
 	if {{range $i, $e := .TestTags}}{{if $i}} || {{end}}os.Getenv("{{$e}}") != ""{{end}} {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_{{snakeCase $name}}.test", "{{$list}}.0.{{$clist}}.0.{{.TfName}}{{if or (eq .Type "StringList") (eq .Type "Int64List")}}.0{{end}}", "{{.Example}}"))
-		{{- if .NormalizeIPv6}}
+		{{- if normalizeIPv6ImportCheck .}}
 		importIPv6Checks["{{$list}}.0.{{$clist}}.0.{{.TfName}}{{if or (eq .Type "StringList") (eq .Type "Int64List")}}.0{{end}}"] = "{{.Example}}"
 		{{- end}}
 	}
 	{{- else}}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_{{snakeCase $name}}.test", "{{$list}}.0.{{$clist}}.0.{{.TfName}}{{if or (eq .Type "StringList") (eq .Type "Int64List")}}.0{{end}}", "{{.Example}}"))
-	{{- if .NormalizeIPv6}}
+	{{- if normalizeIPv6ImportCheck .}}
 	importIPv6Checks["{{$list}}.0.{{$clist}}.0.{{.TfName}}{{if or (eq .Type "StringList") (eq .Type "Int64List")}}.0{{end}}"] = "{{.Example}}"
 	{{- end}}
 	{{- end}}
@@ -82,13 +82,13 @@ func TestAccIosxe{{camelCase .Name}}(t *testing.T) {
 	{{- if len .TestTags}}
 	if {{range $i, $e := .TestTags}}{{if $i}} || {{end}}os.Getenv("{{$e}}") != ""{{end}} {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_{{snakeCase $name}}.test", "{{$list}}.0.{{.TfName}}{{if or (eq .Type "StringList") (eq .Type "Int64List")}}.0{{end}}", "{{.Example}}"))
-		{{- if .NormalizeIPv6}}
+		{{- if normalizeIPv6ImportCheck .}}
 		importIPv6Checks["{{$list}}.0.{{.TfName}}{{if or (eq .Type "StringList") (eq .Type "Int64List")}}.0{{end}}"] = "{{.Example}}"
 		{{- end}}
 	}
 	{{- else}}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_{{snakeCase $name}}.test", "{{$list}}.0.{{.TfName}}{{if or (eq .Type "StringList") (eq .Type "Int64List")}}.0{{end}}", "{{.Example}}"))
-	{{- if .NormalizeIPv6}}
+	{{- if normalizeIPv6ImportCheck .}}
 	importIPv6Checks["{{$list}}.0.{{.TfName}}{{if or (eq .Type "StringList") (eq .Type "Int64List")}}.0{{end}}"] = "{{.Example}}"
 	{{- end}}
 	{{- end}}
@@ -102,13 +102,13 @@ func TestAccIosxe{{camelCase .Name}}(t *testing.T) {
 	{{- if len .TestTags}}
 	if {{range $i, $e := .TestTags}}{{if $i}} || {{end}}os.Getenv("{{$e}}") != ""{{end}} {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_{{snakeCase $name}}.test", "{{.TfName}}{{if or (eq .Type "StringList") (eq .Type "Int64List")}}.0{{end}}", "{{.Example}}"))
-		{{- if .NormalizeIPv6}}
+		{{- if normalizeIPv6ImportCheck .}}
 		importIPv6Checks["{{.TfName}}{{if or (eq .Type "StringList") (eq .Type "Int64List")}}.0{{end}}"] = "{{.Example}}"
 		{{- end}}
 	}
 	{{- else}}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_{{snakeCase $name}}.test", "{{.TfName}}{{if or (eq .Type "StringList") (eq .Type "Int64List")}}.0{{end}}", "{{.Example}}"))
-	{{- if .NormalizeIPv6}}
+	{{- if normalizeIPv6ImportCheck .}}
 	importIPv6Checks["{{.TfName}}{{if or (eq .Type "StringList") (eq .Type "Int64List")}}.0{{end}}"] = "{{.Example}}"
 	{{- end}}
 	{{- end}}

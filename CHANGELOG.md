@@ -9,7 +9,6 @@
 - Add `iosxe_controller` resource and data source for `controller` T1/E1, including T1 `tx-framing` and E1 `e1-framing` and PRI group timeslots.
 - Add `iosxe_redundancy_application_group` resource and data source for `redundancy application redundancy group` (RG inter-chassis HA), including priority/failover, timers, control/data interfaces, preempt, and tracked-object decrements.
 - Add RG redundancy attributes (`redundancy rii` and `redundancy group` virtual-IP) to the `iosxe_interface_ethernet` resource and data source.
-- Fix `normalize_ipv6` attributes not being normalized when read back from the device: a refresh now keeps the configured value when the device returns the same address in a different case or compression (including list key matching), which prevents perpetual diffs and replacements, and generated data source and import tests compare these attributes by normalized value
 - Add `iosxe_voice_register_global` resource and data source for `voice register global` (max-dn, max-pool, system message, secure security-policy).
 - Add `iosxe_voice_register_pool` resource and data source for `voice register pool`, covering network device identity, call-forward (B2BUA), DTMF relay, CoR lists, and translation-profile bindings.
 - Add `iosxe_voice_class_tenant` resource and data source for `voice class tenant`, including SIP registrar options (primary/secondary registrar, expires, scheme and `refresh-ratio`), registration credentials, and digest authentication. Password attributes expose the companion encryption-type (`0`/`6`/`7`) so type-6 secrets import and re-apply correctly.
@@ -62,6 +61,7 @@
 - Add `re_originate_route_type5` attribute to `profiles` list in `iosxe_evpn` resource and data source for L2VPN EVPN profile `re-originate route-type5` configuration
 - Add `stub_connected` and `stub_summary` attributes to `iosxe_eigrp` and `iosxe_eigrp_vrf` resources and data sources for EIGRP stub routing advertisement control (`eigrp stub connected summary`)
 - Fix BGP resources triggering spurious destroy-recreate on import when the device uses `bgp asnotation dot` (asdot ASN format). A new `normalize_asn` plan modifier normalizes asdot and asplain representations to the same value before comparison
+- Fix `normalize_ipv6` attributes not being normalized when read back from the device: a refresh now keeps the configured value when the device returns the same address in a different case or compression (including list key matching), which prevents perpetual diffs and replacements, and generated data source and import tests compare these attributes by normalized value
 
 ## 1.1.1
 
