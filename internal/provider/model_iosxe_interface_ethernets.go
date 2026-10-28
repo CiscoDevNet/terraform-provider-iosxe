@@ -191,6 +191,8 @@ type InterfaceEthernetsItems struct {
 	IpIgmpVersion                                       types.Int64                                       `tfsdk:"ip_igmp_version"`
 	IpRouterIsis                                        types.String                                      `tfsdk:"ip_router_isis"`
 	ZoneMemberSecurity                                  types.String                                      `tfsdk:"zone_member_security"`
+	RedundancyRiiId                                     types.Int64                                       `tfsdk:"redundancy_rii_id"`
+	RedundancyGroups                                    []InterfaceEthernetRedundancyGroups               `tfsdk:"redundancy_groups"`
 }
 
 // End of section. //template:end types
@@ -382,6 +384,8 @@ func (data InterfaceEthernets) toSingle(key string, item InterfaceEthernetsItems
 	single.IpIgmpVersion = item.IpIgmpVersion
 	single.IpRouterIsis = item.IpRouterIsis
 	single.ZoneMemberSecurity = item.ZoneMemberSecurity
+	single.RedundancyRiiId = item.RedundancyRiiId
+	single.RedundancyGroups = item.RedundancyGroups
 	single.Id = types.StringValue(single.getPath())
 	return single
 }
@@ -535,6 +539,8 @@ func (data InterfaceEthernets) toItem(single InterfaceEthernet) InterfaceEtherne
 	item.IpIgmpVersion = single.IpIgmpVersion
 	item.IpRouterIsis = single.IpRouterIsis
 	item.ZoneMemberSecurity = single.ZoneMemberSecurity
+	item.RedundancyRiiId = single.RedundancyRiiId
+	item.RedundancyGroups = single.RedundancyGroups
 	return item
 }
 

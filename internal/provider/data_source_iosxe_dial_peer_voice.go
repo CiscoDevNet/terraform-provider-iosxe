@@ -105,11 +105,11 @@ func (d *DialPeerVoiceDataSource) Schema(ctx context.Context, req datasource.Sch
 				Computed:            true,
 			},
 			"session_protocol": schema.StringAttribute{
-				MarkdownDescription: "The session protocol to be used in getting to this peer",
+				MarkdownDescription: "The session protocol to be used in getting to this peer. While `session_server_group` is set, IOS-XE refuses changing or removing `sipv2` in the same apply; remove `session_server_group` in one apply first.",
 				Computed:            true,
 			},
 			"session_server_group": schema.Int64Attribute{
-				MarkdownDescription: "Configure voice class server-group",
+				MarkdownDescription: "Voice class server-group. Only valid when `session_protocol` is `sipv2`. Remove it in a separate apply before changing or removing `session_protocol`; IOS-XE refuses doing both at once.",
 				Computed:            true,
 			},
 			"session_target": schema.StringAttribute{

@@ -1,0 +1,99 @@
+---
+name: Voice DSPFarm Profile
+path: /Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:dspfarm/profile[id=%v]
+doc_category: Voice
+res_description: "This resource can manage the DSPFarm Profile configuration. Note: IOS-XE refuses to delete a dspfarm profile that is active; set `shutdown = true` before destroying the resource (or remove `no shutdown` on the device first), otherwise the delete fails with `inconsistent value: Device refused one or more commands`. Verified on a C8300 (17.18.03a) with a PVDM4 DSP module."
+ds_description: "This data source can read the DSPFarm Profile configuration."
+# A profile can be created (left in shutdown) without DSP resources, so the test
+# runs on the C8000V; activating it (`shutdown = false`) needs DSPs.
+test_tags: [C8000V]
+attributes:
+  - yang_name: id
+    tf_name: tag
+    id: true
+    example: 1
+  # The device refuses changing the type of an existing profile (CLI keeps the
+  # old type; NETCONF returns "Device refused one or more commands"), so a
+  # change recreates the profile. `type` is mandatory, so the device also
+  # refuses removing it on its own (`/type is not configured`); no_delete keeps
+  # it out of the attribute-mode delete.
+  - yang_name: type
+    requires_replace: true
+    no_delete: true
+    example: transcode
+  - yang_name: universal
+    exclude_test: true
+    example: true
+  - yang_name: security
+    exclude_test: true
+    example: true
+  - yang_name: trustpoint
+    exclude_test: true
+    example: CUBE-CERT
+  - yang_name: codec/g711ulaw
+    tf_name: codec_g711ulaw
+    exclude_test: true
+    example: true
+  - yang_name: codec/g711alaw
+    tf_name: codec_g711alaw
+    exclude_test: true
+    example: true
+  - yang_name: codec/g722-64
+    tf_name: codec_g722_64
+    exclude_test: true
+    example: true
+  - yang_name: codec/g729ar8
+    tf_name: codec_g729ar8
+    exclude_test: true
+    example: true
+  - yang_name: codec/g729abr8
+    tf_name: codec_g729abr8
+    exclude_test: true
+    example: true
+  - yang_name: codec/g729br8
+    tf_name: codec_g729br8
+    exclude_test: true
+    example: true
+  - yang_name: codec/g729r8
+    tf_name: codec_g729r8
+    exclude_test: true
+    example: true
+  - yang_name: codec/ilbc
+    tf_name: codec_ilbc
+    exclude_test: true
+    example: true
+  - yang_name: codec/opus
+    tf_name: codec_opus
+    exclude_test: true
+    example: true
+  - yang_name: codec/pass-through
+    tf_name: codec_pass_through
+    exclude_test: true
+    example: true
+  - yang_name: associate/application
+    tf_name: associate_application
+    exclude_test: true
+    example: cube
+  - yang_name: codec/isac
+    tf_name: codec_isac
+    exclude_test: true
+    example: true
+  - yang_name: maximum/sessions/max-sessions
+    tf_name: maximum_sessions
+    exclude_test: true
+    example: 100
+  - yang_name: maximum/sessions/max-mtp-sessions/hardware
+    tf_name: maximum_mtp_sessions_hardware
+    exclude_test: true
+    example: 100
+  - yang_name: maximum/sessions/max-mtp-sessions/software
+    tf_name: maximum_mtp_sessions_software
+    exclude_test: true
+    example: 50
+  - yang_name: maximum/conference-participants
+    tf_name: conference_participants
+    exclude_test: true
+    example: 8
+  - yang_name: shutdown
+    exclude_test: true
+    example: false
