@@ -1941,33 +1941,21 @@ func ListXPathKeys(res xmldot.Result, parentXPath, elementName string, keyNames 
 
 	name := removeNamespacePrefix(elementName)
 
-	// A single element is addressed directly, multiple siblings by numeric index. This mirrors how
-	// GetFromXPath walks repeated elements.
-	var entries []xmldot.Result
-	if count := parent.Get(name + ".#").Int(); count > 1 {
-		for i := 0; i < int(count); i++ {
-			entries = append(entries, parent.Get(fmt.Sprintf("%s.%d", name, i)))
-		}
-	} else if entry := parent.Get(name); entry.Exists() {
-		entries = append(entries, entry)
-	}
-
-	keys := make([][]string, 0, len(entries))
-	for _, entry := range entries {
+	// Walk the siblings in a single ForEach pass. Addressing them one by one by numeric index
+	// rescans the list for every entry, which is quadratic in the list length.
+	keys := [][]string{}
+	GetFromXPath(parent, name).ForEach(func(_ int, entry xmldot.Result) bool {
 		values := make([]string, 0, len(keyNames))
-		complete := true
 		for _, keyName := range keyNames {
 			value := entry.Get(removeNamespacePrefix(keyName))
 			if !value.Exists() {
-				complete = false
-				break
+				return true
 			}
 			values = append(values, value.String())
 		}
-		if complete {
-			keys = append(keys, values)
-		}
-	}
+		keys = append(keys, values)
+		return true
+	})
 	return keys
 }
 
