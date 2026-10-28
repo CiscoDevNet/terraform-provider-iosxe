@@ -194,6 +194,136 @@ func TestRemoveFromXPathMulti_MatchesSequentialWithNamespaces(t *testing.T) {
 	}
 }
 
+// stVlanBody returns a body with spanning-tree VLAN entries for ids, as written by toBodyXML for
+// VLANs that stay declared.
+func stVlanBody(ids []int) netconf.Body {
+	var b strings.Builder
+	b.WriteString(`<native xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-native"><spanning-tree><mode xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-spanning-tree">pvst</mode>`)
+	for _, id := range ids {
+		fmt.Fprintf(&b, `<vlan xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-spanning-tree"><id>%d</id><max-age>10</max-age></vlan>`, id)
+	}
+	b.WriteString(`</spanning-tree></native>`)
+	return netconf.NewBody(b.String())
+}
+
+// TestRemoveFromXPathMulti_MergesIntoExistingEntries checks that removals below a list entry the
+// body already sets (a VLAN that stays declared while its priority is unset) are merged into that
+// element instead of appending a second element with the same key, matching RemoveFromXPath.
+func TestRemoveFromXPathMulti_MergesIntoExistingEntries(t *testing.T) {
+	existing := []int{}
+	for i := 0; i < 50; i++ {
+		existing = append(existing, i)
+	}
+	// Half of the removals target existing entries, half are new.
+	var xPaths []string
+	for i := 25; i < 75; i++ {
+		xPaths = append(xPaths, fmt.Sprintf("/Cisco-IOS-XE-native:native/spanning-tree/Cisco-IOS-XE-spanning-tree:vlan[id='%d']/priority", i))
+	}
+
+	sequential := stVlanBody(existing)
+	for _, p := range xPaths {
+		sequential = RemoveFromXPath(sequential, p)
+	}
+	batched := RemoveFromXPathMulti(stVlanBody(existing), xPaths)
+
+	for name, body := range map[string]netconf.Body{"sequential": sequential, "batched": batched} {
+		res := body.Res()
+		ids := map[string]int{}
+		GetFromXPath(xmldot.Get(res, "native.spanning-tree"), "vlan").ForEach(func(_ int, v xmldot.Result) bool {
+			ids[v.Get("id").String()]++
+			return true
+		})
+		if len(ids) != 75 {
+			t.Errorf("%s: got %d distinct vlan ids, want 75", name, len(ids))
+		}
+		for id, count := range ids {
+			if count != 1 {
+				t.Errorf("%s: vlan id=%s appears %d times, want 1", name, id, count)
+			}
+		}
+		if got := strings.Count(res, "<max-age>10</max-age>"); got != 50 {
+			t.Errorf("%s: got %d max-age leaves, want 50 (existing content must be kept)", name, got)
+		}
+		if got := strings.Count(res, `<priority operation="remove">`) + strings.Count(res, `<priority operation="remove"/>`); got != 50 {
+			t.Errorf("%s: got %d priority remove operations, want 50\n%s", name, got, res)
+		}
+	}
+}
+
+// TestRemoveFromXPathMulti_MergesWithinBatch checks that several removals below the same list entry
+// share one element, e.g. removing multiple vlan-ids from one MST instance.
+func TestRemoveFromXPathMulti_MergesWithinBatch(t *testing.T) {
+	const prefix = "/Cisco-IOS-XE-native:native/spanning-tree/Cisco-IOS-XE-spanning-tree:mst/configuration/instance"
+	xPaths := []string{
+		prefix + "[id='1']/vlan-ids[.=10]",
+		prefix + "[id='2']/vlan-ids[.=20]",
+		prefix + "[id='1']/vlan-ids[.=11]",
+		prefix + "[id='1']/vlan-ids[.=12]",
+	}
+
+	res := RemoveFromXPathMulti(netconf.Body{}, xPaths).Res()
+
+	instances := map[string][]string{}
+	GetFromXPath(xmldot.Get(res, "native.spanning-tree.mst.configuration"), "instance").ForEach(func(_ int, inst xmldot.Result) bool {
+		id := inst.Get("id").String()
+		GetFromXPath(inst, "vlan-ids").ForEach(func(_ int, v xmldot.Result) bool {
+			instances[id] = append(instances[id], v.String())
+			return true
+		})
+		return true
+	})
+	if got := strings.Count(res, "<instance"); got != 2 {
+		t.Errorf("got %d instance elements, want 2\n%s", got, res)
+	}
+	if got := strings.Join(instances["1"], ","); got != "10,11,12" {
+		t.Errorf("instance 1 vlan-ids = %s, want 10,11,12\n%s", got, res)
+	}
+	if got := strings.Join(instances["2"], ","); got != "20" {
+		t.Errorf("instance 2 vlan-ids = %s, want 20\n%s", got, res)
+	}
+	if got := strings.Count(res, `<vlan-ids operation="remove">`); got != 4 {
+		t.Errorf("got %d vlan-ids remove operations, want 4\n%s", got, res)
+	}
+}
+
+// TestRemoveFromXPathMulti_WholeEntryAlreadyInBody checks that removing a whole list entry that
+// the body also contains still marks the existing element, without adding a duplicate.
+func TestRemoveFromXPathMulti_WholeEntryAlreadyInBody(t *testing.T) {
+	const prefix = "/Cisco-IOS-XE-native:native/spanning-tree/Cisco-IOS-XE-spanning-tree:vlan"
+	res := RemoveFromXPathMulti(stVlanBody([]int{10, 20}), []string{
+		prefix + "[id='10']",
+		prefix + "[id='30']",
+	}).Res()
+
+	if got := strings.Count(res, "<vlan"); got != 3 {
+		t.Errorf("got %d vlan elements, want 3\n%s", got, res)
+	}
+	if got := strings.Count(res, `operation="remove"`); got != 2 {
+		t.Errorf("got %d remove operations, want 2\n%s", got, res)
+	}
+}
+
+// TestRemoveFromXPathMulti_MergesIntoLargeList checks the merge past 1000 entries and that it stays
+// linear: every one of 4094 declared VLANs has its priority removed.
+func TestRemoveFromXPathMulti_MergesIntoLargeList(t *testing.T) {
+	const n = 4094
+	ids := make([]int, n)
+	xPaths := make([]string, n)
+	for i := range ids {
+		ids[i] = i + 1
+		xPaths[i] = fmt.Sprintf("/Cisco-IOS-XE-native:native/spanning-tree/Cisco-IOS-XE-spanning-tree:vlan[id='%d']/priority", i+1)
+	}
+
+	res := RemoveFromXPathMulti(stVlanBody(ids), xPaths).Res()
+
+	if got := strings.Count(res, "<vlan "); got != n {
+		t.Errorf("got %d vlan elements, want %d", got, n)
+	}
+	if got := strings.Count(res, `<max-age>10</max-age><priority operation="remove"></priority></vlan>`); got != n {
+		t.Errorf("got %d vlan elements with the priority removal merged in, want %d", got, n)
+	}
+}
+
 // BenchmarkRemoveFromXPath_Sequential and BenchmarkRemoveFromXPathMulti_Batched
 // demonstrate the O(n^2) vs O(n) difference directly. Run with:
 //

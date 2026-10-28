@@ -22,6 +22,7 @@ import (
 	"fmt"
 	"html"
 	"regexp"
+	"sort"
 	"strings"
 	"sync"
 
@@ -918,12 +919,11 @@ func DeleteFromXPath(body netconf.Body, xPath string) netconf.Body {
 // share a common list parent (or that don't contain a list-key predicate at
 // all) are simply processed one at a time via RemoveFromXPath, so correctness
 // never depends on the batching assumption -- only the performance win does.
-// The one assumption that DOES need to hold for two xPaths to land in the same
-// batch is that they must be genuinely new, non-duplicate siblings (as is the
-// case when a caller loops over a list of removed keys) -- this function does
-// not check for an existing element with matching keys the way findSiblingInfo
-// does for a single call, so it should not be used where "update this existing
-// element instead of appending" is a real possibility within the batch.
+// Like findSiblingInfo does for a single call, removals below a list entry that
+// already exists in the body are merged into that element, and removals below
+// the same entry within the batch share one element, so no two siblings end up
+// with the same key. Existing entries are indexed once (indexListEntryEnds), so
+// this stays linear.
 func RemoveFromXPathMulti(body netconf.Body, xPaths []string) netconf.Body {
 	if len(xPaths) == 0 {
 		return body
@@ -1009,17 +1009,110 @@ func RemoveFromXPathMulti(body netconf.Body, xPaths []string) netconf.Body {
 			existingContent = body.Res()
 		}
 
-		var newFragments strings.Builder
-		for _, item := range items {
-			remainingSegments := item.segments[item.listSegIdx:]
-			newFragments.WriteString(buildRemoveFragment(remainingSegments))
+		listName, listKeys := parseXPathSegment(first.segments[first.listSegIdx])
+		listName = removeNamespacePrefix(listName)
+		keyNames := make([]string, len(listKeys))
+		for i, kv := range listKeys {
+			keyNames[i] = removeNamespacePrefix(kv.Key)
 		}
 
-		combined := existingContent + newFragments.String()
+		// Group the items by list entry, so that several removals below the same
+		// entry (e.g. multiple vlan-ids of one MST instance) end up in a single
+		// element instead of one element per removal with the same key.
+		type entryRemoval struct {
+			items []parsedPath
+			whole bool
+		}
+		entries := make(map[string]*entryRemoval)
+		var entryOrder []string
+		for _, item := range items {
+			_, keys := parseXPathSegment(item.segments[item.listSegIdx])
+			values := make([]string, len(keys))
+			for i, kv := range keys {
+				values[i] = kv.Value
+			}
+			entryKey := CompositeKey(values...)
+			entry, ok := entries[entryKey]
+			if !ok {
+				entry = &entryRemoval{}
+				entries[entryKey] = entry
+				entryOrder = append(entryOrder, entryKey)
+			}
+			entry.items = append(entry.items, item)
+			if len(item.segments) == item.listSegIdx+1 {
+				entry.whole = true
+			}
+		}
+
+		// Entries that already exist in the body (e.g. a VLAN that stays
+		// declared while its priority is removed) get the removals merged into
+		// them rather than a second element with the same key appended.
+		existingEnds := indexListEntryEnds(existingContent, listName, keyNames)
+
+		inserts := make(map[int]string)
+		var fallback []string
+		var newFragments strings.Builder
+		for _, entryKey := range entryOrder {
+			entry := entries[entryKey]
+			end, exists := existingEnds[entryKey]
+
+			if entry.whole {
+				if exists {
+					// Rare: removing an entry the body also sets. Let the
+					// single-path code mark the existing element.
+					fallback = append(fallback, entry.items[0].xPath)
+					continue
+				}
+				// Removing the whole entry covers any removals below it.
+				for _, item := range entry.items {
+					if len(item.segments) == item.listSegIdx+1 {
+						newFragments.WriteString(buildRemoveFragment(item.segments[item.listSegIdx:]))
+						break
+					}
+				}
+				continue
+			}
+
+			var children strings.Builder
+			for _, item := range entry.items {
+				children.WriteString(buildRemoveFragment(item.segments[item.listSegIdx+1:]))
+			}
+			if exists {
+				inserts[end] += children.String()
+				continue
+			}
+
+			first := entry.items[0]
+			newFragments.WriteString(buildSegmentElement(first.segments[first.listSegIdx], "", children.String()))
+		}
+
+		combined := existingContent
+		if len(inserts) > 0 {
+			offsets := make([]int, 0, len(inserts))
+			for offset := range inserts {
+				offsets = append(offsets, offset)
+			}
+			sort.Ints(offsets)
+			var merged strings.Builder
+			last := 0
+			for _, offset := range offsets {
+				merged.WriteString(existingContent[last:offset])
+				merged.WriteString(inserts[offset])
+				last = offset
+			}
+			merged.WriteString(existingContent[last:])
+			combined = merged.String()
+		}
+		combined += newFragments.String()
+
 		if parentPath != "" {
 			body = body.SetRaw(parentPath, combined)
 		} else {
 			body = netconf.NewBody(combined)
+		}
+
+		for _, xPath := range fallback {
+			body = RemoveFromXPath(body, xPath)
 		}
 
 		// Augment namespaces on the ancestor segments only (containers like
@@ -1060,8 +1153,17 @@ func buildRemoveFragment(segments []string) string {
 	if len(segments) == 0 {
 		return ""
 	}
+	if len(segments) == 1 {
+		return buildSegmentElement(segments[0], ` operation="remove"`, "")
+	}
+	return buildSegmentElement(segments[0], "", buildRemoveFragment(segments[1:]))
+}
 
-	elementName, keys := parseXPathSegment(segments[0])
+// buildSegmentElement renders a single XPath segment as an element: its list-key predicates become
+// key child elements (or the text content for a leaf-list), followed by children. extraAttrs is
+// written to the opening tag after the inline xmlns (see buildRemoveFragment).
+func buildSegmentElement(segment, extraAttrs, children string) string {
+	elementName, keys := parseXPathSegment(segment)
 	cleanName := removeNamespacePrefix(elementName)
 
 	// Resolve this segment's namespace (if it is prefixed) and render it as an
@@ -1085,12 +1187,67 @@ func buildRemoveFragment(segments []string) string {
 		}
 	}
 
-	if len(segments) == 1 {
-		return fmt.Sprintf(`<%s%s operation="remove">%s</%s>`, cleanName, openAttrs, inner.String(), cleanName)
+	inner.WriteString(children)
+	return fmt.Sprintf("<%s%s%s>%s</%s>", cleanName, openAttrs, extraAttrs, inner.String(), cleanName)
+}
+
+// indexListEntryEnds locates the direct child elements named elementName in content (the inner XML
+// of their parent) and returns, keyed by CompositeKey of their keyNames values, the byte offset just
+// before each element's closing tag. Children can be merged into an entry by inserting them there.
+//
+// The entries are walked once with ForEach. Each one's Raw (its inner XML) is then found by scanning
+// forward from the previous entry for its opening tag, so the whole index is built in a single pass.
+// Entries that cannot be located are left out; callers then append a new element as before.
+func indexListEntryEnds(content, elementName string, keyNames []string) map[string]int {
+	ends := make(map[string]int)
+	if content == "" || len(keyNames) == 0 {
+		return ends
 	}
 
-	inner.WriteString(buildRemoveFragment(segments[1:]))
-	return fmt.Sprintf("<%s%s>%s</%s>", cleanName, openAttrs, inner.String(), cleanName)
+	openTag := "<" + elementName
+	cursor := 0
+	GetFromXPath(xmldot.Get("<root>"+content+"</root>", "root"), elementName).ForEach(
+		func(_ int, entry xmldot.Result) bool {
+			values := make([]string, len(keyNames))
+			for i, kn := range keyNames {
+				if kn == "." {
+					values[i] = entry.String()
+				} else {
+					values[i] = entry.Get(kn).String()
+				}
+			}
+
+			for {
+				idx := strings.Index(content[cursor:], openTag)
+				if idx == -1 {
+					// Not found: stop indexing, the remaining entries are treated as absent.
+					return false
+				}
+				start := cursor + idx
+				cursor = start + len(openTag)
+				if cursor >= len(content) || !strings.ContainsRune("> \t\r\n", rune(content[cursor])) {
+					// A longer element name sharing the prefix, e.g. <vlan-ids> for <vlan>.
+					continue
+				}
+				gt := strings.IndexByte(content[cursor:], '>')
+				if gt == -1 {
+					return false
+				}
+				innerStart := cursor + gt + 1
+				if content[innerStart-2] == '/' || !strings.HasPrefix(content[innerStart:], entry.Raw) {
+					continue
+				}
+				end := innerStart + len(entry.Raw)
+				if !strings.HasPrefix(content[end:], "</"+elementName+">") {
+					continue
+				}
+				ends[CompositeKey(values...)] = end
+				cursor = end
+				return true
+			}
+		},
+	)
+	return ends
 }
 
 // CleanupRedundantRemoveOperations removes redundant operation="remove" attributes from child elements
