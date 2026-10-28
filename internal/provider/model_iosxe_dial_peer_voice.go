@@ -463,6 +463,7 @@ func (data DialPeerVoice) addToBodyXML(ctx context.Context, config DialPeerVoice
 		body = helpers.SetFromXPath(body, data.getXPath()+"/prefix", data.Prefix.ValueString())
 	}
 	if len(data.TrunkGroups) > 0 {
+		TrunkGroupsFragments := make([]string, 0, len(data.TrunkGroups))
 		for _, item := range data.TrunkGroups {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
@@ -471,8 +472,9 @@ func (data DialPeerVoice) addToBodyXML(ctx context.Context, config DialPeerVoice
 			if !item.Preference.IsNull() && !item.Preference.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "trunk-group-preference", strconv.FormatInt(item.Preference.ValueInt64(), 10))
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/trunkgroup", cBody.Res())
+			TrunkGroupsFragments = append(TrunkGroupsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/trunkgroup", TrunkGroupsFragments)
 	}
 	return body
 }
@@ -852,29 +854,12 @@ func (data *DialPeerVoice) updateFromBodyXML(ctx context.Context, res xmldot.Res
 	} else {
 		data.Prefix = types.StringNull()
 	}
+	TrunkGroupsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	TrunkGroupsKeys := [...]string{"id"}
+	TrunkGroupsItems := helpers.CollectListItemsXML(TrunkGroupsParentScope.Raw, "trunkgroup", TrunkGroupsKeys[:])
 	for i := range data.TrunkGroups {
-		keys := [...]string{"id"}
-		keyValues := [...]string{data.TrunkGroups[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/trunkgroup").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		TrunkGroupsKeyValues := [...]string{data.TrunkGroups[i].Name.ValueString()}
+		r := TrunkGroupsItems[helpers.CompositeKey(TrunkGroupsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "id"); value.Exists() && !data.TrunkGroups[i].Name.IsNull() {
 			data.TrunkGroups[i].Name = types.StringValue(value.String())
 		} else {

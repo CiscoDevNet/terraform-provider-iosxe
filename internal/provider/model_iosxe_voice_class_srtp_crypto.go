@@ -105,6 +105,7 @@ func (data VoiceClassSRTPCrypto) addToBodyXML(ctx context.Context, config VoiceC
 		body = helpers.SetFromXPath(body, data.getXPath()+"/id", strconv.FormatInt(data.Tag.ValueInt64(), 10))
 	}
 	if len(data.Cryptos) > 0 {
+		CryptosFragments := make([]string, 0, len(data.Cryptos))
 		for _, item := range data.Cryptos {
 			cBody := netconf.Body{}
 			if !item.Preference.IsNull() && !item.Preference.IsUnknown() {
@@ -113,8 +114,9 @@ func (data VoiceClassSRTPCrypto) addToBodyXML(ctx context.Context, config VoiceC
 			if !item.CipherSuite.IsNull() && !item.CipherSuite.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "type", item.CipherSuite.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/crypto", cBody.Res())
+			CryptosFragments = append(CryptosFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/crypto", CryptosFragments)
 	}
 	return body
 }
@@ -129,29 +131,12 @@ func (data *VoiceClassSRTPCrypto) updateFromBodyXML(ctx context.Context, res xml
 	} else {
 		data.Tag = types.Int64Null()
 	}
+	CryptosParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	CryptosKeys := [...]string{"id"}
+	CryptosItems := helpers.CollectListItemsXML(CryptosParentScope.Raw, "crypto", CryptosKeys[:])
 	for i := range data.Cryptos {
-		keys := [...]string{"id"}
-		keyValues := [...]string{strconv.FormatInt(data.Cryptos[i].Preference.ValueInt64(), 10)}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/crypto").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		CryptosKeyValues := [...]string{strconv.FormatInt(data.Cryptos[i].Preference.ValueInt64(), 10)}
+		r := CryptosItems[helpers.CompositeKey(CryptosKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "id"); value.Exists() && !data.Cryptos[i].Preference.IsNull() {
 			data.Cryptos[i].Preference = types.Int64Value(value.Int())
 		} else {

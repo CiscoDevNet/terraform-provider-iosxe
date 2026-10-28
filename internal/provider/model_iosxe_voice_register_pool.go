@@ -203,6 +203,7 @@ func (data VoiceRegisterPool) addToBodyXML(ctx context.Context, config VoiceRegi
 		}
 	}
 	if len(data.CorIncoming) > 0 {
+		CorIncomingFragments := make([]string, 0, len(data.CorIncoming))
 		for _, item := range data.CorIncoming {
 			cBody := netconf.Body{}
 			if !item.Id.IsNull() && !item.Id.IsUnknown() {
@@ -220,10 +221,12 @@ func (data VoiceRegisterPool) addToBodyXML(ctx context.Context, config VoiceRegi
 			if !item.Upperbound.IsNull() && !item.Upperbound.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "upperbound", item.Upperbound.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/cor/incoming", cBody.Res())
+			CorIncomingFragments = append(CorIncomingFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/cor/incoming", CorIncomingFragments)
 	}
 	if len(data.CorOutgoing) > 0 {
+		CorOutgoingFragments := make([]string, 0, len(data.CorOutgoing))
 		for _, item := range data.CorOutgoing {
 			cBody := netconf.Body{}
 			if !item.Id.IsNull() && !item.Id.IsUnknown() {
@@ -241,8 +244,9 @@ func (data VoiceRegisterPool) addToBodyXML(ctx context.Context, config VoiceRegi
 			if !item.Upperbound.IsNull() && !item.Upperbound.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "upperbound", item.Upperbound.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/cor/outgoing", cBody.Res())
+			CorOutgoingFragments = append(CorOutgoingFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/cor/outgoing", CorOutgoingFragments)
 	}
 	if !data.TranslationProfileIncoming.IsNull() && !data.TranslationProfileIncoming.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/translation-profile/incoming", data.TranslationProfileIncoming.ValueString())
@@ -335,29 +339,12 @@ func (data *VoiceRegisterPool) updateFromBodyXML(ctx context.Context, res xmldot
 	} else {
 		data.DtmfRelaySipNotify = types.BoolNull()
 	}
+	CorIncomingParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	CorIncomingKeys := [...]string{"id"}
+	CorIncomingItems := helpers.CollectListItemsXML(CorIncomingParentScope.Raw, "cor/incoming", CorIncomingKeys[:])
 	for i := range data.CorIncoming {
-		keys := [...]string{"id"}
-		keyValues := [...]string{data.CorIncoming[i].Id.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/cor/incoming").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		CorIncomingKeyValues := [...]string{data.CorIncoming[i].Id.ValueString()}
+		r := CorIncomingItems[helpers.CompositeKey(CorIncomingKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "id"); value.Exists() && !data.CorIncoming[i].Id.IsNull() {
 			data.CorIncoming[i].Id = types.StringValue(value.String())
 		} else {
@@ -384,29 +371,12 @@ func (data *VoiceRegisterPool) updateFromBodyXML(ctx context.Context, res xmldot
 			data.CorIncoming[i].Upperbound = types.StringNull()
 		}
 	}
+	CorOutgoingParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	CorOutgoingKeys := [...]string{"id"}
+	CorOutgoingItems := helpers.CollectListItemsXML(CorOutgoingParentScope.Raw, "cor/outgoing", CorOutgoingKeys[:])
 	for i := range data.CorOutgoing {
-		keys := [...]string{"id"}
-		keyValues := [...]string{data.CorOutgoing[i].Id.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/cor/outgoing").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		CorOutgoingKeyValues := [...]string{data.CorOutgoing[i].Id.ValueString()}
+		r := CorOutgoingItems[helpers.CompositeKey(CorOutgoingKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "id"); value.Exists() && !data.CorOutgoing[i].Id.IsNull() {
 			data.CorOutgoing[i].Id = types.StringValue(value.String())
 		} else {

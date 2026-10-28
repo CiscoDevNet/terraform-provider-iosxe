@@ -1401,12 +1401,14 @@ func (data InterfaceEthernet) addToBodyXML(ctx context.Context, config Interface
 		body = helpers.SetFromXPath(body, data.getXPath()+"/redundancy/rii/id", strconv.FormatInt(data.RedundancyRiiId.ValueInt64(), 10))
 	}
 	if len(data.RedundancyGroups) > 0 {
+		RedundancyGroupsFragments := make([]string, 0, len(data.RedundancyGroups))
 		for _, item := range data.RedundancyGroups {
 			cBody := netconf.Body{}
 			if !item.GroupId.IsNull() && !item.GroupId.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "id", strconv.FormatInt(item.GroupId.ValueInt64(), 10))
 			}
 			if len(item.VirtualIps) > 0 {
+				VirtualIpsFragments := make([]string, 0, len(item.VirtualIps))
 				for _, citem := range item.VirtualIps {
 					ccBody := netconf.Body{}
 					if !citem.IpFamily.IsNull() && !citem.IpFamily.IsUnknown() {
@@ -1422,11 +1424,13 @@ func (data InterfaceEthernet) addToBodyXML(ctx context.Context, config Interface
 							ccBody = helpers.RemoveFromXPath(ccBody, "ipv4-address/exclusive")
 						}
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "virtual-ip", ccBody.Res())
+					VirtualIpsFragments = append(VirtualIpsFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "virtual-ip", VirtualIpsFragments)
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/redundancy/group", cBody.Res())
+			RedundancyGroupsFragments = append(RedundancyGroupsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/redundancy/group", RedundancyGroupsFragments)
 	}
 	return body
 }
@@ -2664,57 +2668,22 @@ func (data *InterfaceEthernet) updateFromBodyXML(ctx context.Context, res xmldot
 	} else {
 		data.RedundancyRiiId = types.Int64Null()
 	}
+	RedundancyGroupsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	RedundancyGroupsKeys := [...]string{"id"}
+	RedundancyGroupsItems := helpers.CollectListItemsXML(RedundancyGroupsParentScope.Raw, "redundancy/group", RedundancyGroupsKeys[:])
 	for i := range data.RedundancyGroups {
-		keys := [...]string{"id"}
-		keyValues := [...]string{strconv.FormatInt(data.RedundancyGroups[i].GroupId.ValueInt64(), 10)}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/redundancy/group").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		RedundancyGroupsKeyValues := [...]string{strconv.FormatInt(data.RedundancyGroups[i].GroupId.ValueInt64(), 10)}
+		r := RedundancyGroupsItems[helpers.CompositeKey(RedundancyGroupsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "id"); value.Exists() && !data.RedundancyGroups[i].GroupId.IsNull() {
 			data.RedundancyGroups[i].GroupId = types.Int64Value(value.Int())
 		} else {
 			data.RedundancyGroups[i].GroupId = types.Int64Null()
 		}
+		VirtualIpsKeys := [...]string{"ip-family"}
+		VirtualIpsItems := helpers.CollectListItemsXML(r.Raw, "virtual-ip", VirtualIpsKeys[:])
 		for ci := range data.RedundancyGroups[i].VirtualIps {
-			keys := [...]string{"ip-family"}
-			keyValues := [...]string{data.RedundancyGroups[i].VirtualIps[ci].IpFamily.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "virtual-ip").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			VirtualIpsKeyValues := [...]string{data.RedundancyGroups[i].VirtualIps[ci].IpFamily.ValueString()}
+			cr := VirtualIpsItems[helpers.CompositeKey(VirtualIpsKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "ip-family"); value.Exists() && !data.RedundancyGroups[i].VirtualIps[ci].IpFamily.IsNull() {
 				data.RedundancyGroups[i].VirtualIps[ci].IpFamily = types.StringValue(value.String())
 			} else {
