@@ -64,6 +64,8 @@
 - Add `re_originate_route_type5` attribute to `profiles` list in `iosxe_evpn` resource and data source for L2VPN EVPN profile `re-originate route-type5` configuration
 - Add `stub_connected` and `stub_summary` attributes to `iosxe_eigrp` and `iosxe_eigrp_vrf` resources and data sources for EIGRP stub routing advertisement control (`eigrp stub connected summary`)
 - Fix BGP resources triggering spurious destroy-recreate on import when the device uses `bgp asnotation dot` (asdot ASN format). A new `normalize_asn` plan modifier normalizes asdot and asplain representations to the same value before comparison
+- Add `iosxe_wireless_mobility` resource and data source for C9800 mobility: local group name (`wireless mobility group name`), mobility MAC address, keepalive interval and count, DSCP, and the mobility group members (`wireless mobility group member`, with public IP, SSC hash and data link encryption). Destroying it returns the settings to their defaults and deletes the managed members
+- Enable the `mobility_anchors` acceptance test of `iosxe_wireless_policy_profile`, which now configures a mobility peer as a test prerequisite
 
 ## 1.1.1
 
