@@ -9,10 +9,21 @@ description: |-
 
 ## Unreleased
 
+- Add `iosxe_eap_profile` resource and data source for `eap profile` (description, allowed EAP methods and PKI trustpoint). `method_fast` maps to `method/fast-config`, not the obsolete `method/fast` leaf
+- Add `iosxe_parameter_map_webauth_global` resource and data source for the global web authentication parameter map (`parameter-map type webauth global`) and its `virtual-ip ipv4` / `virtual-ip ipv6` addresses. Configuring it converts the device to IBNS 2.0 session management, which cannot be undone from the CLI
+- Add `iosxe_voice_dspfarm_profile` resource and data source for `dspfarm profile`.
+- Add `iosxe_sccp` resource and data source for `sccp` (DSPfarm control protocol).
+- Add `iosxe_voice_card` resource and data source for `voice-card`.
+- Add `iosxe_voice_port` resource and data source for `voice-port`.
+- Add `iosxe_voice_trunk_group` resource and data source for `voice class trunk group`.
+- Add `iosxe_card` resource and data source for `card type` (NIM/module provisioning).
+- Add `iosxe_controller` resource and data source for `controller` T1/E1, including T1 `tx-framing` and E1 `e1-framing` and PRI group timeslots.
+- Add `iosxe_redundancy_application_group` resource and data source for `redundancy application redundancy group` (RG inter-chassis HA), including priority/failover, timers, control/data interfaces, preempt, and tracked-object decrements.
+- Add RG redundancy attributes (`redundancy rii` and `redundancy group` virtual-IP) to the `iosxe_interface_ethernet` resource and data source.
 - Add `iosxe_voice_register_global` resource and data source for `voice register global` (max-dn, max-pool, system message, secure security-policy).
 - Add `iosxe_voice_register_pool` resource and data source for `voice register pool`, covering network device identity, call-forward (B2BUA), DTMF relay, CoR lists, and translation-profile bindings.
 - Add `iosxe_voice_class_tenant` resource and data source for `voice class tenant`, including SIP registrar options (primary/secondary registrar, expires, scheme and `refresh-ratio`), registration credentials, and digest authentication. Password attributes expose the companion encryption-type (`0`/`6`/`7`) so type-6 secrets import and re-apply correctly.
-- Add `iosxe_dial_peer_voice` resource and data source for `dial-peer voice`, covering session protocol/target, codec, destination pattern, VAD, SRTP, and translation-profile bindings.
+- Add `iosxe_dial_peer_voice` resource and data source for `dial-peer voice`, covering session protocol/target, codec, destination pattern, VAD, SRTP, and translation-profile bindings. Destroying it always removes the whole dial-peer, because IOS-XE refuses removing a SIP dial-peer's session attributes individually.
 - Add `iosxe_voice_translation_rule` resource and data source for `voice translation-rule`.
 - Add `iosxe_voice_translation_profile` resource and data source for `voice translation-profile`.
 - Add `iosxe_voice_class_codec` resource and data source for `voice class codec` codec preference lists
@@ -35,6 +46,7 @@ description: |-
 - Add `pqc_mlkem512`, `pqc_mlkem768`, `pqc_mlkem1024`, and `pqc_optional` attributes to `iosxe_crypto_ikev2_proposal` resource and data source
 - Add `set_pfs` attribute to `iosxe_crypto_ipsec_profile` resource and data source
 - Fix BGP resources when the AS number notation differs between Terraform and the device. IOS-XE keys a BGP process by the AS in the notation it was created with, so adopting an existing asdot process without import failed with `too many /native/router/ios-bgp:bgp`, and toggling `asnotation_dot` on a managed process dropped every BGP resource from state. BGP resources now read and write under whichever notation (`1.1` or `65537`) the device stores, so both cases settle as ordinary updates
+- Make `ssid` required on `iosxe_wireless_wlan_profile` and `band` required on `iosxe_wireless_rf_profile`; the C9800 rejects a WLAN profile without an SSID and an RF profile without a band
 - Fix `terraform destroy` failing on the C9800's built-in wireless objects (`default-site-tag`, `default-rf-tag`, `default-policy-profile`, `default-policy-tag`, `default-ap-profile`, `default-rf-profile-6ghz` and the six pre-configured `*_Client_Density_*` RF profiles), which the controller refuses to delete. Destroying one now removes only the attributes Terraform configured, the same as the matching `no` commands, and leaves the object in place; `status` and `band` on `default-rf-profile-6ghz` are left as-is so destroy never disables it, and the read-only pre-configured RF profiles are only removed from state. Add the `builtin_objects`, `builtin_readonly_objects` and `builtin_keep` definition options that implement this
 - Add `iosxe_interface_hsrp` resource and data source for HSRP (Hot Standby Router Protocol) interface-level standby configuration, including version selection, BFD, delay timers, MAC refresh, use-bia, redirect settings, and per-group configuration with virtual IPv4/IPv6 addresses, priority, preemption with delay options, hello/hold timers (seconds and milliseconds), plain text and MD5 authentication, object tracking with priority decrement or shutdown, virtual MAC address, redundancy naming, and group following
 - Add `interface_name`, `interface_protocol`, and `interface_routing` attributes to `iosxe_system` resource and data source `track_objects` list for interface object tracking configuration (`track <num> interface <name> line-protocol` and `track <num> interface <name> ip routing`)
@@ -45,6 +57,8 @@ description: |-
 - Add `iosxe_wireless_policy_tag` resource and data source for C9800 wireless policy tag configuration, mapping WLAN profiles to policy profiles
 - Add `iosxe_wireless_rf_tag` resource and data source for C9800 RF tags mapping 2.4 GHz, 5 GHz, and 6 GHz RF profiles
 - Add `iosxe_wireless_site_tag` resource and data source
+- Add `iosxe_wireless_flex_profile` resource and data source for C9800 FlexConnect profiles, including description, native VLAN, ARP caching, fallback radio shut, AP image predownload, VLAN name to VLAN ID mappings and policy ACLs. `default-flex-profile` is treated as a built-in object: destroying it removes only the configured attributes and leaves the profile in place
+- Add `iosxe_wireless_mesh_profile` resource and data source for C9800 mesh profiles, including description, convergence method, multicast mode, range and security mode. `default-mesh-profile` is treated as a built-in object: destroying it removes only the configured attributes and leaves the profile in place
 - Add wireless YANG model support (wlan, rf, site, flex, mesh, general, ap profiles)
 - Add `iosxe_wireless_wlan_profile` resource and data source for managing C9800 WLAN profiles
 - Add `iosxe_wireless_rf_profile` resource and data source

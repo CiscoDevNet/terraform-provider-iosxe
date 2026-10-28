@@ -61,8 +61,8 @@ data "iosxe_dial_peer_voice" "example" {
 - `port` (String) Voice port associated with this peer
 - `preference` (Number) Configure the preference order of this dial-peer
 - `prefix` (String) The pattern to be appended before the dial num
-- `session_protocol` (String) The session protocol to be used in getting to this peer
-- `session_server_group` (Number) Configure voice class server-group
+- `session_protocol` (String) The session protocol to be used in getting to this peer. While `session_server_group` is set, IOS-XE refuses changing or removing `sipv2` in the same apply; remove `session_server_group` in one apply first.
+- `session_server_group` (Number) Voice class server-group. Only valid when `session_protocol` is `sipv2`. Remove it in a separate apply before changing or removing `session_protocol`; IOS-XE refuses doing both at once.
 - `session_target` (String) WORD A string specifying the session target
 - `session_transport_tcp` (Boolean) Transport Layer Protocol - TCP
 - `session_transport_tcp_tls` (Boolean) Transport Layer Protocol - TLS over TCP

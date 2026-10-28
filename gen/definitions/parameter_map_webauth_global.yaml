@@ -1,0 +1,19 @@
+---
+name: Parameter Map Webauth Global
+path: /Cisco-IOS-XE-native:native/parameter-map/type/Cisco-IOS-XE-policy:webauth-global/webauth/global
+no_delete: true
+# C9800_IBNS2 is destructive: the test irreversibly converts the controller to IBNS 2.0. Only set it against a
+# dedicated, disposable C9800, and reload/rebuild that controller afterwards.
+test_tags: [C9800_IBNS2]
+doc_category: Security
+res_description: "This resource can manage the global web authentication parameter map (`parameter-map type webauth global`). WARNING: configuring a web authentication parameter map, including the global one, converts the device to IBNS 2.0 (new-style) session management. IOS-XE rewrites the authentication configuration to its control-policy equivalents (for example `authentication mac-move deny` becomes `access-session mac-move deny`, the default `ip admission` settings are removed and default `service-template` entries are added). This conversion cannot be undone from the CLI, and it also affects `iosxe_system` attributes such as `authentication_mac_move_*` and `access_session_mac_move_deny`. The global parameter map is a singleton that holds other web authentication settings, so destroying this resource only removes the configured attributes and leaves `parameter-map type webauth global` in place. Removing the attributes does not reverse the IBNS 2.0 conversion."
+attributes:
+  - yang_name: virtual-ip/ipv4/address
+    tf_name: virtual_ip_ipv4
+    description: Virtual IPv4 address.
+    example: 192.0.2.1
+  - yang_name: virtual-ip/ipv6/address
+    tf_name: virtual_ip_ipv6
+    description: Virtual IPv6 address.
+    normalize_ipv6: true
+    example: 2001:db8::1
