@@ -43,13 +43,13 @@ data "iosxe_wireless_policy_profile" "example" {
 - `ipv4_flow_monitors_input` (Attributes List) IPv4 ingress flow monitor associated to policy profile (see [below for nested schema](#nestedatt--ipv4_flow_monitors_input))
 - `ipv4_flow_monitors_output` (Attributes List) IPv4 egress flow monitor associated to policy profile (see [below for nested schema](#nestedatt--ipv4_flow_monitors_output))
 - `ipv6_acl` (String) Configure the name of IPV6 ACL
-- `mobility_anchors` (Attributes List) Guest mm DB associated to policy profile (see [below for nested schema](#nestedatt--mobility_anchors))
+- `mobility_anchors` (Attributes List) Guest mm DB associated to policy profile. The controller rejects it together with `static_ip_mobility`. (see [below for nested schema](#nestedatt--mobility_anchors))
 - `nac` (Boolean) This flag is set when NAC is enabled
 - `nac_type` (String) Type of Network Authentication Control (NAC) supported
 - `service_policy_input` (String) This object specifies the ingress service-policy name. It can be system generated policy name or user-defined policy name.
 - `service_policy_output` (String) This object specifies the egress service-policy name. It can be system generated policy name or user-defined policy name.
 - `session_timeout` (Number) Configures client Session timeout
-- `static_ip_mobility` (Boolean) Configuration of static IP mobility
+- `static_ip_mobility` (Boolean) Configuration of static IP mobility. The controller rejects it together with `mobility_anchors`.
 - `status` (Boolean) This object specifies whether the policy profile is shutdown or active
 - `vlan` (String) This object represents the interface attached to the wireless lan.
 

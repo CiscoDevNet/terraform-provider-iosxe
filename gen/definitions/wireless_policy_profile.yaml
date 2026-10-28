@@ -61,6 +61,7 @@ attributes:
     exclude_test: true
   - yang_name: static-ip-mobility/is-static-ip-mobility
     tf_name: static_ip_mobility
+    description: Configuration of static IP mobility. The controller rejects it together with `mobility_anchors`.
     example: true
     # Excluded from tests: the controller rejects static IP mobility together
     # with mobility_anchors, which the test covers.
@@ -87,9 +88,11 @@ attributes:
         example: S2-AVC-MON-OUT
   - yang_name: guest-mm-db-export-entries/guest-mm-db-export-entry
     tf_name: mobility_anchors
+    description: Guest mm DB associated to policy profile. The controller rejects it together with `static_ip_mobility`.
     type: List
     # The controller rejects an anchor unless a mobility peer with that IP is
-    # configured, so the test creates one as a prerequisite (PreReq2).
+    # configured, so the test creates one as a prerequisite (the mobility-peer
+    # entry in test_prerequisites).
     attributes:
       - yang_name: ip
         id: true

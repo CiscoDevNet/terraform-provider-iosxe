@@ -90,7 +90,7 @@ func (r *WirelessMobilityResource) Schema(ctx context.Context, req resource.Sche
 				MarkdownDescription: helpers.NewAttributeDescription("Mobility local MAC address, in lowercase colon form (the controller stores it in lowercase).").String,
 				Optional:            true,
 				Validators: []validator.String{
-					stringvalidator.RegexMatches(regexp.MustCompile(`[0-9a-fA-F]{2}(:[0-9a-fA-F]{2}){5}`), ""),
+					stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9a-f]{2}(:[0-9a-f]{2}){5}$`), ""),
 				},
 			},
 			"group_keepalive_interval": schema.Int64Attribute{
@@ -108,7 +108,7 @@ func (r *WirelessMobilityResource) Schema(ctx context.Context, req resource.Sche
 				},
 			},
 			"dscp": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("mobility dcsp value").AddIntegerRangeDescription(0, 63).String,
+				MarkdownDescription: helpers.NewAttributeDescription("Mobility DSCP value").AddIntegerRangeDescription(0, 63).String,
 				Optional:            true,
 				Validators: []validator.Int64{
 					int64validator.Between(0, 63),
@@ -123,7 +123,7 @@ func (r *WirelessMobilityResource) Schema(ctx context.Context, req resource.Sche
 							MarkdownDescription: helpers.NewAttributeDescription("Mobility peer MAC address, in lowercase colon form (the controller stores it in lowercase).").String,
 							Required:            true,
 							Validators: []validator.String{
-								stringvalidator.RegexMatches(regexp.MustCompile(`[0-9a-fA-F]{2}(:[0-9a-fA-F]{2}){5}`), ""),
+								stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9a-f]{2}(:[0-9a-f]{2}){5}$`), ""),
 							},
 						},
 						"ip": schema.StringAttribute{
@@ -131,7 +131,7 @@ func (r *WirelessMobilityResource) Schema(ctx context.Context, req resource.Sche
 							Required:            true,
 						},
 						"public_ip": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Peer public IP address. When omitted, the controller stores `0.0.0.0` (the `wireless mobility group member` CLI instead stores the member's `ip`). The controller refuses to change it on an existing member.").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Peer public IP address. If omitted, a member configured through this resource is stored with public IP `0.0.0.0`, unlike the `wireless mobility group member` CLI, where it defaults to `ip`. Set it equal to `ip` to match the CLI behaviour. The controller refuses to change it on an existing member.").String,
 							Optional:            true,
 						},
 						"group": schema.StringAttribute{
@@ -144,6 +144,9 @@ func (r *WirelessMobilityResource) Schema(ctx context.Context, req resource.Sche
 						"ssc_hash": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Peer SSC hash. The controller requires exactly 40 characters and stores the value in the case given.").String,
 							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.LengthBetween(40, 40),
+							},
 						},
 						"data_link_encryption": schema.BoolAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Peer data link encryption status").String,

@@ -165,7 +165,7 @@ func (r *WirelessPolicyProfileResource) Schema(ctx context.Context, req resource
 				},
 			},
 			"static_ip_mobility": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configuration of static IP mobility").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configuration of static IP mobility. The controller rejects it together with `mobility_anchors`.").String,
 				Optional:            true,
 			},
 			"dhcp_tlv_caching": schema.BoolAttribute{
@@ -209,7 +209,7 @@ func (r *WirelessPolicyProfileResource) Schema(ctx context.Context, req resource
 				},
 			},
 			"mobility_anchors": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Guest mm DB associated to policy profile").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Guest mm DB associated to policy profile. The controller rejects it together with `static_ip_mobility`.").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{

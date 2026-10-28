@@ -26,7 +26,7 @@ data "iosxe_wireless_mobility" "example" {
 
 ### Read-Only
 
-- `dscp` (Number) mobility dcsp value
+- `dscp` (Number) Mobility DSCP value
 - `group_keepalive_count` (Number) Mobility Keep Alive count
 - `group_keepalive_interval` (Number) Mobility Keep Alive interval
 - `group_members` (Attributes List) List of Mobility Peers (see [below for nested schema](#nestedatt--group_members))
@@ -43,5 +43,5 @@ Read-Only:
 - `group` (String) Peer group name
 - `ip` (String) Peer IP address. The controller refuses to change it on an existing member.
 - `mac_address` (String) Mobility peer MAC address, in lowercase colon form (the controller stores it in lowercase).
-- `public_ip` (String) Peer public IP address. When omitted, the controller stores `0.0.0.0` (the `wireless mobility group member` CLI instead stores the member's `ip`). The controller refuses to change it on an existing member.
+- `public_ip` (String) Peer public IP address. If omitted, a member configured through this resource is stored with public IP `0.0.0.0`, unlike the `wireless mobility group member` CLI, where it defaults to `ip`. Set it equal to `ip` to match the CLI behaviour. The controller refuses to change it on an existing member.
 - `ssc_hash` (String) Peer SSC hash. The controller requires exactly 40 characters and stores the value in the case given.

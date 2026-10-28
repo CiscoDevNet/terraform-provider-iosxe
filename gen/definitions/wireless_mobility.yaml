@@ -12,6 +12,8 @@ attributes:
   - yang_name: mac-address
     tf_name: mac_address
     description: Mobility local MAC address, in lowercase colon form (the controller stores it in lowercase).
+    string_patterns:
+      - '^[0-9a-f]{2}(:[0-9a-f]{2}){5}$'
     example: 00:00:00:00:0c:01
   - yang_name: mobility-keepalive-interval
     tf_name: group_keepalive_interval
@@ -21,6 +23,7 @@ attributes:
     example: 5
   - yang_name: mobility-dscp
     tf_name: dscp
+    description: Mobility DSCP value
     example: 46
   - yang_name: mobility-peers/mobility-peer
     tf_name: group_members
@@ -30,6 +33,8 @@ attributes:
         tf_name: mac_address
         id: true
         description: Mobility peer MAC address, in lowercase colon form (the controller stores it in lowercase).
+        string_patterns:
+          - '^[0-9a-f]{2}(:[0-9a-f]{2}){5}$'
         example: 00:00:00:00:0a:20
       - yang_name: ip-address
         tf_name: ip
@@ -38,7 +43,7 @@ attributes:
         example: 192.0.2.20
       - yang_name: nat-ip
         tf_name: public_ip
-        description: Peer public IP address. When omitted, the controller stores `0.0.0.0` (the `wireless mobility group member` CLI instead stores the member's `ip`). The controller refuses to change it on an existing member.
+        description: Peer public IP address. If omitted, a member configured through this resource is stored with public IP `0.0.0.0`, unlike the `wireless mobility group member` CLI, where it defaults to `ip`. Set it equal to `ip` to match the CLI behaviour. The controller refuses to change it on an existing member.
         example: 198.51.100.20
       - yang_name: group-name
         tf_name: group
@@ -47,6 +52,8 @@ attributes:
       - yang_name: ssc-hash
         tf_name: ssc_hash
         description: Peer SSC hash. The controller requires exactly 40 characters and stores the value in the case given.
+        string_min_length: 40
+        string_max_length: 40
         example: 0123456789abcdef0123456789abcdef01234567
       - yang_name: data-link-encryption
         tf_name: data_link_encryption

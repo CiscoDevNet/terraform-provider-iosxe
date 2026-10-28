@@ -38,7 +38,7 @@ resource "iosxe_wireless_mobility" "example" {
 ### Optional
 
 - `device` (String) A device name from the provider configuration.
-- `dscp` (Number) mobility dcsp value
+- `dscp` (Number) Mobility DSCP value
   - Range: `0`-`63`
 - `group_keepalive_count` (Number) Mobility Keep Alive count
   - Range: `3`-`20`
@@ -64,7 +64,7 @@ Required:
 Optional:
 
 - `data_link_encryption` (Boolean) Peer data link encryption status
-- `public_ip` (String) Peer public IP address. When omitted, the controller stores `0.0.0.0` (the `wireless mobility group member` CLI instead stores the member's `ip`). The controller refuses to change it on an existing member.
+- `public_ip` (String) Peer public IP address. If omitted, a member configured through this resource is stored with public IP `0.0.0.0`, unlike the `wireless mobility group member` CLI, where it defaults to `ip`. Set it equal to `ip` to match the CLI behaviour. The controller refuses to change it on an existing member.
 - `ssc_hash` (String) Peer SSC hash. The controller requires exactly 40 characters and stores the value in the case given.
 
 ## Import

@@ -85,7 +85,7 @@ func (d *WirelessMobilityDataSource) Schema(ctx context.Context, req datasource.
 				Computed:            true,
 			},
 			"dscp": schema.Int64Attribute{
-				MarkdownDescription: "mobility dcsp value",
+				MarkdownDescription: "Mobility DSCP value",
 				Computed:            true,
 			},
 			"group_members": schema.ListNestedAttribute{
@@ -102,7 +102,7 @@ func (d *WirelessMobilityDataSource) Schema(ctx context.Context, req datasource.
 							Computed:            true,
 						},
 						"public_ip": schema.StringAttribute{
-							MarkdownDescription: "Peer public IP address. When omitted, the controller stores `0.0.0.0` (the `wireless mobility group member` CLI instead stores the member's `ip`). The controller refuses to change it on an existing member.",
+							MarkdownDescription: "Peer public IP address. If omitted, a member configured through this resource is stored with public IP `0.0.0.0`, unlike the `wireless mobility group member` CLI, where it defaults to `ip`. Set it equal to `ip` to match the CLI behaviour. The controller refuses to change it on an existing member.",
 							Computed:            true,
 						},
 						"group": schema.StringAttribute{
