@@ -62,6 +62,9 @@ attributes:
   - yang_name: static-ip-mobility/is-static-ip-mobility
     tf_name: static_ip_mobility
     example: true
+    # Excluded from tests: the controller rejects static IP mobility together
+    # with mobility_anchors, which the test covers.
+    exclude_test: true
   - yang_name: wlan-local-profiling/dhcp-tlv-caching
     tf_name: dhcp_tlv_caching
     example: true
@@ -85,14 +88,12 @@ attributes:
   - yang_name: guest-mm-db-export-entries/guest-mm-db-export-entry
     tf_name: mobility_anchors
     type: List
-    # Excluded from tests: the controller rejects an anchor unless a mobility
-    # peer is configured, and the mobility YANG model is not loaded here.
-    exclude_test: true
+    # The controller rejects an anchor unless a mobility peer with that IP is
+    # configured, so the test creates one as a prerequisite (PreReq2).
     attributes:
       - yang_name: ip
         id: true
         example: 192.0.2.10
-        exclude_test: true
       - yang_name: anchor-priority
         tf_name: priority
         type: String
@@ -101,7 +102,6 @@ attributes:
           - export-anchor-secondary
           - export-anchor-tertiary
         example: export-anchor-primary
-        exclude_test: true
 
 test_prerequisites:
   - path: /Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:monitor[name=S2-AVC-MON-IN]
@@ -116,3 +116,11 @@ test_prerequisites:
         value: S2-AVC-MON-OUT
       - name: record/wireless/avc/basic
         value: ""
+  - path: /Cisco-IOS-XE-wireless-mobility-cfg:mobility-cfg-data/mobility-config/mobility-peers/mobility-peer[mac-addr=00:00:00:00:0a:10]
+    attributes:
+      - name: mac-addr
+        value: 00:00:00:00:0a:10
+      - name: ip-address
+        value: 192.0.2.10
+      - name: group-name
+        value: ANCHORS
