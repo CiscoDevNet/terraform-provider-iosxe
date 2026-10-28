@@ -1,0 +1,18 @@
+---
+name: Voice Card
+path: /Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:voice-card-sb[sb=%v]
+doc_category: Voice
+# Requires DSP hardware on the voice card; gate tests behind the TDM env var.
+test_tags: [TDM]
+attributes:
+  - yang_name: sb
+    tf_name: location
+    id: true
+    example: "0/1"
+  - yang_name: local-bypass
+    exclude_test: true
+    example: true
+  - yang_name: dsp/services/dspfarm
+    tf_name: dsp_services_dspfarm
+    exclude_test: true
+    example: true

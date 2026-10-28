@@ -18,21 +18,16 @@ resource "iosxe_wireless_wlan_profile" "example" {
   wlan_id                         = 10
   ssid                            = "S1-CORP-PSK"
   wlan_status                     = true
-  broadcast_ssid                  = true
-  ccx_aironet_ie                  = false
+  broadcast_ssid                  = false
+  ccx_aironet_ie                  = true
   peer_blocking                   = "p2p-blocking-action-drop"
   security_wpa_akm_dot1x          = false
-  security_wpa_akm_ft_dot1x       = false
   security_wpa_akm_psk            = true
   security_wpa_akm_ft_psk         = true
-  security_wpa_akm_sae            = false
-  security_wpa_akm_ft_sae         = false
-  security_wpa_wpa2_ciphers_aes   = true
-  security_wpa_wpa3               = false
-  security_wpa_psk_key_format     = "key-ascii"
+  security_wpa_psk_key_format     = "key-hex"
   security_wpa_psk_key_encryption = "clear"
-  security_wpa_psk_key            = "Example-Passphrase-123"
-  security_web_auth               = false
+  security_wpa_psk_key            = "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+  security_web_auth               = true
   security_ft                     = "dot11r-enabled"
   security_ft_over_the_ds         = true
   load_balance                    = true
@@ -46,6 +41,7 @@ resource "iosxe_wireless_wlan_profile" "example" {
 ### Required
 
 - `profile_name` (String) profile-name
+- `ssid` (String) Represents the SSID assigned to this WLAN. The access points will broadcast this SSID on this WLAN. SSID is restricted to non control characters.
 - `wlan_id` (Number) wlan ID
   - Range: `1`-`4096`
 
@@ -84,7 +80,6 @@ resource "iosxe_wireless_wlan_profile" "example" {
 - `security_wpa_wpa2_ciphers_gcmp128` (Boolean) WPA2/GCMP128 support
 - `security_wpa_wpa2_ciphers_gcmp256` (Boolean) WPA2/GCMP256 support
 - `security_wpa_wpa3` (Boolean) Configures WPA3 support
-- `ssid` (String) Represents the SSID assigned to this WLAN. The access points will broadcast this SSID on this WLAN. SSID is restricted to non control characters.
 - `wlan_status` (Boolean) Administrative Status of ESS(WLAN). By disabling an ESS the corresponding SSID is no longer broadcasted in AP beacons.
 - `wmm` (String) Configures WMM (WME)
   - Choices: `apf-vap-wme-disabled`, `apf-vap-wme-allowed`, `apf-vap-wme-required`

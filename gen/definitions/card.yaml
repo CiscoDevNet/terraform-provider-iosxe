@@ -1,0 +1,20 @@
+---
+name: Card
+path: /Cisco-IOS-XE-native:native/card/Cisco-IOS-XE-card:type[card-type=%v][slot=%v][bay=%v]
+doc_category: Interface
+# Requires a physical card in the slot/bay; gate tests behind the TDM env var.
+# On a NIM-4MFT-T1/E1, the `card type t1|e1` config itself applies and removes
+# cleanly over NETCONF (~1s, no reload), so no `no_delete` is needed. Note the
+# T1/E1 controllers it provisions only appear after a device reload.
+test_tags: [TDM]
+attributes:
+  - yang_name: card-type
+    tf_name: card_type
+    id: true
+    example: t1
+  - yang_name: slot
+    id: true
+    example: 0
+  - yang_name: bay
+    id: true
+    example: 1

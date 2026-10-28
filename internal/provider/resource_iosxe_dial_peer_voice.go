@@ -81,13 +81,6 @@ func (r *DialPeerVoiceResource) Schema(ctx context.Context, req resource.SchemaR
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
-			"delete_mode": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.").AddStringEnumDescription("all", "attributes").String,
-				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.OneOf("all", "attributes"),
-				},
-			},
 			"tag": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Voice dial-peer tag").AddIntegerRangeDescription(1, 1073741823).String,
 				Required:            true,
@@ -147,14 +140,14 @@ func (r *DialPeerVoiceResource) Schema(ctx context.Context, req resource.SchemaR
 				Optional:            true,
 			},
 			"session_protocol": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("The session protocol to be used in getting to this peer").AddStringEnumDescription("cisco", "multicast", "sipv2").String,
+				MarkdownDescription: helpers.NewAttributeDescription("The session protocol to be used in getting to this peer. While `session_server_group` is set, IOS-XE refuses changing or removing `sipv2` in the same apply; remove `session_server_group` in one apply first.").AddStringEnumDescription("cisco", "multicast", "sipv2").String,
 				Optional:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("cisco", "multicast", "sipv2"),
 				},
 			},
 			"session_server_group": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure voice class server-group").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Voice class server-group. Only valid when `session_protocol` is `sipv2`. Remove it in a separate apply before changing or removing `session_protocol`; IOS-XE refuses doing both at once.").String,
 				Optional:            true,
 			},
 			"session_target": schema.StringAttribute{
@@ -619,11 +612,6 @@ func (r *DialPeerVoiceResource) Delete(ctx context.Context, req resource.DeleteR
 
 	if device.Managed {
 		deleteMode := "all"
-		if state.DeleteMode.ValueString() == "all" {
-			deleteMode = "all"
-		} else if state.DeleteMode.ValueString() == "attributes" {
-			deleteMode = "attributes"
-		}
 
 		// NETCONF - Serialize write operations
 		locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, true)
