@@ -46,9 +46,9 @@ func TestAccDataSourceIosxeInterfaceTunnel(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "ipv6_mtu", "1300"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "ipv6_nd_ra_suppress_all", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "ipv6_address_dhcp", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "ipv6_link_local_addresses.0.address", "fe80::9656:d028:8652:66ba"))
+	checks = append(checks, testAccCheckResourceAttrIPv6("data.iosxe_interface_tunnel.test", "ipv6_link_local_addresses.0.address", "fe80::9656:d028:8652:66ba"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "ipv6_link_local_addresses.0.link_local", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "ipv6_addresses.0.prefix", "2005:DB8::/32"))
+	checks = append(checks, testAccCheckResourceAttrIPv6("data.iosxe_interface_tunnel.test", "ipv6_addresses.0.prefix", "2005:DB8::/32"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "ipv6_addresses.0.eui_64", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "tunnel_destination_ipv4", "2.2.2.2"))
 	if os.Getenv("C8000V") != "" {

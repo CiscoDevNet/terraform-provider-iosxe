@@ -38,8 +38,11 @@ func TestAccIosxeBGPIPv4MVPNNeighbor(t *testing.T) {
 		t.Skip("skipping test, set environment variable IOSXE1715")
 	}
 	var checks []resource.TestCheckFunc
+	// normalize_ipv6 attributes are imported in the device form, so they are compared normalized
+	importIPv6Checks := map[string]string{}
 	if os.Getenv("IOSXE1715") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_ipv4_mvpn_neighbor.test", "ip", "172.16.255.4"))
+		importIPv6Checks["ip"] = "172.16.255.4"
 	}
 	if os.Getenv("IOSXE1715") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_ipv4_mvpn_neighbor.test", "activate", "true"))
@@ -63,7 +66,8 @@ func TestAccIosxeBGPIPv4MVPNNeighbor(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeBGPIPv4MVPNNeighborImportStateIdFunc("iosxe_bgp_ipv4_mvpn_neighbor.test"),
-				ImportStateVerifyIgnore: []string{"activate"},
+				ImportStateVerifyIgnore: []string{"ip", "activate"},
+				ImportStateCheck:        testAccCheckImportStateIPv6("iosxe_bgp_ipv4_mvpn_neighbor", importIPv6Checks),
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},

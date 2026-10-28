@@ -34,6 +34,8 @@ import (
 
 func TestAccIosxeInterfaceLoopback(t *testing.T) {
 	var checks []resource.TestCheckFunc
+	// normalize_ipv6 attributes are imported in the device form, so they are compared normalized
+	importIPv6Checks := map[string]string{}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "name", "201"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "description", "My Interface Description"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "shutdown", "false"))
@@ -52,8 +54,10 @@ func TestAccIosxeInterfaceLoopback(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "ipv6_mtu", "1300"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "ipv6_address_dhcp", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "ipv6_link_local_addresses.0.address", "fe80::9656:d028:8652:66b7"))
+	importIPv6Checks["ipv6_link_local_addresses.0.address"] = "fe80::9656:d028:8652:66b7"
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "ipv6_link_local_addresses.0.link_local", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "ipv6_addresses.0.prefix", "2002:DB8::/32"))
+	importIPv6Checks["ipv6_addresses.0.prefix"] = "2002:DB8::/32"
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "ipv6_addresses.0.eui_64", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "arp_timeout", "2147"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "ip_igmp_version", "3"))
@@ -76,7 +80,8 @@ func TestAccIosxeInterfaceLoopback(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeInterfaceLoopbackImportStateIdFunc("iosxe_interface_loopback.test"),
-				ImportStateVerifyIgnore: []string{"ipv4_address_dhcp", "ipv6_nd_ra_suppress_all", "ipv6_address_autoconfig_default", "ipv6_dhcp_client_pd_rapid_commit", "ipv6_dhcp_relay_trust", "ipv6_dhcp_relay_option_vpn", "ip_nat_inside", "ip_nat_outside"},
+				ImportStateVerifyIgnore: []string{"ipv4_address_dhcp", "ipv6_nd_ra_suppress_all", "ipv6_address_autoconfig_default", "ipv6_dhcp_client_pd_rapid_commit", "ipv6_dhcp_relay_trust", "ipv6_dhcp_relay_option_vpn", "ipv6_link_local_addresses.0.address", "ipv6_addresses.0.prefix", "ip_nat_inside", "ip_nat_outside"},
+				ImportStateCheck:        testAccCheckImportStateIPv6("iosxe_interface_loopback", importIPv6Checks),
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},

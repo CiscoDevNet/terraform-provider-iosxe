@@ -57,10 +57,18 @@ func TestAccDataSourceIosxe{{camelCase .Name}}(t *testing.T) {
 	{{- if and (not .WriteOnly) (not .ExcludeTest) .XPath (ne .Type "StringSet") (ne .Type "Int64Set")}}
 	{{- if len .TestTags}}
 	if {{range $i, $e := .TestTags}}{{if $i}} || {{end}}os.Getenv("{{$e}}") != ""{{end}} {
+		{{- if .NormalizeIPv6}}
+		checks = append(checks, testAccCheckResourceAttrIPv6("data.iosxe_{{snakeCase $name}}.test", "{{$list}}.0.{{$clist}}.0.{{.TfName}}{{if or (eq .Type "StringList") (eq .Type "Int64List")}}.0{{end}}", "{{.Example}}"))
+		{{- else}}
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_{{snakeCase $name}}.test", "{{$list}}.0.{{$clist}}.0.{{.TfName}}{{if or (eq .Type "StringList") (eq .Type "Int64List")}}.0{{end}}", "{{.Example}}"))
+		{{- end}}
 	}
 	{{- else}}
+	{{- if .NormalizeIPv6}}
+	checks = append(checks, testAccCheckResourceAttrIPv6("data.iosxe_{{snakeCase $name}}.test", "{{$list}}.0.{{$clist}}.0.{{.TfName}}{{if or (eq .Type "StringList") (eq .Type "Int64List")}}.0{{end}}", "{{.Example}}"))
+	{{- else}}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_{{snakeCase $name}}.test", "{{$list}}.0.{{$clist}}.0.{{.TfName}}{{if or (eq .Type "StringList") (eq .Type "Int64List")}}.0{{end}}", "{{.Example}}"))
+	{{- end}}
 	{{- end}}
 	{{- end}}
 	{{- end}}
@@ -70,24 +78,40 @@ func TestAccDataSourceIosxe{{camelCase .Name}}(t *testing.T) {
 	{{- else}}
 	{{- if len .TestTags}}
 	if {{range $i, $e := .TestTags}}{{if $i}} || {{end}}os.Getenv("{{$e}}") != ""{{end}} {
+		{{- if .NormalizeIPv6}}
+		checks = append(checks, testAccCheckResourceAttrIPv6("data.iosxe_{{snakeCase $name}}.test", "{{$list}}.0.{{.TfName}}{{if or (eq .Type "StringList") (eq .Type "Int64List")}}.0{{end}}", "{{.Example}}"))
+		{{- else}}
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_{{snakeCase $name}}.test", "{{$list}}.0.{{.TfName}}{{if or (eq .Type "StringList") (eq .Type "Int64List")}}.0{{end}}", "{{.Example}}"))
+		{{- end}}
 	}
+	{{- else}}
+	{{- if .NormalizeIPv6}}
+	checks = append(checks, testAccCheckResourceAttrIPv6("data.iosxe_{{snakeCase $name}}.test", "{{$list}}.0.{{.TfName}}{{if or (eq .Type "StringList") (eq .Type "Int64List")}}.0{{end}}", "{{.Example}}"))
 	{{- else}}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_{{snakeCase $name}}.test", "{{$list}}.0.{{.TfName}}{{if or (eq .Type "StringList") (eq .Type "Int64List")}}.0{{end}}", "{{.Example}}"))
 	{{- end}}
 	{{- end}}
 	{{- end}}
 	{{- end}}
+	{{- end}}
 	{{- if len .TestTags}}
 	}
 	{{- end}}
 	{{- else}}
 	{{- if len .TestTags}}
 	if {{range $i, $e := .TestTags}}{{if $i}} || {{end}}os.Getenv("{{$e}}") != ""{{end}} {
+		{{- if .NormalizeIPv6}}
+		checks = append(checks, testAccCheckResourceAttrIPv6("data.iosxe_{{snakeCase $name}}.test", "{{.TfName}}{{if or (eq .Type "StringList") (eq .Type "Int64List")}}.0{{end}}", "{{.Example}}"))
+		{{- else}}
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_{{snakeCase $name}}.test", "{{.TfName}}{{if or (eq .Type "StringList") (eq .Type "Int64List")}}.0{{end}}", "{{.Example}}"))
+		{{- end}}
 	}
 	{{- else}}
+	{{- if .NormalizeIPv6}}
+	checks = append(checks, testAccCheckResourceAttrIPv6("data.iosxe_{{snakeCase $name}}.test", "{{.TfName}}{{if or (eq .Type "StringList") (eq .Type "Int64List")}}.0{{end}}", "{{.Example}}"))
+	{{- else}}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_{{snakeCase $name}}.test", "{{.TfName}}{{if or (eq .Type "StringList") (eq .Type "Int64List")}}.0{{end}}", "{{.Example}}"))
+	{{- end}}
 	{{- end}}
 	{{- end}}
 	{{- end}}

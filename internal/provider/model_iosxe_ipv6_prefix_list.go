@@ -196,7 +196,10 @@ func (data *IPv6PrefixList) updateFromBodyXML(ctx context.Context, res xmldot.Re
 			data.Prefixes[i].Action = types.StringNull()
 		}
 		if value := helpers.GetFromXPath(r, "ip"); value.Exists() && !data.Prefixes[i].Ip.IsNull() {
-			data.Prefixes[i].Ip = types.StringValue(value.String())
+			// Keep the configured form if the device returns the same IPv6 address in a different case or compression
+			if helpers.NormalizeIPv6Address(value.String()) != helpers.NormalizeIPv6Address(data.Prefixes[i].Ip.ValueString()) {
+				data.Prefixes[i].Ip = types.StringValue(value.String())
+			}
 		} else {
 			data.Prefixes[i].Ip = types.StringNull()
 		}

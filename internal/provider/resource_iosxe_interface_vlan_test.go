@@ -38,6 +38,8 @@ func TestAccIosxeInterfaceVLAN(t *testing.T) {
 		t.Skip("skipping test, set environment variable C9000V")
 	}
 	var checks []resource.TestCheckFunc
+	// normalize_ipv6 attributes are imported in the device form, so they are compared normalized
+	importIPv6Checks := map[string]string{}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "name", "10"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "autostate", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "description", "My Interface Description"))
@@ -66,8 +68,10 @@ func TestAccIosxeInterfaceVLAN(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "ipv6_nd_ra_suppress_all", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "ipv6_address_dhcp", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "ipv6_link_local_addresses.0.address", "fe80::9656:d028:8652:66bb"))
+	importIPv6Checks["ipv6_link_local_addresses.0.address"] = "fe80::9656:d028:8652:66bb"
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "ipv6_link_local_addresses.0.link_local", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "ipv6_addresses.0.prefix", "2006:DB8::/32"))
+	importIPv6Checks["ipv6_addresses.0.prefix"] = "2006:DB8::/32"
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "ipv6_addresses.0.eui_64", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "load_interval", "30"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "mac_address", "0000.dead.beef"))
@@ -92,7 +96,8 @@ func TestAccIosxeInterfaceVLAN(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeInterfaceVLANImportStateIdFunc("iosxe_interface_vlan.test"),
-				ImportStateVerifyIgnore: []string{"ipv4_address_dhcp", "ipv6_address_autoconfig_default", "ipv6_dhcp_client_pd_rapid_commit", "ipv6_dhcp_relay_trust", "ipv6_dhcp_relay_option_vpn", "ip_nat_inside", "ip_nat_outside"},
+				ImportStateVerifyIgnore: []string{"ipv4_address_dhcp", "ipv6_address_autoconfig_default", "ipv6_dhcp_client_pd_rapid_commit", "ipv6_dhcp_relay_trust", "ipv6_dhcp_relay_option_vpn", "ipv6_link_local_addresses.0.address", "ipv6_addresses.0.prefix", "ip_nat_inside", "ip_nat_outside"},
+				ImportStateCheck:        testAccCheckImportStateIPv6("iosxe_interface_vlan", importIPv6Checks),
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},

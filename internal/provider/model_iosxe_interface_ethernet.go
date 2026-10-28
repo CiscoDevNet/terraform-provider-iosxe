@@ -1942,13 +1942,15 @@ func (data *InterfaceEthernet) updateFromBodyXML(ctx context.Context, res xmldot
 	for i := range data.Ipv6LinkLocalAddresses {
 		keys := [...]string{"address"}
 		keyValues := [...]string{data.Ipv6LinkLocalAddresses[i].Address.ValueString()}
+		keyNormalizeIPv6 := [...]bool{true}
 
 		var r xmldot.Result
 		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/address/link-local-address").ForEach(
 			func(_ int, v xmldot.Result) bool {
 				found := false
 				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
+					// normalize_ipv6 keys match when they are the same IPv6 address in a different case or compression
+					if v.Get(keys[ik]).String() == keyValues[ik] || (keyNormalizeIPv6[ik] && helpers.NormalizeIPv6Address(v.Get(keys[ik]).String()) == helpers.NormalizeIPv6Address(keyValues[ik])) {
 						found = true
 						continue
 					}
@@ -1963,7 +1965,10 @@ func (data *InterfaceEthernet) updateFromBodyXML(ctx context.Context, res xmldot
 			},
 		)
 		if value := helpers.GetFromXPath(r, "address"); value.Exists() && !data.Ipv6LinkLocalAddresses[i].Address.IsNull() {
-			data.Ipv6LinkLocalAddresses[i].Address = types.StringValue(value.String())
+			// Keep the configured form if the device returns the same IPv6 address in a different case or compression
+			if helpers.NormalizeIPv6Address(value.String()) != helpers.NormalizeIPv6Address(data.Ipv6LinkLocalAddresses[i].Address.ValueString()) {
+				data.Ipv6LinkLocalAddresses[i].Address = types.StringValue(value.String())
+			}
 		} else {
 			data.Ipv6LinkLocalAddresses[i].Address = types.StringNull()
 		}
@@ -1980,13 +1985,15 @@ func (data *InterfaceEthernet) updateFromBodyXML(ctx context.Context, res xmldot
 	for i := range data.Ipv6Addresses {
 		keys := [...]string{"prefix"}
 		keyValues := [...]string{data.Ipv6Addresses[i].Prefix.ValueString()}
+		keyNormalizeIPv6 := [...]bool{true}
 
 		var r xmldot.Result
 		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/address/prefix-list").ForEach(
 			func(_ int, v xmldot.Result) bool {
 				found := false
 				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
+					// normalize_ipv6 keys match when they are the same IPv6 address in a different case or compression
+					if v.Get(keys[ik]).String() == keyValues[ik] || (keyNormalizeIPv6[ik] && helpers.NormalizeIPv6Address(v.Get(keys[ik]).String()) == helpers.NormalizeIPv6Address(keyValues[ik])) {
 						found = true
 						continue
 					}
@@ -2001,7 +2008,10 @@ func (data *InterfaceEthernet) updateFromBodyXML(ctx context.Context, res xmldot
 			},
 		)
 		if value := helpers.GetFromXPath(r, "prefix"); value.Exists() && !data.Ipv6Addresses[i].Prefix.IsNull() {
-			data.Ipv6Addresses[i].Prefix = types.StringValue(value.String())
+			// Keep the configured form if the device returns the same IPv6 address in a different case or compression
+			if helpers.NormalizeIPv6Address(value.String()) != helpers.NormalizeIPv6Address(data.Ipv6Addresses[i].Prefix.ValueString()) {
+				data.Ipv6Addresses[i].Prefix = types.StringValue(value.String())
+			}
 		} else {
 			data.Ipv6Addresses[i].Prefix = types.StringNull()
 		}

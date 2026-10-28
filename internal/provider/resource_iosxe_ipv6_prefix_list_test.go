@@ -34,10 +34,13 @@ import (
 
 func TestAccIosxeIPv6PrefixList(t *testing.T) {
 	var checks []resource.TestCheckFunc
+	// normalize_ipv6 attributes are imported in the device form, so they are compared normalized
+	importIPv6Checks := map[string]string{}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ipv6_prefix_list.test", "prefixes.0.name", "PREFIX_LIST_1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ipv6_prefix_list.test", "prefixes.0.seq", "10"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ipv6_prefix_list.test", "prefixes.0.action", "permit"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ipv6_prefix_list.test", "prefixes.0.ip", "2001:db8::/32"))
+	importIPv6Checks["prefixes.0.ip"] = "2001:db8::/32"
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ipv6_prefix_list.test", "prefixes.0.ge", "48"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ipv6_prefix_list.test", "prefixes.0.le", "128"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ipv6_prefix_list.test", "prefix_list_description.0.name", "PREFIX_LIST_1"))
@@ -58,7 +61,8 @@ func TestAccIosxeIPv6PrefixList(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeIPv6PrefixListImportStateIdFunc("iosxe_ipv6_prefix_list.test"),
-				ImportStateVerifyIgnore: []string{},
+				ImportStateVerifyIgnore: []string{"prefixes.0.ip"},
+				ImportStateCheck:        testAccCheckImportStateIPv6("iosxe_ipv6_prefix_list", importIPv6Checks),
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},

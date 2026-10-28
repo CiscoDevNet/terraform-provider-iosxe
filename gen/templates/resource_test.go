@@ -39,6 +39,10 @@ func TestAccIosxe{{camelCase .Name}}(t *testing.T) {
     }
 	{{- end}}
 	var checks []resource.TestCheckFunc
+	{{- if hasNormalizeIPv6 .Attributes}}
+	// normalize_ipv6 attributes are imported in the device form, so they are compared normalized
+	importIPv6Checks := map[string]string{}
+	{{- end}}
 	{{- $name := .Name }}
 	{{- range .Attributes}}
 	{{- if and (not .Reference) (not .WriteOnly) (not .ExcludeTest) .XPath (ne .Type "StringSet") (ne .Type "Int64Set") }}
@@ -59,9 +63,15 @@ func TestAccIosxe{{camelCase .Name}}(t *testing.T) {
 	{{- if len .TestTags}}
 	if {{range $i, $e := .TestTags}}{{if $i}} || {{end}}os.Getenv("{{$e}}") != ""{{end}} {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_{{snakeCase $name}}.test", "{{$list}}.0.{{$clist}}.0.{{.TfName}}{{if or (eq .Type "StringList") (eq .Type "Int64List")}}.0{{end}}", "{{.Example}}"))
+		{{- if normalizeIPv6ImportCheck .}}
+		importIPv6Checks["{{$list}}.0.{{$clist}}.0.{{.TfName}}{{if or (eq .Type "StringList") (eq .Type "Int64List")}}.0{{end}}"] = "{{.Example}}"
+		{{- end}}
 	}
 	{{- else}}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_{{snakeCase $name}}.test", "{{$list}}.0.{{$clist}}.0.{{.TfName}}{{if or (eq .Type "StringList") (eq .Type "Int64List")}}.0{{end}}", "{{.Example}}"))
+	{{- if normalizeIPv6ImportCheck .}}
+	importIPv6Checks["{{$list}}.0.{{$clist}}.0.{{.TfName}}{{if or (eq .Type "StringList") (eq .Type "Int64List")}}.0{{end}}"] = "{{.Example}}"
+	{{- end}}
 	{{- end}}
 	{{- end}}
 	{{- end}}
@@ -72,9 +82,15 @@ func TestAccIosxe{{camelCase .Name}}(t *testing.T) {
 	{{- if len .TestTags}}
 	if {{range $i, $e := .TestTags}}{{if $i}} || {{end}}os.Getenv("{{$e}}") != ""{{end}} {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_{{snakeCase $name}}.test", "{{$list}}.0.{{.TfName}}{{if or (eq .Type "StringList") (eq .Type "Int64List")}}.0{{end}}", "{{.Example}}"))
+		{{- if normalizeIPv6ImportCheck .}}
+		importIPv6Checks["{{$list}}.0.{{.TfName}}{{if or (eq .Type "StringList") (eq .Type "Int64List")}}.0{{end}}"] = "{{.Example}}"
+		{{- end}}
 	}
 	{{- else}}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_{{snakeCase $name}}.test", "{{$list}}.0.{{.TfName}}{{if or (eq .Type "StringList") (eq .Type "Int64List")}}.0{{end}}", "{{.Example}}"))
+	{{- if normalizeIPv6ImportCheck .}}
+	importIPv6Checks["{{$list}}.0.{{.TfName}}{{if or (eq .Type "StringList") (eq .Type "Int64List")}}.0{{end}}"] = "{{.Example}}"
+	{{- end}}
 	{{- end}}
 	{{- end}}
 	{{- end}}
@@ -86,9 +102,15 @@ func TestAccIosxe{{camelCase .Name}}(t *testing.T) {
 	{{- if len .TestTags}}
 	if {{range $i, $e := .TestTags}}{{if $i}} || {{end}}os.Getenv("{{$e}}") != ""{{end}} {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_{{snakeCase $name}}.test", "{{.TfName}}{{if or (eq .Type "StringList") (eq .Type "Int64List")}}.0{{end}}", "{{.Example}}"))
+		{{- if normalizeIPv6ImportCheck .}}
+		importIPv6Checks["{{.TfName}}{{if or (eq .Type "StringList") (eq .Type "Int64List")}}.0{{end}}"] = "{{.Example}}"
+		{{- end}}
 	}
 	{{- else}}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_{{snakeCase $name}}.test", "{{.TfName}}{{if or (eq .Type "StringList") (eq .Type "Int64List")}}.0{{end}}", "{{.Example}}"))
+	{{- if normalizeIPv6ImportCheck .}}
+	importIPv6Checks["{{.TfName}}{{if or (eq .Type "StringList") (eq .Type "Int64List")}}.0{{end}}"] = "{{.Example}}"
+	{{- end}}
 	{{- end}}
 	{{- end}}
 	{{- end}}
@@ -112,6 +134,9 @@ func TestAccIosxe{{camelCase .Name}}(t *testing.T) {
 				ImportStateVerify: true,
 				ImportStateIdFunc: iosxe{{camelCase .Name}}ImportStateIdFunc("iosxe_{{snakeCase $name}}.test"),
 				ImportStateVerifyIgnore: []string{ {{range getImportExcludes .Attributes}}"{{.}}",{{end}}{{if and (not .NoDelete) (not .NoDeleteAttributes) .DefaultDeleteAttributes}}"delete_mode",{{end}} },
+				{{- if hasNormalizeIPv6 .Attributes}}
+				ImportStateCheck: testAccCheckImportStateIPv6("iosxe_{{snakeCase $name}}", importIPv6Checks),
+				{{- end}}
 				Check: resource.ComposeTestCheckFunc(checks...),
 			},
 		},

@@ -38,6 +38,8 @@ func TestAccIosxeInterfaceTunnel(t *testing.T) {
 		t.Skip("skipping test, set environment variable C8000V")
 	}
 	var checks []resource.TestCheckFunc
+	// normalize_ipv6 attributes are imported in the device form, so they are compared normalized
+	importIPv6Checks := map[string]string{}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "name", "90"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "description", "My Interface Description"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "shutdown", "false"))
@@ -50,8 +52,10 @@ func TestAccIosxeInterfaceTunnel(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ipv6_nd_ra_suppress_all", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ipv6_address_dhcp", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ipv6_link_local_addresses.0.address", "fe80::9656:d028:8652:66ba"))
+	importIPv6Checks["ipv6_link_local_addresses.0.address"] = "fe80::9656:d028:8652:66ba"
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ipv6_link_local_addresses.0.link_local", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ipv6_addresses.0.prefix", "2005:DB8::/32"))
+	importIPv6Checks["ipv6_addresses.0.prefix"] = "2005:DB8::/32"
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ipv6_addresses.0.eui_64", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "tunnel_destination_ipv4", "2.2.2.2"))
 	if os.Getenv("C8000V") != "" {
@@ -107,7 +111,8 @@ func TestAccIosxeInterfaceTunnel(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeInterfaceTunnelImportStateIdFunc("iosxe_interface_tunnel.test"),
-				ImportStateVerifyIgnore: []string{"ipv6_address_autoconfig_default", "ipv6_dhcp_client_pd_rapid_commit", "ipv6_dhcp_relay_trust", "ipv6_dhcp_relay_option_vpn", "ipv4_address_dhcp", "tunnel_mode_ipsec_ipv4", "ip_nat_inside", "ip_nat_outside", "tunnel_mode_gre_multipoint", "ip_nhrp_redirect", "ip_nhrp_shortcut", "mpls_nhrp"},
+				ImportStateVerifyIgnore: []string{"ipv6_address_autoconfig_default", "ipv6_dhcp_client_pd_rapid_commit", "ipv6_dhcp_relay_trust", "ipv6_dhcp_relay_option_vpn", "ipv6_link_local_addresses.0.address", "ipv6_addresses.0.prefix", "ipv4_address_dhcp", "tunnel_mode_ipsec_ipv4", "ip_nat_inside", "ip_nat_outside", "tunnel_mode_gre_multipoint", "ip_nhrp_redirect", "ip_nhrp_shortcut", "mpls_nhrp"},
+				ImportStateCheck:        testAccCheckImportStateIPv6("iosxe_interface_tunnel", importIPv6Checks),
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},

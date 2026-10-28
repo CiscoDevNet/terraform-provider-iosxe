@@ -73,6 +73,7 @@ description: |-
 - Add `re_originate_route_type5` attribute to `profiles` list in `iosxe_evpn` resource and data source for L2VPN EVPN profile `re-originate route-type5` configuration
 - Add `stub_connected` and `stub_summary` attributes to `iosxe_eigrp` and `iosxe_eigrp_vrf` resources and data sources for EIGRP stub routing advertisement control (`eigrp stub connected summary`)
 - Fix BGP resources triggering spurious destroy-recreate on import when the device uses `bgp asnotation dot` (asdot ASN format). A new `normalize_asn` plan modifier normalizes asdot and asplain representations to the same value before comparison
+- Fix `normalize_ipv6` attributes not being normalized when read back from the device: a refresh now keeps the configured value when the device returns the same address in a different case or compression (including list key matching), which prevents perpetual diffs and replacements, and generated data source and import tests compare these attributes by normalized value
 
 ## 1.1.1
 
