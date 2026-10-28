@@ -9,6 +9,8 @@ description: |-
 
 ## Unreleased
 
+- Add `iosxe_eap_profile` resource and data source for `eap profile` (description, allowed EAP methods and PKI trustpoint). `method_fast` maps to `method/fast-config`, not the obsolete `method/fast` leaf
+- Add `iosxe_parameter_map_webauth_global` resource and data source for the global web authentication parameter map (`parameter-map type webauth global`) and its `virtual-ip ipv4` / `virtual-ip ipv6` addresses. Configuring it converts the device to IBNS 2.0 session management, which cannot be undone from the CLI
 - Add `iosxe_voice_dspfarm_profile` resource and data source for `dspfarm profile`.
 - Add `iosxe_sccp` resource and data source for `sccp` (DSPfarm control protocol).
 - Add `iosxe_voice_card` resource and data source for `voice-card`.
