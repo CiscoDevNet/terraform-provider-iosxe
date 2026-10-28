@@ -39,7 +39,6 @@ import (
 type VoiceDSPFarmProfile struct {
 	Device                     types.String `tfsdk:"device"`
 	Id                         types.String `tfsdk:"id"`
-	DeleteMode                 types.String `tfsdk:"delete_mode"`
 	Tag                        types.Int64  `tfsdk:"tag"`
 	Type                       types.String `tfsdk:"type"`
 	Universal                  types.Bool   `tfsdk:"universal"`

@@ -46,8 +46,6 @@ resource "iosxe_voice_dspfarm_profile" "example" {
 - `codec_pass_through` (Boolean) Add the codec pass-through
 - `conference_participants` (String) Configure the maximum number of conferee per conference session
   - Choices: `16`, `32`, `8`
-- `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
-  - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
 - `maximum_mtp_sessions_hardware` (Number) Configure the maximum hardware MTP sessions of this profile
   - Range: `1`-`4000`
