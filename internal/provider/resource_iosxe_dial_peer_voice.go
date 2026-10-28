@@ -140,14 +140,14 @@ func (r *DialPeerVoiceResource) Schema(ctx context.Context, req resource.SchemaR
 				Optional:            true,
 			},
 			"session_protocol": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("The session protocol to be used in getting to this peer").AddStringEnumDescription("cisco", "multicast", "sipv2").String,
+				MarkdownDescription: helpers.NewAttributeDescription("The session protocol to be used in getting to this peer. While `session_server_group` is set, IOS-XE refuses changing or removing `sipv2` in the same apply; remove `session_server_group` in one apply first.").AddStringEnumDescription("cisco", "multicast", "sipv2").String,
 				Optional:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("cisco", "multicast", "sipv2"),
 				},
 			},
 			"session_server_group": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure voice class server-group").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Voice class server-group. Only valid when `session_protocol` is `sipv2`. Remove it in a separate apply before changing or removing `session_protocol`; IOS-XE refuses doing both at once.").String,
 				Optional:            true,
 			},
 			"session_target": schema.StringAttribute{

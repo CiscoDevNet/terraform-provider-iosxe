@@ -40,9 +40,11 @@ attributes:
   # --- Session ---
   - yang_name: session/protocol
     tf_name: session_protocol
+    description: "The session protocol to be used in getting to this peer. While `session_server_group` is set, IOS-XE refuses changing or removing `sipv2` in the same apply; remove `session_server_group` in one apply first."
     example: sipv2
   - yang_name: session/server-group
     tf_name: session_server_group
+    description: "Voice class server-group. Only valid when `session_protocol` is `sipv2`. Remove it in a separate apply before changing or removing `session_protocol`; IOS-XE refuses doing both at once."
     type: Int64
     example: 10
   - yang_name: session/target/target-choice/address-choice/address
