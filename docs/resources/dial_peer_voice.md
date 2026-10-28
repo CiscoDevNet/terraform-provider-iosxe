@@ -56,8 +56,6 @@ resource "iosxe_dial_peer_voice" "example" {
 - `codec_transparent` (Boolean) Uses the endpoint codec
 - `corlist_incoming` (String) set the incoming Class of Restriction lists
 - `corlist_outgoing` (String) set the outgoing Class of Restriction lists
-- `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
-  - Choices: `all`, `attributes`
 - `description` (String) Dial peer specific description
 - `destination_dpg` (Number) Configure voice class dpg
 - `destination_e164_pattern_map` (Number) Configure voice class to match destination e164-pattern-map
@@ -87,9 +85,9 @@ resource "iosxe_dial_peer_voice" "example" {
 - `preference` (Number) Configure the preference order of this dial-peer
   - Range: `0`-`10`
 - `prefix` (String) The pattern to be appended before the dial num
-- `session_protocol` (String) The session protocol to be used in getting to this peer
+- `session_protocol` (String) The session protocol to be used in getting to this peer. While `session_server_group` is set, IOS-XE refuses changing or removing `sipv2` in the same apply; remove `session_server_group` in one apply first.
   - Choices: `cisco`, `multicast`, `sipv2`
-- `session_server_group` (Number) Configure voice class server-group
+- `session_server_group` (Number) Voice class server-group. Only valid when `session_protocol` is `sipv2`. Remove it in a separate apply before changing or removing `session_protocol`; IOS-XE refuses doing both at once.
 - `session_target` (String) WORD A string specifying the session target
 - `session_transport_tcp` (Boolean) Transport Layer Protocol - TCP
 - `session_transport_tcp_tls` (Boolean) Transport Layer Protocol - TLS over TCP

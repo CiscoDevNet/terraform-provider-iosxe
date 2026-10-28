@@ -126,7 +126,6 @@ resource "iosxe_yang" "PreReq5" {
 
 func testAccDataSourceIosxeDialPeerVoiceConfig() string {
 	config := `resource "iosxe_dial_peer_voice" "test" {` + "\n"
-	config += `	delete_mode = "attributes"` + "\n"
 	config += `	tag = 100` + "\n"
 	config += `	type = "voip"` + "\n"
 	config += `	description = "Outbound to CUCM"` + "\n"
