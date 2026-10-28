@@ -16,21 +16,20 @@ This resource can manage the Wireless RF Profile configuration. The device's bui
 resource "iosxe_wireless_rf_profile" "example" {
   name                           = "S2-RF-5GHz-Test"
   band                           = "dot11-5-ghz-band"
-  status                         = true
   description                    = "5GHz RF Profile"
-  data_rate_1m                   = "apf-tx-rate-basic"
-  data_rate_2m                   = "apf-tx-rate-basic"
-  data_rate_5_5m                 = "apf-tx-rate-basic"
-  data_rate_11m                  = "apf-tx-rate-basic"
+  data_rate_1m                   = "apf-tx-rate-supported"
+  data_rate_2m                   = "apf-tx-rate-supported"
+  data_rate_5_5m                 = "apf-tx-rate-supported"
+  data_rate_11m                  = "apf-tx-rate-supported"
   data_rate_6m                   = "apf-tx-rate-basic"
-  data_rate_9m                   = "apf-tx-rate-supported"
+  data_rate_9m                   = "apf-tx-rate-unsupported"
   data_rate_12m                  = "apf-tx-rate-basic"
-  data_rate_18m                  = "apf-tx-rate-supported"
+  data_rate_18m                  = "apf-tx-rate-basic"
   data_rate_24m                  = "apf-tx-rate-basic"
-  data_rate_36m                  = "apf-tx-rate-supported"
-  data_rate_48m                  = "apf-tx-rate-supported"
-  data_rate_54m                  = "apf-tx-rate-supported"
-  band_select_client_rssi        = -70
+  data_rate_36m                  = "apf-tx-rate-basic"
+  data_rate_48m                  = "apf-tx-rate-basic"
+  data_rate_54m                  = "apf-tx-rate-basic"
+  band_select_client_rssi        = -85
   band_select_cycle_count        = 3
   band_select_cycle_threshold    = 300
   band_select_expire_dual_band   = 80
@@ -47,7 +46,7 @@ resource "iosxe_wireless_rf_profile" "example" {
   load_balancing_denial         = 5
   max_clients                   = 100
   tx_power_v1_threshold         = -65
-  tx_power_max                  = 30
+  tx_power_max                  = 20
   tx_power_min                  = 7
   trap_threshold_clients        = 20
   trap_threshold_interference   = 15
@@ -60,12 +59,12 @@ resource "iosxe_wireless_rf_profile" "example" {
 
 ### Required
 
+- `band` (String) Configure the radio type for this profile.
+  - Choices: `dot11-2-dot-4-ghz-band`, `dot11-5-ghz-band`, `dot11-6-ghz-band`
 - `name` (String) Configure the name of the Radio-Frequency(rf)-profile
 
 ### Optional
 
-- `band` (String) Configure the radio type for this profile.
-  - Choices: `dot11-2-dot-4-ghz-band`, `dot11-5-ghz-band`, `dot11-6-ghz-band`
 - `band_select_client_rssi` (Number) Configure minimum mobile station Received Signal Strength Indicator(RSSI) threshold in dBm. Mobile stations having RSSI below this value will not be recorded in the suppressed table. This configuration filters out far away mobile stations with weaker signal strength. This will limit the number of mobile stations on the table to a reasonable amount.
   - Range: `-90`-`20`
 - `band_select_cycle_count` (Number) Configure maximum number of cycles not responding.

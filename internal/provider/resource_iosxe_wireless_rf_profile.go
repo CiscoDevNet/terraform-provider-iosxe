@@ -92,7 +92,7 @@ func (r *WirelessRFProfileResource) Schema(ctx context.Context, req resource.Sch
 			},
 			"band": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Configure the radio type for this profile.").AddStringEnumDescription("dot11-2-dot-4-ghz-band", "dot11-5-ghz-band", "dot11-6-ghz-band").String,
-				Optional:            true,
+				Required:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("dot11-2-dot-4-ghz-band", "dot11-5-ghz-band", "dot11-6-ghz-band"),
 				},
