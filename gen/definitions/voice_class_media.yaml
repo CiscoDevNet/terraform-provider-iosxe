@@ -1,0 +1,30 @@
+---
+name: Voice Class Media
+path: /Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:voice/class/media[media-tag=%v]
+doc_category: Voice
+# CUBE is a router feature; a switch rejects these voice class resources.
+test_tags: [C8000V]
+attributes:
+  - yang_name: media-tag
+    tf_name: tag
+    id: true
+    example: 1
+  - yang_name: media/anti-trombone
+    tf_name: anti_trombone
+    example: true
+  - yang_name: media/forking
+    tf_name: forking
+    exclude_test: true
+    example: true
+  - yang_name: media/monitor-video
+    tf_name: monitor_video
+    exclude_test: true
+    example: true
+  - yang_name: media/stats-disconnect
+    tf_name: stats_disconnect
+    exclude_test: true
+    example: true
+  - yang_name: media/flow-through-or-around
+    tf_name: flow
+    exclude_test: true
+    example: flow-around
