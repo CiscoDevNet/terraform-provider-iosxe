@@ -56,8 +56,6 @@ resource "iosxe_dial_peer_voice" "example" {
 - `codec_transparent` (Boolean) Uses the endpoint codec
 - `corlist_incoming` (String) set the incoming Class of Restriction lists
 - `corlist_outgoing` (String) set the outgoing Class of Restriction lists
-- `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
-  - Choices: `all`, `attributes`
 - `description` (String) Dial peer specific description
 - `destination_dpg` (Number) Configure voice class dpg
 - `destination_e164_pattern_map` (Number) Configure voice class to match destination e164-pattern-map

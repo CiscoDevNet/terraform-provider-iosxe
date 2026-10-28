@@ -1,6 +1,11 @@
 ---
 name: Dial Peer Voice
 path: /Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:dial-peer/voice[dialpeertag=%v]
+# IOS-XE refuses an attribute-level delete of a SIP dial-peer: removing
+# session/protocol makes the device also emit `no session server-group`, which
+# the protocol removal already cascaded away, so the whole edit is refused
+# (17.15.3a, 17.18.1a, 17.18.3a). Deleting the whole dial-peer works.
+no_delete_attributes: true
 doc_category: Voice
 # CUBE is a router feature; a switch rejects these voice resources.
 test_tags: [C8000V]
