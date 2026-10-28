@@ -163,6 +163,7 @@ environment; the `make test-*` targets set the version and platform tags for eac
 | `C9000V` | Device is a Catalyst 9000V switch |
 | `C9500` | Device is a Catalyst 9500 switch (StackWise Virtual and switch features) |
 | `C9800` | Device is a Catalyst 9800 wireless controller |
+| `C9800_IBNS2` | Opt in to tests that irreversibly convert a Catalyst 9800 to IBNS 2.0; use only a disposable controller and reload or rebuild it afterwards |
 | `ISR` | Device is an ISR router |
 | `IOSXE1712` | Device runs IOS-XE 17.12.x |
 | `IOSXE1715` | Device runs IOS-XE 17.15.x |
@@ -172,6 +173,7 @@ environment; the `make test-*` targets set the version and platform tags for eac
 | `CRYPTO_PKI` | Opt in to crypto PKI tests |
 | `LICENSE` | Opt in to license tests |
 | `LINE` | Opt in to line tests, which can affect device access |
+| `TDM` | Device has TDM voice hardware (a T1/E1 voice module and DSPs) |
 | `VTP` | Opt in to VTP tests |
 
 Use a version tag such as `IOSXE1718` for an attribute or resource that only works on, or behaves differently on, one
