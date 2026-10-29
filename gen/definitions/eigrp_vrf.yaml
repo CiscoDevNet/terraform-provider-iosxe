@@ -10,6 +10,10 @@ test_prerequisites:
         value: VRF1
       - name: address-family/ipv4
         value: ""
+  - path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-eigrp:router-eigrp/eigrp/named-mode[name=TOPGEN]
+    attributes:
+      - name: name
+        value: TOPGEN
 attributes:
   - yang_name: name
     xpath: ../../../name
