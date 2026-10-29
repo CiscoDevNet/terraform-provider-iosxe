@@ -2,6 +2,15 @@
 name: EIGRP
 path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-eigrp:router-eigrp/eigrp/named-mode[name=%s]/address-family/ipv4/af-ipv4[unicast=unicast]
 doc_category: EIGRP
+res_description: "This resource can manage the EIGRP configuration. Destroying it removes the IPv4 unicast address family, but the `router eigrp <name>` instance stays on the device, because VRF address families (`iosxe_eigrp_vrf`) can share it."
+test_prerequisites:
+  # Creating the address family implicitly creates `router eigrp TOPGEN`, and
+  # destroying it leaves the empty instance behind, so the test owns the
+  # instance and removes it afterwards.
+  - path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-eigrp:router-eigrp/eigrp/named-mode[name=TOPGEN]
+    attributes:
+      - name: name
+        value: TOPGEN
 attributes:
   - yang_name: name
     xpath: ../../../name
