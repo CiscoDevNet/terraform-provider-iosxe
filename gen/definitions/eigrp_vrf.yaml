@@ -2,6 +2,7 @@
 name: EIGRP VRF
 path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-eigrp:router-eigrp/eigrp/named-mode[name=%s]/address-family/ipv4/af-ipv4-vrf[vrf=%s]
 doc_category: EIGRP
+res_description: "This resource can manage the EIGRP VRF configuration. Destroying it removes the VRF address family, but the `router eigrp <name>` instance stays on the device, because other address families (`iosxe_eigrp` or other VRFs) can share it."
 test_prerequisites:
   - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
     no_delete: true

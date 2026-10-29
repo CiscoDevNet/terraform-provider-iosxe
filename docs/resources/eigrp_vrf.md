@@ -3,12 +3,12 @@
 page_title: "iosxe_eigrp_vrf Resource - terraform-provider-iosxe"
 subcategory: "EIGRP"
 description: |-
-  This resource can manage the EIGRP VRF configuration.
+  This resource can manage the EIGRP VRF configuration. Destroying it removes the VRF address family, but the router eigrp <name> instance stays on the device, because other address families (iosxe_eigrp or other VRFs) can share it.
 ---
 
 # iosxe_eigrp_vrf (Resource)
 
-This resource can manage the EIGRP VRF configuration.
+This resource can manage the EIGRP VRF configuration. Destroying it removes the VRF address family, but the `router eigrp <name>` instance stays on the device, because other address families (`iosxe_eigrp` or other VRFs) can share it.
 
 ## Example Usage
 
