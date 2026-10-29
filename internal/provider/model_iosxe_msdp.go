@@ -154,6 +154,7 @@ func (data MSDP) addToBodyXML(ctx context.Context, config MSDP, body netconf.Bod
 		body = helpers.SetFromXPath(body, data.getXPath()+"/originator-id", data.OriginatorId.ValueString())
 	}
 	if len(data.Peers) > 0 {
+		PeersFragments := make([]string, 0, len(data.Peers))
 		for _, item := range data.Peers {
 			cBody := netconf.Body{}
 			if !item.Addr.IsNull() && !item.Addr.IsUnknown() {
@@ -165,10 +166,12 @@ func (data MSDP) addToBodyXML(ctx context.Context, config MSDP, body netconf.Bod
 			if !item.ConnectSourceLoopback.IsNull() && !item.ConnectSourceLoopback.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "connect-source/Loopback", strconv.FormatInt(item.ConnectSourceLoopback.ValueInt64(), 10))
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/peer", cBody.Res())
+			PeersFragments = append(PeersFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/peer", PeersFragments)
 	}
 	if len(data.Passwords) > 0 {
+		PasswordsFragments := make([]string, 0, len(data.Passwords))
 		for _, item := range data.Passwords {
 			var configItem MSDPPasswords
 			for _, ci := range config.Passwords {
@@ -192,10 +195,12 @@ func (data MSDP) addToBodyXML(ctx context.Context, config MSDP, body netconf.Bod
 					cBody = helpers.SetFromXPath(cBody, "password", item.Password.ValueString())
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/password/peer-list", cBody.Res())
+			PasswordsFragments = append(PasswordsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/password/peer-list", PasswordsFragments)
 	}
 	if len(data.Vrfs) > 0 {
+		VrfsFragments := make([]string, 0, len(data.Vrfs))
 		for _, item := range data.Vrfs {
 			var configItem MSDPVrfs
 			for _, ci := range config.Vrfs {
@@ -213,6 +218,7 @@ func (data MSDP) addToBodyXML(ctx context.Context, config MSDP, body netconf.Bod
 				cBody = helpers.SetFromXPath(cBody, "originator-id", item.OriginatorId.ValueString())
 			}
 			if len(item.Peers) > 0 {
+				PeersFragments := make([]string, 0, len(item.Peers))
 				for _, citem := range item.Peers {
 					ccBody := netconf.Body{}
 					if !citem.Addr.IsNull() && !citem.Addr.IsUnknown() {
@@ -224,10 +230,12 @@ func (data MSDP) addToBodyXML(ctx context.Context, config MSDP, body netconf.Bod
 					if !citem.ConnectSourceLoopback.IsNull() && !citem.ConnectSourceLoopback.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "connect-source/Loopback", strconv.FormatInt(citem.ConnectSourceLoopback.ValueInt64(), 10))
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "peer", ccBody.Res())
+					PeersFragments = append(PeersFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "peer", PeersFragments)
 			}
 			if len(item.Passwords) > 0 {
+				PasswordsFragments := make([]string, 0, len(item.Passwords))
 				for _, citem := range item.Passwords {
 					var cConfigItem MSDPVrfsPasswords
 					for _, cci := range configItem.Passwords {
@@ -251,11 +259,13 @@ func (data MSDP) addToBodyXML(ctx context.Context, config MSDP, body netconf.Bod
 							ccBody = helpers.SetFromXPath(ccBody, "password", citem.Password.ValueString())
 						}
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "password/peer-list", ccBody.Res())
+					PasswordsFragments = append(PasswordsFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "password/peer-list", PasswordsFragments)
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/vrf", cBody.Res())
+			VrfsFragments = append(VrfsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/vrf", VrfsFragments)
 	}
 	return body
 }
@@ -270,29 +280,12 @@ func (data *MSDP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.OriginatorId = types.StringNull()
 	}
+	PeersParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	PeersKeys := [...]string{"addr"}
+	PeersItems := helpers.CollectListItemsXML(PeersParentScope.Raw, "peer", PeersKeys[:])
 	for i := range data.Peers {
-		keys := [...]string{"addr"}
-		keyValues := [...]string{data.Peers[i].Addr.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/peer").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		PeersKeyValues := [...]string{data.Peers[i].Addr.ValueString()}
+		r := PeersItems[helpers.CompositeKey(PeersKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "addr"); value.Exists() && !data.Peers[i].Addr.IsNull() {
 			data.Peers[i].Addr = types.StringValue(value.String())
 		} else {
@@ -309,58 +302,24 @@ func (data *MSDP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 			data.Peers[i].ConnectSourceLoopback = types.Int64Null()
 		}
 	}
+	PasswordsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	PasswordsKeys := [...]string{"addr"}
+	PasswordsItems := helpers.CollectListItemsXML(PasswordsParentScope.Raw, "password/peer-list", PasswordsKeys[:])
 	for i := range data.Passwords {
-		keys := [...]string{"addr"}
-		keyValues := [...]string{data.Passwords[i].Addr.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/password/peer-list").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		PasswordsKeyValues := [...]string{data.Passwords[i].Addr.ValueString()}
+		r := PasswordsItems[helpers.CompositeKey(PasswordsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "addr"); value.Exists() && !data.Passwords[i].Addr.IsNull() {
 			data.Passwords[i].Addr = types.StringValue(value.String())
 		} else {
 			data.Passwords[i].Addr = types.StringNull()
 		}
 	}
+	VrfsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	VrfsKeys := [...]string{"name"}
+	VrfsItems := helpers.CollectListItemsXML(VrfsParentScope.Raw, "vrf", VrfsKeys[:])
 	for i := range data.Vrfs {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.Vrfs[i].Vrf.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/vrf").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		VrfsKeyValues := [...]string{data.Vrfs[i].Vrf.ValueString()}
+		r := VrfsItems[helpers.CompositeKey(VrfsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.Vrfs[i].Vrf.IsNull() {
 			data.Vrfs[i].Vrf = types.StringValue(value.String())
 		} else {
@@ -371,29 +330,11 @@ func (data *MSDP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		} else {
 			data.Vrfs[i].OriginatorId = types.StringNull()
 		}
+		PeersKeys := [...]string{"addr"}
+		PeersItems := helpers.CollectListItemsXML(r.Raw, "peer", PeersKeys[:])
 		for ci := range data.Vrfs[i].Peers {
-			keys := [...]string{"addr"}
-			keyValues := [...]string{data.Vrfs[i].Peers[ci].Addr.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "peer").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			PeersKeyValues := [...]string{data.Vrfs[i].Peers[ci].Addr.ValueString()}
+			cr := PeersItems[helpers.CompositeKey(PeersKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "addr"); value.Exists() && !data.Vrfs[i].Peers[ci].Addr.IsNull() {
 				data.Vrfs[i].Peers[ci].Addr = types.StringValue(value.String())
 			} else {
@@ -410,29 +351,11 @@ func (data *MSDP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 				data.Vrfs[i].Peers[ci].ConnectSourceLoopback = types.Int64Null()
 			}
 		}
+		PasswordsKeys := [...]string{"addr"}
+		PasswordsItems := helpers.CollectListItemsXML(r.Raw, "password/peer-list", PasswordsKeys[:])
 		for ci := range data.Vrfs[i].Passwords {
-			keys := [...]string{"addr"}
-			keyValues := [...]string{data.Vrfs[i].Passwords[ci].Addr.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "password/peer-list").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			PasswordsKeyValues := [...]string{data.Vrfs[i].Passwords[ci].Addr.ValueString()}
+			cr := PasswordsItems[helpers.CompositeKey(PasswordsKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "addr"); value.Exists() && !data.Vrfs[i].Passwords[ci].Addr.IsNull() {
 				data.Vrfs[i].Passwords[ci].Addr = types.StringValue(value.String())
 			} else {

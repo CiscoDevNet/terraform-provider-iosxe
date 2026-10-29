@@ -138,6 +138,7 @@ func (data InterfaceVRRPV2) addToBodyXML(ctx context.Context, config InterfaceVR
 		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/primary/address", data.IpPrimaryAddress.ValueString())
 	}
 	if len(data.IpSecondaryAddresses) > 0 {
+		IpSecondaryAddressesFragments := make([]string, 0, len(data.IpSecondaryAddresses))
 		for _, item := range data.IpSecondaryAddresses {
 			cBody := netconf.Body{}
 			if !item.Address.IsNull() && !item.Address.IsUnknown() {
@@ -150,8 +151,9 @@ func (data InterfaceVRRPV2) addToBodyXML(ctx context.Context, config InterfaceVR
 					cBody = helpers.RemoveFromXPath(cBody, "secondary")
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ip/secondary", cBody.Res())
+			IpSecondaryAddressesFragments = append(IpSecondaryAddressesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/ip/secondary", IpSecondaryAddressesFragments)
 	}
 	if !data.Priority.IsNull() && !data.Priority.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/priority", strconv.FormatInt(data.Priority.ValueInt64(), 10))
@@ -172,6 +174,7 @@ func (data InterfaceVRRPV2) addToBodyXML(ctx context.Context, config InterfaceVR
 		body = helpers.SetFromXPath(body, data.getXPath()+"/description", data.Description.ValueString())
 	}
 	if len(data.Tracks) > 0 {
+		TracksFragments := make([]string, 0, len(data.Tracks))
 		for _, item := range data.Tracks {
 			cBody := netconf.Body{}
 			if !item.ObjectId.IsNull() && !item.ObjectId.IsUnknown() {
@@ -180,8 +183,9 @@ func (data InterfaceVRRPV2) addToBodyXML(ctx context.Context, config InterfaceVR
 			if !item.Decrement.IsNull() && !item.Decrement.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "decrement", strconv.FormatInt(item.Decrement.ValueInt64(), 10))
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/track/event", cBody.Res())
+			TracksFragments = append(TracksFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/track/event", TracksFragments)
 	}
 	if !data.Shutdown.IsNull() && !data.Shutdown.IsUnknown() {
 		if data.Shutdown.ValueBool() {
@@ -208,29 +212,12 @@ func (data *InterfaceVRRPV2) updateFromBodyXML(ctx context.Context, res xmldot.R
 	} else {
 		data.IpPrimaryAddress = types.StringNull()
 	}
+	IpSecondaryAddressesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	IpSecondaryAddressesKeys := [...]string{"address"}
+	IpSecondaryAddressesItems := helpers.CollectListItemsXML(IpSecondaryAddressesParentScope.Raw, "ip/secondary", IpSecondaryAddressesKeys[:])
 	for i := range data.IpSecondaryAddresses {
-		keys := [...]string{"address"}
-		keyValues := [...]string{data.IpSecondaryAddresses[i].Address.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/secondary").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		IpSecondaryAddressesKeyValues := [...]string{data.IpSecondaryAddresses[i].Address.ValueString()}
+		r := IpSecondaryAddressesItems[helpers.CompositeKey(IpSecondaryAddressesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "address"); value.Exists() && !data.IpSecondaryAddresses[i].Address.IsNull() {
 			data.IpSecondaryAddresses[i].Address = types.StringValue(value.String())
 		} else {
@@ -278,29 +265,12 @@ func (data *InterfaceVRRPV2) updateFromBodyXML(ctx context.Context, res xmldot.R
 	} else {
 		data.Description = types.StringNull()
 	}
+	TracksParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	TracksKeys := [...]string{"object-id"}
+	TracksItems := helpers.CollectListItemsXML(TracksParentScope.Raw, "track/event", TracksKeys[:])
 	for i := range data.Tracks {
-		keys := [...]string{"object-id"}
-		keyValues := [...]string{strconv.FormatInt(data.Tracks[i].ObjectId.ValueInt64(), 10)}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/track/event").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		TracksKeyValues := [...]string{strconv.FormatInt(data.Tracks[i].ObjectId.ValueInt64(), 10)}
+		r := TracksItems[helpers.CompositeKey(TracksKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "object-id"); value.Exists() && !data.Tracks[i].ObjectId.IsNull() {
 			data.Tracks[i].ObjectId = types.Int64Value(value.Int())
 		} else {

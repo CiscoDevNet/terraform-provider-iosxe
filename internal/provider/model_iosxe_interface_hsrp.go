@@ -228,6 +228,7 @@ func (data InterfaceHSRP) addToBodyXML(ctx context.Context, config InterfaceHSRP
 		body = helpers.SetFromXPath(body, data.getXPath()+"/redirect/unknown", data.RedirectUnknown.ValueBool())
 	}
 	if len(data.StandbyList) > 0 {
+		StandbyListFragments := make([]string, 0, len(data.StandbyList))
 		for _, item := range data.StandbyList {
 			var configItem InterfaceHSRPStandbyList
 			for _, ci := range config.StandbyList {
@@ -269,6 +270,7 @@ func (data InterfaceHSRP) addToBodyXML(ctx context.Context, config InterfaceHSRP
 				cBody = helpers.SetFromXPath(cBody, "ip-config/address", item.IpAddress.ValueString())
 			}
 			if len(item.IpSecondaryAddresses) > 0 {
+				IpSecondaryAddressesFragments := make([]string, 0, len(item.IpSecondaryAddresses))
 				for _, citem := range item.IpSecondaryAddresses {
 					ccBody := netconf.Body{}
 					if !citem.Address.IsNull() && !citem.Address.IsUnknown() {
@@ -281,20 +283,23 @@ func (data InterfaceHSRP) addToBodyXML(ctx context.Context, config InterfaceHSRP
 							ccBody = helpers.RemoveFromXPath(ccBody, "secondary")
 						}
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "ip-config/secondary-address", ccBody.Res())
+					IpSecondaryAddressesFragments = append(IpSecondaryAddressesFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "ip-config/secondary-address", IpSecondaryAddressesFragments)
 			}
 			if !item.Ipv6LinkLocal.IsNull() && !item.Ipv6LinkLocal.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "ipv6-config/ipv6-link-local", item.Ipv6LinkLocal.ValueString())
 			}
 			if len(item.Ipv6Addresses) > 0 {
+				Ipv6AddressesFragments := make([]string, 0, len(item.Ipv6Addresses))
 				for _, citem := range item.Ipv6Addresses {
 					ccBody := netconf.Body{}
 					if !citem.Prefix.IsNull() && !citem.Prefix.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "prefix", citem.Prefix.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "ipv6-config/ipv6_prefix", ccBody.Res())
+					Ipv6AddressesFragments = append(Ipv6AddressesFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "ipv6-config/ipv6_prefix", Ipv6AddressesFragments)
 			}
 			if !item.MacAddress.IsNull() && !item.MacAddress.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "mac-address", item.MacAddress.ValueString())
@@ -334,6 +339,7 @@ func (data InterfaceHSRP) addToBodyXML(ctx context.Context, config InterfaceHSRP
 				cBody = helpers.SetFromXPath(cBody, "timers/hold-time/msec", strconv.FormatInt(item.TimersHoldTimeMsec.ValueInt64(), 10))
 			}
 			if len(item.Tracks) > 0 {
+				TracksFragments := make([]string, 0, len(item.Tracks))
 				for _, citem := range item.Tracks {
 					ccBody := netconf.Body{}
 					if !citem.Number.IsNull() && !citem.Number.IsUnknown() {
@@ -349,11 +355,13 @@ func (data InterfaceHSRP) addToBodyXML(ctx context.Context, config InterfaceHSRP
 							ccBody = helpers.RemoveFromXPath(ccBody, "shutdown")
 						}
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "track", ccBody.Res())
+					TracksFragments = append(TracksFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "track", TracksFragments)
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/standby-list", cBody.Res())
+			StandbyListFragments = append(StandbyListFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/standby-list", StandbyListFragments)
 	}
 	return body
 }
@@ -425,29 +433,12 @@ func (data *InterfaceHSRP) updateFromBodyXML(ctx context.Context, res xmldot.Res
 	} else {
 		data.RedirectUnknown = types.BoolNull()
 	}
+	StandbyListParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	StandbyListKeys := [...]string{"group-number"}
+	StandbyListItems := helpers.CollectListItemsXML(StandbyListParentScope.Raw, "standby-list", StandbyListKeys[:])
 	for i := range data.StandbyList {
-		keys := [...]string{"group-number"}
-		keyValues := [...]string{strconv.FormatInt(data.StandbyList[i].GroupNumber.ValueInt64(), 10)}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/standby-list").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		StandbyListKeyValues := [...]string{strconv.FormatInt(data.StandbyList[i].GroupNumber.ValueInt64(), 10)}
+		r := StandbyListItems[helpers.CompositeKey(StandbyListKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "group-number"); value.Exists() && !data.StandbyList[i].GroupNumber.IsNull() {
 			data.StandbyList[i].GroupNumber = types.Int64Value(value.Int())
 		} else {
@@ -482,29 +473,11 @@ func (data *InterfaceHSRP) updateFromBodyXML(ctx context.Context, res xmldot.Res
 		} else {
 			data.StandbyList[i].IpAddress = types.StringNull()
 		}
+		IpSecondaryAddressesKeys := [...]string{"address"}
+		IpSecondaryAddressesItems := helpers.CollectListItemsXML(r.Raw, "ip-config/secondary-address", IpSecondaryAddressesKeys[:])
 		for ci := range data.StandbyList[i].IpSecondaryAddresses {
-			keys := [...]string{"address"}
-			keyValues := [...]string{data.StandbyList[i].IpSecondaryAddresses[ci].Address.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "ip-config/secondary-address").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			IpSecondaryAddressesKeyValues := [...]string{data.StandbyList[i].IpSecondaryAddresses[ci].Address.ValueString()}
+			cr := IpSecondaryAddressesItems[helpers.CompositeKey(IpSecondaryAddressesKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "address"); value.Exists() && !data.StandbyList[i].IpSecondaryAddresses[ci].Address.IsNull() {
 				data.StandbyList[i].IpSecondaryAddresses[ci].Address = types.StringValue(value.String())
 			} else {
@@ -525,29 +498,11 @@ func (data *InterfaceHSRP) updateFromBodyXML(ctx context.Context, res xmldot.Res
 		} else {
 			data.StandbyList[i].Ipv6LinkLocal = types.StringNull()
 		}
+		Ipv6AddressesKeys := [...]string{"prefix"}
+		Ipv6AddressesItems := helpers.CollectListItemsXML(r.Raw, "ipv6-config/ipv6_prefix", Ipv6AddressesKeys[:])
 		for ci := range data.StandbyList[i].Ipv6Addresses {
-			keys := [...]string{"prefix"}
-			keyValues := [...]string{data.StandbyList[i].Ipv6Addresses[ci].Prefix.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "ipv6-config/ipv6_prefix").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			Ipv6AddressesKeyValues := [...]string{data.StandbyList[i].Ipv6Addresses[ci].Prefix.ValueString()}
+			cr := Ipv6AddressesItems[helpers.CompositeKey(Ipv6AddressesKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "prefix"); value.Exists() && !data.StandbyList[i].Ipv6Addresses[ci].Prefix.IsNull() {
 				data.StandbyList[i].Ipv6Addresses[ci].Prefix = types.StringValue(value.String())
 			} else {
@@ -613,29 +568,11 @@ func (data *InterfaceHSRP) updateFromBodyXML(ctx context.Context, res xmldot.Res
 		} else {
 			data.StandbyList[i].TimersHoldTimeMsec = types.Int64Null()
 		}
+		TracksKeys := [...]string{"number"}
+		TracksItems := helpers.CollectListItemsXML(r.Raw, "track", TracksKeys[:])
 		for ci := range data.StandbyList[i].Tracks {
-			keys := [...]string{"number"}
-			keyValues := [...]string{strconv.FormatInt(data.StandbyList[i].Tracks[ci].Number.ValueInt64(), 10)}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "track").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			TracksKeyValues := [...]string{strconv.FormatInt(data.StandbyList[i].Tracks[ci].Number.ValueInt64(), 10)}
+			cr := TracksItems[helpers.CompositeKey(TracksKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "number"); value.Exists() && !data.StandbyList[i].Tracks[ci].Number.IsNull() {
 				data.StandbyList[i].Tracks[ci].Number = types.Int64Value(value.Int())
 			} else {
