@@ -50,10 +50,10 @@ func TestAccIosxeEIGRP(t *testing.T) {
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccIosxeEIGRPConfig_minimum(),
+				Config: testAccIosxeEIGRPPrerequisitesConfig + testAccIosxeEIGRPConfig_minimum(),
 			},
 			{
-				Config: testAccIosxeEIGRPConfig_all(),
+				Config: testAccIosxeEIGRPPrerequisitesConfig + testAccIosxeEIGRPConfig_all(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
@@ -84,6 +84,16 @@ func iosxeEIGRPImportStateIdFunc(resourceName string) resource.ImportStateIdFunc
 // End of section. //template:end importStateIdFunc
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+const testAccIosxeEIGRPPrerequisitesConfig = `
+resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-eigrp:router-eigrp/eigrp/named-mode[name=TOPGEN]"
+	attributes = {
+		"name" = "TOPGEN"
+	}
+}
+
+`
+
 // End of section. //template:end testPrerequisites
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
@@ -92,6 +102,7 @@ func testAccIosxeEIGRPConfig_minimum() string {
 	config := `resource "iosxe_eigrp" "test" {` + "\n"
 	config += `	name = "TOPGEN"` + "\n"
 	config += `	autonomous_system = 100` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -118,6 +129,7 @@ func testAccIosxeEIGRPConfig_all() string {
 	config += `	stub_connected = true` + "\n"
 	config += `	stub_summary = true` + "\n"
 	config += `	shutdown = false` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

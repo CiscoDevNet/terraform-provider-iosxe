@@ -2,6 +2,14 @@
 name: EIGRP
 path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-eigrp:router-eigrp/eigrp/named-mode[name=%s]/address-family/ipv4/af-ipv4[unicast=unicast]
 doc_category: EIGRP
+test_prerequisites:
+  # Creating the address family implicitly creates `router eigrp TOPGEN`, and
+  # destroying it leaves the empty instance behind, so the test owns the
+  # instance and removes it afterwards.
+  - path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-eigrp:router-eigrp/eigrp/named-mode[name=TOPGEN]
+    attributes:
+      - name: name
+        value: TOPGEN
 attributes:
   - yang_name: name
     xpath: ../../../name
