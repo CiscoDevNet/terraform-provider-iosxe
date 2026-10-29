@@ -3,12 +3,12 @@
 page_title: "iosxe_eigrp Resource - terraform-provider-iosxe"
 subcategory: "EIGRP"
 description: |-
-  This resource can manage the EIGRP configuration.
+  This resource can manage the EIGRP configuration. Destroying it removes the IPv4 unicast address family, but the router eigrp <name> instance stays on the device, because VRF address families (iosxe_eigrp_vrf) can share it.
 ---
 
 # iosxe_eigrp (Resource)
 
-This resource can manage the EIGRP configuration.
+This resource can manage the EIGRP configuration. Destroying it removes the IPv4 unicast address family, but the `router eigrp <name>` instance stays on the device, because VRF address families (`iosxe_eigrp_vrf`) can share it.
 
 ## Example Usage
 
