@@ -35,4 +35,5 @@ data "iosxe_wireless_site_tag" "example" {
 - `description` (String) Description of the Site Tag
 - `flex_profile` (String) The flex profile which is part of the Site tag
 - `id` (String) The path of the retrieved object.
+- `load` (Number) Estimate of the relative load contributed by the site. AP count can be used as an approximation.
 - `local_site` (Boolean) This parameter is set to enable local site

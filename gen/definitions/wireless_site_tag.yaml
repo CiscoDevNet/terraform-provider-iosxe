@@ -28,6 +28,12 @@ attributes:
     tf_name: flex_profile
     type: String
     example: S1-FLEX
+  - yang_name: load
+    tf_name: load
+    type: Int64
+    min_int: 0
+    max_int: 1000
+    example: 400
 
 test_prerequisites:
   - path: /Cisco-IOS-XE-wireless-site-cfg:site-cfg-data/ap-cfg-profiles/ap-cfg-profile[profile-name=S1-AP-JOIN]

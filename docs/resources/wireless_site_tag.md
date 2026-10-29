@@ -19,6 +19,7 @@ resource "iosxe_wireless_site_tag" "example" {
   ap_join_profile = "S1-AP-JOIN"
   local_site      = false
   flex_profile    = "S1-FLEX"
+  load            = 400
 }
 ```
 
@@ -35,6 +36,8 @@ resource "iosxe_wireless_site_tag" "example" {
 - `description` (String) Description of the Site Tag
 - `device` (String) A device name from the provider configuration.
 - `flex_profile` (String) The flex profile which is part of the Site tag
+- `load` (Number) Estimate of the relative load contributed by the site. AP count can be used as an approximation.
+  - Range: `0`-`1000`
 - `local_site` (Boolean) This parameter is set to enable local site
 
 ### Read-Only
