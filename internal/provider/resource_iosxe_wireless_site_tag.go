@@ -28,6 +28,7 @@ import (
 	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -104,6 +105,13 @@ func (r *WirelessSiteTagResource) Schema(ctx context.Context, req resource.Schem
 			"flex_profile": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("The flex profile which is part of the Site tag").String,
 				Optional:            true,
+			},
+			"load": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Estimate of the relative load contributed by the site. AP count can be used as an approximation.").AddIntegerRangeDescription(0, 1000).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 1000),
+				},
 			},
 		},
 	}
