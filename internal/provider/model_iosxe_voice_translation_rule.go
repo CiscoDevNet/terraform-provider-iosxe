@@ -107,6 +107,7 @@ func (data VoiceTranslationRule) addToBodyXML(ctx context.Context, config VoiceT
 		body = helpers.SetFromXPath(body, data.getXPath()+"/id", strconv.FormatInt(data.Tag.ValueInt64(), 10))
 	}
 	if len(data.Rules) > 0 {
+		RulesFragments := make([]string, 0, len(data.Rules))
 		for _, item := range data.Rules {
 			cBody := netconf.Body{}
 			if !item.RuleId.IsNull() && !item.RuleId.IsUnknown() {
@@ -118,8 +119,9 @@ func (data VoiceTranslationRule) addToBodyXML(ctx context.Context, config VoiceT
 			if !item.Reject.IsNull() && !item.Reject.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "reject", item.Reject.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/rule", cBody.Res())
+			RulesFragments = append(RulesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/rule", RulesFragments)
 	}
 	return body
 }
@@ -134,29 +136,12 @@ func (data *VoiceTranslationRule) updateFromBodyXML(ctx context.Context, res xml
 	} else {
 		data.Tag = types.Int64Null()
 	}
+	RulesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	RulesKeys := [...]string{"id"}
+	RulesItems := helpers.CollectListItemsXML(RulesParentScope.Raw, "rule", RulesKeys[:])
 	for i := range data.Rules {
-		keys := [...]string{"id"}
-		keyValues := [...]string{strconv.FormatInt(data.Rules[i].RuleId.ValueInt64(), 10)}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/rule").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		RulesKeyValues := [...]string{strconv.FormatInt(data.Rules[i].RuleId.ValueInt64(), 10)}
+		r := RulesItems[helpers.CompositeKey(RulesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "id"); value.Exists() && !data.Rules[i].RuleId.IsNull() {
 			data.Rules[i].RuleId = types.Int64Value(value.Int())
 		} else {

@@ -147,6 +147,7 @@ func (data InterfaceNVE) addToBodyXML(ctx context.Context, config InterfaceNVE, 
 		body = helpers.SetFromXPath(body, data.getXPath()+"/source-interface/Loopback", strconv.FormatInt(data.SourceInterfaceLoopback.ValueInt64(), 10))
 	}
 	if len(data.VniVrfs) > 0 {
+		VniVrfsFragments := make([]string, 0, len(data.VniVrfs))
 		for _, item := range data.VniVrfs {
 			cBody := netconf.Body{}
 			if !item.VniRange.IsNull() && !item.VniRange.IsUnknown() {
@@ -155,10 +156,12 @@ func (data InterfaceNVE) addToBodyXML(ctx context.Context, config InterfaceNVE, 
 			if !item.Vrf.IsNull() && !item.Vrf.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "vrf", item.Vrf.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/member-in-one-line/member/vni", cBody.Res())
+			VniVrfsFragments = append(VniVrfsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/member-in-one-line/member/vni", VniVrfsFragments)
 	}
 	if len(data.Vnis) > 0 {
+		VnisFragments := make([]string, 0, len(data.Vnis))
 		for _, item := range data.Vnis {
 			cBody := netconf.Body{}
 			if !item.VniRange.IsNull() && !item.VniRange.IsUnknown() {
@@ -181,8 +184,9 @@ func (data InterfaceNVE) addToBodyXML(ctx context.Context, config InterfaceNVE, 
 					cBody = helpers.RemoveFromXPath(cBody, "ir-cp-config/local-routing")
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/member/vni", cBody.Res())
+			VnisFragments = append(VnisFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/member/vni", VnisFragments)
 	}
 	return body
 }
@@ -225,29 +229,12 @@ func (data *InterfaceNVE) updateFromBodyXML(ctx context.Context, res xmldot.Resu
 	} else {
 		data.SourceInterfaceLoopback = types.Int64Null()
 	}
+	VniVrfsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	VniVrfsKeys := [...]string{"vni-range"}
+	VniVrfsItems := helpers.CollectListItemsXML(VniVrfsParentScope.Raw, "member-in-one-line/member/vni", VniVrfsKeys[:])
 	for i := range data.VniVrfs {
-		keys := [...]string{"vni-range"}
-		keyValues := [...]string{data.VniVrfs[i].VniRange.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/member-in-one-line/member/vni").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		VniVrfsKeyValues := [...]string{data.VniVrfs[i].VniRange.ValueString()}
+		r := VniVrfsItems[helpers.CompositeKey(VniVrfsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "vni-range"); value.Exists() && !data.VniVrfs[i].VniRange.IsNull() {
 			data.VniVrfs[i].VniRange = types.StringValue(value.String())
 		} else {
@@ -259,29 +246,12 @@ func (data *InterfaceNVE) updateFromBodyXML(ctx context.Context, res xmldot.Resu
 			data.VniVrfs[i].Vrf = types.StringNull()
 		}
 	}
+	VnisParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	VnisKeys := [...]string{"vni-range"}
+	VnisItems := helpers.CollectListItemsXML(VnisParentScope.Raw, "member/vni", VnisKeys[:])
 	for i := range data.Vnis {
-		keys := [...]string{"vni-range"}
-		keyValues := [...]string{data.Vnis[i].VniRange.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/member/vni").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		VnisKeyValues := [...]string{data.Vnis[i].VniRange.ValueString()}
+		r := VnisItems[helpers.CompositeKey(VnisKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "vni-range"); value.Exists() && !data.Vnis[i].VniRange.IsNull() {
 			data.Vnis[i].VniRange = types.StringValue(value.String())
 		} else {

@@ -154,6 +154,7 @@ func (data VoiceClassSIPProfiles) addToBodyXML(ctx context.Context, config Voice
 		body = helpers.SetFromXPath(body, data.getXPath()+"/description", data.Description.ValueString())
 	}
 	if len(data.Rules) > 0 {
+		RulesFragments := make([]string, 0, len(data.Rules))
 		for _, item := range data.Rules {
 			cBody := netconf.Body{}
 			if !item.Rule.IsNull() && !item.Rule.IsUnknown() {
@@ -236,8 +237,9 @@ func (data VoiceClassSIPProfiles) addToBodyXML(ctx context.Context, config Voice
 			if !item.RequestPeerHeaderSipRequriCopyVariable.IsNull() && !item.RequestPeerHeaderSipRequriCopyVariable.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "rule-response-request/request/peer-header/sip/SIP-Req-URI/COPY/variable", item.RequestPeerHeaderSipRequriCopyVariable.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/rule", cBody.Res())
+			RulesFragments = append(RulesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/rule", RulesFragments)
 	}
 	return body
 }
@@ -257,29 +259,12 @@ func (data *VoiceClassSIPProfiles) updateFromBodyXML(ctx context.Context, res xm
 	} else {
 		data.Description = types.StringNull()
 	}
+	RulesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	RulesKeys := [...]string{"id"}
+	RulesItems := helpers.CollectListItemsXML(RulesParentScope.Raw, "rule", RulesKeys[:])
 	for i := range data.Rules {
-		keys := [...]string{"id"}
-		keyValues := [...]string{strconv.FormatInt(data.Rules[i].Rule.ValueInt64(), 10)}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/rule").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		RulesKeyValues := [...]string{strconv.FormatInt(data.Rules[i].Rule.ValueInt64(), 10)}
+		r := RulesItems[helpers.CompositeKey(RulesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "id"); value.Exists() && !data.Rules[i].Rule.IsNull() {
 			data.Rules[i].Rule = types.Int64Value(value.Int())
 		} else {

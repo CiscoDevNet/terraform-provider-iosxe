@@ -357,24 +357,29 @@ func (data DHCP) addToBodyXML(ctx context.Context, config DHCP, body netconf.Bod
 		}
 	}
 	if len(data.SnoopingVlansLegacy) > 0 {
+		SnoopingVlansLegacyFragments := make([]string, 0, len(data.SnoopingVlansLegacy))
 		for _, item := range data.SnoopingVlansLegacy {
 			cBody := netconf.Body{}
 			if !item.VlanId.IsNull() && !item.VlanId.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "id", item.VlanId.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/vlan-list", cBody.Res())
+			SnoopingVlansLegacyFragments = append(SnoopingVlansLegacyFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/vlan-list", SnoopingVlansLegacyFragments)
 	}
 	if len(data.SnoopingVlans) > 0 {
+		SnoopingVlansFragments := make([]string, 0, len(data.SnoopingVlans))
 		for _, item := range data.SnoopingVlans {
 			cBody := netconf.Body{}
 			if !item.VlanId.IsNull() && !item.VlanId.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "id", strconv.FormatInt(item.VlanId.ValueInt64(), 10))
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/vlan-v2", cBody.Res())
+			SnoopingVlansFragments = append(SnoopingVlansFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/vlan-v2", SnoopingVlansFragments)
 	}
 	if len(data.Pools) > 0 {
+		PoolsFragments := make([]string, 0, len(data.Pools))
 		for _, item := range data.Pools {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
@@ -399,6 +404,7 @@ func (data DHCP) addToBodyXML(ctx context.Context, config DHCP, body netconf.Bod
 				cBody = helpers.SetFromXPath(cBody, "network/primary-network/mask", item.NetworkMask.ValueString())
 			}
 			if len(item.SecondaryNetworks) > 0 {
+				SecondaryNetworksFragments := make([]string, 0, len(item.SecondaryNetworks))
 				for _, citem := range item.SecondaryNetworks {
 					ccBody := netconf.Body{}
 					if !citem.Number.IsNull() && !citem.Number.IsUnknown() {
@@ -414,8 +420,9 @@ func (data DHCP) addToBodyXML(ctx context.Context, config DHCP, body netconf.Bod
 							ccBody = helpers.RemoveFromXPath(ccBody, "secondary")
 						}
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "network/secondary-network", ccBody.Res())
+					SecondaryNetworksFragments = append(SecondaryNetworksFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "network/secondary-network", SecondaryNetworksFragments)
 			}
 			if !item.HostNumber.IsNull() && !item.HostNumber.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "host/number", item.HostNumber.ValueString())
@@ -484,6 +491,7 @@ func (data DHCP) addToBodyXML(ctx context.Context, config DHCP, body netconf.Bod
 				cBody = helpers.SetFromXPath(cBody, "subnet/prefix-length", strconv.FormatInt(item.SubnetPrefixLength.ValueInt64(), 10))
 			}
 			if len(item.Options) > 0 {
+				OptionsFragments := make([]string, 0, len(item.Options))
 				for _, citem := range item.Options {
 					ccBody := netconf.Body{}
 					if !citem.OptionCode.IsNull() && !citem.OptionCode.IsUnknown() {
@@ -509,13 +517,16 @@ func (data DHCP) addToBodyXML(ctx context.Context, config DHCP, body netconf.Bod
 							ccBody = helpers.AppendFromXPath(ccBody, "ip-new", v)
 						}
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "option/option-range", ccBody.Res())
+					OptionsFragments = append(OptionsFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "option/option-range", OptionsFragments)
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool", cBody.Res())
+			PoolsFragments = append(PoolsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool", PoolsFragments)
 	}
 	if len(data.Ipv6Pools) > 0 {
+		Ipv6PoolsFragments := make([]string, 0, len(data.Ipv6Pools))
 		for _, item := range data.Ipv6Pools {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
@@ -525,6 +536,7 @@ func (data DHCP) addToBodyXML(ctx context.Context, config DHCP, body netconf.Bod
 				cBody = helpers.SetFromXPath(cBody, "vrf", item.Vrf.ValueString())
 			}
 			if len(item.AddressPrefixes) > 0 {
+				AddressPrefixesFragments := make([]string, 0, len(item.AddressPrefixes))
 				for _, citem := range item.AddressPrefixes {
 					ccBody := netconf.Body{}
 					if !citem.Address.IsNull() && !citem.Address.IsUnknown() {
@@ -536,8 +548,9 @@ func (data DHCP) addToBodyXML(ctx context.Context, config DHCP, body netconf.Bod
 					if !citem.PreferredLifetime.IsNull() && !citem.PreferredLifetime.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "lifetime/preferred-lifetime", citem.PreferredLifetime.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "address/prefix", ccBody.Res())
+					AddressPrefixesFragments = append(AddressPrefixesFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "address/prefix", AddressPrefixesFragments)
 			}
 			if !item.PrefixDelegationPoolName.IsNull() && !item.PrefixDelegationPoolName.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "prefix-delegation/pool/pool-name", item.PrefixDelegationPoolName.ValueString())
@@ -549,6 +562,7 @@ func (data DHCP) addToBodyXML(ctx context.Context, config DHCP, body netconf.Bod
 				cBody = helpers.SetFromXPath(cBody, "prefix-delegation/pool/lifetime/preferred-lifetime", item.PrefixDelegationPoolPreferredLifetime.ValueString())
 			}
 			if len(item.PrefixDelegationPrefixes) > 0 {
+				PrefixDelegationPrefixesFragments := make([]string, 0, len(item.PrefixDelegationPrefixes))
 				for _, citem := range item.PrefixDelegationPrefixes {
 					ccBody := netconf.Body{}
 					if !citem.Prefix.IsNull() && !citem.Prefix.IsUnknown() {
@@ -566,8 +580,9 @@ func (data DHCP) addToBodyXML(ctx context.Context, config DHCP, body netconf.Bod
 					if !citem.PreferredLifetime.IsNull() && !citem.PreferredLifetime.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "lifetime/preferred-lifetime", citem.PreferredLifetime.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "prefix-delegation/pd-prefix", ccBody.Res())
+					PrefixDelegationPrefixesFragments = append(PrefixDelegationPrefixesFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "prefix-delegation/pd-prefix", PrefixDelegationPrefixesFragments)
 			}
 			if !item.DnsServers.IsNull() && !item.DnsServers.IsUnknown() {
 				var values []string
@@ -584,13 +599,15 @@ func (data DHCP) addToBodyXML(ctx context.Context, config DHCP, body netconf.Bod
 				}
 			}
 			if len(item.LinkAddresses) > 0 {
+				LinkAddressesFragments := make([]string, 0, len(item.LinkAddresses))
 				for _, citem := range item.LinkAddresses {
 					ccBody := netconf.Body{}
 					if !citem.Address.IsNull() && !citem.Address.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "address", citem.Address.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "link-address", ccBody.Res())
+					LinkAddressesFragments = append(LinkAddressesFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "link-address", LinkAddressesFragments)
 			}
 			if !item.BootfileUrl.IsNull() && !item.BootfileUrl.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "bootfile-url", item.BootfileUrl.ValueString())
@@ -603,12 +620,14 @@ func (data DHCP) addToBodyXML(ctx context.Context, config DHCP, body netconf.Bod
 				}
 			}
 			if len(item.VendorSpecifics) > 0 {
+				VendorSpecificsFragments := make([]string, 0, len(item.VendorSpecifics))
 				for _, citem := range item.VendorSpecifics {
 					ccBody := netconf.Body{}
 					if !citem.EnterpriseId.IsNull() && !citem.EnterpriseId.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "value", strconv.FormatInt(citem.EnterpriseId.ValueInt64(), 10))
 					}
 					if len(citem.Suboptions) > 0 {
+						SuboptionsFragments := make([]string, 0, len(citem.Suboptions))
 						for _, ccitem := range citem.Suboptions {
 							cccBody := netconf.Body{}
 							if !ccitem.Number.IsNull() && !ccitem.Number.IsUnknown() {
@@ -623,11 +642,13 @@ func (data DHCP) addToBodyXML(ctx context.Context, config DHCP, body netconf.Bod
 							if !ccitem.Hex.IsNull() && !ccitem.Hex.IsUnknown() {
 								cccBody = helpers.SetFromXPath(cccBody, "hex", ccitem.Hex.ValueString())
 							}
-							ccBody = helpers.SetRawFromXPath(ccBody, "suboption", cccBody.Res())
+							SuboptionsFragments = append(SuboptionsFragments, cccBody.Res())
 						}
+						ccBody = helpers.SetRawFromXPathMulti(ccBody, "suboption", SuboptionsFragments)
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "vendor-specific", ccBody.Res())
+					VendorSpecificsFragments = append(VendorSpecificsFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "vendor-specific", VendorSpecificsFragments)
 			}
 			if !item.ImportDnsServer.IsNull() && !item.ImportDnsServer.IsUnknown() {
 				if item.ImportDnsServer.ValueBool() {
@@ -666,8 +687,9 @@ func (data DHCP) addToBodyXML(ctx context.Context, config DHCP, body netconf.Bod
 					cBody = helpers.RemoveFromXPath(cBody, "information/refresh/infinite")
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool", cBody.Res())
+			Ipv6PoolsFragments = append(Ipv6PoolsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool", Ipv6PoolsFragments)
 	}
 	return body
 }
@@ -762,87 +784,36 @@ func (data *DHCP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.SnoopingInformationOptionFormatRemoteIdHostname = types.BoolNull()
 	}
+	SnoopingVlansLegacyParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	SnoopingVlansLegacyKeys := [...]string{"id"}
+	SnoopingVlansLegacyItems := helpers.CollectListItemsXML(SnoopingVlansLegacyParentScope.Raw, "ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/vlan-list", SnoopingVlansLegacyKeys[:])
 	for i := range data.SnoopingVlansLegacy {
-		keys := [...]string{"id"}
-		keyValues := [...]string{data.SnoopingVlansLegacy[i].VlanId.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/vlan-list").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		SnoopingVlansLegacyKeyValues := [...]string{data.SnoopingVlansLegacy[i].VlanId.ValueString()}
+		r := SnoopingVlansLegacyItems[helpers.CompositeKey(SnoopingVlansLegacyKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "id"); value.Exists() && !data.SnoopingVlansLegacy[i].VlanId.IsNull() {
 			data.SnoopingVlansLegacy[i].VlanId = types.StringValue(value.String())
 		} else {
 			data.SnoopingVlansLegacy[i].VlanId = types.StringNull()
 		}
 	}
+	SnoopingVlansParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	SnoopingVlansKeys := [...]string{"id"}
+	SnoopingVlansItems := helpers.CollectListItemsXML(SnoopingVlansParentScope.Raw, "ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/vlan-v2", SnoopingVlansKeys[:])
 	for i := range data.SnoopingVlans {
-		keys := [...]string{"id"}
-		keyValues := [...]string{strconv.FormatInt(data.SnoopingVlans[i].VlanId.ValueInt64(), 10)}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/vlan-v2").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		SnoopingVlansKeyValues := [...]string{strconv.FormatInt(data.SnoopingVlans[i].VlanId.ValueInt64(), 10)}
+		r := SnoopingVlansItems[helpers.CompositeKey(SnoopingVlansKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "id"); value.Exists() && !data.SnoopingVlans[i].VlanId.IsNull() {
 			data.SnoopingVlans[i].VlanId = types.Int64Value(value.Int())
 		} else {
 			data.SnoopingVlans[i].VlanId = types.Int64Null()
 		}
 	}
+	PoolsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	PoolsKeys := [...]string{"id"}
+	PoolsItems := helpers.CollectListItemsXML(PoolsParentScope.Raw, "ip/dhcp/Cisco-IOS-XE-dhcp:pool", PoolsKeys[:])
 	for i := range data.Pools {
-		keys := [...]string{"id"}
-		keyValues := [...]string{data.Pools[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		PoolsKeyValues := [...]string{data.Pools[i].Name.ValueString()}
+		r := PoolsItems[helpers.CompositeKey(PoolsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "id"); value.Exists() && !data.Pools[i].Name.IsNull() {
 			data.Pools[i].Name = types.StringValue(value.String())
 		} else {
@@ -878,29 +849,11 @@ func (data *DHCP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		} else {
 			data.Pools[i].NetworkMask = types.StringNull()
 		}
+		SecondaryNetworksKeys := [...]string{"number"}
+		SecondaryNetworksItems := helpers.CollectListItemsXML(r.Raw, "network/secondary-network", SecondaryNetworksKeys[:])
 		for ci := range data.Pools[i].SecondaryNetworks {
-			keys := [...]string{"number"}
-			keyValues := [...]string{data.Pools[i].SecondaryNetworks[ci].Number.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "network/secondary-network").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			SecondaryNetworksKeyValues := [...]string{data.Pools[i].SecondaryNetworks[ci].Number.ValueString()}
+			cr := SecondaryNetworksItems[helpers.CompositeKey(SecondaryNetworksKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "number"); value.Exists() && !data.Pools[i].SecondaryNetworks[ci].Number.IsNull() {
 				data.Pools[i].SecondaryNetworks[ci].Number = types.StringValue(value.String())
 			} else {
@@ -1003,29 +956,11 @@ func (data *DHCP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		} else {
 			data.Pools[i].SubnetPrefixLength = types.Int64Null()
 		}
+		OptionsKeys := [...]string{"option-range"}
+		OptionsItems := helpers.CollectListItemsXML(r.Raw, "option/option-range", OptionsKeys[:])
 		for ci := range data.Pools[i].Options {
-			keys := [...]string{"option-range"}
-			keyValues := [...]string{strconv.FormatInt(data.Pools[i].Options[ci].OptionCode.ValueInt64(), 10)}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "option/option-range").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			OptionsKeyValues := [...]string{strconv.FormatInt(data.Pools[i].Options[ci].OptionCode.ValueInt64(), 10)}
+			cr := OptionsItems[helpers.CompositeKey(OptionsKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "option-range"); value.Exists() && !data.Pools[i].Options[ci].OptionCode.IsNull() {
 				data.Pools[i].Options[ci].OptionCode = types.Int64Value(value.Int())
 			} else {
@@ -1053,29 +988,12 @@ func (data *DHCP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 			}
 		}
 	}
+	Ipv6PoolsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	Ipv6PoolsKeys := [...]string{"name"}
+	Ipv6PoolsItems := helpers.CollectListItemsXML(Ipv6PoolsParentScope.Raw, "ipv6/dhcp/Cisco-IOS-XE-dhcp:pool", Ipv6PoolsKeys[:])
 	for i := range data.Ipv6Pools {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.Ipv6Pools[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		Ipv6PoolsKeyValues := [...]string{data.Ipv6Pools[i].Name.ValueString()}
+		r := Ipv6PoolsItems[helpers.CompositeKey(Ipv6PoolsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.Ipv6Pools[i].Name.IsNull() {
 			data.Ipv6Pools[i].Name = types.StringValue(value.String())
 		} else {
@@ -1086,29 +1004,11 @@ func (data *DHCP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		} else {
 			data.Ipv6Pools[i].Vrf = types.StringNull()
 		}
+		AddressPrefixesKeys := [...]string{"ipv6-address"}
+		AddressPrefixesItems := helpers.CollectListItemsXML(r.Raw, "address/prefix", AddressPrefixesKeys[:])
 		for ci := range data.Ipv6Pools[i].AddressPrefixes {
-			keys := [...]string{"ipv6-address"}
-			keyValues := [...]string{data.Ipv6Pools[i].AddressPrefixes[ci].Address.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "address/prefix").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			AddressPrefixesKeyValues := [...]string{data.Ipv6Pools[i].AddressPrefixes[ci].Address.ValueString()}
+			cr := AddressPrefixesItems[helpers.CompositeKey(AddressPrefixesKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "ipv6-address"); value.Exists() && !data.Ipv6Pools[i].AddressPrefixes[ci].Address.IsNull() {
 				data.Ipv6Pools[i].AddressPrefixes[ci].Address = types.StringValue(value.String())
 			} else {
@@ -1140,29 +1040,11 @@ func (data *DHCP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		} else {
 			data.Ipv6Pools[i].PrefixDelegationPoolPreferredLifetime = types.StringNull()
 		}
+		PrefixDelegationPrefixesKeys := [...]string{"ipv6-prefix"}
+		PrefixDelegationPrefixesItems := helpers.CollectListItemsXML(r.Raw, "prefix-delegation/pd-prefix", PrefixDelegationPrefixesKeys[:])
 		for ci := range data.Ipv6Pools[i].PrefixDelegationPrefixes {
-			keys := [...]string{"ipv6-prefix"}
-			keyValues := [...]string{data.Ipv6Pools[i].PrefixDelegationPrefixes[ci].Prefix.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "prefix-delegation/pd-prefix").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			PrefixDelegationPrefixesKeyValues := [...]string{data.Ipv6Pools[i].PrefixDelegationPrefixes[ci].Prefix.ValueString()}
+			cr := PrefixDelegationPrefixesItems[helpers.CompositeKey(PrefixDelegationPrefixesKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "ipv6-prefix"); value.Exists() && !data.Ipv6Pools[i].PrefixDelegationPrefixes[ci].Prefix.IsNull() {
 				data.Ipv6Pools[i].PrefixDelegationPrefixes[ci].Prefix = types.StringValue(value.String())
 			} else {
@@ -1199,29 +1081,11 @@ func (data *DHCP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		} else {
 			data.Ipv6Pools[i].DomainNames = types.ListNull(types.StringType)
 		}
+		LinkAddressesKeys := [...]string{"address"}
+		LinkAddressesItems := helpers.CollectListItemsXML(r.Raw, "link-address", LinkAddressesKeys[:])
 		for ci := range data.Ipv6Pools[i].LinkAddresses {
-			keys := [...]string{"address"}
-			keyValues := [...]string{data.Ipv6Pools[i].LinkAddresses[ci].Address.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "link-address").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			LinkAddressesKeyValues := [...]string{data.Ipv6Pools[i].LinkAddresses[ci].Address.ValueString()}
+			cr := LinkAddressesItems[helpers.CompositeKey(LinkAddressesKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "address"); value.Exists() && !data.Ipv6Pools[i].LinkAddresses[ci].Address.IsNull() {
 				data.Ipv6Pools[i].LinkAddresses[ci].Address = types.StringValue(value.String())
 			} else {
@@ -1242,29 +1106,11 @@ func (data *DHCP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		} else {
 			data.Ipv6Pools[i].OptionIncludeAll = types.BoolNull()
 		}
+		VendorSpecificsKeys := [...]string{"value"}
+		VendorSpecificsItems := helpers.CollectListItemsXML(r.Raw, "vendor-specific", VendorSpecificsKeys[:])
 		for ci := range data.Ipv6Pools[i].VendorSpecifics {
-			keys := [...]string{"value"}
-			keyValues := [...]string{strconv.FormatInt(data.Ipv6Pools[i].VendorSpecifics[ci].EnterpriseId.ValueInt64(), 10)}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "vendor-specific").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			VendorSpecificsKeyValues := [...]string{strconv.FormatInt(data.Ipv6Pools[i].VendorSpecifics[ci].EnterpriseId.ValueInt64(), 10)}
+			cr := VendorSpecificsItems[helpers.CompositeKey(VendorSpecificsKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "value"); value.Exists() && !data.Ipv6Pools[i].VendorSpecifics[ci].EnterpriseId.IsNull() {
 				data.Ipv6Pools[i].VendorSpecifics[ci].EnterpriseId = types.Int64Value(value.Int())
 			} else {

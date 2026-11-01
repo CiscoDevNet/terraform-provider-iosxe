@@ -302,6 +302,7 @@ func (data EEM) toBodyXML(ctx context.Context, config EEM) string {
 // resources use this to serialize all of their items into a single NETCONF payload.
 func (data EEM) addToBodyXML(ctx context.Context, config EEM, body netconf.Body) netconf.Body {
 	if len(data.EnvironmentVariables) > 0 {
+		EnvironmentVariablesFragments := make([]string, 0, len(data.EnvironmentVariables))
 		for _, item := range data.EnvironmentVariables {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
@@ -310,8 +311,9 @@ func (data EEM) addToBodyXML(ctx context.Context, config EEM, body netconf.Body)
 			if !item.Value.IsNull() && !item.Value.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "value", item.Value.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/environment", cBody.Res())
+			EnvironmentVariablesFragments = append(EnvironmentVariablesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/environment", EnvironmentVariablesFragments)
 	}
 	if !data.SessionCliUsername.IsNull() && !data.SessionCliUsername.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/session/cli/username/username_in_word_set", data.SessionCliUsername.ValueString())
@@ -342,6 +344,7 @@ func (data EEM) addToBodyXML(ctx context.Context, config EEM, body netconf.Body)
 		body = helpers.SetFromXPath(body, data.getXPath()+"/detector/routing/bootup-delay", strconv.FormatFloat(data.DetectorRoutingBootupDelay.ValueFloat64(), 'f', 1, 64))
 	}
 	if len(data.Applets) > 0 {
+		AppletsFragments := make([]string, 0, len(data.Applets))
 		for _, item := range data.Applets {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
@@ -366,6 +369,7 @@ func (data EEM) addToBodyXML(ctx context.Context, config EEM, body netconf.Body)
 				cBody = helpers.SetFromXPath(cBody, "event/cli/skip", item.EventCliSkip.ValueString())
 			}
 			if len(item.Actions) > 0 {
+				ActionsFragments := make([]string, 0, len(item.Actions))
 				for _, citem := range item.Actions {
 					ccBody := netconf.Body{}
 					if !citem.Name.IsNull() && !citem.Name.IsUnknown() {
@@ -615,8 +619,9 @@ func (data EEM) addToBodyXML(ctx context.Context, config EEM, body netconf.Body)
 					if !citem.StringFirstStringOp2.IsNull() && !citem.StringFirstStringOp2.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "string/first/string-op-2", citem.StringFirstStringOp2.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "action-config/action", ccBody.Res())
+					ActionsFragments = append(ActionsFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "action-config/action", ActionsFragments)
 			}
 			if !item.EventTimerWatchdogTime.IsNull() && !item.EventTimerWatchdogTime.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "event/timer-choice/watchdog/time-set", strconv.FormatFloat(item.EventTimerWatchdogTime.ValueFloat64(), 'f', 1, 64))
@@ -657,8 +662,9 @@ func (data EEM) addToBodyXML(ctx context.Context, config EEM, body netconf.Body)
 			if !item.EventSyslogPeriod.IsNull() && !item.EventSyslogPeriod.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "event/syslog-choice/period-set", strconv.FormatFloat(item.EventSyslogPeriod.ValueFloat64(), 'f', 1, 64))
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/applet", cBody.Res())
+			AppletsFragments = append(AppletsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/applet", AppletsFragments)
 	}
 	return body
 }
@@ -668,29 +674,12 @@ func (data EEM) addToBodyXML(ctx context.Context, config EEM, body netconf.Body)
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *EEM) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	EnvironmentVariablesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	EnvironmentVariablesKeys := [...]string{"name"}
+	EnvironmentVariablesItems := helpers.CollectListItemsXML(EnvironmentVariablesParentScope.Raw, "environment", EnvironmentVariablesKeys[:])
 	for i := range data.EnvironmentVariables {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.EnvironmentVariables[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/environment").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		EnvironmentVariablesKeyValues := [...]string{data.EnvironmentVariables[i].Name.ValueString()}
+		r := EnvironmentVariablesItems[helpers.CompositeKey(EnvironmentVariablesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.EnvironmentVariables[i].Name.IsNull() {
 			data.EnvironmentVariables[i].Name = types.StringValue(value.String())
 		} else {
@@ -746,29 +735,12 @@ func (data *EEM) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.DetectorRoutingBootupDelay = types.Float64Null()
 	}
+	AppletsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	AppletsKeys := [...]string{"name"}
+	AppletsItems := helpers.CollectListItemsXML(AppletsParentScope.Raw, "applet", AppletsKeys[:])
 	for i := range data.Applets {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.Applets[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/applet").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		AppletsKeyValues := [...]string{data.Applets[i].Name.ValueString()}
+		r := AppletsItems[helpers.CompositeKey(AppletsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.Applets[i].Name.IsNull() {
 			data.Applets[i].Name = types.StringValue(value.String())
 		} else {
@@ -804,29 +776,11 @@ func (data *EEM) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		} else {
 			data.Applets[i].EventCliSkip = types.StringNull()
 		}
+		ActionsKeys := [...]string{"name"}
+		ActionsItems := helpers.CollectListItemsXML(r.Raw, "action-config/action", ActionsKeys[:])
 		for ci := range data.Applets[i].Actions {
-			keys := [...]string{"name"}
-			keyValues := [...]string{data.Applets[i].Actions[ci].Name.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "action-config/action").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			ActionsKeyValues := [...]string{data.Applets[i].Actions[ci].Name.ValueString()}
+			cr := ActionsItems[helpers.CompositeKey(ActionsKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "name"); value.Exists() && !data.Applets[i].Actions[ci].Name.IsNull() {
 				data.Applets[i].Actions[ci].Name = types.StringValue(value.String())
 			} else {

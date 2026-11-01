@@ -137,6 +137,7 @@ func (data WirelessFlexProfile) addToBodyXML(ctx context.Context, config Wireles
 		body = helpers.SetFromXPath(body, data.getXPath()+"/efficient-ap-upgrade-enable", data.Predownload.ValueBool())
 	}
 	if len(data.VlanNames) > 0 {
+		VlanNamesFragments := make([]string, 0, len(data.VlanNames))
 		for _, item := range data.VlanNames {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
@@ -145,17 +146,20 @@ func (data WirelessFlexProfile) addToBodyXML(ctx context.Context, config Wireles
 			if !item.VlanId.IsNull() && !item.VlanId.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "vlan-id", strconv.FormatInt(item.VlanId.ValueInt64(), 10))
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/if-name-vlan-ids/if-name-vlan-id", cBody.Res())
+			VlanNamesFragments = append(VlanNamesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/if-name-vlan-ids/if-name-vlan-id", VlanNamesFragments)
 	}
 	if len(data.AclPolicies) > 0 {
+		AclPoliciesFragments := make([]string, 0, len(data.AclPolicies))
 		for _, item := range data.AclPolicies {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "acl-name", item.Name.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/policy-acls/policy-acl", cBody.Res())
+			AclPoliciesFragments = append(AclPoliciesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/policy-acls/policy-acl", AclPoliciesFragments)
 	}
 	return body
 }
@@ -201,29 +205,12 @@ func (data *WirelessFlexProfile) updateFromBodyXML(ctx context.Context, res xmld
 	} else {
 		data.Predownload = types.BoolNull()
 	}
+	VlanNamesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	VlanNamesKeys := [...]string{"interface-name"}
+	VlanNamesItems := helpers.CollectListItemsXML(VlanNamesParentScope.Raw, "if-name-vlan-ids/if-name-vlan-id", VlanNamesKeys[:])
 	for i := range data.VlanNames {
-		keys := [...]string{"interface-name"}
-		keyValues := [...]string{data.VlanNames[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/if-name-vlan-ids/if-name-vlan-id").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		VlanNamesKeyValues := [...]string{data.VlanNames[i].Name.ValueString()}
+		r := VlanNamesItems[helpers.CompositeKey(VlanNamesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "interface-name"); value.Exists() && !data.VlanNames[i].Name.IsNull() {
 			data.VlanNames[i].Name = types.StringValue(value.String())
 		} else {
@@ -235,29 +222,12 @@ func (data *WirelessFlexProfile) updateFromBodyXML(ctx context.Context, res xmld
 			data.VlanNames[i].VlanId = types.Int64Null()
 		}
 	}
+	AclPoliciesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	AclPoliciesKeys := [...]string{"acl-name"}
+	AclPoliciesItems := helpers.CollectListItemsXML(AclPoliciesParentScope.Raw, "policy-acls/policy-acl", AclPoliciesKeys[:])
 	for i := range data.AclPolicies {
-		keys := [...]string{"acl-name"}
-		keyValues := [...]string{data.AclPolicies[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/policy-acls/policy-acl").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		AclPoliciesKeyValues := [...]string{data.AclPolicies[i].Name.ValueString()}
+		r := AclPoliciesItems[helpers.CompositeKey(AclPoliciesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "acl-name"); value.Exists() && !data.AclPolicies[i].Name.IsNull() {
 			data.AclPolicies[i].Name = types.StringValue(value.String())
 		} else {

@@ -114,6 +114,7 @@ func (data VoiceClassDPG) addToBodyXML(ctx context.Context, config VoiceClassDPG
 		}
 	}
 	if len(data.DialPeers) > 0 {
+		DialPeersFragments := make([]string, 0, len(data.DialPeers))
 		for _, item := range data.DialPeers {
 			cBody := netconf.Body{}
 			if !item.DialPeerId.IsNull() && !item.DialPeerId.IsUnknown() {
@@ -122,8 +123,9 @@ func (data VoiceClassDPG) addToBodyXML(ctx context.Context, config VoiceClassDPG
 			if !item.Preference.IsNull() && !item.Preference.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "preference", strconv.FormatInt(item.Preference.ValueInt64(), 10))
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/dial-peer", cBody.Res())
+			DialPeersFragments = append(DialPeersFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/dial-peer", DialPeersFragments)
 	}
 	return body
 }
@@ -147,29 +149,12 @@ func (data *VoiceClassDPG) updateFromBodyXML(ctx context.Context, res xmldot.Res
 	} else {
 		data.Shutdown = types.BoolNull()
 	}
+	DialPeersParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	DialPeersKeys := [...]string{"id"}
+	DialPeersItems := helpers.CollectListItemsXML(DialPeersParentScope.Raw, "dial-peer", DialPeersKeys[:])
 	for i := range data.DialPeers {
-		keys := [...]string{"id"}
-		keyValues := [...]string{strconv.FormatInt(data.DialPeers[i].DialPeerId.ValueInt64(), 10)}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/dial-peer").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		DialPeersKeyValues := [...]string{strconv.FormatInt(data.DialPeers[i].DialPeerId.ValueInt64(), 10)}
+		r := DialPeersItems[helpers.CompositeKey(DialPeersKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "id"); value.Exists() && !data.DialPeers[i].DialPeerId.IsNull() {
 			data.DialPeers[i].DialPeerId = types.Int64Value(value.Int())
 		} else {

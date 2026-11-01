@@ -675,6 +675,7 @@ func (data InterfaceEthernet) addToBodyXML(ctx context.Context, config Interface
 		body = helpers.SetFromXPath(body, data.getXPath()+"/trust/device", data.TrustDevice.ValueString())
 	}
 	if len(data.HelperAddresses) > 0 {
+		HelperAddressesFragments := make([]string, 0, len(data.HelperAddresses))
 		for _, item := range data.HelperAddresses {
 			cBody := netconf.Body{}
 			if !item.Address.IsNull() && !item.Address.IsUnknown() {
@@ -690,10 +691,12 @@ func (data InterfaceEthernet) addToBodyXML(ctx context.Context, config Interface
 			if !item.Vrf.IsNull() && !item.Vrf.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "vrf", item.Vrf.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ip/helper-address", cBody.Res())
+			HelperAddressesFragments = append(HelperAddressesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/ip/helper-address", HelperAddressesFragments)
 	}
 	if len(data.SourceTemplate) > 0 {
+		SourceTemplateFragments := make([]string, 0, len(data.SourceTemplate))
 		for _, item := range data.SourceTemplate {
 			cBody := netconf.Body{}
 			if !item.TemplateName.IsNull() && !item.TemplateName.IsUnknown() {
@@ -706,8 +709,9 @@ func (data InterfaceEthernet) addToBodyXML(ctx context.Context, config Interface
 					cBody = helpers.RemoveFromXPath(cBody, "merge")
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/source/template/template-name", cBody.Res())
+			SourceTemplateFragments = append(SourceTemplateFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/source/template/template-name", SourceTemplateFragments)
 	}
 	if !data.BfdTemplate.IsNull() && !data.BfdTemplate.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:template", data.BfdTemplate.ValueString())
@@ -762,6 +766,7 @@ func (data InterfaceEthernet) addToBodyXML(ctx context.Context, config Interface
 		}
 	}
 	if len(data.Ipv6DhcpServers) > 0 {
+		Ipv6DhcpServersFragments := make([]string, 0, len(data.Ipv6DhcpServers))
 		for _, item := range data.Ipv6DhcpServers {
 			cBody := netconf.Body{}
 			if !item.PoolName.IsNull() && !item.PoolName.IsUnknown() {
@@ -784,8 +789,9 @@ func (data InterfaceEthernet) addToBodyXML(ctx context.Context, config Interface
 			if !item.Preference.IsNull() && !item.Preference.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "preference", strconv.FormatInt(item.Preference.ValueInt64(), 10))
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:server", cBody.Res())
+			Ipv6DhcpServersFragments = append(Ipv6DhcpServersFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:server", Ipv6DhcpServersFragments)
 	}
 	if !data.Ipv6DhcpClientPd.IsNull() && !data.Ipv6DhcpClientPd.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:client/pd/pd-prefix/prefix-name", data.Ipv6DhcpClientPd.ValueString())
@@ -798,6 +804,7 @@ func (data InterfaceEthernet) addToBodyXML(ctx context.Context, config Interface
 		}
 	}
 	if len(data.Ipv6DhcpRelayDestinations) > 0 {
+		Ipv6DhcpRelayDestinationsFragments := make([]string, 0, len(data.Ipv6DhcpRelayDestinations))
 		for _, item := range data.Ipv6DhcpRelayDestinations {
 			cBody := netconf.Body{}
 			if !item.Address.IsNull() && !item.Address.IsUnknown() {
@@ -810,8 +817,9 @@ func (data InterfaceEthernet) addToBodyXML(ctx context.Context, config Interface
 					cBody = helpers.AppendFromXPath(cBody, "interface-list", v)
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:relay/destination/address", cBody.Res())
+			Ipv6DhcpRelayDestinationsFragments = append(Ipv6DhcpRelayDestinationsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:relay/destination/address", Ipv6DhcpRelayDestinationsFragments)
 	}
 	if !data.Ipv6DhcpRelayTrust.IsNull() && !data.Ipv6DhcpRelayTrust.IsUnknown() {
 		if data.Ipv6DhcpRelayTrust.ValueBool() {
@@ -828,6 +836,7 @@ func (data InterfaceEthernet) addToBodyXML(ctx context.Context, config Interface
 		}
 	}
 	if len(data.Ipv6LinkLocalAddresses) > 0 {
+		Ipv6LinkLocalAddressesFragments := make([]string, 0, len(data.Ipv6LinkLocalAddresses))
 		for _, item := range data.Ipv6LinkLocalAddresses {
 			cBody := netconf.Body{}
 			if !item.Address.IsNull() && !item.Address.IsUnknown() {
@@ -840,10 +849,12 @@ func (data InterfaceEthernet) addToBodyXML(ctx context.Context, config Interface
 					cBody = helpers.RemoveFromXPath(cBody, "link-local")
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ipv6/address/link-local-address", cBody.Res())
+			Ipv6LinkLocalAddressesFragments = append(Ipv6LinkLocalAddressesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/ipv6/address/link-local-address", Ipv6LinkLocalAddressesFragments)
 	}
 	if len(data.Ipv6Addresses) > 0 {
+		Ipv6AddressesFragments := make([]string, 0, len(data.Ipv6Addresses))
 		for _, item := range data.Ipv6Addresses {
 			cBody := netconf.Body{}
 			if !item.Prefix.IsNull() && !item.Prefix.IsUnknown() {
@@ -856,10 +867,12 @@ func (data InterfaceEthernet) addToBodyXML(ctx context.Context, config Interface
 					cBody = helpers.RemoveFromXPath(cBody, "eui-64")
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ipv6/address/prefix-list", cBody.Res())
+			Ipv6AddressesFragments = append(Ipv6AddressesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/ipv6/address/prefix-list", Ipv6AddressesFragments)
 	}
 	if len(data.Ipv6FlowMonitors) > 0 {
+		Ipv6FlowMonitorsFragments := make([]string, 0, len(data.Ipv6FlowMonitors))
 		for _, item := range data.Ipv6FlowMonitors {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
@@ -868,8 +881,9 @@ func (data InterfaceEthernet) addToBodyXML(ctx context.Context, config Interface
 			if !item.Direction.IsNull() && !item.Direction.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "direction", item.Direction.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ipv6/Cisco-IOS-XE-flow:flow/monitor-new", cBody.Res())
+			Ipv6FlowMonitorsFragments = append(Ipv6FlowMonitorsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/ipv6/Cisco-IOS-XE-flow:flow/monitor-new", Ipv6FlowMonitorsFragments)
 	}
 	if !data.ArpTimeout.IsNull() && !data.ArpTimeout.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/arp/timeout", strconv.FormatInt(data.ArpTimeout.ValueInt64(), 10))
@@ -1010,6 +1024,7 @@ func (data InterfaceEthernet) addToBodyXML(ctx context.Context, config Interface
 		}
 	}
 	if len(data.ServiceInstances) > 0 {
+		ServiceInstancesFragments := make([]string, 0, len(data.ServiceInstances))
 		for _, item := range data.ServiceInstances {
 			cBody := netconf.Body{}
 			if !item.Id.IsNull() && !item.Id.IsUnknown() {
@@ -1029,8 +1044,9 @@ func (data InterfaceEthernet) addToBodyXML(ctx context.Context, config Interface
 					cBody = helpers.RemoveFromXPath(cBody, "encapsulation/untagged")
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-ethernet:service/instance", cBody.Res())
+			ServiceInstancesFragments = append(ServiceInstancesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/Cisco-IOS-XE-ethernet:service/instance", ServiceInstancesFragments)
 	}
 	if !data.AuthenticationHostMode.IsNull() && !data.AuthenticationHostMode.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-sanet:authentication/host-mode", data.AuthenticationHostMode.ValueString())
@@ -1254,6 +1270,7 @@ func (data InterfaceEthernet) addToBodyXML(ctx context.Context, config Interface
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-policy:service-policy/output", data.ServicePolicyOutput.ValueString())
 	}
 	if len(data.IpFlowMonitors) > 0 {
+		IpFlowMonitorsFragments := make([]string, 0, len(data.IpFlowMonitors))
 		for _, item := range data.IpFlowMonitors {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
@@ -1262,8 +1279,9 @@ func (data InterfaceEthernet) addToBodyXML(ctx context.Context, config Interface
 			if !item.Direction.IsNull() && !item.Direction.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "direction", item.Direction.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-flow:flow/monitor-new", cBody.Res())
+			IpFlowMonitorsFragments = append(IpFlowMonitorsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/ip/Cisco-IOS-XE-flow:flow/monitor-new", IpFlowMonitorsFragments)
 	}
 	if !data.LoadInterval.IsNull() && !data.LoadInterval.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/load-interval", strconv.FormatInt(data.LoadInterval.ValueInt64(), 10))
@@ -1289,13 +1307,15 @@ func (data InterfaceEthernet) addToBodyXML(ctx context.Context, config Interface
 		}
 	}
 	if len(data.DeviceTrackingAttachedPolicies) > 0 {
+		DeviceTrackingAttachedPoliciesFragments := make([]string, 0, len(data.DeviceTrackingAttachedPolicies))
 		for _, item := range data.DeviceTrackingAttachedPolicies {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "attach-policy", item.Name.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-switch:device-tracking/attached-policies", cBody.Res())
+			DeviceTrackingAttachedPoliciesFragments = append(DeviceTrackingAttachedPoliciesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/Cisco-IOS-XE-switch:device-tracking/attached-policies", DeviceTrackingAttachedPoliciesFragments)
 	}
 	if !data.CdpEnable.IsNull() && !data.CdpEnable.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-cdp:cdp/enable", data.CdpEnable.ValueBool())
@@ -1341,18 +1361,21 @@ func (data InterfaceEthernet) addToBodyXML(ctx context.Context, config Interface
 		}
 	}
 	if len(data.EvpnEthernetSegments) > 0 {
+		EvpnEthernetSegmentsFragments := make([]string, 0, len(data.EvpnEthernetSegments))
 		for _, item := range data.EvpnEthernetSegments {
 			cBody := netconf.Body{}
 			if !item.EsValue.IsNull() && !item.EsValue.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "es-value", strconv.FormatInt(item.EsValue.ValueInt64(), 10))
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-l2vpn:evpn/ethernet-segment", cBody.Res())
+			EvpnEthernetSegmentsFragments = append(EvpnEthernetSegmentsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/Cisco-IOS-XE-l2vpn:evpn/ethernet-segment", EvpnEthernetSegmentsFragments)
 	}
 	if !data.CarrierDelayMsec.IsNull() && !data.CarrierDelayMsec.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-ethernet:carrier-delay/msec", strconv.FormatInt(data.CarrierDelayMsec.ValueInt64(), 10))
 	}
 	if len(data.HoldQueues) > 0 {
+		HoldQueuesFragments := make([]string, 0, len(data.HoldQueues))
 		for _, item := range data.HoldQueues {
 			cBody := netconf.Body{}
 			if !item.Direction.IsNull() && !item.Direction.IsUnknown() {
@@ -1361,8 +1384,9 @@ func (data InterfaceEthernet) addToBodyXML(ctx context.Context, config Interface
 			if !item.QueueLength.IsNull() && !item.QueueLength.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "queue-length", strconv.FormatInt(item.QueueLength.ValueInt64(), 10))
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/hold-queue", cBody.Res())
+			HoldQueuesFragments = append(HoldQueuesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/hold-queue", HoldQueuesFragments)
 	}
 	if !data.IpIgmpVersion.IsNull() && !data.IpIgmpVersion.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/version", strconv.FormatInt(data.IpIgmpVersion.ValueInt64(), 10))
@@ -1377,12 +1401,14 @@ func (data InterfaceEthernet) addToBodyXML(ctx context.Context, config Interface
 		body = helpers.SetFromXPath(body, data.getXPath()+"/redundancy/rii/id", strconv.FormatInt(data.RedundancyRiiId.ValueInt64(), 10))
 	}
 	if len(data.RedundancyGroups) > 0 {
+		RedundancyGroupsFragments := make([]string, 0, len(data.RedundancyGroups))
 		for _, item := range data.RedundancyGroups {
 			cBody := netconf.Body{}
 			if !item.GroupId.IsNull() && !item.GroupId.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "id", strconv.FormatInt(item.GroupId.ValueInt64(), 10))
 			}
 			if len(item.VirtualIps) > 0 {
+				VirtualIpsFragments := make([]string, 0, len(item.VirtualIps))
 				for _, citem := range item.VirtualIps {
 					ccBody := netconf.Body{}
 					if !citem.IpFamily.IsNull() && !citem.IpFamily.IsUnknown() {
@@ -1398,11 +1424,13 @@ func (data InterfaceEthernet) addToBodyXML(ctx context.Context, config Interface
 							ccBody = helpers.RemoveFromXPath(ccBody, "ipv4-address/exclusive")
 						}
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "virtual-ip", ccBody.Res())
+					VirtualIpsFragments = append(VirtualIpsFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "virtual-ip", VirtualIpsFragments)
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/redundancy/group", cBody.Res())
+			RedundancyGroupsFragments = append(RedundancyGroupsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/redundancy/group", RedundancyGroupsFragments)
 	}
 	return body
 }
@@ -1660,29 +1688,12 @@ func (data *InterfaceEthernet) updateFromBodyXML(ctx context.Context, res xmldot
 	} else {
 		data.TrustDevice = types.StringNull()
 	}
+	HelperAddressesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	HelperAddressesKeys := [...]string{"address"}
+	HelperAddressesItems := helpers.CollectListItemsXML(HelperAddressesParentScope.Raw, "ip/helper-address", HelperAddressesKeys[:])
 	for i := range data.HelperAddresses {
-		keys := [...]string{"address"}
-		keyValues := [...]string{data.HelperAddresses[i].Address.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/helper-address").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		HelperAddressesKeyValues := [...]string{data.HelperAddresses[i].Address.ValueString()}
+		r := HelperAddressesItems[helpers.CompositeKey(HelperAddressesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "address"); value.Exists() && !data.HelperAddresses[i].Address.IsNull() {
 			data.HelperAddresses[i].Address = types.StringValue(value.String())
 		} else {
@@ -1703,29 +1714,12 @@ func (data *InterfaceEthernet) updateFromBodyXML(ctx context.Context, res xmldot
 			data.HelperAddresses[i].Vrf = types.StringNull()
 		}
 	}
+	SourceTemplateParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	SourceTemplateKeys := [...]string{"template-name"}
+	SourceTemplateItems := helpers.CollectListItemsXML(SourceTemplateParentScope.Raw, "source/template/template-name", SourceTemplateKeys[:])
 	for i := range data.SourceTemplate {
-		keys := [...]string{"template-name"}
-		keyValues := [...]string{data.SourceTemplate[i].TemplateName.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/source/template/template-name").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		SourceTemplateKeyValues := [...]string{data.SourceTemplate[i].TemplateName.ValueString()}
+		r := SourceTemplateItems[helpers.CompositeKey(SourceTemplateKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "template-name"); value.Exists() && !data.SourceTemplate[i].TemplateName.IsNull() {
 			data.SourceTemplate[i].TemplateName = types.StringValue(value.String())
 		} else {
@@ -1821,29 +1815,12 @@ func (data *InterfaceEthernet) updateFromBodyXML(ctx context.Context, res xmldot
 	} else {
 		data.Ipv6AddressDhcp = types.BoolNull()
 	}
+	Ipv6DhcpServersParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	Ipv6DhcpServersKeys := [...]string{"word"}
+	Ipv6DhcpServersItems := helpers.CollectListItemsXML(Ipv6DhcpServersParentScope.Raw, "ipv6/dhcp/Cisco-IOS-XE-dhcp:server", Ipv6DhcpServersKeys[:])
 	for i := range data.Ipv6DhcpServers {
-		keys := [...]string{"word"}
-		keyValues := [...]string{data.Ipv6DhcpServers[i].PoolName.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:server").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		Ipv6DhcpServersKeyValues := [...]string{data.Ipv6DhcpServers[i].PoolName.ValueString()}
+		r := Ipv6DhcpServersItems[helpers.CompositeKey(Ipv6DhcpServersKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "word"); value.Exists() && !data.Ipv6DhcpServers[i].PoolName.IsNull() {
 			data.Ipv6DhcpServers[i].PoolName = types.StringValue(value.String())
 		} else {
@@ -1887,29 +1864,12 @@ func (data *InterfaceEthernet) updateFromBodyXML(ctx context.Context, res xmldot
 	} else {
 		data.Ipv6DhcpClientPdRapidCommit = types.BoolNull()
 	}
+	Ipv6DhcpRelayDestinationsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	Ipv6DhcpRelayDestinationsKeys := [...]string{"ipv6-address"}
+	Ipv6DhcpRelayDestinationsItems := helpers.CollectListItemsXML(Ipv6DhcpRelayDestinationsParentScope.Raw, "ipv6/dhcp/Cisco-IOS-XE-dhcp:relay/destination/address", Ipv6DhcpRelayDestinationsKeys[:])
 	for i := range data.Ipv6DhcpRelayDestinations {
-		keys := [...]string{"ipv6-address"}
-		keyValues := [...]string{data.Ipv6DhcpRelayDestinations[i].Address.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:relay/destination/address").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		Ipv6DhcpRelayDestinationsKeyValues := [...]string{data.Ipv6DhcpRelayDestinations[i].Address.ValueString()}
+		r := Ipv6DhcpRelayDestinationsItems[helpers.CompositeKey(Ipv6DhcpRelayDestinationsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "ipv6-address"); value.Exists() && !data.Ipv6DhcpRelayDestinations[i].Address.IsNull() {
 			data.Ipv6DhcpRelayDestinations[i].Address = types.StringValue(value.String())
 		} else {
@@ -1939,29 +1899,12 @@ func (data *InterfaceEthernet) updateFromBodyXML(ctx context.Context, res xmldot
 	} else {
 		data.Ipv6DhcpRelayOptionVpn = types.BoolNull()
 	}
+	Ipv6LinkLocalAddressesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	Ipv6LinkLocalAddressesKeys := [...]string{"address"}
+	Ipv6LinkLocalAddressesItems := helpers.CollectListItemsXML(Ipv6LinkLocalAddressesParentScope.Raw, "ipv6/address/link-local-address", Ipv6LinkLocalAddressesKeys[:])
 	for i := range data.Ipv6LinkLocalAddresses {
-		keys := [...]string{"address"}
-		keyValues := [...]string{data.Ipv6LinkLocalAddresses[i].Address.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/address/link-local-address").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		Ipv6LinkLocalAddressesKeyValues := [...]string{data.Ipv6LinkLocalAddresses[i].Address.ValueString()}
+		r := Ipv6LinkLocalAddressesItems[helpers.CompositeKey(Ipv6LinkLocalAddressesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "address"); value.Exists() && !data.Ipv6LinkLocalAddresses[i].Address.IsNull() {
 			data.Ipv6LinkLocalAddresses[i].Address = types.StringValue(value.String())
 		} else {
@@ -1977,29 +1920,12 @@ func (data *InterfaceEthernet) updateFromBodyXML(ctx context.Context, res xmldot
 			data.Ipv6LinkLocalAddresses[i].LinkLocal = types.BoolNull()
 		}
 	}
+	Ipv6AddressesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	Ipv6AddressesKeys := [...]string{"prefix"}
+	Ipv6AddressesItems := helpers.CollectListItemsXML(Ipv6AddressesParentScope.Raw, "ipv6/address/prefix-list", Ipv6AddressesKeys[:])
 	for i := range data.Ipv6Addresses {
-		keys := [...]string{"prefix"}
-		keyValues := [...]string{data.Ipv6Addresses[i].Prefix.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/address/prefix-list").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		Ipv6AddressesKeyValues := [...]string{data.Ipv6Addresses[i].Prefix.ValueString()}
+		r := Ipv6AddressesItems[helpers.CompositeKey(Ipv6AddressesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "prefix"); value.Exists() && !data.Ipv6Addresses[i].Prefix.IsNull() {
 			data.Ipv6Addresses[i].Prefix = types.StringValue(value.String())
 		} else {
@@ -2015,29 +1941,12 @@ func (data *InterfaceEthernet) updateFromBodyXML(ctx context.Context, res xmldot
 			data.Ipv6Addresses[i].Eui64 = types.BoolNull()
 		}
 	}
+	Ipv6FlowMonitorsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	Ipv6FlowMonitorsKeys := [...]string{"name", "direction"}
+	Ipv6FlowMonitorsItems := helpers.CollectListItemsXML(Ipv6FlowMonitorsParentScope.Raw, "ipv6/Cisco-IOS-XE-flow:flow/monitor-new", Ipv6FlowMonitorsKeys[:])
 	for i := range data.Ipv6FlowMonitors {
-		keys := [...]string{"name", "direction"}
-		keyValues := [...]string{data.Ipv6FlowMonitors[i].Name.ValueString(), data.Ipv6FlowMonitors[i].Direction.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/Cisco-IOS-XE-flow:flow/monitor-new").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		Ipv6FlowMonitorsKeyValues := [...]string{data.Ipv6FlowMonitors[i].Name.ValueString(), data.Ipv6FlowMonitors[i].Direction.ValueString()}
+		r := Ipv6FlowMonitorsItems[helpers.CompositeKey(Ipv6FlowMonitorsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.Ipv6FlowMonitors[i].Name.IsNull() {
 			data.Ipv6FlowMonitors[i].Name = types.StringValue(value.String())
 		} else {
@@ -2233,29 +2142,12 @@ func (data *InterfaceEthernet) updateFromBodyXML(ctx context.Context, res xmldot
 	} else {
 		data.SpeedNonegotiate = types.BoolNull()
 	}
+	ServiceInstancesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	ServiceInstancesKeys := [...]string{"id"}
+	ServiceInstancesItems := helpers.CollectListItemsXML(ServiceInstancesParentScope.Raw, "Cisco-IOS-XE-ethernet:service/instance", ServiceInstancesKeys[:])
 	for i := range data.ServiceInstances {
-		keys := [...]string{"id"}
-		keyValues := [...]string{strconv.FormatInt(data.ServiceInstances[i].Id.ValueInt64(), 10)}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-ethernet:service/instance").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		ServiceInstancesKeyValues := [...]string{strconv.FormatInt(data.ServiceInstances[i].Id.ValueInt64(), 10)}
+		r := ServiceInstancesItems[helpers.CompositeKey(ServiceInstancesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "id"); value.Exists() && !data.ServiceInstances[i].Id.IsNull() {
 			data.ServiceInstances[i].Id = types.Int64Value(value.Int())
 		} else {
@@ -2587,29 +2479,12 @@ func (data *InterfaceEthernet) updateFromBodyXML(ctx context.Context, res xmldot
 	} else {
 		data.ServicePolicyOutput = types.StringNull()
 	}
+	IpFlowMonitorsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	IpFlowMonitorsKeys := [...]string{"name", "direction"}
+	IpFlowMonitorsItems := helpers.CollectListItemsXML(IpFlowMonitorsParentScope.Raw, "ip/Cisco-IOS-XE-flow:flow/monitor-new", IpFlowMonitorsKeys[:])
 	for i := range data.IpFlowMonitors {
-		keys := [...]string{"name", "direction"}
-		keyValues := [...]string{data.IpFlowMonitors[i].Name.ValueString(), data.IpFlowMonitors[i].Direction.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-flow:flow/monitor-new").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		IpFlowMonitorsKeyValues := [...]string{data.IpFlowMonitors[i].Name.ValueString(), data.IpFlowMonitors[i].Direction.ValueString()}
+		r := IpFlowMonitorsItems[helpers.CompositeKey(IpFlowMonitorsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.IpFlowMonitors[i].Name.IsNull() {
 			data.IpFlowMonitors[i].Name = types.StringValue(value.String())
 		} else {
@@ -2658,29 +2533,12 @@ func (data *InterfaceEthernet) updateFromBodyXML(ctx context.Context, res xmldot
 	} else {
 		data.DeviceTracking = types.BoolNull()
 	}
+	DeviceTrackingAttachedPoliciesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	DeviceTrackingAttachedPoliciesKeys := [...]string{"attach-policy"}
+	DeviceTrackingAttachedPoliciesItems := helpers.CollectListItemsXML(DeviceTrackingAttachedPoliciesParentScope.Raw, "Cisco-IOS-XE-switch:device-tracking/attached-policies", DeviceTrackingAttachedPoliciesKeys[:])
 	for i := range data.DeviceTrackingAttachedPolicies {
-		keys := [...]string{"attach-policy"}
-		keyValues := [...]string{data.DeviceTrackingAttachedPolicies[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-switch:device-tracking/attached-policies").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		DeviceTrackingAttachedPoliciesKeyValues := [...]string{data.DeviceTrackingAttachedPolicies[i].Name.ValueString()}
+		r := DeviceTrackingAttachedPoliciesItems[helpers.CompositeKey(DeviceTrackingAttachedPoliciesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "attach-policy"); value.Exists() && !data.DeviceTrackingAttachedPolicies[i].Name.IsNull() {
 			data.DeviceTrackingAttachedPolicies[i].Name = types.StringValue(value.String())
 		} else {
@@ -2756,29 +2614,12 @@ func (data *InterfaceEthernet) updateFromBodyXML(ctx context.Context, res xmldot
 	} else {
 		data.IpVerifyUnicastSourceAllowDefault = types.BoolNull()
 	}
+	EvpnEthernetSegmentsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	EvpnEthernetSegmentsKeys := [...]string{"es-value"}
+	EvpnEthernetSegmentsItems := helpers.CollectListItemsXML(EvpnEthernetSegmentsParentScope.Raw, "Cisco-IOS-XE-l2vpn:evpn/ethernet-segment", EvpnEthernetSegmentsKeys[:])
 	for i := range data.EvpnEthernetSegments {
-		keys := [...]string{"es-value"}
-		keyValues := [...]string{strconv.FormatInt(data.EvpnEthernetSegments[i].EsValue.ValueInt64(), 10)}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-l2vpn:evpn/ethernet-segment").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		EvpnEthernetSegmentsKeyValues := [...]string{strconv.FormatInt(data.EvpnEthernetSegments[i].EsValue.ValueInt64(), 10)}
+		r := EvpnEthernetSegmentsItems[helpers.CompositeKey(EvpnEthernetSegmentsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "es-value"); value.Exists() && !data.EvpnEthernetSegments[i].EsValue.IsNull() {
 			data.EvpnEthernetSegments[i].EsValue = types.Int64Value(value.Int())
 		} else {
@@ -2790,29 +2631,12 @@ func (data *InterfaceEthernet) updateFromBodyXML(ctx context.Context, res xmldot
 	} else {
 		data.CarrierDelayMsec = types.Int64Null()
 	}
+	HoldQueuesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	HoldQueuesKeys := [...]string{"direction"}
+	HoldQueuesItems := helpers.CollectListItemsXML(HoldQueuesParentScope.Raw, "hold-queue", HoldQueuesKeys[:])
 	for i := range data.HoldQueues {
-		keys := [...]string{"direction"}
-		keyValues := [...]string{data.HoldQueues[i].Direction.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/hold-queue").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		HoldQueuesKeyValues := [...]string{data.HoldQueues[i].Direction.ValueString()}
+		r := HoldQueuesItems[helpers.CompositeKey(HoldQueuesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "direction"); value.Exists() && !data.HoldQueues[i].Direction.IsNull() {
 			data.HoldQueues[i].Direction = types.StringValue(value.String())
 		} else {
@@ -2844,57 +2668,22 @@ func (data *InterfaceEthernet) updateFromBodyXML(ctx context.Context, res xmldot
 	} else {
 		data.RedundancyRiiId = types.Int64Null()
 	}
+	RedundancyGroupsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	RedundancyGroupsKeys := [...]string{"id"}
+	RedundancyGroupsItems := helpers.CollectListItemsXML(RedundancyGroupsParentScope.Raw, "redundancy/group", RedundancyGroupsKeys[:])
 	for i := range data.RedundancyGroups {
-		keys := [...]string{"id"}
-		keyValues := [...]string{strconv.FormatInt(data.RedundancyGroups[i].GroupId.ValueInt64(), 10)}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/redundancy/group").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		RedundancyGroupsKeyValues := [...]string{strconv.FormatInt(data.RedundancyGroups[i].GroupId.ValueInt64(), 10)}
+		r := RedundancyGroupsItems[helpers.CompositeKey(RedundancyGroupsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "id"); value.Exists() && !data.RedundancyGroups[i].GroupId.IsNull() {
 			data.RedundancyGroups[i].GroupId = types.Int64Value(value.Int())
 		} else {
 			data.RedundancyGroups[i].GroupId = types.Int64Null()
 		}
+		VirtualIpsKeys := [...]string{"ip-family"}
+		VirtualIpsItems := helpers.CollectListItemsXML(r.Raw, "virtual-ip", VirtualIpsKeys[:])
 		for ci := range data.RedundancyGroups[i].VirtualIps {
-			keys := [...]string{"ip-family"}
-			keyValues := [...]string{data.RedundancyGroups[i].VirtualIps[ci].IpFamily.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "virtual-ip").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			VirtualIpsKeyValues := [...]string{data.RedundancyGroups[i].VirtualIps[ci].IpFamily.ValueString()}
+			cr := VirtualIpsItems[helpers.CompositeKey(VirtualIpsKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "ip-family"); value.Exists() && !data.RedundancyGroups[i].VirtualIps[ci].IpFamily.IsNull() {
 				data.RedundancyGroups[i].VirtualIps[ci].IpFamily = types.StringValue(value.String())
 			} else {

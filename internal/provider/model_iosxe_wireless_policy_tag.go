@@ -108,6 +108,7 @@ func (data WirelessPolicyTag) addToBodyXML(ctx context.Context, config WirelessP
 		body = helpers.SetFromXPath(body, data.getXPath()+"/description", data.Description.ValueString())
 	}
 	if len(data.WlanPolicies) > 0 {
+		WlanPoliciesFragments := make([]string, 0, len(data.WlanPolicies))
 		for _, item := range data.WlanPolicies {
 			cBody := netconf.Body{}
 			if !item.WlanProfileName.IsNull() && !item.WlanProfileName.IsUnknown() {
@@ -116,8 +117,9 @@ func (data WirelessPolicyTag) addToBodyXML(ctx context.Context, config WirelessP
 			if !item.PolicyProfileName.IsNull() && !item.PolicyProfileName.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "policy-profile-name", item.PolicyProfileName.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/wlan-policies/wlan-policy", cBody.Res())
+			WlanPoliciesFragments = append(WlanPoliciesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/wlan-policies/wlan-policy", WlanPoliciesFragments)
 	}
 	return body
 }
@@ -137,29 +139,12 @@ func (data *WirelessPolicyTag) updateFromBodyXML(ctx context.Context, res xmldot
 	} else {
 		data.Description = types.StringNull()
 	}
+	WlanPoliciesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	WlanPoliciesKeys := [...]string{"wlan-profile-name"}
+	WlanPoliciesItems := helpers.CollectListItemsXML(WlanPoliciesParentScope.Raw, "wlan-policies/wlan-policy", WlanPoliciesKeys[:])
 	for i := range data.WlanPolicies {
-		keys := [...]string{"wlan-profile-name"}
-		keyValues := [...]string{data.WlanPolicies[i].WlanProfileName.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/wlan-policies/wlan-policy").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		WlanPoliciesKeyValues := [...]string{data.WlanPolicies[i].WlanProfileName.ValueString()}
+		r := WlanPoliciesItems[helpers.CompositeKey(WlanPoliciesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "wlan-profile-name"); value.Exists() && !data.WlanPolicies[i].WlanProfileName.IsNull() {
 			data.WlanPolicies[i].WlanProfileName = types.StringValue(value.String())
 		} else {

@@ -226,13 +226,15 @@ func (data WirelessRFProfile) addToBodyXML(ctx context.Context, config WirelessR
 		body = helpers.SetFromXPath(body, data.getXPath()+"/band-select-age-out-suppression", strconv.FormatInt(data.BandSelectExpireSuppression.ValueInt64(), 10))
 	}
 	if len(data.DcaAllowedChannels) > 0 {
+		DcaAllowedChannelsFragments := make([]string, 0, len(data.DcaAllowedChannels))
 		for _, item := range data.DcaAllowedChannels {
 			cBody := netconf.Body{}
 			if !item.Channel.IsNull() && !item.Channel.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "channel", strconv.FormatInt(item.Channel.ValueInt64(), 10))
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/rf-dca-allowed-channels/rf-dca-allowed-channel", cBody.Res())
+			DcaAllowedChannelsFragments = append(DcaAllowedChannelsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/rf-dca-allowed-channels/rf-dca-allowed-channel", DcaAllowedChannelsFragments)
 	}
 	if !data.CoverageDataRssiThreshold.IsNull() && !data.CoverageDataRssiThreshold.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/coverage-data-packet-rssi-threshold", strconv.FormatInt(data.CoverageDataRssiThreshold.ValueInt64(), 10))
@@ -385,29 +387,12 @@ func (data *WirelessRFProfile) updateFromBodyXML(ctx context.Context, res xmldot
 	} else {
 		data.BandSelectExpireSuppression = types.Int64Null()
 	}
+	DcaAllowedChannelsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	DcaAllowedChannelsKeys := [...]string{"channel"}
+	DcaAllowedChannelsItems := helpers.CollectListItemsXML(DcaAllowedChannelsParentScope.Raw, "rf-dca-allowed-channels/rf-dca-allowed-channel", DcaAllowedChannelsKeys[:])
 	for i := range data.DcaAllowedChannels {
-		keys := [...]string{"channel"}
-		keyValues := [...]string{strconv.FormatInt(data.DcaAllowedChannels[i].Channel.ValueInt64(), 10)}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/rf-dca-allowed-channels/rf-dca-allowed-channel").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		DcaAllowedChannelsKeyValues := [...]string{strconv.FormatInt(data.DcaAllowedChannels[i].Channel.ValueInt64(), 10)}
+		r := DcaAllowedChannelsItems[helpers.CompositeKey(DcaAllowedChannelsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "channel"); value.Exists() && !data.DcaAllowedChannels[i].Channel.IsNull() {
 			data.DcaAllowedChannels[i].Channel = types.Int64Value(value.Int())
 		} else {

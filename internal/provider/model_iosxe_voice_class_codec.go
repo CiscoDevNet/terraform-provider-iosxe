@@ -105,6 +105,7 @@ func (data VoiceClassCodec) addToBodyXML(ctx context.Context, config VoiceClassC
 		body = helpers.SetFromXPath(body, data.getXPath()+"/codec-tag", strconv.FormatInt(data.Tag.ValueInt64(), 10))
 	}
 	if len(data.Preferences) > 0 {
+		PreferencesFragments := make([]string, 0, len(data.Preferences))
 		for _, item := range data.Preferences {
 			cBody := netconf.Body{}
 			if !item.Preference.IsNull() && !item.Preference.IsUnknown() {
@@ -113,8 +114,9 @@ func (data VoiceClassCodec) addToBodyXML(ctx context.Context, config VoiceClassC
 			if !item.Codec.IsNull() && !item.Codec.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "codec-type", item.Codec.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/codec/preference", cBody.Res())
+			PreferencesFragments = append(PreferencesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/codec/preference", PreferencesFragments)
 	}
 	return body
 }
@@ -129,29 +131,12 @@ func (data *VoiceClassCodec) updateFromBodyXML(ctx context.Context, res xmldot.R
 	} else {
 		data.Tag = types.Int64Null()
 	}
+	PreferencesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	PreferencesKeys := [...]string{"preference-tag"}
+	PreferencesItems := helpers.CollectListItemsXML(PreferencesParentScope.Raw, "codec/preference", PreferencesKeys[:])
 	for i := range data.Preferences {
-		keys := [...]string{"preference-tag"}
-		keyValues := [...]string{strconv.FormatInt(data.Preferences[i].Preference.ValueInt64(), 10)}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/codec/preference").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		PreferencesKeyValues := [...]string{strconv.FormatInt(data.Preferences[i].Preference.ValueInt64(), 10)}
+		r := PreferencesItems[helpers.CompositeKey(PreferencesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "preference-tag"); value.Exists() && !data.Preferences[i].Preference.IsNull() {
 			data.Preferences[i].Preference = types.Int64Value(value.Int())
 		} else {

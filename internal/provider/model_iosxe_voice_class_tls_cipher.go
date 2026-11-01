@@ -105,6 +105,7 @@ func (data VoiceClassTLSCipher) addToBodyXML(ctx context.Context, config VoiceCl
 		body = helpers.SetFromXPath(body, data.getXPath()+"/id", strconv.FormatInt(data.Tag.ValueInt64(), 10))
 	}
 	if len(data.Ciphers) > 0 {
+		CiphersFragments := make([]string, 0, len(data.Ciphers))
 		for _, item := range data.Ciphers {
 			cBody := netconf.Body{}
 			if !item.Preference.IsNull() && !item.Preference.IsUnknown() {
@@ -113,8 +114,9 @@ func (data VoiceClassTLSCipher) addToBodyXML(ctx context.Context, config VoiceCl
 			if !item.CipherSuite.IsNull() && !item.CipherSuite.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "type", item.CipherSuite.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/cipher", cBody.Res())
+			CiphersFragments = append(CiphersFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/cipher", CiphersFragments)
 	}
 	return body
 }
@@ -129,29 +131,12 @@ func (data *VoiceClassTLSCipher) updateFromBodyXML(ctx context.Context, res xmld
 	} else {
 		data.Tag = types.Int64Null()
 	}
+	CiphersParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	CiphersKeys := [...]string{"preference"}
+	CiphersItems := helpers.CollectListItemsXML(CiphersParentScope.Raw, "cipher", CiphersKeys[:])
 	for i := range data.Ciphers {
-		keys := [...]string{"preference"}
-		keyValues := [...]string{strconv.FormatInt(data.Ciphers[i].Preference.ValueInt64(), 10)}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/cipher").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		CiphersKeyValues := [...]string{strconv.FormatInt(data.Ciphers[i].Preference.ValueInt64(), 10)}
+		r := CiphersItems[helpers.CompositeKey(CiphersKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "preference"); value.Exists() && !data.Ciphers[i].Preference.IsNull() {
 			data.Ciphers[i].Preference = types.Int64Value(value.Int())
 		} else {

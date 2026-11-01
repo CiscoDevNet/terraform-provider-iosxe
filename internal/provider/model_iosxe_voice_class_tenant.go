@@ -623,6 +623,7 @@ func (data VoiceClassTenant) addToBodyXML(ctx context.Context, config VoiceClass
 		body = helpers.SetFromXPath(body, data.getXPath()+"/authentication/auth-with-realm/realm", data.AuthenticationRealm.ValueString())
 	}
 	if len(data.CredentialsNumbers) > 0 {
+		CredentialsNumbersFragments := make([]string, 0, len(data.CredentialsNumbers))
 		for _, item := range data.CredentialsNumbers {
 			var configItem VoiceClassTenantCredentialsNumbers
 			for _, ci := range config.CredentialsNumbers {
@@ -652,8 +653,9 @@ func (data VoiceClassTenant) addToBodyXML(ctx context.Context, config VoiceClass
 			if !item.Realm.IsNull() && !item.Realm.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "realm", item.Realm.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/credentials/number-list", cBody.Res())
+			CredentialsNumbersFragments = append(CredentialsNumbersFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/credentials/number-list", CredentialsNumbersFragments)
 	}
 	if !data.RegistrarPrimary.IsNull() && !data.RegistrarPrimary.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/registrar/primary-registrar/registrar-config", data.RegistrarPrimary.ValueString())
@@ -1180,29 +1182,12 @@ func (data *VoiceClassTenant) updateFromBodyXML(ctx context.Context, res xmldot.
 	} else {
 		data.AuthenticationRealm = types.StringNull()
 	}
+	CredentialsNumbersParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	CredentialsNumbersKeys := [...]string{"number"}
+	CredentialsNumbersItems := helpers.CollectListItemsXML(CredentialsNumbersParentScope.Raw, "credentials/number-list", CredentialsNumbersKeys[:])
 	for i := range data.CredentialsNumbers {
-		keys := [...]string{"number"}
-		keyValues := [...]string{data.CredentialsNumbers[i].Number.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/credentials/number-list").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		CredentialsNumbersKeyValues := [...]string{data.CredentialsNumbers[i].Number.ValueString()}
+		r := CredentialsNumbersItems[helpers.CompositeKey(CredentialsNumbersKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "number"); value.Exists() && !data.CredentialsNumbers[i].Number.IsNull() {
 			data.CredentialsNumbers[i].Number = types.StringValue(value.String())
 		} else {
