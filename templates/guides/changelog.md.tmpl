@@ -9,6 +9,7 @@ description: |-
 
 ## Unreleased
 
+- Bump `go-netconf` dependency to v0.7.0 and `xmldot` to v0.6.0. NETCONF replies with lists longer than 1000 elements are no longer truncated, the document size limit rises from 10 MB to 100 MB, and a reply or edit-config that exceeds a limit now fails with an error instead of silently returning or sending incomplete data. `scrapligo` is back on v1.4.3, which fixes the intermittent connection errors on the first operation of a new NETCONF session that led to the v0.6.2 downgrade
 - Add `iosxe_eap_profile` resource and data source for `eap profile` (description, allowed EAP methods and PKI trustpoint). `method_fast` maps to `method/fast-config`, not the obsolete `method/fast` leaf
 - Add `iosxe_parameter_map_webauth_global` resource and data source for the global web authentication parameter map (`parameter-map type webauth global`) and its `virtual-ip ipv4` / `virtual-ip ipv6` addresses. Configuring it converts the device to IBNS 2.0 session management, which cannot be undone from the CLI
 - Add `iosxe_voice_dspfarm_profile` resource and data source for `dspfarm profile`. Destroying it always removes the whole profile, because the mandatory `type` cannot be removed on its own.
