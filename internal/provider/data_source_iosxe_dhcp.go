@@ -136,6 +136,70 @@ func (d *DHCPDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 					},
 				},
 			},
+			"excluded_addresses": schema.ListNestedAttribute{
+				MarkdownDescription: "Exclude a single address from DHCP assignment",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"address": schema.StringAttribute{
+							MarkdownDescription: "Excluded IPv4 address",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"excluded_address_ranges": schema.ListNestedAttribute{
+				MarkdownDescription: "Exclude an address range from DHCP assignment",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"low_address": schema.StringAttribute{
+							MarkdownDescription: "First IPv4 address of the excluded range",
+							Computed:            true,
+						},
+						"high_address": schema.StringAttribute{
+							MarkdownDescription: "Last IPv4 address of the excluded range",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"excluded_addresses_vrf": schema.ListNestedAttribute{
+				MarkdownDescription: "Exclude a single address in a VRF from DHCP assignment",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"vrf": schema.StringAttribute{
+							MarkdownDescription: "VRF name for excluded address range",
+							Computed:            true,
+						},
+						"address": schema.StringAttribute{
+							MarkdownDescription: "Excluded IPv4 address",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"excluded_address_ranges_vrf": schema.ListNestedAttribute{
+				MarkdownDescription: "Exclude an address range in a VRF from DHCP assignment",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"vrf": schema.StringAttribute{
+							MarkdownDescription: "VRF name for excluded address range",
+							Computed:            true,
+						},
+						"low_address": schema.StringAttribute{
+							MarkdownDescription: "First IPv4 address of the excluded range",
+							Computed:            true,
+						},
+						"high_address": schema.StringAttribute{
+							MarkdownDescription: "Last IPv4 address of the excluded range",
+							Computed:            true,
+						},
+					},
+				},
+			},
 			"pools": schema.ListNestedAttribute{
 				MarkdownDescription: "Configure DHCP address pools",
 				Computed:            true,
@@ -190,11 +254,19 @@ func (d *DHCPDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 							},
 						},
 						"host_number": schema.StringAttribute{
-							MarkdownDescription: "Client IP address",
+							MarkdownDescription: "Client IP address for a manual binding. IOS XE refuses an address that is still bound to another pool, so swapping addresses between two pools must be done in two applies.",
 							Computed:            true,
 						},
 						"host_mask": schema.StringAttribute{
 							MarkdownDescription: "Network mask",
+							Computed:            true,
+						},
+						"client_identifier": schema.StringAttribute{
+							MarkdownDescription: "Client identifier for a manual binding, dotted-hexadecimal string (e.g. `0100.0c9f.f001.01`). Use with `host_number` and `host_mask`. Mutually exclusive with `hardware_address` and network pools.",
+							Computed:            true,
+						},
+						"hardware_address": schema.StringAttribute{
+							MarkdownDescription: "Client hardware address for a manual binding, dotted-hexadecimal string (e.g. `000c.9ff0.0101`). Use with `host_number` and `host_mask`. Mutually exclusive with `client_identifier` and network pools.",
 							Computed:            true,
 						},
 						"default_routers": schema.ListAttribute{

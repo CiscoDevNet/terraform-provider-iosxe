@@ -48,6 +48,9 @@ func TestAccIosxeDHCP(t *testing.T) {
 	if os.Getenv("IOSXE1715") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_dhcp.test", "snooping_vlans.0.vlan_id", "3"))
 	}
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_dhcp.test", "excluded_addresses.0.address", "10.1.1.1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_dhcp.test", "excluded_address_ranges.0.low_address", "10.1.1.2"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_dhcp.test", "excluded_address_ranges.0.high_address", "10.1.1.10"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_dhcp.test", "pools.0.name", "POOL1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_dhcp.test", "pools.0.domain_name", "example.com"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_dhcp.test", "pools.0.bootfile", "boot.cfg"))
@@ -160,6 +163,13 @@ func testAccIosxeDHCPConfig_all() string {
 		config += `		vlan_id = 3` + "\n"
 		config += `	}]` + "\n"
 	}
+	config += `	excluded_addresses = [{` + "\n"
+	config += `		address = "10.1.1.1"` + "\n"
+	config += `	}]` + "\n"
+	config += `	excluded_address_ranges = [{` + "\n"
+	config += `		low_address = "10.1.1.2"` + "\n"
+	config += `		high_address = "10.1.1.10"` + "\n"
+	config += `	}]` + "\n"
 	config += `	pools = [{` + "\n"
 	config += `		name = "POOL1"` + "\n"
 	config += `		domain_name = "example.com"` + "\n"

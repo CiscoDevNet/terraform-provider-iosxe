@@ -21,6 +21,17 @@ resource "iosxe_dhcp" "example" {
   snooping                                    = true
   snooping_information_option                 = true
   snooping_information_option_allow_untrusted = true
+  excluded_addresses = [
+    {
+      address = "10.1.1.1"
+    }
+  ]
+  excluded_address_ranges = [
+    {
+      low_address  = "10.1.1.2"
+      high_address = "10.1.1.10"
+    }
+  ]
   pools = [
     {
       name            = "POOL1"
@@ -52,6 +63,10 @@ resource "iosxe_dhcp" "example" {
 - `compatibility_suboption_link_selection` (String) - Choices: `cisco`, `standard`
 - `compatibility_suboption_server_override` (String) - Choices: `cisco`, `standard`
 - `device` (String) A device name from the provider configuration.
+- `excluded_address_ranges` (Attributes List) Exclude an address range from DHCP assignment (see [below for nested schema](#nestedatt--excluded_address_ranges))
+- `excluded_address_ranges_vrf` (Attributes List) Exclude an address range in a VRF from DHCP assignment (see [below for nested schema](#nestedatt--excluded_address_ranges_vrf))
+- `excluded_addresses` (Attributes List) Exclude a single address from DHCP assignment (see [below for nested schema](#nestedatt--excluded_addresses))
+- `excluded_addresses_vrf` (Attributes List) Exclude a single address in a VRF from DHCP assignment (see [below for nested schema](#nestedatt--excluded_addresses_vrf))
 - `ipv6_pools` (Attributes List) Configure IPv6 DHCP pool (see [below for nested schema](#nestedatt--ipv6_pools))
 - `pools` (Attributes List) Configure DHCP address pools (see [below for nested schema](#nestedatt--pools))
 - `relay_bootp_ignore` (Boolean) Configure this DHCP relay to ignore to BOOTP requests.
@@ -69,6 +84,42 @@ resource "iosxe_dhcp" "example" {
 ### Read-Only
 
 - `id` (String) The path of the object.
+
+<a id="nestedatt--excluded_address_ranges"></a>
+### Nested Schema for `excluded_address_ranges`
+
+Required:
+
+- `high_address` (String) Last IPv4 address of the excluded range
+- `low_address` (String) First IPv4 address of the excluded range
+
+
+<a id="nestedatt--excluded_address_ranges_vrf"></a>
+### Nested Schema for `excluded_address_ranges_vrf`
+
+Required:
+
+- `high_address` (String) Last IPv4 address of the excluded range
+- `low_address` (String) First IPv4 address of the excluded range
+- `vrf` (String) VRF name for excluded address range
+
+
+<a id="nestedatt--excluded_addresses"></a>
+### Nested Schema for `excluded_addresses`
+
+Required:
+
+- `address` (String) Excluded IPv4 address
+
+
+<a id="nestedatt--excluded_addresses_vrf"></a>
+### Nested Schema for `excluded_addresses_vrf`
+
+Required:
+
+- `address` (String) Excluded IPv4 address
+- `vrf` (String) VRF name for excluded address range
+
 
 <a id="nestedatt--ipv6_pools"></a>
 ### Nested Schema for `ipv6_pools`
@@ -177,12 +228,14 @@ Required:
 Optional:
 
 - `bootfile` (String) Boot file name
+- `client_identifier` (String) Client identifier for a manual binding, dotted-hexadecimal string (e.g. `0100.0c9f.f001.01`). Use with `host_number` and `host_mask`. Mutually exclusive with `hardware_address` and network pools.
 - `client_name` (String) Client name
 - `default_routers` (List of String) Default routers
 - `dns_servers` (List of String) DNS servers
 - `domain_name` (String) Domain name
+- `hardware_address` (String) Client hardware address for a manual binding, dotted-hexadecimal string (e.g. `000c.9ff0.0101`). Use with `host_number` and `host_mask`. Mutually exclusive with `client_identifier` and network pools.
 - `host_mask` (String) Network mask
-- `host_number` (String) Client IP address
+- `host_number` (String) Client IP address for a manual binding. IOS XE refuses an address that is still bound to another pool, so swapping addresses between two pools must be done in two applies.
 - `lease_days` (Number) Lease days
   - Range: `0`-`365`
 - `lease_hours` (Number) Lease hours

@@ -37,29 +37,49 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin types
 type DHCP struct {
-	Device                                          types.String              `tfsdk:"device"`
-	Id                                              types.String              `tfsdk:"id"`
-	CompatibilitySuboptionLinkSelection             types.String              `tfsdk:"compatibility_suboption_link_selection"`
-	CompatibilitySuboptionServerOverride            types.String              `tfsdk:"compatibility_suboption_server_override"`
-	RelayInformationTrustAll                        types.Bool                `tfsdk:"relay_information_trust_all"`
-	RelayInformationOptionDefault                   types.Bool                `tfsdk:"relay_information_option_default"`
-	RelayInformationOptionVpn                       types.Bool                `tfsdk:"relay_information_option_vpn"`
-	RelayBootpIgnore                                types.Bool                `tfsdk:"relay_bootp_ignore"`
-	Snooping                                        types.Bool                `tfsdk:"snooping"`
-	SnoopingInformationOption                       types.Bool                `tfsdk:"snooping_information_option"`
-	SnoopingInformationOptionAllowUntrusted         types.Bool                `tfsdk:"snooping_information_option_allow_untrusted"`
-	SnoopingInformationOptionFormatRemoteIdString   types.String              `tfsdk:"snooping_information_option_format_remote_id_string"`
-	SnoopingInformationOptionFormatRemoteIdHostname types.Bool                `tfsdk:"snooping_information_option_format_remote_id_hostname"`
-	SnoopingVlansLegacy                             []DHCPSnoopingVlansLegacy `tfsdk:"snooping_vlans_legacy"`
-	SnoopingVlans                                   []DHCPSnoopingVlans       `tfsdk:"snooping_vlans"`
-	Pools                                           []DHCPPools               `tfsdk:"pools"`
-	Ipv6Pools                                       []DHCPIpv6Pools           `tfsdk:"ipv6_pools"`
+	Device                                          types.String                   `tfsdk:"device"`
+	Id                                              types.String                   `tfsdk:"id"`
+	CompatibilitySuboptionLinkSelection             types.String                   `tfsdk:"compatibility_suboption_link_selection"`
+	CompatibilitySuboptionServerOverride            types.String                   `tfsdk:"compatibility_suboption_server_override"`
+	RelayInformationTrustAll                        types.Bool                     `tfsdk:"relay_information_trust_all"`
+	RelayInformationOptionDefault                   types.Bool                     `tfsdk:"relay_information_option_default"`
+	RelayInformationOptionVpn                       types.Bool                     `tfsdk:"relay_information_option_vpn"`
+	RelayBootpIgnore                                types.Bool                     `tfsdk:"relay_bootp_ignore"`
+	Snooping                                        types.Bool                     `tfsdk:"snooping"`
+	SnoopingInformationOption                       types.Bool                     `tfsdk:"snooping_information_option"`
+	SnoopingInformationOptionAllowUntrusted         types.Bool                     `tfsdk:"snooping_information_option_allow_untrusted"`
+	SnoopingInformationOptionFormatRemoteIdString   types.String                   `tfsdk:"snooping_information_option_format_remote_id_string"`
+	SnoopingInformationOptionFormatRemoteIdHostname types.Bool                     `tfsdk:"snooping_information_option_format_remote_id_hostname"`
+	SnoopingVlansLegacy                             []DHCPSnoopingVlansLegacy      `tfsdk:"snooping_vlans_legacy"`
+	SnoopingVlans                                   []DHCPSnoopingVlans            `tfsdk:"snooping_vlans"`
+	ExcludedAddresses                               []DHCPExcludedAddresses        `tfsdk:"excluded_addresses"`
+	ExcludedAddressRanges                           []DHCPExcludedAddressRanges    `tfsdk:"excluded_address_ranges"`
+	ExcludedAddressesVrf                            []DHCPExcludedAddressesVrf     `tfsdk:"excluded_addresses_vrf"`
+	ExcludedAddressRangesVrf                        []DHCPExcludedAddressRangesVrf `tfsdk:"excluded_address_ranges_vrf"`
+	Pools                                           []DHCPPools                    `tfsdk:"pools"`
+	Ipv6Pools                                       []DHCPIpv6Pools                `tfsdk:"ipv6_pools"`
 }
 type DHCPSnoopingVlansLegacy struct {
 	VlanId types.String `tfsdk:"vlan_id"`
 }
 type DHCPSnoopingVlans struct {
 	VlanId types.Int64 `tfsdk:"vlan_id"`
+}
+type DHCPExcludedAddresses struct {
+	Address types.String `tfsdk:"address"`
+}
+type DHCPExcludedAddressRanges struct {
+	LowAddress  types.String `tfsdk:"low_address"`
+	HighAddress types.String `tfsdk:"high_address"`
+}
+type DHCPExcludedAddressesVrf struct {
+	Vrf     types.String `tfsdk:"vrf"`
+	Address types.String `tfsdk:"address"`
+}
+type DHCPExcludedAddressRangesVrf struct {
+	Vrf         types.String `tfsdk:"vrf"`
+	LowAddress  types.String `tfsdk:"low_address"`
+	HighAddress types.String `tfsdk:"high_address"`
 }
 type DHCPPools struct {
 	Name                   types.String                 `tfsdk:"name"`
@@ -72,6 +92,8 @@ type DHCPPools struct {
 	SecondaryNetworks      []DHCPPoolsSecondaryNetworks `tfsdk:"secondary_networks"`
 	HostNumber             types.String                 `tfsdk:"host_number"`
 	HostMask               types.String                 `tfsdk:"host_mask"`
+	ClientIdentifier       types.String                 `tfsdk:"client_identifier"`
+	HardwareAddress        types.String                 `tfsdk:"hardware_address"`
 	DefaultRouters         types.List                   `tfsdk:"default_routers"`
 	DnsServers             types.List                   `tfsdk:"dns_servers"`
 	NextServers            types.List                   `tfsdk:"next_servers"`
@@ -147,29 +169,49 @@ type DHCPIpv6PoolsVendorSpecificsSuboptions struct {
 }
 
 type DHCPData struct {
-	Device                                          types.String                  `tfsdk:"device"`
-	Id                                              types.String                  `tfsdk:"id"`
-	CompatibilitySuboptionLinkSelection             types.String                  `tfsdk:"compatibility_suboption_link_selection"`
-	CompatibilitySuboptionServerOverride            types.String                  `tfsdk:"compatibility_suboption_server_override"`
-	RelayInformationTrustAll                        types.Bool                    `tfsdk:"relay_information_trust_all"`
-	RelayInformationOptionDefault                   types.Bool                    `tfsdk:"relay_information_option_default"`
-	RelayInformationOptionVpn                       types.Bool                    `tfsdk:"relay_information_option_vpn"`
-	RelayBootpIgnore                                types.Bool                    `tfsdk:"relay_bootp_ignore"`
-	Snooping                                        types.Bool                    `tfsdk:"snooping"`
-	SnoopingInformationOption                       types.Bool                    `tfsdk:"snooping_information_option"`
-	SnoopingInformationOptionAllowUntrusted         types.Bool                    `tfsdk:"snooping_information_option_allow_untrusted"`
-	SnoopingInformationOptionFormatRemoteIdString   types.String                  `tfsdk:"snooping_information_option_format_remote_id_string"`
-	SnoopingInformationOptionFormatRemoteIdHostname types.Bool                    `tfsdk:"snooping_information_option_format_remote_id_hostname"`
-	SnoopingVlansLegacy                             []DHCPSnoopingVlansLegacyData `tfsdk:"snooping_vlans_legacy"`
-	SnoopingVlans                                   []DHCPSnoopingVlansData       `tfsdk:"snooping_vlans"`
-	Pools                                           []DHCPPoolsData               `tfsdk:"pools"`
-	Ipv6Pools                                       []DHCPIpv6PoolsData           `tfsdk:"ipv6_pools"`
+	Device                                          types.String                       `tfsdk:"device"`
+	Id                                              types.String                       `tfsdk:"id"`
+	CompatibilitySuboptionLinkSelection             types.String                       `tfsdk:"compatibility_suboption_link_selection"`
+	CompatibilitySuboptionServerOverride            types.String                       `tfsdk:"compatibility_suboption_server_override"`
+	RelayInformationTrustAll                        types.Bool                         `tfsdk:"relay_information_trust_all"`
+	RelayInformationOptionDefault                   types.Bool                         `tfsdk:"relay_information_option_default"`
+	RelayInformationOptionVpn                       types.Bool                         `tfsdk:"relay_information_option_vpn"`
+	RelayBootpIgnore                                types.Bool                         `tfsdk:"relay_bootp_ignore"`
+	Snooping                                        types.Bool                         `tfsdk:"snooping"`
+	SnoopingInformationOption                       types.Bool                         `tfsdk:"snooping_information_option"`
+	SnoopingInformationOptionAllowUntrusted         types.Bool                         `tfsdk:"snooping_information_option_allow_untrusted"`
+	SnoopingInformationOptionFormatRemoteIdString   types.String                       `tfsdk:"snooping_information_option_format_remote_id_string"`
+	SnoopingInformationOptionFormatRemoteIdHostname types.Bool                         `tfsdk:"snooping_information_option_format_remote_id_hostname"`
+	SnoopingVlansLegacy                             []DHCPSnoopingVlansLegacyData      `tfsdk:"snooping_vlans_legacy"`
+	SnoopingVlans                                   []DHCPSnoopingVlansData            `tfsdk:"snooping_vlans"`
+	ExcludedAddresses                               []DHCPExcludedAddressesData        `tfsdk:"excluded_addresses"`
+	ExcludedAddressRanges                           []DHCPExcludedAddressRangesData    `tfsdk:"excluded_address_ranges"`
+	ExcludedAddressesVrf                            []DHCPExcludedAddressesVrfData     `tfsdk:"excluded_addresses_vrf"`
+	ExcludedAddressRangesVrf                        []DHCPExcludedAddressRangesVrfData `tfsdk:"excluded_address_ranges_vrf"`
+	Pools                                           []DHCPPoolsData                    `tfsdk:"pools"`
+	Ipv6Pools                                       []DHCPIpv6PoolsData                `tfsdk:"ipv6_pools"`
 }
 type DHCPSnoopingVlansLegacyData struct {
 	VlanId types.String `tfsdk:"vlan_id"`
 }
 type DHCPSnoopingVlansData struct {
 	VlanId types.Int64 `tfsdk:"vlan_id"`
+}
+type DHCPExcludedAddressesData struct {
+	Address types.String `tfsdk:"address"`
+}
+type DHCPExcludedAddressRangesData struct {
+	LowAddress  types.String `tfsdk:"low_address"`
+	HighAddress types.String `tfsdk:"high_address"`
+}
+type DHCPExcludedAddressesVrfData struct {
+	Vrf     types.String `tfsdk:"vrf"`
+	Address types.String `tfsdk:"address"`
+}
+type DHCPExcludedAddressRangesVrfData struct {
+	Vrf         types.String `tfsdk:"vrf"`
+	LowAddress  types.String `tfsdk:"low_address"`
+	HighAddress types.String `tfsdk:"high_address"`
 }
 type DHCPPoolsData struct {
 	Name                   types.String                     `tfsdk:"name"`
@@ -182,6 +224,8 @@ type DHCPPoolsData struct {
 	SecondaryNetworks      []DHCPPoolsSecondaryNetworksData `tfsdk:"secondary_networks"`
 	HostNumber             types.String                     `tfsdk:"host_number"`
 	HostMask               types.String                     `tfsdk:"host_mask"`
+	ClientIdentifier       types.String                     `tfsdk:"client_identifier"`
+	HardwareAddress        types.String                     `tfsdk:"hardware_address"`
 	DefaultRouters         types.List                       `tfsdk:"default_routers"`
 	DnsServers             types.List                       `tfsdk:"dns_servers"`
 	NextServers            types.List                       `tfsdk:"next_servers"`
@@ -374,6 +418,54 @@ func (data DHCP) addToBodyXML(ctx context.Context, config DHCP, body netconf.Bod
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/vlan-v2", cBody.Res())
 		}
 	}
+	if len(data.ExcludedAddresses) > 0 {
+		for _, item := range data.ExcludedAddresses {
+			cBody := netconf.Body{}
+			if !item.Address.IsNull() && !item.Address.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "low-address", item.Address.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:excluded-address/low-address-list", cBody.Res())
+		}
+	}
+	if len(data.ExcludedAddressRanges) > 0 {
+		for _, item := range data.ExcludedAddressRanges {
+			cBody := netconf.Body{}
+			if !item.LowAddress.IsNull() && !item.LowAddress.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "low-address", item.LowAddress.ValueString())
+			}
+			if !item.HighAddress.IsNull() && !item.HighAddress.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "high-address", item.HighAddress.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:excluded-address/low-high-address-list", cBody.Res())
+		}
+	}
+	if len(data.ExcludedAddressesVrf) > 0 {
+		for _, item := range data.ExcludedAddressesVrf {
+			cBody := netconf.Body{}
+			if !item.Vrf.IsNull() && !item.Vrf.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "vrf", item.Vrf.ValueString())
+			}
+			if !item.Address.IsNull() && !item.Address.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "low-address", item.Address.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:excluded-address/vrf-low-address-list", cBody.Res())
+		}
+	}
+	if len(data.ExcludedAddressRangesVrf) > 0 {
+		for _, item := range data.ExcludedAddressRangesVrf {
+			cBody := netconf.Body{}
+			if !item.Vrf.IsNull() && !item.Vrf.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "vrf", item.Vrf.ValueString())
+			}
+			if !item.LowAddress.IsNull() && !item.LowAddress.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "low-address", item.LowAddress.ValueString())
+			}
+			if !item.HighAddress.IsNull() && !item.HighAddress.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "high-address", item.HighAddress.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:excluded-address/vrf-low-high-address-list", cBody.Res())
+		}
+	}
 	if len(data.Pools) > 0 {
 		for _, item := range data.Pools {
 			cBody := netconf.Body{}
@@ -422,6 +514,12 @@ func (data DHCP) addToBodyXML(ctx context.Context, config DHCP, body netconf.Bod
 			}
 			if !item.HostMask.IsNull() && !item.HostMask.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "host/mask", item.HostMask.ValueString())
+			}
+			if !item.ClientIdentifier.IsNull() && !item.ClientIdentifier.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "client-identifier", item.ClientIdentifier.ValueString())
+			}
+			if !item.HardwareAddress.IsNull() && !item.HardwareAddress.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "hardware-address/hardware-address-val", item.HardwareAddress.ValueString())
 			}
 			if !item.DefaultRouters.IsNull() && !item.DefaultRouters.IsUnknown() {
 				var values []string
@@ -820,6 +918,142 @@ func (data *DHCP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 			data.SnoopingVlans[i].VlanId = types.Int64Null()
 		}
 	}
+	for i := range data.ExcludedAddresses {
+		keys := [...]string{"low-address"}
+		keyValues := [...]string{data.ExcludedAddresses[i].Address.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:excluded-address/low-address-list").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "low-address"); value.Exists() && !data.ExcludedAddresses[i].Address.IsNull() {
+			data.ExcludedAddresses[i].Address = types.StringValue(value.String())
+		} else {
+			data.ExcludedAddresses[i].Address = types.StringNull()
+		}
+	}
+	for i := range data.ExcludedAddressRanges {
+		keys := [...]string{"low-address", "high-address"}
+		keyValues := [...]string{data.ExcludedAddressRanges[i].LowAddress.ValueString(), data.ExcludedAddressRanges[i].HighAddress.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:excluded-address/low-high-address-list").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "low-address"); value.Exists() && !data.ExcludedAddressRanges[i].LowAddress.IsNull() {
+			data.ExcludedAddressRanges[i].LowAddress = types.StringValue(value.String())
+		} else {
+			data.ExcludedAddressRanges[i].LowAddress = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "high-address"); value.Exists() && !data.ExcludedAddressRanges[i].HighAddress.IsNull() {
+			data.ExcludedAddressRanges[i].HighAddress = types.StringValue(value.String())
+		} else {
+			data.ExcludedAddressRanges[i].HighAddress = types.StringNull()
+		}
+	}
+	for i := range data.ExcludedAddressesVrf {
+		keys := [...]string{"vrf", "low-address"}
+		keyValues := [...]string{data.ExcludedAddressesVrf[i].Vrf.ValueString(), data.ExcludedAddressesVrf[i].Address.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:excluded-address/vrf-low-address-list").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "vrf"); value.Exists() && !data.ExcludedAddressesVrf[i].Vrf.IsNull() {
+			data.ExcludedAddressesVrf[i].Vrf = types.StringValue(value.String())
+		} else {
+			data.ExcludedAddressesVrf[i].Vrf = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "low-address"); value.Exists() && !data.ExcludedAddressesVrf[i].Address.IsNull() {
+			data.ExcludedAddressesVrf[i].Address = types.StringValue(value.String())
+		} else {
+			data.ExcludedAddressesVrf[i].Address = types.StringNull()
+		}
+	}
+	for i := range data.ExcludedAddressRangesVrf {
+		keys := [...]string{"vrf", "low-address", "high-address"}
+		keyValues := [...]string{data.ExcludedAddressRangesVrf[i].Vrf.ValueString(), data.ExcludedAddressRangesVrf[i].LowAddress.ValueString(), data.ExcludedAddressRangesVrf[i].HighAddress.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:excluded-address/vrf-low-high-address-list").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "vrf"); value.Exists() && !data.ExcludedAddressRangesVrf[i].Vrf.IsNull() {
+			data.ExcludedAddressRangesVrf[i].Vrf = types.StringValue(value.String())
+		} else {
+			data.ExcludedAddressRangesVrf[i].Vrf = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "low-address"); value.Exists() && !data.ExcludedAddressRangesVrf[i].LowAddress.IsNull() {
+			data.ExcludedAddressRangesVrf[i].LowAddress = types.StringValue(value.String())
+		} else {
+			data.ExcludedAddressRangesVrf[i].LowAddress = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "high-address"); value.Exists() && !data.ExcludedAddressRangesVrf[i].HighAddress.IsNull() {
+			data.ExcludedAddressRangesVrf[i].HighAddress = types.StringValue(value.String())
+		} else {
+			data.ExcludedAddressRangesVrf[i].HighAddress = types.StringNull()
+		}
+	}
 	for i := range data.Pools {
 		keys := [...]string{"id"}
 		keyValues := [...]string{data.Pools[i].Name.ValueString()}
@@ -930,6 +1164,16 @@ func (data *DHCP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 			data.Pools[i].HostMask = types.StringValue(value.String())
 		} else {
 			data.Pools[i].HostMask = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "client-identifier"); value.Exists() && !data.Pools[i].ClientIdentifier.IsNull() {
+			data.Pools[i].ClientIdentifier = types.StringValue(value.String())
+		} else {
+			data.Pools[i].ClientIdentifier = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "hardware-address/hardware-address-val"); value.Exists() && !data.Pools[i].HardwareAddress.IsNull() {
+			data.Pools[i].HardwareAddress = types.StringValue(value.String())
+		} else {
+			data.Pools[i].HardwareAddress = types.StringNull()
 		}
 		if value := helpers.GetFromXPath(r, "default-router/default-router-list"); value.Exists() && !data.Pools[i].DefaultRouters.IsNull() {
 			data.Pools[i].DefaultRouters = helpers.GetStringListXML(value.Array())
@@ -1397,6 +1641,62 @@ func (data *DHCP) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			return true
 		})
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:excluded-address/low-address-list"); value.Exists() {
+		data.ExcludedAddresses = make([]DHCPExcludedAddresses, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := DHCPExcludedAddresses{}
+			if cValue := helpers.GetFromXPath(v, "low-address"); cValue.Exists() {
+				item.Address = types.StringValue(cValue.String())
+			}
+			data.ExcludedAddresses = append(data.ExcludedAddresses, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:excluded-address/low-high-address-list"); value.Exists() {
+		data.ExcludedAddressRanges = make([]DHCPExcludedAddressRanges, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := DHCPExcludedAddressRanges{}
+			if cValue := helpers.GetFromXPath(v, "low-address"); cValue.Exists() {
+				item.LowAddress = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "high-address"); cValue.Exists() {
+				item.HighAddress = types.StringValue(cValue.String())
+			}
+			data.ExcludedAddressRanges = append(data.ExcludedAddressRanges, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:excluded-address/vrf-low-address-list"); value.Exists() {
+		data.ExcludedAddressesVrf = make([]DHCPExcludedAddressesVrf, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := DHCPExcludedAddressesVrf{}
+			if cValue := helpers.GetFromXPath(v, "vrf"); cValue.Exists() {
+				item.Vrf = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "low-address"); cValue.Exists() {
+				item.Address = types.StringValue(cValue.String())
+			}
+			data.ExcludedAddressesVrf = append(data.ExcludedAddressesVrf, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:excluded-address/vrf-low-high-address-list"); value.Exists() {
+		data.ExcludedAddressRangesVrf = make([]DHCPExcludedAddressRangesVrf, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := DHCPExcludedAddressRangesVrf{}
+			if cValue := helpers.GetFromXPath(v, "vrf"); cValue.Exists() {
+				item.Vrf = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "low-address"); cValue.Exists() {
+				item.LowAddress = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "high-address"); cValue.Exists() {
+				item.HighAddress = types.StringValue(cValue.String())
+			}
+			data.ExcludedAddressRangesVrf = append(data.ExcludedAddressRangesVrf, item)
+			return true
+		})
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool"); value.Exists() {
 		data.Pools = make([]DHCPPools, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
@@ -1446,6 +1746,12 @@ func (data *DHCP) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			}
 			if cValue := helpers.GetFromXPath(v, "host/mask"); cValue.Exists() {
 				item.HostMask = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "client-identifier"); cValue.Exists() {
+				item.ClientIdentifier = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "hardware-address/hardware-address-val"); cValue.Exists() {
+				item.HardwareAddress = types.StringValue(cValue.String())
 			}
 			if cValue := helpers.GetFromXPath(v, "default-router/default-router-list"); cValue.Exists() {
 				item.DefaultRouters = helpers.GetStringListXML(cValue.Array())
@@ -1736,6 +2042,62 @@ func (data *DHCPData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			return true
 		})
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:excluded-address/low-address-list"); value.Exists() {
+		data.ExcludedAddresses = make([]DHCPExcludedAddressesData, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := DHCPExcludedAddressesData{}
+			if cValue := helpers.GetFromXPath(v, "low-address"); cValue.Exists() {
+				item.Address = types.StringValue(cValue.String())
+			}
+			data.ExcludedAddresses = append(data.ExcludedAddresses, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:excluded-address/low-high-address-list"); value.Exists() {
+		data.ExcludedAddressRanges = make([]DHCPExcludedAddressRangesData, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := DHCPExcludedAddressRangesData{}
+			if cValue := helpers.GetFromXPath(v, "low-address"); cValue.Exists() {
+				item.LowAddress = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "high-address"); cValue.Exists() {
+				item.HighAddress = types.StringValue(cValue.String())
+			}
+			data.ExcludedAddressRanges = append(data.ExcludedAddressRanges, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:excluded-address/vrf-low-address-list"); value.Exists() {
+		data.ExcludedAddressesVrf = make([]DHCPExcludedAddressesVrfData, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := DHCPExcludedAddressesVrfData{}
+			if cValue := helpers.GetFromXPath(v, "vrf"); cValue.Exists() {
+				item.Vrf = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "low-address"); cValue.Exists() {
+				item.Address = types.StringValue(cValue.String())
+			}
+			data.ExcludedAddressesVrf = append(data.ExcludedAddressesVrf, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:excluded-address/vrf-low-high-address-list"); value.Exists() {
+		data.ExcludedAddressRangesVrf = make([]DHCPExcludedAddressRangesVrfData, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := DHCPExcludedAddressRangesVrfData{}
+			if cValue := helpers.GetFromXPath(v, "vrf"); cValue.Exists() {
+				item.Vrf = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "low-address"); cValue.Exists() {
+				item.LowAddress = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "high-address"); cValue.Exists() {
+				item.HighAddress = types.StringValue(cValue.String())
+			}
+			data.ExcludedAddressRangesVrf = append(data.ExcludedAddressRangesVrf, item)
+			return true
+		})
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool"); value.Exists() {
 		data.Pools = make([]DHCPPoolsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
@@ -1785,6 +2147,12 @@ func (data *DHCPData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			}
 			if cValue := helpers.GetFromXPath(v, "host/mask"); cValue.Exists() {
 				item.HostMask = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "client-identifier"); cValue.Exists() {
+				item.ClientIdentifier = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "hardware-address/hardware-address-val"); cValue.Exists() {
+				item.HardwareAddress = types.StringValue(cValue.String())
 			}
 			if cValue := helpers.GetFromXPath(v, "default-router/default-router-list"); cValue.Exists() {
 				item.DefaultRouters = helpers.GetStringListXML(cValue.Array())
@@ -2495,6 +2863,12 @@ func (data *DHCP) addDeletedItemsXML(ctx context.Context, state DHCP, body strin
 						}
 					}
 				}
+				if !state.Pools[i].HardwareAddress.IsNull() && data.Pools[j].HardwareAddress.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/hardware-address/hardware-address-val", predicates))
+				}
+				if !state.Pools[i].ClientIdentifier.IsNull() && data.Pools[j].ClientIdentifier.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/client-identifier", predicates))
+				}
 				if !state.Pools[i].HostMask.IsNull() && data.Pools[j].HostMask.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/host/mask", predicates))
 				}
@@ -2560,6 +2934,150 @@ func (data *DHCP) addDeletedItemsXML(ctx context.Context, state DHCP, body strin
 		}
 		if !found {
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v", predicates))
+		}
+	}
+	for i := range state.ExcludedAddressRangesVrf {
+		stateKeys := [...]string{"vrf", "low-address", "high-address"}
+		stateKeyValues := [...]string{state.ExcludedAddressRangesVrf[i].Vrf.ValueString(), state.ExcludedAddressRangesVrf[i].LowAddress.ValueString(), state.ExcludedAddressRangesVrf[i].HighAddress.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.ExcludedAddressRangesVrf[i].Vrf.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.ExcludedAddressRangesVrf[i].LowAddress.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.ExcludedAddressRangesVrf[i].HighAddress.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.ExcludedAddressRangesVrf {
+			found = true
+			if state.ExcludedAddressRangesVrf[i].Vrf.ValueString() != data.ExcludedAddressRangesVrf[j].Vrf.ValueString() {
+				found = false
+			}
+			if state.ExcludedAddressRangesVrf[i].LowAddress.ValueString() != data.ExcludedAddressRangesVrf[j].LowAddress.ValueString() {
+				found = false
+			}
+			if state.ExcludedAddressRangesVrf[i].HighAddress.ValueString() != data.ExcludedAddressRangesVrf[j].HighAddress.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:excluded-address/vrf-low-high-address-list%v", predicates))
+		}
+	}
+	for i := range state.ExcludedAddressesVrf {
+		stateKeys := [...]string{"vrf", "low-address"}
+		stateKeyValues := [...]string{state.ExcludedAddressesVrf[i].Vrf.ValueString(), state.ExcludedAddressesVrf[i].Address.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.ExcludedAddressesVrf[i].Vrf.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.ExcludedAddressesVrf[i].Address.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.ExcludedAddressesVrf {
+			found = true
+			if state.ExcludedAddressesVrf[i].Vrf.ValueString() != data.ExcludedAddressesVrf[j].Vrf.ValueString() {
+				found = false
+			}
+			if state.ExcludedAddressesVrf[i].Address.ValueString() != data.ExcludedAddressesVrf[j].Address.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:excluded-address/vrf-low-address-list%v", predicates))
+		}
+	}
+	for i := range state.ExcludedAddressRanges {
+		stateKeys := [...]string{"low-address", "high-address"}
+		stateKeyValues := [...]string{state.ExcludedAddressRanges[i].LowAddress.ValueString(), state.ExcludedAddressRanges[i].HighAddress.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.ExcludedAddressRanges[i].LowAddress.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.ExcludedAddressRanges[i].HighAddress.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.ExcludedAddressRanges {
+			found = true
+			if state.ExcludedAddressRanges[i].LowAddress.ValueString() != data.ExcludedAddressRanges[j].LowAddress.ValueString() {
+				found = false
+			}
+			if state.ExcludedAddressRanges[i].HighAddress.ValueString() != data.ExcludedAddressRanges[j].HighAddress.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:excluded-address/low-high-address-list%v", predicates))
+		}
+	}
+	for i := range state.ExcludedAddresses {
+		stateKeys := [...]string{"low-address"}
+		stateKeyValues := [...]string{state.ExcludedAddresses[i].Address.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.ExcludedAddresses[i].Address.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.ExcludedAddresses {
+			found = true
+			if state.ExcludedAddresses[i].Address.ValueString() != data.ExcludedAddresses[j].Address.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:excluded-address/low-address-list%v", predicates))
 		}
 	}
 	for i := range state.SnoopingVlans {
@@ -2685,6 +3203,46 @@ func (data *DHCP) addDeletePathsXML(ctx context.Context, body string) string {
 		}
 
 		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v", predicates))
+	}
+	for i := range data.ExcludedAddressRangesVrf {
+		keys := [...]string{"vrf", "low-address", "high-address"}
+		keyValues := [...]string{data.ExcludedAddressRangesVrf[i].Vrf.ValueString(), data.ExcludedAddressRangesVrf[i].LowAddress.ValueString(), data.ExcludedAddressRangesVrf[i].HighAddress.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:excluded-address/vrf-low-high-address-list%v", predicates))
+	}
+	for i := range data.ExcludedAddressesVrf {
+		keys := [...]string{"vrf", "low-address"}
+		keyValues := [...]string{data.ExcludedAddressesVrf[i].Vrf.ValueString(), data.ExcludedAddressesVrf[i].Address.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:excluded-address/vrf-low-address-list%v", predicates))
+	}
+	for i := range data.ExcludedAddressRanges {
+		keys := [...]string{"low-address", "high-address"}
+		keyValues := [...]string{data.ExcludedAddressRanges[i].LowAddress.ValueString(), data.ExcludedAddressRanges[i].HighAddress.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:excluded-address/low-high-address-list%v", predicates))
+	}
+	for i := range data.ExcludedAddresses {
+		keys := [...]string{"low-address"}
+		keyValues := [...]string{data.ExcludedAddresses[i].Address.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:excluded-address/low-address-list%v", predicates))
 	}
 	for i := range data.SnoopingVlans {
 		keys := [...]string{"id"}

@@ -1,3 +1,9 @@
+## Unreleased
+
+- Add `client_identifier` and `hardware_address` attributes to `pools` in `iosxe_dhcp` resource and data source, enabling manual bindings (`host` + `client-identifier` / `hardware-address`) for DHCP reservations
+- Validate that `client_identifier` and `hardware_address` are not both set on an `iosxe_dhcp` pool. The device only keeps one of them, which caused a permanent diff
+- Add `excluded_addresses`, `excluded_address_ranges`, `excluded_addresses_vrf` and `excluded_address_ranges_vrf` attributes to `iosxe_dhcp` resource and data source for `ip dhcp excluded-address`
+
 ## 1.2.0
 
 - Bump `go-netconf` dependency to v0.7.0 and `xmldot` to v0.6.0. NETCONF replies with lists longer than 1000 elements are no longer truncated, the document size limit rises from 10 MB to 100 MB, and a reply or edit-config that exceeds a limit now fails with an error instead of silently returning or sending incomplete data. `scrapligo` is back on v1.4.3, which fixes the intermittent connection errors on the first operation of a new NETCONF session that led to the v0.6.2 downgrade
