@@ -160,6 +160,88 @@ func (r *DHCPResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 					},
 				},
 			},
+			"excluded_addresses": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Exclude a single address from DHCP assignment").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"address": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Excluded IPv4 address").String,
+							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+							},
+						},
+					},
+				},
+			},
+			"excluded_address_ranges": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Exclude an address range from DHCP assignment").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"low_address": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("First IPv4 address of the excluded range").String,
+							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+							},
+						},
+						"high_address": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Last IPv4 address of the excluded range").String,
+							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+							},
+						},
+					},
+				},
+			},
+			"excluded_addresses_vrf": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Exclude a single address in a VRF from DHCP assignment").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"vrf": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("VRF name for excluded address range").String,
+							Required:            true,
+						},
+						"address": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Excluded IPv4 address").String,
+							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+							},
+						},
+					},
+				},
+			},
+			"excluded_address_ranges_vrf": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Exclude an address range in a VRF from DHCP assignment").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"vrf": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("VRF name for excluded address range").String,
+							Required:            true,
+						},
+						"low_address": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("First IPv4 address of the excluded range").String,
+							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+							},
+						},
+						"high_address": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Last IPv4 address of the excluded range").String,
+							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+							},
+						},
+					},
+				},
+			},
 			"pools": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Configure DHCP address pools").String,
 				Optional:            true,
@@ -228,7 +310,7 @@ func (r *DHCPResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 							},
 						},
 						"host_number": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Client IP address").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Client IP address for a manual binding. IOS XE refuses an address that is still bound to another pool, so swapping addresses between two pools must be done in two applies.").String,
 							Optional:            true,
 							Validators: []validator.String{
 								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
@@ -239,6 +321,20 @@ func (r *DHCPResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 							Optional:            true,
 							Validators: []validator.String{
 								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+							},
+						},
+						"client_identifier": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Client identifier for a manual binding, dotted-hexadecimal string (e.g. `0100.0c9f.f001.01`). Use with `host_number` and `host_mask`. Mutually exclusive with `hardware_address` and network pools.").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`([0-9a-fA-F]{4}(.[0-9a-fA-F]{4})*((.[0-9a-fA-F]{2})|(.[0-9a-fA-F]{4})))?`), ""),
+							},
+						},
+						"hardware_address": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Client hardware address for a manual binding, dotted-hexadecimal string (e.g. `000c.9ff0.0101`). Use with `host_number` and `host_mask`. Mutually exclusive with `client_identifier` and network pools.").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`[0-9a-fA-F]+\.[0-9a-fA-F]+\.[0-9a-fA-F]+`), ""),
 							},
 						},
 						"default_routers": schema.ListAttribute{

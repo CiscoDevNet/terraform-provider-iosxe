@@ -6,6 +6,17 @@ resource "iosxe_dhcp" "example" {
   snooping                                    = true
   snooping_information_option                 = true
   snooping_information_option_allow_untrusted = true
+  excluded_addresses = [
+    {
+      address = "10.1.1.1"
+    }
+  ]
+  excluded_address_ranges = [
+    {
+      low_address  = "10.1.1.2"
+      high_address = "10.1.1.10"
+    }
+  ]
   pools = [
     {
       name            = "POOL1"

@@ -74,6 +74,64 @@ attributes:
         tf_name: vlan_id
         id: true
         example: 3
+  - yang_name: ip/dhcp/Cisco-IOS-XE-dhcp:excluded-address/low-address-list
+    xpath: ip/dhcp/Cisco-IOS-XE-dhcp:excluded-address/low-address-list
+    tf_name: excluded_addresses
+    description: Exclude a single address from DHCP assignment
+    type: List
+    attributes:
+      - yang_name: low-address
+        tf_name: address
+        description: Excluded IPv4 address
+        id: true
+        example: 10.1.1.1
+  - yang_name: ip/dhcp/Cisco-IOS-XE-dhcp:excluded-address/low-high-address-list
+    xpath: ip/dhcp/Cisco-IOS-XE-dhcp:excluded-address/low-high-address-list
+    tf_name: excluded_address_ranges
+    description: Exclude an address range from DHCP assignment
+    type: List
+    attributes:
+      - yang_name: low-address
+        description: First IPv4 address of the excluded range
+        id: true
+        example: 10.1.1.2
+      - yang_name: high-address
+        description: Last IPv4 address of the excluded range
+        id: true
+        example: 10.1.1.10
+  - yang_name: ip/dhcp/Cisco-IOS-XE-dhcp:excluded-address/vrf-low-address-list
+    xpath: ip/dhcp/Cisco-IOS-XE-dhcp:excluded-address/vrf-low-address-list
+    tf_name: excluded_addresses_vrf
+    description: Exclude a single address in a VRF from DHCP assignment
+    type: List
+    exclude_test: true
+    attributes:
+      - yang_name: vrf
+        id: true
+        example: VRF1
+      - yang_name: low-address
+        tf_name: address
+        description: Excluded IPv4 address
+        id: true
+        example: 10.2.1.1
+  - yang_name: ip/dhcp/Cisco-IOS-XE-dhcp:excluded-address/vrf-low-high-address-list
+    xpath: ip/dhcp/Cisco-IOS-XE-dhcp:excluded-address/vrf-low-high-address-list
+    tf_name: excluded_address_ranges_vrf
+    description: Exclude an address range in a VRF from DHCP assignment
+    type: List
+    exclude_test: true
+    attributes:
+      - yang_name: vrf
+        id: true
+        example: VRF1
+      - yang_name: low-address
+        description: First IPv4 address of the excluded range
+        id: true
+        example: 10.2.1.2
+      - yang_name: high-address
+        description: Last IPv4 address of the excluded range
+        id: true
+        example: 10.2.1.10
   - yang_name: ip/dhcp/Cisco-IOS-XE-dhcp:pool
     xpath: ip/dhcp/Cisco-IOS-XE-dhcp:pool
     tf_name: pools
@@ -122,13 +180,25 @@ attributes:
             default_value: true
       - yang_name: host/number
         tf_name: host_number
-        description: Client IP address
+        description: Client IP address for a manual binding. IOS XE refuses an address that is still bound to another pool, so swapping addresses between two pools must be done in two applies.
         example: 10.1.1.100
         exclude_test: true
       - yang_name: host/mask
         tf_name: host_mask
         description: Network mask
         example: 255.255.255.0
+        exclude_test: true
+      - yang_name: hardware-addr-cient-id-choice/client-identifier/client-identifier
+        xpath: client-identifier
+        tf_name: client_identifier
+        description: Client identifier for a manual binding, dotted-hexadecimal string (e.g. `0100.0c9f.f001.01`). Use with `host_number` and `host_mask`. Mutually exclusive with `hardware_address` and network pools.
+        example: 0100.0c9f.f001.01
+        exclude_test: true
+      - yang_name: hardware-addr-cient-id-choice/hardware-address/hardware-address/hardware-address-val
+        xpath: hardware-address/hardware-address-val
+        tf_name: hardware_address
+        description: Client hardware address for a manual binding, dotted-hexadecimal string (e.g. `000c.9ff0.0101`). Use with `host_number` and `host_mask`. Mutually exclusive with `client_identifier` and network pools.
+        example: 000c.9ff0.0101
         exclude_test: true
       - yang_name: default-router/default-router-list
         tf_name: default_routers
