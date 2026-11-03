@@ -187,6 +187,10 @@ resource "iosxe_system" "example" {
 - `ip_ssh_bulk_mode` (Boolean) Enable optimizations for bulk data transfer procedures
 - `ip_ssh_bulk_mode_window_size` (Number) Window-size value
   - Range: `131072`-`1073741824`
+- `ip_ssh_server_algorithm_authentication` (List of String) SSH server authentication algorithms
+- `ip_ssh_server_algorithm_encryption` (List of String) SSH server encryption algorithms
+- `ip_ssh_server_algorithm_kex` (List of String) SSH server key exchange algorithms
+- `ip_ssh_server_algorithm_mac` (List of String) SSH server MAC algorithms
 - `ip_ssh_source_interface_five_gigabit_ethernet` (String) Five GigabitEthernet
 - `ip_ssh_source_interface_forty_gigabit_ethernet` (String) Forty GigabitEthernet
 - `ip_ssh_source_interface_gigabit_ethernet` (String) GigabitEthernet IEEE 802.3z
