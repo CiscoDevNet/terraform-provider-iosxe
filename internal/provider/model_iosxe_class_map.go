@@ -196,13 +196,15 @@ func (data ClassMap) addToBodyXML(ctx context.Context, config ClassMap, body net
 		}
 	}
 	if len(data.MatchActivatedServiceTemplates) > 0 {
+		MatchActivatedServiceTemplatesFragments := make([]string, 0, len(data.MatchActivatedServiceTemplates))
 		for _, item := range data.MatchActivatedServiceTemplates {
 			cBody := netconf.Body{}
 			if !item.ServiceName.IsNull() && !item.ServiceName.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "service-name", item.ServiceName.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/match/activated-service-template", cBody.Res())
+			MatchActivatedServiceTemplatesFragments = append(MatchActivatedServiceTemplatesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/match/activated-service-template", MatchActivatedServiceTemplatesFragments)
 	}
 	if !data.MatchAuthorizingMethodPriorityGreaterThan.IsNull() && !data.MatchAuthorizingMethodPriorityGreaterThan.IsUnknown() {
 		var values []int
@@ -302,13 +304,15 @@ func (data ClassMap) addToBodyXML(ctx context.Context, config ClassMap, body net
 		}
 	}
 	if len(data.MatchProtocol) > 0 {
+		MatchProtocolFragments := make([]string, 0, len(data.MatchProtocol))
 		for _, item := range data.MatchProtocol {
 			cBody := netconf.Body{}
 			if !item.Protocols.IsNull() && !item.Protocols.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "protocols", item.Protocols.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/match/protocol/protocols-list", cBody.Res())
+			MatchProtocolFragments = append(MatchProtocolFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/match/protocol/protocols-list", MatchProtocolFragments)
 	}
 	if !data.MatchClassMap.IsNull() && !data.MatchClassMap.IsUnknown() {
 		var values []string
@@ -385,29 +389,12 @@ func (data *ClassMap) updateFromBodyXML(ctx context.Context, res xmldot.Result) 
 	} else {
 		data.MatchAuthorizationStatusUnauthorized = types.BoolNull()
 	}
+	MatchActivatedServiceTemplatesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	MatchActivatedServiceTemplatesKeys := [...]string{"service-name"}
+	MatchActivatedServiceTemplatesItems := helpers.CollectListItemsXML(MatchActivatedServiceTemplatesParentScope.Raw, "match/activated-service-template", MatchActivatedServiceTemplatesKeys[:])
 	for i := range data.MatchActivatedServiceTemplates {
-		keys := [...]string{"service-name"}
-		keyValues := [...]string{data.MatchActivatedServiceTemplates[i].ServiceName.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/activated-service-template").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		MatchActivatedServiceTemplatesKeyValues := [...]string{data.MatchActivatedServiceTemplates[i].ServiceName.ValueString()}
+		r := MatchActivatedServiceTemplatesItems[helpers.CompositeKey(MatchActivatedServiceTemplatesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "service-name"); value.Exists() && !data.MatchActivatedServiceTemplates[i].ServiceName.IsNull() {
 			data.MatchActivatedServiceTemplates[i].ServiceName = types.StringValue(value.String())
 		} else {
@@ -513,29 +500,12 @@ func (data *ClassMap) updateFromBodyXML(ctx context.Context, res xmldot.Result) 
 	} else {
 		data.MatchIpPrecedence = types.ListNull(types.StringType)
 	}
+	MatchProtocolParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	MatchProtocolKeys := [...]string{"protocols"}
+	MatchProtocolItems := helpers.CollectListItemsXML(MatchProtocolParentScope.Raw, "match/protocol/protocols-list", MatchProtocolKeys[:])
 	for i := range data.MatchProtocol {
-		keys := [...]string{"protocols"}
-		keyValues := [...]string{data.MatchProtocol[i].Protocols.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/protocol/protocols-list").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		MatchProtocolKeyValues := [...]string{data.MatchProtocol[i].Protocols.ValueString()}
+		r := MatchProtocolItems[helpers.CompositeKey(MatchProtocolKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "protocols"); value.Exists() && !data.MatchProtocol[i].Protocols.IsNull() {
 			data.MatchProtocol[i].Protocols = types.StringValue(value.String())
 		} else {

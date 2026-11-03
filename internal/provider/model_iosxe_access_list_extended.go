@@ -222,6 +222,7 @@ func (data AccessListExtended) addToBodyXML(ctx context.Context, config AccessLi
 		body = helpers.SetFromXPath(body, data.getXPath()+"/name", data.Name.ValueString())
 	}
 	if len(data.Entries) > 0 {
+		EntriesFragments := make([]string, 0, len(data.Entries))
 		for _, item := range data.Entries {
 			cBody := netconf.Body{}
 			if !item.Sequence.IsNull() && !item.Sequence.IsUnknown() {
@@ -455,8 +456,9 @@ func (data AccessListExtended) addToBodyXML(ctx context.Context, config AccessLi
 			if !item.IcmpMsgCode.IsNull() && !item.IcmpMsgCode.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "ace-rule/msg-code", strconv.FormatInt(item.IcmpMsgCode.ValueInt64(), 10))
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/access-list-seq-rule", cBody.Res())
+			EntriesFragments = append(EntriesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/access-list-seq-rule", EntriesFragments)
 	}
 	return body
 }
@@ -471,29 +473,12 @@ func (data *AccessListExtended) updateFromBodyXML(ctx context.Context, res xmldo
 	} else {
 		data.Name = types.StringNull()
 	}
+	EntriesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	EntriesKeys := [...]string{"sequence"}
+	EntriesItems := helpers.CollectListItemsXML(EntriesParentScope.Raw, "access-list-seq-rule", EntriesKeys[:])
 	for i := range data.Entries {
-		keys := [...]string{"sequence"}
-		keyValues := [...]string{strconv.FormatInt(data.Entries[i].Sequence.ValueInt64(), 10)}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/access-list-seq-rule").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		EntriesKeyValues := [...]string{strconv.FormatInt(data.Entries[i].Sequence.ValueInt64(), 10)}
+		r := EntriesItems[helpers.CompositeKey(EntriesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "sequence"); value.Exists() && !data.Entries[i].Sequence.IsNull() {
 			data.Entries[i].Sequence = types.Int64Value(value.Int())
 		} else {

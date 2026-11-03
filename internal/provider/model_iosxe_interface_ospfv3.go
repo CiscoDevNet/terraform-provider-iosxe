@@ -196,12 +196,14 @@ func (data InterfaceOSPFv3) addToBodyXML(ctx context.Context, config InterfaceOS
 		body = helpers.SetFromXPath(body, data.getXPath()+"/priority", strconv.FormatInt(data.Priority.ValueInt64(), 10))
 	}
 	if len(data.ProcessIds) > 0 {
+		ProcessIdsFragments := make([]string, 0, len(data.ProcessIds))
 		for _, item := range data.ProcessIds {
 			cBody := netconf.Body{}
 			if !item.Id.IsNull() && !item.Id.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "id", strconv.FormatInt(item.Id.ValueInt64(), 10))
 			}
 			if len(item.Ipv4Areas) > 0 {
+				Ipv4AreasFragments := make([]string, 0, len(item.Ipv4Areas))
 				for _, citem := range item.Ipv4Areas {
 					ccBody := netconf.Body{}
 					if !citem.Id.IsNull() && !citem.Id.IsUnknown() {
@@ -210,10 +212,12 @@ func (data InterfaceOSPFv3) addToBodyXML(ctx context.Context, config InterfaceOS
 					if !citem.Instance.IsNull() && !citem.Instance.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "instance", strconv.FormatInt(citem.Instance.ValueInt64(), 10))
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "ipv4/area", ccBody.Res())
+					Ipv4AreasFragments = append(Ipv4AreasFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "ipv4/area", Ipv4AreasFragments)
 			}
 			if len(item.Ipv6Areas) > 0 {
+				Ipv6AreasFragments := make([]string, 0, len(item.Ipv6Areas))
 				for _, citem := range item.Ipv6Areas {
 					ccBody := netconf.Body{}
 					if !citem.Id.IsNull() && !citem.Id.IsUnknown() {
@@ -222,11 +226,13 @@ func (data InterfaceOSPFv3) addToBodyXML(ctx context.Context, config InterfaceOS
 					if !citem.Instance.IsNull() && !citem.Instance.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "instance", strconv.FormatInt(citem.Instance.ValueInt64(), 10))
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "ipv6/area", ccBody.Res())
+					Ipv6AreasFragments = append(Ipv6AreasFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "ipv6/area", Ipv6AreasFragments)
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/process-id", cBody.Res())
+			ProcessIdsFragments = append(ProcessIdsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/process-id", ProcessIdsFragments)
 	}
 	return body
 }
@@ -310,57 +316,22 @@ func (data *InterfaceOSPFv3) updateFromBodyXML(ctx context.Context, res xmldot.R
 	} else {
 		data.Priority = types.Int64Null()
 	}
+	ProcessIdsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	ProcessIdsKeys := [...]string{"id"}
+	ProcessIdsItems := helpers.CollectListItemsXML(ProcessIdsParentScope.Raw, "process-id", ProcessIdsKeys[:])
 	for i := range data.ProcessIds {
-		keys := [...]string{"id"}
-		keyValues := [...]string{strconv.FormatInt(data.ProcessIds[i].Id.ValueInt64(), 10)}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/process-id").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		ProcessIdsKeyValues := [...]string{strconv.FormatInt(data.ProcessIds[i].Id.ValueInt64(), 10)}
+		r := ProcessIdsItems[helpers.CompositeKey(ProcessIdsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "id"); value.Exists() && !data.ProcessIds[i].Id.IsNull() {
 			data.ProcessIds[i].Id = types.Int64Value(value.Int())
 		} else {
 			data.ProcessIds[i].Id = types.Int64Null()
 		}
+		Ipv4AreasKeys := [...]string{"id"}
+		Ipv4AreasItems := helpers.CollectListItemsXML(r.Raw, "ipv4/area", Ipv4AreasKeys[:])
 		for ci := range data.ProcessIds[i].Ipv4Areas {
-			keys := [...]string{"id"}
-			keyValues := [...]string{data.ProcessIds[i].Ipv4Areas[ci].Id.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "ipv4/area").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			Ipv4AreasKeyValues := [...]string{data.ProcessIds[i].Ipv4Areas[ci].Id.ValueString()}
+			cr := Ipv4AreasItems[helpers.CompositeKey(Ipv4AreasKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "id"); value.Exists() && !data.ProcessIds[i].Ipv4Areas[ci].Id.IsNull() {
 				data.ProcessIds[i].Ipv4Areas[ci].Id = types.StringValue(value.String())
 			} else {
@@ -372,29 +343,11 @@ func (data *InterfaceOSPFv3) updateFromBodyXML(ctx context.Context, res xmldot.R
 				data.ProcessIds[i].Ipv4Areas[ci].Instance = types.Int64Null()
 			}
 		}
+		Ipv6AreasKeys := [...]string{"id"}
+		Ipv6AreasItems := helpers.CollectListItemsXML(r.Raw, "ipv6/area", Ipv6AreasKeys[:])
 		for ci := range data.ProcessIds[i].Ipv6Areas {
-			keys := [...]string{"id"}
-			keyValues := [...]string{data.ProcessIds[i].Ipv6Areas[ci].Id.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "ipv6/area").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			Ipv6AreasKeyValues := [...]string{data.ProcessIds[i].Ipv6Areas[ci].Id.ValueString()}
+			cr := Ipv6AreasItems[helpers.CompositeKey(Ipv6AreasKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "id"); value.Exists() && !data.ProcessIds[i].Ipv6Areas[ci].Id.IsNull() {
 				data.ProcessIds[i].Ipv6Areas[ci].Id = types.StringValue(value.String())
 			} else {

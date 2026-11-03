@@ -139,6 +139,7 @@ func (data LLDP) addToBodyXML(ctx context.Context, config LLDP, body netconf.Bod
 		}
 	}
 	if len(data.SystemNames) > 0 {
+		SystemNamesFragments := make([]string, 0, len(data.SystemNames))
 		for _, item := range data.SystemNames {
 			cBody := netconf.Body{}
 			if !item.SwitchId.IsNull() && !item.SwitchId.IsUnknown() {
@@ -147,8 +148,9 @@ func (data LLDP) addToBodyXML(ctx context.Context, config LLDP, body netconf.Bod
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/system-name", cBody.Res())
+			SystemNamesFragments = append(SystemNamesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/system-name", SystemNamesFragments)
 	}
 	return body
 }
@@ -192,29 +194,12 @@ func (data *LLDP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.Ipv6ManagementAddresses = types.ListNull(types.StringType)
 	}
+	SystemNamesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	SystemNamesKeys := [...]string{"switch-id"}
+	SystemNamesItems := helpers.CollectListItemsXML(SystemNamesParentScope.Raw, "system-name", SystemNamesKeys[:])
 	for i := range data.SystemNames {
-		keys := [...]string{"switch-id"}
-		keyValues := [...]string{strconv.FormatInt(data.SystemNames[i].SwitchId.ValueInt64(), 10)}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/system-name").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		SystemNamesKeyValues := [...]string{strconv.FormatInt(data.SystemNames[i].SwitchId.ValueInt64(), 10)}
+		r := SystemNamesItems[helpers.CompositeKey(SystemNamesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "switch-id"); value.Exists() && !data.SystemNames[i].SwitchId.IsNull() {
 			data.SystemNames[i].SwitchId = types.Int64Value(value.Int())
 		} else {
