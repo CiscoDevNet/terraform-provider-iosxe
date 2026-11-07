@@ -1,14 +1,19 @@
-# See GitHub's documentation for more information on this file:
-# https://docs.github.com/en/code-security/supply-chain-security/keeping-your-dependencies-updated-automatically/configuration-options-for-dependency-updates
+# Please see the documentation for all configuration options:
+# https://help.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
 version: 2
 updates:
   - package-ecosystem: 'github-actions'
     directory: '/'
     schedule:
       interval: 'daily'
-    ignore:
-      - dependency-name: 'mktcode/consecutive-workflow-action'
+    cooldown:
+      default-days: 3
+
   - package-ecosystem: 'gomod'
     directory: '/'
     schedule:
       interval: 'daily'
+    cooldown:
+      default-days: 3
+      exclude:
+        - 'github.com/netascode/*'
