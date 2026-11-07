@@ -308,6 +308,7 @@ func (data CryptoGDOI) addToBodyXML(ctx context.Context, config CryptoGDOI, body
 		}
 	}
 	if len(data.ServerLocalSaIpsec) > 0 {
+		ServerLocalSaIpsecFragments := make([]string, 0, len(data.ServerLocalSaIpsec))
 		for _, item := range data.ServerLocalSaIpsec {
 			cBody := netconf.Body{}
 			if !item.Sequence.IsNull() && !item.Sequence.IsUnknown() {
@@ -346,8 +347,9 @@ func (data CryptoGDOI) addToBodyXML(ctx context.Context, config CryptoGDOI, body
 					cBody = helpers.RemoveFromXPath(cBody, "tag/cts/sgt")
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/server/local/sa/ipsec", cBody.Res())
+			ServerLocalSaIpsecFragments = append(ServerLocalSaIpsecFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/server/local/sa/ipsec", ServerLocalSaIpsecFragments)
 	}
 	if !data.ClientBypassPolicy.IsNull() && !data.ClientBypassPolicy.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/client/bypass-policy-new", data.ClientBypassPolicy.ValueBool())
@@ -626,29 +628,12 @@ func (data *CryptoGDOI) updateFromBodyXML(ctx context.Context, res xmldot.Result
 	} else {
 		data.ServerLocalSaReceiveOnly = types.BoolNull()
 	}
+	ServerLocalSaIpsecParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	ServerLocalSaIpsecKeys := [...]string{"sequence"}
+	ServerLocalSaIpsecItems := helpers.CollectListItemsXML(ServerLocalSaIpsecParentScope.Raw, "server/local/sa/ipsec", ServerLocalSaIpsecKeys[:])
 	for i := range data.ServerLocalSaIpsec {
-		keys := [...]string{"sequence"}
-		keyValues := [...]string{strconv.FormatInt(data.ServerLocalSaIpsec[i].Sequence.ValueInt64(), 10)}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/server/local/sa/ipsec").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		ServerLocalSaIpsecKeyValues := [...]string{strconv.FormatInt(data.ServerLocalSaIpsec[i].Sequence.ValueInt64(), 10)}
+		r := ServerLocalSaIpsecItems[helpers.CompositeKey(ServerLocalSaIpsecKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "sequence"); value.Exists() && !data.ServerLocalSaIpsec[i].Sequence.IsNull() {
 			data.ServerLocalSaIpsec[i].Sequence = types.Int64Value(value.Int())
 		} else {

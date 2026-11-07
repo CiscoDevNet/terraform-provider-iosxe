@@ -113,13 +113,15 @@ func (data VoiceClassE164PatternMap) addToBodyXML(ctx context.Context, config Vo
 		body = helpers.SetFromXPath(body, data.getXPath()+"/url", data.Url.ValueString())
 	}
 	if len(data.Patterns) > 0 {
+		PatternsFragments := make([]string, 0, len(data.Patterns))
 		for _, item := range data.Patterns {
 			cBody := netconf.Body{}
 			if !item.Pattern.IsNull() && !item.Pattern.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "WORD", item.Pattern.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/e164", cBody.Res())
+			PatternsFragments = append(PatternsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/e164", PatternsFragments)
 	}
 	return body
 }
@@ -144,29 +146,12 @@ func (data *VoiceClassE164PatternMap) updateFromBodyXML(ctx context.Context, res
 	} else {
 		data.Url = types.StringNull()
 	}
+	PatternsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	PatternsKeys := [...]string{"WORD"}
+	PatternsItems := helpers.CollectListItemsXML(PatternsParentScope.Raw, "e164", PatternsKeys[:])
 	for i := range data.Patterns {
-		keys := [...]string{"WORD"}
-		keyValues := [...]string{data.Patterns[i].Pattern.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/e164").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		PatternsKeyValues := [...]string{data.Patterns[i].Pattern.ValueString()}
+		r := PatternsItems[helpers.CompositeKey(PatternsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "WORD"); value.Exists() && !data.Patterns[i].Pattern.IsNull() {
 			data.Patterns[i].Pattern = types.StringValue(value.String())
 		} else {

@@ -139,6 +139,7 @@ func (data SCCP) addToBodyXML(ctx context.Context, config SCCP, body netconf.Bod
 		body = helpers.SetFromXPath(body, data.getXPath()+"/sccp/ip/precedence", strconv.FormatInt(data.IpPrecedence.ValueInt64(), 10))
 	}
 	if len(data.CcmServers) > 0 {
+		CcmServersFragments := make([]string, 0, len(data.CcmServers))
 		for _, item := range data.CcmServers {
 			cBody := netconf.Body{}
 			if !item.Host.IsNull() && !item.Host.IsUnknown() {
@@ -150,10 +151,12 @@ func (data SCCP) addToBodyXML(ctx context.Context, config SCCP, body netconf.Bod
 			if !item.Version.IsNull() && !item.Version.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "version", item.Version.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/sccp/sccp-ccm-list/ccm", cBody.Res())
+			CcmServersFragments = append(CcmServersFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/sccp/sccp-ccm-list/ccm", CcmServersFragments)
 	}
 	if len(data.CcmGroups) > 0 {
+		CcmGroupsFragments := make([]string, 0, len(data.CcmGroups))
 		for _, item := range data.CcmGroups {
 			cBody := netconf.Body{}
 			if !item.GroupId.IsNull() && !item.GroupId.IsUnknown() {
@@ -163,6 +166,7 @@ func (data SCCP) addToBodyXML(ctx context.Context, config SCCP, body netconf.Bod
 				cBody = helpers.SetFromXPath(cBody, "description", item.Description.ValueString())
 			}
 			if len(item.AssociateCcm) > 0 {
+				AssociateCcmFragments := make([]string, 0, len(item.AssociateCcm))
 				for _, citem := range item.AssociateCcm {
 					ccBody := netconf.Body{}
 					if !citem.CcmId.IsNull() && !citem.CcmId.IsUnknown() {
@@ -171,10 +175,12 @@ func (data SCCP) addToBodyXML(ctx context.Context, config SCCP, body netconf.Bod
 					if !citem.Priority.IsNull() && !citem.Priority.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "priority", strconv.FormatInt(citem.Priority.ValueInt64(), 10))
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "associate/ccm", ccBody.Res())
+					AssociateCcmFragments = append(AssociateCcmFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "associate/ccm", AssociateCcmFragments)
 			}
 			if len(item.AssociateProfiles) > 0 {
+				AssociateProfilesFragments := make([]string, 0, len(item.AssociateProfiles))
 				for _, citem := range item.AssociateProfiles {
 					ccBody := netconf.Body{}
 					if !citem.ProfileId.IsNull() && !citem.ProfileId.IsUnknown() {
@@ -183,11 +189,13 @@ func (data SCCP) addToBodyXML(ctx context.Context, config SCCP, body netconf.Bod
 					if !citem.Register.IsNull() && !citem.Register.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "register", citem.Register.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "associate/profile", ccBody.Res())
+					AssociateProfilesFragments = append(AssociateProfilesFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "associate/profile", AssociateProfilesFragments)
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/sccp/sccp-ccm-group-list/ccm/group", cBody.Res())
+			CcmGroupsFragments = append(CcmGroupsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/sccp/sccp-ccm-group-list/ccm/group", CcmGroupsFragments)
 	}
 	return body
 }
@@ -207,29 +215,12 @@ func (data *SCCP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.IpPrecedence = types.Int64Null()
 	}
+	CcmServersParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	CcmServersKeys := [...]string{"host"}
+	CcmServersItems := helpers.CollectListItemsXML(CcmServersParentScope.Raw, "sccp/sccp-ccm-list/ccm", CcmServersKeys[:])
 	for i := range data.CcmServers {
-		keys := [...]string{"host"}
-		keyValues := [...]string{data.CcmServers[i].Host.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/sccp/sccp-ccm-list/ccm").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		CcmServersKeyValues := [...]string{data.CcmServers[i].Host.ValueString()}
+		r := CcmServersItems[helpers.CompositeKey(CcmServersKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "host"); value.Exists() && !data.CcmServers[i].Host.IsNull() {
 			data.CcmServers[i].Host = types.StringValue(value.String())
 		} else {
@@ -246,29 +237,12 @@ func (data *SCCP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 			data.CcmServers[i].Version = types.StringNull()
 		}
 	}
+	CcmGroupsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	CcmGroupsKeys := [...]string{"id"}
+	CcmGroupsItems := helpers.CollectListItemsXML(CcmGroupsParentScope.Raw, "sccp/sccp-ccm-group-list/ccm/group", CcmGroupsKeys[:])
 	for i := range data.CcmGroups {
-		keys := [...]string{"id"}
-		keyValues := [...]string{strconv.FormatInt(data.CcmGroups[i].GroupId.ValueInt64(), 10)}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/sccp/sccp-ccm-group-list/ccm/group").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		CcmGroupsKeyValues := [...]string{strconv.FormatInt(data.CcmGroups[i].GroupId.ValueInt64(), 10)}
+		r := CcmGroupsItems[helpers.CompositeKey(CcmGroupsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "id"); value.Exists() && !data.CcmGroups[i].GroupId.IsNull() {
 			data.CcmGroups[i].GroupId = types.Int64Value(value.Int())
 		} else {
@@ -279,29 +253,11 @@ func (data *SCCP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		} else {
 			data.CcmGroups[i].Description = types.StringNull()
 		}
+		AssociateCcmKeys := [...]string{"id"}
+		AssociateCcmItems := helpers.CollectListItemsXML(r.Raw, "associate/ccm", AssociateCcmKeys[:])
 		for ci := range data.CcmGroups[i].AssociateCcm {
-			keys := [...]string{"id"}
-			keyValues := [...]string{strconv.FormatInt(data.CcmGroups[i].AssociateCcm[ci].CcmId.ValueInt64(), 10)}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "associate/ccm").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			AssociateCcmKeyValues := [...]string{strconv.FormatInt(data.CcmGroups[i].AssociateCcm[ci].CcmId.ValueInt64(), 10)}
+			cr := AssociateCcmItems[helpers.CompositeKey(AssociateCcmKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "id"); value.Exists() && !data.CcmGroups[i].AssociateCcm[ci].CcmId.IsNull() {
 				data.CcmGroups[i].AssociateCcm[ci].CcmId = types.Int64Value(value.Int())
 			} else {
@@ -313,29 +269,11 @@ func (data *SCCP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 				data.CcmGroups[i].AssociateCcm[ci].Priority = types.Int64Null()
 			}
 		}
+		AssociateProfilesKeys := [...]string{"id"}
+		AssociateProfilesItems := helpers.CollectListItemsXML(r.Raw, "associate/profile", AssociateProfilesKeys[:])
 		for ci := range data.CcmGroups[i].AssociateProfiles {
-			keys := [...]string{"id"}
-			keyValues := [...]string{strconv.FormatInt(data.CcmGroups[i].AssociateProfiles[ci].ProfileId.ValueInt64(), 10)}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "associate/profile").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			AssociateProfilesKeyValues := [...]string{strconv.FormatInt(data.CcmGroups[i].AssociateProfiles[ci].ProfileId.ValueInt64(), 10)}
+			cr := AssociateProfilesItems[helpers.CompositeKey(AssociateProfilesKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "id"); value.Exists() && !data.CcmGroups[i].AssociateProfiles[ci].ProfileId.IsNull() {
 				data.CcmGroups[i].AssociateProfiles[ci].ProfileId = types.Int64Value(value.Int())
 			} else {

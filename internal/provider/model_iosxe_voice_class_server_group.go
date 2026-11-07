@@ -136,6 +136,7 @@ func (data VoiceClassServerGroup) addToBodyXML(ctx context.Context, config Voice
 		}
 	}
 	if len(data.Ipv4) > 0 {
+		Ipv4Fragments := make([]string, 0, len(data.Ipv4))
 		for _, item := range data.Ipv4 {
 			cBody := netconf.Body{}
 			if !item.Address.IsNull() && !item.Address.IsUnknown() {
@@ -144,10 +145,12 @@ func (data VoiceClassServerGroup) addToBodyXML(ctx context.Context, config Voice
 			if !item.Preference.IsNull() && !item.Preference.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "preference", strconv.FormatInt(item.Preference.ValueInt64(), 10))
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ipv4-address/ipv4", cBody.Res())
+			Ipv4Fragments = append(Ipv4Fragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/ipv4-address/ipv4", Ipv4Fragments)
 	}
 	if len(data.Ipv4WithPort) > 0 {
+		Ipv4WithPortFragments := make([]string, 0, len(data.Ipv4WithPort))
 		for _, item := range data.Ipv4WithPort {
 			cBody := netconf.Body{}
 			if !item.Address.IsNull() && !item.Address.IsUnknown() {
@@ -159,8 +162,9 @@ func (data VoiceClassServerGroup) addToBodyXML(ctx context.Context, config Voice
 			if !item.Preference.IsNull() && !item.Preference.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "preference", strconv.FormatInt(item.Preference.ValueInt64(), 10))
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ipv4-address/ipv4-addr-port/ipv4", cBody.Res())
+			Ipv4WithPortFragments = append(Ipv4WithPortFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/ipv4-address/ipv4-addr-port/ipv4", Ipv4WithPortFragments)
 	}
 	return body
 }
@@ -196,29 +200,12 @@ func (data *VoiceClassServerGroup) updateFromBodyXML(ctx context.Context, res xm
 	} else {
 		data.HuntSchemeRoundRobin = types.BoolNull()
 	}
+	Ipv4ParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	Ipv4Keys := [...]string{"address"}
+	Ipv4Items := helpers.CollectListItemsXML(Ipv4ParentScope.Raw, "ipv4-address/ipv4", Ipv4Keys[:])
 	for i := range data.Ipv4 {
-		keys := [...]string{"address"}
-		keyValues := [...]string{data.Ipv4[i].Address.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv4-address/ipv4").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		Ipv4KeyValues := [...]string{data.Ipv4[i].Address.ValueString()}
+		r := Ipv4Items[helpers.CompositeKey(Ipv4KeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "address"); value.Exists() && !data.Ipv4[i].Address.IsNull() {
 			data.Ipv4[i].Address = types.StringValue(value.String())
 		} else {
@@ -230,29 +217,12 @@ func (data *VoiceClassServerGroup) updateFromBodyXML(ctx context.Context, res xm
 			data.Ipv4[i].Preference = types.Int64Null()
 		}
 	}
+	Ipv4WithPortParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	Ipv4WithPortKeys := [...]string{"address", "port"}
+	Ipv4WithPortItems := helpers.CollectListItemsXML(Ipv4WithPortParentScope.Raw, "ipv4-address/ipv4-addr-port/ipv4", Ipv4WithPortKeys[:])
 	for i := range data.Ipv4WithPort {
-		keys := [...]string{"address", "port"}
-		keyValues := [...]string{data.Ipv4WithPort[i].Address.ValueString(), strconv.FormatInt(data.Ipv4WithPort[i].Port.ValueInt64(), 10)}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv4-address/ipv4-addr-port/ipv4").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		Ipv4WithPortKeyValues := [...]string{data.Ipv4WithPort[i].Address.ValueString(), strconv.FormatInt(data.Ipv4WithPort[i].Port.ValueInt64(), 10)}
+		r := Ipv4WithPortItems[helpers.CompositeKey(Ipv4WithPortKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "address"); value.Exists() && !data.Ipv4WithPort[i].Address.IsNull() {
 			data.Ipv4WithPort[i].Address = types.StringValue(value.String())
 		} else {
