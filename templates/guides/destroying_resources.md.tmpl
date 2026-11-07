@@ -1,5 +1,5 @@
 ---
-subcategory: "Guides"
+subcategory: ""
 page_title: "Destroying Resources"
 description: |-
     Destroying Resources

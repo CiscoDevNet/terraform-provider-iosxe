@@ -1,5 +1,5 @@
 ---
-subcategory: "Guides"
+subcategory: ""
 page_title: "Importing Resources"
 description: |-
     Importing Resources

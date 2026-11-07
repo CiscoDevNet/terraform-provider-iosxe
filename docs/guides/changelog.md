@@ -1,11 +1,16 @@
 ---
-subcategory: "Guides"
+subcategory: ""
 page_title: "Changelog"
 description: |-
     Changelog
 ---
 
 # Changelog
+
+## Unreleased
+
+- Fix documentation links to work on both the Terraform and OpenTofu registries
+- Improve documentation page titles and descriptions
 
 ## 1.2.0
 

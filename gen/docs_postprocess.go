@@ -24,6 +24,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 
 	"gopkg.in/yaml.v3"
@@ -77,6 +78,42 @@ func pluralize(s string) string {
 	}
 	words[len(words)-1] = last
 	return strings.Join(words, " ")
+}
+
+// pageTitleRegex matches the default tfplugindocs page title, e.g. "iosxe_bgp Resource - terraform-provider-iosxe"
+var pageTitleRegex = regexp.MustCompile(`(?m)^page_title: "(\S+) (Resource|Data Source|Action) - terraform-provider-iosxe"$`)
+
+// cleanFrontmatter shortens the page title to e.g. "iosxe_bgp (Resource)" and reduces the
+// description to its first line. Both are only used for page titles and meta descriptions,
+// e.g. by the OpenTofu registry.
+func cleanFrontmatter(s string) string {
+	s = pageTitleRegex.ReplaceAllString(s, `page_title: "$1 ($2)"`)
+
+	lines := strings.Split(s, "\n")
+	out := make([]string, 0, len(lines))
+	inDescription, keptLine := false, false
+	for i, line := range lines {
+		if i > 0 && line == "---" {
+			// end of frontmatter, keep the rest unchanged
+			out = append(out, lines[i:]...)
+			break
+		}
+		if line == "description: |-" {
+			inDescription, keptLine = true, false
+			out = append(out, line)
+			continue
+		}
+		if inDescription && strings.HasPrefix(line, "  ") {
+			if !keptLine {
+				out = append(out, line)
+				keptLine = true
+			}
+			continue
+		}
+		inDescription = false
+		out = append(out, line)
+	}
+	return strings.Join(out, "\n")
 }
 
 func main() {
@@ -144,6 +181,18 @@ func main() {
 			s := string(content)
 			s = strings.ReplaceAll(s, `subcategory: ""`, `subcategory: "General"`)
 			os.WriteFile(filename, []byte(s), 0644)
+		}
+	}
+
+	// Clean up frontmatter of all docs
+	for _, path := range generalDocPaths {
+		files, _ := filepath.Glob(filepath.Join(path, "*.md"))
+		for _, filename := range files {
+			content, err := os.ReadFile(filename)
+			if err != nil {
+				log.Fatalf("Error reading file: %v", err)
+			}
+			os.WriteFile(filename, []byte(cleanFrontmatter(string(content))), 0644)
 		}
 	}
 }

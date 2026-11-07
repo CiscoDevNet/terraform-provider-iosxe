@@ -1,5 +1,5 @@
 ---
-subcategory: "Guides"
+subcategory: ""
 page_title: "Bulk Resources"
 description: |-
     Bulk Resources
