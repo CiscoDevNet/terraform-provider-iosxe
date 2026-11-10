@@ -315,6 +315,7 @@ func (data InterfaceVLAN) addToBodyXML(ctx context.Context, config InterfaceVLAN
 		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/access-group/out/acl/acl-name", data.IpAccessGroupOut.ValueString())
 	}
 	if len(data.HelperAddresses) > 0 {
+		HelperAddressesFragments := make([]string, 0, len(data.HelperAddresses))
 		for _, item := range data.HelperAddresses {
 			cBody := netconf.Body{}
 			if !item.Address.IsNull() && !item.Address.IsUnknown() {
@@ -330,8 +331,9 @@ func (data InterfaceVLAN) addToBodyXML(ctx context.Context, config InterfaceVLAN
 			if !item.Vrf.IsNull() && !item.Vrf.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "vrf", item.Vrf.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ip/helper-address", cBody.Res())
+			HelperAddressesFragments = append(HelperAddressesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/ip/helper-address", HelperAddressesFragments)
 	}
 	if !data.BfdTemplate.IsNull() && !data.BfdTemplate.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:template", data.BfdTemplate.ValueString())
@@ -386,6 +388,7 @@ func (data InterfaceVLAN) addToBodyXML(ctx context.Context, config InterfaceVLAN
 		}
 	}
 	if len(data.Ipv6DhcpServers) > 0 {
+		Ipv6DhcpServersFragments := make([]string, 0, len(data.Ipv6DhcpServers))
 		for _, item := range data.Ipv6DhcpServers {
 			cBody := netconf.Body{}
 			if !item.PoolName.IsNull() && !item.PoolName.IsUnknown() {
@@ -408,8 +411,9 @@ func (data InterfaceVLAN) addToBodyXML(ctx context.Context, config InterfaceVLAN
 			if !item.Preference.IsNull() && !item.Preference.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "preference", strconv.FormatInt(item.Preference.ValueInt64(), 10))
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:server", cBody.Res())
+			Ipv6DhcpServersFragments = append(Ipv6DhcpServersFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:server", Ipv6DhcpServersFragments)
 	}
 	if !data.Ipv6DhcpClientPd.IsNull() && !data.Ipv6DhcpClientPd.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:client/pd/pd-prefix/prefix-name", data.Ipv6DhcpClientPd.ValueString())
@@ -422,6 +426,7 @@ func (data InterfaceVLAN) addToBodyXML(ctx context.Context, config InterfaceVLAN
 		}
 	}
 	if len(data.Ipv6DhcpRelayDestinations) > 0 {
+		Ipv6DhcpRelayDestinationsFragments := make([]string, 0, len(data.Ipv6DhcpRelayDestinations))
 		for _, item := range data.Ipv6DhcpRelayDestinations {
 			cBody := netconf.Body{}
 			if !item.Address.IsNull() && !item.Address.IsUnknown() {
@@ -434,8 +439,9 @@ func (data InterfaceVLAN) addToBodyXML(ctx context.Context, config InterfaceVLAN
 					cBody = helpers.AppendFromXPath(cBody, "interface-list", v)
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:relay/destination/address", cBody.Res())
+			Ipv6DhcpRelayDestinationsFragments = append(Ipv6DhcpRelayDestinationsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:relay/destination/address", Ipv6DhcpRelayDestinationsFragments)
 	}
 	if !data.Ipv6DhcpRelayTrust.IsNull() && !data.Ipv6DhcpRelayTrust.IsUnknown() {
 		if data.Ipv6DhcpRelayTrust.ValueBool() {
@@ -452,6 +458,7 @@ func (data InterfaceVLAN) addToBodyXML(ctx context.Context, config InterfaceVLAN
 		}
 	}
 	if len(data.Ipv6LinkLocalAddresses) > 0 {
+		Ipv6LinkLocalAddressesFragments := make([]string, 0, len(data.Ipv6LinkLocalAddresses))
 		for _, item := range data.Ipv6LinkLocalAddresses {
 			cBody := netconf.Body{}
 			if !item.Address.IsNull() && !item.Address.IsUnknown() {
@@ -464,10 +471,12 @@ func (data InterfaceVLAN) addToBodyXML(ctx context.Context, config InterfaceVLAN
 					cBody = helpers.RemoveFromXPath(cBody, "link-local")
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ipv6/address/link-local-address", cBody.Res())
+			Ipv6LinkLocalAddressesFragments = append(Ipv6LinkLocalAddressesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/ipv6/address/link-local-address", Ipv6LinkLocalAddressesFragments)
 	}
 	if len(data.Ipv6Addresses) > 0 {
+		Ipv6AddressesFragments := make([]string, 0, len(data.Ipv6Addresses))
 		for _, item := range data.Ipv6Addresses {
 			cBody := netconf.Body{}
 			if !item.Prefix.IsNull() && !item.Prefix.IsUnknown() {
@@ -480,8 +489,9 @@ func (data InterfaceVLAN) addToBodyXML(ctx context.Context, config InterfaceVLAN
 					cBody = helpers.RemoveFromXPath(cBody, "eui-64")
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ipv6/address/prefix-list", cBody.Res())
+			Ipv6AddressesFragments = append(Ipv6AddressesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/ipv6/address/prefix-list", Ipv6AddressesFragments)
 	}
 	if !data.LoadInterval.IsNull() && !data.LoadInterval.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/load-interval", strconv.FormatInt(data.LoadInterval.ValueInt64(), 10))
@@ -667,29 +677,12 @@ func (data *InterfaceVLAN) updateFromBodyXML(ctx context.Context, res xmldot.Res
 	} else {
 		data.IpAccessGroupOut = types.StringNull()
 	}
+	HelperAddressesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	HelperAddressesKeys := [...]string{"address"}
+	HelperAddressesItems := helpers.CollectListItemsXML(HelperAddressesParentScope.Raw, "ip/helper-address", HelperAddressesKeys[:])
 	for i := range data.HelperAddresses {
-		keys := [...]string{"address"}
-		keyValues := [...]string{data.HelperAddresses[i].Address.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/helper-address").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		HelperAddressesKeyValues := [...]string{data.HelperAddresses[i].Address.ValueString()}
+		r := HelperAddressesItems[helpers.CompositeKey(HelperAddressesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "address"); value.Exists() && !data.HelperAddresses[i].Address.IsNull() {
 			data.HelperAddresses[i].Address = types.StringValue(value.String())
 		} else {
@@ -790,29 +783,12 @@ func (data *InterfaceVLAN) updateFromBodyXML(ctx context.Context, res xmldot.Res
 	} else {
 		data.Ipv6AddressDhcp = types.BoolNull()
 	}
+	Ipv6DhcpServersParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	Ipv6DhcpServersKeys := [...]string{"word"}
+	Ipv6DhcpServersItems := helpers.CollectListItemsXML(Ipv6DhcpServersParentScope.Raw, "ipv6/dhcp/Cisco-IOS-XE-dhcp:server", Ipv6DhcpServersKeys[:])
 	for i := range data.Ipv6DhcpServers {
-		keys := [...]string{"word"}
-		keyValues := [...]string{data.Ipv6DhcpServers[i].PoolName.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:server").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		Ipv6DhcpServersKeyValues := [...]string{data.Ipv6DhcpServers[i].PoolName.ValueString()}
+		r := Ipv6DhcpServersItems[helpers.CompositeKey(Ipv6DhcpServersKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "word"); value.Exists() && !data.Ipv6DhcpServers[i].PoolName.IsNull() {
 			data.Ipv6DhcpServers[i].PoolName = types.StringValue(value.String())
 		} else {
@@ -856,29 +832,12 @@ func (data *InterfaceVLAN) updateFromBodyXML(ctx context.Context, res xmldot.Res
 	} else {
 		data.Ipv6DhcpClientPdRapidCommit = types.BoolNull()
 	}
+	Ipv6DhcpRelayDestinationsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	Ipv6DhcpRelayDestinationsKeys := [...]string{"ipv6-address"}
+	Ipv6DhcpRelayDestinationsItems := helpers.CollectListItemsXML(Ipv6DhcpRelayDestinationsParentScope.Raw, "ipv6/dhcp/Cisco-IOS-XE-dhcp:relay/destination/address", Ipv6DhcpRelayDestinationsKeys[:])
 	for i := range data.Ipv6DhcpRelayDestinations {
-		keys := [...]string{"ipv6-address"}
-		keyValues := [...]string{data.Ipv6DhcpRelayDestinations[i].Address.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:relay/destination/address").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		Ipv6DhcpRelayDestinationsKeyValues := [...]string{data.Ipv6DhcpRelayDestinations[i].Address.ValueString()}
+		r := Ipv6DhcpRelayDestinationsItems[helpers.CompositeKey(Ipv6DhcpRelayDestinationsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "ipv6-address"); value.Exists() && !data.Ipv6DhcpRelayDestinations[i].Address.IsNull() {
 			data.Ipv6DhcpRelayDestinations[i].Address = types.StringValue(value.String())
 		} else {
@@ -908,29 +867,12 @@ func (data *InterfaceVLAN) updateFromBodyXML(ctx context.Context, res xmldot.Res
 	} else {
 		data.Ipv6DhcpRelayOptionVpn = types.BoolNull()
 	}
+	Ipv6LinkLocalAddressesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	Ipv6LinkLocalAddressesKeys := [...]string{"address"}
+	Ipv6LinkLocalAddressesItems := helpers.CollectListItemsXML(Ipv6LinkLocalAddressesParentScope.Raw, "ipv6/address/link-local-address", Ipv6LinkLocalAddressesKeys[:])
 	for i := range data.Ipv6LinkLocalAddresses {
-		keys := [...]string{"address"}
-		keyValues := [...]string{data.Ipv6LinkLocalAddresses[i].Address.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/address/link-local-address").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		Ipv6LinkLocalAddressesKeyValues := [...]string{data.Ipv6LinkLocalAddresses[i].Address.ValueString()}
+		r := Ipv6LinkLocalAddressesItems[helpers.CompositeKey(Ipv6LinkLocalAddressesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "address"); value.Exists() && !data.Ipv6LinkLocalAddresses[i].Address.IsNull() {
 			data.Ipv6LinkLocalAddresses[i].Address = types.StringValue(value.String())
 		} else {
@@ -946,29 +888,12 @@ func (data *InterfaceVLAN) updateFromBodyXML(ctx context.Context, res xmldot.Res
 			data.Ipv6LinkLocalAddresses[i].LinkLocal = types.BoolNull()
 		}
 	}
+	Ipv6AddressesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	Ipv6AddressesKeys := [...]string{"prefix"}
+	Ipv6AddressesItems := helpers.CollectListItemsXML(Ipv6AddressesParentScope.Raw, "ipv6/address/prefix-list", Ipv6AddressesKeys[:])
 	for i := range data.Ipv6Addresses {
-		keys := [...]string{"prefix"}
-		keyValues := [...]string{data.Ipv6Addresses[i].Prefix.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/address/prefix-list").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		Ipv6AddressesKeyValues := [...]string{data.Ipv6Addresses[i].Prefix.ValueString()}
+		r := Ipv6AddressesItems[helpers.CompositeKey(Ipv6AddressesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "prefix"); value.Exists() && !data.Ipv6Addresses[i].Prefix.IsNull() {
 			data.Ipv6Addresses[i].Prefix = types.StringValue(value.String())
 		} else {
