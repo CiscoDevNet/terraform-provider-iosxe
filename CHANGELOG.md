@@ -1,5 +1,7 @@
 ## Unreleased
 
+- Add `iosxe_voice_service_voip` resource and data source for the global `voice service voip` CUBE/SBC block (mode border-element, allow-connections, address-hiding, media/rtcp, redirect ip2ip, gcid, emergency, HA redundancy-group, trusted IP address list, fax protocol, and the full `sip` sub-block: transport, early-offer, header/error/referto pass-through, asserted-id, srtp negotiate, local registrar, sip-profiles, etc.)
+- Add `iosxe_sip_ua` resource and data source for the global `sip-ua` block (TCP/UDP/TLS transport, retry and signaling timers, connection-reuse, reason-header override, crypto signaling default and remote-addr tls-profile, digest authentication, registration credentials with password encryption type, and primary/secondary/dhcp registrar configuration)
 - Fix documentation links to work on both the Terraform and OpenTofu registries
 - Improve documentation page titles and descriptions
 
