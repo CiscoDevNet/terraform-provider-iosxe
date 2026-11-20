@@ -61,6 +61,7 @@ func TestAccDataSourceIosxePrefixList(t *testing.T) {
 
 func testAccDataSourceIosxePrefixListConfig() string {
 	config := `resource "iosxe_prefix_list" "test" {` + "\n"
+	config += `	delete_mode = "attributes"` + "\n"
 	config += `	prefixes = [{` + "\n"
 	config += `		name = "PREFIX_LIST_1"` + "\n"
 	config += `		seq = 10` + "\n"
