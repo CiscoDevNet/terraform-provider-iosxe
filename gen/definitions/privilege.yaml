@@ -1,0 +1,35 @@
+---
+name: Privilege
+path: /Cisco-IOS-XE-native:native/privilege/mode[name=%v]
+# IOS-XE 17.15 refuses a NETCONF delete of a single command-list entry or
+# a whole level entry for most commands ("Device refused one or more
+# commands"), but accepts a delete of the whole mode entry (Cat8kv 17.15.1a,
+# Cat9kv 17.15.3). So deletes always remove the mode, and any change to the
+# levels recreates it. Deleting the mode returns each command to its default
+# level; the device keeps an explicit default-level line, for example
+# `privilege exec level 1 ping`, which only `privilege exec reset <command>`
+# removes.
+no_delete_attributes: true
+doc_category: System
+test_tags: [C8000V, C9000V]
+attributes:
+  - yang_name: name
+    tf_name: mode
+    id: true
+    example: exec
+  - yang_name: level
+    tf_name: levels
+    type: List
+    requires_replace: true
+    attributes:
+      - yang_name: privilege
+        tf_name: level
+        id: true
+        example: 7
+      - yang_name: command-list
+        tf_name: commands
+        type: List
+        attributes:
+          - yang_name: command
+            id: true
+            example: ping
