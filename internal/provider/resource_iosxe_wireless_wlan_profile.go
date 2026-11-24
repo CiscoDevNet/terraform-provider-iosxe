@@ -147,6 +147,14 @@ func (r *WirelessWLANProfileResource) Schema(ctx context.Context, req resource.S
 				MarkdownDescription: helpers.NewAttributeDescription("Authentication key management type FT-SAE").String,
 				Optional:            true,
 			},
+			"security_wpa_akm_dot1x_sha256": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Authentication key management type 802.1x SHA256").String,
+				Optional:            true,
+			},
+			"security_wpa_akm_owe": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("OWE support").String,
+				Optional:            true,
+			},
 			"security_wpa_wpa2_ciphers_aes": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("WPA2/CCMP128 support").String,
 				Optional:            true,
@@ -162,6 +170,21 @@ func (r *WirelessWLANProfileResource) Schema(ctx context.Context, req resource.S
 			"security_wpa_wpa3": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Configures WPA3 support").String,
 				Optional:            true,
+			},
+			"security_wpa_wpa2": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Configures WPA2 support").String,
+				Optional:            true,
+			},
+			"security_wpa": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Configures WPA/WPA2 Support for a WLAN").String,
+				Optional:            true,
+			},
+			"security_pmf": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Configures PMF as optional/required").AddStringEnumDescription("apf-vap-pmf-disabled", "apf-vap-pmf-optional", "apf-vap-pmf-required").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("apf-vap-pmf-disabled", "apf-vap-pmf-optional", "apf-vap-pmf-required"),
+				},
 			},
 			"security_wpa_psk_key_format": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Authentication pre-shared key type ascii/hex").AddStringEnumDescription("key-ascii", "key-hex").String,
@@ -232,6 +255,41 @@ func (r *WirelessWLANProfileResource) Schema(ctx context.Context, req resource.S
 				Validators: []validator.String{
 					stringvalidator.OneOf("apf-vap-wme-disabled", "apf-vap-wme-allowed", "apf-vap-wme-required"),
 				},
+			},
+			"radio_policies": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Bands the WLAN is broadcast on (`radio policy dot11 24ghz|5ghz|6ghz`). An empty list broadcasts on the default bands, 2.4 GHz and 5 GHz").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"band": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Broadcast WLAN on band").AddStringEnumDescription("dot11-2-dot-4-ghz-band", "dot11-5-ghz-band", "dot11-6-ghz-band").String,
+							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("dot11-2-dot-4-ghz-band", "dot11-5-ghz-band", "dot11-6-ghz-band"),
+							},
+						},
+					},
+				},
+			},
+			"bss_transition": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Configure BSS transition per WLAN").String,
+				Optional:            true,
+			},
+			"bss_max_idle": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Configure BSS max idle processing per WLAN").String,
+				Optional:            true,
+			},
+			"dms": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Configure DMS processing per WLAN").String,
+				Optional:            true,
+			},
+			"assisted_roaming_neighbor_list": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Indicates whether 11k Neighbor List is enabled on the controller for this WLAN.").String,
+				Optional:            true,
+			},
+			"okc": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable/disable opportunistic key caching").String,
+				Optional:            true,
 			},
 		},
 	}

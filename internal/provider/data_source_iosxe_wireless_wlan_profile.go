@@ -120,6 +120,14 @@ func (d *WirelessWLANProfileDataSource) Schema(ctx context.Context, req datasour
 				MarkdownDescription: "Authentication key management type FT-SAE",
 				Computed:            true,
 			},
+			"security_wpa_akm_dot1x_sha256": schema.BoolAttribute{
+				MarkdownDescription: "Authentication key management type 802.1x SHA256",
+				Computed:            true,
+			},
+			"security_wpa_akm_owe": schema.BoolAttribute{
+				MarkdownDescription: "OWE support",
+				Computed:            true,
+			},
 			"security_wpa_wpa2_ciphers_aes": schema.BoolAttribute{
 				MarkdownDescription: "WPA2/CCMP128 support",
 				Computed:            true,
@@ -134,6 +142,18 @@ func (d *WirelessWLANProfileDataSource) Schema(ctx context.Context, req datasour
 			},
 			"security_wpa_wpa3": schema.BoolAttribute{
 				MarkdownDescription: "Configures WPA3 support",
+				Computed:            true,
+			},
+			"security_wpa_wpa2": schema.BoolAttribute{
+				MarkdownDescription: "Configures WPA2 support",
+				Computed:            true,
+			},
+			"security_wpa": schema.BoolAttribute{
+				MarkdownDescription: "Configures WPA/WPA2 Support for a WLAN",
+				Computed:            true,
+			},
+			"security_pmf": schema.StringAttribute{
+				MarkdownDescription: "Configures PMF as optional/required",
 				Computed:            true,
 			},
 			"security_wpa_psk_key_format": schema.StringAttribute{
@@ -183,6 +203,38 @@ func (d *WirelessWLANProfileDataSource) Schema(ctx context.Context, req datasour
 			},
 			"wmm": schema.StringAttribute{
 				MarkdownDescription: "Configures WMM (WME)",
+				Computed:            true,
+			},
+			"radio_policies": schema.ListNestedAttribute{
+				MarkdownDescription: "Bands the WLAN is broadcast on (`radio policy dot11 24ghz|5ghz|6ghz`). An empty list broadcasts on the default bands, 2.4 GHz and 5 GHz",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"band": schema.StringAttribute{
+							MarkdownDescription: "Broadcast WLAN on band",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"bss_transition": schema.BoolAttribute{
+				MarkdownDescription: "Configure BSS transition per WLAN",
+				Computed:            true,
+			},
+			"bss_max_idle": schema.BoolAttribute{
+				MarkdownDescription: "Configure BSS max idle processing per WLAN",
+				Computed:            true,
+			},
+			"dms": schema.BoolAttribute{
+				MarkdownDescription: "Configure DMS processing per WLAN",
+				Computed:            true,
+			},
+			"assisted_roaming_neighbor_list": schema.BoolAttribute{
+				MarkdownDescription: "Indicates whether 11k Neighbor List is enabled on the controller for this WLAN.",
+				Computed:            true,
+			},
+			"okc": schema.BoolAttribute{
+				MarkdownDescription: "Enable/disable opportunistic key caching",
 				Computed:            true,
 			},
 		},

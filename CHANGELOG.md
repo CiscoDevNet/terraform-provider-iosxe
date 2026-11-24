@@ -1,5 +1,6 @@
 ## Unreleased
 
+- Add `security_wpa_akm_dot1x_sha256`, `security_wpa_akm_owe`, `security_wpa_wpa2`, `security_wpa`, `security_pmf`, `radio_policies`, `bss_transition`, `bss_max_idle`, `dms`, `assisted_roaming_neighbor_list` and `okc` attributes to `iosxe_wireless_wlan_profile` resource and data source
 - Fix documentation links to work on both the Terraform and OpenTofu registries
 - Improve documentation page titles and descriptions
 
