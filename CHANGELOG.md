@@ -1,5 +1,6 @@
 ## Unreleased
 
+- Add `stub_receive_only`, `stub_static` and `stub_redistributed` attributes (`eigrp stub receive-only`, `eigrp stub static`, `eigrp stub redistributed`) to `iosxe_eigrp` and `iosxe_eigrp_vrf` resources and data sources
 - Fix documentation links to work on both the Terraform and OpenTofu registries
 - Improve documentation page titles and descriptions
 

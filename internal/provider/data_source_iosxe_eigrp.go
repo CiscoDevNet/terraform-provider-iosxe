@@ -132,6 +132,18 @@ func (d *EIGRPDataSource) Schema(ctx context.Context, req datasource.SchemaReque
 				MarkdownDescription: "Enable EIGRP stub routing and advertise summary routes (`eigrp stub summary`)",
 				Computed:            true,
 			},
+			"stub_static": schema.BoolAttribute{
+				MarkdownDescription: "Enable EIGRP stub routing and advertise static routes (`eigrp stub static`)",
+				Computed:            true,
+			},
+			"stub_redistributed": schema.BoolAttribute{
+				MarkdownDescription: "Enable EIGRP stub routing and advertise redistributed routes (`eigrp stub redistributed`)",
+				Computed:            true,
+			},
+			"stub_receive_only": schema.BoolAttribute{
+				MarkdownDescription: "Enable EIGRP stub routing as receive-only (`eigrp stub receive-only`). Cannot be combined with `stub_connected`, `stub_static`, `stub_summary` or `stub_redistributed`",
+				Computed:            true,
+			},
 			"shutdown": schema.BoolAttribute{
 				MarkdownDescription: "Shutdown address family",
 				Computed:            true,
