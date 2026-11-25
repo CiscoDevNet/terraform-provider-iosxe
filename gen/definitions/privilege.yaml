@@ -29,6 +29,7 @@ attributes:
         tf_name: level
         id: true
         description: Privilege level the commands are assigned to.
+        max_int: 15
         example: 7
       - yang_name: command-list
         tf_name: commands

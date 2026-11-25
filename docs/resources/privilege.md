@@ -51,7 +51,7 @@ resource "iosxe_privilege" "example" {
 Required:
 
 - `level` (Number) Privilege level the commands are assigned to.
-  - Range: `0`-`255`
+  - Range: `0`-`15`
 
 Optional:
 

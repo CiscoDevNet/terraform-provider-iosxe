@@ -98,10 +98,10 @@ func (r *PrivilegeResource) Schema(ctx context.Context, req resource.SchemaReque
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"level": schema.Int64Attribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Privilege level the commands are assigned to.").AddIntegerRangeDescription(0, 255).String,
+							MarkdownDescription: helpers.NewAttributeDescription("Privilege level the commands are assigned to.").AddIntegerRangeDescription(0, 15).String,
 							Required:            true,
 							Validators: []validator.Int64{
-								int64validator.Between(0, 255),
+								int64validator.Between(0, 15),
 							},
 						},
 						"commands": schema.ListNestedAttribute{
