@@ -45,6 +45,8 @@ func TestAccIosxeEIGRPVRF(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eigrp_vrf.test", "af_interfaces.0.split_horizon", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eigrp_vrf.test", "stub_connected", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eigrp_vrf.test", "stub_summary", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eigrp_vrf.test", "stub_static", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eigrp_vrf.test", "stub_redistributed", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eigrp_vrf.test", "shutdown", "false"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -62,7 +64,7 @@ func TestAccIosxeEIGRPVRF(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeEIGRPVRFImportStateIdFunc("iosxe_eigrp_vrf.test"),
-				ImportStateVerifyIgnore: []string{},
+				ImportStateVerifyIgnore: []string{"stub_receive_only"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -96,6 +98,13 @@ resource "iosxe_yang" "PreReq0" {
 	}
 }
 
+resource "iosxe_yang" "PreReq1" {
+	path = "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-eigrp:router-eigrp/eigrp/named-mode[name=TOPGEN]"
+	attributes = {
+		"name" = "TOPGEN"
+	}
+}
+
 `
 
 // End of section. //template:end testPrerequisites
@@ -107,7 +116,7 @@ func testAccIosxeEIGRPVRFConfig_minimum() string {
 	config += `	name = "TOPGEN"` + "\n"
 	config += `	vrf = "VRF1"` + "\n"
 	config += `	autonomous_system = 100` + "\n"
-	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -134,8 +143,10 @@ func testAccIosxeEIGRPVRFConfig_all() string {
 	config += `	}]` + "\n"
 	config += `	stub_connected = true` + "\n"
 	config += `	stub_summary = true` + "\n"
+	config += `	stub_static = true` + "\n"
+	config += `	stub_redistributed = true` + "\n"
 	config += `	shutdown = false` + "\n"
-	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

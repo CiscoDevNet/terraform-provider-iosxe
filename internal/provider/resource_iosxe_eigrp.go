@@ -67,7 +67,7 @@ func (r *EIGRPResource) Metadata(_ context.Context, req resource.MetadataRequest
 func (r *EIGRPResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This resource can manage the EIGRP configuration.",
+		MarkdownDescription: "This resource can manage the EIGRP configuration. Destroying it removes the IPv4 unicast address family, but the `router eigrp <name>` instance stays on the device, because VRF address families (`iosxe_eigrp_vrf`) can share it.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -176,6 +176,18 @@ func (r *EIGRPResource) Schema(ctx context.Context, req resource.SchemaRequest, 
 			},
 			"stub_summary": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Enable EIGRP stub routing and advertise summary routes (`eigrp stub summary`)").String,
+				Optional:            true,
+			},
+			"stub_static": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable EIGRP stub routing and advertise static routes (`eigrp stub static`)").String,
+				Optional:            true,
+			},
+			"stub_redistributed": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable EIGRP stub routing and advertise redistributed routes (`eigrp stub redistributed`)").String,
+				Optional:            true,
+			},
+			"stub_receive_only": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable EIGRP stub routing as receive-only (`eigrp stub receive-only`). Cannot be combined with `stub_connected`, `stub_static`, `stub_summary` or `stub_redistributed`").String,
 				Optional:            true,
 			},
 			"shutdown": schema.BoolAttribute{

@@ -42,13 +42,15 @@ func TestAccDataSourceIosxeEIGRP(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eigrp.test", "af_interfaces.0.split_horizon", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eigrp.test", "stub_connected", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eigrp.test", "stub_summary", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eigrp.test", "stub_static", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eigrp.test", "stub_redistributed", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eigrp.test", "shutdown", "false"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccDataSourceIosxeEIGRPConfig(),
+				Config: testAccDataSourceIosxeEIGRPPrerequisitesConfig + testAccDataSourceIosxeEIGRPConfig(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -58,6 +60,16 @@ func TestAccDataSourceIosxeEIGRP(t *testing.T) {
 // End of section. //template:end testAccDataSource
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+const testAccDataSourceIosxeEIGRPPrerequisitesConfig = `
+resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-eigrp:router-eigrp/eigrp/named-mode[name=TOPGEN]"
+	attributes = {
+		"name" = "TOPGEN"
+	}
+}
+
+`
+
 // End of section. //template:end testPrerequisites
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSourceConfig
@@ -80,7 +92,10 @@ func testAccDataSourceIosxeEIGRPConfig() string {
 	config += `	}]` + "\n"
 	config += `	stub_connected = true` + "\n"
 	config += `	stub_summary = true` + "\n"
+	config += `	stub_static = true` + "\n"
+	config += `	stub_redistributed = true` + "\n"
 	config += `	shutdown = false` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `
