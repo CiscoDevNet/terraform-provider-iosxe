@@ -88,6 +88,10 @@ func (d *WirelessSiteTagDataSource) Schema(ctx context.Context, req datasource.S
 				MarkdownDescription: "The flex profile which is part of the Site tag",
 				Computed:            true,
 			},
+			"load": schema.Int64Attribute{
+				MarkdownDescription: "Estimate of the relative load contributed by the site (`load <0-1000>`). AP count can be used as an approximation. The default 0 means no load recommendation for the site and is not returned on read, so leave the attribute unset for the default; setting 0 shows a change on every plan",
+				Computed:            true,
+			},
 		},
 	}
 }

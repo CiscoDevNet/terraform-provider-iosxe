@@ -24,6 +24,7 @@ import (
 	"context"
 	"fmt"
 	"net/url"
+	"strconv"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -43,6 +44,7 @@ type WirelessSiteTag struct {
 	ApJoinProfile types.String `tfsdk:"ap_join_profile"`
 	LocalSite     types.Bool   `tfsdk:"local_site"`
 	FlexProfile   types.String `tfsdk:"flex_profile"`
+	Load          types.Int64  `tfsdk:"load"`
 }
 
 type WirelessSiteTagData struct {
@@ -53,6 +55,7 @@ type WirelessSiteTagData struct {
 	ApJoinProfile types.String `tfsdk:"ap_join_profile"`
 	LocalSite     types.Bool   `tfsdk:"local_site"`
 	FlexProfile   types.String `tfsdk:"flex_profile"`
+	Load          types.Int64  `tfsdk:"load"`
 }
 
 // End of section. //template:end types
@@ -111,6 +114,9 @@ func (data WirelessSiteTag) addToBodyXML(ctx context.Context, config WirelessSit
 	if !data.FlexProfile.IsNull() && !data.FlexProfile.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/flex-profile", data.FlexProfile.ValueString())
 	}
+	if !data.Load.IsNull() && !data.Load.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/load", strconv.FormatInt(data.Load.ValueInt64(), 10))
+	}
 	return body
 }
 
@@ -146,6 +152,11 @@ func (data *WirelessSiteTag) updateFromBodyXML(ctx context.Context, res xmldot.R
 	} else {
 		data.FlexProfile = types.StringNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/load"); value.Exists() && !data.Load.IsNull() {
+		data.Load = types.Int64Value(value.Int())
+	} else {
+		data.Load = types.Int64Null()
+	}
 }
 
 // End of section. //template:end updateFromBodyXML
@@ -166,6 +177,9 @@ func (data *WirelessSiteTag) fromBodyXML(ctx context.Context, res xmldot.Result)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/flex-profile"); value.Exists() {
 		data.FlexProfile = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/load"); value.Exists() {
+		data.Load = types.Int64Value(value.Int())
 	}
 }
 
@@ -188,6 +202,9 @@ func (data *WirelessSiteTagData) fromBodyXML(ctx context.Context, res xmldot.Res
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/flex-profile"); value.Exists() {
 		data.FlexProfile = types.StringValue(value.String())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/load"); value.Exists() {
+		data.Load = types.Int64Value(value.Int())
+	}
 }
 
 // End of section. //template:end fromBodyDataXML
@@ -196,6 +213,9 @@ func (data *WirelessSiteTagData) fromBodyXML(ctx context.Context, res xmldot.Res
 
 func (data *WirelessSiteTag) addDeletedItemsXML(ctx context.Context, state WirelessSiteTag, body string) string {
 	b := netconf.NewBody(body)
+	if !state.Load.IsNull() && data.Load.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/load")
+	}
 	if !state.FlexProfile.IsNull() && data.FlexProfile.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/flex-profile")
 	}
@@ -219,6 +239,9 @@ func (data *WirelessSiteTag) addDeletedItemsXML(ctx context.Context, state Wirel
 
 func (data *WirelessSiteTag) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	if !data.Load.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/load")
+	}
 	if !data.FlexProfile.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/flex-profile")
 	}
@@ -240,6 +263,9 @@ func (data *WirelessSiteTag) addDeletePathsXML(ctx context.Context, body string)
 // deleted: it skips attributes marked builtin_keep so destroying one never disables it.
 func (data *WirelessSiteTag) addBuiltinDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	if !data.Load.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/load")
+	}
 	if !data.FlexProfile.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/flex-profile")
 	}
