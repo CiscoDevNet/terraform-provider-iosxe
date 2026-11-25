@@ -387,11 +387,10 @@ resource "iosxe_wireless_ap_tag_source_priority" "test" {
 	})
 }
 
-// TestWirelessAPTagsListKeysOver1000 documents how the bulk import read enumerates more than 1000
-// ap-tag entries. ListXPathKeys counts siblings with xmldot, whose match collection is capped at
-// 1000 results, so only the first 1000 entries are returned. This is the known bulk limitation
-// tracked in https://github.com/CiscoDevNet/terraform-provider-iosxe/issues/619; update the
-// expectation when it is fixed.
+// TestWirelessAPTagsListKeysOver1000 checks that the bulk import read enumerates more than 1000
+// ap-tag entries. ListXPathKeys counts siblings with xmldot, which capped its match collection at
+// 1000 results before xmldot 0.6.0; see
+// https://github.com/CiscoDevNet/terraform-provider-iosxe/issues/619.
 func TestWirelessAPTagsListKeysOver1000(t *testing.T) {
 	const n = 1001
 	var sb strings.Builder
@@ -403,8 +402,8 @@ func TestWirelessAPTagsListKeysOver1000(t *testing.T) {
 	res := xmldot.Get(sb.String(), "root")
 	var data WirelessAPTags
 	keys := helpers.ListXPathKeys(res, "data"+data.getXPath(), "ap-tag", []string{"ap-mac"})
-	if len(keys) != 1000 {
-		t.Fatalf("got %d of %d keys; the 1000-entry cap (issue 619) changed, update this test and the iosxe_wireless_ap_tags description", len(keys), n)
+	if len(keys) != n {
+		t.Fatalf("got %d of %d keys; the bulk import read no longer returns every ap-tag entry (issue 619)", len(keys), n)
 	}
 }
 

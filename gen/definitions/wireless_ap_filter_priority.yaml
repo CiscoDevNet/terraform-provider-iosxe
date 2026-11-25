@@ -21,6 +21,7 @@ attributes:
       - yang_name: filter-name
         tf_name: filter_name
         type: String
+        mandatory: true
         example: S3-AF-TEST
 
 test_prerequisites:

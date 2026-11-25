@@ -91,7 +91,7 @@ func (r *WirelessAPFilterPriorityResource) Schema(ctx context.Context, req resou
 						},
 						"filter_name": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Name of the filter rule").String,
-							Optional:            true,
+							Required:            true,
 						},
 					},
 				},

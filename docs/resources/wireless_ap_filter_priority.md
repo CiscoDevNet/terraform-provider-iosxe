@@ -40,12 +40,9 @@ resource "iosxe_wireless_ap_filter_priority" "example" {
 
 Required:
 
+- `filter_name` (String) Name of the filter rule
 - `priority` (Number) Priority of filter rule
   - Range: `0`-`1023`
-
-Optional:
-
-- `filter_name` (String) Name of the filter rule
 
 ## Import
 
