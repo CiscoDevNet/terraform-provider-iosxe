@@ -42,8 +42,8 @@ import (
 // can be customized.
 //go:generate go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs
 
-// Update documentation categories.
-//go:generate go run gen/doc_category.go
+// Update documentation categories and frontmatter.
+//go:generate go run gen/docs_postprocess.go
 
 var (
 	// these will be set by the goreleaser configuration

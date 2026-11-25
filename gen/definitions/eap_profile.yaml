@@ -1,0 +1,45 @@
+---
+name: EAP Profile
+path: /Cisco-IOS-XE-native:native/eap/profile[name=%v]
+test_tags: [C9800, C9000V, C8000V]
+doc_category: AAA
+attributes:
+  - yang_name: name
+    id: true
+    example: EAP1
+  - yang_name: description
+    example: My EAP Profile
+  - yang_name: method/fast-config
+    tf_name: method_fast
+    type: Bool
+    type_yang_bool: presence
+    description: EAP-FAST method allowed.
+    example: true
+  - yang_name: method/gtc
+    tf_name: method_gtc
+    example: true
+  - yang_name: method/leap
+    tf_name: method_leap
+    example: true
+  - yang_name: method/md5
+    tf_name: method_md5
+    example: true
+  - yang_name: method/mschapv2
+    tf_name: method_mschapv2
+    example: true
+  - yang_name: method/peap
+    tf_name: method_peap
+    example: true
+  - yang_name: method/tls
+    tf_name: method_tls
+    example: true
+  - yang_name: pki-trustpoint
+    example: TP1
+
+test_prerequisites:
+  - path: /Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:pki/trustpoint[id=TP1]
+    attributes:
+      - name: id
+        value: TP1
+      - name: enrollment/enrollment-method/selfsigned
+        value: ""

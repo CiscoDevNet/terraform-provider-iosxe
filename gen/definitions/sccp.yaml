@@ -1,0 +1,62 @@
+---
+name: SCCP
+path: /Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:sccp-config
+doc_category: Voice
+# SCCP is the control protocol for DSPfarm. The global sccp config applies on a
+# C8000V without DSP hardware, so the test runs on the router testbed.
+test_tags: [C8000V]
+attributes:
+  - yang_name: sccp/local
+    tf_name: local_interface
+    example: GigabitEthernet1
+  - yang_name: sccp/ip/precedence
+    tf_name: ip_precedence
+    exclude_test: true
+    example: 5
+  - yang_name: sccp/sccp-ccm-list/ccm
+    tf_name: ccm_servers
+    type: List
+    attributes:
+      - yang_name: host
+        id: true
+        example: 192.0.2.50
+      - yang_name: identifier
+        example: 1
+      - yang_name: version
+        exclude_test: true
+        example: "7.0+"
+  - yang_name: sccp/sccp-ccm-group-list/ccm/group
+    tf_name: ccm_groups
+    type: List
+    attributes:
+      - yang_name: id
+        tf_name: group_id
+        id: true
+        example: 1
+      - yang_name: description
+        exclude_test: true
+        example: CUCM group
+      - yang_name: associate/ccm
+        tf_name: associate_ccm
+        type: List
+        attributes:
+          - yang_name: id
+            tf_name: ccm_id
+            id: true
+            example: 1
+          - yang_name: priority
+            example: 1
+      - yang_name: associate/profile
+        tf_name: associate_profiles
+        type: List
+        # The profile id is a leafref to a dspfarm profile, which needs DSP
+        # resources to be usable; kept out of the C8000V test.
+        exclude_test: true
+        attributes:
+          - yang_name: id
+            tf_name: profile_id
+            type: Int64
+            id: true
+            example: 1
+          - yang_name: register
+            example: MTP000C29A0

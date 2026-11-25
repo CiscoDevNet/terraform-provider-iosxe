@@ -1,0 +1,17 @@
+---
+name: Voice Class STUN Usage
+path: /Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:voice/class/stun-usage[id=%v]
+doc_category: Voice
+# CUBE is a router feature; a switch rejects these voice class resources.
+test_tags: [C8000V]
+attributes:
+  - yang_name: id
+    tf_name: tag
+    id: true
+    example: 1
+  - yang_name: stun/usage/firewall-traversal/flowdata
+    tf_name: stun_usage_firewall_traversal_flowdata
+    example: true
+  - yang_name: stun/usage/ice/lite
+    tf_name: stun_usage_ice_lite
+    example: true

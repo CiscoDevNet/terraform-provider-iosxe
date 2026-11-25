@@ -15,16 +15,17 @@ attributes:
     example: 10
   - yang_name: apf-vap-id-data/ssid
     tf_name: ssid
+    mandatory: true
     example: S1-CORP-PSK
   - yang_name: apf-vap-id-data/wlan-status
     tf_name: wlan_status
     example: true
   - yang_name: apf-vap-id-data/broadcast-ssid
     tf_name: broadcast_ssid
-    example: true
+    example: false
   - yang_name: apf-vap-id-data/ccx-aironet-ie
     tf_name: ccx_aironet_ie
-    example: false
+    example: true
   - yang_name: apf-vap-id-data/p2p-block-action
     tf_name: peer_blocking
     type: String
@@ -38,7 +39,10 @@ attributes:
     example: false
   - yang_name: auth-key-mgmt-ft-dot1x
     tf_name: security_wpa_akm_ft_dot1x
+    # Excluded from tests: the test value is the YANG default, which the
+    # controller omits on read, and a PSK WLAN cannot use the non-default value.
     example: false
+    exclude_test: true
   - yang_name: auth-key-mgmt-psk
     tf_name: security_wpa_akm_psk
     example: true
@@ -47,13 +51,22 @@ attributes:
     example: true
   - yang_name: auth-key-mgmt-sae
     tf_name: security_wpa_akm_sae
+    # Excluded from tests: the test value is the YANG default, which the
+    # controller omits on read, and a PSK WLAN cannot use the non-default value.
     example: false
+    exclude_test: true
   - yang_name: auth-key-mgmt-ft-sae
     tf_name: security_wpa_akm_ft_sae
+    # Excluded from tests: the test value is the YANG default, which the
+    # controller omits on read, and a PSK WLAN cannot use the non-default value.
     example: false
+    exclude_test: true
   - yang_name: wpa2-aes
     tf_name: security_wpa_wpa2_ciphers_aes
+    # Excluded from tests: the test value is the YANG default, which the
+    # controller omits on read, and a PSK WLAN cannot use the non-default value.
     example: true
+    exclude_test: true
   - yang_name: rsn-cipher-suite-gcmp128
     tf_name: security_wpa_wpa2_ciphers_gcmp128
     example: false
@@ -64,14 +77,17 @@ attributes:
     exclude_test: true
   - yang_name: wpa3-enabled
     tf_name: security_wpa_wpa3
+    # Excluded from tests: the test value is the YANG default, which the
+    # controller omits on read, and a PSK WLAN cannot use the non-default value.
     example: false
+    exclude_test: true
   - yang_name: psk-key-type
     tf_name: security_wpa_psk_key_format
     type: String
     enum_values:
       - key-ascii
       - key-hex
-    example: key-ascii
+    example: key-hex
   - yang_name: psk-type
     tf_name: security_wpa_psk_key_encryption
     write_only: true
@@ -79,18 +95,19 @@ attributes:
     enum_values:
       - clear
     example: clear
+    allow_import_changes: true
   - yang_name: psk
     tf_name: security_wpa_psk_key
     write_only: true
     sensitive: true
-    example: Example-Passphrase-123
+    example: 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
   - yang_name: authentication-list
     tf_name: security_dot1x_authentication_list
     exclude_test: true
     example: ""
   - yang_name: webauth-enabled
     tf_name: security_web_auth
-    example: false
+    example: true
   - yang_name: web-authc-list
     tf_name: security_web_auth_authentication_list
     exclude_test: true

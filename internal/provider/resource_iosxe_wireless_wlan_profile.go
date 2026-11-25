@@ -99,7 +99,7 @@ func (r *WirelessWLANProfileResource) Schema(ctx context.Context, req resource.S
 			},
 			"ssid": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Represents the SSID assigned to this WLAN. The access points will broadcast this SSID on this WLAN. SSID is restricted to non control characters.").String,
-				Optional:            true,
+				Required:            true,
 				Validators: []validator.String{
 					stringvalidator.LengthBetween(0, 32),
 				},

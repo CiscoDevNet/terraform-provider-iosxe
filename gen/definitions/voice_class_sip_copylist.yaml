@@ -1,0 +1,22 @@
+---
+name: Voice Class SIP Copylist
+path: /Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:voice/class/sip-copylist[id=%v]
+doc_category: Voice
+# CUBE is a router feature; a switch rejects these voice class resources.
+test_tags: [C8000V]
+attributes:
+  - yang_name: id
+    tf_name: tag
+    id: true
+    example: 100
+  - yang_name: sip-header/SIP-Req-URI
+    tf_name: sip_header_req_uri
+    example: true
+  - yang_name: sip-header/SIP-StatusLine
+    tf_name: sip_header_status_line
+    example: true
+  - yang_name: sip-header/header
+    tf_name: headers
+    # Unordered leaf-list (no `ordered-by user`); StringSet avoids spurious diffs.
+    type: StringSet
+    example: History-Info

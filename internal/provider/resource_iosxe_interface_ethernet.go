@@ -1002,6 +1002,54 @@ func (r *InterfaceEthernetResource) Schema(ctx context.Context, req resource.Sch
 				MarkdownDescription: helpers.NewAttributeDescription("Security zone").String,
 				Optional:            true,
 			},
+			"redundancy_rii_id": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 65535).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 65535),
+				},
+			},
+			"redundancy_groups": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("RG redundancy traffic interface config").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"group_id": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("RG Group Id").AddIntegerRangeDescription(1, 2).String,
+							Required:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 2),
+							},
+						},
+						"virtual_ips": schema.ListNestedAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Virtual-IP address family").String,
+							Optional:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"ip_family": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("IP Address family").AddStringEnumDescription("ip").String,
+										Required:            true,
+										Validators: []validator.String{
+											stringvalidator.OneOf("ip"),
+										},
+									},
+									"ipv4_address": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("").String,
+										Optional:            true,
+										Validators: []validator.String{
+											stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+										},
+									},
+									"exclusive": schema.BoolAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Exclusive").String,
+										Optional:            true,
+									},
+								},
+							},
+						},
+					},
+				},
+			},
 		},
 	}
 }

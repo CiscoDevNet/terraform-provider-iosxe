@@ -188,6 +188,8 @@ type InterfaceEthernet struct {
 	IpIgmpVersion                                       types.Int64                                       `tfsdk:"ip_igmp_version"`
 	IpRouterIsis                                        types.String                                      `tfsdk:"ip_router_isis"`
 	ZoneMemberSecurity                                  types.String                                      `tfsdk:"zone_member_security"`
+	RedundancyRiiId                                     types.Int64                                       `tfsdk:"redundancy_rii_id"`
+	RedundancyGroups                                    []InterfaceEthernetRedundancyGroups               `tfsdk:"redundancy_groups"`
 }
 type InterfaceEthernetHelperAddresses struct {
 	Address types.String `tfsdk:"address"`
@@ -238,6 +240,15 @@ type InterfaceEthernetEvpnEthernetSegments struct {
 type InterfaceEthernetHoldQueues struct {
 	Direction   types.String `tfsdk:"direction"`
 	QueueLength types.Int64  `tfsdk:"queue_length"`
+}
+type InterfaceEthernetRedundancyGroups struct {
+	GroupId    types.Int64                                   `tfsdk:"group_id"`
+	VirtualIps []InterfaceEthernetRedundancyGroupsVirtualIps `tfsdk:"virtual_ips"`
+}
+type InterfaceEthernetRedundancyGroupsVirtualIps struct {
+	IpFamily    types.String `tfsdk:"ip_family"`
+	Ipv4Address types.String `tfsdk:"ipv4_address"`
+	Exclusive   types.Bool   `tfsdk:"exclusive"`
 }
 
 type InterfaceEthernetData struct {
@@ -391,6 +402,8 @@ type InterfaceEthernetData struct {
 	IpIgmpVersion                                       types.Int64                                           `tfsdk:"ip_igmp_version"`
 	IpRouterIsis                                        types.String                                          `tfsdk:"ip_router_isis"`
 	ZoneMemberSecurity                                  types.String                                          `tfsdk:"zone_member_security"`
+	RedundancyRiiId                                     types.Int64                                           `tfsdk:"redundancy_rii_id"`
+	RedundancyGroups                                    []InterfaceEthernetRedundancyGroupsData               `tfsdk:"redundancy_groups"`
 }
 type InterfaceEthernetHelperAddressesData struct {
 	Address types.String `tfsdk:"address"`
@@ -441,6 +454,15 @@ type InterfaceEthernetEvpnEthernetSegmentsData struct {
 type InterfaceEthernetHoldQueuesData struct {
 	Direction   types.String `tfsdk:"direction"`
 	QueueLength types.Int64  `tfsdk:"queue_length"`
+}
+type InterfaceEthernetRedundancyGroupsData struct {
+	GroupId    types.Int64                                       `tfsdk:"group_id"`
+	VirtualIps []InterfaceEthernetRedundancyGroupsVirtualIpsData `tfsdk:"virtual_ips"`
+}
+type InterfaceEthernetRedundancyGroupsVirtualIpsData struct {
+	IpFamily    types.String `tfsdk:"ip_family"`
+	Ipv4Address types.String `tfsdk:"ipv4_address"`
+	Exclusive   types.Bool   `tfsdk:"exclusive"`
 }
 
 // End of section. //template:end types
@@ -1350,6 +1372,37 @@ func (data InterfaceEthernet) addToBodyXML(ctx context.Context, config Interface
 	}
 	if !data.ZoneMemberSecurity.IsNull() && !data.ZoneMemberSecurity.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security", data.ZoneMemberSecurity.ValueString())
+	}
+	if !data.RedundancyRiiId.IsNull() && !data.RedundancyRiiId.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/redundancy/rii/id", strconv.FormatInt(data.RedundancyRiiId.ValueInt64(), 10))
+	}
+	if len(data.RedundancyGroups) > 0 {
+		for _, item := range data.RedundancyGroups {
+			cBody := netconf.Body{}
+			if !item.GroupId.IsNull() && !item.GroupId.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "id", strconv.FormatInt(item.GroupId.ValueInt64(), 10))
+			}
+			if len(item.VirtualIps) > 0 {
+				for _, citem := range item.VirtualIps {
+					ccBody := netconf.Body{}
+					if !citem.IpFamily.IsNull() && !citem.IpFamily.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "ip-family", citem.IpFamily.ValueString())
+					}
+					if !citem.Ipv4Address.IsNull() && !citem.Ipv4Address.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "ipv4-address/ip", citem.Ipv4Address.ValueString())
+					}
+					if !citem.Exclusive.IsNull() && !citem.Exclusive.IsUnknown() {
+						if citem.Exclusive.ValueBool() {
+							ccBody = helpers.SetFromXPath(ccBody, "ipv4-address/exclusive", "")
+						} else {
+							ccBody = helpers.RemoveFromXPath(ccBody, "ipv4-address/exclusive")
+						}
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "virtual-ip", ccBody.Res())
+				}
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/redundancy/group", cBody.Res())
+		}
 	}
 	return body
 }
@@ -2786,6 +2839,83 @@ func (data *InterfaceEthernet) updateFromBodyXML(ctx context.Context, res xmldot
 	} else {
 		data.ZoneMemberSecurity = types.StringNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redundancy/rii/id"); value.Exists() && !data.RedundancyRiiId.IsNull() {
+		data.RedundancyRiiId = types.Int64Value(value.Int())
+	} else {
+		data.RedundancyRiiId = types.Int64Null()
+	}
+	for i := range data.RedundancyGroups {
+		keys := [...]string{"id"}
+		keyValues := [...]string{strconv.FormatInt(data.RedundancyGroups[i].GroupId.ValueInt64(), 10)}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/redundancy/group").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "id"); value.Exists() && !data.RedundancyGroups[i].GroupId.IsNull() {
+			data.RedundancyGroups[i].GroupId = types.Int64Value(value.Int())
+		} else {
+			data.RedundancyGroups[i].GroupId = types.Int64Null()
+		}
+		for ci := range data.RedundancyGroups[i].VirtualIps {
+			keys := [...]string{"ip-family"}
+			keyValues := [...]string{data.RedundancyGroups[i].VirtualIps[ci].IpFamily.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "virtual-ip").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "ip-family"); value.Exists() && !data.RedundancyGroups[i].VirtualIps[ci].IpFamily.IsNull() {
+				data.RedundancyGroups[i].VirtualIps[ci].IpFamily = types.StringValue(value.String())
+			} else {
+				data.RedundancyGroups[i].VirtualIps[ci].IpFamily = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "ipv4-address/ip"); value.Exists() && !data.RedundancyGroups[i].VirtualIps[ci].Ipv4Address.IsNull() {
+				data.RedundancyGroups[i].VirtualIps[ci].Ipv4Address = types.StringValue(value.String())
+			} else {
+				data.RedundancyGroups[i].VirtualIps[ci].Ipv4Address = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "ipv4-address/exclusive"); !data.RedundancyGroups[i].VirtualIps[ci].Exclusive.IsNull() {
+				if value.Exists() {
+					data.RedundancyGroups[i].VirtualIps[ci].Exclusive = types.BoolValue(true)
+				} else {
+					data.RedundancyGroups[i].VirtualIps[ci].Exclusive = types.BoolValue(false)
+				}
+			} else {
+				data.RedundancyGroups[i].VirtualIps[ci].Exclusive = types.BoolNull()
+			}
+		}
+	}
 }
 
 // End of section. //template:end updateFromBodyXML
@@ -3550,6 +3680,39 @@ func (data *InterfaceEthernet) fromBodyXML(ctx context.Context, res xmldot.Resul
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security"); value.Exists() {
 		data.ZoneMemberSecurity = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redundancy/rii/id"); value.Exists() {
+		data.RedundancyRiiId = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redundancy/group"); value.Exists() {
+		data.RedundancyGroups = make([]InterfaceEthernetRedundancyGroups, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := InterfaceEthernetRedundancyGroups{}
+			if cValue := helpers.GetFromXPath(v, "id"); cValue.Exists() {
+				item.GroupId = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "virtual-ip"); cValue.Exists() {
+				item.VirtualIps = make([]InterfaceEthernetRedundancyGroupsVirtualIps, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := InterfaceEthernetRedundancyGroupsVirtualIps{}
+					if ccValue := helpers.GetFromXPath(cv, "ip-family"); ccValue.Exists() {
+						cItem.IpFamily = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "ipv4-address/ip"); ccValue.Exists() {
+						cItem.Ipv4Address = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "ipv4-address/exclusive"); ccValue.Exists() {
+						cItem.Exclusive = types.BoolValue(true)
+					} else {
+						cItem.Exclusive = types.BoolValue(false)
+					}
+					item.VirtualIps = append(item.VirtualIps, cItem)
+					return true
+				})
+			}
+			data.RedundancyGroups = append(data.RedundancyGroups, item)
+			return true
+		})
 	}
 }
 
@@ -4316,6 +4479,39 @@ func (data *InterfaceEthernetData) fromBodyXML(ctx context.Context, res xmldot.R
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security"); value.Exists() {
 		data.ZoneMemberSecurity = types.StringValue(value.String())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redundancy/rii/id"); value.Exists() {
+		data.RedundancyRiiId = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redundancy/group"); value.Exists() {
+		data.RedundancyGroups = make([]InterfaceEthernetRedundancyGroupsData, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := InterfaceEthernetRedundancyGroupsData{}
+			if cValue := helpers.GetFromXPath(v, "id"); cValue.Exists() {
+				item.GroupId = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "virtual-ip"); cValue.Exists() {
+				item.VirtualIps = make([]InterfaceEthernetRedundancyGroupsVirtualIpsData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := InterfaceEthernetRedundancyGroupsVirtualIpsData{}
+					if ccValue := helpers.GetFromXPath(cv, "ip-family"); ccValue.Exists() {
+						cItem.IpFamily = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "ipv4-address/ip"); ccValue.Exists() {
+						cItem.Ipv4Address = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "ipv4-address/exclusive"); ccValue.Exists() {
+						cItem.Exclusive = types.BoolValue(true)
+					} else {
+						cItem.Exclusive = types.BoolValue(false)
+					}
+					item.VirtualIps = append(item.VirtualIps, cItem)
+					return true
+				})
+			}
+			data.RedundancyGroups = append(data.RedundancyGroups, item)
+			return true
+		})
+	}
 }
 
 // End of section. //template:end fromBodyDataXML
@@ -4324,6 +4520,75 @@ func (data *InterfaceEthernetData) fromBodyXML(ctx context.Context, res xmldot.R
 
 func (data *InterfaceEthernet) addDeletedItemsXML(ctx context.Context, state InterfaceEthernet, body string) string {
 	b := netconf.NewBody(body)
+	for i := range state.RedundancyGroups {
+		stateKeys := [...]string{"id"}
+		stateKeyValues := [...]string{strconv.FormatInt(state.RedundancyGroups[i].GroupId.ValueInt64(), 10)}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.RedundancyGroups[i].GroupId.ValueInt64()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.RedundancyGroups {
+			found = true
+			if state.RedundancyGroups[i].GroupId.ValueInt64() != data.RedundancyGroups[j].GroupId.ValueInt64() {
+				found = false
+			}
+			if found {
+				for ci := range state.RedundancyGroups[i].VirtualIps {
+					cstateKeys := [...]string{"ip-family"}
+					cstateKeyValues := [...]string{state.RedundancyGroups[i].VirtualIps[ci].IpFamily.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.RedundancyGroups[i].VirtualIps[ci].IpFamily.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.RedundancyGroups[j].VirtualIps {
+						found = true
+						if state.RedundancyGroups[i].VirtualIps[ci].IpFamily.ValueString() != data.RedundancyGroups[j].VirtualIps[cj].IpFamily.ValueString() {
+							found = false
+						}
+						if found {
+							if !state.RedundancyGroups[i].VirtualIps[ci].Exclusive.IsNull() && data.RedundancyGroups[j].VirtualIps[cj].Exclusive.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/redundancy/group%v/virtual-ip%v/ipv4-address/exclusive", predicates, cpredicates))
+							}
+							if !state.RedundancyGroups[i].VirtualIps[ci].Ipv4Address.IsNull() && data.RedundancyGroups[j].VirtualIps[cj].Ipv4Address.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/redundancy/group%v/virtual-ip%v/ipv4-address/ip", predicates, cpredicates))
+							}
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/redundancy/group%v/virtual-ip%v", predicates, cpredicates))
+					}
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/redundancy/group%v", predicates))
+		}
+	}
+	if !state.RedundancyRiiId.IsNull() && data.RedundancyRiiId.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/redundancy/rii/id")
+	}
 	if !state.ZoneMemberSecurity.IsNull() && data.ZoneMemberSecurity.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security")
 	}
@@ -5167,6 +5432,19 @@ func (data *InterfaceEthernet) addDeletedItemsXML(ctx context.Context, state Int
 
 func (data *InterfaceEthernet) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	for i := range data.RedundancyGroups {
+		keys := [...]string{"id"}
+		keyValues := [...]string{strconv.FormatInt(data.RedundancyGroups[i].GroupId.ValueInt64(), 10)}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/redundancy/group%v", predicates))
+	}
+	if !data.RedundancyRiiId.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/redundancy/rii/id")
+	}
 	if !data.ZoneMemberSecurity.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security")
 	}

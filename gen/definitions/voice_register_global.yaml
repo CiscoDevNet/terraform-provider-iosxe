@@ -1,0 +1,17 @@
+---
+name: Voice Register Global
+path: /Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:voice/register/global
+doc_category: Voice
+# CUBE/SRST is a router feature; a switch rejects voice register config.
+test_tags: [C8000V]
+attributes:
+  - yang_name: max-dn
+    example: 100
+  - yang_name: max-pool
+    example: 50
+  - yang_name: system/message
+    tf_name: system_message
+    example: CUBE SRST
+  - yang_name: security-policy/secure
+    tf_name: security_policy_secure
+    example: false

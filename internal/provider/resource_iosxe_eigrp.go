@@ -67,7 +67,7 @@ func (r *EIGRPResource) Metadata(_ context.Context, req resource.MetadataRequest
 func (r *EIGRPResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This resource can manage the EIGRP configuration.",
+		MarkdownDescription: "This resource can manage the EIGRP configuration. Destroying it removes the IPv4 unicast address family, but the `router eigrp <name>` instance stays on the device, because VRF address families (`iosxe_eigrp_vrf`) can share it.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{

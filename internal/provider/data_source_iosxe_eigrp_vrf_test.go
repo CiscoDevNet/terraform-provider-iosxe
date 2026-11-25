@@ -68,6 +68,13 @@ resource "iosxe_yang" "PreReq0" {
 	}
 }
 
+resource "iosxe_yang" "PreReq1" {
+	path = "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-eigrp:router-eigrp/eigrp/named-mode[name=TOPGEN]"
+	attributes = {
+		"name" = "TOPGEN"
+	}
+}
+
 `
 
 // End of section. //template:end testPrerequisites
@@ -94,7 +101,7 @@ func testAccDataSourceIosxeEIGRPVRFConfig() string {
 	config += `	stub_connected = true` + "\n"
 	config += `	stub_summary = true` + "\n"
 	config += `	shutdown = false` + "\n"
-	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `
