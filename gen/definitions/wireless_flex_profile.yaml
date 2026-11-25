@@ -1,0 +1,60 @@
+---
+name: Wireless Flex Profile
+path: /Cisco-IOS-XE-wireless-flex-cfg:flex-cfg-data/flex-policy-entries/flex-policy-entry[policy-name=%s]
+no_delete_attributes: true
+test_tags: [C9800]
+builtin_objects:
+  - default-flex-profile
+doc_category: Wireless
+attributes:
+  - yang_name: policy-name
+    tf_name: name
+    type: String
+    id: true
+    example: S2-BRANCH-FLEX
+  - yang_name: description
+    tf_name: description
+    type: String
+    example: Branch FlexConnect profile
+  - yang_name: native-vlan-id
+    tf_name: native_vlan_id
+    type: Int64
+    min_int: 1
+    max_int: 4094
+    example: 10
+  - yang_name: arp-caching
+    tf_name: arp_caching
+    type: Bool
+    example: false
+  - yang_name: fallback-radio-shut
+    tf_name: fallback_radio_shut
+    type: Bool
+    example: true
+  - yang_name: efficient-ap-upgrade-enable
+    tf_name: predownload
+    type: Bool
+    example: false
+  - yang_name: if-name-vlan-ids/if-name-vlan-id
+    tf_name: vlan_names
+    type: List
+    attributes:
+      - yang_name: interface-name
+        tf_name: name
+        type: String
+        id: true
+        example: data
+      - yang_name: vlan-id
+        tf_name: vlan_id
+        type: Int64
+        min_int: 1
+        max_int: 4096
+        example: 20
+  - yang_name: policy-acls/policy-acl
+    tf_name: acl_policies
+    type: List
+    attributes:
+      - yang_name: acl-name
+        tf_name: name
+        type: String
+        id: true
+        example: S2-FLEX-ACL

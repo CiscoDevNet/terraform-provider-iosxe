@@ -17,7 +17,9 @@ resource "iosxe_eigrp_vrf" "example" {
       split_horizon     = false
     }
   ]
-  stub_connected = true
-  stub_summary   = true
-  shutdown       = false
+  stub_connected     = true
+  stub_summary       = true
+  stub_static        = true
+  stub_redistributed = true
+  shutdown           = false
 }

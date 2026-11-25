@@ -42,23 +42,25 @@ func TestAccIosxeWirelessWLANProfile(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "wlan_id", "10"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "ssid", "S1-CORP-PSK"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "wlan_status", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "broadcast_ssid", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "ccx_aironet_ie", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "broadcast_ssid", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "ccx_aironet_ie", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "peer_blocking", "p2p-blocking-action-drop"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "security_wpa_akm_dot1x", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "security_wpa_akm_ft_dot1x", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "security_wpa_akm_psk", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "security_wpa_akm_ft_psk", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "security_wpa_akm_sae", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "security_wpa_akm_ft_sae", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "security_wpa_wpa2_ciphers_aes", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "security_wpa_wpa3", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "security_wpa_psk_key_format", "key-ascii"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "security_web_auth", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "security_pmf", "apf-vap-pmf-optional"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "security_wpa_psk_key_format", "key-hex"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "security_web_auth", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "security_ft", "dot11r-enabled"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "security_ft_over_the_ds", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "load_balance", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "wmm", "apf-vap-wme-required"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "radio_policies.0.band", "dot11-5-ghz-band"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "bss_transition", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "bss_max_idle", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "dms", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "assisted_roaming_neighbor_list", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "okc", "false"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -75,7 +77,7 @@ func TestAccIosxeWirelessWLANProfile(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeWirelessWLANProfileImportStateIdFunc("iosxe_wireless_wlan_profile.test"),
-				ImportStateVerifyIgnore: []string{},
+				ImportStateVerifyIgnore: []string{"security_wpa_psk_key_encryption"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -106,6 +108,7 @@ func testAccIosxeWirelessWLANProfileConfig_minimum() string {
 	config := `resource "iosxe_wireless_wlan_profile" "test" {` + "\n"
 	config += `	profile_name = "S1-CORP-PSK"` + "\n"
 	config += `	wlan_id = 10` + "\n"
+	config += `	ssid = "S1-CORP-PSK"` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -120,25 +123,29 @@ func testAccIosxeWirelessWLANProfileConfig_all() string {
 	config += `	wlan_id = 10` + "\n"
 	config += `	ssid = "S1-CORP-PSK"` + "\n"
 	config += `	wlan_status = true` + "\n"
-	config += `	broadcast_ssid = true` + "\n"
-	config += `	ccx_aironet_ie = false` + "\n"
+	config += `	broadcast_ssid = false` + "\n"
+	config += `	ccx_aironet_ie = true` + "\n"
 	config += `	peer_blocking = "p2p-blocking-action-drop"` + "\n"
 	config += `	security_wpa_akm_dot1x = false` + "\n"
-	config += `	security_wpa_akm_ft_dot1x = false` + "\n"
 	config += `	security_wpa_akm_psk = true` + "\n"
 	config += `	security_wpa_akm_ft_psk = true` + "\n"
-	config += `	security_wpa_akm_sae = false` + "\n"
-	config += `	security_wpa_akm_ft_sae = false` + "\n"
-	config += `	security_wpa_wpa2_ciphers_aes = true` + "\n"
-	config += `	security_wpa_wpa3 = false` + "\n"
-	config += `	security_wpa_psk_key_format = "key-ascii"` + "\n"
+	config += `	security_pmf = "apf-vap-pmf-optional"` + "\n"
+	config += `	security_wpa_psk_key_format = "key-hex"` + "\n"
 	config += `	security_wpa_psk_key_encryption = "clear"` + "\n"
-	config += `	security_wpa_psk_key = "Example-Passphrase-123"` + "\n"
-	config += `	security_web_auth = false` + "\n"
+	config += `	security_wpa_psk_key = "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"` + "\n"
+	config += `	security_web_auth = true` + "\n"
 	config += `	security_ft = "dot11r-enabled"` + "\n"
 	config += `	security_ft_over_the_ds = true` + "\n"
 	config += `	load_balance = true` + "\n"
 	config += `	wmm = "apf-vap-wme-required"` + "\n"
+	config += `	radio_policies = [{` + "\n"
+	config += `		band = "dot11-5-ghz-band"` + "\n"
+	config += `	}]` + "\n"
+	config += `	bss_transition = false` + "\n"
+	config += `	bss_max_idle = false` + "\n"
+	config += `	dms = false` + "\n"
+	config += `	assisted_roaming_neighbor_list = false` + "\n"
+	config += `	okc = false` + "\n"
 	config += `}` + "\n"
 	return config
 }

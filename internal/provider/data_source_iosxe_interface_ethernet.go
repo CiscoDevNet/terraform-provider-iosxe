@@ -813,6 +813,42 @@ func (d *InterfaceEthernetDataSource) Schema(ctx context.Context, req datasource
 				MarkdownDescription: "Security zone",
 				Computed:            true,
 			},
+			"redundancy_rii_id": schema.Int64Attribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"redundancy_groups": schema.ListNestedAttribute{
+				MarkdownDescription: "RG redundancy traffic interface config",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"group_id": schema.Int64Attribute{
+							MarkdownDescription: "RG Group Id",
+							Computed:            true,
+						},
+						"virtual_ips": schema.ListNestedAttribute{
+							MarkdownDescription: "Virtual-IP address family",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"ip_family": schema.StringAttribute{
+										MarkdownDescription: "IP Address family",
+										Computed:            true,
+									},
+									"ipv4_address": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"exclusive": schema.BoolAttribute{
+										MarkdownDescription: "Exclusive",
+										Computed:            true,
+									},
+								},
+							},
+						},
+					},
+				},
+			},
 		},
 	}
 }

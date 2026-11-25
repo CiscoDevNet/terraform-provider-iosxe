@@ -42,6 +42,8 @@ func TestAccDataSourceIosxeEIGRPVRF(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eigrp_vrf.test", "af_interfaces.0.split_horizon", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eigrp_vrf.test", "stub_connected", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eigrp_vrf.test", "stub_summary", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eigrp_vrf.test", "stub_static", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eigrp_vrf.test", "stub_redistributed", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eigrp_vrf.test", "shutdown", "false"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -65,6 +67,13 @@ resource "iosxe_yang" "PreReq0" {
 	attributes = {
 		"name" = "VRF1"
 		"address-family/ipv4" = ""
+	}
+}
+
+resource "iosxe_yang" "PreReq1" {
+	path = "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-eigrp:router-eigrp/eigrp/named-mode[name=TOPGEN]"
+	attributes = {
+		"name" = "TOPGEN"
 	}
 }
 
@@ -93,8 +102,10 @@ func testAccDataSourceIosxeEIGRPVRFConfig() string {
 	config += `	}]` + "\n"
 	config += `	stub_connected = true` + "\n"
 	config += `	stub_summary = true` + "\n"
+	config += `	stub_static = true` + "\n"
+	config += `	stub_redistributed = true` + "\n"
 	config += `	shutdown = false` + "\n"
-	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `

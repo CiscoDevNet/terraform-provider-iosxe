@@ -99,7 +99,7 @@ func (r *WirelessWLANProfileResource) Schema(ctx context.Context, req resource.S
 			},
 			"ssid": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Represents the SSID assigned to this WLAN. The access points will broadcast this SSID on this WLAN. SSID is restricted to non control characters.").String,
-				Optional:            true,
+				Required:            true,
 				Validators: []validator.String{
 					stringvalidator.LengthBetween(0, 32),
 				},
@@ -147,6 +147,14 @@ func (r *WirelessWLANProfileResource) Schema(ctx context.Context, req resource.S
 				MarkdownDescription: helpers.NewAttributeDescription("Authentication key management type FT-SAE").String,
 				Optional:            true,
 			},
+			"security_wpa_akm_dot1x_sha256": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable the 802.1X SHA256 AKM (`security wpa akm dot1x-sha256`). With OWE and SAE, one of the AKMs a 6 GHz WLAN can use").String,
+				Optional:            true,
+			},
+			"security_wpa_akm_owe": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable OWE (`security wpa akm owe`). The controller refuses it while `security_wpa_wpa2` is true").String,
+				Optional:            true,
+			},
 			"security_wpa_wpa2_ciphers_aes": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("WPA2/CCMP128 support").String,
 				Optional:            true,
@@ -162,6 +170,21 @@ func (r *WirelessWLANProfileResource) Schema(ctx context.Context, req resource.S
 			"security_wpa_wpa3": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Configures WPA3 support").String,
 				Optional:            true,
+			},
+			"security_wpa_wpa2": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable WPA2 (`security wpa wpa2`). Set to false for OWE, and for a WLAN broadcast only on 6 GHz").String,
+				Optional:            true,
+			},
+			"security_wpa": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable WPA security on the WLAN (`security wpa`). Set to false for an open WLAN").String,
+				Optional:            true,
+			},
+			"security_pmf": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Protected Management Frames, 802.11w (`security pmf optional|mandatory`). `apf-vap-pmf-required` is `mandatory`. The controller default is disabled and is not returned on read, so leave the attribute unset for PMF disabled; setting `apf-vap-pmf-disabled` shows a change on every plan. A WLAN broadcast only on 6 GHz requires `apf-vap-pmf-required`").AddStringEnumDescription("apf-vap-pmf-disabled", "apf-vap-pmf-optional", "apf-vap-pmf-required").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("apf-vap-pmf-disabled", "apf-vap-pmf-optional", "apf-vap-pmf-required"),
+				},
 			},
 			"security_wpa_psk_key_format": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Authentication pre-shared key type ascii/hex").AddStringEnumDescription("key-ascii", "key-hex").String,
@@ -232,6 +255,41 @@ func (r *WirelessWLANProfileResource) Schema(ctx context.Context, req resource.S
 				Validators: []validator.String{
 					stringvalidator.OneOf("apf-vap-wme-disabled", "apf-vap-wme-allowed", "apf-vap-wme-required"),
 				},
+			},
+			"radio_policies": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Bands the WLAN is broadcast on (`radio policy dot11 24ghz|5ghz|6ghz`). With no entries the controller uses all bands, and 6 GHz comes up only when WPA3 and 802.11ax are enabled. A WLAN broadcast only on 6 GHz requires `security_wpa_wpa2` false, `security_wpa_wpa3` true and `security_pmf` `apf-vap-pmf-required`").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"band": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Broadcast WLAN on band").AddStringEnumDescription("dot11-2-dot-4-ghz-band", "dot11-5-ghz-band", "dot11-6-ghz-band").String,
+							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("dot11-2-dot-4-ghz-band", "dot11-5-ghz-band", "dot11-6-ghz-band"),
+							},
+						},
+					},
+				},
+			},
+			"bss_transition": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Configure BSS transition per WLAN").String,
+				Optional:            true,
+			},
+			"bss_max_idle": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Configure BSS max idle processing per WLAN").String,
+				Optional:            true,
+			},
+			"dms": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Configure DMS processing per WLAN").String,
+				Optional:            true,
+			},
+			"assisted_roaming_neighbor_list": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable the 802.11k neighbor list (`assisted-roaming neighbor-list`). Enabled by default").String,
+				Optional:            true,
+			},
+			"okc": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable/disable opportunistic key caching").String,
+				Optional:            true,
 			},
 		},
 	}

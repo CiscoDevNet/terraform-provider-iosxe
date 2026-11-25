@@ -1,0 +1,73 @@
+---
+name: Redundancy Application Group
+path: /Cisco-IOS-XE-native:native/redundancy/application/redundancy/group[id=%v]
+doc_category: Redundancy
+test_tags: [C8000V]
+attributes:
+  - yang_name: id
+    tf_name: group_id
+    id: true
+    example: 1
+  - yang_name: name/group-name
+    tf_name: name
+    example: cube-rg-1
+  - yang_name: priority/value
+    tf_name: priority
+    example: 100
+  - yang_name: priority/failover/threshold
+    tf_name: failover_threshold
+    example: 75
+  - yang_name: timers/delay
+    tf_name: timers_delay
+    example: 30
+  - yang_name: timers/reload
+    tf_name: timers_reload
+    example: 60
+  # control/data interfaces require a specific physical interface and a peer, so
+  # they stay out of the single-device acceptance test.
+  - yang_name: control/interface
+    tf_name: control_interface
+    exclude_test: true
+    example: GigabitEthernet4
+  - yang_name: control/protocol
+    tf_name: control_protocol
+    exclude_test: true
+    example: 1
+  - yang_name: data
+    tf_name: data_interface
+    exclude_test: true
+    example: GigabitEthernet4
+  - yang_name: preempt
+    example: true
+  - yang_name: shutdown
+    example: false
+  - yang_name: Cisco-IOS-XE-track:track
+    xpath: Cisco-IOS-XE-track:track
+    tf_name: tracks
+    type: List
+    attributes:
+      - yang_name: object-number
+        tf_name: object_number
+        id: true
+        example: 1
+      - yang_name: decrement-shutdown/shutdown-case/shutdown
+        xpath: shutdown
+        tf_name: shutdown
+        example: true
+      # shutdown and decrement are the two branches of a YANG choice, so only
+      # one can be set on a given track object; decrement is covered by example.
+      - yang_name: decrement-shutdown/decrement-case/decrement
+        xpath: decrement
+        tf_name: decrement
+        exclude_test: true
+        example: 10
+
+# The RG track list references a global tracked object, so create a stub track
+# object for the acceptance test.
+test_prerequisites:
+  - path: /Cisco-IOS-XE-native:native/track/Cisco-IOS-XE-track:tracked-object-v2[object-number=1]
+    attributes:
+      - name: object-number
+        value: 1
+      - name: stub-object
+        value: ""

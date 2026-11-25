@@ -22,13 +22,17 @@ attributes:
     tf_name: band
     type: String
     enum_values: [dot11-2-dot-4-ghz-band, dot11-5-ghz-band, dot11-6-ghz-band]
+    mandatory: true
     builtin_keep: true
     example: dot11-5-ghz-band
   - yang_name: status
     tf_name: status
     type: Bool
     builtin_keep: true
+    # Excluded from tests: the controller only accepts status true in the same
+    # edit that creates the profile, so the minimum-then-update test cannot enable it.
     example: true
+    exclude_test: true
   - yang_name: description
     tf_name: description
     type: String
@@ -37,22 +41,22 @@ attributes:
     tf_name: data_rate_1m
     type: String
     enum_values: [apf-tx-rate-unsupported, apf-tx-rate-supported, apf-tx-rate-basic, apf-tx-rate-not-applicable]
-    example: apf-tx-rate-basic
+    example: apf-tx-rate-supported
   - yang_name: data-rate-2m
     tf_name: data_rate_2m
     type: String
     enum_values: [apf-tx-rate-unsupported, apf-tx-rate-supported, apf-tx-rate-basic, apf-tx-rate-not-applicable]
-    example: apf-tx-rate-basic
+    example: apf-tx-rate-supported
   - yang_name: data-rate-5-5m
     tf_name: data_rate_5_5m
     type: String
     enum_values: [apf-tx-rate-unsupported, apf-tx-rate-supported, apf-tx-rate-basic, apf-tx-rate-not-applicable]
-    example: apf-tx-rate-basic
+    example: apf-tx-rate-supported
   - yang_name: data-rate-11m
     tf_name: data_rate_11m
     type: String
     enum_values: [apf-tx-rate-unsupported, apf-tx-rate-supported, apf-tx-rate-basic, apf-tx-rate-not-applicable]
-    example: apf-tx-rate-basic
+    example: apf-tx-rate-supported
   - yang_name: data-rate-6m
     tf_name: data_rate_6m
     type: String
@@ -62,7 +66,7 @@ attributes:
     tf_name: data_rate_9m
     type: String
     enum_values: [apf-tx-rate-unsupported, apf-tx-rate-supported, apf-tx-rate-basic, apf-tx-rate-not-applicable]
-    example: apf-tx-rate-supported
+    example: apf-tx-rate-unsupported
   - yang_name: data-rate-12m
     tf_name: data_rate_12m
     type: String
@@ -72,7 +76,7 @@ attributes:
     tf_name: data_rate_18m
     type: String
     enum_values: [apf-tx-rate-unsupported, apf-tx-rate-supported, apf-tx-rate-basic, apf-tx-rate-not-applicable]
-    example: apf-tx-rate-supported
+    example: apf-tx-rate-basic
   - yang_name: data-rate-24m
     tf_name: data_rate_24m
     type: String
@@ -82,21 +86,21 @@ attributes:
     tf_name: data_rate_36m
     type: String
     enum_values: [apf-tx-rate-unsupported, apf-tx-rate-supported, apf-tx-rate-basic, apf-tx-rate-not-applicable]
-    example: apf-tx-rate-supported
+    example: apf-tx-rate-basic
   - yang_name: data-rate-48m
     tf_name: data_rate_48m
     type: String
     enum_values: [apf-tx-rate-unsupported, apf-tx-rate-supported, apf-tx-rate-basic, apf-tx-rate-not-applicable]
-    example: apf-tx-rate-supported
+    example: apf-tx-rate-basic
   - yang_name: data-rate-54m
     tf_name: data_rate_54m
     type: String
     enum_values: [apf-tx-rate-unsupported, apf-tx-rate-supported, apf-tx-rate-basic, apf-tx-rate-not-applicable]
-    example: apf-tx-rate-supported
+    example: apf-tx-rate-basic
   - yang_name: band-select-client-rssi
     tf_name: band_select_client_rssi
     type: Int64
-    example: -70
+    example: -85
   - yang_name: band-select-cycle-count
     tf_name: band_select_cycle_count
     type: Int64
@@ -153,7 +157,7 @@ attributes:
   - yang_name: tx-power-max
     tf_name: tx_power_max
     type: Int64
-    example: 30
+    example: 20
   - yang_name: tx-power-min
     tf_name: tx_power_min
     type: Int64
