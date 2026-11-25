@@ -475,6 +475,26 @@ func (d *SystemDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 				MarkdownDescription: "Window-size value",
 				Computed:            true,
 			},
+			"ip_ssh_server_algorithm_encryption": schema.SetAttribute{
+				MarkdownDescription: "SSH server encryption algorithms (`ip ssh server algorithm encryption`). The order is not significant, because SSH selects the first algorithm in the client's list that the server also supports. Valid values are `aes128-ctr`, `aes192-ctr`, `aes256-ctr`, `aes128-cbc`, `aes192-cbc`, `aes256-cbc`, `aes128-gcm`, `aes256-gcm`, `aes128-gcm@openssh.com`, `aes256-gcm@openssh.com`, `chacha20-poly1305@openssh.com` and `3des-cbc`. When unset the device uses its default list. Requires IOS-XE 17.16.1 or later",
+				ElementType:         types.StringType,
+				Computed:            true,
+			},
+			"ip_ssh_server_algorithm_mac": schema.SetAttribute{
+				MarkdownDescription: "SSH server MAC algorithms (`ip ssh server algorithm mac`). The order is not significant, because SSH selects the first algorithm in the client's list that the server also supports. Valid values are `hmac-sha1`, `hmac-sha2-256`, `hmac-sha2-256-etm@openssh.com`, `hmac-sha2-512` and `hmac-sha2-512-etm@openssh.com`. When unset the device uses its default list. Requires IOS-XE 17.16.1 or later",
+				ElementType:         types.StringType,
+				Computed:            true,
+			},
+			"ip_ssh_server_algorithm_kex": schema.SetAttribute{
+				MarkdownDescription: "SSH server key exchange algorithms (`ip ssh server algorithm kex`). The order is not significant, because SSH selects the first algorithm in the client's list that the server also supports. Valid values are `curve25519-sha256`, `curve25519-sha256@libssh.org`, `diffie-hellman-group14-sha1`, `diffie-hellman-group14-sha256`, `diffie-hellman-group16-sha512`, `ecdh-sha2-nistp256`, `ecdh-sha2-nistp384` and `ecdh-sha2-nistp521`; IOS-XE 26.1.1 and later also accept `mlkem768x25519-sha256`, `mlkem768nistp256-sha256` and `mlkem1024nistp384-sha384`. When unset the device uses its default list. Requires IOS-XE 17.16.1 or later",
+				ElementType:         types.StringType,
+				Computed:            true,
+			},
+			"ip_ssh_server_algorithm_authentication": schema.SetAttribute{
+				MarkdownDescription: "SSH server user authentication methods (`ip ssh server algorithm authentication`). Valid values are `publickey`, `keyboard` (keyboard-interactive) and `password`. The provider logs in with `password` or `keyboard`, so a list without either locks the provider out of the device. When unset the device uses its default methods. Requires IOS-XE 17.16.1 or later",
+				ElementType:         types.StringType,
+				Computed:            true,
+			},
 			"control_plane_service_policy_input": schema.StringAttribute{
 				MarkdownDescription: "Assign policy-map to the input of an interface",
 				Computed:            true,

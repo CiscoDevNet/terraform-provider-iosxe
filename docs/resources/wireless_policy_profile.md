@@ -24,7 +24,6 @@ resource "iosxe_wireless_policy_profile" "example" {
   session_timeout       = 3600
   idle_timeout          = 600
   exclusionlist_timeout = 180
-  static_ip_mobility    = true
   dhcp_tlv_caching      = true
   http_tlv_caching      = true
   ipv4_flow_monitors_input = [
@@ -35,6 +34,12 @@ resource "iosxe_wireless_policy_profile" "example" {
   ipv4_flow_monitors_output = [
     {
       name = "S2-AVC-MON-OUT"
+    }
+  ]
+  mobility_anchors = [
+    {
+      ip       = "192.0.2.10"
+      priority = "export-anchor-primary"
     }
   ]
 }
@@ -63,7 +68,7 @@ resource "iosxe_wireless_policy_profile" "example" {
 - `ipv4_flow_monitors_input` (Attributes List) IPv4 ingress flow monitor associated to policy profile (see [below for nested schema](#nestedatt--ipv4_flow_monitors_input))
 - `ipv4_flow_monitors_output` (Attributes List) IPv4 egress flow monitor associated to policy profile (see [below for nested schema](#nestedatt--ipv4_flow_monitors_output))
 - `ipv6_acl` (String) Configure the name of IPV6 ACL
-- `mobility_anchors` (Attributes List) Guest mm DB associated to policy profile (see [below for nested schema](#nestedatt--mobility_anchors))
+- `mobility_anchors` (Attributes List) Guest mm DB associated to policy profile. The controller rejects it together with `static_ip_mobility`. (see [below for nested schema](#nestedatt--mobility_anchors))
 - `nac` (Boolean) This flag is set when NAC is enabled
 - `nac_type` (String) Type of Network Authentication Control (NAC) supported
   - Choices: `nac-support-radius`
@@ -71,7 +76,7 @@ resource "iosxe_wireless_policy_profile" "example" {
 - `service_policy_output` (String) This object specifies the egress service-policy name. It can be system generated policy name or user-defined policy name.
 - `session_timeout` (Number) Configures client Session timeout
   - Range: `0`-`86400`
-- `static_ip_mobility` (Boolean) Configuration of static IP mobility
+- `static_ip_mobility` (Boolean) Configuration of static IP mobility. The controller rejects it together with `mobility_anchors`.
 - `status` (Boolean) This object specifies whether the policy profile is shutdown or active
 - `vlan` (String) This object represents the interface attached to the wireless lan.
 
