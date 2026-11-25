@@ -63,12 +63,14 @@ attributes:
     exclude_test: true
   - yang_name: auth-key-mgmt-dot1x-sha256
     tf_name: security_wpa_akm_dot1x_sha256
+    description: Enable the 802.1X SHA256 AKM (`security wpa akm dot1x-sha256`). With OWE and SAE, one of the AKMs a 6 GHz WLAN can use
     # Excluded from tests: the test value is the YANG default, which the
     # controller omits on read, and a PSK WLAN cannot use the non-default value.
     example: false
     exclude_test: true
   - yang_name: akm-owe
     tf_name: security_wpa_akm_owe
+    description: Enable OWE (`security wpa akm owe`). The controller refuses it while `security_wpa_wpa2` is true
     # Excluded from tests: the test value is the YANG default, which the
     # controller omits on read, and a PSK WLAN cannot use the non-default value.
     example: false
@@ -95,18 +97,21 @@ attributes:
     exclude_test: true
   - yang_name: wpa2-enabled
     tf_name: security_wpa_wpa2
+    description: Enable WPA2 (`security wpa wpa2`). Set to false for OWE, and for a WLAN broadcast only on 6 GHz
     # Excluded from tests: the test value is the YANG default, which the
     # controller omits on read, and the PSK test WLAN needs WPA2.
     example: true
     exclude_test: true
   - yang_name: security-wpa
     tf_name: security_wpa
+    description: Enable WPA security on the WLAN (`security wpa`). Set to false for an open WLAN
     # Excluded from tests: the test value is the YANG default, which the
     # controller omits on read, and the PSK test WLAN needs WPA.
     example: true
     exclude_test: true
   - yang_name: pmf-options
     tf_name: security_pmf
+    description: Protected Management Frames, 802.11w (`security pmf optional|mandatory`). `apf-vap-pmf-required` is `mandatory`. The controller default is disabled and is not returned on read, so leave the attribute unset for PMF disabled; setting `apf-vap-pmf-disabled` shows a change on every plan. A WLAN broadcast only on 6 GHz requires `apf-vap-pmf-required`
     type: String
     enum_values:
       - apf-vap-pmf-disabled
@@ -177,7 +182,7 @@ attributes:
   - yang_name: wlan-radio-policies/wlan-radio-policy
     tf_name: radio_policies
     type: List
-    description: Bands the WLAN is broadcast on (`radio policy dot11 24ghz|5ghz|6ghz`). An empty list broadcasts on the default bands, 2.4 GHz and 5 GHz
+    description: Bands the WLAN is broadcast on (`radio policy dot11 24ghz|5ghz|6ghz`). With no entries the controller uses all bands, and 6 GHz comes up only when WPA3 and 802.11ax are enabled. A WLAN broadcast only on 6 GHz requires `security_wpa_wpa2` false, `security_wpa_wpa3` true and `security_pmf` `apf-vap-pmf-required`
     attributes:
       - yang_name: band
         tf_name: band
@@ -199,6 +204,7 @@ attributes:
     example: false
   - yang_name: wlan-11k-neigh-list
     tf_name: assisted_roaming_neighbor_list
+    description: Enable the 802.11k neighbor list (`assisted-roaming neighbor-list`). Enabled by default
     example: false
   - yang_name: okc
     tf_name: okc

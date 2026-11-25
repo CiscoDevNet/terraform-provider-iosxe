@@ -60,7 +60,7 @@ resource "iosxe_wireless_wlan_profile" "example" {
 
 > **NOTE**: [Write-only arguments](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments) are supported in Terraform 1.11 and later.
 
-- `assisted_roaming_neighbor_list` (Boolean) Indicates whether 11k Neighbor List is enabled on the controller for this WLAN.
+- `assisted_roaming_neighbor_list` (Boolean) Enable the 802.11k neighbor list (`assisted-roaming neighbor-list`). Enabled by default
 - `broadcast_ssid` (Boolean) broadcast SSID on a WLAN
 - `bss_max_idle` (Boolean) Configure BSS max idle processing per WLAN
 - `bss_transition` (Boolean) Configure BSS transition per WLAN
@@ -72,23 +72,23 @@ resource "iosxe_wireless_wlan_profile" "example" {
 - `okc` (Boolean) Enable/disable opportunistic key caching
 - `peer_blocking` (String) Represents the name of the ACL applied to this WLAN. If it is required to remove the ACL
   - Choices: `p2p-blocking-action-none`, `p2p-blocking-action-drop`, `p2p-blocking-action-fwdup`
-- `radio_policies` (Attributes List) Bands the WLAN is broadcast on (`radio policy dot11 24ghz|5ghz|6ghz`). An empty list broadcasts on the default bands, 2.4 GHz and 5 GHz (see [below for nested schema](#nestedatt--radio_policies))
+- `radio_policies` (Attributes List) Bands the WLAN is broadcast on (`radio policy dot11 24ghz|5ghz|6ghz`). With no entries the controller uses all bands, and 6 GHz comes up only when WPA3 and 802.11ax are enabled. A WLAN broadcast only on 6 GHz requires `security_wpa_wpa2` false, `security_wpa_wpa3` true and `security_pmf` `apf-vap-pmf-required` (see [below for nested schema](#nestedatt--radio_policies))
 - `security_dot1x_authentication_list` (String) Enter the Authentication list name
 - `security_ft` (String) Configures Fast Transition Adaptive support
   - Choices: `dot11r-disabled`, `dot11r-enabled`, `dot11r-adaptive-enabled`
 - `security_ft_over_the_ds` (Boolean) Configures Fast Transition over the DS
-- `security_pmf` (String) Configures PMF as optional/required
+- `security_pmf` (String) Protected Management Frames, 802.11w (`security pmf optional|mandatory`). `apf-vap-pmf-required` is `mandatory`. The controller default is disabled and is not returned on read, so leave the attribute unset for PMF disabled; setting `apf-vap-pmf-disabled` shows a change on every plan. A WLAN broadcast only on 6 GHz requires `apf-vap-pmf-required`
   - Choices: `apf-vap-pmf-disabled`, `apf-vap-pmf-optional`, `apf-vap-pmf-required`
 - `security_web_auth` (Boolean) Configures Web authentication
 - `security_web_auth_authentication_list` (String) Enter the Authentication list name
 - `security_web_auth_parameter_map` (String) Enter the parameter-map name
-- `security_wpa` (Boolean) Configures WPA/WPA2 Support for a WLAN
+- `security_wpa` (Boolean) Enable WPA security on the WLAN (`security wpa`). Set to false for an open WLAN
 - `security_wpa_akm_dot1x` (Boolean) Authentication key management type 802.1x
-- `security_wpa_akm_dot1x_sha256` (Boolean) Authentication key management type 802.1x SHA256
+- `security_wpa_akm_dot1x_sha256` (Boolean) Enable the 802.1X SHA256 AKM (`security wpa akm dot1x-sha256`). With OWE and SAE, one of the AKMs a 6 GHz WLAN can use
 - `security_wpa_akm_ft_dot1x` (Boolean) Authentication key management type 802.11r dot1x
 - `security_wpa_akm_ft_psk` (Boolean) Authentication key management type 802.11r PSK
 - `security_wpa_akm_ft_sae` (Boolean) Authentication key management type FT-SAE
-- `security_wpa_akm_owe` (Boolean) OWE support
+- `security_wpa_akm_owe` (Boolean) Enable OWE (`security wpa akm owe`). The controller refuses it while `security_wpa_wpa2` is true
 - `security_wpa_akm_psk` (Boolean) Authentication key management PSK
 - `security_wpa_akm_sae` (Boolean) Authentication key management type SAE
 - `security_wpa_psk_key` (String, Sensitive) Authentication pre-shared key. For hexadecimal key format, PSK length must be exactly 64 characters and for ASCII key format, PSK length must be in the range of 8 and 63
@@ -98,7 +98,7 @@ resource "iosxe_wireless_wlan_profile" "example" {
   - Choices: `key-ascii`, `key-hex`
 - `security_wpa_psk_key_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
 - `security_wpa_psk_key_wo_version` (Number) The write-only version of the attribute.
-- `security_wpa_wpa2` (Boolean) Configures WPA2 support
+- `security_wpa_wpa2` (Boolean) Enable WPA2 (`security wpa wpa2`). Set to false for OWE, and for a WLAN broadcast only on 6 GHz
 - `security_wpa_wpa2_ciphers_aes` (Boolean) WPA2/CCMP128 support
 - `security_wpa_wpa2_ciphers_gcmp128` (Boolean) WPA2/GCMP128 support
 - `security_wpa_wpa2_ciphers_gcmp256` (Boolean) WPA2/GCMP256 support
