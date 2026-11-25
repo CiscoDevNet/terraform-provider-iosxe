@@ -69,25 +69,25 @@ func (d *PrivilegeDataSource) Schema(ctx context.Context, req datasource.SchemaR
 				Computed:            true,
 			},
 			"mode": schema.StringAttribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Command mode that the commands belong to.",
 				Required:            true,
 			},
 			"levels": schema.ListNestedAttribute{
-				MarkdownDescription: "Set privilege level of command",
+				MarkdownDescription: "Privilege levels and the commands assigned to each.",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"level": schema.Int64Attribute{
-							MarkdownDescription: "",
+							MarkdownDescription: "Privilege level the commands are assigned to.",
 							Computed:            true,
 						},
 						"commands": schema.ListNestedAttribute{
-							MarkdownDescription: "",
+							MarkdownDescription: "Commands assigned to this privilege level. IOS-XE also assigns every command whose syntax is a subset of the command (for example `show` for `show interfaces`) to the same level.",
 							Computed:            true,
 							NestedObject: schema.NestedAttributeObject{
 								Attributes: map[string]schema.Attribute{
 									"command": schema.StringAttribute{
-										MarkdownDescription: "There are side effects",
+										MarkdownDescription: "Command name, for example `ping` or `show interfaces`.",
 										Computed:            true,
 									},
 								},

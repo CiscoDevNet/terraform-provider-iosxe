@@ -17,20 +17,25 @@ attributes:
   - yang_name: name
     tf_name: mode
     id: true
+    description: Command mode that the commands belong to.
     example: exec
   - yang_name: level
     tf_name: levels
     type: List
     requires_replace: true
+    description: Privilege levels and the commands assigned to each.
     attributes:
       - yang_name: privilege
         tf_name: level
         id: true
+        description: Privilege level the commands are assigned to.
         example: 7
       - yang_name: command-list
         tf_name: commands
         type: List
+        description: Commands assigned to this privilege level. IOS-XE also assigns every command whose syntax is a subset of the command (for example `show` for `show interfaces`) to the same level.
         attributes:
           - yang_name: command
             id: true
+            description: Command name, for example `ping` or `show interfaces`.
             example: ping

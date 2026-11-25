@@ -33,12 +33,13 @@ resource "iosxe_privilege" "example" {
 
 ### Required
 
-- `mode` (String) - Choices: `configure`, `crypto-map`, `exec`, `interface`, `ipenacl`, `router`
+- `mode` (String) Command mode that the commands belong to.
+  - Choices: `configure`, `crypto-map`, `exec`, `interface`, `ipenacl`, `router`
 
 ### Optional
 
 - `device` (String) A device name from the provider configuration.
-- `levels` (Attributes List) Set privilege level of command (see [below for nested schema](#nestedatt--levels))
+- `levels` (Attributes List) Privilege levels and the commands assigned to each. (see [below for nested schema](#nestedatt--levels))
 
 ### Read-Only
 
@@ -49,18 +50,19 @@ resource "iosxe_privilege" "example" {
 
 Required:
 
-- `level` (Number) - Range: `0`-`255`
+- `level` (Number) Privilege level the commands are assigned to.
+  - Range: `0`-`255`
 
 Optional:
 
-- `commands` (Attributes List) (see [below for nested schema](#nestedatt--levels--commands))
+- `commands` (Attributes List) Commands assigned to this privilege level. IOS-XE also assigns every command whose syntax is a subset of the command (for example `show` for `show interfaces`) to the same level. (see [below for nested schema](#nestedatt--levels--commands))
 
 <a id="nestedatt--levels--commands"></a>
 ### Nested Schema for `levels.commands`
 
 Required:
 
-- `command` (String) There are side effects
+- `command` (String) Command name, for example `ping` or `show interfaces`.
 
 ## Import
 

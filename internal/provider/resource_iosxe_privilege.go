@@ -80,7 +80,7 @@ func (r *PrivilegeResource) Schema(ctx context.Context, req resource.SchemaReque
 				},
 			},
 			"mode": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("configure", "crypto-map", "exec", "interface", "ipenacl", "router").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Command mode that the commands belong to.").AddStringEnumDescription("configure", "crypto-map", "exec", "interface", "ipenacl", "router").String,
 				Required:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("configure", "crypto-map", "exec", "interface", "ipenacl", "router"),
@@ -90,7 +90,7 @@ func (r *PrivilegeResource) Schema(ctx context.Context, req resource.SchemaReque
 				},
 			},
 			"levels": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set privilege level of command").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Privilege levels and the commands assigned to each.").String,
 				Optional:            true,
 				PlanModifiers: []planmodifier.List{
 					listplanmodifier.RequiresReplace(),
@@ -98,19 +98,19 @@ func (r *PrivilegeResource) Schema(ctx context.Context, req resource.SchemaReque
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"level": schema.Int64Attribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(0, 255).String,
+							MarkdownDescription: helpers.NewAttributeDescription("Privilege level the commands are assigned to.").AddIntegerRangeDescription(0, 255).String,
 							Required:            true,
 							Validators: []validator.Int64{
 								int64validator.Between(0, 255),
 							},
 						},
 						"commands": schema.ListNestedAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Commands assigned to this privilege level. IOS-XE also assigns every command whose syntax is a subset of the command (for example `show` for `show interfaces`) to the same level.").String,
 							Optional:            true,
 							NestedObject: schema.NestedAttributeObject{
 								Attributes: map[string]schema.Attribute{
 									"command": schema.StringAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("There are side effects").String,
+										MarkdownDescription: helpers.NewAttributeDescription("Command name, for example `ping` or `show interfaces`.").String,
 										Required:            true,
 									},
 								},

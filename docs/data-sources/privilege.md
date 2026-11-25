@@ -23,7 +23,7 @@ data "iosxe_privilege" "example" {
 
 ### Required
 
-- `mode` (String)
+- `mode` (String) Command mode that the commands belong to.
 
 ### Optional
 
@@ -32,19 +32,19 @@ data "iosxe_privilege" "example" {
 ### Read-Only
 
 - `id` (String) The path of the retrieved object.
-- `levels` (Attributes List) Set privilege level of command (see [below for nested schema](#nestedatt--levels))
+- `levels` (Attributes List) Privilege levels and the commands assigned to each. (see [below for nested schema](#nestedatt--levels))
 
 <a id="nestedatt--levels"></a>
 ### Nested Schema for `levels`
 
 Read-Only:
 
-- `commands` (Attributes List) (see [below for nested schema](#nestedatt--levels--commands))
-- `level` (Number)
+- `commands` (Attributes List) Commands assigned to this privilege level. IOS-XE also assigns every command whose syntax is a subset of the command (for example `show` for `show interfaces`) to the same level. (see [below for nested schema](#nestedatt--levels--commands))
+- `level` (Number) Privilege level the commands are assigned to.
 
 <a id="nestedatt--levels--commands"></a>
 ### Nested Schema for `levels.commands`
 
 Read-Only:
 
-- `command` (String) There are side effects
+- `command` (String) Command name, for example `ping` or `show interfaces`.
