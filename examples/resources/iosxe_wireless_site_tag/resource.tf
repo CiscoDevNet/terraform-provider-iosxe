@@ -4,4 +4,5 @@ resource "iosxe_wireless_site_tag" "example" {
   ap_join_profile = "S1-AP-JOIN"
   local_site      = false
   flex_profile    = "S1-FLEX"
+  load            = 400
 }
