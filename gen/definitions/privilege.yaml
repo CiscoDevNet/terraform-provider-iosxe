@@ -1,0 +1,42 @@
+---
+name: Privilege
+path: /Cisco-IOS-XE-native:native/privilege/mode[name=%v]
+# IOS-XE 17.15 refuses a NETCONF delete of a single command-list entry or
+# a whole level entry for most commands ("Device refused one or more
+# commands"), but accepts a delete of the whole mode entry (Cat8kv 17.15.1a,
+# Cat9kv 17.15.3). So deletes always remove the mode, and any change to the
+# levels recreates it. Deleting the mode returns each command to its default
+# level; the device keeps an explicit default-level line, for example
+# `privilege exec level 1 ping`, which only `privilege exec reset <command>`
+# removes.
+res_description: "This resource can manage the Privilege configuration for one command mode. It owns the whole `privilege <mode>` entry: destroying it, or changing `levels`, deletes the mode and recreates the configured commands, which also removes mappings in that mode that the resource does not manage. IOS-XE also assigns every command whose syntax is a subset of a configured command (for example `show` for `show interfaces`) to the same level. Plans ignore those extra entries, but `terraform import` reads them, so after an import either list them in `levels` or expect the first plan to replace the mode."
+no_delete_attributes: true
+doc_category: System
+test_tags: [C8000V, C9000V]
+attributes:
+  - yang_name: name
+    tf_name: mode
+    id: true
+    description: Command mode that the commands belong to.
+    example: exec
+  - yang_name: level
+    tf_name: levels
+    type: List
+    requires_replace: true
+    description: Privilege levels and the commands assigned to each.
+    attributes:
+      - yang_name: privilege
+        tf_name: level
+        id: true
+        description: Privilege level the commands are assigned to.
+        max_int: 15
+        example: 7
+      - yang_name: command-list
+        tf_name: commands
+        type: List
+        description: Commands assigned to this privilege level. IOS-XE also assigns every command whose syntax is a subset of the command (for example `show` for `show interfaces`) to the same level.
+        attributes:
+          - yang_name: command
+            id: true
+            description: Command name, for example `ping` or `show interfaces`.
+            example: ping
