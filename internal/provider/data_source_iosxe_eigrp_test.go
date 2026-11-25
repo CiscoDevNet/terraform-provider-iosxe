@@ -42,6 +42,8 @@ func TestAccDataSourceIosxeEIGRP(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eigrp.test", "af_interfaces.0.split_horizon", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eigrp.test", "stub_connected", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eigrp.test", "stub_summary", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eigrp.test", "stub_static", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eigrp.test", "stub_redistributed", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eigrp.test", "shutdown", "false"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -90,6 +92,8 @@ func testAccDataSourceIosxeEIGRPConfig() string {
 	config += `	}]` + "\n"
 	config += `	stub_connected = true` + "\n"
 	config += `	stub_summary = true` + "\n"
+	config += `	stub_static = true` + "\n"
+	config += `	stub_redistributed = true` + "\n"
 	config += `	shutdown = false` + "\n"
 	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"

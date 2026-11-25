@@ -38,20 +38,23 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin types
 type EIGRPVRF struct {
-	Device           types.String           `tfsdk:"device"`
-	Id               types.String           `tfsdk:"id"`
-	DeleteMode       types.String           `tfsdk:"delete_mode"`
-	Name             types.String           `tfsdk:"name"`
-	Vrf              types.String           `tfsdk:"vrf"`
-	AutonomousSystem types.Int64            `tfsdk:"autonomous_system"`
-	RouterId         types.String           `tfsdk:"router_id"`
-	Networks         []EIGRPVRFNetworks     `tfsdk:"networks"`
-	TopologyBase     types.String           `tfsdk:"topology_base"`
-	AutoSummary      types.Bool             `tfsdk:"auto_summary"`
-	AfInterfaces     []EIGRPVRFAfInterfaces `tfsdk:"af_interfaces"`
-	StubConnected    types.Bool             `tfsdk:"stub_connected"`
-	StubSummary      types.Bool             `tfsdk:"stub_summary"`
-	Shutdown         types.Bool             `tfsdk:"shutdown"`
+	Device            types.String           `tfsdk:"device"`
+	Id                types.String           `tfsdk:"id"`
+	DeleteMode        types.String           `tfsdk:"delete_mode"`
+	Name              types.String           `tfsdk:"name"`
+	Vrf               types.String           `tfsdk:"vrf"`
+	AutonomousSystem  types.Int64            `tfsdk:"autonomous_system"`
+	RouterId          types.String           `tfsdk:"router_id"`
+	Networks          []EIGRPVRFNetworks     `tfsdk:"networks"`
+	TopologyBase      types.String           `tfsdk:"topology_base"`
+	AutoSummary       types.Bool             `tfsdk:"auto_summary"`
+	AfInterfaces      []EIGRPVRFAfInterfaces `tfsdk:"af_interfaces"`
+	StubConnected     types.Bool             `tfsdk:"stub_connected"`
+	StubSummary       types.Bool             `tfsdk:"stub_summary"`
+	StubStatic        types.Bool             `tfsdk:"stub_static"`
+	StubRedistributed types.Bool             `tfsdk:"stub_redistributed"`
+	StubReceiveOnly   types.Bool             `tfsdk:"stub_receive_only"`
+	Shutdown          types.Bool             `tfsdk:"shutdown"`
 }
 type EIGRPVRFNetworks struct {
 	Ip       types.String `tfsdk:"ip"`
@@ -64,19 +67,22 @@ type EIGRPVRFAfInterfaces struct {
 }
 
 type EIGRPVRFData struct {
-	Device           types.String               `tfsdk:"device"`
-	Id               types.String               `tfsdk:"id"`
-	Name             types.String               `tfsdk:"name"`
-	Vrf              types.String               `tfsdk:"vrf"`
-	AutonomousSystem types.Int64                `tfsdk:"autonomous_system"`
-	RouterId         types.String               `tfsdk:"router_id"`
-	Networks         []EIGRPVRFNetworksData     `tfsdk:"networks"`
-	TopologyBase     types.String               `tfsdk:"topology_base"`
-	AutoSummary      types.Bool                 `tfsdk:"auto_summary"`
-	AfInterfaces     []EIGRPVRFAfInterfacesData `tfsdk:"af_interfaces"`
-	StubConnected    types.Bool                 `tfsdk:"stub_connected"`
-	StubSummary      types.Bool                 `tfsdk:"stub_summary"`
-	Shutdown         types.Bool                 `tfsdk:"shutdown"`
+	Device            types.String               `tfsdk:"device"`
+	Id                types.String               `tfsdk:"id"`
+	Name              types.String               `tfsdk:"name"`
+	Vrf               types.String               `tfsdk:"vrf"`
+	AutonomousSystem  types.Int64                `tfsdk:"autonomous_system"`
+	RouterId          types.String               `tfsdk:"router_id"`
+	Networks          []EIGRPVRFNetworksData     `tfsdk:"networks"`
+	TopologyBase      types.String               `tfsdk:"topology_base"`
+	AutoSummary       types.Bool                 `tfsdk:"auto_summary"`
+	AfInterfaces      []EIGRPVRFAfInterfacesData `tfsdk:"af_interfaces"`
+	StubConnected     types.Bool                 `tfsdk:"stub_connected"`
+	StubSummary       types.Bool                 `tfsdk:"stub_summary"`
+	StubStatic        types.Bool                 `tfsdk:"stub_static"`
+	StubRedistributed types.Bool                 `tfsdk:"stub_redistributed"`
+	StubReceiveOnly   types.Bool                 `tfsdk:"stub_receive_only"`
+	Shutdown          types.Bool                 `tfsdk:"shutdown"`
 }
 type EIGRPVRFNetworksData struct {
 	Ip       types.String `tfsdk:"ip"`
@@ -183,6 +189,27 @@ func (data EIGRPVRF) addToBodyXML(ctx context.Context, config EIGRPVRF, body net
 			body = helpers.SetFromXPath(body, data.getXPath()+"/eigrp/stub/advertise/summary", "")
 		} else {
 			body = helpers.RemoveFromXPath(body, data.getXPath()+"/eigrp/stub/advertise/summary")
+		}
+	}
+	if !data.StubStatic.IsNull() && !data.StubStatic.IsUnknown() {
+		if data.StubStatic.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/eigrp/stub/advertise/static", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/eigrp/stub/advertise/static")
+		}
+	}
+	if !data.StubRedistributed.IsNull() && !data.StubRedistributed.IsUnknown() {
+		if data.StubRedistributed.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/eigrp/stub/advertise/redistributed", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/eigrp/stub/advertise/redistributed")
+		}
+	}
+	if !data.StubReceiveOnly.IsNull() && !data.StubReceiveOnly.IsUnknown() {
+		if data.StubReceiveOnly.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/eigrp/stub/receive-only", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/eigrp/stub/receive-only")
 		}
 	}
 	if !data.Shutdown.IsNull() && !data.Shutdown.IsUnknown() {
@@ -318,6 +345,33 @@ func (data *EIGRPVRF) updateFromBodyXML(ctx context.Context, res xmldot.Result) 
 	} else {
 		data.StubSummary = types.BoolNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/eigrp/stub/advertise/static"); !data.StubStatic.IsNull() {
+		if value.Exists() {
+			data.StubStatic = types.BoolValue(true)
+		} else {
+			data.StubStatic = types.BoolValue(false)
+		}
+	} else {
+		data.StubStatic = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/eigrp/stub/advertise/redistributed"); !data.StubRedistributed.IsNull() {
+		if value.Exists() {
+			data.StubRedistributed = types.BoolValue(true)
+		} else {
+			data.StubRedistributed = types.BoolValue(false)
+		}
+	} else {
+		data.StubRedistributed = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/eigrp/stub/receive-only"); !data.StubReceiveOnly.IsNull() {
+		if value.Exists() {
+			data.StubReceiveOnly = types.BoolValue(true)
+		} else {
+			data.StubReceiveOnly = types.BoolValue(false)
+		}
+	} else {
+		data.StubReceiveOnly = types.BoolNull()
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/shutdown"); !data.Shutdown.IsNull() {
 		if value.Exists() {
 			data.Shutdown = types.BoolValue(value.Bool())
@@ -391,6 +445,21 @@ func (data *EIGRPVRF) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.StubSummary = types.BoolValue(false)
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/eigrp/stub/advertise/static"); value.Exists() {
+		data.StubStatic = types.BoolValue(true)
+	} else {
+		data.StubStatic = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/eigrp/stub/advertise/redistributed"); value.Exists() {
+		data.StubRedistributed = types.BoolValue(true)
+	} else {
+		data.StubRedistributed = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/eigrp/stub/receive-only"); value.Exists() {
+		data.StubReceiveOnly = types.BoolValue(true)
+	} else {
+		data.StubReceiveOnly = types.BoolValue(false)
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/shutdown"); value.Exists() {
 		data.Shutdown = types.BoolValue(value.Bool())
 	} else {
@@ -462,6 +531,21 @@ func (data *EIGRPVRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.StubSummary = types.BoolValue(false)
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/eigrp/stub/advertise/static"); value.Exists() {
+		data.StubStatic = types.BoolValue(true)
+	} else {
+		data.StubStatic = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/eigrp/stub/advertise/redistributed"); value.Exists() {
+		data.StubRedistributed = types.BoolValue(true)
+	} else {
+		data.StubRedistributed = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/eigrp/stub/receive-only"); value.Exists() {
+		data.StubReceiveOnly = types.BoolValue(true)
+	} else {
+		data.StubReceiveOnly = types.BoolValue(false)
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/shutdown"); value.Exists() {
 		data.Shutdown = types.BoolValue(value.Bool())
 	} else {
@@ -477,6 +561,15 @@ func (data *EIGRPVRF) addDeletedItemsXML(ctx context.Context, state EIGRPVRF, bo
 	b := netconf.NewBody(body)
 	if !state.Shutdown.IsNull() && data.Shutdown.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/shutdown")
+	}
+	if !state.StubReceiveOnly.IsNull() && data.StubReceiveOnly.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/eigrp/stub/receive-only")
+	}
+	if !state.StubRedistributed.IsNull() && data.StubRedistributed.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/eigrp/stub/advertise/redistributed")
+	}
+	if !state.StubStatic.IsNull() && data.StubStatic.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/eigrp/stub/advertise/static")
 	}
 	if !state.StubSummary.IsNull() && data.StubSummary.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/eigrp/stub/advertise/summary")
@@ -572,6 +665,15 @@ func (data *EIGRPVRF) addDeletePathsXML(ctx context.Context, body string) string
 	b := netconf.NewBody(body)
 	if !data.Shutdown.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/shutdown")
+	}
+	if !data.StubReceiveOnly.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/eigrp/stub/receive-only")
+	}
+	if !data.StubRedistributed.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/eigrp/stub/advertise/redistributed")
+	}
+	if !data.StubStatic.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/eigrp/stub/advertise/static")
 	}
 	if !data.StubSummary.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/eigrp/stub/advertise/summary")

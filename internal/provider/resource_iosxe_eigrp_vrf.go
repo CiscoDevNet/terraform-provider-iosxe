@@ -185,6 +185,18 @@ func (r *EIGRPVRFResource) Schema(ctx context.Context, req resource.SchemaReques
 				MarkdownDescription: helpers.NewAttributeDescription("Enable EIGRP stub routing and advertise summary routes (`eigrp stub summary`)").String,
 				Optional:            true,
 			},
+			"stub_static": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable EIGRP stub routing and advertise static routes (`eigrp stub static`)").String,
+				Optional:            true,
+			},
+			"stub_redistributed": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable EIGRP stub routing and advertise redistributed routes (`eigrp stub redistributed`)").String,
+				Optional:            true,
+			},
+			"stub_receive_only": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable EIGRP stub routing as receive-only (`eigrp stub receive-only`). Cannot be combined with `stub_connected`, `stub_static`, `stub_summary` or `stub_redistributed`").String,
+				Optional:            true,
+			},
 			"shutdown": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Shutdown address family").String,
 				Optional:            true,
