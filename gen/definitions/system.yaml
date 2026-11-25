@@ -375,6 +375,7 @@ attributes:
     xpath: ip/ssh/server/algorithm/encryption/encrypt-options
     tf_name: ip_ssh_server_algorithm_encryption
     type: StringList
+    no_augment_config: true
     description: SSH server encryption algorithms
     example: aes128-ctr
     test_tags: [IOSXE1716]
@@ -382,6 +383,7 @@ attributes:
     xpath: ip/ssh/server/algorithm/mac/mac-options
     tf_name: ip_ssh_server_algorithm_mac
     type: StringList
+    no_augment_config: true
     description: SSH server MAC algorithms
     example: hmac-sha2-256
     test_tags: [IOSXE1716]
@@ -389,6 +391,7 @@ attributes:
     xpath: ip/ssh/server/algorithm/kex/kex-options
     tf_name: ip_ssh_server_algorithm_kex
     type: StringList
+    no_augment_config: true
     description: SSH server key exchange algorithms
     example: diffie-hellman-group14-sha256
     test_tags: [IOSXE1716]
@@ -396,6 +399,7 @@ attributes:
     xpath: ip/ssh/server/algorithm/authentication/authentication-options
     tf_name: ip_ssh_server_algorithm_authentication
     type: StringList
+    no_augment_config: true
     description: SSH server authentication algorithms
     example: publickey
     test_tags: [IOSXE1716]
