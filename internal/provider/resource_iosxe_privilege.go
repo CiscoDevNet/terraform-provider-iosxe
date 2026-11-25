@@ -65,7 +65,7 @@ func (r *PrivilegeResource) Metadata(_ context.Context, req resource.MetadataReq
 func (r *PrivilegeResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This resource can manage the Privilege configuration.",
+		MarkdownDescription: "This resource can manage the Privilege configuration for one command mode. It owns the whole `privilege <mode>` entry: destroying it, or changing `levels`, deletes the mode and recreates the configured commands, which also removes mappings in that mode that the resource does not manage. IOS-XE also assigns every command whose syntax is a subset of a configured command (for example `show` for `show interfaces`) to the same level. Plans ignore those extra entries, but `terraform import` reads them, so after an import either list them in `levels` or expect the first plan to replace the mode.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
