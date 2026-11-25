@@ -80,23 +80,23 @@ type BGPIPv4UnicastNeighborRouteMapsData struct {
 // Section below is generated&owned by "gen/generator.go". //template:begin getPath
 
 func (data BGPIPv4UnicastNeighbor) getPath() string {
-	return fmt.Sprintf("Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=%v/address-family/no-vrf/ipv4=unicast/ipv4-unicast/neighbor=%s", url.QueryEscape(fmt.Sprintf("%v", data.Asn.ValueString())), url.QueryEscape(fmt.Sprintf("%v", data.Ip.ValueString())))
+	return fmt.Sprintf("Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=%v/address-family/no-vrf/ipv4=unicast/ipv4-unicast/neighbor=%s", url.QueryEscape(fmt.Sprintf("%v", data.Asn.ValueString())), url.QueryEscape(helpers.NormalizeIPv6Address(data.Ip.ValueString())))
 }
 
 func (data BGPIPv4UnicastNeighborData) getPath() string {
-	return fmt.Sprintf("Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=%v/address-family/no-vrf/ipv4=unicast/ipv4-unicast/neighbor=%s", url.QueryEscape(fmt.Sprintf("%v", data.Asn.ValueString())), url.QueryEscape(fmt.Sprintf("%v", data.Ip.ValueString())))
+	return fmt.Sprintf("Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=%v/address-family/no-vrf/ipv4=unicast/ipv4-unicast/neighbor=%s", url.QueryEscape(fmt.Sprintf("%v", data.Asn.ValueString())), url.QueryEscape(helpers.NormalizeIPv6Address(data.Ip.ValueString())))
 }
 
 // getXPath returns the XPath for NETCONF operations
 func (data BGPIPv4UnicastNeighbor) getXPath() string {
 	path := "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=%v]/address-family/no-vrf/ipv4[af-name=unicast]/ipv4-unicast/neighbor[id=%s]"
-	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Asn.ValueString()), fmt.Sprintf("%v", data.Ip.ValueString()))
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Asn.ValueString()), helpers.NormalizeIPv6Address(data.Ip.ValueString()))
 	return path
 }
 
 func (data BGPIPv4UnicastNeighborData) getXPath() string {
 	path := "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=%v]/address-family/no-vrf/ipv4[af-name=unicast]/ipv4-unicast/neighbor[id=%s]"
-	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Asn.ValueString()), fmt.Sprintf("%v", data.Ip.ValueString()))
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Asn.ValueString()), helpers.NormalizeIPv6Address(data.Ip.ValueString()))
 	return path
 }
 

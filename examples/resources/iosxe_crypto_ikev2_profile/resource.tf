@@ -12,12 +12,21 @@ resource "iosxe_crypto_ikev2_profile" "example" {
       mask    = "255.255.255.0"
     }
   ]
-  match_identity_remote_keys = ["key1"]
-  keyring_local              = "test"
-  ivrf                       = "VRF1"
-  dpd_interval               = 10
-  dpd_retry                  = 2
-  dpd_query                  = "periodic"
-  lifetime                   = 28800
-  config_exchange_request    = false
+  match_identity_remote_keys    = ["key1"]
+  keyring_local                 = "test"
+  ivrf                          = "VRF1"
+  dpd_interval                  = 10
+  dpd_retry                     = 2
+  dpd_query                     = "periodic"
+  lifetime                      = 28800
+  authentication_local_rsa_sig  = true
+  authentication_remote_rsa_sig = true
+  match_certificate_maps        = ["map1"]
+  pki_trustpoints = [
+    {
+      name = "myCA"
+      uses = "sign"
+    }
+  ]
+  config_exchange_request = false
 }

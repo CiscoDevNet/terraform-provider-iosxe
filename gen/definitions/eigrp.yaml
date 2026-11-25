@@ -2,6 +2,15 @@
 name: EIGRP
 path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-eigrp:router-eigrp/eigrp/named-mode[name=%s]/address-family/ipv4/af-ipv4[unicast=unicast]
 doc_category: EIGRP
+res_description: "This resource can manage the EIGRP configuration. Destroying it removes the IPv4 unicast address family, but the `router eigrp <name>` instance stays on the device, because VRF address families (`iosxe_eigrp_vrf`) can share it."
+test_prerequisites:
+  # Creating the address family implicitly creates `router eigrp TOPGEN`, and
+  # destroying it leaves the empty instance behind, so the test owns the
+  # instance and removes it afterwards.
+  - path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-eigrp:router-eigrp/eigrp/named-mode[name=TOPGEN]
+    attributes:
+      - name: name
+        value: TOPGEN
 attributes:
   - yang_name: name
     xpath: ../../../name
@@ -44,6 +53,51 @@ attributes:
     no_delete: true
     example: false
     description: Enable automatic network number summarization
+  - yang_name: af-interface
+    tf_name: af_interfaces
+    type: List
+    description: Enter Address Family interface configuration
+    attributes:
+      - yang_name: interface
+        id: true
+        example: default
+        description: Interface name or default for the default AF interface
+      - yang_name: passive-interface
+        default_value: "false"
+        example: true
+        description: Suppress address updates on an interface
+      - yang_name: split-horizon
+        default_value: "true"
+        example: false
+        description: Perform split horizon
+  - yang_name: eigrp/stub/stub-type-choice/advertise/advertise/connected
+    xpath: eigrp/stub/advertise/connected
+    tf_name: stub_connected
+    example: true
+    description: Enable EIGRP stub routing and advertise connected routes (`eigrp stub connected`)
+  - yang_name: eigrp/stub/stub-type-choice/advertise/advertise/summary
+    xpath: eigrp/stub/advertise/summary
+    tf_name: stub_summary
+    example: true
+    description: Enable EIGRP stub routing and advertise summary routes (`eigrp stub summary`)
+  - yang_name: eigrp/stub/stub-type-choice/advertise/advertise/static
+    xpath: eigrp/stub/advertise/static
+    tf_name: stub_static
+    example: true
+    description: Enable EIGRP stub routing and advertise static routes (`eigrp stub static`)
+  - yang_name: eigrp/stub/stub-type-choice/advertise/advertise/redistributed
+    xpath: eigrp/stub/advertise/redistributed
+    tf_name: stub_redistributed
+    example: true
+    description: Enable EIGRP stub routing and advertise redistributed routes (`eigrp stub redistributed`)
+  - yang_name: eigrp/stub/stub-type-choice/receive-only/receive-only
+    xpath: eigrp/stub/receive-only
+    tf_name: stub_receive_only
+    example: true
+    # receive-only and the advertise options are separate cases of the same YANG choice, so they cannot share one test or example config
+    exclude_test: true
+    exclude_example: true
+    description: Enable EIGRP stub routing as receive-only (`eigrp stub receive-only`). Cannot be combined with `stub_connected`, `stub_static`, `stub_summary` or `stub_redistributed`
   - yang_name: shutdown
     example: false
     description: Shutdown address family

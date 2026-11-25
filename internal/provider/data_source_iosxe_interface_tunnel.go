@@ -438,8 +438,29 @@ func (d *InterfaceTunnelDataSource) Schema(ctx context.Context, req datasource.S
 							MarkdownDescription: "Protocol IP address of NHS",
 							Computed:            true,
 						},
+						"nbma_ipv4s": schema.ListNestedAttribute{
+							MarkdownDescription: "NBMA address of the NHS. IOS-XE applies only one NBMA address per NHS, so configure exactly one entry; with more than one, the running configuration keeps only the last and removing one of them leaves the NHS without an NBMA address.",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"ipv4": schema.StringAttribute{
+										MarkdownDescription: "IPv4 address",
+										Computed:            true,
+									},
+								},
+							},
+						},
 					},
 				},
+			},
+			"ip_nhrp_map_multicast_dynamic": schema.BoolAttribute{
+				MarkdownDescription: "Dynamically learn destinations from client registrations on hub. Use this for versions `17.14` and later.",
+				Computed:            true,
+			},
+			"ip_nhrp_map_multicast_nbma_ipv4": schema.ListAttribute{
+				MarkdownDescription: "Static NBMA addresses for multicast mapping.",
+				ElementType:         types.StringType,
+				Computed:            true,
 			},
 			"ip_nhrp_maps": schema.ListNestedAttribute{
 				MarkdownDescription: "",
@@ -450,9 +471,17 @@ func (d *InterfaceTunnelDataSource) Schema(ctx context.Context, req datasource.S
 							MarkdownDescription: "IP address of destination",
 							Computed:            true,
 						},
-						"nbma_ipv4": schema.StringAttribute{
-							MarkdownDescription: "IP NBMA address",
+						"nbma_ipv4s": schema.ListNestedAttribute{
+							MarkdownDescription: "NBMA address mapped to the destination. IOS-XE applies only one NBMA address per destination, so configure exactly one entry; with more than one, the running configuration keeps only the last and removing one of them removes the mapping. To remove the NBMA address, remove the `ip_nhrp_maps` entry instead.",
 							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"ipv4": schema.StringAttribute{
+										MarkdownDescription: "IP NBMA address",
+										Computed:            true,
+									},
+								},
+							},
 						},
 					},
 				},

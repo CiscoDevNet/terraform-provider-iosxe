@@ -108,6 +108,46 @@ func (d *EIGRPVRFDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 				MarkdownDescription: "Enable automatic network number summarization",
 				Computed:            true,
 			},
+			"af_interfaces": schema.ListNestedAttribute{
+				MarkdownDescription: "Enter Address Family interface configuration",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"interface": schema.StringAttribute{
+							MarkdownDescription: "Interface name or default for the default AF interface",
+							Computed:            true,
+						},
+						"passive_interface": schema.BoolAttribute{
+							MarkdownDescription: "Suppress address updates on an interface",
+							Computed:            true,
+						},
+						"split_horizon": schema.BoolAttribute{
+							MarkdownDescription: "Perform split horizon",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"stub_connected": schema.BoolAttribute{
+				MarkdownDescription: "Enable EIGRP stub routing and advertise connected routes (`eigrp stub connected`)",
+				Computed:            true,
+			},
+			"stub_summary": schema.BoolAttribute{
+				MarkdownDescription: "Enable EIGRP stub routing and advertise summary routes (`eigrp stub summary`)",
+				Computed:            true,
+			},
+			"stub_static": schema.BoolAttribute{
+				MarkdownDescription: "Enable EIGRP stub routing and advertise static routes (`eigrp stub static`)",
+				Computed:            true,
+			},
+			"stub_redistributed": schema.BoolAttribute{
+				MarkdownDescription: "Enable EIGRP stub routing and advertise redistributed routes (`eigrp stub redistributed`)",
+				Computed:            true,
+			},
+			"stub_receive_only": schema.BoolAttribute{
+				MarkdownDescription: "Enable EIGRP stub routing as receive-only (`eigrp stub receive-only`). Cannot be combined with `stub_connected`, `stub_static`, `stub_summary` or `stub_redistributed`",
+				Computed:            true,
+			},
 			"shutdown": schema.BoolAttribute{
 				MarkdownDescription: "Shutdown address family",
 				Computed:            true,

@@ -1,5 +1,5 @@
 ---
-subcategory: "Guides"
+subcategory: ""
 page_title: "NETCONF"
 description: |-
     How to use NETCONF with the IOSXE provider.

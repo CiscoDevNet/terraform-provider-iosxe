@@ -10,5 +10,16 @@ resource "iosxe_eigrp_vrf" "example" {
     }
   ]
   auto_summary = false
-  shutdown     = false
+  af_interfaces = [
+    {
+      interface         = "default"
+      passive_interface = true
+      split_horizon     = false
+    }
+  ]
+  stub_connected     = true
+  stub_summary       = true
+  stub_static        = true
+  stub_redistributed = true
+  shutdown           = false
 }

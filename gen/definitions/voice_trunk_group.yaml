@@ -1,0 +1,26 @@
+---
+name: Voice Trunk Group
+path: /Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:trunk/group[id=%v]
+doc_category: Voice
+# CUBE is a router feature; a switch rejects `voice class trunk group`.
+test_tags: [C8000V]
+attributes:
+  - yang_name: id
+    tf_name: name
+    id: true
+    example: PRI-1
+  - yang_name: hunt-scheme/hunt-method
+    tf_name: hunt_scheme_method
+    exclude_test: true
+    example: round-robin
+  - yang_name: max-retry
+    exclude_test: true
+    example: 3
+  - yang_name: translation-profile/incoming
+    tf_name: translation_profile_incoming
+    exclude_test: true
+    example: PSTN-IN
+  - yang_name: translation-profile/outgoing
+    tf_name: translation_profile_outgoing
+    exclude_test: true
+    example: PSTN-OUT

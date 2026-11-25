@@ -558,8 +558,32 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
 							},
 						},
+						"nbma_ipv4s": schema.ListNestedAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("NBMA address of the NHS. IOS-XE applies only one NBMA address per NHS, so configure exactly one entry; with more than one, the running configuration keeps only the last and removing one of them leaves the NHS without an NBMA address.").String,
+							Optional:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"ipv4": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("IPv4 address").String,
+										Required:            true,
+										Validators: []validator.String{
+											stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+										},
+									},
+								},
+							},
+						},
 					},
 				},
+			},
+			"ip_nhrp_map_multicast_dynamic": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Dynamically learn destinations from client registrations on hub. Use this for versions `17.14` and later.").String,
+				Optional:            true,
+			},
+			"ip_nhrp_map_multicast_nbma_ipv4": schema.ListAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Static NBMA addresses for multicast mapping.").String,
+				ElementType:         types.StringType,
+				Optional:            true,
 			},
 			"ip_nhrp_maps": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
@@ -573,11 +597,19 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
 							},
 						},
-						"nbma_ipv4": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("IP NBMA address").String,
-							Optional:            true,
-							Validators: []validator.String{
-								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+						"nbma_ipv4s": schema.ListNestedAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("NBMA address mapped to the destination. IOS-XE applies only one NBMA address per destination, so configure exactly one entry; with more than one, the running configuration keeps only the last and removing one of them removes the mapping. To remove the NBMA address, remove the `ip_nhrp_maps` entry instead.").String,
+							Required:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"ipv4": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("IP NBMA address").String,
+										Required:            true,
+										Validators: []validator.String{
+											stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+										},
+									},
+								},
 							},
 						},
 					},

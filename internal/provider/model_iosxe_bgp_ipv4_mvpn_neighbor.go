@@ -59,23 +59,23 @@ type BGPIPv4MVPNNeighborData struct {
 // Section below is generated&owned by "gen/generator.go". //template:begin getPath
 
 func (data BGPIPv4MVPNNeighbor) getPath() string {
-	return fmt.Sprintf("Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=%v/address-family/no-vrf/ipv4=mvpn/ipv4-mvpn/neighbor=%s", url.QueryEscape(fmt.Sprintf("%v", data.Asn.ValueString())), url.QueryEscape(fmt.Sprintf("%v", data.Ip.ValueString())))
+	return fmt.Sprintf("Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=%v/address-family/no-vrf/ipv4=mvpn/ipv4-mvpn/neighbor=%s", url.QueryEscape(fmt.Sprintf("%v", data.Asn.ValueString())), url.QueryEscape(helpers.NormalizeIPv6Address(data.Ip.ValueString())))
 }
 
 func (data BGPIPv4MVPNNeighborData) getPath() string {
-	return fmt.Sprintf("Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=%v/address-family/no-vrf/ipv4=mvpn/ipv4-mvpn/neighbor=%s", url.QueryEscape(fmt.Sprintf("%v", data.Asn.ValueString())), url.QueryEscape(fmt.Sprintf("%v", data.Ip.ValueString())))
+	return fmt.Sprintf("Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=%v/address-family/no-vrf/ipv4=mvpn/ipv4-mvpn/neighbor=%s", url.QueryEscape(fmt.Sprintf("%v", data.Asn.ValueString())), url.QueryEscape(helpers.NormalizeIPv6Address(data.Ip.ValueString())))
 }
 
 // getXPath returns the XPath for NETCONF operations
 func (data BGPIPv4MVPNNeighbor) getXPath() string {
 	path := "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=%v]/address-family/no-vrf/ipv4[af-name=mvpn]/ipv4-mvpn/neighbor[id=%s]"
-	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Asn.ValueString()), fmt.Sprintf("%v", data.Ip.ValueString()))
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Asn.ValueString()), helpers.NormalizeIPv6Address(data.Ip.ValueString()))
 	return path
 }
 
 func (data BGPIPv4MVPNNeighborData) getXPath() string {
 	path := "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=%v]/address-family/no-vrf/ipv4[af-name=mvpn]/ipv4-mvpn/neighbor[id=%s]"
-	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Asn.ValueString()), fmt.Sprintf("%v", data.Ip.ValueString()))
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Asn.ValueString()), helpers.NormalizeIPv6Address(data.Ip.ValueString()))
 	return path
 }
 

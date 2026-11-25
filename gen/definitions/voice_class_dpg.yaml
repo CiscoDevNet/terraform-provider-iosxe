@@ -1,0 +1,28 @@
+---
+name: Voice Class DPG
+path: /Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:voice/class/dpg[id=%v]
+doc_category: Voice
+# CUBE is a router feature; a switch rejects these voice class resources.
+test_tags: [C8000V]
+attributes:
+  - yang_name: id
+    tf_name: tag
+    id: true
+    example: 200
+  - yang_name: shutdown
+    type: Bool
+    type_yang_bool: empty
+    example: true
+  - yang_name: dial-peer
+    tf_name: dial_peers
+    type: List
+    exclude_test: true # dial-peer leafref target is added in the dial_peer_voice PR (#1820)
+    attributes:
+      - yang_name: id
+        tf_name: dial_peer_id
+        type: Int64
+        id: true
+        example: 100
+      - yang_name: preference
+        exclude_test: true
+        example: 1

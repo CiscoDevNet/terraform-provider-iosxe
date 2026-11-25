@@ -23,6 +23,42 @@ attributes:
   - yang_name: encryption/aes-gcm-256
     example: true
     exclude_test: true
+  - yang_name: pqc/mlkem512
+    xpath: pqc/mlkem512
+    tf_name: pqc_mlkem512
+    type: Bool
+    type_yang_bool: empty
+    no_augment_config: true
+    description: Enable the ML-KEM-512 post-quantum key exchange algorithm. Requires IOS XE 26.1.1 or later on a supported Cisco Secure Router G2 platform in autonomous mode.
+    example: true
+    test_tags: [IOSXE2611_C8000G2]
+  - yang_name: pqc/mlkem768
+    xpath: pqc/mlkem768
+    tf_name: pqc_mlkem768
+    type: Bool
+    type_yang_bool: empty
+    no_augment_config: true
+    description: Enable the ML-KEM-768 post-quantum key exchange algorithm. Requires IOS XE 26.1.1 or later on a supported Cisco Secure Router G2 platform in autonomous mode.
+    example: true
+    test_tags: [IOSXE2611_C8000G2]
+  - yang_name: pqc/mlkem1024
+    xpath: pqc/mlkem1024
+    tf_name: pqc_mlkem1024
+    type: Bool
+    type_yang_bool: empty
+    no_augment_config: true
+    description: Enable the ML-KEM-1024 post-quantum key exchange algorithm. Requires IOS XE 26.1.1 or later on a supported Cisco Secure Router G2 platform in autonomous mode. IKEv2 fragmentation should be considered because of the larger key size.
+    example: true
+    test_tags: [IOSXE2611_C8000G2]
+  - yang_name: pqc/optional
+    xpath: pqc/optional
+    tf_name: pqc_optional
+    type: Bool
+    type_yang_bool: empty
+    no_augment_config: true
+    description: Allow fallback to classical key exchange when the peer does not support ML-KEM. Requires at least one PQC ML-KEM algorithm and IOS XE 26.1.1 or later on a supported Cisco Secure Router G2 platform in autonomous mode.
+    example: true
+    test_tags: [IOSXE2611_C8000G2]
   - yang_name: group/one
     example: true
     exclude_test: true

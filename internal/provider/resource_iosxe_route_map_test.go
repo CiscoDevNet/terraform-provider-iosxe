@@ -75,12 +75,6 @@ func TestAccIosxeRouteMap(t *testing.T) {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.match_as_paths_legacy.0", "10"))
 	}
 	if os.Getenv("IOSXE1712") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.match_community_lists_legacy.0", "COMM1"))
-	}
-	if os.Getenv("IOSXE1712") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.match_extcommunity_lists_legacy.0", "EXTCOMM1"))
-	}
-	if os.Getenv("IOSXE1712") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.match_local_preferences_legacy.0", "100"))
 	}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.match_as_paths.0", "10"))
@@ -116,18 +110,6 @@ func TestAccIosxeRouteMap(t *testing.T) {
 	}
 	if os.Getenv("IOSXE1712") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.set_as_path_tag_legacy", "true"))
-	}
-	if os.Getenv("IOSXE1712") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.set_communities_legacy.0", "no-export"))
-	}
-	if os.Getenv("IOSXE1712") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.set_communities_additive_legacy", "true"))
-	}
-	if os.Getenv("IOSXE1712") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.set_community_list_delete_legacy", "true"))
-	}
-	if os.Getenv("IOSXE1712") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.set_community_list_name_legacy", "COMML1"))
 	}
 	if os.Getenv("IOSXE1712") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.set_extcomunity_rt_legacy.0", "10:10"))
@@ -171,7 +153,7 @@ func TestAccIosxeRouteMap(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeRouteMapImportStateIdFunc("iosxe_route_map.test"),
-				ImportStateVerifyIgnore: []string{"entries.0.description_legacy", "entries.0.match_route_type_local_legacy", "entries.0.match_route_type_local", "entries.0.match_community_list_exact_match", "entries.0.set_ip_next_hop_self", "entries.0.set_ip_next_hop_unchanged", "entries.0.set_level_1_2", "entries.0.set_level_2", "entries.0.set_as_path_tag_legacy", "entries.0.set_community_none_legacy", "entries.0.set_communities_additive_legacy", "entries.0.set_community_list_delete_legacy", "entries.0.set_as_path_tag", "entries.0.set_as_path_replace_any", "entries.0.set_community_none", "entries.0.set_communities_additive", "entries.0.set_community_list_delete", "entries.0.set_extcomunity_vpn_distinguisher_additive"},
+				ImportStateVerifyIgnore: []string{"entries.0.description_legacy", "entries.0.match_route_type_local_legacy", "entries.0.match_route_type_local", "entries.0.match_community_list_exact_match", "entries.0.set_ip_next_hop_self", "entries.0.set_ip_next_hop_unchanged", "entries.0.set_level_1_2", "entries.0.set_level_2", "entries.0.set_as_path_tag_legacy", "entries.0.set_as_path_tag", "entries.0.set_as_path_replace_any", "entries.0.set_community_none", "entries.0.set_communities_additive", "entries.0.set_community_list_delete", "entries.0.set_extcomunity_vpn_distinguisher_additive"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -265,12 +247,6 @@ func testAccIosxeRouteMapConfig_all() string {
 		config += `		match_as_paths_legacy = [10]` + "\n"
 	}
 	if os.Getenv("IOSXE1712") != "" {
-		config += `		match_community_lists_legacy = ["COMM1"]` + "\n"
-	}
-	if os.Getenv("IOSXE1712") != "" {
-		config += `		match_extcommunity_lists_legacy = ["EXTCOMM1"]` + "\n"
-	}
-	if os.Getenv("IOSXE1712") != "" {
 		config += `		match_local_preferences_legacy = [100]` + "\n"
 	}
 	config += `		match_as_paths = [10]` + "\n"
@@ -306,18 +282,6 @@ func testAccIosxeRouteMapConfig_all() string {
 	}
 	if os.Getenv("IOSXE1712") != "" {
 		config += `		set_as_path_tag_legacy = true` + "\n"
-	}
-	if os.Getenv("IOSXE1712") != "" {
-		config += `		set_communities_legacy = ["no-export"]` + "\n"
-	}
-	if os.Getenv("IOSXE1712") != "" {
-		config += `		set_communities_additive_legacy = true` + "\n"
-	}
-	if os.Getenv("IOSXE1712") != "" {
-		config += `		set_community_list_delete_legacy = true` + "\n"
-	}
-	if os.Getenv("IOSXE1712") != "" {
-		config += `		set_community_list_name_legacy = "COMML1"` + "\n"
 	}
 	if os.Getenv("IOSXE1712") != "" {
 		config += `		set_extcomunity_rt_legacy = ["10:10"]` + "\n"

@@ -39,16 +39,23 @@ func TestAccIosxeEIGRP(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eigrp.test", "networks.0.ip", "10.10.0.0"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eigrp.test", "networks.0.wildcard", "0.0.255.255"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eigrp.test", "auto_summary", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eigrp.test", "af_interfaces.0.interface", "default"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eigrp.test", "af_interfaces.0.passive_interface", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eigrp.test", "af_interfaces.0.split_horizon", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eigrp.test", "stub_connected", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eigrp.test", "stub_summary", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eigrp.test", "stub_static", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eigrp.test", "stub_redistributed", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eigrp.test", "shutdown", "false"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccIosxeEIGRPConfig_minimum(),
+				Config: testAccIosxeEIGRPPrerequisitesConfig + testAccIosxeEIGRPConfig_minimum(),
 			},
 			{
-				Config: testAccIosxeEIGRPConfig_all(),
+				Config: testAccIosxeEIGRPPrerequisitesConfig + testAccIosxeEIGRPConfig_all(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
@@ -56,7 +63,7 @@ func TestAccIosxeEIGRP(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeEIGRPImportStateIdFunc("iosxe_eigrp.test"),
-				ImportStateVerifyIgnore: []string{},
+				ImportStateVerifyIgnore: []string{"stub_receive_only"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -79,6 +86,16 @@ func iosxeEIGRPImportStateIdFunc(resourceName string) resource.ImportStateIdFunc
 // End of section. //template:end importStateIdFunc
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+const testAccIosxeEIGRPPrerequisitesConfig = `
+resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-eigrp:router-eigrp/eigrp/named-mode[name=TOPGEN]"
+	attributes = {
+		"name" = "TOPGEN"
+	}
+}
+
+`
+
 // End of section. //template:end testPrerequisites
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
@@ -87,6 +104,7 @@ func testAccIosxeEIGRPConfig_minimum() string {
 	config := `resource "iosxe_eigrp" "test" {` + "\n"
 	config += `	name = "TOPGEN"` + "\n"
 	config += `	autonomous_system = 100` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -105,7 +123,17 @@ func testAccIosxeEIGRPConfig_all() string {
 	config += `		wildcard = "0.0.255.255"` + "\n"
 	config += `	}]` + "\n"
 	config += `	auto_summary = false` + "\n"
+	config += `	af_interfaces = [{` + "\n"
+	config += `		interface = "default"` + "\n"
+	config += `		passive_interface = true` + "\n"
+	config += `		split_horizon = false` + "\n"
+	config += `	}]` + "\n"
+	config += `	stub_connected = true` + "\n"
+	config += `	stub_summary = true` + "\n"
+	config += `	stub_static = true` + "\n"
+	config += `	stub_redistributed = true` + "\n"
 	config += `	shutdown = false` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

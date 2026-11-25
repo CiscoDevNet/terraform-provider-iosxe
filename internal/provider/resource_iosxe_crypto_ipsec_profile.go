@@ -98,8 +98,12 @@ func (r *CryptoIPSecProfileResource) Schema(ctx context.Context, req resource.Sc
 				MarkdownDescription: helpers.NewAttributeDescription("Specify isakmp Profile").String,
 				Optional:            true,
 			},
+			"set_pfs": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable Perfect Forward Secrecy without selecting an explicit classical DH group. Use this form with ML-KEM so that IPsec Child SAs and rekeys inherit the algorithm negotiated by the IKEv2 SA. Do not configure together with `set_pfs_group`.").String,
+				Optional:            true,
+			},
 			"set_pfs_group": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("List of supported DH groups").AddStringEnumDescription("group1", "group14", "group15", "group16", "group19", "group2", "group20", "group21", "group24", "group5").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable Perfect Forward Secrecy with an explicit classical DH group. Do not configure together with `set_pfs`.").AddStringEnumDescription("group1", "group14", "group15", "group16", "group19", "group2", "group20", "group21", "group24", "group5").String,
 				Optional:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("group1", "group14", "group15", "group16", "group19", "group2", "group20", "group21", "group24", "group5"),

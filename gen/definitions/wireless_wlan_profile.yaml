@@ -1,0 +1,211 @@
+---
+name: Wireless WLAN Profile
+path: /Cisco-IOS-XE-wireless-wlan-cfg:wlan-cfg-data/wlan-cfg-entries/wlan-cfg-entry[profile-name=%s]
+no_delete_attributes: true
+test_tags: [C9800]
+doc_category: Wireless
+attributes:
+  - yang_name: profile-name
+    tf_name: profile_name
+    id: true
+    example: S1-CORP-PSK
+  - yang_name: wlan-id
+    tf_name: wlan_id
+    mandatory: true
+    example: 10
+  - yang_name: apf-vap-id-data/ssid
+    tf_name: ssid
+    mandatory: true
+    example: S1-CORP-PSK
+  - yang_name: apf-vap-id-data/wlan-status
+    tf_name: wlan_status
+    example: true
+  - yang_name: apf-vap-id-data/broadcast-ssid
+    tf_name: broadcast_ssid
+    example: false
+  - yang_name: apf-vap-id-data/ccx-aironet-ie
+    tf_name: ccx_aironet_ie
+    example: true
+  - yang_name: apf-vap-id-data/p2p-block-action
+    tf_name: peer_blocking
+    type: String
+    enum_values:
+      - p2p-blocking-action-none
+      - p2p-blocking-action-drop
+      - p2p-blocking-action-fwdup
+    example: p2p-blocking-action-drop
+  - yang_name: auth-key-mgmt-dot1x
+    tf_name: security_wpa_akm_dot1x
+    example: false
+  - yang_name: auth-key-mgmt-ft-dot1x
+    tf_name: security_wpa_akm_ft_dot1x
+    # Excluded from tests: the test value is the YANG default, which the
+    # controller omits on read, and a PSK WLAN cannot use the non-default value.
+    example: false
+    exclude_test: true
+  - yang_name: auth-key-mgmt-psk
+    tf_name: security_wpa_akm_psk
+    example: true
+  - yang_name: auth-key-mgmt-ft-psk
+    tf_name: security_wpa_akm_ft_psk
+    example: true
+  - yang_name: auth-key-mgmt-sae
+    tf_name: security_wpa_akm_sae
+    # Excluded from tests: the test value is the YANG default, which the
+    # controller omits on read, and a PSK WLAN cannot use the non-default value.
+    example: false
+    exclude_test: true
+  - yang_name: auth-key-mgmt-ft-sae
+    tf_name: security_wpa_akm_ft_sae
+    # Excluded from tests: the test value is the YANG default, which the
+    # controller omits on read, and a PSK WLAN cannot use the non-default value.
+    example: false
+    exclude_test: true
+  - yang_name: auth-key-mgmt-dot1x-sha256
+    tf_name: security_wpa_akm_dot1x_sha256
+    description: Enable the 802.1X SHA256 AKM (`security wpa akm dot1x-sha256`). With OWE and SAE, one of the AKMs a 6 GHz WLAN can use
+    # Excluded from tests: the test value is the YANG default, which the
+    # controller omits on read, and a PSK WLAN cannot use the non-default value.
+    example: false
+    exclude_test: true
+  - yang_name: akm-owe
+    tf_name: security_wpa_akm_owe
+    description: Enable OWE (`security wpa akm owe`). The controller refuses it while `security_wpa_wpa2` is true
+    # Excluded from tests: the test value is the YANG default, which the
+    # controller omits on read, and a PSK WLAN cannot use the non-default value.
+    example: false
+    exclude_test: true
+  - yang_name: wpa2-aes
+    tf_name: security_wpa_wpa2_ciphers_aes
+    # Excluded from tests: the test value is the YANG default, which the
+    # controller omits on read, and a PSK WLAN cannot use the non-default value.
+    example: true
+    exclude_test: true
+  - yang_name: rsn-cipher-suite-gcmp128
+    tf_name: security_wpa_wpa2_ciphers_gcmp128
+    example: false
+    exclude_test: true
+  - yang_name: rsn-cipher-suite-gcmp256
+    tf_name: security_wpa_wpa2_ciphers_gcmp256
+    example: false
+    exclude_test: true
+  - yang_name: wpa3-enabled
+    tf_name: security_wpa_wpa3
+    # Excluded from tests: the test value is the YANG default, which the
+    # controller omits on read, and a PSK WLAN cannot use the non-default value.
+    example: false
+    exclude_test: true
+  - yang_name: wpa2-enabled
+    tf_name: security_wpa_wpa2
+    description: Enable WPA2 (`security wpa wpa2`). Set to false for OWE, and for a WLAN broadcast only on 6 GHz
+    # Excluded from tests: the test value is the YANG default, which the
+    # controller omits on read, and the PSK test WLAN needs WPA2.
+    example: true
+    exclude_test: true
+  - yang_name: security-wpa
+    tf_name: security_wpa
+    description: Enable WPA security on the WLAN (`security wpa`). Set to false for an open WLAN
+    # Excluded from tests: the test value is the YANG default, which the
+    # controller omits on read, and the PSK test WLAN needs WPA.
+    example: true
+    exclude_test: true
+  - yang_name: pmf-options
+    tf_name: security_pmf
+    description: Protected Management Frames, 802.11w (`security pmf optional|mandatory`). `apf-vap-pmf-required` is `mandatory`. The controller default is disabled and is not returned on read, so leave the attribute unset for PMF disabled; setting `apf-vap-pmf-disabled` shows a change on every plan. A WLAN broadcast only on 6 GHz requires `apf-vap-pmf-required`
+    type: String
+    enum_values:
+      - apf-vap-pmf-disabled
+      - apf-vap-pmf-optional
+      - apf-vap-pmf-required
+    example: apf-vap-pmf-optional
+  - yang_name: psk-key-type
+    tf_name: security_wpa_psk_key_format
+    type: String
+    enum_values:
+      - key-ascii
+      - key-hex
+    example: key-hex
+  - yang_name: psk-type
+    tf_name: security_wpa_psk_key_encryption
+    write_only: true
+    type: String
+    enum_values:
+      - clear
+    example: clear
+    allow_import_changes: true
+  - yang_name: psk
+    tf_name: security_wpa_psk_key
+    write_only: true
+    sensitive: true
+    example: 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
+  - yang_name: authentication-list
+    tf_name: security_dot1x_authentication_list
+    exclude_test: true
+    example: ""
+  - yang_name: webauth-enabled
+    tf_name: security_web_auth
+    example: true
+  - yang_name: web-authc-list
+    tf_name: security_web_auth_authentication_list
+    exclude_test: true
+    example: ""
+  - yang_name: web-auth-parameter-map
+    tf_name: security_web_auth_parameter_map
+    exclude_test: true
+    example: ""
+  - yang_name: ft-mode
+    tf_name: security_ft
+    type: String
+    enum_values:
+      - dot11r-disabled
+      - dot11r-enabled
+      - dot11r-adaptive-enabled
+    example: dot11r-enabled
+  - yang_name: ft-over-ds
+    tf_name: security_ft_over_the_ds
+    example: true
+  - yang_name: mac-filtering-list
+    tf_name: mac_filtering
+    exclude_test: true
+    example: ""
+  - yang_name: load-balance
+    tf_name: load_balance
+    example: true
+  - yang_name: qos-wmm-status
+    tf_name: wmm
+    type: String
+    enum_values:
+      - apf-vap-wme-disabled
+      - apf-vap-wme-allowed
+      - apf-vap-wme-required
+    example: apf-vap-wme-required
+  - yang_name: wlan-radio-policies/wlan-radio-policy
+    tf_name: radio_policies
+    type: List
+    description: Bands the WLAN is broadcast on (`radio policy dot11 24ghz|5ghz|6ghz`). With no entries the controller uses all bands, and 6 GHz comes up only when WPA3 and 802.11ax are enabled. A WLAN broadcast only on 6 GHz requires `security_wpa_wpa2` false, `security_wpa_wpa3` true and `security_pmf` `apf-vap-pmf-required`
+    attributes:
+      - yang_name: band
+        tf_name: band
+        id: true
+        type: String
+        enum_values:
+          - dot11-2-dot-4-ghz-band
+          - dot11-5-ghz-band
+          - dot11-6-ghz-band
+        example: dot11-5-ghz-band
+  - yang_name: apf-vap-802-11v-data/dot11v-bss-transition
+    tf_name: bss_transition
+    example: false
+  - yang_name: apf-vap-802-11v-data/dot11v-bss-max-idle
+    tf_name: bss_max_idle
+    example: false
+  - yang_name: apf-vap-802-11v-data/dot11v-dms
+    tf_name: dms
+    example: false
+  - yang_name: wlan-11k-neigh-list
+    tf_name: assisted_roaming_neighbor_list
+    description: Enable the 802.11k neighbor list (`assisted-roaming neighbor-list`). Enabled by default
+    example: false
+  - yang_name: okc
+    tf_name: okc
+    example: false

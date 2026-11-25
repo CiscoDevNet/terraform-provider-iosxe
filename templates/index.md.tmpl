@@ -1,6 +1,4 @@
-
 ---
-layout: ""
 page_title: "Provider: IOSXE"
 description: |-
   The IOSXE provider provides resources to interact with one or more Cisco IOS-XE devices.

@@ -67,7 +67,7 @@ func (r *EIGRPVRFResource) Metadata(_ context.Context, req resource.MetadataRequ
 func (r *EIGRPVRFResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This resource can manage the EIGRP VRF configuration.",
+		MarkdownDescription: "This resource can manage the EIGRP VRF configuration. Destroying it removes the VRF address family, but the `router eigrp <name>` instance stays on the device, because other address families (`iosxe_eigrp` or other VRFs) can share it.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -152,6 +152,50 @@ func (r *EIGRPVRFResource) Schema(ctx context.Context, req resource.SchemaReques
 				Optional:            true,
 				Computed:            true,
 				Default:             booldefault.StaticBool(false),
+			},
+			"af_interfaces": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enter Address Family interface configuration").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"interface": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Interface name or default for the default AF interface").String,
+							Required:            true,
+						},
+						"passive_interface": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Suppress address updates on an interface").AddDefaultValueDescription("false").String,
+							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
+						},
+						"split_horizon": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Perform split horizon").AddDefaultValueDescription("true").String,
+							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(true),
+						},
+					},
+				},
+			},
+			"stub_connected": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable EIGRP stub routing and advertise connected routes (`eigrp stub connected`)").String,
+				Optional:            true,
+			},
+			"stub_summary": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable EIGRP stub routing and advertise summary routes (`eigrp stub summary`)").String,
+				Optional:            true,
+			},
+			"stub_static": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable EIGRP stub routing and advertise static routes (`eigrp stub static`)").String,
+				Optional:            true,
+			},
+			"stub_redistributed": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable EIGRP stub routing and advertise redistributed routes (`eigrp stub redistributed`)").String,
+				Optional:            true,
+			},
+			"stub_receive_only": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable EIGRP stub routing as receive-only (`eigrp stub receive-only`). Cannot be combined with `stub_connected`, `stub_static`, `stub_summary` or `stub_redistributed`").String,
+				Optional:            true,
 			},
 			"shutdown": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Shutdown address family").String,

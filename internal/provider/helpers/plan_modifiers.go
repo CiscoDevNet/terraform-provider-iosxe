@@ -96,6 +96,53 @@ func (m netconfTrailingWhitespaceTrimModifier) PlanModifyString(ctx context.Cont
 	resp.PlanValue = req.ConfigValue
 }
 
+// asnNormalizationModifier implements a plan modifier that normalizes BGP AS numbers
+// to prevent false drift caused by asdot vs asplain notation differences.
+type asnNormalizationModifier struct{}
+
+// UseAsnNormalization returns a plan modifier that prevents drift caused by
+// BGP AS number notation differences (asdot vs asplain).
+//
+// When a device has `bgp asnotation dot` configured, NETCONF returns ASNs in
+// asdot format (e.g., "64111.56369") rather than asplain (e.g., "4201634865").
+// This plan modifier normalizes both values to asplain before comparison,
+// preventing unnecessary drift or ForceNew replacement.
+func UseAsnNormalization() planmodifier.String {
+	return asnNormalizationModifier{}
+}
+
+func (m asnNormalizationModifier) Description(_ context.Context) string {
+	return "Normalizes BGP AS number representations (asdot vs asplain) to prevent drift."
+}
+
+func (m asnNormalizationModifier) MarkdownDescription(_ context.Context) string {
+	return "Normalizes BGP AS number representations (asdot vs asplain) to prevent drift."
+}
+
+func (m asnNormalizationModifier) PlanModifyString(ctx context.Context, req planmodifier.StringRequest, resp *planmodifier.StringResponse) {
+	if req.ConfigValue.IsNull() {
+		resp.PlanValue = types.StringNull()
+		return
+	}
+	if req.ConfigValue.IsUnknown() {
+		return
+	}
+
+	if req.StateValue.IsNull() || req.StateValue.IsUnknown() {
+		return
+	}
+
+	configNormalized := NormalizeASN(req.ConfigValue.ValueString())
+	stateNormalized := NormalizeASN(req.StateValue.ValueString())
+
+	if configNormalized == stateNormalized {
+		resp.PlanValue = req.StateValue
+		return
+	}
+
+	resp.PlanValue = req.ConfigValue
+}
+
 // ipv6NormalizationModifier implements a plan modifier that normalizes IPv6 addresses
 // to prevent false drift caused by case or representation differences.
 type ipv6NormalizationModifier struct{}

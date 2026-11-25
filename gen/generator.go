@@ -147,6 +147,8 @@ type YamlConfig struct {
 	NoDelete                bool                  `yaml:"no_delete"`
 	NoDeleteAttributes      bool                  `yaml:"no_delete_attributes"`
 	DefaultDeleteAttributes bool                  `yaml:"default_delete_attributes"`
+	BuiltinObjects          []string              `yaml:"builtin_objects"`
+	BuiltinReadonlyObjects  []string              `yaml:"builtin_readonly_objects"`
 	Wait                    bool                  `yaml:"wait"`
 	RequestTimeout          int64                 `yaml:"request_timeout"`
 	TestTags                []string              `yaml:"test_tags"`
@@ -193,9 +195,12 @@ type YamlConfigAttribute struct {
 	RequiresReplace    bool                  `yaml:"requires_replace"`
 	NoAugmentConfig    bool                  `yaml:"no_augment_config"`
 	DeleteParent       bool                  `yaml:"delete_parent"`
+	DeletePath         string                `yaml:"delete_path"`
 	NoDelete           bool                  `yaml:"no_delete"`
+	BuiltinKeep        bool                  `yaml:"builtin_keep"`
 	ReadFilter         string                `yaml:"read_filter"`
 	NormalizeIPv6      bool                  `yaml:"normalize_ipv6"`
+	NormalizeASN       bool                  `yaml:"normalize_asn"`
 	TestTags           []string              `yaml:"test_tags"`
 	Attributes         []YamlConfigAttribute `yaml:"attributes"`
 }
@@ -282,6 +287,18 @@ func HasId(attributes []YamlConfigAttribute) bool {
 	return false
 }
 
+// Templating helper function to return the Go name of the reference/id attribute that holds a BGP AS
+// number (normalize_asn), or "" if there is none. IOS-XE keys the BGP process by the AS in whichever
+// notation is active, so reads retry with the other notation when the key is not found.
+func AsnKeyAttribute(attributes []YamlConfigAttribute) string {
+	for _, attr := range attributes {
+		if (attr.Id || attr.Reference) && attr.NormalizeASN {
+			return ToGoName(attr.TfName)
+		}
+	}
+	return ""
+}
+
 // Templating helper function to return true if any id attribute is write-only
 func HasWriteOnlyId(attributes []YamlConfigAttribute) bool {
 	for _, attr := range attributes {
@@ -348,6 +365,9 @@ func ImportAttributes(config YamlConfig) []YamlConfigAttribute {
 }
 
 func GetDeletePath(attribute YamlConfigAttribute) string {
+	if attribute.DeletePath != "" {
+		return attribute.DeletePath
+	}
 	path := attribute.XPath
 	if attribute.DeleteParent {
 		return RemoveLastPathElement(path)
@@ -625,6 +645,7 @@ var functions = template.FuncMap{
 	"camelCase":                CamelCase,
 	"snakeCase":                SnakeCase,
 	"hasId":                    HasId,
+	"asnKeyAttribute":          AsnKeyAttribute,
 	"hasWriteOnlyId":           HasWriteOnlyId,
 	"hasSensitiveAttr":         HasSensitiveAttr,
 	"add":                      Add,
@@ -921,6 +942,20 @@ func augmentConfig(config *YamlConfig, yangModules *yang.Modules) {
 	if config.ResDescription == "" {
 		config.ResDescription = fmt.Sprintf("This resource can manage the %s configuration.", config.Name)
 	}
+	if len(config.BuiltinObjects) > 0 {
+		config.ResDescription += fmt.Sprintf(" The device's built-in %s cannot be deleted: destroying it only removes the attributes Terraform configured, which reverts them like the matching `no` commands (a description is cleared).", strings.Join(quoteNames(config.BuiltinObjects), ", "))
+	}
+	if len(config.BuiltinReadonlyObjects) > 0 {
+		config.ResDescription += fmt.Sprintf(" The pre-configured %s cannot be modified or deleted: destroying one only removes it from state.", strings.Join(quoteNames(config.BuiltinReadonlyObjects), ", "))
+	}
+}
+
+func quoteNames(names []string) []string {
+	quoted := make([]string, len(names))
+	for i, n := range names {
+		quoted[i] = "`" + n + "`"
+	}
+	return quoted
 }
 
 func getTemplateSection(content, name string) string {
