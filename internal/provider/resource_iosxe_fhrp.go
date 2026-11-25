@@ -63,7 +63,7 @@ func (r *FHRPResource) Metadata(_ context.Context, req resource.MetadataRequest,
 func (r *FHRPResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This resource can manage the FHRP configuration.",
+		MarkdownDescription: "This resource can manage the global FHRP configuration. VRRPv3 groups (`iosxe_interface_vrrp`) require `version_vrrp` set to `v3`. Destroying the resource removes the setting, which returns the device to its default of `v2`, and IOS-XE then deletes every VRRPv3 group on the device. Make the `iosxe_interface_vrrp` resources depend on this resource (`depends_on`), so that Terraform destroys them first.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
