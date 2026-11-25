@@ -57,7 +57,7 @@ func (d *WirelessMultiBSSIDProfileDataSource) Metadata(_ context.Context, req da
 func (d *WirelessMultiBSSIDProfileDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This data source can read the Wireless Multi BSSID Profile configuration. The `dot11be_*` attributes require IOS-XE 17.15.1 or later.",
+		MarkdownDescription: "This data source can read the Wireless Multi BSSID Profile configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -69,11 +69,11 @@ func (d *WirelessMultiBSSIDProfileDataSource) Schema(ctx context.Context, req da
 				Computed:            true,
 			},
 			"name": schema.StringAttribute{
-				MarkdownDescription: "Name of the 802.11ax Multi BSSID profile",
+				MarkdownDescription: "Name of the Multi BSSID profile",
 				Required:            true,
 			},
 			"description": schema.StringAttribute{
-				MarkdownDescription: "Brief description of 802.11ax Multi BSSID profile",
+				MarkdownDescription: "Description of the Multi BSSID profile",
 				Computed:            true,
 			},
 			"dot11ax_downlink_ofdma": schema.BoolAttribute{
@@ -101,23 +101,23 @@ func (d *WirelessMultiBSSIDProfileDataSource) Schema(ctx context.Context, req da
 				Computed:            true,
 			},
 			"dot11be_downlink_ofdma": schema.BoolAttribute{
-				MarkdownDescription: "802.11be OFDMA downlink. Requires IOS-XE `17.15.1` or later.",
+				MarkdownDescription: "802.11be OFDMA downlink.",
 				Computed:            true,
 			},
 			"dot11be_uplink_ofdma": schema.BoolAttribute{
-				MarkdownDescription: "802.11be OFDMA uplink. Requires IOS-XE `17.15.1` or later.",
+				MarkdownDescription: "802.11be OFDMA uplink.",
 				Computed:            true,
 			},
 			"dot11be_downlink_mumimo": schema.BoolAttribute{
-				MarkdownDescription: "802.11be MU-MIMO downlink. Requires IOS-XE `17.15.1` or later.",
+				MarkdownDescription: "802.11be MU-MIMO downlink.",
 				Computed:            true,
 			},
 			"dot11be_uplink_mumimo": schema.BoolAttribute{
-				MarkdownDescription: "802.11be MU-MIMO uplink. Requires IOS-XE `17.15.1` or later.",
+				MarkdownDescription: "802.11be MU-MIMO uplink.",
 				Computed:            true,
 			},
 			"dot11be_ofdma_multi_ru": schema.BoolAttribute{
-				MarkdownDescription: "802.11be OFDMA multiple resource unit. Requires IOS-XE `17.15.1` or later.",
+				MarkdownDescription: "802.11be OFDMA multiple resource unit.",
 				Computed:            true,
 			},
 		},

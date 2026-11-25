@@ -3,18 +3,18 @@
 page_title: "iosxe_wireless_multi_bssid_profile (Data Source)"
 subcategory: "Wireless"
 description: |-
-  This data source can read the Wireless Multi BSSID Profile configuration. The dot11be_* attributes require IOS-XE 17.15.1 or later.
+  This data source can read the Wireless Multi BSSID Profile configuration.
 ---
 
 # iosxe_wireless_multi_bssid_profile (Data Source)
 
-This data source can read the Wireless Multi BSSID Profile configuration. The `dot11be_*` attributes require IOS-XE 17.15.1 or later.
+This data source can read the Wireless Multi BSSID Profile configuration.
 
 ## Example Usage
 
 ```terraform
 data "iosxe_wireless_multi_bssid_profile" "example" {
-  name = "MBSSID1"
+  name = "S1-MBSSID1"
 }
 ```
 
@@ -23,7 +23,7 @@ data "iosxe_wireless_multi_bssid_profile" "example" {
 
 ### Required
 
-- `name` (String) Name of the 802.11ax Multi BSSID profile
+- `name` (String) Name of the Multi BSSID profile
 
 ### Optional
 
@@ -31,16 +31,16 @@ data "iosxe_wireless_multi_bssid_profile" "example" {
 
 ### Read-Only
 
-- `description` (String) Brief description of 802.11ax Multi BSSID profile
+- `description` (String) Description of the Multi BSSID profile
 - `dot11ax_downlink_mumimo` (Boolean) 802.11ax MU-MIMO downlink
 - `dot11ax_downlink_ofdma` (Boolean) 802.11ax OFDMA downlink
 - `dot11ax_target_waketime` (Boolean) 802.11ax Target Wake-up time
 - `dot11ax_twt_broadcast` (Boolean) 802.11ax Target Wake-up time broadcast
 - `dot11ax_uplink_mumimo` (Boolean) 802.11ax MU-MIMO uplink
 - `dot11ax_uplink_ofdma` (Boolean) 802.11ax OFDMA uplink
-- `dot11be_downlink_mumimo` (Boolean) 802.11be MU-MIMO downlink. Requires IOS-XE `17.15.1` or later.
-- `dot11be_downlink_ofdma` (Boolean) 802.11be OFDMA downlink. Requires IOS-XE `17.15.1` or later.
-- `dot11be_ofdma_multi_ru` (Boolean) 802.11be OFDMA multiple resource unit. Requires IOS-XE `17.15.1` or later.
-- `dot11be_uplink_mumimo` (Boolean) 802.11be MU-MIMO uplink. Requires IOS-XE `17.15.1` or later.
-- `dot11be_uplink_ofdma` (Boolean) 802.11be OFDMA uplink. Requires IOS-XE `17.15.1` or later.
+- `dot11be_downlink_mumimo` (Boolean) 802.11be MU-MIMO downlink.
+- `dot11be_downlink_ofdma` (Boolean) 802.11be OFDMA downlink.
+- `dot11be_ofdma_multi_ru` (Boolean) 802.11be OFDMA multiple resource unit.
+- `dot11be_uplink_mumimo` (Boolean) 802.11be MU-MIMO uplink.
+- `dot11be_uplink_ofdma` (Boolean) 802.11be OFDMA uplink.
 - `id` (String) The path of the retrieved object.

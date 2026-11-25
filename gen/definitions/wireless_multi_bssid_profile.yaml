@@ -6,15 +6,17 @@ test_tags: [C9800]
 builtin_objects:
   - default-multi-bssid-profile
 doc_category: Wireless
-res_description: "This resource can manage the Wireless Multi BSSID Profile configuration. The `dot11be_*` attributes require IOS-XE 17.15.1 or later."
-ds_description: "This data source can read the Wireless Multi BSSID Profile configuration. The `dot11be_*` attributes require IOS-XE 17.15.1 or later."
+res_description: "This resource can manage the Wireless Multi BSSID Profile configuration."
+ds_description: "This data source can read the Wireless Multi BSSID Profile configuration."
 attributes:
   - yang_name: profile-name
     tf_name: name
     id: true
-    example: MBSSID1
+    description: Name of the Multi BSSID profile
+    example: S1-MBSSID1
   - yang_name: description
     tf_name: description
+    description: Description of the Multi BSSID profile
     example: 6 GHz Multi BSSID Profile
   - yang_name: he-ofdma-downlink
     tf_name: dot11ax_downlink_ofdma
@@ -36,26 +38,26 @@ attributes:
     example: true
   - yang_name: eht-ofdma-downlink
     tf_name: dot11be_downlink_ofdma
-    description: 802.11be OFDMA downlink. Requires IOS-XE `17.15.1` or later.
+    description: 802.11be OFDMA downlink.
     example: false
     test_tags: [IOSXE1715, IOSXE1718]
   - yang_name: eht-ofdma-uplink
     tf_name: dot11be_uplink_ofdma
-    description: 802.11be OFDMA uplink. Requires IOS-XE `17.15.1` or later.
+    description: 802.11be OFDMA uplink.
     example: false
     test_tags: [IOSXE1715, IOSXE1718]
   - yang_name: eht-mumimo-downlink
     tf_name: dot11be_downlink_mumimo
-    description: 802.11be MU-MIMO downlink. Requires IOS-XE `17.15.1` or later.
+    description: 802.11be MU-MIMO downlink.
     example: true
     test_tags: [IOSXE1715, IOSXE1718]
   - yang_name: eht-mumimo-uplink
     tf_name: dot11be_uplink_mumimo
-    description: 802.11be MU-MIMO uplink. Requires IOS-XE `17.15.1` or later.
+    description: 802.11be MU-MIMO uplink.
     example: true
     test_tags: [IOSXE1715, IOSXE1718]
   - yang_name: eht-ofdma-multi-ru
     tf_name: dot11be_ofdma_multi_ru
-    description: 802.11be OFDMA multiple resource unit. Requires IOS-XE `17.15.1` or later.
+    description: 802.11be OFDMA multiple resource unit.
     example: true
     test_tags: [IOSXE1715, IOSXE1718]

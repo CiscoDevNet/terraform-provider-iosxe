@@ -79,7 +79,7 @@ func TestAccDataSourceIosxeWirelessMultiBSSIDProfile(t *testing.T) {
 
 func testAccDataSourceIosxeWirelessMultiBSSIDProfileConfig() string {
 	config := `resource "iosxe_wireless_multi_bssid_profile" "test" {` + "\n"
-	config += `	name = "MBSSID1"` + "\n"
+	config += `	name = "S1-MBSSID1"` + "\n"
 	config += `	description = "6 GHz Multi BSSID Profile"` + "\n"
 	config += `	dot11ax_downlink_ofdma = false` + "\n"
 	config += `	dot11ax_uplink_ofdma = false` + "\n"
@@ -106,7 +106,7 @@ func testAccDataSourceIosxeWirelessMultiBSSIDProfileConfig() string {
 
 	config += `
 		data "iosxe_wireless_multi_bssid_profile" "test" {
-			name = "MBSSID1"
+			name = "S1-MBSSID1"
 			depends_on = [iosxe_wireless_multi_bssid_profile.test]
 		}
 	`

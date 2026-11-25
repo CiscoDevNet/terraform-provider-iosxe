@@ -38,7 +38,7 @@ func TestAccIosxeWirelessMultiBSSIDProfile(t *testing.T) {
 		t.Skip("skipping test, set environment variable C9800")
 	}
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_multi_bssid_profile.test", "name", "MBSSID1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_multi_bssid_profile.test", "name", "S1-MBSSID1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_multi_bssid_profile.test", "description", "6 GHz Multi BSSID Profile"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_multi_bssid_profile.test", "dot11ax_downlink_ofdma", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_multi_bssid_profile.test", "dot11ax_uplink_ofdma", "false"))
@@ -106,7 +106,7 @@ func iosxeWirelessMultiBSSIDProfileImportStateIdFunc(resourceName string) resour
 
 func testAccIosxeWirelessMultiBSSIDProfileConfig_minimum() string {
 	config := `resource "iosxe_wireless_multi_bssid_profile" "test" {` + "\n"
-	config += `	name = "MBSSID1"` + "\n"
+	config += `	name = "S1-MBSSID1"` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -117,7 +117,7 @@ func testAccIosxeWirelessMultiBSSIDProfileConfig_minimum() string {
 
 func testAccIosxeWirelessMultiBSSIDProfileConfig_all() string {
 	config := `resource "iosxe_wireless_multi_bssid_profile" "test" {` + "\n"
-	config += `	name = "MBSSID1"` + "\n"
+	config += `	name = "S1-MBSSID1"` + "\n"
 	config += `	description = "6 GHz Multi BSSID Profile"` + "\n"
 	config += `	dot11ax_downlink_ofdma = false` + "\n"
 	config += `	dot11ax_uplink_ofdma = false` + "\n"

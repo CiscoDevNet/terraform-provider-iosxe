@@ -1,5 +1,5 @@
 resource "iosxe_wireless_multi_bssid_profile" "example" {
-  name                    = "MBSSID1"
+  name                    = "S1-MBSSID1"
   description             = "6 GHz Multi BSSID Profile"
   dot11ax_downlink_ofdma  = false
   dot11ax_uplink_ofdma    = false

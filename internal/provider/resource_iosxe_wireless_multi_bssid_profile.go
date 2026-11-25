@@ -65,7 +65,7 @@ func (r *WirelessMultiBSSIDProfileResource) Metadata(_ context.Context, req reso
 func (r *WirelessMultiBSSIDProfileResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This resource can manage the Wireless Multi BSSID Profile configuration. The `dot11be_*` attributes require IOS-XE 17.15.1 or later. The device's built-in `default-multi-bssid-profile` cannot be deleted: destroying it only removes the attributes Terraform configured, which reverts them like the matching `no` commands (a description is cleared).",
+		MarkdownDescription: "This resource can manage the Wireless Multi BSSID Profile configuration. The device's built-in `default-multi-bssid-profile` cannot be deleted: destroying it only removes the attributes Terraform configured, which reverts them like the matching `no` commands (a description is cleared).",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -80,7 +80,7 @@ func (r *WirelessMultiBSSIDProfileResource) Schema(ctx context.Context, req reso
 				},
 			},
 			"name": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Name of the 802.11ax Multi BSSID profile").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Name of the Multi BSSID profile").String,
 				Required:            true,
 				Validators: []validator.String{
 					stringvalidator.RegexMatches(regexp.MustCompile(`[!-~]([ -~]*[!-~])?`), ""),
@@ -90,7 +90,7 @@ func (r *WirelessMultiBSSIDProfileResource) Schema(ctx context.Context, req reso
 				},
 			},
 			"description": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Brief description of 802.11ax Multi BSSID profile").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Description of the Multi BSSID profile").String,
 				Optional:            true,
 			},
 			"dot11ax_downlink_ofdma": schema.BoolAttribute{
@@ -118,23 +118,23 @@ func (r *WirelessMultiBSSIDProfileResource) Schema(ctx context.Context, req reso
 				Optional:            true,
 			},
 			"dot11be_downlink_ofdma": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("802.11be OFDMA downlink. Requires IOS-XE `17.15.1` or later.").String,
+				MarkdownDescription: helpers.NewAttributeDescription("802.11be OFDMA downlink.").String,
 				Optional:            true,
 			},
 			"dot11be_uplink_ofdma": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("802.11be OFDMA uplink. Requires IOS-XE `17.15.1` or later.").String,
+				MarkdownDescription: helpers.NewAttributeDescription("802.11be OFDMA uplink.").String,
 				Optional:            true,
 			},
 			"dot11be_downlink_mumimo": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("802.11be MU-MIMO downlink. Requires IOS-XE `17.15.1` or later.").String,
+				MarkdownDescription: helpers.NewAttributeDescription("802.11be MU-MIMO downlink.").String,
 				Optional:            true,
 			},
 			"dot11be_uplink_mumimo": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("802.11be MU-MIMO uplink. Requires IOS-XE `17.15.1` or later.").String,
+				MarkdownDescription: helpers.NewAttributeDescription("802.11be MU-MIMO uplink.").String,
 				Optional:            true,
 			},
 			"dot11be_ofdma_multi_ru": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("802.11be OFDMA multiple resource unit. Requires IOS-XE `17.15.1` or later.").String,
+				MarkdownDescription: helpers.NewAttributeDescription("802.11be OFDMA multiple resource unit.").String,
 				Optional:            true,
 			},
 		},
