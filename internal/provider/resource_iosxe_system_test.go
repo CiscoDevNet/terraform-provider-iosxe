@@ -80,18 +80,6 @@ func TestAccIosxeSystem(t *testing.T) {
 	}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_ssh_time_out", "120"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_ssh_authentication_retries", "3"))
-	if os.Getenv("IOSXE1718") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_ssh_server_algorithm_encryption.0", "aes128-ctr"))
-	}
-	if os.Getenv("IOSXE1718") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_ssh_server_algorithm_mac.0", "hmac-sha2-256"))
-	}
-	if os.Getenv("IOSXE1718") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_ssh_server_algorithm_kex.0", "diffie-hellman-group14-sha256"))
-	}
-	if os.Getenv("IOSXE1718") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_ssh_server_algorithm_authentication.0", "password"))
-	}
 	if os.Getenv("IOSXE1715") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_hosts.0.name", "test.router.com"))
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_hosts.0.ips.0", "3.3.3.3"))
