@@ -32,9 +32,13 @@ import (
 // a family whose primary address is not configured would be written once and then removed again.
 var _ resource.ResourceWithConfigValidators = &InterfaceVRRPResource{}
 
-var interfaceVRRPFamilyAttributes = map[string][]string{
-	"ipv4": {"secondary_addresses", "priority", "preempt_delay_minimum", "timers_advertise", "description", "tracks", "shutdown"},
-	"ipv6": {"prefixes", "priority", "preempt_delay_minimum", "timers_advertise", "description", "tracks", "shutdown"},
+// A slice rather than a map, so the diagnostics come out in the same order on every run.
+var interfaceVRRPFamilyAttributes = []struct {
+	family string
+	attrs  []string
+}{
+	{"ipv4", []string{"secondary_addresses", "priority", "preempt_delay_minimum", "timers_advertise", "description", "tracks", "shutdown"}},
+	{"ipv6", []string{"prefixes", "priority", "preempt_delay_minimum", "timers_advertise", "description", "tracks", "shutdown"}},
 }
 
 func (r *InterfaceVRRPResource) ConfigValidators(_ context.Context) []resource.ConfigValidator {
@@ -55,7 +59,8 @@ func (v interfaceVRRPFamilyValidator) MarkdownDescription(ctx context.Context) s
 }
 
 func (v interfaceVRRPFamilyValidator) ValidateResource(ctx context.Context, req resource.ValidateConfigRequest, resp *resource.ValidateConfigResponse) {
-	for family, attrs := range interfaceVRRPFamilyAttributes {
+	for _, f := range interfaceVRRPFamilyAttributes {
+		family, attrs := f.family, f.attrs
 		var primary attr.Value
 		resp.Diagnostics.Append(req.Config.GetAttribute(ctx, path.Root(family+"_primary_address"), &primary)...)
 		if primary == nil || !primary.IsNull() {
