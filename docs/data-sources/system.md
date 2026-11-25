@@ -123,10 +123,10 @@ data "iosxe_system" "example" {
 - `ip_ssh_authentication_retries` (Number) Specify number of authentication retries
 - `ip_ssh_bulk_mode` (Boolean) Enable optimizations for bulk data transfer procedures
 - `ip_ssh_bulk_mode_window_size` (Number) Window-size value
-- `ip_ssh_server_algorithm_authentication` (List of String) SSH server authentication algorithms
-- `ip_ssh_server_algorithm_encryption` (List of String) SSH server encryption algorithms
-- `ip_ssh_server_algorithm_kex` (List of String) SSH server key exchange algorithms
-- `ip_ssh_server_algorithm_mac` (List of String) SSH server MAC algorithms
+- `ip_ssh_server_algorithm_authentication` (List of String) SSH server user authentication methods (`ip ssh server algorithm authentication`). Valid values are `publickey`, `keyboard` (keyboard-interactive) and `password`. The provider logs in with `password` or `keyboard`, so a list without either locks the provider out of the device. When unset the device uses its default methods. Requires IOS-XE 17.16.1 or later
+- `ip_ssh_server_algorithm_encryption` (List of String) SSH server encryption algorithms (`ip ssh server algorithm encryption`), in the order they are presented to the client. Valid values are `aes128-ctr`, `aes192-ctr`, `aes256-ctr`, `aes128-cbc`, `aes192-cbc`, `aes256-cbc`, `aes128-gcm`, `aes256-gcm`, `aes128-gcm@openssh.com`, `aes256-gcm@openssh.com`, `chacha20-poly1305@openssh.com` and `3des-cbc`. When unset the device uses its default list. Requires IOS-XE 17.16.1 or later
+- `ip_ssh_server_algorithm_kex` (List of String) SSH server key exchange algorithms (`ip ssh server algorithm kex`), in the order they are presented to the client. Valid values are `curve25519-sha256`, `curve25519-sha256@libssh.org`, `diffie-hellman-group14-sha1`, `diffie-hellman-group14-sha256`, `diffie-hellman-group16-sha512`, `ecdh-sha2-nistp256`, `ecdh-sha2-nistp384` and `ecdh-sha2-nistp521`; IOS-XE 26.1.1 and later also accept `mlkem768x25519-sha256`, `mlkem768nistp256-sha256` and `mlkem1024nistp384-sha384`. When unset the device uses its default list. Requires IOS-XE 17.16.1 or later
+- `ip_ssh_server_algorithm_mac` (List of String) SSH server MAC algorithms (`ip ssh server algorithm mac`), in the order they are presented to the client. Valid values are `hmac-sha1`, `hmac-sha2-256`, `hmac-sha2-256-etm@openssh.com`, `hmac-sha2-512` and `hmac-sha2-512-etm@openssh.com`. When unset the device uses its default list. Requires IOS-XE 17.16.1 or later
 - `ip_ssh_source_interface_five_gigabit_ethernet` (String) Five GigabitEthernet
 - `ip_ssh_source_interface_forty_gigabit_ethernet` (String) Forty GigabitEthernet
 - `ip_ssh_source_interface_gigabit_ethernet` (String) GigabitEthernet IEEE 802.3z

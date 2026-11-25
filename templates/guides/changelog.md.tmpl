@@ -16,7 +16,7 @@ description: |-
 - Add `iosxe_fhrp` resource and data source for global FHRP version configuration (`fhrp version vrrp v3`). Destroying it returns the device to `v2`, which deletes every VRRPv3 group, so make `iosxe_interface_vrrp` resources depend on it
 - Add `stub_receive_only`, `stub_static` and `stub_redistributed` attributes (`eigrp stub receive-only`, `eigrp stub static`, `eigrp stub redistributed`) to `iosxe_eigrp` and `iosxe_eigrp_vrf` resources and data sources
 - Add `security_wpa_akm_dot1x_sha256`, `security_wpa_akm_owe`, `security_wpa_wpa2`, `security_wpa`, `security_pmf`, `radio_policies`, `bss_transition`, `bss_max_idle`, `dms`, `assisted_roaming_neighbor_list` and `okc` attributes to `iosxe_wireless_wlan_profile` resource and data source
-- Add `ip_ssh_server_algorithm_encryption`, `ip_ssh_server_algorithm_mac`, `ip_ssh_server_algorithm_kex`, and `ip_ssh_server_algorithm_authentication` attributes to `iosxe_system` resource and data source for SSH server algorithm selection (`ip ssh server algorithm ...`)
+- Add `ip_ssh_server_algorithm_encryption`, `ip_ssh_server_algorithm_mac`, `ip_ssh_server_algorithm_kex`, and `ip_ssh_server_algorithm_authentication` attributes to `iosxe_system` resource and data source for SSH server algorithm selection (`ip ssh server algorithm ...`). Requires IOS-XE 17.16.1 or later
 
 ## 1.2.0
 

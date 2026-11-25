@@ -376,33 +376,33 @@ attributes:
     tf_name: ip_ssh_server_algorithm_encryption
     type: StringList
     no_augment_config: true
-    description: SSH server encryption algorithms
+    description: SSH server encryption algorithms (`ip ssh server algorithm encryption`), in the order they are presented to the client. Valid values are `aes128-ctr`, `aes192-ctr`, `aes256-ctr`, `aes128-cbc`, `aes192-cbc`, `aes256-cbc`, `aes128-gcm`, `aes256-gcm`, `aes128-gcm@openssh.com`, `aes256-gcm@openssh.com`, `chacha20-poly1305@openssh.com` and `3des-cbc`. When unset the device uses its default list. Requires IOS-XE 17.16.1 or later
     example: aes128-ctr
-    test_tags: [IOSXE1716]
+    test_tags: [IOSXE1718]
   - yang_name: ip/ssh/server/algorithm/mac/mac-choice/config-case/mac-options
     xpath: ip/ssh/server/algorithm/mac/mac-options
     tf_name: ip_ssh_server_algorithm_mac
     type: StringList
     no_augment_config: true
-    description: SSH server MAC algorithms
+    description: SSH server MAC algorithms (`ip ssh server algorithm mac`), in the order they are presented to the client. Valid values are `hmac-sha1`, `hmac-sha2-256`, `hmac-sha2-256-etm@openssh.com`, `hmac-sha2-512` and `hmac-sha2-512-etm@openssh.com`. When unset the device uses its default list. Requires IOS-XE 17.16.1 or later
     example: hmac-sha2-256
-    test_tags: [IOSXE1716]
+    test_tags: [IOSXE1718]
   - yang_name: ip/ssh/server/algorithm/kex/kex-choice/config-case/kex-options
     xpath: ip/ssh/server/algorithm/kex/kex-options
     tf_name: ip_ssh_server_algorithm_kex
     type: StringList
     no_augment_config: true
-    description: SSH server key exchange algorithms
+    description: SSH server key exchange algorithms (`ip ssh server algorithm kex`), in the order they are presented to the client. Valid values are `curve25519-sha256`, `curve25519-sha256@libssh.org`, `diffie-hellman-group14-sha1`, `diffie-hellman-group14-sha256`, `diffie-hellman-group16-sha512`, `ecdh-sha2-nistp256`, `ecdh-sha2-nistp384` and `ecdh-sha2-nistp521`; IOS-XE 26.1.1 and later also accept `mlkem768x25519-sha256`, `mlkem768nistp256-sha256` and `mlkem1024nistp384-sha384`. When unset the device uses its default list. Requires IOS-XE 17.16.1 or later
     example: diffie-hellman-group14-sha256
-    test_tags: [IOSXE1716]
+    test_tags: [IOSXE1718]
   - yang_name: ip/ssh/server/algorithm/authentication/authentication-choice/config-case/authentication-options
     xpath: ip/ssh/server/algorithm/authentication/authentication-options
     tf_name: ip_ssh_server_algorithm_authentication
     type: StringList
     no_augment_config: true
-    description: SSH server authentication algorithms
-    example: publickey
-    test_tags: [IOSXE1716]
+    description: SSH server user authentication methods (`ip ssh server algorithm authentication`). Valid values are `publickey`, `keyboard` (keyboard-interactive) and `password`. The provider logs in with `password` or `keyboard`, so a list without either locks the provider out of the device. When unset the device uses its default methods. Requires IOS-XE 17.16.1 or later
+    example: password
+    test_tags: [IOSXE1718]
   - yang_name: control-plane/Cisco-IOS-XE-policy:service-policy/input
     example: system-cpp-policy
     exclude_test: true
