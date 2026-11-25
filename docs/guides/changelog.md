@@ -9,7 +9,7 @@ description: |-
 
 ## Unreleased
 
-- Add `iosxe_privilege` resource and data source for `privilege <mode> level <level> <command>`, one resource per mode. IOS-XE refuses a NETCONF delete of a single command or level, so destroying the resource deletes the whole mode and any change to `levels` recreates it. Each command then returns to its default level, and the device keeps an explicit default-level line (for example `privilege exec level 1 ping`)
+- Add `iosxe_privilege` resource and data source for `privilege <mode> level <level> <command>`, one resource per mode. IOS-XE refuses a NETCONF delete of a single command or level, so destroying the resource deletes the whole mode and any change to `levels` recreates it. Each command then returns to its default level, and the device keeps an explicit default-level line (for example `privilege exec level 1 ping`). After `terraform import`, the first plan replaces the mode unless `levels` lists every entry on the device, including the parent commands IOS-XE adds (for example `show` for `show interfaces`)
 - Fix documentation links to work on both the Terraform and OpenTofu registries
 - Improve documentation page titles and descriptions
 
