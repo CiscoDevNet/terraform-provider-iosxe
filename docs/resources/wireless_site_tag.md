@@ -36,7 +36,7 @@ resource "iosxe_wireless_site_tag" "example" {
 - `description` (String) Description of the Site Tag
 - `device` (String) A device name from the provider configuration.
 - `flex_profile` (String) The flex profile which is part of the Site tag
-- `load` (Number) Estimate of the relative load contributed by the site. AP count can be used as an approximation.
+- `load` (Number) Estimate of the relative load contributed by the site (`load <0-1000>`). AP count can be used as an approximation. The default 0 means no load recommendation for the site and is not returned on read, so leave the attribute unset for the default; setting 0 shows a change on every plan
   - Range: `0`-`1000`
 - `local_site` (Boolean) This parameter is set to enable local site
 

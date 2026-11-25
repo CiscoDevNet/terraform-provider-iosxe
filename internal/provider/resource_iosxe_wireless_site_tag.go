@@ -107,7 +107,7 @@ func (r *WirelessSiteTagResource) Schema(ctx context.Context, req resource.Schem
 				Optional:            true,
 			},
 			"load": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Estimate of the relative load contributed by the site. AP count can be used as an approximation.").AddIntegerRangeDescription(0, 1000).String,
+				MarkdownDescription: helpers.NewAttributeDescription("Estimate of the relative load contributed by the site (`load <0-1000>`). AP count can be used as an approximation. The default 0 means no load recommendation for the site and is not returned on read, so leave the attribute unset for the default; setting 0 shows a change on every plan").AddIntegerRangeDescription(0, 1000).String,
 				Optional:            true,
 				Validators: []validator.Int64{
 					int64validator.Between(0, 1000),

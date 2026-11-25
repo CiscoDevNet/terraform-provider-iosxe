@@ -31,8 +31,7 @@ attributes:
   - yang_name: load
     tf_name: load
     type: Int64
-    min_int: 0
-    max_int: 1000
+    description: Estimate of the relative load contributed by the site (`load <0-1000>`). AP count can be used as an approximation. The default 0 means no load recommendation for the site and is not returned on read, so leave the attribute unset for the default; setting 0 shows a change on every plan
     example: 400
 
 test_prerequisites:
