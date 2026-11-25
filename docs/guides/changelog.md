@@ -9,9 +9,12 @@ description: |-
 
 ## Unreleased
 
-- Add `security_wpa_akm_dot1x_sha256`, `security_wpa_akm_owe`, `security_wpa_wpa2`, `security_wpa`, `security_pmf`, `radio_policies`, `bss_transition`, `bss_max_idle`, `dms`, `assisted_roaming_neighbor_list` and `okc` attributes to `iosxe_wireless_wlan_profile` resource and data source
+- Add `iosxe_privilege` resource and data source for `privilege <mode> level <level> <command>`, one resource per mode. IOS-XE refuses a NETCONF delete of a single command or level, so destroying the resource deletes the whole mode and any change to `levels` recreates it. Each command then returns to its default level, and the device keeps an explicit default-level line (for example `privilege exec level 1 ping`). After `terraform import`, the first plan replaces the mode unless `levels` lists every entry on the device, including the parent commands IOS-XE adds (for example `show` for `show interfaces`)
 - Fix documentation links to work on both the Terraform and OpenTofu registries
 - Improve documentation page titles and descriptions
+- Add `iosxe_interface_vrrp` resource and data source for VRRPv3 interface-level configuration (`vrrp <group> address-family ipv4|ipv6`). One resource manages both address families of a group: IPv4 primary and secondary virtual addresses, IPv6 link-local primary address and prefixes, and per-family priority, preempt delay, advertisement timer, description, object tracking with priority decrement or shutdown, and shutdown. Setting or removing a family's primary address adds or removes that family, and destroying the resource removes the group
+- Add `iosxe_fhrp` resource and data source for global FHRP version configuration (`fhrp version vrrp v3`). Destroying it returns the device to `v2`, which deletes every VRRPv3 group, so make `iosxe_interface_vrrp` resources depend on it
+- Add `security_wpa_akm_dot1x_sha256`, `security_wpa_akm_owe`, `security_wpa_wpa2`, `security_wpa`, `security_pmf`, `radio_policies`, `bss_transition`, `bss_max_idle`, `dms`, `assisted_roaming_neighbor_list` and `okc` attributes to `iosxe_wireless_wlan_profile` resource and data source
 
 ## 1.2.0
 
