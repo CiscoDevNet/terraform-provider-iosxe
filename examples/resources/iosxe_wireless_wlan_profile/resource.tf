@@ -9,6 +9,7 @@ resource "iosxe_wireless_wlan_profile" "example" {
   security_wpa_akm_dot1x          = false
   security_wpa_akm_psk            = true
   security_wpa_akm_ft_psk         = true
+  security_pmf                    = "apf-vap-pmf-optional"
   security_wpa_psk_key_format     = "key-hex"
   security_wpa_psk_key_encryption = "clear"
   security_wpa_psk_key            = "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
@@ -17,4 +18,14 @@ resource "iosxe_wireless_wlan_profile" "example" {
   security_ft_over_the_ds         = true
   load_balance                    = true
   wmm                             = "apf-vap-wme-required"
+  radio_policies = [
+    {
+      band = "dot11-5-ghz-band"
+    }
+  ]
+  bss_transition                 = false
+  bss_max_idle                   = false
+  dms                            = false
+  assisted_roaming_neighbor_list = false
+  okc                            = false
 }

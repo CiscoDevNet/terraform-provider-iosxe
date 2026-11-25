@@ -24,6 +24,7 @@ import (
 	"context"
 	"fmt"
 	"net/url"
+	"reflect"
 	"strconv"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
@@ -37,73 +38,101 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin types
 type WirelessWLANProfile struct {
-	Device                            types.String `tfsdk:"device"`
-	Id                                types.String `tfsdk:"id"`
-	ProfileName                       types.String `tfsdk:"profile_name"`
-	WlanId                            types.Int64  `tfsdk:"wlan_id"`
-	Ssid                              types.String `tfsdk:"ssid"`
-	WlanStatus                        types.Bool   `tfsdk:"wlan_status"`
-	BroadcastSsid                     types.Bool   `tfsdk:"broadcast_ssid"`
-	CcxAironetIe                      types.Bool   `tfsdk:"ccx_aironet_ie"`
-	PeerBlocking                      types.String `tfsdk:"peer_blocking"`
-	SecurityWpaAkmDot1x               types.Bool   `tfsdk:"security_wpa_akm_dot1x"`
-	SecurityWpaAkmFtDot1x             types.Bool   `tfsdk:"security_wpa_akm_ft_dot1x"`
-	SecurityWpaAkmPsk                 types.Bool   `tfsdk:"security_wpa_akm_psk"`
-	SecurityWpaAkmFtPsk               types.Bool   `tfsdk:"security_wpa_akm_ft_psk"`
-	SecurityWpaAkmSae                 types.Bool   `tfsdk:"security_wpa_akm_sae"`
-	SecurityWpaAkmFtSae               types.Bool   `tfsdk:"security_wpa_akm_ft_sae"`
-	SecurityWpaWpa2CiphersAes         types.Bool   `tfsdk:"security_wpa_wpa2_ciphers_aes"`
-	SecurityWpaWpa2CiphersGcmp128     types.Bool   `tfsdk:"security_wpa_wpa2_ciphers_gcmp128"`
-	SecurityWpaWpa2CiphersGcmp256     types.Bool   `tfsdk:"security_wpa_wpa2_ciphers_gcmp256"`
-	SecurityWpaWpa3                   types.Bool   `tfsdk:"security_wpa_wpa3"`
-	SecurityWpaPskKeyFormat           types.String `tfsdk:"security_wpa_psk_key_format"`
-	SecurityWpaPskKeyEncryption       types.String `tfsdk:"security_wpa_psk_key_encryption"`
-	SecurityWpaPskKey                 types.String `tfsdk:"security_wpa_psk_key"`
-	SecurityWpaPskKeyWO               types.String `tfsdk:"security_wpa_psk_key_wo"`
-	SecurityWpaPskKeyWOVersion        types.Int64  `tfsdk:"security_wpa_psk_key_wo_version"`
-	SecurityDot1xAuthenticationList   types.String `tfsdk:"security_dot1x_authentication_list"`
-	SecurityWebAuth                   types.Bool   `tfsdk:"security_web_auth"`
-	SecurityWebAuthAuthenticationList types.String `tfsdk:"security_web_auth_authentication_list"`
-	SecurityWebAuthParameterMap       types.String `tfsdk:"security_web_auth_parameter_map"`
-	SecurityFt                        types.String `tfsdk:"security_ft"`
-	SecurityFtOverTheDs               types.Bool   `tfsdk:"security_ft_over_the_ds"`
-	MacFiltering                      types.String `tfsdk:"mac_filtering"`
-	LoadBalance                       types.Bool   `tfsdk:"load_balance"`
-	Wmm                               types.String `tfsdk:"wmm"`
+	Device                            types.String                       `tfsdk:"device"`
+	Id                                types.String                       `tfsdk:"id"`
+	ProfileName                       types.String                       `tfsdk:"profile_name"`
+	WlanId                            types.Int64                        `tfsdk:"wlan_id"`
+	Ssid                              types.String                       `tfsdk:"ssid"`
+	WlanStatus                        types.Bool                         `tfsdk:"wlan_status"`
+	BroadcastSsid                     types.Bool                         `tfsdk:"broadcast_ssid"`
+	CcxAironetIe                      types.Bool                         `tfsdk:"ccx_aironet_ie"`
+	PeerBlocking                      types.String                       `tfsdk:"peer_blocking"`
+	SecurityWpaAkmDot1x               types.Bool                         `tfsdk:"security_wpa_akm_dot1x"`
+	SecurityWpaAkmFtDot1x             types.Bool                         `tfsdk:"security_wpa_akm_ft_dot1x"`
+	SecurityWpaAkmPsk                 types.Bool                         `tfsdk:"security_wpa_akm_psk"`
+	SecurityWpaAkmFtPsk               types.Bool                         `tfsdk:"security_wpa_akm_ft_psk"`
+	SecurityWpaAkmSae                 types.Bool                         `tfsdk:"security_wpa_akm_sae"`
+	SecurityWpaAkmFtSae               types.Bool                         `tfsdk:"security_wpa_akm_ft_sae"`
+	SecurityWpaAkmDot1xSha256         types.Bool                         `tfsdk:"security_wpa_akm_dot1x_sha256"`
+	SecurityWpaAkmOwe                 types.Bool                         `tfsdk:"security_wpa_akm_owe"`
+	SecurityWpaWpa2CiphersAes         types.Bool                         `tfsdk:"security_wpa_wpa2_ciphers_aes"`
+	SecurityWpaWpa2CiphersGcmp128     types.Bool                         `tfsdk:"security_wpa_wpa2_ciphers_gcmp128"`
+	SecurityWpaWpa2CiphersGcmp256     types.Bool                         `tfsdk:"security_wpa_wpa2_ciphers_gcmp256"`
+	SecurityWpaWpa3                   types.Bool                         `tfsdk:"security_wpa_wpa3"`
+	SecurityWpaWpa2                   types.Bool                         `tfsdk:"security_wpa_wpa2"`
+	SecurityWpa                       types.Bool                         `tfsdk:"security_wpa"`
+	SecurityPmf                       types.String                       `tfsdk:"security_pmf"`
+	SecurityWpaPskKeyFormat           types.String                       `tfsdk:"security_wpa_psk_key_format"`
+	SecurityWpaPskKeyEncryption       types.String                       `tfsdk:"security_wpa_psk_key_encryption"`
+	SecurityWpaPskKey                 types.String                       `tfsdk:"security_wpa_psk_key"`
+	SecurityWpaPskKeyWO               types.String                       `tfsdk:"security_wpa_psk_key_wo"`
+	SecurityWpaPskKeyWOVersion        types.Int64                        `tfsdk:"security_wpa_psk_key_wo_version"`
+	SecurityDot1xAuthenticationList   types.String                       `tfsdk:"security_dot1x_authentication_list"`
+	SecurityWebAuth                   types.Bool                         `tfsdk:"security_web_auth"`
+	SecurityWebAuthAuthenticationList types.String                       `tfsdk:"security_web_auth_authentication_list"`
+	SecurityWebAuthParameterMap       types.String                       `tfsdk:"security_web_auth_parameter_map"`
+	SecurityFt                        types.String                       `tfsdk:"security_ft"`
+	SecurityFtOverTheDs               types.Bool                         `tfsdk:"security_ft_over_the_ds"`
+	MacFiltering                      types.String                       `tfsdk:"mac_filtering"`
+	LoadBalance                       types.Bool                         `tfsdk:"load_balance"`
+	Wmm                               types.String                       `tfsdk:"wmm"`
+	RadioPolicies                     []WirelessWLANProfileRadioPolicies `tfsdk:"radio_policies"`
+	BssTransition                     types.Bool                         `tfsdk:"bss_transition"`
+	BssMaxIdle                        types.Bool                         `tfsdk:"bss_max_idle"`
+	Dms                               types.Bool                         `tfsdk:"dms"`
+	AssistedRoamingNeighborList       types.Bool                         `tfsdk:"assisted_roaming_neighbor_list"`
+	Okc                               types.Bool                         `tfsdk:"okc"`
+}
+type WirelessWLANProfileRadioPolicies struct {
+	Band types.String `tfsdk:"band"`
 }
 
 type WirelessWLANProfileData struct {
-	Device                            types.String `tfsdk:"device"`
-	Id                                types.String `tfsdk:"id"`
-	ProfileName                       types.String `tfsdk:"profile_name"`
-	WlanId                            types.Int64  `tfsdk:"wlan_id"`
-	Ssid                              types.String `tfsdk:"ssid"`
-	WlanStatus                        types.Bool   `tfsdk:"wlan_status"`
-	BroadcastSsid                     types.Bool   `tfsdk:"broadcast_ssid"`
-	CcxAironetIe                      types.Bool   `tfsdk:"ccx_aironet_ie"`
-	PeerBlocking                      types.String `tfsdk:"peer_blocking"`
-	SecurityWpaAkmDot1x               types.Bool   `tfsdk:"security_wpa_akm_dot1x"`
-	SecurityWpaAkmFtDot1x             types.Bool   `tfsdk:"security_wpa_akm_ft_dot1x"`
-	SecurityWpaAkmPsk                 types.Bool   `tfsdk:"security_wpa_akm_psk"`
-	SecurityWpaAkmFtPsk               types.Bool   `tfsdk:"security_wpa_akm_ft_psk"`
-	SecurityWpaAkmSae                 types.Bool   `tfsdk:"security_wpa_akm_sae"`
-	SecurityWpaAkmFtSae               types.Bool   `tfsdk:"security_wpa_akm_ft_sae"`
-	SecurityWpaWpa2CiphersAes         types.Bool   `tfsdk:"security_wpa_wpa2_ciphers_aes"`
-	SecurityWpaWpa2CiphersGcmp128     types.Bool   `tfsdk:"security_wpa_wpa2_ciphers_gcmp128"`
-	SecurityWpaWpa2CiphersGcmp256     types.Bool   `tfsdk:"security_wpa_wpa2_ciphers_gcmp256"`
-	SecurityWpaWpa3                   types.Bool   `tfsdk:"security_wpa_wpa3"`
-	SecurityWpaPskKeyFormat           types.String `tfsdk:"security_wpa_psk_key_format"`
-	SecurityWpaPskKeyEncryption       types.String `tfsdk:"security_wpa_psk_key_encryption"`
-	SecurityWpaPskKey                 types.String `tfsdk:"security_wpa_psk_key"`
-	SecurityDot1xAuthenticationList   types.String `tfsdk:"security_dot1x_authentication_list"`
-	SecurityWebAuth                   types.Bool   `tfsdk:"security_web_auth"`
-	SecurityWebAuthAuthenticationList types.String `tfsdk:"security_web_auth_authentication_list"`
-	SecurityWebAuthParameterMap       types.String `tfsdk:"security_web_auth_parameter_map"`
-	SecurityFt                        types.String `tfsdk:"security_ft"`
-	SecurityFtOverTheDs               types.Bool   `tfsdk:"security_ft_over_the_ds"`
-	MacFiltering                      types.String `tfsdk:"mac_filtering"`
-	LoadBalance                       types.Bool   `tfsdk:"load_balance"`
-	Wmm                               types.String `tfsdk:"wmm"`
+	Device                            types.String                           `tfsdk:"device"`
+	Id                                types.String                           `tfsdk:"id"`
+	ProfileName                       types.String                           `tfsdk:"profile_name"`
+	WlanId                            types.Int64                            `tfsdk:"wlan_id"`
+	Ssid                              types.String                           `tfsdk:"ssid"`
+	WlanStatus                        types.Bool                             `tfsdk:"wlan_status"`
+	BroadcastSsid                     types.Bool                             `tfsdk:"broadcast_ssid"`
+	CcxAironetIe                      types.Bool                             `tfsdk:"ccx_aironet_ie"`
+	PeerBlocking                      types.String                           `tfsdk:"peer_blocking"`
+	SecurityWpaAkmDot1x               types.Bool                             `tfsdk:"security_wpa_akm_dot1x"`
+	SecurityWpaAkmFtDot1x             types.Bool                             `tfsdk:"security_wpa_akm_ft_dot1x"`
+	SecurityWpaAkmPsk                 types.Bool                             `tfsdk:"security_wpa_akm_psk"`
+	SecurityWpaAkmFtPsk               types.Bool                             `tfsdk:"security_wpa_akm_ft_psk"`
+	SecurityWpaAkmSae                 types.Bool                             `tfsdk:"security_wpa_akm_sae"`
+	SecurityWpaAkmFtSae               types.Bool                             `tfsdk:"security_wpa_akm_ft_sae"`
+	SecurityWpaAkmDot1xSha256         types.Bool                             `tfsdk:"security_wpa_akm_dot1x_sha256"`
+	SecurityWpaAkmOwe                 types.Bool                             `tfsdk:"security_wpa_akm_owe"`
+	SecurityWpaWpa2CiphersAes         types.Bool                             `tfsdk:"security_wpa_wpa2_ciphers_aes"`
+	SecurityWpaWpa2CiphersGcmp128     types.Bool                             `tfsdk:"security_wpa_wpa2_ciphers_gcmp128"`
+	SecurityWpaWpa2CiphersGcmp256     types.Bool                             `tfsdk:"security_wpa_wpa2_ciphers_gcmp256"`
+	SecurityWpaWpa3                   types.Bool                             `tfsdk:"security_wpa_wpa3"`
+	SecurityWpaWpa2                   types.Bool                             `tfsdk:"security_wpa_wpa2"`
+	SecurityWpa                       types.Bool                             `tfsdk:"security_wpa"`
+	SecurityPmf                       types.String                           `tfsdk:"security_pmf"`
+	SecurityWpaPskKeyFormat           types.String                           `tfsdk:"security_wpa_psk_key_format"`
+	SecurityWpaPskKeyEncryption       types.String                           `tfsdk:"security_wpa_psk_key_encryption"`
+	SecurityWpaPskKey                 types.String                           `tfsdk:"security_wpa_psk_key"`
+	SecurityDot1xAuthenticationList   types.String                           `tfsdk:"security_dot1x_authentication_list"`
+	SecurityWebAuth                   types.Bool                             `tfsdk:"security_web_auth"`
+	SecurityWebAuthAuthenticationList types.String                           `tfsdk:"security_web_auth_authentication_list"`
+	SecurityWebAuthParameterMap       types.String                           `tfsdk:"security_web_auth_parameter_map"`
+	SecurityFt                        types.String                           `tfsdk:"security_ft"`
+	SecurityFtOverTheDs               types.Bool                             `tfsdk:"security_ft_over_the_ds"`
+	MacFiltering                      types.String                           `tfsdk:"mac_filtering"`
+	LoadBalance                       types.Bool                             `tfsdk:"load_balance"`
+	Wmm                               types.String                           `tfsdk:"wmm"`
+	RadioPolicies                     []WirelessWLANProfileRadioPoliciesData `tfsdk:"radio_policies"`
+	BssTransition                     types.Bool                             `tfsdk:"bss_transition"`
+	BssMaxIdle                        types.Bool                             `tfsdk:"bss_max_idle"`
+	Dms                               types.Bool                             `tfsdk:"dms"`
+	AssistedRoamingNeighborList       types.Bool                             `tfsdk:"assisted_roaming_neighbor_list"`
+	Okc                               types.Bool                             `tfsdk:"okc"`
+}
+type WirelessWLANProfileRadioPoliciesData struct {
+	Band types.String `tfsdk:"band"`
 }
 
 // End of section. //template:end types
@@ -186,6 +215,12 @@ func (data WirelessWLANProfile) addToBodyXML(ctx context.Context, config Wireles
 	if !data.SecurityWpaAkmFtSae.IsNull() && !data.SecurityWpaAkmFtSae.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/auth-key-mgmt-ft-sae", data.SecurityWpaAkmFtSae.ValueBool())
 	}
+	if !data.SecurityWpaAkmDot1xSha256.IsNull() && !data.SecurityWpaAkmDot1xSha256.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/auth-key-mgmt-dot1x-sha256", data.SecurityWpaAkmDot1xSha256.ValueBool())
+	}
+	if !data.SecurityWpaAkmOwe.IsNull() && !data.SecurityWpaAkmOwe.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/akm-owe", data.SecurityWpaAkmOwe.ValueBool())
+	}
 	if !data.SecurityWpaWpa2CiphersAes.IsNull() && !data.SecurityWpaWpa2CiphersAes.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/wpa2-aes", data.SecurityWpaWpa2CiphersAes.ValueBool())
 	}
@@ -197,6 +232,15 @@ func (data WirelessWLANProfile) addToBodyXML(ctx context.Context, config Wireles
 	}
 	if !data.SecurityWpaWpa3.IsNull() && !data.SecurityWpaWpa3.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/wpa3-enabled", data.SecurityWpaWpa3.ValueBool())
+	}
+	if !data.SecurityWpaWpa2.IsNull() && !data.SecurityWpaWpa2.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/wpa2-enabled", data.SecurityWpaWpa2.ValueBool())
+	}
+	if !data.SecurityWpa.IsNull() && !data.SecurityWpa.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/security-wpa", data.SecurityWpa.ValueBool())
+	}
+	if !data.SecurityPmf.IsNull() && !data.SecurityPmf.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/pmf-options", data.SecurityPmf.ValueString())
 	}
 	if !data.SecurityWpaPskKeyFormat.IsNull() && !data.SecurityWpaPskKeyFormat.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/psk-key-type", data.SecurityWpaPskKeyFormat.ValueString())
@@ -237,6 +281,30 @@ func (data WirelessWLANProfile) addToBodyXML(ctx context.Context, config Wireles
 	}
 	if !data.Wmm.IsNull() && !data.Wmm.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/qos-wmm-status", data.Wmm.ValueString())
+	}
+	if len(data.RadioPolicies) > 0 {
+		for _, item := range data.RadioPolicies {
+			cBody := netconf.Body{}
+			if !item.Band.IsNull() && !item.Band.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "band", item.Band.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/wlan-radio-policies/wlan-radio-policy", cBody.Res())
+		}
+	}
+	if !data.BssTransition.IsNull() && !data.BssTransition.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/apf-vap-802-11v-data/dot11v-bss-transition", data.BssTransition.ValueBool())
+	}
+	if !data.BssMaxIdle.IsNull() && !data.BssMaxIdle.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/apf-vap-802-11v-data/dot11v-bss-max-idle", data.BssMaxIdle.ValueBool())
+	}
+	if !data.Dms.IsNull() && !data.Dms.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/apf-vap-802-11v-data/dot11v-dms", data.Dms.ValueBool())
+	}
+	if !data.AssistedRoamingNeighborList.IsNull() && !data.AssistedRoamingNeighborList.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/wlan-11k-neigh-list", data.AssistedRoamingNeighborList.ValueBool())
+	}
+	if !data.Okc.IsNull() && !data.Okc.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/okc", data.Okc.ValueBool())
 	}
 	return body
 }
@@ -329,6 +397,20 @@ func (data *WirelessWLANProfile) updateFromBodyXML(ctx context.Context, res xmld
 	} else {
 		data.SecurityWpaAkmFtSae = types.BoolNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/auth-key-mgmt-dot1x-sha256"); !data.SecurityWpaAkmDot1xSha256.IsNull() {
+		if value.Exists() {
+			data.SecurityWpaAkmDot1xSha256 = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.SecurityWpaAkmDot1xSha256 = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/akm-owe"); !data.SecurityWpaAkmOwe.IsNull() {
+		if value.Exists() {
+			data.SecurityWpaAkmOwe = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.SecurityWpaAkmOwe = types.BoolNull()
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/wpa2-aes"); !data.SecurityWpaWpa2CiphersAes.IsNull() {
 		if value.Exists() {
 			data.SecurityWpaWpa2CiphersAes = types.BoolValue(value.Bool())
@@ -356,6 +438,25 @@ func (data *WirelessWLANProfile) updateFromBodyXML(ctx context.Context, res xmld
 		}
 	} else {
 		data.SecurityWpaWpa3 = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/wpa2-enabled"); !data.SecurityWpaWpa2.IsNull() {
+		if value.Exists() {
+			data.SecurityWpaWpa2 = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.SecurityWpaWpa2 = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/security-wpa"); !data.SecurityWpa.IsNull() {
+		if value.Exists() {
+			data.SecurityWpa = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.SecurityWpa = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/pmf-options"); value.Exists() && !data.SecurityPmf.IsNull() {
+		data.SecurityPmf = types.StringValue(value.String())
+	} else {
+		data.SecurityPmf = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/psk-key-type"); value.Exists() && !data.SecurityWpaPskKeyFormat.IsNull() {
 		data.SecurityWpaPskKeyFormat = types.StringValue(value.String())
@@ -412,6 +513,70 @@ func (data *WirelessWLANProfile) updateFromBodyXML(ctx context.Context, res xmld
 		data.Wmm = types.StringValue(value.String())
 	} else {
 		data.Wmm = types.StringNull()
+	}
+	for i := range data.RadioPolicies {
+		keys := [...]string{"band"}
+		keyValues := [...]string{data.RadioPolicies[i].Band.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/wlan-radio-policies/wlan-radio-policy").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "band"); value.Exists() && !data.RadioPolicies[i].Band.IsNull() {
+			data.RadioPolicies[i].Band = types.StringValue(value.String())
+		} else {
+			data.RadioPolicies[i].Band = types.StringNull()
+		}
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/apf-vap-802-11v-data/dot11v-bss-transition"); !data.BssTransition.IsNull() {
+		if value.Exists() {
+			data.BssTransition = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.BssTransition = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/apf-vap-802-11v-data/dot11v-bss-max-idle"); !data.BssMaxIdle.IsNull() {
+		if value.Exists() {
+			data.BssMaxIdle = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.BssMaxIdle = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/apf-vap-802-11v-data/dot11v-dms"); !data.Dms.IsNull() {
+		if value.Exists() {
+			data.Dms = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.Dms = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/wlan-11k-neigh-list"); !data.AssistedRoamingNeighborList.IsNull() {
+		if value.Exists() {
+			data.AssistedRoamingNeighborList = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.AssistedRoamingNeighborList = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/okc"); !data.Okc.IsNull() {
+		if value.Exists() {
+			data.Okc = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.Okc = types.BoolNull()
 	}
 }
 
@@ -474,6 +639,16 @@ func (data *WirelessWLANProfile) fromBodyXML(ctx context.Context, res xmldot.Res
 	} else {
 		data.SecurityWpaAkmFtSae = types.BoolNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/auth-key-mgmt-dot1x-sha256"); value.Exists() {
+		data.SecurityWpaAkmDot1xSha256 = types.BoolValue(value.Bool())
+	} else {
+		data.SecurityWpaAkmDot1xSha256 = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/akm-owe"); value.Exists() {
+		data.SecurityWpaAkmOwe = types.BoolValue(value.Bool())
+	} else {
+		data.SecurityWpaAkmOwe = types.BoolNull()
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/wpa2-aes"); value.Exists() {
 		data.SecurityWpaWpa2CiphersAes = types.BoolValue(value.Bool())
 	} else {
@@ -493,6 +668,19 @@ func (data *WirelessWLANProfile) fromBodyXML(ctx context.Context, res xmldot.Res
 		data.SecurityWpaWpa3 = types.BoolValue(value.Bool())
 	} else {
 		data.SecurityWpaWpa3 = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/wpa2-enabled"); value.Exists() {
+		data.SecurityWpaWpa2 = types.BoolValue(value.Bool())
+	} else {
+		data.SecurityWpaWpa2 = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/security-wpa"); value.Exists() {
+		data.SecurityWpa = types.BoolValue(value.Bool())
+	} else {
+		data.SecurityWpa = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/pmf-options"); value.Exists() {
+		data.SecurityPmf = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/psk-key-type"); value.Exists() {
 		data.SecurityWpaPskKeyFormat = types.StringValue(value.String())
@@ -535,6 +723,42 @@ func (data *WirelessWLANProfile) fromBodyXML(ctx context.Context, res xmldot.Res
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/qos-wmm-status"); value.Exists() {
 		data.Wmm = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/wlan-radio-policies/wlan-radio-policy"); value.Exists() {
+		data.RadioPolicies = make([]WirelessWLANProfileRadioPolicies, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := WirelessWLANProfileRadioPolicies{}
+			if cValue := helpers.GetFromXPath(v, "band"); cValue.Exists() {
+				item.Band = types.StringValue(cValue.String())
+			}
+			data.RadioPolicies = append(data.RadioPolicies, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/apf-vap-802-11v-data/dot11v-bss-transition"); value.Exists() {
+		data.BssTransition = types.BoolValue(value.Bool())
+	} else {
+		data.BssTransition = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/apf-vap-802-11v-data/dot11v-bss-max-idle"); value.Exists() {
+		data.BssMaxIdle = types.BoolValue(value.Bool())
+	} else {
+		data.BssMaxIdle = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/apf-vap-802-11v-data/dot11v-dms"); value.Exists() {
+		data.Dms = types.BoolValue(value.Bool())
+	} else {
+		data.Dms = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/wlan-11k-neigh-list"); value.Exists() {
+		data.AssistedRoamingNeighborList = types.BoolValue(value.Bool())
+	} else {
+		data.AssistedRoamingNeighborList = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/okc"); value.Exists() {
+		data.Okc = types.BoolValue(value.Bool())
+	} else {
+		data.Okc = types.BoolNull()
 	}
 }
 
@@ -597,6 +821,16 @@ func (data *WirelessWLANProfileData) fromBodyXML(ctx context.Context, res xmldot
 	} else {
 		data.SecurityWpaAkmFtSae = types.BoolNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/auth-key-mgmt-dot1x-sha256"); value.Exists() {
+		data.SecurityWpaAkmDot1xSha256 = types.BoolValue(value.Bool())
+	} else {
+		data.SecurityWpaAkmDot1xSha256 = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/akm-owe"); value.Exists() {
+		data.SecurityWpaAkmOwe = types.BoolValue(value.Bool())
+	} else {
+		data.SecurityWpaAkmOwe = types.BoolNull()
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/wpa2-aes"); value.Exists() {
 		data.SecurityWpaWpa2CiphersAes = types.BoolValue(value.Bool())
 	} else {
@@ -616,6 +850,19 @@ func (data *WirelessWLANProfileData) fromBodyXML(ctx context.Context, res xmldot
 		data.SecurityWpaWpa3 = types.BoolValue(value.Bool())
 	} else {
 		data.SecurityWpaWpa3 = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/wpa2-enabled"); value.Exists() {
+		data.SecurityWpaWpa2 = types.BoolValue(value.Bool())
+	} else {
+		data.SecurityWpaWpa2 = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/security-wpa"); value.Exists() {
+		data.SecurityWpa = types.BoolValue(value.Bool())
+	} else {
+		data.SecurityWpa = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/pmf-options"); value.Exists() {
+		data.SecurityPmf = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/psk-key-type"); value.Exists() {
 		data.SecurityWpaPskKeyFormat = types.StringValue(value.String())
@@ -659,6 +906,42 @@ func (data *WirelessWLANProfileData) fromBodyXML(ctx context.Context, res xmldot
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/qos-wmm-status"); value.Exists() {
 		data.Wmm = types.StringValue(value.String())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/wlan-radio-policies/wlan-radio-policy"); value.Exists() {
+		data.RadioPolicies = make([]WirelessWLANProfileRadioPoliciesData, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := WirelessWLANProfileRadioPoliciesData{}
+			if cValue := helpers.GetFromXPath(v, "band"); cValue.Exists() {
+				item.Band = types.StringValue(cValue.String())
+			}
+			data.RadioPolicies = append(data.RadioPolicies, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/apf-vap-802-11v-data/dot11v-bss-transition"); value.Exists() {
+		data.BssTransition = types.BoolValue(value.Bool())
+	} else {
+		data.BssTransition = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/apf-vap-802-11v-data/dot11v-bss-max-idle"); value.Exists() {
+		data.BssMaxIdle = types.BoolValue(value.Bool())
+	} else {
+		data.BssMaxIdle = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/apf-vap-802-11v-data/dot11v-dms"); value.Exists() {
+		data.Dms = types.BoolValue(value.Bool())
+	} else {
+		data.Dms = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/wlan-11k-neigh-list"); value.Exists() {
+		data.AssistedRoamingNeighborList = types.BoolValue(value.Bool())
+	} else {
+		data.AssistedRoamingNeighborList = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/okc"); value.Exists() {
+		data.Okc = types.BoolValue(value.Bool())
+	} else {
+		data.Okc = types.BoolNull()
+	}
 }
 
 // End of section. //template:end fromBodyDataXML
@@ -667,6 +950,51 @@ func (data *WirelessWLANProfileData) fromBodyXML(ctx context.Context, res xmldot
 
 func (data *WirelessWLANProfile) addDeletedItemsXML(ctx context.Context, state WirelessWLANProfile, body string) string {
 	b := netconf.NewBody(body)
+	if !state.Okc.IsNull() && data.Okc.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/okc")
+	}
+	if !state.AssistedRoamingNeighborList.IsNull() && data.AssistedRoamingNeighborList.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/wlan-11k-neigh-list")
+	}
+	if !state.Dms.IsNull() && data.Dms.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/apf-vap-802-11v-data/dot11v-dms")
+	}
+	if !state.BssMaxIdle.IsNull() && data.BssMaxIdle.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/apf-vap-802-11v-data/dot11v-bss-max-idle")
+	}
+	if !state.BssTransition.IsNull() && data.BssTransition.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/apf-vap-802-11v-data/dot11v-bss-transition")
+	}
+	for i := range state.RadioPolicies {
+		stateKeys := [...]string{"band"}
+		stateKeyValues := [...]string{state.RadioPolicies[i].Band.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.RadioPolicies[i].Band.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.RadioPolicies {
+			found = true
+			if state.RadioPolicies[i].Band.ValueString() != data.RadioPolicies[j].Band.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/wlan-radio-policies/wlan-radio-policy%v", predicates))
+		}
+	}
 	if !state.Wmm.IsNull() && data.Wmm.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/qos-wmm-status")
 	}
@@ -703,6 +1031,15 @@ func (data *WirelessWLANProfile) addDeletedItemsXML(ctx context.Context, state W
 	if !state.SecurityWpaPskKeyFormat.IsNull() && data.SecurityWpaPskKeyFormat.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/psk-key-type")
 	}
+	if !state.SecurityPmf.IsNull() && data.SecurityPmf.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/pmf-options")
+	}
+	if !state.SecurityWpa.IsNull() && data.SecurityWpa.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/security-wpa")
+	}
+	if !state.SecurityWpaWpa2.IsNull() && data.SecurityWpaWpa2.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/wpa2-enabled")
+	}
 	if !state.SecurityWpaWpa3.IsNull() && data.SecurityWpaWpa3.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/wpa3-enabled")
 	}
@@ -714,6 +1051,12 @@ func (data *WirelessWLANProfile) addDeletedItemsXML(ctx context.Context, state W
 	}
 	if !state.SecurityWpaWpa2CiphersAes.IsNull() && data.SecurityWpaWpa2CiphersAes.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/wpa2-aes")
+	}
+	if !state.SecurityWpaAkmOwe.IsNull() && data.SecurityWpaAkmOwe.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/akm-owe")
+	}
+	if !state.SecurityWpaAkmDot1xSha256.IsNull() && data.SecurityWpaAkmDot1xSha256.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/auth-key-mgmt-dot1x-sha256")
 	}
 	if !state.SecurityWpaAkmFtSae.IsNull() && data.SecurityWpaAkmFtSae.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/auth-key-mgmt-ft-sae")
@@ -762,6 +1105,31 @@ func (data *WirelessWLANProfile) addDeletedItemsXML(ctx context.Context, state W
 
 func (data *WirelessWLANProfile) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	if !data.Okc.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/okc")
+	}
+	if !data.AssistedRoamingNeighborList.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/wlan-11k-neigh-list")
+	}
+	if !data.Dms.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/apf-vap-802-11v-data/dot11v-dms")
+	}
+	if !data.BssMaxIdle.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/apf-vap-802-11v-data/dot11v-bss-max-idle")
+	}
+	if !data.BssTransition.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/apf-vap-802-11v-data/dot11v-bss-transition")
+	}
+	for i := range data.RadioPolicies {
+		keys := [...]string{"band"}
+		keyValues := [...]string{data.RadioPolicies[i].Band.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/wlan-radio-policies/wlan-radio-policy%v", predicates))
+	}
 	if !data.Wmm.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/qos-wmm-status")
 	}
@@ -798,6 +1166,15 @@ func (data *WirelessWLANProfile) addDeletePathsXML(ctx context.Context, body str
 	if !data.SecurityWpaPskKeyFormat.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/psk-key-type")
 	}
+	if !data.SecurityPmf.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/pmf-options")
+	}
+	if !data.SecurityWpa.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/security-wpa")
+	}
+	if !data.SecurityWpaWpa2.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/wpa2-enabled")
+	}
 	if !data.SecurityWpaWpa3.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/wpa3-enabled")
 	}
@@ -809,6 +1186,12 @@ func (data *WirelessWLANProfile) addDeletePathsXML(ctx context.Context, body str
 	}
 	if !data.SecurityWpaWpa2CiphersAes.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/wpa2-aes")
+	}
+	if !data.SecurityWpaAkmOwe.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/akm-owe")
+	}
+	if !data.SecurityWpaAkmDot1xSha256.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/auth-key-mgmt-dot1x-sha256")
 	}
 	if !data.SecurityWpaAkmFtSae.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/auth-key-mgmt-ft-sae")

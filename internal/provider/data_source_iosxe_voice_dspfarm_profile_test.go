@@ -58,7 +58,6 @@ func TestAccDataSourceIosxeVoiceDSPFarmProfile(t *testing.T) {
 
 func testAccDataSourceIosxeVoiceDSPFarmProfileConfig() string {
 	config := `resource "iosxe_voice_dspfarm_profile" "test" {` + "\n"
-	config += `	delete_mode = "attributes"` + "\n"
 	config += `	tag = 1` + "\n"
 	config += `	type = "transcode"` + "\n"
 	config += `}` + "\n"

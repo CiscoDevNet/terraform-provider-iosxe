@@ -4,6 +4,10 @@ path: /Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:dspfarm/profile[id=%v]
 doc_category: Voice
 res_description: "This resource can manage the DSPFarm Profile configuration. Note: IOS-XE refuses to delete a dspfarm profile that is active; set `shutdown = true` before destroying the resource (or remove `no shutdown` on the device first), otherwise the delete fails with `inconsistent value: Device refused one or more commands`. Verified on a C8300 (17.18.03a) with a PVDM4 DSP module."
 ds_description: "This data source can read the DSPFarm Profile configuration."
+# `type` is mandatory and cannot be removed on its own, so an attribute-mode
+# delete leaves `dspfarm profile <tag> <type>` on the device. Destroy removes
+# the whole profile instead.
+no_delete_attributes: true
 # A profile can be created (left in shutdown) without DSP resources, so the test
 # runs on the C8000V; activating it (`shutdown = false`) needs DSPs.
 test_tags: [C8000V]

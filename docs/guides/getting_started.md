@@ -1,5 +1,5 @@
 ---
-subcategory: "Guides"
+subcategory: ""
 page_title: "Getting Started"
 description: |-
     Get started with the IOSXE provider by configuring a device end to end.
