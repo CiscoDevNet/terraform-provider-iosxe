@@ -1,0 +1,35 @@
+---
+name: Wireless AP Filter
+path: /Cisco-IOS-XE-wireless-ap-cfg:ap-cfg-data/ap-filter-configs/ap-filter-config[filter-name=%s]
+test_tags: [C9800]
+doc_category: Wireless
+res_description: This resource can manage an AP filter (`ap filter name`), which assigns policy, site and RF tags to access points whose name matches a regular expression. A filter only takes effect once it has a priority, see `iosxe_wireless_ap_filter_priority`.
+attributes:
+  - yang_name: filter-name
+    tf_name: name
+    type: String
+    id: true
+    string_max_length: 32
+    example: S3-AF-TEST
+  - yang_name: filter-string
+    tf_name: ap_name_regex
+    type: String
+    example: ^S3-AP-TEST-.*
+  - yang_name: apply-tag-list/policy-tag
+    tf_name: tag_policy
+    type: String
+    example: S3-PT-TEST
+  - yang_name: apply-tag-list/site-tag
+    tf_name: tag_site
+    type: String
+    example: S3-ST-TEST
+  - yang_name: apply-tag-list/rf-tag
+    tf_name: tag_rf
+    type: String
+    example: S3-RT-TEST
+  - yang_name: filter-type
+    tf_name: filter_type
+    type: String
+    enum_values: [ap-filter-type-tag, ap-filter-type-priming]
+    default_value: ap-filter-type-tag
+    example: ap-filter-type-tag
