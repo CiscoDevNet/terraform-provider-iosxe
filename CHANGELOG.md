@@ -10,6 +10,8 @@
 - Add `load` attribute to `iosxe_wireless_site_tag` resource and data source (`load <0-1000>` site load estimate)
 - Add `iosxe_wireless_multi_bssid_profile` resource and data source for `wireless profile multi-bssid` (802.11ax and 802.11be Multi-BSSID profiles)
 - Add `ip_ssh_server_algorithm_encryption`, `ip_ssh_server_algorithm_mac`, `ip_ssh_server_algorithm_kex`, and `ip_ssh_server_algorithm_authentication` attributes to `iosxe_system` resource and data source for SSH server algorithm selection (`ip ssh server algorithm ...`). Requires IOS-XE 17.16.1 or later
+- Add `iosxe_wireless_mobility` resource and data source for C9800 mobility: local group name (`wireless mobility group name`), mobility MAC address, keepalive interval and count, DSCP, and the mobility group members (`wireless mobility group member`, with public IP, SSC hash and data link encryption). Destroying it returns the settings to their defaults and deletes the managed members
+- Enable the `mobility_anchors` acceptance test of `iosxe_wireless_policy_profile`, which now configures a mobility peer as a test prerequisite
 
 ## 1.2.0
 
