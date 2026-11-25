@@ -174,9 +174,9 @@ test_prerequisites:
         value: 192.0.2.1
       - name: mask
         value: 255.255.255.0
-  - path: /Cisco-IOS-XE-native:native/interface/Vlan[name=123]/ipv6/address/link-local-address[address=fe80::1]
+  - path: /Cisco-IOS-XE-native:native/interface/Vlan[name=123]/ipv6/address/link-local-address[address=fe80::2]
     attributes:
       - name: address
-        value: fe80::1
+        value: fe80::2
       - name: link-local
         value: ""
