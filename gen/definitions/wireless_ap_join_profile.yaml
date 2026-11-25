@@ -34,6 +34,7 @@ attributes:
     tf_name: mgmtuser_password_type
     write_only: true
     example: clear
+    allow_import_changes: true
   - yang_name: user-mgmt/secret
     tf_name: mgmtuser_secret
     write_only: true
@@ -43,6 +44,7 @@ attributes:
     tf_name: mgmtuser_secret_type
     write_only: true
     example: clear
+    allow_import_changes: true
   - yang_name: ntp-server-info/ntp-address
     tf_name: ntp_ip
     example: 10.10.10.5
@@ -69,13 +71,13 @@ attributes:
     example: true
   - yang_name: retransmit-timer/count
     tf_name: capwap_retransmit_count
-    example: 5
+    example: 6
   - yang_name: retransmit-timer/interval
     tf_name: capwap_retransmit_interval
-    example: 3
+    example: 4
   - yang_name: capwap-timer/discovery-timeout
     tf_name: capwap_timers_discovery_timeout
-    example: 10
+    example: 5
   - yang_name: capwap-timer/fast-heart-beat-timeout
     tf_name: capwap_timers_fast_heartbeat_timeout
     example: 1
@@ -87,7 +89,7 @@ attributes:
     example: 60
   - yang_name: capwap-timer/primed-join-timeout
     tf_name: capwap_timers_primed_join_timeout
-    example: 0
+    example: 120
   - yang_name: backup-controllers/primary-controller-name
     tf_name: capwap_backup_primary_name
     example: wlc-dc1
@@ -102,16 +104,16 @@ attributes:
     example: 10.20.20.11
   - yang_name: backup-controllers/fallback-enabled
     tf_name: capwap_fallback
-    example: true
+    example: false
   - yang_name: private-ip-discovery
     tf_name: capwap_discovery_private
-    example: true
+    example: false
   - yang_name: public-ip-discovery
     tf_name: capwap_discovery_public
     example: false
   - yang_name: cdp/cdp-enable
     tf_name: cdp
-    example: true
+    example: false
   - yang_name: dot1x-eap-type-info/dot1x-eap-type
     tf_name: dot1x_eap_type
     example: dot1x-eap-tls
@@ -127,33 +129,37 @@ attributes:
     tf_name: dot1x_password_type
     write_only: true
     example: clear
+    allow_import_changes: true
   - yang_name: hyperlocation/hyperlocation-enable
     tf_name: hyperlocation
-    example: false
+    example: true
   - yang_name: dhcp-fallback/dhcp-fallback
     tf_name: ip_dhcp_fallback
-    example: true
+    example: false
   - yang_name: lag-info/ap-lag-enabled
     tf_name: lag
-    example: false
+    example: true
   - yang_name: led-state/led-state
     tf_name: led
-    example: true
+    example: false
   - yang_name: mesh/mesh-profile-name
     tf_name: mesh_profile
+    # Excluded from tests: the only mesh profile on a fresh controller is the
+    # built-in default, which the controller omits on read.
     example: default-mesh-profile
+    exclude_test: true
   - yang_name: rogue-detection/ap-rogue-detection
     tf_name: rogue_detection_enable
-    example: true
+    example: false
   - yang_name: rogue-detection/ap-rogue-detection-min-rssi
     tf_name: rogue_detection_min_rssi
     example: -80
   - yang_name: rogue-detection/ap-rogue-detection-transient-interval
     tf_name: rogue_detection_min_transient_time
-    example: 0
+    example: 120
   - yang_name: rogue-detection/rogue-detection-monitor-mode-report-interval
     tf_name: rogue_detection_report_interval
-    example: 10
+    example: 30
   - yang_name: stats-monitor/enable
     tf_name: statistics_ap_system_monitoring_enable
     example: true
@@ -163,10 +169,10 @@ attributes:
     example: true
   - yang_name: stats-monitor/alarm-hold-time
     tf_name: statistics_ap_system_monitoring_alarm_hold_time
-    example: 6
+    example: 10
   - yang_name: stats-monitor/trap-retx-time
     tf_name: statistics_ap_system_monitoring_alarm_retransmit_time
-    example: 0
+    example: 5
   - yang_name: stats-monitor/cpu-threshold
     tf_name: statistics_ap_system_monitoring_cpu_threshold
     example: 90
@@ -175,31 +181,31 @@ attributes:
     example: 90
   - yang_name: stats-monitor/sample-intvl
     tf_name: statistics_ap_system_monitoring_sampling_interval
-    example: 30
+    example: 60
   - yang_name: stats-monitor/stats-intvl
     tf_name: statistics_ap_system_monitoring_stats_interval
-    example: 300
+    example: 600
   - yang_name: traffic-distribution/status
     tf_name: statistics_traffic_distribution
-    example: true
+    example: false
   - yang_name: traffic-distribution/interval
     tf_name: statistics_traffic_distribution_interval
-    example: 300
+    example: 600
   - yang_name: radio-stats-monitor/enable
     tf_name: statistics_ap_radio_monitoring_enable
-    example: false
+    example: true
   - yang_name: radio-stats-monitor/sample-intvl
     tf_name: statistics_ap_radio_monitoring_sampling_interval
-    example: 720
+    example: 900
   - yang_name: stats-timer/stats-timer
     tf_name: stats_timer
-    example: 180
+    example: 120
   - yang_name: tcp-mss/adjust-mss
     tf_name: tcp_adjust_mss_enable
-    example: true
+    example: false
   - yang_name: tcp-mss/tcp-adjust-mss
     tf_name: tcp_adjust_mss_size
-    example: 1250
+    example: 1200
   - yang_name: ble/scan-state
     tf_name: ble_scan
-    example: false
+    example: true

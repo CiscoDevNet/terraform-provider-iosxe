@@ -1,5 +1,5 @@
 ---
-subcategory: "Guides"
+subcategory: ""
 page_title: "Manage Multiple Devices"
 description: |-
     How to manage multiple IOS-XE devices.
@@ -110,7 +110,7 @@ resource "iosxe_banner" "login_banner" {
 
 ### Relationship with `selected_devices`
 
-**Important**: The [`selected_devices` provider attribute](selective_deploy.md) takes precedence over individual `managed` flags:
+**Important**: The [`selected_devices` provider attribute](selective_deploy) takes precedence over individual `managed` flags:
 
 - **When `selected_devices` is specified**: Individual `managed` flags are ignored
 - **When `selected_devices` is not specified**: Individual `managed` flags are respected

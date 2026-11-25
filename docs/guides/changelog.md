@@ -1,5 +1,5 @@
 ---
-subcategory: "Guides"
+subcategory: ""
 page_title: "Changelog"
 description: |-
     Changelog
@@ -9,7 +9,21 @@ description: |-
 
 ## Unreleased
 
-- Add `iosxe_voice_dspfarm_profile` resource and data source for `dspfarm profile`.
+- Add `iosxe_privilege` resource and data source for `privilege <mode> level <level> <command>`, one resource per mode. IOS-XE refuses a NETCONF delete of a single command or level, so destroying the resource deletes the whole mode and any change to `levels` recreates it. Each command then returns to its default level, and the device keeps an explicit default-level line (for example `privilege exec level 1 ping`). After `terraform import`, the first plan replaces the mode unless `levels` lists every entry on the device, including the parent commands IOS-XE adds (for example `show` for `show interfaces`)
+- Fix documentation links to work on both the Terraform and OpenTofu registries
+- Improve documentation page titles and descriptions
+- Add `iosxe_interface_vrrp` resource and data source for VRRPv3 interface-level configuration (`vrrp <group> address-family ipv4|ipv6`). One resource manages both address families of a group: IPv4 primary and secondary virtual addresses, IPv6 link-local primary address and prefixes, and per-family priority, preempt delay, advertisement timer, description, object tracking with priority decrement or shutdown, and shutdown. Setting or removing a family's primary address adds or removes that family, and destroying the resource removes the group
+- Add `iosxe_fhrp` resource and data source for global FHRP version configuration (`fhrp version vrrp v3`). Destroying it returns the device to `v2`, which deletes every VRRPv3 group, so make `iosxe_interface_vrrp` resources depend on it
+- Add `stub_receive_only`, `stub_static` and `stub_redistributed` attributes (`eigrp stub receive-only`, `eigrp stub static`, `eigrp stub redistributed`) to `iosxe_eigrp` and `iosxe_eigrp_vrf` resources and data sources
+- Add `security_wpa_akm_dot1x_sha256`, `security_wpa_akm_owe`, `security_wpa_wpa2`, `security_wpa`, `security_pmf`, `radio_policies`, `bss_transition`, `bss_max_idle`, `dms`, `assisted_roaming_neighbor_list` and `okc` attributes to `iosxe_wireless_wlan_profile` resource and data source
+- Add `iosxe_wireless_multi_bssid_profile` resource and data source for `wireless profile multi-bssid` (802.11ax and 802.11be Multi-BSSID profiles, `dot11be` attributes require IOS-XE 17.15 or later)
+
+## 1.2.0
+
+- Bump `go-netconf` dependency to v0.7.0 and `xmldot` to v0.6.0. NETCONF replies with lists longer than 1000 elements are no longer truncated, the document size limit rises from 10 MB to 100 MB, and a reply or edit-config that exceeds a limit now fails with an error instead of silently returning or sending incomplete data. `scrapligo` is back on v1.4.3, which fixes the intermittent connection errors on the first operation of a new NETCONF session that led to the v0.6.2 downgrade
+- Add `iosxe_eap_profile` resource and data source for `eap profile` (description, allowed EAP methods and PKI trustpoint). `method_fast` maps to `method/fast-config`, not the obsolete `method/fast` leaf
+- Add `iosxe_parameter_map_webauth_global` resource and data source for the global web authentication parameter map (`parameter-map type webauth global`) and its `virtual-ip ipv4` / `virtual-ip ipv6` addresses. Configuring it converts the device to IBNS 2.0 session management, which cannot be undone from the CLI
+- Add `iosxe_voice_dspfarm_profile` resource and data source for `dspfarm profile`. Destroying it always removes the whole profile, because the mandatory `type` cannot be removed on its own.
 - Add `iosxe_sccp` resource and data source for `sccp` (DSPfarm control protocol).
 - Add `iosxe_voice_card` resource and data source for `voice-card`.
 - Add `iosxe_voice_port` resource and data source for `voice-port`.
@@ -44,6 +58,7 @@ description: |-
 - Add `pqc_mlkem512`, `pqc_mlkem768`, `pqc_mlkem1024`, and `pqc_optional` attributes to `iosxe_crypto_ikev2_proposal` resource and data source
 - Add `set_pfs` attribute to `iosxe_crypto_ipsec_profile` resource and data source
 - Fix BGP resources when the AS number notation differs between Terraform and the device. IOS-XE keys a BGP process by the AS in the notation it was created with, so adopting an existing asdot process without import failed with `too many /native/router/ios-bgp:bgp`, and toggling `asnotation_dot` on a managed process dropped every BGP resource from state. BGP resources now read and write under whichever notation (`1.1` or `65537`) the device stores, so both cases settle as ordinary updates
+- Make `ssid` required on `iosxe_wireless_wlan_profile` and `band` required on `iosxe_wireless_rf_profile`; the C9800 rejects a WLAN profile without an SSID and an RF profile without a band
 - Fix `terraform destroy` failing on the C9800's built-in wireless objects (`default-site-tag`, `default-rf-tag`, `default-policy-profile`, `default-policy-tag`, `default-ap-profile`, `default-rf-profile-6ghz` and the six pre-configured `*_Client_Density_*` RF profiles), which the controller refuses to delete. Destroying one now removes only the attributes Terraform configured, the same as the matching `no` commands, and leaves the object in place; `status` and `band` on `default-rf-profile-6ghz` are left as-is so destroy never disables it, and the read-only pre-configured RF profiles are only removed from state. Add the `builtin_objects`, `builtin_readonly_objects` and `builtin_keep` definition options that implement this
 - Add `iosxe_interface_hsrp` resource and data source for HSRP (Hot Standby Router Protocol) interface-level standby configuration, including version selection, BFD, delay timers, MAC refresh, use-bia, redirect settings, and per-group configuration with virtual IPv4/IPv6 addresses, priority, preemption with delay options, hello/hold timers (seconds and milliseconds), plain text and MD5 authentication, object tracking with priority decrement or shutdown, virtual MAC address, redundancy naming, and group following
 - Add `interface_name`, `interface_protocol`, and `interface_routing` attributes to `iosxe_system` resource and data source `track_objects` list for interface object tracking configuration (`track <num> interface <name> line-protocol` and `track <num> interface <name> ip routing`)
@@ -70,7 +85,7 @@ description: |-
 - Add `re_originate_route_type5` attribute to `profiles` list in `iosxe_evpn` resource and data source for L2VPN EVPN profile `re-originate route-type5` configuration
 - Add `stub_connected` and `stub_summary` attributes to `iosxe_eigrp` and `iosxe_eigrp_vrf` resources and data sources for EIGRP stub routing advertisement control (`eigrp stub connected summary`)
 - Fix BGP resources triggering spurious destroy-recreate on import when the device uses `bgp asnotation dot` (asdot ASN format). A new `normalize_asn` plan modifier normalizes asdot and asplain representations to the same value before comparison
-- Add `iosxe_wireless_multi_bssid_profile` resource and data source for `wireless profile multi-bssid` (802.11ax and 802.11be Multi-BSSID profiles, `dot11be` attributes require IOS-XE 17.15 or later)
+- Document that destroying `iosxe_eigrp` or `iosxe_eigrp_vrf` removes only the address family and leaves the `router eigrp <name>` instance on the device, since address families can share it. Their acceptance tests now remove the instance afterwards
 
 ## 1.1.1
 
