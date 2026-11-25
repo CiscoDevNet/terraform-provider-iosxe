@@ -44,6 +44,8 @@ func TestAccIosxeEIGRP(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eigrp.test", "af_interfaces.0.split_horizon", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eigrp.test", "stub_connected", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eigrp.test", "stub_summary", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eigrp.test", "stub_static", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eigrp.test", "stub_redistributed", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eigrp.test", "shutdown", "false"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -61,7 +63,7 @@ func TestAccIosxeEIGRP(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeEIGRPImportStateIdFunc("iosxe_eigrp.test"),
-				ImportStateVerifyIgnore: []string{},
+				ImportStateVerifyIgnore: []string{"stub_receive_only"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -128,6 +130,8 @@ func testAccIosxeEIGRPConfig_all() string {
 	config += `	}]` + "\n"
 	config += `	stub_connected = true` + "\n"
 	config += `	stub_summary = true` + "\n"
+	config += `	stub_static = true` + "\n"
+	config += `	stub_redistributed = true` + "\n"
 	config += `	shutdown = false` + "\n"
 	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
