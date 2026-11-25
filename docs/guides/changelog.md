@@ -18,6 +18,7 @@ description: |-
 - Add `security_wpa_akm_dot1x_sha256`, `security_wpa_akm_owe`, `security_wpa_wpa2`, `security_wpa`, `security_pmf`, `radio_policies`, `bss_transition`, `bss_max_idle`, `dms`, `assisted_roaming_neighbor_list` and `okc` attributes to `iosxe_wireless_wlan_profile` resource and data source
 - Add `load` attribute to `iosxe_wireless_site_tag` resource and data source (`load <0-1000>` site load estimate)
 - Add `iosxe_wireless_multi_bssid_profile` resource and data source for `wireless profile multi-bssid` (802.11ax and 802.11be Multi-BSSID profiles)
+- Add `ip_ssh_server_algorithm_encryption`, `ip_ssh_server_algorithm_mac`, `ip_ssh_server_algorithm_kex`, and `ip_ssh_server_algorithm_authentication` attributes to `iosxe_system` resource and data source for SSH server algorithm selection (`ip ssh server algorithm ...`). Requires IOS-XE 17.16.1 or later
 
 ## 1.2.0
 

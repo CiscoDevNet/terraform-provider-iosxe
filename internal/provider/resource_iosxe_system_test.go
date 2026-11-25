@@ -231,6 +231,18 @@ func testAccIosxeSystemConfig_all() string {
 	}
 	config += `	ip_ssh_time_out = 120` + "\n"
 	config += `	ip_ssh_authentication_retries = 3` + "\n"
+	if os.Getenv("IOSXE1718") != "" {
+		config += `	ip_ssh_server_algorithm_encryption = ["aes128-ctr"]` + "\n"
+	}
+	if os.Getenv("IOSXE1718") != "" {
+		config += `	ip_ssh_server_algorithm_mac = ["hmac-sha2-256"]` + "\n"
+	}
+	if os.Getenv("IOSXE1718") != "" {
+		config += `	ip_ssh_server_algorithm_kex = ["diffie-hellman-group14-sha256"]` + "\n"
+	}
+	if os.Getenv("IOSXE1718") != "" {
+		config += `	ip_ssh_server_algorithm_authentication = ["password"]` + "\n"
+	}
 	if os.Getenv("IOSXE1715") != "" {
 		config += `	ip_hosts = [{` + "\n"
 		config += `		name = "test.router.com"` + "\n"
