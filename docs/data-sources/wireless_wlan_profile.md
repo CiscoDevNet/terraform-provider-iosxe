@@ -31,27 +31,38 @@ data "iosxe_wireless_wlan_profile" "example" {
 
 ### Read-Only
 
+- `assisted_roaming_neighbor_list` (Boolean) Enable the 802.11k neighbor list (`assisted-roaming neighbor-list`). Enabled by default
 - `broadcast_ssid` (Boolean) broadcast SSID on a WLAN
+- `bss_max_idle` (Boolean) Configure BSS max idle processing per WLAN
+- `bss_transition` (Boolean) Configure BSS transition per WLAN
 - `ccx_aironet_ie` (Boolean) This object indicates the support for the Cisco Compatible Extensions Aironet information element on this WLAN.
+- `dms` (Boolean) Configure DMS processing per WLAN
 - `id` (String) The path of the retrieved object.
 - `load_balance` (Boolean) Allow/Disallow Load Balance on a WLAN
 - `mac_filtering` (String) Set MAC filtering support on WLAN
+- `okc` (Boolean) Enable/disable opportunistic key caching
 - `peer_blocking` (String) Represents the name of the ACL applied to this WLAN. If it is required to remove the ACL
+- `radio_policies` (Attributes List) Bands the WLAN is broadcast on (`radio policy dot11 24ghz|5ghz|6ghz`). With no entries the controller uses all bands, and 6 GHz comes up only when WPA3 and 802.11ax are enabled. A WLAN broadcast only on 6 GHz requires `security_wpa_wpa2` false, `security_wpa_wpa3` true and `security_pmf` `apf-vap-pmf-required` (see [below for nested schema](#nestedatt--radio_policies))
 - `security_dot1x_authentication_list` (String) Enter the Authentication list name
 - `security_ft` (String) Configures Fast Transition Adaptive support
 - `security_ft_over_the_ds` (Boolean) Configures Fast Transition over the DS
+- `security_pmf` (String) Protected Management Frames, 802.11w (`security pmf optional|mandatory`). `apf-vap-pmf-required` is `mandatory`. The controller default is disabled and is not returned on read, so leave the attribute unset for PMF disabled; setting `apf-vap-pmf-disabled` shows a change on every plan. A WLAN broadcast only on 6 GHz requires `apf-vap-pmf-required`
 - `security_web_auth` (Boolean) Configures Web authentication
 - `security_web_auth_authentication_list` (String) Enter the Authentication list name
 - `security_web_auth_parameter_map` (String) Enter the parameter-map name
+- `security_wpa` (Boolean) Enable WPA security on the WLAN (`security wpa`). Set to false for an open WLAN
 - `security_wpa_akm_dot1x` (Boolean) Authentication key management type 802.1x
+- `security_wpa_akm_dot1x_sha256` (Boolean) Enable the 802.1X SHA256 AKM (`security wpa akm dot1x-sha256`). With OWE and SAE, one of the AKMs a 6 GHz WLAN can use
 - `security_wpa_akm_ft_dot1x` (Boolean) Authentication key management type 802.11r dot1x
 - `security_wpa_akm_ft_psk` (Boolean) Authentication key management type 802.11r PSK
 - `security_wpa_akm_ft_sae` (Boolean) Authentication key management type FT-SAE
+- `security_wpa_akm_owe` (Boolean) Enable OWE (`security wpa akm owe`). The controller refuses it while `security_wpa_wpa2` is true
 - `security_wpa_akm_psk` (Boolean) Authentication key management PSK
 - `security_wpa_akm_sae` (Boolean) Authentication key management type SAE
 - `security_wpa_psk_key` (String, Sensitive) Authentication pre-shared key. For hexadecimal key format, PSK length must be exactly 64 characters and for ASCII key format, PSK length must be in the range of 8 and 63
 - `security_wpa_psk_key_encryption` (String) Pre-shared key encryption type
 - `security_wpa_psk_key_format` (String) Authentication pre-shared key type ascii/hex
+- `security_wpa_wpa2` (Boolean) Enable WPA2 (`security wpa wpa2`). Set to false for OWE, and for a WLAN broadcast only on 6 GHz
 - `security_wpa_wpa2_ciphers_aes` (Boolean) WPA2/CCMP128 support
 - `security_wpa_wpa2_ciphers_gcmp128` (Boolean) WPA2/GCMP128 support
 - `security_wpa_wpa2_ciphers_gcmp256` (Boolean) WPA2/GCMP256 support
@@ -60,3 +71,10 @@ data "iosxe_wireless_wlan_profile" "example" {
 - `wlan_id` (Number) wlan ID
 - `wlan_status` (Boolean) Administrative Status of ESS(WLAN). By disabling an ESS the corresponding SSID is no longer broadcasted in AP beacons.
 - `wmm` (String) Configures WMM (WME)
+
+<a id="nestedatt--radio_policies"></a>
+### Nested Schema for `radio_policies`
+
+Read-Only:
+
+- `band` (String) Broadcast WLAN on band

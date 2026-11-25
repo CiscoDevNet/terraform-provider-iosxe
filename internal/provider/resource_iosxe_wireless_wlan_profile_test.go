@@ -48,12 +48,19 @@ func TestAccIosxeWirelessWLANProfile(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "security_wpa_akm_dot1x", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "security_wpa_akm_psk", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "security_wpa_akm_ft_psk", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "security_pmf", "apf-vap-pmf-optional"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "security_wpa_psk_key_format", "key-hex"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "security_web_auth", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "security_ft", "dot11r-enabled"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "security_ft_over_the_ds", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "load_balance", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "wmm", "apf-vap-wme-required"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "radio_policies.0.band", "dot11-5-ghz-band"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "bss_transition", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "bss_max_idle", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "dms", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "assisted_roaming_neighbor_list", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_wlan_profile.test", "okc", "false"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -122,6 +129,7 @@ func testAccIosxeWirelessWLANProfileConfig_all() string {
 	config += `	security_wpa_akm_dot1x = false` + "\n"
 	config += `	security_wpa_akm_psk = true` + "\n"
 	config += `	security_wpa_akm_ft_psk = true` + "\n"
+	config += `	security_pmf = "apf-vap-pmf-optional"` + "\n"
 	config += `	security_wpa_psk_key_format = "key-hex"` + "\n"
 	config += `	security_wpa_psk_key_encryption = "clear"` + "\n"
 	config += `	security_wpa_psk_key = "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"` + "\n"
@@ -130,6 +138,14 @@ func testAccIosxeWirelessWLANProfileConfig_all() string {
 	config += `	security_ft_over_the_ds = true` + "\n"
 	config += `	load_balance = true` + "\n"
 	config += `	wmm = "apf-vap-wme-required"` + "\n"
+	config += `	radio_policies = [{` + "\n"
+	config += `		band = "dot11-5-ghz-band"` + "\n"
+	config += `	}]` + "\n"
+	config += `	bss_transition = false` + "\n"
+	config += `	bss_max_idle = false` + "\n"
+	config += `	dms = false` + "\n"
+	config += `	assisted_roaming_neighbor_list = false` + "\n"
+	config += `	okc = false` + "\n"
 	config += `}` + "\n"
 	return config
 }
