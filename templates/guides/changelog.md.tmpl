@@ -16,6 +16,7 @@ description: |-
 - Add `iosxe_fhrp` resource and data source for global FHRP version configuration (`fhrp version vrrp v3`). Destroying it returns the device to `v2`, which deletes every VRRPv3 group, so make `iosxe_interface_vrrp` resources depend on it
 - Add `stub_receive_only`, `stub_static` and `stub_redistributed` attributes (`eigrp stub receive-only`, `eigrp stub static`, `eigrp stub redistributed`) to `iosxe_eigrp` and `iosxe_eigrp_vrf` resources and data sources
 - Add `security_wpa_akm_dot1x_sha256`, `security_wpa_akm_owe`, `security_wpa_wpa2`, `security_wpa`, `security_pmf`, `radio_policies`, `bss_transition`, `bss_max_idle`, `dms`, `assisted_roaming_neighbor_list` and `okc` attributes to `iosxe_wireless_wlan_profile` resource and data source
+- Add `load` attribute to `iosxe_wireless_site_tag` resource and data source (`load <0-1000>` site load estimate)
 
 ## 1.2.0
 

@@ -28,6 +28,11 @@ attributes:
     tf_name: flex_profile
     type: String
     example: S1-FLEX
+  - yang_name: load
+    tf_name: load
+    type: Int64
+    description: Estimate of the relative load contributed by the site (`load <0-1000>`). AP count can be used as an approximation. The default 0 means no load recommendation for the site and is not returned on read, so leave the attribute unset for the default; setting 0 shows a change on every plan
+    example: 400
 
 test_prerequisites:
   - path: /Cisco-IOS-XE-wireless-site-cfg:site-cfg-data/ap-cfg-profiles/ap-cfg-profile[profile-name=S1-AP-JOIN]
