@@ -80,42 +80,42 @@ func (r *WirelessMobilityResource) Schema(ctx context.Context, req resource.Sche
 				},
 			},
 			"group_name": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Local Mobility group name").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Local mobility group name. The default `default` is not returned on read, so leave the attribute unset for the default; setting `default` shows a change on every plan").String,
 				Optional:            true,
 				Validators: []validator.String{
 					stringvalidator.LengthBetween(1, 31),
 				},
 			},
 			"mac_address": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Mobility local MAC address, in lowercase colon form (the controller stores it in lowercase).").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Mobility local MAC address, in lowercase colon form (the controller stores it in lowercase). The default `00:00:00:00:00:00` is not returned on read, so leave the attribute unset for the default; setting it shows a change on every plan").String,
 				Optional:            true,
 				Validators: []validator.String{
 					stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9a-f]{2}(:[0-9a-f]{2}){5}$`), ""),
 				},
 			},
 			"group_keepalive_interval": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Mobility Keep Alive interval").AddIntegerRangeDescription(1, 30).String,
+				MarkdownDescription: helpers.NewAttributeDescription("Mobility group keepalive interval in seconds. The default 10 is not returned on read, so leave the attribute unset for the default; setting 10 shows a change on every plan").AddIntegerRangeDescription(1, 30).String,
 				Optional:            true,
 				Validators: []validator.Int64{
 					int64validator.Between(1, 30),
 				},
 			},
 			"group_keepalive_count": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Mobility Keep Alive count").AddIntegerRangeDescription(3, 20).String,
+				MarkdownDescription: helpers.NewAttributeDescription("Mobility group keepalive retry count. The default 3 is not returned on read, so leave the attribute unset for the default; setting 3 shows a change on every plan").AddIntegerRangeDescription(3, 20).String,
 				Optional:            true,
 				Validators: []validator.Int64{
 					int64validator.Between(3, 20),
 				},
 			},
 			"dscp": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Mobility DSCP value").AddIntegerRangeDescription(0, 63).String,
+				MarkdownDescription: helpers.NewAttributeDescription("Mobility DSCP value. The default 48 is not returned on read, so leave the attribute unset for the default; setting 48 shows a change on every plan").AddIntegerRangeDescription(0, 63).String,
 				Optional:            true,
 				Validators: []validator.Int64{
 					int64validator.Between(0, 63),
 				},
 			},
 			"group_members": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("List of Mobility Peers").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Mobility group members (peers), up to 72. Each member `ip` must be unique").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
@@ -127,11 +127,11 @@ func (r *WirelessMobilityResource) Schema(ctx context.Context, req resource.Sche
 							},
 						},
 						"ip": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Peer IP address. The controller refuses to change it on an existing member.").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Peer IP address. Must be unique across members and in the same address family as `public_ip`. The controller refuses to change it on an existing member.").String,
 							Required:            true,
 						},
 						"public_ip": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Peer public IP address. If omitted, a member configured through this resource is stored with public IP `0.0.0.0`, unlike the `wireless mobility group member` CLI, where it defaults to `ip`. Set it equal to `ip` to match the CLI behaviour. The controller refuses to change it on an existing member.").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Peer public IP address. If omitted, a member configured through this resource is stored with public IP `0.0.0.0`, unlike the `wireless mobility group member` CLI, where it defaults to `ip`. Set it equal to `ip` to match the CLI behaviour. Do not set `0.0.0.0`, which is not returned on read and shows a change on every plan. The controller refuses to change it on an existing member.").String,
 							Optional:            true,
 						},
 						"group": schema.StringAttribute{
@@ -142,7 +142,7 @@ func (r *WirelessMobilityResource) Schema(ctx context.Context, req resource.Sche
 							},
 						},
 						"ssc_hash": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Peer SSC hash. The controller requires exactly 40 characters and stores the value in the case given.").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Peer SSC hash, the SHA-1 hash of the peer's self-signed certificate (40 hexadecimal characters). Needed only when the peer uses a self-signed certificate, such as a Catalyst 9800-CL. The controller requires exactly 40 characters and stores the value in the case given.").String,
 							Optional:            true,
 							Validators: []validator.String{
 								stringvalidator.LengthBetween(40, 40),

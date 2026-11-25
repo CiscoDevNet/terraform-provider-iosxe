@@ -126,4 +126,4 @@ test_prerequisites:
       - name: ip-address
         value: 192.0.2.10
       - name: group-name
-        value: ANCHORS
+        value: S2-ANCHORS

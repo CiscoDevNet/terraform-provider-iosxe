@@ -14,7 +14,7 @@ This resource can manage the Wireless Mobility configuration: the local mobility
 
 ```terraform
 resource "iosxe_wireless_mobility" "example" {
-  group_name               = "MOBILITY-1"
+  group_name               = "S1-MOBILITY"
   mac_address              = "00:00:00:00:0c:01"
   group_keepalive_interval = 20
   group_keepalive_count    = 5
@@ -24,7 +24,7 @@ resource "iosxe_wireless_mobility" "example" {
       mac_address          = "00:00:00:00:0a:20"
       ip                   = "192.0.2.20"
       public_ip            = "198.51.100.20"
-      group                = "MOBILITY-2"
+      group                = "S1-MOBILITY-PEER"
       ssc_hash             = "0123456789abcdef0123456789abcdef01234567"
       data_link_encryption = true
     }
@@ -38,15 +38,15 @@ resource "iosxe_wireless_mobility" "example" {
 ### Optional
 
 - `device` (String) A device name from the provider configuration.
-- `dscp` (Number) Mobility DSCP value
+- `dscp` (Number) Mobility DSCP value. The default 48 is not returned on read, so leave the attribute unset for the default; setting 48 shows a change on every plan
   - Range: `0`-`63`
-- `group_keepalive_count` (Number) Mobility Keep Alive count
+- `group_keepalive_count` (Number) Mobility group keepalive retry count. The default 3 is not returned on read, so leave the attribute unset for the default; setting 3 shows a change on every plan
   - Range: `3`-`20`
-- `group_keepalive_interval` (Number) Mobility Keep Alive interval
+- `group_keepalive_interval` (Number) Mobility group keepalive interval in seconds. The default 10 is not returned on read, so leave the attribute unset for the default; setting 10 shows a change on every plan
   - Range: `1`-`30`
-- `group_members` (Attributes List) List of Mobility Peers (see [below for nested schema](#nestedatt--group_members))
-- `group_name` (String) Local Mobility group name
-- `mac_address` (String) Mobility local MAC address, in lowercase colon form (the controller stores it in lowercase).
+- `group_members` (Attributes List) Mobility group members (peers), up to 72. Each member `ip` must be unique (see [below for nested schema](#nestedatt--group_members))
+- `group_name` (String) Local mobility group name. The default `default` is not returned on read, so leave the attribute unset for the default; setting `default` shows a change on every plan
+- `mac_address` (String) Mobility local MAC address, in lowercase colon form (the controller stores it in lowercase). The default `00:00:00:00:00:00` is not returned on read, so leave the attribute unset for the default; setting it shows a change on every plan
 
 ### Read-Only
 
@@ -58,14 +58,14 @@ resource "iosxe_wireless_mobility" "example" {
 Required:
 
 - `group` (String) Peer group name
-- `ip` (String) Peer IP address. The controller refuses to change it on an existing member.
+- `ip` (String) Peer IP address. Must be unique across members and in the same address family as `public_ip`. The controller refuses to change it on an existing member.
 - `mac_address` (String) Mobility peer MAC address, in lowercase colon form (the controller stores it in lowercase).
 
 Optional:
 
 - `data_link_encryption` (Boolean) Peer data link encryption status
-- `public_ip` (String) Peer public IP address. If omitted, a member configured through this resource is stored with public IP `0.0.0.0`, unlike the `wireless mobility group member` CLI, where it defaults to `ip`. Set it equal to `ip` to match the CLI behaviour. The controller refuses to change it on an existing member.
-- `ssc_hash` (String) Peer SSC hash. The controller requires exactly 40 characters and stores the value in the case given.
+- `public_ip` (String) Peer public IP address. If omitted, a member configured through this resource is stored with public IP `0.0.0.0`, unlike the `wireless mobility group member` CLI, where it defaults to `ip`. Set it equal to `ip` to match the CLI behaviour. Do not set `0.0.0.0`, which is not returned on read and shows a change on every plan. The controller refuses to change it on an existing member.
+- `ssc_hash` (String) Peer SSC hash, the SHA-1 hash of the peer's self-signed certificate (40 hexadecimal characters). Needed only when the peer uses a self-signed certificate, such as a Catalyst 9800-CL. The controller requires exactly 40 characters and stores the value in the case given.
 
 ## Import
 

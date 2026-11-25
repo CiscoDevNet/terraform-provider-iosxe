@@ -38,7 +38,7 @@ func TestAccIosxeWirelessMobility(t *testing.T) {
 		t.Skip("skipping test, set environment variable C9800")
 	}
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_mobility.test", "group_name", "MOBILITY-1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_mobility.test", "group_name", "S1-MOBILITY"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_mobility.test", "mac_address", "00:00:00:00:0c:01"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_mobility.test", "group_keepalive_interval", "20"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_mobility.test", "group_keepalive_count", "5"))
@@ -46,7 +46,7 @@ func TestAccIosxeWirelessMobility(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_mobility.test", "group_members.0.mac_address", "00:00:00:00:0a:20"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_mobility.test", "group_members.0.ip", "192.0.2.20"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_mobility.test", "group_members.0.public_ip", "198.51.100.20"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_mobility.test", "group_members.0.group", "MOBILITY-2"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_mobility.test", "group_members.0.group", "S1-MOBILITY-PEER"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_mobility.test", "group_members.0.ssc_hash", "0123456789abcdef0123456789abcdef01234567"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_wireless_mobility.test", "group_members.0.data_link_encryption", "true"))
 	resource.Test(t, resource.TestCase{
@@ -102,7 +102,7 @@ func testAccIosxeWirelessMobilityConfig_minimum() string {
 
 func testAccIosxeWirelessMobilityConfig_all() string {
 	config := `resource "iosxe_wireless_mobility" "test" {` + "\n"
-	config += `	group_name = "MOBILITY-1"` + "\n"
+	config += `	group_name = "S1-MOBILITY"` + "\n"
 	config += `	mac_address = "00:00:00:00:0c:01"` + "\n"
 	config += `	group_keepalive_interval = 20` + "\n"
 	config += `	group_keepalive_count = 5` + "\n"
@@ -111,7 +111,7 @@ func testAccIosxeWirelessMobilityConfig_all() string {
 	config += `		mac_address = "00:00:00:00:0a:20"` + "\n"
 	config += `		ip = "192.0.2.20"` + "\n"
 	config += `		public_ip = "198.51.100.20"` + "\n"
-	config += `		group = "MOBILITY-2"` + "\n"
+	config += `		group = "S1-MOBILITY-PEER"` + "\n"
 	config += `		ssc_hash = "0123456789abcdef0123456789abcdef01234567"` + "\n"
 	config += `		data_link_encryption = true` + "\n"
 	config += `	}]` + "\n"

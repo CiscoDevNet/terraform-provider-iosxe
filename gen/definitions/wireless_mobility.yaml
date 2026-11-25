@@ -8,26 +8,30 @@ res_description: "This resource can manage the Wireless Mobility configuration: 
 attributes:
   - yang_name: local-group
     tf_name: group_name
-    example: MOBILITY-1
+    description: Local mobility group name. The default `default` is not returned on read, so leave the attribute unset for the default; setting `default` shows a change on every plan
+    example: S1-MOBILITY
   - yang_name: mac-address
     tf_name: mac_address
-    description: Mobility local MAC address, in lowercase colon form (the controller stores it in lowercase).
+    description: Mobility local MAC address, in lowercase colon form (the controller stores it in lowercase). The default `00:00:00:00:00:00` is not returned on read, so leave the attribute unset for the default; setting it shows a change on every plan
     string_patterns:
       - '^[0-9a-f]{2}(:[0-9a-f]{2}){5}$'
     example: 00:00:00:00:0c:01
   - yang_name: mobility-keepalive-interval
     tf_name: group_keepalive_interval
+    description: Mobility group keepalive interval in seconds. The default 10 is not returned on read, so leave the attribute unset for the default; setting 10 shows a change on every plan
     example: 20
   - yang_name: mobility-keepalive-count
     tf_name: group_keepalive_count
+    description: Mobility group keepalive retry count. The default 3 is not returned on read, so leave the attribute unset for the default; setting 3 shows a change on every plan
     example: 5
   - yang_name: mobility-dscp
     tf_name: dscp
-    description: Mobility DSCP value
+    description: Mobility DSCP value. The default 48 is not returned on read, so leave the attribute unset for the default; setting 48 shows a change on every plan
     example: 46
   - yang_name: mobility-peers/mobility-peer
     tf_name: group_members
     type: List
+    description: Mobility group members (peers), up to 72. Each member `ip` must be unique
     attributes:
       - yang_name: mac-addr
         tf_name: mac_address
@@ -39,19 +43,18 @@ attributes:
       - yang_name: ip-address
         tf_name: ip
         mandatory: true
-        description: Peer IP address. The controller refuses to change it on an existing member.
+        description: Peer IP address. Must be unique across members and in the same address family as `public_ip`. The controller refuses to change it on an existing member.
         example: 192.0.2.20
       - yang_name: nat-ip
         tf_name: public_ip
-        description: Peer public IP address. If omitted, a member configured through this resource is stored with public IP `0.0.0.0`, unlike the `wireless mobility group member` CLI, where it defaults to `ip`. Set it equal to `ip` to match the CLI behaviour. The controller refuses to change it on an existing member.
+        description: Peer public IP address. If omitted, a member configured through this resource is stored with public IP `0.0.0.0`, unlike the `wireless mobility group member` CLI, where it defaults to `ip`. Set it equal to `ip` to match the CLI behaviour. Do not set `0.0.0.0`, which is not returned on read and shows a change on every plan. The controller refuses to change it on an existing member.
         example: 198.51.100.20
       - yang_name: group-name
         tf_name: group
-        mandatory: true
-        example: MOBILITY-2
+        example: S1-MOBILITY-PEER
       - yang_name: ssc-hash
         tf_name: ssc_hash
-        description: Peer SSC hash. The controller requires exactly 40 characters and stores the value in the case given.
+        description: Peer SSC hash, the SHA-1 hash of the peer's self-signed certificate (40 hexadecimal characters). Needed only when the peer uses a self-signed certificate, such as a Catalyst 9800-CL. The controller requires exactly 40 characters and stores the value in the case given.
         string_min_length: 40
         string_max_length: 40
         example: 0123456789abcdef0123456789abcdef01234567

@@ -115,7 +115,7 @@ resource "iosxe_yang" "PreReq2" {
 	attributes = {
 		"mac-addr" = "00:00:00:00:0a:10"
 		"ip-address" = "192.0.2.10"
-		"group-name" = "ANCHORS"
+		"group-name" = "S2-ANCHORS"
 	}
 }
 

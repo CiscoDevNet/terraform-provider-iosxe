@@ -69,27 +69,27 @@ func (d *WirelessMobilityDataSource) Schema(ctx context.Context, req datasource.
 				Computed:            true,
 			},
 			"group_name": schema.StringAttribute{
-				MarkdownDescription: "Local Mobility group name",
+				MarkdownDescription: "Local mobility group name. The default `default` is not returned on read, so leave the attribute unset for the default; setting `default` shows a change on every plan",
 				Computed:            true,
 			},
 			"mac_address": schema.StringAttribute{
-				MarkdownDescription: "Mobility local MAC address, in lowercase colon form (the controller stores it in lowercase).",
+				MarkdownDescription: "Mobility local MAC address, in lowercase colon form (the controller stores it in lowercase). The default `00:00:00:00:00:00` is not returned on read, so leave the attribute unset for the default; setting it shows a change on every plan",
 				Computed:            true,
 			},
 			"group_keepalive_interval": schema.Int64Attribute{
-				MarkdownDescription: "Mobility Keep Alive interval",
+				MarkdownDescription: "Mobility group keepalive interval in seconds. The default 10 is not returned on read, so leave the attribute unset for the default; setting 10 shows a change on every plan",
 				Computed:            true,
 			},
 			"group_keepalive_count": schema.Int64Attribute{
-				MarkdownDescription: "Mobility Keep Alive count",
+				MarkdownDescription: "Mobility group keepalive retry count. The default 3 is not returned on read, so leave the attribute unset for the default; setting 3 shows a change on every plan",
 				Computed:            true,
 			},
 			"dscp": schema.Int64Attribute{
-				MarkdownDescription: "Mobility DSCP value",
+				MarkdownDescription: "Mobility DSCP value. The default 48 is not returned on read, so leave the attribute unset for the default; setting 48 shows a change on every plan",
 				Computed:            true,
 			},
 			"group_members": schema.ListNestedAttribute{
-				MarkdownDescription: "List of Mobility Peers",
+				MarkdownDescription: "Mobility group members (peers), up to 72. Each member `ip` must be unique",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
@@ -98,11 +98,11 @@ func (d *WirelessMobilityDataSource) Schema(ctx context.Context, req datasource.
 							Computed:            true,
 						},
 						"ip": schema.StringAttribute{
-							MarkdownDescription: "Peer IP address. The controller refuses to change it on an existing member.",
+							MarkdownDescription: "Peer IP address. Must be unique across members and in the same address family as `public_ip`. The controller refuses to change it on an existing member.",
 							Computed:            true,
 						},
 						"public_ip": schema.StringAttribute{
-							MarkdownDescription: "Peer public IP address. If omitted, a member configured through this resource is stored with public IP `0.0.0.0`, unlike the `wireless mobility group member` CLI, where it defaults to `ip`. Set it equal to `ip` to match the CLI behaviour. The controller refuses to change it on an existing member.",
+							MarkdownDescription: "Peer public IP address. If omitted, a member configured through this resource is stored with public IP `0.0.0.0`, unlike the `wireless mobility group member` CLI, where it defaults to `ip`. Set it equal to `ip` to match the CLI behaviour. Do not set `0.0.0.0`, which is not returned on read and shows a change on every plan. The controller refuses to change it on an existing member.",
 							Computed:            true,
 						},
 						"group": schema.StringAttribute{
@@ -110,7 +110,7 @@ func (d *WirelessMobilityDataSource) Schema(ctx context.Context, req datasource.
 							Computed:            true,
 						},
 						"ssc_hash": schema.StringAttribute{
-							MarkdownDescription: "Peer SSC hash. The controller requires exactly 40 characters and stores the value in the case given.",
+							MarkdownDescription: "Peer SSC hash, the SHA-1 hash of the peer's self-signed certificate (40 hexadecimal characters). Needed only when the peer uses a self-signed certificate, such as a Catalyst 9800-CL. The controller requires exactly 40 characters and stores the value in the case given.",
 							Computed:            true,
 						},
 						"data_link_encryption": schema.BoolAttribute{
