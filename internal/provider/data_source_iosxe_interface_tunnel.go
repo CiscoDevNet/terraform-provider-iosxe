@@ -225,6 +225,10 @@ func (d *InterfaceTunnelDataSource) Schema(ctx context.Context, req datasource.S
 				MarkdownDescription: "Handling of encapsulated DF bit.",
 				Computed:            true,
 			},
+			"crypto_map": schema.StringAttribute{
+				MarkdownDescription: "Assign a crypto map. Only GDOI crypto maps are supported on tunnel interfaces.",
+				Computed:            true,
+			},
 			"arp_timeout": schema.Int64Attribute{
 				MarkdownDescription: "Set ARP cache timeout",
 				Computed:            true,

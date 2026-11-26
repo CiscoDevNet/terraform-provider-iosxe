@@ -41,6 +41,7 @@ data "iosxe_interface_tunnel" "example" {
 - `bfd_local_address` (String) The Source IP address to be used for BFD sessions over this interface.
 - `bfd_template` (String) BFD template
 - `crypto_ipsec_df_bit` (String) Handling of encapsulated DF bit.
+- `crypto_map` (String) Assign a crypto map. Only GDOI crypto maps are supported on tunnel interfaces.
 - `description` (String) Interface specific description
 - `helper_addresses` (Attributes List) Specify a destination address for UDP broadcasts (see [below for nested schema](#nestedatt--helper_addresses))
 - `id` (String) The path of the retrieved object.

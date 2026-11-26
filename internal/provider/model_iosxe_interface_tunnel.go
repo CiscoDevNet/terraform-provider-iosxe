@@ -66,6 +66,7 @@ type InterfaceTunnel struct {
 	TunnelProtectionIpsecProfileLegacy types.String                               `tfsdk:"tunnel_protection_ipsec_profile_legacy"`
 	TunnelProtectionIpsecProfile       types.String                               `tfsdk:"tunnel_protection_ipsec_profile"`
 	CryptoIpsecDfBit                   types.String                               `tfsdk:"crypto_ipsec_df_bit"`
+	CryptoMap                          types.String                               `tfsdk:"crypto_map"`
 	ArpTimeout                         types.Int64                                `tfsdk:"arp_timeout"`
 	Ipv4Address                        types.String                               `tfsdk:"ipv4_address"`
 	Ipv4AddressMask                    types.String                               `tfsdk:"ipv4_address_mask"`
@@ -189,6 +190,7 @@ type InterfaceTunnelData struct {
 	TunnelProtectionIpsecProfileLegacy types.String                                   `tfsdk:"tunnel_protection_ipsec_profile_legacy"`
 	TunnelProtectionIpsecProfile       types.String                                   `tfsdk:"tunnel_protection_ipsec_profile"`
 	CryptoIpsecDfBit                   types.String                                   `tfsdk:"crypto_ipsec_df_bit"`
+	CryptoMap                          types.String                                   `tfsdk:"crypto_map"`
 	ArpTimeout                         types.Int64                                    `tfsdk:"arp_timeout"`
 	Ipv4Address                        types.String                                   `tfsdk:"ipv4_address"`
 	Ipv4AddressMask                    types.String                                   `tfsdk:"ipv4_address_mask"`
@@ -493,6 +495,9 @@ func (data InterfaceTunnel) addToBodyXML(ctx context.Context, config InterfaceTu
 	}
 	if !data.CryptoIpsecDfBit.IsNull() && !data.CryptoIpsecDfBit.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-crypto:crypto/ipsec/df-bit", data.CryptoIpsecDfBit.ValueString())
+	}
+	if !data.CryptoMap.IsNull() && !data.CryptoMap.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-crypto:crypto/map/tag", data.CryptoMap.ValueString())
 	}
 	if !data.ArpTimeout.IsNull() && !data.ArpTimeout.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/arp/timeout", strconv.FormatInt(data.ArpTimeout.ValueInt64(), 10))
@@ -1058,6 +1063,11 @@ func (data *InterfaceTunnel) updateFromBodyXML(ctx context.Context, res xmldot.R
 		data.CryptoIpsecDfBit = types.StringValue(value.String())
 	} else {
 		data.CryptoIpsecDfBit = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-crypto:crypto/map/tag"); value.Exists() && !data.CryptoMap.IsNull() {
+		data.CryptoMap = types.StringValue(value.String())
+	} else {
+		data.CryptoMap = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/arp/timeout"); value.Exists() && !data.ArpTimeout.IsNull() {
 		data.ArpTimeout = types.Int64Value(value.Int())
@@ -1707,6 +1717,9 @@ func (data *InterfaceTunnel) fromBodyXML(ctx context.Context, res xmldot.Result)
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-crypto:crypto/ipsec/df-bit"); value.Exists() {
 		data.CryptoIpsecDfBit = types.StringValue(value.String())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-crypto:crypto/map/tag"); value.Exists() {
+		data.CryptoMap = types.StringValue(value.String())
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/arp/timeout"); value.Exists() {
 		data.ArpTimeout = types.Int64Value(value.Int())
 	}
@@ -2119,6 +2132,9 @@ func (data *InterfaceTunnelData) fromBodyXML(ctx context.Context, res xmldot.Res
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-crypto:crypto/ipsec/df-bit"); value.Exists() {
 		data.CryptoIpsecDfBit = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-crypto:crypto/map/tag"); value.Exists() {
+		data.CryptoMap = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/arp/timeout"); value.Exists() {
 		data.ArpTimeout = types.Int64Value(value.Int())
@@ -2756,6 +2772,9 @@ func (data *InterfaceTunnel) addDeletedItemsXML(ctx context.Context, state Inter
 	if !state.ArpTimeout.IsNull() && data.ArpTimeout.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/arp/timeout")
 	}
+	if !state.CryptoMap.IsNull() && data.CryptoMap.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-crypto:crypto/map/tag")
+	}
 	if !state.CryptoIpsecDfBit.IsNull() && data.CryptoIpsecDfBit.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-crypto:crypto/ipsec/df-bit")
 	}
@@ -3166,6 +3185,9 @@ func (data *InterfaceTunnel) addDeletePathsXML(ctx context.Context, body string)
 	}
 	if !data.ArpTimeout.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/arp/timeout")
+	}
+	if !data.CryptoMap.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-crypto:crypto/map/tag")
 	}
 	if !data.CryptoIpsecDfBit.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-crypto:crypto/ipsec/df-bit")

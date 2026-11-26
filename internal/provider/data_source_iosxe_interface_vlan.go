@@ -301,6 +301,10 @@ func (d *InterfaceVLANDataSource) Schema(ctx context.Context, req datasource.Sch
 					},
 				},
 			},
+			"crypto_map": schema.StringAttribute{
+				MarkdownDescription: "Assign a crypto map",
+				Computed:            true,
+			},
 			"load_interval": schema.Int64Attribute{
 				MarkdownDescription: "Specify interval for load calculation for an interface",
 				Computed:            true,

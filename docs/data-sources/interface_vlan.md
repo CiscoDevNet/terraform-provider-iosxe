@@ -39,6 +39,7 @@ data "iosxe_interface_vlan" "example" {
 - `bfd_interval_multiplier` (Number) Multiplier value used to compute holddown
 - `bfd_local_address` (String) The Source IP address to be used for BFD sessions over this interface.
 - `bfd_template` (String) BFD template
+- `crypto_map` (String) Assign a crypto map
 - `description` (String) Interface specific description
 - `helper_addresses` (Attributes List) Specify a destination address for UDP broadcasts (see [below for nested schema](#nestedatt--helper_addresses))
 - `id` (String) The path of the retrieved object.

@@ -504,6 +504,10 @@ func (r *InterfaceEthernetResource) Schema(ctx context.Context, req resource.Sch
 					},
 				},
 			},
+			"crypto_map": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Assign a crypto map").String,
+				Optional:            true,
+			},
 			"arp_timeout": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Set ARP cache timeout").AddIntegerRangeDescription(0, 2147483).String,
 				Optional:            true,

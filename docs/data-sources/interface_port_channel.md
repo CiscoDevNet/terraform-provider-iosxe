@@ -52,6 +52,7 @@ data "iosxe_interface_port_channel" "example" {
 - `bfd_template` (String) BFD template
 - `bpduguard_disable` (Boolean) Disable BPDU guard for this interface
 - `bpduguard_enable` (Boolean) Enable BPDU guard for this interface
+- `crypto_map` (String) Assign a crypto map. Only GDOI crypto maps are supported on port-channel interfaces.
 - `description` (String) Interface specific description
 - `device_tracking` (Boolean) Configure device-tracking on the interface
 - `device_tracking_attached_policies` (Attributes List) (see [below for nested schema](#nestedatt--device_tracking_attached_policies))

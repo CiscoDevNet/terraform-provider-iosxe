@@ -103,6 +103,7 @@ type InterfaceEthernetsItems struct {
 	Ipv6LinkLocalAddresses                              []InterfaceEthernetIpv6LinkLocalAddresses         `tfsdk:"ipv6_link_local_addresses"`
 	Ipv6Addresses                                       []InterfaceEthernetIpv6Addresses                  `tfsdk:"ipv6_addresses"`
 	Ipv6FlowMonitors                                    []InterfaceEthernetIpv6FlowMonitors               `tfsdk:"ipv6_flow_monitors"`
+	CryptoMap                                           types.String                                      `tfsdk:"crypto_map"`
 	ArpTimeout                                          types.Int64                                       `tfsdk:"arp_timeout"`
 	SpanningTreeLinkType                                types.String                                      `tfsdk:"spanning_tree_link_type"`
 	BpduguardEnable                                     types.Bool                                        `tfsdk:"bpduguard_enable"`
@@ -296,6 +297,7 @@ func (data InterfaceEthernets) toSingle(key string, item InterfaceEthernetsItems
 	single.Ipv6LinkLocalAddresses = item.Ipv6LinkLocalAddresses
 	single.Ipv6Addresses = item.Ipv6Addresses
 	single.Ipv6FlowMonitors = item.Ipv6FlowMonitors
+	single.CryptoMap = item.CryptoMap
 	single.ArpTimeout = item.ArpTimeout
 	single.SpanningTreeLinkType = item.SpanningTreeLinkType
 	single.BpduguardEnable = item.BpduguardEnable
@@ -451,6 +453,7 @@ func (data InterfaceEthernets) toItem(single InterfaceEthernet) InterfaceEtherne
 	item.Ipv6LinkLocalAddresses = single.Ipv6LinkLocalAddresses
 	item.Ipv6Addresses = single.Ipv6Addresses
 	item.Ipv6FlowMonitors = single.Ipv6FlowMonitors
+	item.CryptoMap = single.CryptoMap
 	item.ArpTimeout = single.ArpTimeout
 	item.SpanningTreeLinkType = single.SpanningTreeLinkType
 	item.BpduguardEnable = single.BpduguardEnable

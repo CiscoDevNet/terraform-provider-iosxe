@@ -38,6 +38,7 @@ resource "iosxe_interface_tunnel" "example" {
     }
   ]
   tunnel_destination_ipv4        = "2.2.2.2"
+  crypto_map                     = "CMAP1"
   arp_timeout                    = 300
   ipv4_address                   = "10.2.1.1"
   ipv4_address_mask              = "255.255.255.0"
@@ -92,6 +93,7 @@ resource "iosxe_interface_tunnel" "example" {
 - `bfd_template` (String) BFD template
 - `crypto_ipsec_df_bit` (String) Handling of encapsulated DF bit.
   - Choices: `clear`, `copy`, `set`
+- `crypto_map` (String) Assign a crypto map. Only GDOI crypto maps are supported on tunnel interfaces.
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `description` (String) Interface specific description

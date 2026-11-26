@@ -44,6 +44,7 @@ resource "iosxe_interface_ethernets" "example" {
           eui_64 = true
         }
       ]
+      crypto_map                     = "CMAP1"
       arp_timeout                    = 300
       spanning_tree_link_type        = "point-to-point"
       bpduguard_enable               = false

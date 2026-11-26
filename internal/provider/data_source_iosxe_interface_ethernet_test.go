@@ -63,6 +63,7 @@ func TestAccDataSourceIosxeInterfaceEthernet(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "ipv6_link_local_addresses.0.link_local", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "ipv6_addresses.0.prefix", "2001:DB8::/32"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "ipv6_addresses.0.eui_64", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "crypto_map", "CMAP1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "arp_timeout", "300"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "spanning_tree_link_type", "point-to-point"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "bpduguard_enable", "false"))
@@ -167,6 +168,26 @@ resource "iosxe_yang" "PreReq5" {
 	}
 }
 
+resource "iosxe_yang" "PreReq6" {
+	path = "/Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:gdoi/group[name=CMGROUP1]"
+	attributes = {
+		"name" = "CMGROUP1"
+		"identity/number" = "1995"
+		"server/address/ipv4" = "198.51.100.1"
+	}
+}
+
+resource "iosxe_yang" "PreReq7" {
+	path = "/Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:map/map-seq/map[name=CMAP1][seq=10]"
+	attributes = {
+		"name" = "CMAP1"
+		"seq" = "10"
+		"gdoi" = ""
+		"set/group" = "CMGROUP1"
+	}
+	depends_on = [iosxe_yang.PreReq6, ]
+}
+
 `
 
 // End of section. //template:end testPrerequisites
@@ -212,6 +233,7 @@ func testAccDataSourceIosxeInterfaceEthernetConfig() string {
 	config += `		prefix = "2001:DB8::/32"` + "\n"
 	config += `		eui_64 = true` + "\n"
 	config += `	}]` + "\n"
+	config += `	crypto_map = "CMAP1"` + "\n"
 	config += `	arp_timeout = 300` + "\n"
 	config += `	spanning_tree_link_type = "point-to-point"` + "\n"
 	config += `	bpduguard_enable = false` + "\n"
@@ -258,7 +280,7 @@ func testAccDataSourceIosxeInterfaceEthernetConfig() string {
 	config += `		queue_length = 50` + "\n"
 	config += `	}]` + "\n"
 	config += `	ip_igmp_version = 3` + "\n"
-	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, iosxe_yang.PreReq3, iosxe_yang.PreReq4, iosxe_yang.PreReq5, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, iosxe_yang.PreReq3, iosxe_yang.PreReq4, iosxe_yang.PreReq5, iosxe_yang.PreReq6, iosxe_yang.PreReq7, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `
