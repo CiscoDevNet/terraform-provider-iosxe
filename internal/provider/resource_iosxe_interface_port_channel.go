@@ -449,7 +449,7 @@ func (r *InterfacePortChannelResource) Schema(ctx context.Context, req resource.
 				},
 			},
 			"crypto_map": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Assign a crypto map").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Assign a crypto map. Only GDOI crypto maps are supported on port-channel interfaces.").String,
 				Optional:            true,
 			},
 			"arp_timeout": schema.Int64Attribute{

@@ -253,7 +253,7 @@ attributes:
         example: input
   - yang_name: Cisco-IOS-XE-crypto:crypto/map/tag
     tf_name: crypto_map
-    description: Assign a crypto map
+    description: Assign a crypto map. Only GDOI crypto maps are supported on port-channel interfaces.
     example: CMAP1
     exclude_test: true
   - yang_name: arp/timeout
