@@ -134,7 +134,7 @@ attributes:
     test_tags: [C8000V]
   - yang_name: Cisco-IOS-XE-crypto:crypto/map/tag
     tf_name: crypto_map
-    description: Assign a crypto map
+    description: Assign a crypto map. Only GDOI crypto maps are supported on tunnel interfaces.
     example: CMAP1
   - yang_name: arp/timeout
     example: 300

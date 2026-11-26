@@ -289,7 +289,7 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 				},
 			},
 			"crypto_map": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Assign a crypto map").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Assign a crypto map. Only GDOI crypto maps are supported on tunnel interfaces.").String,
 				Optional:            true,
 			},
 			"arp_timeout": schema.Int64Attribute{
