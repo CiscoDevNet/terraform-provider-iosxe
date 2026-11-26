@@ -257,6 +257,7 @@ func (data PIM) addToBodyXML(ctx context.Context, config PIM, body netconf.Body)
 		}
 	}
 	if len(data.RpAddresses) > 0 {
+		RpAddressesFragments := make([]string, 0, len(data.RpAddresses))
 		for _, item := range data.RpAddresses {
 			cBody := netconf.Body{}
 			if !item.AccessList.IsNull() && !item.AccessList.IsUnknown() {
@@ -279,10 +280,12 @@ func (data PIM) addToBodyXML(ctx context.Context, config PIM, body netconf.Body)
 					cBody = helpers.RemoveFromXPath(cBody, "bidir")
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:rp-address-list", cBody.Res())
+			RpAddressesFragments = append(RpAddressesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/Cisco-IOS-XE-multicast:rp-address-list", RpAddressesFragments)
 	}
 	if len(data.RpCandidates) > 0 {
+		RpCandidatesFragments := make([]string, 0, len(data.RpCandidates))
 		for _, item := range data.RpCandidates {
 			cBody := netconf.Body{}
 			if !item.Interface.IsNull() && !item.Interface.IsUnknown() {
@@ -304,10 +307,12 @@ func (data PIM) addToBodyXML(ctx context.Context, config PIM, body netconf.Body)
 					cBody = helpers.RemoveFromXPath(cBody, "bidir")
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:rp-candidate", cBody.Res())
+			RpCandidatesFragments = append(RpCandidatesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/Cisco-IOS-XE-multicast:rp-candidate", RpCandidatesFragments)
 	}
 	if len(data.Vrfs) > 0 {
+		VrfsFragments := make([]string, 0, len(data.Vrfs))
 		for _, item := range data.Vrfs {
 			cBody := netconf.Body{}
 			if !item.Vrf.IsNull() && !item.Vrf.IsUnknown() {
@@ -373,6 +378,7 @@ func (data PIM) addToBodyXML(ctx context.Context, config PIM, body netconf.Body)
 				}
 			}
 			if len(item.RpAddresses) > 0 {
+				RpAddressesFragments := make([]string, 0, len(item.RpAddresses))
 				for _, citem := range item.RpAddresses {
 					ccBody := netconf.Body{}
 					if !citem.AccessList.IsNull() && !citem.AccessList.IsUnknown() {
@@ -395,10 +401,12 @@ func (data PIM) addToBodyXML(ctx context.Context, config PIM, body netconf.Body)
 							ccBody = helpers.RemoveFromXPath(ccBody, "bidir")
 						}
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "rp-address-list", ccBody.Res())
+					RpAddressesFragments = append(RpAddressesFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "rp-address-list", RpAddressesFragments)
 			}
 			if len(item.RpCandidates) > 0 {
+				RpCandidatesFragments := make([]string, 0, len(item.RpCandidates))
 				for _, citem := range item.RpCandidates {
 					ccBody := netconf.Body{}
 					if !citem.Interface.IsNull() && !citem.Interface.IsUnknown() {
@@ -420,11 +428,13 @@ func (data PIM) addToBodyXML(ctx context.Context, config PIM, body netconf.Body)
 							ccBody = helpers.RemoveFromXPath(ccBody, "bidir")
 						}
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "rp-candidate", ccBody.Res())
+					RpCandidatesFragments = append(RpCandidatesFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "rp-candidate", RpCandidatesFragments)
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:vrf", cBody.Res())
+			VrfsFragments = append(VrfsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/Cisco-IOS-XE-multicast:vrf", VrfsFragments)
 	}
 	return body
 }
@@ -512,29 +522,12 @@ func (data *PIM) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.RpAddressBidir = types.BoolNull()
 	}
+	RpAddressesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	RpAddressesKeys := [...]string{"access-list"}
+	RpAddressesItems := helpers.CollectListItemsXML(RpAddressesParentScope.Raw, "Cisco-IOS-XE-multicast:rp-address-list", RpAddressesKeys[:])
 	for i := range data.RpAddresses {
-		keys := [...]string{"access-list"}
-		keyValues := [...]string{data.RpAddresses[i].AccessList.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:rp-address-list").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		RpAddressesKeyValues := [...]string{data.RpAddresses[i].AccessList.ValueString()}
+		r := RpAddressesItems[helpers.CompositeKey(RpAddressesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "access-list"); value.Exists() && !data.RpAddresses[i].AccessList.IsNull() {
 			data.RpAddresses[i].AccessList = types.StringValue(value.String())
 		} else {
@@ -564,29 +557,12 @@ func (data *PIM) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 			data.RpAddresses[i].Bidir = types.BoolNull()
 		}
 	}
+	RpCandidatesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	RpCandidatesKeys := [...]string{"interface"}
+	RpCandidatesItems := helpers.CollectListItemsXML(RpCandidatesParentScope.Raw, "Cisco-IOS-XE-multicast:rp-candidate", RpCandidatesKeys[:])
 	for i := range data.RpCandidates {
-		keys := [...]string{"interface"}
-		keyValues := [...]string{data.RpCandidates[i].Interface.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:rp-candidate").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		RpCandidatesKeyValues := [...]string{data.RpCandidates[i].Interface.ValueString()}
+		r := RpCandidatesItems[helpers.CompositeKey(RpCandidatesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "interface"); value.Exists() && !data.RpCandidates[i].Interface.IsNull() {
 			data.RpCandidates[i].Interface = types.StringValue(value.String())
 		} else {
@@ -617,29 +593,12 @@ func (data *PIM) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 			data.RpCandidates[i].Bidir = types.BoolNull()
 		}
 	}
+	VrfsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	VrfsKeys := [...]string{"id"}
+	VrfsItems := helpers.CollectListItemsXML(VrfsParentScope.Raw, "Cisco-IOS-XE-multicast:vrf", VrfsKeys[:])
 	for i := range data.Vrfs {
-		keys := [...]string{"id"}
-		keyValues := [...]string{data.Vrfs[i].Vrf.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:vrf").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		VrfsKeyValues := [...]string{data.Vrfs[i].Vrf.ValueString()}
+		r := VrfsItems[helpers.CompositeKey(VrfsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "id"); value.Exists() && !data.Vrfs[i].Vrf.IsNull() {
 			data.Vrfs[i].Vrf = types.StringValue(value.String())
 		} else {
@@ -732,29 +691,11 @@ func (data *PIM) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		} else {
 			data.Vrfs[i].CacheRpfOif = types.BoolNull()
 		}
+		RpAddressesKeys := [...]string{"access-list"}
+		RpAddressesItems := helpers.CollectListItemsXML(r.Raw, "rp-address-list", RpAddressesKeys[:])
 		for ci := range data.Vrfs[i].RpAddresses {
-			keys := [...]string{"access-list"}
-			keyValues := [...]string{data.Vrfs[i].RpAddresses[ci].AccessList.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "rp-address-list").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			RpAddressesKeyValues := [...]string{data.Vrfs[i].RpAddresses[ci].AccessList.ValueString()}
+			cr := RpAddressesItems[helpers.CompositeKey(RpAddressesKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "access-list"); value.Exists() && !data.Vrfs[i].RpAddresses[ci].AccessList.IsNull() {
 				data.Vrfs[i].RpAddresses[ci].AccessList = types.StringValue(value.String())
 			} else {
@@ -784,29 +725,11 @@ func (data *PIM) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 				data.Vrfs[i].RpAddresses[ci].Bidir = types.BoolNull()
 			}
 		}
+		RpCandidatesKeys := [...]string{"interface"}
+		RpCandidatesItems := helpers.CollectListItemsXML(r.Raw, "rp-candidate", RpCandidatesKeys[:])
 		for ci := range data.Vrfs[i].RpCandidates {
-			keys := [...]string{"interface"}
-			keyValues := [...]string{data.Vrfs[i].RpCandidates[ci].Interface.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "rp-candidate").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			RpCandidatesKeyValues := [...]string{data.Vrfs[i].RpCandidates[ci].Interface.ValueString()}
+			cr := RpCandidatesItems[helpers.CompositeKey(RpCandidatesKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "interface"); value.Exists() && !data.Vrfs[i].RpCandidates[ci].Interface.IsNull() {
 				data.Vrfs[i].RpCandidates[ci].Interface = types.StringValue(value.String())
 			} else {

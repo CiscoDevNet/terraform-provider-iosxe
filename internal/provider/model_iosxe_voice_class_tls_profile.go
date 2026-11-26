@@ -157,6 +157,7 @@ func (data VoiceClassTLSProfile) addToBodyXML(ctx context.Context, config VoiceC
 		}
 	}
 	if len(data.CnSanNames) > 0 {
+		CnSanNamesFragments := make([]string, 0, len(data.CnSanNames))
 		for _, item := range data.CnSanNames {
 			cBody := netconf.Body{}
 			if !item.Tag.IsNull() && !item.Tag.IsUnknown() {
@@ -165,8 +166,9 @@ func (data VoiceClassTLSProfile) addToBodyXML(ctx context.Context, config VoiceC
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "cn-san-name", item.Name.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/cn-san/tag", cBody.Res())
+			CnSanNamesFragments = append(CnSanNamesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/cn-san/tag", CnSanNamesFragments)
 	}
 	if !data.EcdsaCipher.IsNull() && !data.EcdsaCipher.IsUnknown() {
 		if data.EcdsaCipher.ValueBool() {
@@ -250,29 +252,12 @@ func (data *VoiceClassTLSProfile) updateFromBodyXML(ctx context.Context, res xml
 	} else {
 		data.CnSanValidateBidirectional = types.BoolNull()
 	}
+	CnSanNamesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	CnSanNamesKeys := [...]string{"id"}
+	CnSanNamesItems := helpers.CollectListItemsXML(CnSanNamesParentScope.Raw, "cn-san/tag", CnSanNamesKeys[:])
 	for i := range data.CnSanNames {
-		keys := [...]string{"id"}
-		keyValues := [...]string{strconv.FormatInt(data.CnSanNames[i].Tag.ValueInt64(), 10)}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/cn-san/tag").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		CnSanNamesKeyValues := [...]string{strconv.FormatInt(data.CnSanNames[i].Tag.ValueInt64(), 10)}
+		r := CnSanNamesItems[helpers.CompositeKey(CnSanNamesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "id"); value.Exists() && !data.CnSanNames[i].Tag.IsNull() {
 			data.CnSanNames[i].Tag = types.Int64Value(value.Int())
 		} else {

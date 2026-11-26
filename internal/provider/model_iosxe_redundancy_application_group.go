@@ -165,6 +165,7 @@ func (data RedundancyApplicationGroup) addToBodyXML(ctx context.Context, config 
 		}
 	}
 	if len(data.Tracks) > 0 {
+		TracksFragments := make([]string, 0, len(data.Tracks))
 		for _, item := range data.Tracks {
 			cBody := netconf.Body{}
 			if !item.ObjectNumber.IsNull() && !item.ObjectNumber.IsUnknown() {
@@ -180,8 +181,9 @@ func (data RedundancyApplicationGroup) addToBodyXML(ctx context.Context, config 
 			if !item.Decrement.IsNull() && !item.Decrement.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "decrement", strconv.FormatInt(item.Decrement.ValueInt64(), 10))
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-track:track", cBody.Res())
+			TracksFragments = append(TracksFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/Cisco-IOS-XE-track:track", TracksFragments)
 	}
 	return body
 }
@@ -254,29 +256,12 @@ func (data *RedundancyApplicationGroup) updateFromBodyXML(ctx context.Context, r
 	} else {
 		data.Shutdown = types.BoolNull()
 	}
+	TracksParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	TracksKeys := [...]string{"object-number"}
+	TracksItems := helpers.CollectListItemsXML(TracksParentScope.Raw, "Cisco-IOS-XE-track:track", TracksKeys[:])
 	for i := range data.Tracks {
-		keys := [...]string{"object-number"}
-		keyValues := [...]string{data.Tracks[i].ObjectNumber.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-track:track").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		TracksKeyValues := [...]string{data.Tracks[i].ObjectNumber.ValueString()}
+		r := TracksItems[helpers.CompositeKey(TracksKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "object-number"); value.Exists() && !data.Tracks[i].ObjectNumber.IsNull() {
 			data.Tracks[i].ObjectNumber = types.StringValue(value.String())
 		} else {

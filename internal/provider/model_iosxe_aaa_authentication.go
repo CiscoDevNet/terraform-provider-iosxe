@@ -238,6 +238,7 @@ func (data AAAAuthentication) toBodyXML(ctx context.Context, config AAAAuthentic
 // resources use this to serialize all of their items into a single NETCONF payload.
 func (data AAAAuthentication) addToBodyXML(ctx context.Context, config AAAAuthentication, body netconf.Body) netconf.Body {
 	if len(data.Logins) > 0 {
+		LoginsFragments := make([]string, 0, len(data.Logins))
 		for _, item := range data.Logins {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
@@ -367,10 +368,12 @@ func (data AAAAuthentication) addToBodyXML(ctx context.Context, config AAAAuthen
 			if !item.A4Group.IsNull() && !item.A4Group.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "a4/group", item.A4Group.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/login", cBody.Res())
+			LoginsFragments = append(LoginsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/login", LoginsFragments)
 	}
 	if len(data.Dot1x) > 0 {
+		Dot1xFragments := make([]string, 0, len(data.Dot1x))
 		for _, item := range data.Dot1x {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
@@ -456,8 +459,9 @@ func (data AAAAuthentication) addToBodyXML(ctx context.Context, config AAAAuthen
 					cBody = helpers.RemoveFromXPath(cBody, "a4-config/radius")
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/dot1x/dot1x-list", cBody.Res())
+			Dot1xFragments = append(Dot1xFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/dot1x/dot1x-list", Dot1xFragments)
 	}
 	if !data.Dot1xDefaultA1Group.IsNull() && !data.Dot1xDefaultA1Group.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/dot1x/default/a1-config/group", data.Dot1xDefaultA1Group.ValueString())
@@ -639,29 +643,12 @@ func (data AAAAuthentication) addToBodyXML(ctx context.Context, config AAAAuthen
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *AAAAuthentication) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	LoginsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	LoginsKeys := [...]string{"name"}
+	LoginsItems := helpers.CollectListItemsXML(LoginsParentScope.Raw, "login", LoginsKeys[:])
 	for i := range data.Logins {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.Logins[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/login").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		LoginsKeyValues := [...]string{data.Logins[i].Name.ValueString()}
+		r := LoginsItems[helpers.CompositeKey(LoginsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.Logins[i].Name.IsNull() {
 			data.Logins[i].Name = types.StringValue(value.String())
 		} else {
@@ -832,29 +819,12 @@ func (data *AAAAuthentication) updateFromBodyXML(ctx context.Context, res xmldot
 			data.Logins[i].A4Group = types.StringNull()
 		}
 	}
+	Dot1xParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	Dot1xKeys := [...]string{"name"}
+	Dot1xItems := helpers.CollectListItemsXML(Dot1xParentScope.Raw, "dot1x/dot1x-list", Dot1xKeys[:])
 	for i := range data.Dot1x {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.Dot1x[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/dot1x-list").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		Dot1xKeyValues := [...]string{data.Dot1x[i].Name.ValueString()}
+		r := Dot1xItems[helpers.CompositeKey(Dot1xKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.Dot1x[i].Name.IsNull() {
 			data.Dot1x[i].Name = types.StringValue(value.String())
 		} else {

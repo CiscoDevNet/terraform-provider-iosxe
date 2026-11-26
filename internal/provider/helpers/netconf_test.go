@@ -780,6 +780,31 @@ func TestListXPathKeys(t *testing.T) {
 	}
 }
 
+// TestListXPathKeys_LargeList pins that every entry is returned in document order past the
+// 1000-element cap of xmldot versions before v0.6.0.
+func TestListXPathKeys_LargeList(t *testing.T) {
+	for _, n := range []int{1000, 1001, 4094} {
+		var b strings.Builder
+		b.WriteString("<root><native><interface>")
+		for i := 0; i < n; i++ {
+			fmt.Fprintf(&b, "<GigabitEthernet><name>1/0/%d</name></GigabitEthernet>", i)
+		}
+		b.WriteString("</interface></native></root>")
+		res := xmldot.Get(b.String(), "root")
+
+		keys := ListXPathKeys(res, "/native/interface", "GigabitEthernet", []string{"name"})
+
+		if len(keys) != n {
+			t.Fatalf("n=%d: ListXPathKeys() returned %d entries", n, len(keys))
+		}
+		for i, key := range keys {
+			if want := fmt.Sprintf("1/0/%d", i); len(key) != 1 || key[0] != want {
+				t.Fatalf("n=%d: ListXPathKeys()[%d] = %v, want [%s]", n, i, key, want)
+			}
+		}
+	}
+}
+
 // TestGetFromXPath tests the GetFromXPath function with filter conversion
 func TestGetFromXPath(t *testing.T) {
 	tests := []struct {

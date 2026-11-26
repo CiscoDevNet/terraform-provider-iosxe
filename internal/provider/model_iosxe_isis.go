@@ -112,13 +112,15 @@ func (data ISIS) addToBodyXML(ctx context.Context, config ISIS, body netconf.Bod
 		body = helpers.SetFromXPath(body, data.getXPath()+"/area-tag", data.AreaTag.ValueString())
 	}
 	if len(data.Nets) > 0 {
+		NetsFragments := make([]string, 0, len(data.Nets))
 		for _, item := range data.Nets {
 			cBody := netconf.Body{}
 			if !item.Tag.IsNull() && !item.Tag.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "tag", item.Tag.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/net", cBody.Res())
+			NetsFragments = append(NetsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/net", NetsFragments)
 	}
 	if !data.MetricStyleWide.IsNull() && !data.MetricStyleWide.IsUnknown() {
 		if data.MetricStyleWide.ValueBool() {
@@ -164,29 +166,12 @@ func (data *ISIS) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.AreaTag = types.StringNull()
 	}
+	NetsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	NetsKeys := [...]string{"tag"}
+	NetsItems := helpers.CollectListItemsXML(NetsParentScope.Raw, "net", NetsKeys[:])
 	for i := range data.Nets {
-		keys := [...]string{"tag"}
-		keyValues := [...]string{data.Nets[i].Tag.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/net").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		NetsKeyValues := [...]string{data.Nets[i].Tag.ValueString()}
+		r := NetsItems[helpers.CompositeKey(NetsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "tag"); value.Exists() && !data.Nets[i].Tag.IsNull() {
 			data.Nets[i].Tag = types.StringValue(value.String())
 		} else {
