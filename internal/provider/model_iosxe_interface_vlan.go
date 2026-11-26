@@ -81,6 +81,7 @@ type InterfaceVLAN struct {
 	Ipv6DhcpRelayOptionVpn             types.Bool                               `tfsdk:"ipv6_dhcp_relay_option_vpn"`
 	Ipv6LinkLocalAddresses             []InterfaceVLANIpv6LinkLocalAddresses    `tfsdk:"ipv6_link_local_addresses"`
 	Ipv6Addresses                      []InterfaceVLANIpv6Addresses             `tfsdk:"ipv6_addresses"`
+	CryptoMap                          types.String                             `tfsdk:"crypto_map"`
 	LoadInterval                       types.Int64                              `tfsdk:"load_interval"`
 	MacAddress                         types.String                             `tfsdk:"mac_address"`
 	IpDhcpRelayInformationOptionVpnId  types.Bool                               `tfsdk:"ip_dhcp_relay_information_option_vpn_id"`
@@ -160,6 +161,7 @@ type InterfaceVLANData struct {
 	Ipv6DhcpRelayOptionVpn             types.Bool                                   `tfsdk:"ipv6_dhcp_relay_option_vpn"`
 	Ipv6LinkLocalAddresses             []InterfaceVLANIpv6LinkLocalAddressesData    `tfsdk:"ipv6_link_local_addresses"`
 	Ipv6Addresses                      []InterfaceVLANIpv6AddressesData             `tfsdk:"ipv6_addresses"`
+	CryptoMap                          types.String                                 `tfsdk:"crypto_map"`
 	LoadInterval                       types.Int64                                  `tfsdk:"load_interval"`
 	MacAddress                         types.String                                 `tfsdk:"mac_address"`
 	IpDhcpRelayInformationOptionVpnId  types.Bool                                   `tfsdk:"ip_dhcp_relay_information_option_vpn_id"`
@@ -482,6 +484,9 @@ func (data InterfaceVLAN) addToBodyXML(ctx context.Context, config InterfaceVLAN
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ipv6/address/prefix-list", cBody.Res())
 		}
+	}
+	if !data.CryptoMap.IsNull() && !data.CryptoMap.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-crypto:crypto/map/tag", data.CryptoMap.ValueString())
 	}
 	if !data.LoadInterval.IsNull() && !data.LoadInterval.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/load-interval", strconv.FormatInt(data.LoadInterval.ValueInt64(), 10))
@@ -984,6 +989,11 @@ func (data *InterfaceVLAN) updateFromBodyXML(ctx context.Context, res xmldot.Res
 			data.Ipv6Addresses[i].Eui64 = types.BoolNull()
 		}
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-crypto:crypto/map/tag"); value.Exists() && !data.CryptoMap.IsNull() {
+		data.CryptoMap = types.StringValue(value.String())
+	} else {
+		data.CryptoMap = types.StringNull()
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/load-interval"); value.Exists() && !data.LoadInterval.IsNull() {
 		data.LoadInterval = types.Int64Value(value.Int())
 	} else {
@@ -1295,6 +1305,9 @@ func (data *InterfaceVLAN) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			return true
 		})
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-crypto:crypto/map/tag"); value.Exists() {
+		data.CryptoMap = types.StringValue(value.String())
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/load-interval"); value.Exists() {
 		data.LoadInterval = types.Int64Value(value.Int())
 	}
@@ -1574,6 +1587,9 @@ func (data *InterfaceVLANData) fromBodyXML(ctx context.Context, res xmldot.Resul
 			return true
 		})
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-crypto:crypto/map/tag"); value.Exists() {
+		data.CryptoMap = types.StringValue(value.String())
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/load-interval"); value.Exists() {
 		data.LoadInterval = types.Int64Value(value.Int())
 	}
@@ -1657,6 +1673,9 @@ func (data *InterfaceVLAN) addDeletedItemsXML(ctx context.Context, state Interfa
 	}
 	if !state.LoadInterval.IsNull() && data.LoadInterval.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/load-interval")
+	}
+	if !state.CryptoMap.IsNull() && data.CryptoMap.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-crypto:crypto/map/tag")
 	}
 	for i := range state.Ipv6Addresses {
 		stateKeys := [...]string{"prefix"}
@@ -1996,6 +2015,9 @@ func (data *InterfaceVLAN) addDeletePathsXML(ctx context.Context, body string) s
 	}
 	if !data.LoadInterval.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/load-interval")
+	}
+	if !data.CryptoMap.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-crypto:crypto/map/tag")
 	}
 	for i := range data.Ipv6Addresses {
 		keys := [...]string{"prefix"}

@@ -104,6 +104,7 @@ resource "iosxe_interface_port_channel" "example" {
 - `bfd_template` (String) BFD template
 - `bpduguard_disable` (Boolean) Disable BPDU guard for this interface
 - `bpduguard_enable` (Boolean) Enable BPDU guard for this interface
+- `crypto_map` (String) Assign a crypto map
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `description` (String) Interface specific description

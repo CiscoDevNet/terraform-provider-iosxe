@@ -57,6 +57,7 @@ func TestAccIosxeInterfaceTunnel(t *testing.T) {
 	if os.Getenv("C8000V") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "crypto_ipsec_df_bit", "clear"))
 	}
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "crypto_map", "CMAP1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "arp_timeout", "300"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ipv4_address", "10.2.1.1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ipv4_address_mask", "255.255.255.0"))
@@ -159,6 +160,26 @@ resource "iosxe_yang" "PreReq2" {
 	depends_on = [iosxe_yang.PreReq1, ]
 }
 
+resource "iosxe_yang" "PreReq3" {
+	path = "/Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:gdoi/group[name=CMGROUP1]"
+	attributes = {
+		"name" = "CMGROUP1"
+		"identity/number" = "1995"
+		"server/address/ipv4" = "198.51.100.1"
+	}
+}
+
+resource "iosxe_yang" "PreReq4" {
+	path = "/Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:map/map-seq/map[name=CMAP1][seq=10]"
+	attributes = {
+		"name" = "CMAP1"
+		"seq" = "10"
+		"gdoi" = ""
+		"set/group" = "CMGROUP1"
+	}
+	depends_on = [iosxe_yang.PreReq3, ]
+}
+
 `
 
 // End of section. //template:end testPrerequisites
@@ -168,7 +189,7 @@ resource "iosxe_yang" "PreReq2" {
 func testAccIosxeInterfaceTunnelConfig_minimum() string {
 	config := `resource "iosxe_interface_tunnel" "test" {` + "\n"
 	config += `	name = 90` + "\n"
-	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, iosxe_yang.PreReq3, iosxe_yang.PreReq4, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -202,6 +223,7 @@ func testAccIosxeInterfaceTunnelConfig_all() string {
 	if os.Getenv("C8000V") != "" {
 		config += `	crypto_ipsec_df_bit = "clear"` + "\n"
 	}
+	config += `	crypto_map = "CMAP1"` + "\n"
 	config += `	arp_timeout = 300` + "\n"
 	config += `	ipv4_address = "10.2.1.1"` + "\n"
 	config += `	ipv4_address_mask = "255.255.255.0"` + "\n"
@@ -240,7 +262,7 @@ func testAccIosxeInterfaceTunnelConfig_all() string {
 	if os.Getenv("C8000V") != "" {
 		config += `	tunnel_key = 10` + "\n"
 	}
-	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, iosxe_yang.PreReq3, iosxe_yang.PreReq4, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

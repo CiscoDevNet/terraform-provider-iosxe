@@ -93,6 +93,7 @@ type InterfacePortChannel struct {
 	Ipv6LinkLocalAddresses             []InterfacePortChannelIpv6LinkLocalAddresses         `tfsdk:"ipv6_link_local_addresses"`
 	Ipv6Addresses                      []InterfacePortChannelIpv6Addresses                  `tfsdk:"ipv6_addresses"`
 	Ipv6FlowMonitors                   []InterfacePortChannelIpv6FlowMonitors               `tfsdk:"ipv6_flow_monitors"`
+	CryptoMap                          types.String                                         `tfsdk:"crypto_map"`
 	ArpTimeout                         types.Int64                                          `tfsdk:"arp_timeout"`
 	IpArpInspectionTrust               types.Bool                                           `tfsdk:"ip_arp_inspection_trust"`
 	IpArpInspectionLimitRate           types.Int64                                          `tfsdk:"ip_arp_inspection_limit_rate"`
@@ -218,6 +219,7 @@ type InterfacePortChannelData struct {
 	Ipv6LinkLocalAddresses             []InterfacePortChannelIpv6LinkLocalAddressesData         `tfsdk:"ipv6_link_local_addresses"`
 	Ipv6Addresses                      []InterfacePortChannelIpv6AddressesData                  `tfsdk:"ipv6_addresses"`
 	Ipv6FlowMonitors                   []InterfacePortChannelIpv6FlowMonitorsData               `tfsdk:"ipv6_flow_monitors"`
+	CryptoMap                          types.String                                             `tfsdk:"crypto_map"`
 	ArpTimeout                         types.Int64                                              `tfsdk:"arp_timeout"`
 	IpArpInspectionTrust               types.Bool                                               `tfsdk:"ip_arp_inspection_trust"`
 	IpArpInspectionLimitRate           types.Int64                                              `tfsdk:"ip_arp_inspection_limit_rate"`
@@ -659,6 +661,9 @@ func (data InterfacePortChannel) addToBodyXML(ctx context.Context, config Interf
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ipv6/Cisco-IOS-XE-flow:flow/monitor-new", cBody.Res())
 		}
+	}
+	if !data.CryptoMap.IsNull() && !data.CryptoMap.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-crypto:crypto/map/tag", data.CryptoMap.ValueString())
 	}
 	if !data.ArpTimeout.IsNull() && !data.ArpTimeout.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/arp/timeout", strconv.FormatInt(data.ArpTimeout.ValueInt64(), 10))
@@ -1400,6 +1405,11 @@ func (data *InterfacePortChannel) updateFromBodyXML(ctx context.Context, res xml
 			data.Ipv6FlowMonitors[i].Direction = types.StringNull()
 		}
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-crypto:crypto/map/tag"); value.Exists() && !data.CryptoMap.IsNull() {
+		data.CryptoMap = types.StringValue(value.String())
+	} else {
+		data.CryptoMap = types.StringNull()
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/arp/timeout"); value.Exists() && !data.ArpTimeout.IsNull() {
 		data.ArpTimeout = types.Int64Value(value.Int())
 	} else {
@@ -2002,6 +2012,9 @@ func (data *InterfacePortChannel) fromBodyXML(ctx context.Context, res xmldot.Re
 			return true
 		})
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-crypto:crypto/map/tag"); value.Exists() {
+		data.CryptoMap = types.StringValue(value.String())
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/arp/timeout"); value.Exists() {
 		data.ArpTimeout = types.Int64Value(value.Int())
 	}
@@ -2456,6 +2469,9 @@ func (data *InterfacePortChannelData) fromBodyXML(ctx context.Context, res xmldo
 			return true
 		})
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-crypto:crypto/map/tag"); value.Exists() {
+		data.CryptoMap = types.StringValue(value.String())
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/arp/timeout"); value.Exists() {
 		data.ArpTimeout = types.Int64Value(value.Int())
 	}
@@ -2812,6 +2828,9 @@ func (data *InterfacePortChannel) addDeletedItemsXML(ctx context.Context, state 
 	}
 	if !state.ArpTimeout.IsNull() && data.ArpTimeout.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/arp/timeout")
+	}
+	if !state.CryptoMap.IsNull() && data.CryptoMap.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-crypto:crypto/map/tag")
 	}
 	for i := range state.Ipv6FlowMonitors {
 		stateKeys := [...]string{"name", "direction"}
@@ -3299,6 +3318,9 @@ func (data *InterfacePortChannel) addDeletePathsXML(ctx context.Context, body st
 	}
 	if !data.ArpTimeout.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/arp/timeout")
+	}
+	if !data.CryptoMap.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-crypto:crypto/map/tag")
 	}
 	for i := range data.Ipv6FlowMonitors {
 		keys := [...]string{"name", "direction"}

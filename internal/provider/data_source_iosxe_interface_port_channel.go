@@ -361,6 +361,10 @@ func (d *InterfacePortChannelDataSource) Schema(ctx context.Context, req datasou
 					},
 				},
 			},
+			"crypto_map": schema.StringAttribute{
+				MarkdownDescription: "Assign a crypto map",
+				Computed:            true,
+			},
 			"arp_timeout": schema.Int64Attribute{
 				MarkdownDescription: "Set ARP cache timeout",
 				Computed:            true,

@@ -202,6 +202,11 @@ attributes:
         example: 2006:DB8::/32
       - yang_name: eui-64
         example: true
+  - yang_name: Cisco-IOS-XE-crypto:crypto/map/tag
+    tf_name: crypto_map
+    description: Assign a crypto map
+    example: CMAP1
+    exclude_test: true
   - yang_name: load-interval
     example: 30
   - yang_name: mac-address

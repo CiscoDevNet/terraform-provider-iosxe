@@ -100,6 +100,7 @@ type InterfaceEthernet struct {
 	Ipv6LinkLocalAddresses                              []InterfaceEthernetIpv6LinkLocalAddresses         `tfsdk:"ipv6_link_local_addresses"`
 	Ipv6Addresses                                       []InterfaceEthernetIpv6Addresses                  `tfsdk:"ipv6_addresses"`
 	Ipv6FlowMonitors                                    []InterfaceEthernetIpv6FlowMonitors               `tfsdk:"ipv6_flow_monitors"`
+	CryptoMap                                           types.String                                      `tfsdk:"crypto_map"`
 	ArpTimeout                                          types.Int64                                       `tfsdk:"arp_timeout"`
 	SpanningTreeLinkType                                types.String                                      `tfsdk:"spanning_tree_link_type"`
 	BpduguardEnable                                     types.Bool                                        `tfsdk:"bpduguard_enable"`
@@ -314,6 +315,7 @@ type InterfaceEthernetData struct {
 	Ipv6LinkLocalAddresses                              []InterfaceEthernetIpv6LinkLocalAddressesData         `tfsdk:"ipv6_link_local_addresses"`
 	Ipv6Addresses                                       []InterfaceEthernetIpv6AddressesData                  `tfsdk:"ipv6_addresses"`
 	Ipv6FlowMonitors                                    []InterfaceEthernetIpv6FlowMonitorsData               `tfsdk:"ipv6_flow_monitors"`
+	CryptoMap                                           types.String                                          `tfsdk:"crypto_map"`
 	ArpTimeout                                          types.Int64                                           `tfsdk:"arp_timeout"`
 	SpanningTreeLinkType                                types.String                                          `tfsdk:"spanning_tree_link_type"`
 	BpduguardEnable                                     types.Bool                                            `tfsdk:"bpduguard_enable"`
@@ -870,6 +872,9 @@ func (data InterfaceEthernet) addToBodyXML(ctx context.Context, config Interface
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ipv6/Cisco-IOS-XE-flow:flow/monitor-new", cBody.Res())
 		}
+	}
+	if !data.CryptoMap.IsNull() && !data.CryptoMap.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-crypto:crypto/map/tag", data.CryptoMap.ValueString())
 	}
 	if !data.ArpTimeout.IsNull() && !data.ArpTimeout.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/arp/timeout", strconv.FormatInt(data.ArpTimeout.ValueInt64(), 10))
@@ -2048,6 +2053,11 @@ func (data *InterfaceEthernet) updateFromBodyXML(ctx context.Context, res xmldot
 		} else {
 			data.Ipv6FlowMonitors[i].Direction = types.StringNull()
 		}
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-crypto:crypto/map/tag"); value.Exists() && !data.CryptoMap.IsNull() {
+		data.CryptoMap = types.StringValue(value.String())
+	} else {
+		data.CryptoMap = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/arp/timeout"); value.Exists() && !data.ArpTimeout.IsNull() {
 		data.ArpTimeout = types.Int64Value(value.Int())
@@ -3253,6 +3263,9 @@ func (data *InterfaceEthernet) fromBodyXML(ctx context.Context, res xmldot.Resul
 			return true
 		})
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-crypto:crypto/map/tag"); value.Exists() {
+		data.CryptoMap = types.StringValue(value.String())
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/arp/timeout"); value.Exists() {
 		data.ArpTimeout = types.Int64Value(value.Int())
 	}
@@ -4050,6 +4063,9 @@ func (data *InterfaceEthernetData) fromBodyXML(ctx context.Context, res xmldot.R
 			data.Ipv6FlowMonitors = append(data.Ipv6FlowMonitors, item)
 			return true
 		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-crypto:crypto/map/tag"); value.Exists() {
+		data.CryptoMap = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/arp/timeout"); value.Exists() {
 		data.ArpTimeout = types.Int64Value(value.Int())
@@ -5003,6 +5019,9 @@ func (data *InterfaceEthernet) addDeletedItemsXML(ctx context.Context, state Int
 	if !state.ArpTimeout.IsNull() && data.ArpTimeout.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/arp/timeout")
 	}
+	if !state.CryptoMap.IsNull() && data.CryptoMap.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-crypto:crypto/map/tag")
+	}
 	for i := range state.Ipv6FlowMonitors {
 		stateKeys := [...]string{"name", "direction"}
 		stateKeyValues := [...]string{state.Ipv6FlowMonitors[i].Name.ValueString(), state.Ipv6FlowMonitors[i].Direction.ValueString()}
@@ -5743,6 +5762,9 @@ func (data *InterfaceEthernet) addDeletePathsXML(ctx context.Context, body strin
 	}
 	if !data.ArpTimeout.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/arp/timeout")
+	}
+	if !data.CryptoMap.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-crypto:crypto/map/tag")
 	}
 	for i := range data.Ipv6FlowMonitors {
 		keys := [...]string{"name", "direction"}

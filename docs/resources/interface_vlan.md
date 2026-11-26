@@ -86,6 +86,7 @@ resource "iosxe_interface_vlan" "example" {
   - Range: `3`-`50`
 - `bfd_local_address` (String) The Source IP address to be used for BFD sessions over this interface.
 - `bfd_template` (String) BFD template
+- `crypto_map` (String) Assign a crypto map
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `description` (String) Interface specific description

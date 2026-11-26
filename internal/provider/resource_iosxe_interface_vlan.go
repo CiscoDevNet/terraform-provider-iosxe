@@ -379,6 +379,10 @@ func (r *InterfaceVLANResource) Schema(ctx context.Context, req resource.SchemaR
 					},
 				},
 			},
+			"crypto_map": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Assign a crypto map").String,
+				Optional:            true,
+			},
 			"load_interval": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Specify interval for load calculation for an interface").AddIntegerRangeDescription(30, 600).String,
 				Optional:            true,

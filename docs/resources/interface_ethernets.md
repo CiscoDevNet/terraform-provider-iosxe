@@ -59,6 +59,7 @@ resource "iosxe_interface_ethernets" "example" {
           eui_64 = true
         }
       ]
+      crypto_map                     = "CMAP1"
       arp_timeout                    = 300
       spanning_tree_link_type        = "point-to-point"
       bpduguard_enable               = false
@@ -185,6 +186,7 @@ Optional:
 - `channel_group_mode` (String) Etherchannel Mode of the interface
   - Choices: `active`, `auto`, `desirable`, `on`, `passive`
 - `channel_group_number` (Number) - Range: `1`-`512`
+- `crypto_map` (String) Assign a crypto map
 - `description` (String) Interface specific description
 - `device_tracking` (Boolean) Configure device-tracking on the interface
 - `device_tracking_attached_policies` (Attributes List) (see [below for nested schema](#nestedatt--items--device_tracking_attached_policies))

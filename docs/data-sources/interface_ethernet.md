@@ -90,6 +90,7 @@ data "iosxe_interface_ethernet" "example" {
 - `cdp_tlv_server_location` (Boolean) Enable CDP location server on interface
 - `channel_group_mode` (String) Etherchannel Mode of the interface
 - `channel_group_number` (Number)
+- `crypto_map` (String) Assign a crypto map
 - `description` (String) Interface specific description
 - `device_tracking` (Boolean) Configure device-tracking on the interface
 - `device_tracking_attached_policies` (Attributes List) (see [below for nested schema](#nestedatt--device_tracking_attached_policies))

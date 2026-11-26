@@ -132,6 +132,10 @@ attributes:
   - yang_name: Cisco-IOS-XE-crypto:crypto/ipsec/df-bit
     example: clear
     test_tags: [C8000V]
+  - yang_name: Cisco-IOS-XE-crypto:crypto/map/tag
+    tf_name: crypto_map
+    description: Assign a crypto map
+    example: CMAP1
   - yang_name: arp/timeout
     example: 300
   - yang_name: ip/address-choice/address/address/address-choice/fixed-case/primary/address
@@ -408,3 +412,22 @@ test_prerequisites:
       - name: record/type
         value: REC1
     dependencies: [1]
+  - path: /Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:gdoi/group[name=CMGROUP1]
+    attributes:
+      - name: name
+        value: CMGROUP1
+      - name: identity/number
+        value: 1995
+      - name: server/address/ipv4
+        value: 198.51.100.1
+  - path: /Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:map/map-seq/map[name=CMAP1][seq=10]
+    attributes:
+      - name: name
+        value: CMAP1
+      - name: seq
+        value: 10
+      - name: gdoi
+        value: ""
+      - name: set/group
+        value: CMGROUP1
+    dependencies: [3]
