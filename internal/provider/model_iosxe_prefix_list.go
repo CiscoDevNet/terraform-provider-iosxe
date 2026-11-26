@@ -39,6 +39,7 @@ import (
 type PrefixList struct {
 	Device                types.String                      `tfsdk:"device"`
 	Id                    types.String                      `tfsdk:"id"`
+	DeleteMode            types.String                      `tfsdk:"delete_mode"`
 	Prefixes              []PrefixListPrefixes              `tfsdk:"prefixes"`
 	PrefixListDescription []PrefixListPrefixListDescription `tfsdk:"prefix_list_description"`
 }

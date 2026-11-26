@@ -38,6 +38,8 @@ resource "iosxe_prefix_list" "example" {
 
 ### Optional
 
+- `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
+  - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
 - `prefix_list_description` (Attributes List) Describe about prefix-list entry (see [below for nested schema](#nestedatt--prefix_list_description))
 - `prefixes` (Attributes List) Build prefix-lists with name ans seq.no (see [below for nested schema](#nestedatt--prefixes))
