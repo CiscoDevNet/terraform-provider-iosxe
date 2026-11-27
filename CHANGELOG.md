@@ -19,6 +19,7 @@
 - Add `iosxe_wireless_ap_tag_source_priority` resource and data source for the configurable C9800 AP tag source priorities 2 and 3 (`ap tag-source-priority <2-3> source <filter|ap>`). Priorities 0, 1 and 4 are fixed by the device and not exposed. Because the controller rejects any single edit that assigns one source to two priorities, swapping the two sources is applied in two edit-config operations (with a best-effort restore of the previous table if the second one fails), a duplicate priority or source is rejected at plan time, and destroy restores the factory order
 - Add `trap_threshold_utilization` attribute (`trap-threshold utilization`) to `iosxe_wireless_rf_profile` resource and data source
 - Add `security_wpa_akm_suite_b`, `security_wpa_akm_suite_b_192`, `security_wpa_akm_sae_ext_key` and `security_wpa_akm_ft_sae_ext_key` attributes to `iosxe_wireless_wlan_profile` resource and data source, the AKMs that the GCMP128 and GCMP256 ciphers require
+- Fix malformed NETCONF for lists whose entry element and key leaf share a name when two or more entries are configured, such as `ip_hosts_vrf.hosts` in `iosxe_system` with several hosts in one VRF. The leaves after the first entry's key were emitted outside the entry, and the device rejected the edit-config with `unknown-element`
 
 ## 1.2.0
 
