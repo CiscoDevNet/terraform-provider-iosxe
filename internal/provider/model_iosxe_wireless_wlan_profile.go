@@ -55,6 +55,10 @@ type WirelessWLANProfile struct {
 	SecurityWpaAkmFtSae               types.Bool                         `tfsdk:"security_wpa_akm_ft_sae"`
 	SecurityWpaAkmDot1xSha256         types.Bool                         `tfsdk:"security_wpa_akm_dot1x_sha256"`
 	SecurityWpaAkmOwe                 types.Bool                         `tfsdk:"security_wpa_akm_owe"`
+	SecurityWpaAkmSuiteB              types.Bool                         `tfsdk:"security_wpa_akm_suite_b"`
+	SecurityWpaAkmSuiteB192           types.Bool                         `tfsdk:"security_wpa_akm_suite_b_192"`
+	SecurityWpaAkmSaeExtKey           types.Bool                         `tfsdk:"security_wpa_akm_sae_ext_key"`
+	SecurityWpaAkmFtSaeExtKey         types.Bool                         `tfsdk:"security_wpa_akm_ft_sae_ext_key"`
 	SecurityWpaWpa2CiphersAes         types.Bool                         `tfsdk:"security_wpa_wpa2_ciphers_aes"`
 	SecurityWpaWpa2CiphersGcmp128     types.Bool                         `tfsdk:"security_wpa_wpa2_ciphers_gcmp128"`
 	SecurityWpaWpa2CiphersGcmp256     types.Bool                         `tfsdk:"security_wpa_wpa2_ciphers_gcmp256"`
@@ -105,6 +109,10 @@ type WirelessWLANProfileData struct {
 	SecurityWpaAkmFtSae               types.Bool                             `tfsdk:"security_wpa_akm_ft_sae"`
 	SecurityWpaAkmDot1xSha256         types.Bool                             `tfsdk:"security_wpa_akm_dot1x_sha256"`
 	SecurityWpaAkmOwe                 types.Bool                             `tfsdk:"security_wpa_akm_owe"`
+	SecurityWpaAkmSuiteB              types.Bool                             `tfsdk:"security_wpa_akm_suite_b"`
+	SecurityWpaAkmSuiteB192           types.Bool                             `tfsdk:"security_wpa_akm_suite_b_192"`
+	SecurityWpaAkmSaeExtKey           types.Bool                             `tfsdk:"security_wpa_akm_sae_ext_key"`
+	SecurityWpaAkmFtSaeExtKey         types.Bool                             `tfsdk:"security_wpa_akm_ft_sae_ext_key"`
 	SecurityWpaWpa2CiphersAes         types.Bool                             `tfsdk:"security_wpa_wpa2_ciphers_aes"`
 	SecurityWpaWpa2CiphersGcmp128     types.Bool                             `tfsdk:"security_wpa_wpa2_ciphers_gcmp128"`
 	SecurityWpaWpa2CiphersGcmp256     types.Bool                             `tfsdk:"security_wpa_wpa2_ciphers_gcmp256"`
@@ -220,6 +228,18 @@ func (data WirelessWLANProfile) addToBodyXML(ctx context.Context, config Wireles
 	}
 	if !data.SecurityWpaAkmOwe.IsNull() && !data.SecurityWpaAkmOwe.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/akm-owe", data.SecurityWpaAkmOwe.ValueBool())
+	}
+	if !data.SecurityWpaAkmSuiteB.IsNull() && !data.SecurityWpaAkmSuiteB.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/auth-key-mgmt-suite-b", data.SecurityWpaAkmSuiteB.ValueBool())
+	}
+	if !data.SecurityWpaAkmSuiteB192.IsNull() && !data.SecurityWpaAkmSuiteB192.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/auth-key-mgmt-suite-b-192", data.SecurityWpaAkmSuiteB192.ValueBool())
+	}
+	if !data.SecurityWpaAkmSaeExtKey.IsNull() && !data.SecurityWpaAkmSaeExtKey.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/akm-sae-ext-key", data.SecurityWpaAkmSaeExtKey.ValueBool())
+	}
+	if !data.SecurityWpaAkmFtSaeExtKey.IsNull() && !data.SecurityWpaAkmFtSaeExtKey.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/akm-ft-sae-ext-key", data.SecurityWpaAkmFtSaeExtKey.ValueBool())
 	}
 	if !data.SecurityWpaWpa2CiphersAes.IsNull() && !data.SecurityWpaWpa2CiphersAes.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/wpa2-aes", data.SecurityWpaWpa2CiphersAes.ValueBool())
@@ -410,6 +430,34 @@ func (data *WirelessWLANProfile) updateFromBodyXML(ctx context.Context, res xmld
 		}
 	} else {
 		data.SecurityWpaAkmOwe = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/auth-key-mgmt-suite-b"); !data.SecurityWpaAkmSuiteB.IsNull() {
+		if value.Exists() {
+			data.SecurityWpaAkmSuiteB = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.SecurityWpaAkmSuiteB = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/auth-key-mgmt-suite-b-192"); !data.SecurityWpaAkmSuiteB192.IsNull() {
+		if value.Exists() {
+			data.SecurityWpaAkmSuiteB192 = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.SecurityWpaAkmSuiteB192 = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/akm-sae-ext-key"); !data.SecurityWpaAkmSaeExtKey.IsNull() {
+		if value.Exists() {
+			data.SecurityWpaAkmSaeExtKey = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.SecurityWpaAkmSaeExtKey = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/akm-ft-sae-ext-key"); !data.SecurityWpaAkmFtSaeExtKey.IsNull() {
+		if value.Exists() {
+			data.SecurityWpaAkmFtSaeExtKey = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.SecurityWpaAkmFtSaeExtKey = types.BoolNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/wpa2-aes"); !data.SecurityWpaWpa2CiphersAes.IsNull() {
 		if value.Exists() {
@@ -649,6 +697,26 @@ func (data *WirelessWLANProfile) fromBodyXML(ctx context.Context, res xmldot.Res
 	} else {
 		data.SecurityWpaAkmOwe = types.BoolNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/auth-key-mgmt-suite-b"); value.Exists() {
+		data.SecurityWpaAkmSuiteB = types.BoolValue(value.Bool())
+	} else {
+		data.SecurityWpaAkmSuiteB = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/auth-key-mgmt-suite-b-192"); value.Exists() {
+		data.SecurityWpaAkmSuiteB192 = types.BoolValue(value.Bool())
+	} else {
+		data.SecurityWpaAkmSuiteB192 = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/akm-sae-ext-key"); value.Exists() {
+		data.SecurityWpaAkmSaeExtKey = types.BoolValue(value.Bool())
+	} else {
+		data.SecurityWpaAkmSaeExtKey = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/akm-ft-sae-ext-key"); value.Exists() {
+		data.SecurityWpaAkmFtSaeExtKey = types.BoolValue(value.Bool())
+	} else {
+		data.SecurityWpaAkmFtSaeExtKey = types.BoolNull()
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/wpa2-aes"); value.Exists() {
 		data.SecurityWpaWpa2CiphersAes = types.BoolValue(value.Bool())
 	} else {
@@ -830,6 +898,26 @@ func (data *WirelessWLANProfileData) fromBodyXML(ctx context.Context, res xmldot
 		data.SecurityWpaAkmOwe = types.BoolValue(value.Bool())
 	} else {
 		data.SecurityWpaAkmOwe = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/auth-key-mgmt-suite-b"); value.Exists() {
+		data.SecurityWpaAkmSuiteB = types.BoolValue(value.Bool())
+	} else {
+		data.SecurityWpaAkmSuiteB = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/auth-key-mgmt-suite-b-192"); value.Exists() {
+		data.SecurityWpaAkmSuiteB192 = types.BoolValue(value.Bool())
+	} else {
+		data.SecurityWpaAkmSuiteB192 = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/akm-sae-ext-key"); value.Exists() {
+		data.SecurityWpaAkmSaeExtKey = types.BoolValue(value.Bool())
+	} else {
+		data.SecurityWpaAkmSaeExtKey = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/akm-ft-sae-ext-key"); value.Exists() {
+		data.SecurityWpaAkmFtSaeExtKey = types.BoolValue(value.Bool())
+	} else {
+		data.SecurityWpaAkmFtSaeExtKey = types.BoolNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/wpa2-aes"); value.Exists() {
 		data.SecurityWpaWpa2CiphersAes = types.BoolValue(value.Bool())
@@ -1052,6 +1140,18 @@ func (data *WirelessWLANProfile) addDeletedItemsXML(ctx context.Context, state W
 	if !state.SecurityWpaWpa2CiphersAes.IsNull() && data.SecurityWpaWpa2CiphersAes.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/wpa2-aes")
 	}
+	if !state.SecurityWpaAkmFtSaeExtKey.IsNull() && data.SecurityWpaAkmFtSaeExtKey.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/akm-ft-sae-ext-key")
+	}
+	if !state.SecurityWpaAkmSaeExtKey.IsNull() && data.SecurityWpaAkmSaeExtKey.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/akm-sae-ext-key")
+	}
+	if !state.SecurityWpaAkmSuiteB192.IsNull() && data.SecurityWpaAkmSuiteB192.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/auth-key-mgmt-suite-b-192")
+	}
+	if !state.SecurityWpaAkmSuiteB.IsNull() && data.SecurityWpaAkmSuiteB.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/auth-key-mgmt-suite-b")
+	}
 	if !state.SecurityWpaAkmOwe.IsNull() && data.SecurityWpaAkmOwe.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/akm-owe")
 	}
@@ -1186,6 +1286,18 @@ func (data *WirelessWLANProfile) addDeletePathsXML(ctx context.Context, body str
 	}
 	if !data.SecurityWpaWpa2CiphersAes.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/wpa2-aes")
+	}
+	if !data.SecurityWpaAkmFtSaeExtKey.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/akm-ft-sae-ext-key")
+	}
+	if !data.SecurityWpaAkmSaeExtKey.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/akm-sae-ext-key")
+	}
+	if !data.SecurityWpaAkmSuiteB192.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/auth-key-mgmt-suite-b-192")
+	}
+	if !data.SecurityWpaAkmSuiteB.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/auth-key-mgmt-suite-b")
 	}
 	if !data.SecurityWpaAkmOwe.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/akm-owe")

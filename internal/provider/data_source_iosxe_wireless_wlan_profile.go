@@ -128,6 +128,22 @@ func (d *WirelessWLANProfileDataSource) Schema(ctx context.Context, req datasour
 				MarkdownDescription: "Enable OWE (`security wpa akm owe`). The controller refuses it while `security_wpa_wpa2` is true",
 				Computed:            true,
 			},
+			"security_wpa_akm_suite_b": schema.BoolAttribute{
+				MarkdownDescription: "Enable the SuiteB AKM (`security wpa akm suiteb`). The controller requires `security_wpa_wpa2_ciphers_gcmp128` with it, refuses it together with the PSK, SAE and SAE-EXT-KEY AKMs, and refuses FT, so set `security_ft` to `dot11r-disabled` (the device default is adaptive)",
+				Computed:            true,
+			},
+			"security_wpa_akm_suite_b_192": schema.BoolAttribute{
+				MarkdownDescription: "Enable the SuiteB-192 AKM (`security wpa akm suiteb-192`). The controller requires `security_wpa_wpa2_ciphers_gcmp256` with it, refuses it together with the PSK, SAE and SAE-EXT-KEY AKMs, and refuses FT, so set `security_ft` to `dot11r-disabled` (the device default is adaptive)",
+				Computed:            true,
+			},
+			"security_wpa_akm_sae_ext_key": schema.BoolAttribute{
+				MarkdownDescription: "Enable the SAE-EXT-KEY AKM (`security wpa akm sae ext-key`). It needs a PSK (`security_wpa_psk_key`) and allows `security_wpa_wpa2_ciphers_gcmp256`. On a WPA3-only WLAN the controller refuses FT adaptive, so set `security_ft` to `dot11r-disabled`",
+				Computed:            true,
+			},
+			"security_wpa_akm_ft_sae_ext_key": schema.BoolAttribute{
+				MarkdownDescription: "Enable the FT-SAE-EXT-KEY AKM (`security wpa akm ft sae ext-key`). It needs a PSK (`security_wpa_psk_key`) and `security_ft` set to `dot11r-enabled`, and the controller refuses it together with FT-802.1X",
+				Computed:            true,
+			},
 			"security_wpa_wpa2_ciphers_aes": schema.BoolAttribute{
 				MarkdownDescription: "WPA2/CCMP128 support",
 				Computed:            true,
