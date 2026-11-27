@@ -382,6 +382,7 @@ func (data InterfacePortChannelSubinterface) addToBodyXML(ctx context.Context, c
 		body = helpers.SetFromXPath(body, data.getXPath()+"/trust/device", data.TrustDevice.ValueString())
 	}
 	if len(data.HelperAddresses) > 0 {
+		HelperAddressesFragments := make([]string, 0, len(data.HelperAddresses))
 		for _, item := range data.HelperAddresses {
 			cBody := netconf.Body{}
 			if !item.Address.IsNull() && !item.Address.IsUnknown() {
@@ -397,8 +398,9 @@ func (data InterfacePortChannelSubinterface) addToBodyXML(ctx context.Context, c
 			if !item.Vrf.IsNull() && !item.Vrf.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "vrf", item.Vrf.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ip/helper-address", cBody.Res())
+			HelperAddressesFragments = append(HelperAddressesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/ip/helper-address", HelperAddressesFragments)
 	}
 	if !data.BfdTemplate.IsNull() && !data.BfdTemplate.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:template", data.BfdTemplate.ValueString())
@@ -453,6 +455,7 @@ func (data InterfacePortChannelSubinterface) addToBodyXML(ctx context.Context, c
 		}
 	}
 	if len(data.Ipv6LinkLocalAddresses) > 0 {
+		Ipv6LinkLocalAddressesFragments := make([]string, 0, len(data.Ipv6LinkLocalAddresses))
 		for _, item := range data.Ipv6LinkLocalAddresses {
 			cBody := netconf.Body{}
 			if !item.Address.IsNull() && !item.Address.IsUnknown() {
@@ -465,10 +468,12 @@ func (data InterfacePortChannelSubinterface) addToBodyXML(ctx context.Context, c
 					cBody = helpers.RemoveFromXPath(cBody, "link-local")
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ipv6/address/link-local-address", cBody.Res())
+			Ipv6LinkLocalAddressesFragments = append(Ipv6LinkLocalAddressesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/ipv6/address/link-local-address", Ipv6LinkLocalAddressesFragments)
 	}
 	if len(data.Ipv6Addresses) > 0 {
+		Ipv6AddressesFragments := make([]string, 0, len(data.Ipv6Addresses))
 		for _, item := range data.Ipv6Addresses {
 			cBody := netconf.Body{}
 			if !item.Prefix.IsNull() && !item.Prefix.IsUnknown() {
@@ -481,10 +486,12 @@ func (data InterfacePortChannelSubinterface) addToBodyXML(ctx context.Context, c
 					cBody = helpers.RemoveFromXPath(cBody, "eui-64")
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ipv6/address/prefix-list", cBody.Res())
+			Ipv6AddressesFragments = append(Ipv6AddressesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/ipv6/address/prefix-list", Ipv6AddressesFragments)
 	}
 	if len(data.Ipv6FlowMonitors) > 0 {
+		Ipv6FlowMonitorsFragments := make([]string, 0, len(data.Ipv6FlowMonitors))
 		for _, item := range data.Ipv6FlowMonitors {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
@@ -493,8 +500,9 @@ func (data InterfacePortChannelSubinterface) addToBodyXML(ctx context.Context, c
 			if !item.Direction.IsNull() && !item.Direction.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "direction", item.Direction.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ipv6/Cisco-IOS-XE-flow:flow/monitor-new", cBody.Res())
+			Ipv6FlowMonitorsFragments = append(Ipv6FlowMonitorsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/ipv6/Cisco-IOS-XE-flow:flow/monitor-new", Ipv6FlowMonitorsFragments)
 	}
 	if !data.ArpTimeout.IsNull() && !data.ArpTimeout.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/arp/timeout", strconv.FormatInt(data.ArpTimeout.ValueInt64(), 10))
@@ -530,6 +538,7 @@ func (data InterfacePortChannelSubinterface) addToBodyXML(ctx context.Context, c
 		}
 	}
 	if len(data.IpFlowMonitors) > 0 {
+		IpFlowMonitorsFragments := make([]string, 0, len(data.IpFlowMonitors))
 		for _, item := range data.IpFlowMonitors {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
@@ -538,8 +547,9 @@ func (data InterfacePortChannelSubinterface) addToBodyXML(ctx context.Context, c
 			if !item.Direction.IsNull() && !item.Direction.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "direction", item.Direction.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-flow:flow/monitor-new", cBody.Res())
+			IpFlowMonitorsFragments = append(IpFlowMonitorsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/ip/Cisco-IOS-XE-flow:flow/monitor-new", IpFlowMonitorsFragments)
 	}
 	if !data.ZoneMemberSecurity.IsNull() && !data.ZoneMemberSecurity.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security", data.ZoneMemberSecurity.ValueString())
@@ -758,29 +768,12 @@ func (data *InterfacePortChannelSubinterface) updateFromBodyXML(ctx context.Cont
 	} else {
 		data.TrustDevice = types.StringNull()
 	}
+	HelperAddressesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	HelperAddressesKeys := [...]string{"address"}
+	HelperAddressesItems := helpers.CollectListItemsXML(HelperAddressesParentScope.Raw, "ip/helper-address", HelperAddressesKeys[:])
 	for i := range data.HelperAddresses {
-		keys := [...]string{"address"}
-		keyValues := [...]string{data.HelperAddresses[i].Address.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/helper-address").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		HelperAddressesKeyValues := [...]string{data.HelperAddresses[i].Address.ValueString()}
+		r := HelperAddressesItems[helpers.CompositeKey(HelperAddressesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "address"); value.Exists() && !data.HelperAddresses[i].Address.IsNull() {
 			data.HelperAddresses[i].Address = types.StringValue(value.String())
 		} else {
@@ -881,29 +874,12 @@ func (data *InterfacePortChannelSubinterface) updateFromBodyXML(ctx context.Cont
 	} else {
 		data.Ipv6AddressDhcp = types.BoolNull()
 	}
+	Ipv6LinkLocalAddressesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	Ipv6LinkLocalAddressesKeys := [...]string{"address"}
+	Ipv6LinkLocalAddressesItems := helpers.CollectListItemsXML(Ipv6LinkLocalAddressesParentScope.Raw, "ipv6/address/link-local-address", Ipv6LinkLocalAddressesKeys[:])
 	for i := range data.Ipv6LinkLocalAddresses {
-		keys := [...]string{"address"}
-		keyValues := [...]string{data.Ipv6LinkLocalAddresses[i].Address.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/address/link-local-address").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		Ipv6LinkLocalAddressesKeyValues := [...]string{data.Ipv6LinkLocalAddresses[i].Address.ValueString()}
+		r := Ipv6LinkLocalAddressesItems[helpers.CompositeKey(Ipv6LinkLocalAddressesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "address"); value.Exists() && !data.Ipv6LinkLocalAddresses[i].Address.IsNull() {
 			data.Ipv6LinkLocalAddresses[i].Address = types.StringValue(value.String())
 		} else {
@@ -919,29 +895,12 @@ func (data *InterfacePortChannelSubinterface) updateFromBodyXML(ctx context.Cont
 			data.Ipv6LinkLocalAddresses[i].LinkLocal = types.BoolNull()
 		}
 	}
+	Ipv6AddressesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	Ipv6AddressesKeys := [...]string{"prefix"}
+	Ipv6AddressesItems := helpers.CollectListItemsXML(Ipv6AddressesParentScope.Raw, "ipv6/address/prefix-list", Ipv6AddressesKeys[:])
 	for i := range data.Ipv6Addresses {
-		keys := [...]string{"prefix"}
-		keyValues := [...]string{data.Ipv6Addresses[i].Prefix.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/address/prefix-list").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		Ipv6AddressesKeyValues := [...]string{data.Ipv6Addresses[i].Prefix.ValueString()}
+		r := Ipv6AddressesItems[helpers.CompositeKey(Ipv6AddressesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "prefix"); value.Exists() && !data.Ipv6Addresses[i].Prefix.IsNull() {
 			data.Ipv6Addresses[i].Prefix = types.StringValue(value.String())
 		} else {
@@ -957,29 +916,12 @@ func (data *InterfacePortChannelSubinterface) updateFromBodyXML(ctx context.Cont
 			data.Ipv6Addresses[i].Eui64 = types.BoolNull()
 		}
 	}
+	Ipv6FlowMonitorsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	Ipv6FlowMonitorsKeys := [...]string{"name", "direction"}
+	Ipv6FlowMonitorsItems := helpers.CollectListItemsXML(Ipv6FlowMonitorsParentScope.Raw, "ipv6/Cisco-IOS-XE-flow:flow/monitor-new", Ipv6FlowMonitorsKeys[:])
 	for i := range data.Ipv6FlowMonitors {
-		keys := [...]string{"name", "direction"}
-		keyValues := [...]string{data.Ipv6FlowMonitors[i].Name.ValueString(), data.Ipv6FlowMonitors[i].Direction.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/Cisco-IOS-XE-flow:flow/monitor-new").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		Ipv6FlowMonitorsKeyValues := [...]string{data.Ipv6FlowMonitors[i].Name.ValueString(), data.Ipv6FlowMonitors[i].Direction.ValueString()}
+		r := Ipv6FlowMonitorsItems[helpers.CompositeKey(Ipv6FlowMonitorsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.Ipv6FlowMonitors[i].Name.IsNull() {
 			data.Ipv6FlowMonitors[i].Name = types.StringValue(value.String())
 		} else {
@@ -1038,29 +980,12 @@ func (data *InterfacePortChannelSubinterface) updateFromBodyXML(ctx context.Cont
 	} else {
 		data.IpNatOutside = types.BoolNull()
 	}
+	IpFlowMonitorsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	IpFlowMonitorsKeys := [...]string{"name", "direction"}
+	IpFlowMonitorsItems := helpers.CollectListItemsXML(IpFlowMonitorsParentScope.Raw, "ip/Cisco-IOS-XE-flow:flow/monitor-new", IpFlowMonitorsKeys[:])
 	for i := range data.IpFlowMonitors {
-		keys := [...]string{"name", "direction"}
-		keyValues := [...]string{data.IpFlowMonitors[i].Name.ValueString(), data.IpFlowMonitors[i].Direction.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-flow:flow/monitor-new").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		IpFlowMonitorsKeyValues := [...]string{data.IpFlowMonitors[i].Name.ValueString(), data.IpFlowMonitors[i].Direction.ValueString()}
+		r := IpFlowMonitorsItems[helpers.CompositeKey(IpFlowMonitorsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.IpFlowMonitors[i].Name.IsNull() {
 			data.IpFlowMonitors[i].Name = types.StringValue(value.String())
 		} else {

@@ -268,6 +268,7 @@ func (data AAAAccounting) addToBodyXML(ctx context.Context, config AAAAccounting
 		body = helpers.SetFromXPath(body, data.getXPath()+"/update/newinfo/periodic", strconv.FormatInt(data.UpdateNewinfoPeriodic.ValueInt64(), 10))
 	}
 	if len(data.Identities) > 0 {
+		IdentitiesFragments := make([]string, 0, len(data.Identities))
 		for _, item := range data.Identities {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
@@ -306,8 +307,9 @@ func (data AAAAccounting) addToBodyXML(ctx context.Context, config AAAAccounting
 			if !item.StartStopGroup4.IsNull() && !item.StartStopGroup4.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "start-stop/group-config/group4/group", item.StartStopGroup4.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/identity/accounting-list", cBody.Res())
+			IdentitiesFragments = append(IdentitiesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/identity/accounting-list", IdentitiesFragments)
 	}
 	if !data.IdentityDefaultStartStopGroup1.IsNull() && !data.IdentityDefaultStartStopGroup1.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/identity/default/start-stop/group-config/group1/group", data.IdentityDefaultStartStopGroup1.ValueString())
@@ -322,6 +324,7 @@ func (data AAAAccounting) addToBodyXML(ctx context.Context, config AAAAccounting
 		body = helpers.SetFromXPath(body, data.getXPath()+"/identity/default/start-stop/group-config/group4/group", data.IdentityDefaultStartStopGroup4.ValueString())
 	}
 	if len(data.Networks) > 0 {
+		NetworksFragments := make([]string, 0, len(data.Networks))
 		for _, item := range data.Networks {
 			cBody := netconf.Body{}
 			if !item.Id.IsNull() && !item.Id.IsUnknown() {
@@ -333,13 +336,15 @@ func (data AAAAccounting) addToBodyXML(ctx context.Context, config AAAAccounting
 			if !item.StartStopGroup2.IsNull() && !item.StartStopGroup2.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "start-stop/group-config/group2/group", item.StartStopGroup2.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/network", cBody.Res())
+			NetworksFragments = append(NetworksFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/network", NetworksFragments)
 	}
 	if !data.SystemGuaranteeFirst.IsNull() && !data.SystemGuaranteeFirst.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/system/guarantee-first", data.SystemGuaranteeFirst.ValueBool())
 	}
 	if len(data.Commands) > 0 {
+		CommandsFragments := make([]string, 0, len(data.Commands))
 		for _, item := range data.Commands {
 			cBody := netconf.Body{}
 			if !item.Level.IsNull() && !item.Level.IsUnknown() {
@@ -384,10 +389,12 @@ func (data AAAAccounting) addToBodyXML(ctx context.Context, config AAAAccounting
 			if !item.Group4Group.IsNull() && !item.Group4Group.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "commands-config/group-config/group4/group", item.Group4Group.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/commands", cBody.Res())
+			CommandsFragments = append(CommandsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/commands", CommandsFragments)
 	}
 	if len(data.Connections) > 0 {
+		ConnectionsFragments := make([]string, 0, len(data.Connections))
 		for _, item := range data.Connections {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
@@ -459,10 +466,12 @@ func (data AAAAccounting) addToBodyXML(ctx context.Context, config AAAAccounting
 			if !item.StopOnlyGroup4.IsNull() && !item.StopOnlyGroup4.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "stop-only/group4/group", item.StopOnlyGroup4.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/connection", cBody.Res())
+			ConnectionsFragments = append(ConnectionsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/connection", ConnectionsFragments)
 	}
 	if len(data.Execs) > 0 {
+		ExecsFragments := make([]string, 0, len(data.Execs))
 		for _, item := range data.Execs {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
@@ -527,8 +536,9 @@ func (data AAAAccounting) addToBodyXML(ctx context.Context, config AAAAccounting
 			if !item.StopOnlyGroup4.IsNull() && !item.StopOnlyGroup4.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "stop-only/group4/group", item.StopOnlyGroup4.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/exec", cBody.Res())
+			ExecsFragments = append(ExecsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/exec", ExecsFragments)
 	}
 	if !data.Dot1xDefaultStartStopGroup1.IsNull() && !data.Dot1xDefaultStartStopGroup1.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/dot1x/default/start-stop/group-config/group1/group", data.Dot1xDefaultStartStopGroup1.ValueString())
@@ -564,6 +574,7 @@ func (data AAAAccounting) addToBodyXML(ctx context.Context, config AAAAccounting
 		}
 	}
 	if len(data.Dot1x) > 0 {
+		Dot1xFragments := make([]string, 0, len(data.Dot1x))
 		for _, item := range data.Dot1x {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
@@ -602,8 +613,9 @@ func (data AAAAccounting) addToBodyXML(ctx context.Context, config AAAAccounting
 					cBody = helpers.RemoveFromXPath(cBody, "start-stop/group-config/logger")
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/dot1x/accounting-list", cBody.Res())
+			Dot1xFragments = append(Dot1xFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/dot1x/accounting-list", Dot1xFragments)
 	}
 	return body
 }
@@ -618,29 +630,12 @@ func (data *AAAAccounting) updateFromBodyXML(ctx context.Context, res xmldot.Res
 	} else {
 		data.UpdateNewinfoPeriodic = types.Int64Null()
 	}
+	IdentitiesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	IdentitiesKeys := [...]string{"name"}
+	IdentitiesItems := helpers.CollectListItemsXML(IdentitiesParentScope.Raw, "identity/accounting-list", IdentitiesKeys[:])
 	for i := range data.Identities {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.Identities[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/identity/accounting-list").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		IdentitiesKeyValues := [...]string{data.Identities[i].Name.ValueString()}
+		r := IdentitiesItems[helpers.CompositeKey(IdentitiesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.Identities[i].Name.IsNull() {
 			data.Identities[i].Name = types.StringValue(value.String())
 		} else {
@@ -714,29 +709,12 @@ func (data *AAAAccounting) updateFromBodyXML(ctx context.Context, res xmldot.Res
 	} else {
 		data.IdentityDefaultStartStopGroup4 = types.StringNull()
 	}
+	NetworksParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	NetworksKeys := [...]string{"id"}
+	NetworksItems := helpers.CollectListItemsXML(NetworksParentScope.Raw, "network", NetworksKeys[:])
 	for i := range data.Networks {
-		keys := [...]string{"id"}
-		keyValues := [...]string{data.Networks[i].Id.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/network").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		NetworksKeyValues := [...]string{data.Networks[i].Id.ValueString()}
+		r := NetworksItems[helpers.CompositeKey(NetworksKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "id"); value.Exists() && !data.Networks[i].Id.IsNull() {
 			data.Networks[i].Id = types.StringValue(value.String())
 		} else {
@@ -760,29 +738,12 @@ func (data *AAAAccounting) updateFromBodyXML(ctx context.Context, res xmldot.Res
 	} else {
 		data.SystemGuaranteeFirst = types.BoolNull()
 	}
+	CommandsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	CommandsKeys := [...]string{"level", "list-name"}
+	CommandsItems := helpers.CollectListItemsXML(CommandsParentScope.Raw, "commands", CommandsKeys[:])
 	for i := range data.Commands {
-		keys := [...]string{"level", "list-name"}
-		keyValues := [...]string{strconv.FormatInt(data.Commands[i].Level.ValueInt64(), 10), data.Commands[i].ListName.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/commands").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		CommandsKeyValues := [...]string{strconv.FormatInt(data.Commands[i].Level.ValueInt64(), 10), data.Commands[i].ListName.ValueString()}
+		r := CommandsItems[helpers.CompositeKey(CommandsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "level"); value.Exists() && !data.Commands[i].Level.IsNull() {
 			data.Commands[i].Level = types.Int64Value(value.Int())
 		} else {
@@ -846,29 +807,12 @@ func (data *AAAAccounting) updateFromBodyXML(ctx context.Context, res xmldot.Res
 			data.Commands[i].Group4Group = types.StringNull()
 		}
 	}
+	ConnectionsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	ConnectionsKeys := [...]string{"name"}
+	ConnectionsItems := helpers.CollectListItemsXML(ConnectionsParentScope.Raw, "connection", ConnectionsKeys[:])
 	for i := range data.Connections {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.Connections[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/connection").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		ConnectionsKeyValues := [...]string{data.Connections[i].Name.ValueString()}
+		r := ConnectionsItems[helpers.CompositeKey(ConnectionsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.Connections[i].Name.IsNull() {
 			data.Connections[i].Name = types.StringValue(value.String())
 		} else {
@@ -969,29 +913,12 @@ func (data *AAAAccounting) updateFromBodyXML(ctx context.Context, res xmldot.Res
 			data.Connections[i].StopOnlyGroup4 = types.StringNull()
 		}
 	}
+	ExecsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	ExecsKeys := [...]string{"name"}
+	ExecsItems := helpers.CollectListItemsXML(ExecsParentScope.Raw, "exec", ExecsKeys[:])
 	for i := range data.Execs {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.Execs[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/exec").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		ExecsKeyValues := [...]string{data.Execs[i].Name.ValueString()}
+		r := ExecsItems[helpers.CompositeKey(ExecsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.Execs[i].Name.IsNull() {
 			data.Execs[i].Name = types.StringValue(value.String())
 		} else {
@@ -1130,29 +1057,12 @@ func (data *AAAAccounting) updateFromBodyXML(ctx context.Context, res xmldot.Res
 	} else {
 		data.Dot1xDefaultStartStopGroupLogger = types.BoolNull()
 	}
+	Dot1xParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	Dot1xKeys := [...]string{"name"}
+	Dot1xItems := helpers.CollectListItemsXML(Dot1xParentScope.Raw, "dot1x/accounting-list", Dot1xKeys[:])
 	for i := range data.Dot1x {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.Dot1x[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/accounting-list").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		Dot1xKeyValues := [...]string{data.Dot1x[i].Name.ValueString()}
+		r := Dot1xItems[helpers.CompositeKey(Dot1xKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.Dot1x[i].Name.IsNull() {
 			data.Dot1x[i].Name = types.StringValue(value.String())
 		} else {

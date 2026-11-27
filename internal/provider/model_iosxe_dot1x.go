@@ -138,6 +138,7 @@ func (data Dot1x) addToBodyXML(ctx context.Context, config Dot1x, body netconf.B
 		}
 	}
 	if len(data.Credentials) > 0 {
+		CredentialsFragments := make([]string, 0, len(data.Credentials))
 		for _, item := range data.Credentials {
 			var configItem Dot1xCredentials
 			for _, ci := range config.Credentials {
@@ -173,8 +174,9 @@ func (data Dot1x) addToBodyXML(ctx context.Context, config Dot1x, body netconf.B
 			if !item.AnonymousId.IsNull() && !item.AnonymousId.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "anonymous-id", item.AnonymousId.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-dot1x:credentials", cBody.Res())
+			CredentialsFragments = append(CredentialsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/Cisco-IOS-XE-dot1x:credentials", CredentialsFragments)
 	}
 	if !data.CriticalEapolConfigBlock.IsNull() && !data.CriticalEapolConfigBlock.IsUnknown() {
 		if data.CriticalEapolConfigBlock.ValueBool() {
@@ -255,29 +257,12 @@ func (data *Dot1x) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.AuthFailEapol = types.BoolNull()
 	}
+	CredentialsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	CredentialsKeys := [...]string{"profile-name"}
+	CredentialsItems := helpers.CollectListItemsXML(CredentialsParentScope.Raw, "Cisco-IOS-XE-dot1x:credentials", CredentialsKeys[:])
 	for i := range data.Credentials {
-		keys := [...]string{"profile-name"}
-		keyValues := [...]string{data.Credentials[i].ProfileName.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-dot1x:credentials").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		CredentialsKeyValues := [...]string{data.Credentials[i].ProfileName.ValueString()}
+		r := CredentialsItems[helpers.CompositeKey(CredentialsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "profile-name"); value.Exists() && !data.Credentials[i].ProfileName.IsNull() {
 			data.Credentials[i].ProfileName = types.StringValue(value.String())
 		} else {

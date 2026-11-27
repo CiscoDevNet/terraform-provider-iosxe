@@ -109,6 +109,7 @@ func (data InterfaceISIS) addToBodyXML(ctx context.Context, config InterfaceISIS
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-isis:network/point-to-point", data.NetworkPointToPoint.ValueBool())
 	}
 	if len(data.Ipv4MetricLevels) > 0 {
+		Ipv4MetricLevelsFragments := make([]string, 0, len(data.Ipv4MetricLevels))
 		for _, item := range data.Ipv4MetricLevels {
 			cBody := netconf.Body{}
 			if !item.Level.IsNull() && !item.Level.IsUnknown() {
@@ -117,8 +118,9 @@ func (data InterfaceISIS) addToBodyXML(ctx context.Context, config InterfaceISIS
 			if !item.Value.IsNull() && !item.Value.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "value", strconv.FormatInt(item.Value.ValueInt64(), 10))
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-isis:metric/metric-list", cBody.Res())
+			Ipv4MetricLevelsFragments = append(Ipv4MetricLevelsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/Cisco-IOS-XE-isis:metric/metric-list", Ipv4MetricLevelsFragments)
 	}
 	return body
 }
@@ -135,29 +137,12 @@ func (data *InterfaceISIS) updateFromBodyXML(ctx context.Context, res xmldot.Res
 	} else {
 		data.NetworkPointToPoint = types.BoolNull()
 	}
+	Ipv4MetricLevelsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	Ipv4MetricLevelsKeys := [...]string{"levels"}
+	Ipv4MetricLevelsItems := helpers.CollectListItemsXML(Ipv4MetricLevelsParentScope.Raw, "Cisco-IOS-XE-isis:metric/metric-list", Ipv4MetricLevelsKeys[:])
 	for i := range data.Ipv4MetricLevels {
-		keys := [...]string{"levels"}
-		keyValues := [...]string{data.Ipv4MetricLevels[i].Level.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-isis:metric/metric-list").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		Ipv4MetricLevelsKeyValues := [...]string{data.Ipv4MetricLevels[i].Level.ValueString()}
+		r := Ipv4MetricLevelsItems[helpers.CompositeKey(Ipv4MetricLevelsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "levels"); value.Exists() && !data.Ipv4MetricLevels[i].Level.IsNull() {
 			data.Ipv4MetricLevels[i].Level = types.StringValue(value.String())
 		} else {

@@ -756,6 +756,7 @@ func (data ObjectGroup) toBodyXML(ctx context.Context, config ObjectGroup) strin
 // resources use this to serialize all of their items into a single NETCONF payload.
 func (data ObjectGroup) addToBodyXML(ctx context.Context, config ObjectGroup, body netconf.Body) netconf.Body {
 	if len(data.Fqdn) > 0 {
+		FqdnFragments := make([]string, 0, len(data.Fqdn))
 		for _, item := range data.Fqdn {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
@@ -765,27 +766,33 @@ func (data ObjectGroup) addToBodyXML(ctx context.Context, config ObjectGroup, bo
 				cBody = helpers.SetFromXPath(cBody, "description", item.Description.ValueString())
 			}
 			if len(item.GroupObjects) > 0 {
+				GroupObjectsFragments := make([]string, 0, len(item.GroupObjects))
 				for _, citem := range item.GroupObjects {
 					ccBody := netconf.Body{}
 					if !citem.GroupName.IsNull() && !citem.GroupName.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "fqdn-group", citem.GroupName.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "group-object", ccBody.Res())
+					GroupObjectsFragments = append(GroupObjectsFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "group-object", GroupObjectsFragments)
 			}
 			if len(item.Patterns) > 0 {
+				PatternsFragments := make([]string, 0, len(item.Patterns))
 				for _, citem := range item.Patterns {
 					ccBody := netconf.Body{}
 					if !citem.FqdnPattern.IsNull() && !citem.FqdnPattern.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "fqdn-pattern", citem.FqdnPattern.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "pattern", ccBody.Res())
+					PatternsFragments = append(PatternsFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "pattern", PatternsFragments)
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-object-group:fqdn", cBody.Res())
+			FqdnFragments = append(FqdnFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/Cisco-IOS-XE-object-group:fqdn", FqdnFragments)
 	}
 	if len(data.Network) > 0 {
+		NetworkFragments := make([]string, 0, len(data.Network))
 		for _, item := range data.Network {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
@@ -795,15 +802,18 @@ func (data ObjectGroup) addToBodyXML(ctx context.Context, config ObjectGroup, bo
 				cBody = helpers.SetFromXPath(cBody, "obj-Mode-config-network-group/description", item.Description.ValueString())
 			}
 			if len(item.Hosts) > 0 {
+				HostsFragments := make([]string, 0, len(item.Hosts))
 				for _, citem := range item.Hosts {
 					ccBody := netconf.Body{}
 					if !citem.Ipv4Host.IsNull() && !citem.Ipv4Host.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "ipv4-host", citem.Ipv4Host.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "obj-Mode-config-network-group/host", ccBody.Res())
+					HostsFragments = append(HostsFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "obj-Mode-config-network-group/host", HostsFragments)
 			}
 			if len(item.NetworkAddresses) > 0 {
+				NetworkAddressesFragments := make([]string, 0, len(item.NetworkAddresses))
 				for _, citem := range item.NetworkAddresses {
 					ccBody := netconf.Body{}
 					if !citem.Ipv4Address.IsNull() && !citem.Ipv4Address.IsUnknown() {
@@ -812,10 +822,12 @@ func (data ObjectGroup) addToBodyXML(ctx context.Context, config ObjectGroup, bo
 					if !citem.Ipv4Mask.IsNull() && !citem.Ipv4Mask.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "ipv4_mask", citem.Ipv4Mask.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "obj-Mode-config-network-group/network_address", ccBody.Res())
+					NetworkAddressesFragments = append(NetworkAddressesFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "obj-Mode-config-network-group/network_address", NetworkAddressesFragments)
 			}
 			if len(item.AddressRanges) > 0 {
+				AddressRangesFragments := make([]string, 0, len(item.AddressRanges))
 				for _, citem := range item.AddressRanges {
 					ccBody := netconf.Body{}
 					if !citem.Start.IsNull() && !citem.Start.IsUnknown() {
@@ -824,22 +836,27 @@ func (data ObjectGroup) addToBodyXML(ctx context.Context, config ObjectGroup, bo
 					if !citem.End.IsNull() && !citem.End.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "addr-range-end", citem.End.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "obj-Mode-config-network-group/addr-ranges", ccBody.Res())
+					AddressRangesFragments = append(AddressRangesFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "obj-Mode-config-network-group/addr-ranges", AddressRangesFragments)
 			}
 			if len(item.GroupObjects) > 0 {
+				GroupObjectsFragments := make([]string, 0, len(item.GroupObjects))
 				for _, citem := range item.GroupObjects {
 					ccBody := netconf.Body{}
 					if !citem.GroupName.IsNull() && !citem.GroupName.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "network-group", citem.GroupName.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "obj-Mode-config-network-group/group-objects", ccBody.Res())
+					GroupObjectsFragments = append(GroupObjectsFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "obj-Mode-config-network-group/group-objects", GroupObjectsFragments)
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-object-group:network", cBody.Res())
+			NetworkFragments = append(NetworkFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/Cisco-IOS-XE-object-group:network", NetworkFragments)
 	}
 	if len(data.Service) > 0 {
+		ServiceFragments := make([]string, 0, len(data.Service))
 		for _, item := range data.Service {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
@@ -849,13 +866,15 @@ func (data ObjectGroup) addToBodyXML(ctx context.Context, config ObjectGroup, bo
 				cBody = helpers.SetFromXPath(cBody, "description", item.Description.ValueString())
 			}
 			if len(item.GroupObjects) > 0 {
+				GroupObjectsFragments := make([]string, 0, len(item.GroupObjects))
 				for _, citem := range item.GroupObjects {
 					ccBody := netconf.Body{}
 					if !citem.GroupName.IsNull() && !citem.GroupName.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "service-group", citem.GroupName.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "group-objects", ccBody.Res())
+					GroupObjectsFragments = append(GroupObjectsFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "group-objects", GroupObjectsFragments)
 			}
 			if !item.ProtocolNumbers.IsNull() && !item.ProtocolNumbers.IsUnknown() {
 				var values []int
@@ -1099,6 +1118,7 @@ func (data ObjectGroup) addToBodyXML(ctx context.Context, config ObjectGroup, bo
 				}
 			}
 			if len(item.TcpDstPortListOp) > 0 {
+				TcpDstPortListOpFragments := make([]string, 0, len(item.TcpDstPortListOp))
 				for _, citem := range item.TcpDstPortListOp {
 					ccBody := netconf.Body{}
 					if !citem.Operator.IsNull() && !citem.Operator.IsUnknown() {
@@ -1107,19 +1127,23 @@ func (data ObjectGroup) addToBodyXML(ctx context.Context, config ObjectGroup, bo
 					if !citem.Port.IsNull() && !citem.Port.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "tcp-port", citem.Port.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "tcp-conf/tcp/tcp-port-list-op", ccBody.Res())
+					TcpDstPortListOpFragments = append(TcpDstPortListOpFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "tcp-conf/tcp/tcp-port-list-op", TcpDstPortListOpFragments)
 			}
 			if len(item.TcpDstPortList) > 0 {
+				TcpDstPortListFragments := make([]string, 0, len(item.TcpDstPortList))
 				for _, citem := range item.TcpDstPortList {
 					ccBody := netconf.Body{}
 					if !citem.Port.IsNull() && !citem.Port.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "tcp-port", citem.Port.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "tcp-conf/tcp/tcp-port-list-no-op", ccBody.Res())
+					TcpDstPortListFragments = append(TcpDstPortListFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "tcp-conf/tcp/tcp-port-list-no-op", TcpDstPortListFragments)
 			}
 			if len(item.TcpDstPortRanges) > 0 {
+				TcpDstPortRangesFragments := make([]string, 0, len(item.TcpDstPortRanges))
 				for _, citem := range item.TcpDstPortRanges {
 					ccBody := netconf.Body{}
 					if !citem.MinPort.IsNull() && !citem.MinPort.IsUnknown() {
@@ -1128,10 +1152,12 @@ func (data ObjectGroup) addToBodyXML(ctx context.Context, config ObjectGroup, bo
 					if !citem.MaxPort.IsNull() && !citem.MaxPort.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "tcp-max-port", citem.MaxPort.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "tcp-conf/tcp/tcp-range-port-list/range", ccBody.Res())
+					TcpDstPortRangesFragments = append(TcpDstPortRangesFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "tcp-conf/tcp/tcp-range-port-list/range", TcpDstPortRangesFragments)
 			}
 			if len(item.TcpSrcPortListOp) > 0 {
+				TcpSrcPortListOpFragments := make([]string, 0, len(item.TcpSrcPortListOp))
 				for _, citem := range item.TcpSrcPortListOp {
 					ccBody := netconf.Body{}
 					if !citem.Operator.IsNull() && !citem.Operator.IsUnknown() {
@@ -1140,19 +1166,23 @@ func (data ObjectGroup) addToBodyXML(ctx context.Context, config ObjectGroup, bo
 					if !citem.Port.IsNull() && !citem.Port.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "tcp-port", citem.Port.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "tcp-conf/tcp/tcp-src-port-list-op/source", ccBody.Res())
+					TcpSrcPortListOpFragments = append(TcpSrcPortListOpFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "tcp-conf/tcp/tcp-src-port-list-op/source", TcpSrcPortListOpFragments)
 			}
 			if len(item.TcpSrcPortList) > 0 {
+				TcpSrcPortListFragments := make([]string, 0, len(item.TcpSrcPortList))
 				for _, citem := range item.TcpSrcPortList {
 					ccBody := netconf.Body{}
 					if !citem.Port.IsNull() && !citem.Port.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "tcp-port", citem.Port.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "tcp-conf/tcp/tcp-src-port-list-no-op/source", ccBody.Res())
+					TcpSrcPortListFragments = append(TcpSrcPortListFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "tcp-conf/tcp/tcp-src-port-list-no-op/source", TcpSrcPortListFragments)
 			}
 			if len(item.TcpSrcPortRanges) > 0 {
+				TcpSrcPortRangesFragments := make([]string, 0, len(item.TcpSrcPortRanges))
 				for _, citem := range item.TcpSrcPortRanges {
 					ccBody := netconf.Body{}
 					if !citem.MinPort.IsNull() && !citem.MinPort.IsUnknown() {
@@ -1161,10 +1191,12 @@ func (data ObjectGroup) addToBodyXML(ctx context.Context, config ObjectGroup, bo
 					if !citem.MaxPort.IsNull() && !citem.MaxPort.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "tcp-max-port", citem.MaxPort.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "tcp-conf/tcp/tcp-src-range-port-list/source/range", ccBody.Res())
+					TcpSrcPortRangesFragments = append(TcpSrcPortRangesFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "tcp-conf/tcp/tcp-src-range-port-list/source/range", TcpSrcPortRangesFragments)
 			}
 			if len(item.TcpSrcDstPortListOp) > 0 {
+				TcpSrcDstPortListOpFragments := make([]string, 0, len(item.TcpSrcDstPortListOp))
 				for _, citem := range item.TcpSrcDstPortListOp {
 					ccBody := netconf.Body{}
 					if !citem.SrcOperator.IsNull() && !citem.SrcOperator.IsUnknown() {
@@ -1179,10 +1211,12 @@ func (data ObjectGroup) addToBodyXML(ctx context.Context, config ObjectGroup, bo
 					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "tcp-dst-port", citem.DstPort.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "tcp-conf/tcp/tcp-src-dst-port-list-op/source", ccBody.Res())
+					TcpSrcDstPortListOpFragments = append(TcpSrcDstPortListOpFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "tcp-conf/tcp/tcp-src-dst-port-list-op/source", TcpSrcDstPortListOpFragments)
 			}
 			if len(item.TcpSrcDstPortList) > 0 {
+				TcpSrcDstPortListFragments := make([]string, 0, len(item.TcpSrcDstPortList))
 				for _, citem := range item.TcpSrcDstPortList {
 					ccBody := netconf.Body{}
 					if !citem.SrcPort.IsNull() && !citem.SrcPort.IsUnknown() {
@@ -1191,10 +1225,12 @@ func (data ObjectGroup) addToBodyXML(ctx context.Context, config ObjectGroup, bo
 					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "tcp-dst-port", citem.DstPort.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "tcp-conf/tcp/tcp-src-dst-port-list-no-op/source", ccBody.Res())
+					TcpSrcDstPortListFragments = append(TcpSrcDstPortListFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "tcp-conf/tcp/tcp-src-dst-port-list-no-op/source", TcpSrcDstPortListFragments)
 			}
 			if len(item.TcpSrcDstPortListSrcOp) > 0 {
+				TcpSrcDstPortListSrcOpFragments := make([]string, 0, len(item.TcpSrcDstPortListSrcOp))
 				for _, citem := range item.TcpSrcDstPortListSrcOp {
 					ccBody := netconf.Body{}
 					if !citem.SrcOperator.IsNull() && !citem.SrcOperator.IsUnknown() {
@@ -1206,10 +1242,12 @@ func (data ObjectGroup) addToBodyXML(ctx context.Context, config ObjectGroup, bo
 					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "tcp-dst-port", citem.DstPort.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "tcp-conf/tcp/tcp-src-dst-port-list-src-op/source", ccBody.Res())
+					TcpSrcDstPortListSrcOpFragments = append(TcpSrcDstPortListSrcOpFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "tcp-conf/tcp/tcp-src-dst-port-list-src-op/source", TcpSrcDstPortListSrcOpFragments)
 			}
 			if len(item.TcpSrcDstPortListDstOp) > 0 {
+				TcpSrcDstPortListDstOpFragments := make([]string, 0, len(item.TcpSrcDstPortListDstOp))
 				for _, citem := range item.TcpSrcDstPortListDstOp {
 					ccBody := netconf.Body{}
 					if !citem.SrcPort.IsNull() && !citem.SrcPort.IsUnknown() {
@@ -1221,10 +1259,12 @@ func (data ObjectGroup) addToBodyXML(ctx context.Context, config ObjectGroup, bo
 					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "tcp-dst-port", citem.DstPort.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "tcp-conf/tcp/tcp-src-dst-port-list-dst-op/source", ccBody.Res())
+					TcpSrcDstPortListDstOpFragments = append(TcpSrcDstPortListDstOpFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "tcp-conf/tcp/tcp-src-dst-port-list-dst-op/source", TcpSrcDstPortListDstOpFragments)
 			}
 			if len(item.TcpSrcRangeDstPortListOp) > 0 {
+				TcpSrcRangeDstPortListOpFragments := make([]string, 0, len(item.TcpSrcRangeDstPortListOp))
 				for _, citem := range item.TcpSrcRangeDstPortListOp {
 					ccBody := netconf.Body{}
 					if !citem.SrcMinPort.IsNull() && !citem.SrcMinPort.IsUnknown() {
@@ -1239,10 +1279,12 @@ func (data ObjectGroup) addToBodyXML(ctx context.Context, config ObjectGroup, bo
 					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "tcp-dst-port", citem.DstPort.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "tcp-conf/tcp/tcp-src-range-dst-port-list-op/source", ccBody.Res())
+					TcpSrcRangeDstPortListOpFragments = append(TcpSrcRangeDstPortListOpFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "tcp-conf/tcp/tcp-src-range-dst-port-list-op/source", TcpSrcRangeDstPortListOpFragments)
 			}
 			if len(item.TcpSrcRangeDstPortList) > 0 {
+				TcpSrcRangeDstPortListFragments := make([]string, 0, len(item.TcpSrcRangeDstPortList))
 				for _, citem := range item.TcpSrcRangeDstPortList {
 					ccBody := netconf.Body{}
 					if !citem.SrcMinPort.IsNull() && !citem.SrcMinPort.IsUnknown() {
@@ -1254,10 +1296,12 @@ func (data ObjectGroup) addToBodyXML(ctx context.Context, config ObjectGroup, bo
 					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "tcp-dst-port", citem.DstPort.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "tcp-conf/tcp/tcp-src-range-dst-port-list-no-op/source", ccBody.Res())
+					TcpSrcRangeDstPortListFragments = append(TcpSrcRangeDstPortListFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "tcp-conf/tcp/tcp-src-range-dst-port-list-no-op/source", TcpSrcRangeDstPortListFragments)
 			}
 			if len(item.TcpSrcDstRangePortListOp) > 0 {
+				TcpSrcDstRangePortListOpFragments := make([]string, 0, len(item.TcpSrcDstRangePortListOp))
 				for _, citem := range item.TcpSrcDstRangePortListOp {
 					ccBody := netconf.Body{}
 					if !citem.Operator.IsNull() && !citem.Operator.IsUnknown() {
@@ -1272,10 +1316,12 @@ func (data ObjectGroup) addToBodyXML(ctx context.Context, config ObjectGroup, bo
 					if !citem.DstMaxPort.IsNull() && !citem.DstMaxPort.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "tcp-dst-max-port", citem.DstMaxPort.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "tcp-conf/tcp/tcp-src-dst-range-port-list-op/source", ccBody.Res())
+					TcpSrcDstRangePortListOpFragments = append(TcpSrcDstRangePortListOpFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "tcp-conf/tcp/tcp-src-dst-range-port-list-op/source", TcpSrcDstRangePortListOpFragments)
 			}
 			if len(item.TcpSrcDstRangePortList) > 0 {
+				TcpSrcDstRangePortListFragments := make([]string, 0, len(item.TcpSrcDstRangePortList))
 				for _, citem := range item.TcpSrcDstRangePortList {
 					ccBody := netconf.Body{}
 					if !citem.SrcPort.IsNull() && !citem.SrcPort.IsUnknown() {
@@ -1287,10 +1333,12 @@ func (data ObjectGroup) addToBodyXML(ctx context.Context, config ObjectGroup, bo
 					if !citem.DstMaxPort.IsNull() && !citem.DstMaxPort.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "tcp-dst-max-port", citem.DstMaxPort.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "tcp-conf/tcp/tcp-src-dst-range-port-list-no-op/source", ccBody.Res())
+					TcpSrcDstRangePortListFragments = append(TcpSrcDstRangePortListFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "tcp-conf/tcp/tcp-src-dst-range-port-list-no-op/source", TcpSrcDstRangePortListFragments)
 			}
 			if len(item.TcpSrcRangeDstRangePortList) > 0 {
+				TcpSrcRangeDstRangePortListFragments := make([]string, 0, len(item.TcpSrcRangeDstRangePortList))
 				for _, citem := range item.TcpSrcRangeDstRangePortList {
 					ccBody := netconf.Body{}
 					if !citem.SrcMinPort.IsNull() && !citem.SrcMinPort.IsUnknown() {
@@ -1305,10 +1353,12 @@ func (data ObjectGroup) addToBodyXML(ctx context.Context, config ObjectGroup, bo
 					if !citem.DstMaxPort.IsNull() && !citem.DstMaxPort.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "tcp-dst-max-port", citem.DstMaxPort.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "tcp-conf/tcp/tcp-src-range-dst-range-port-list/source", ccBody.Res())
+					TcpSrcRangeDstRangePortListFragments = append(TcpSrcRangeDstRangePortListFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "tcp-conf/tcp/tcp-src-range-dst-range-port-list/source", TcpSrcRangeDstRangePortListFragments)
 			}
 			if len(item.UdpDstPortListOp) > 0 {
+				UdpDstPortListOpFragments := make([]string, 0, len(item.UdpDstPortListOp))
 				for _, citem := range item.UdpDstPortListOp {
 					ccBody := netconf.Body{}
 					if !citem.Operator.IsNull() && !citem.Operator.IsUnknown() {
@@ -1317,19 +1367,23 @@ func (data ObjectGroup) addToBodyXML(ctx context.Context, config ObjectGroup, bo
 					if !citem.Port.IsNull() && !citem.Port.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "udp-port", citem.Port.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "udp-conf/udp/udp-port-list-op", ccBody.Res())
+					UdpDstPortListOpFragments = append(UdpDstPortListOpFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "udp-conf/udp/udp-port-list-op", UdpDstPortListOpFragments)
 			}
 			if len(item.UdpDstPortList) > 0 {
+				UdpDstPortListFragments := make([]string, 0, len(item.UdpDstPortList))
 				for _, citem := range item.UdpDstPortList {
 					ccBody := netconf.Body{}
 					if !citem.Port.IsNull() && !citem.Port.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "udp-port", citem.Port.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "udp-conf/udp/udp-port-list-no-op", ccBody.Res())
+					UdpDstPortListFragments = append(UdpDstPortListFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "udp-conf/udp/udp-port-list-no-op", UdpDstPortListFragments)
 			}
 			if len(item.UdpDstPortRanges) > 0 {
+				UdpDstPortRangesFragments := make([]string, 0, len(item.UdpDstPortRanges))
 				for _, citem := range item.UdpDstPortRanges {
 					ccBody := netconf.Body{}
 					if !citem.MinPort.IsNull() && !citem.MinPort.IsUnknown() {
@@ -1338,10 +1392,12 @@ func (data ObjectGroup) addToBodyXML(ctx context.Context, config ObjectGroup, bo
 					if !citem.MaxPort.IsNull() && !citem.MaxPort.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "udp-max-port", citem.MaxPort.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "udp-conf/udp/udp-range-port-list/range", ccBody.Res())
+					UdpDstPortRangesFragments = append(UdpDstPortRangesFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "udp-conf/udp/udp-range-port-list/range", UdpDstPortRangesFragments)
 			}
 			if len(item.UdpSrcPortListOp) > 0 {
+				UdpSrcPortListOpFragments := make([]string, 0, len(item.UdpSrcPortListOp))
 				for _, citem := range item.UdpSrcPortListOp {
 					ccBody := netconf.Body{}
 					if !citem.Operator.IsNull() && !citem.Operator.IsUnknown() {
@@ -1350,19 +1406,23 @@ func (data ObjectGroup) addToBodyXML(ctx context.Context, config ObjectGroup, bo
 					if !citem.Port.IsNull() && !citem.Port.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "udp-port", citem.Port.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "udp-conf/udp/udp-src-port-list-op/source", ccBody.Res())
+					UdpSrcPortListOpFragments = append(UdpSrcPortListOpFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "udp-conf/udp/udp-src-port-list-op/source", UdpSrcPortListOpFragments)
 			}
 			if len(item.UdpSrcPortList) > 0 {
+				UdpSrcPortListFragments := make([]string, 0, len(item.UdpSrcPortList))
 				for _, citem := range item.UdpSrcPortList {
 					ccBody := netconf.Body{}
 					if !citem.Port.IsNull() && !citem.Port.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "udp-port", citem.Port.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "udp-conf/udp/udp-src-port-list-no-op/source", ccBody.Res())
+					UdpSrcPortListFragments = append(UdpSrcPortListFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "udp-conf/udp/udp-src-port-list-no-op/source", UdpSrcPortListFragments)
 			}
 			if len(item.UdpSrcPortRanges) > 0 {
+				UdpSrcPortRangesFragments := make([]string, 0, len(item.UdpSrcPortRanges))
 				for _, citem := range item.UdpSrcPortRanges {
 					ccBody := netconf.Body{}
 					if !citem.MinPort.IsNull() && !citem.MinPort.IsUnknown() {
@@ -1371,10 +1431,12 @@ func (data ObjectGroup) addToBodyXML(ctx context.Context, config ObjectGroup, bo
 					if !citem.MaxPort.IsNull() && !citem.MaxPort.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "udp-max-port", citem.MaxPort.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "udp-conf/udp/udp-src-range-port-list/source/range", ccBody.Res())
+					UdpSrcPortRangesFragments = append(UdpSrcPortRangesFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "udp-conf/udp/udp-src-range-port-list/source/range", UdpSrcPortRangesFragments)
 			}
 			if len(item.UdpSrcDstPortListOp) > 0 {
+				UdpSrcDstPortListOpFragments := make([]string, 0, len(item.UdpSrcDstPortListOp))
 				for _, citem := range item.UdpSrcDstPortListOp {
 					ccBody := netconf.Body{}
 					if !citem.SrcOperator.IsNull() && !citem.SrcOperator.IsUnknown() {
@@ -1389,10 +1451,12 @@ func (data ObjectGroup) addToBodyXML(ctx context.Context, config ObjectGroup, bo
 					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "udp-dst-port", citem.DstPort.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "udp-conf/udp/udp-src-dst-port-list-op/source", ccBody.Res())
+					UdpSrcDstPortListOpFragments = append(UdpSrcDstPortListOpFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "udp-conf/udp/udp-src-dst-port-list-op/source", UdpSrcDstPortListOpFragments)
 			}
 			if len(item.UdpSrcDstPortList) > 0 {
+				UdpSrcDstPortListFragments := make([]string, 0, len(item.UdpSrcDstPortList))
 				for _, citem := range item.UdpSrcDstPortList {
 					ccBody := netconf.Body{}
 					if !citem.SrcPort.IsNull() && !citem.SrcPort.IsUnknown() {
@@ -1401,10 +1465,12 @@ func (data ObjectGroup) addToBodyXML(ctx context.Context, config ObjectGroup, bo
 					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "udp-dst-port", citem.DstPort.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "udp-conf/udp/udp-src-dst-port-list-no-op/source", ccBody.Res())
+					UdpSrcDstPortListFragments = append(UdpSrcDstPortListFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "udp-conf/udp/udp-src-dst-port-list-no-op/source", UdpSrcDstPortListFragments)
 			}
 			if len(item.UdpSrcDstPortListSrcOp) > 0 {
+				UdpSrcDstPortListSrcOpFragments := make([]string, 0, len(item.UdpSrcDstPortListSrcOp))
 				for _, citem := range item.UdpSrcDstPortListSrcOp {
 					ccBody := netconf.Body{}
 					if !citem.SrcOperator.IsNull() && !citem.SrcOperator.IsUnknown() {
@@ -1416,10 +1482,12 @@ func (data ObjectGroup) addToBodyXML(ctx context.Context, config ObjectGroup, bo
 					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "udp-dst-port", citem.DstPort.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "udp-conf/udp/udp-src-dst-port-list-src-op/source", ccBody.Res())
+					UdpSrcDstPortListSrcOpFragments = append(UdpSrcDstPortListSrcOpFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "udp-conf/udp/udp-src-dst-port-list-src-op/source", UdpSrcDstPortListSrcOpFragments)
 			}
 			if len(item.UdpSrcDstPortListDstOp) > 0 {
+				UdpSrcDstPortListDstOpFragments := make([]string, 0, len(item.UdpSrcDstPortListDstOp))
 				for _, citem := range item.UdpSrcDstPortListDstOp {
 					ccBody := netconf.Body{}
 					if !citem.SrcPort.IsNull() && !citem.SrcPort.IsUnknown() {
@@ -1431,10 +1499,12 @@ func (data ObjectGroup) addToBodyXML(ctx context.Context, config ObjectGroup, bo
 					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "udp-dst-port", citem.DstPort.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "udp-conf/udp/udp-src-dst-port-list-dst-op/source", ccBody.Res())
+					UdpSrcDstPortListDstOpFragments = append(UdpSrcDstPortListDstOpFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "udp-conf/udp/udp-src-dst-port-list-dst-op/source", UdpSrcDstPortListDstOpFragments)
 			}
 			if len(item.UdpSrcRangeDstPortListOp) > 0 {
+				UdpSrcRangeDstPortListOpFragments := make([]string, 0, len(item.UdpSrcRangeDstPortListOp))
 				for _, citem := range item.UdpSrcRangeDstPortListOp {
 					ccBody := netconf.Body{}
 					if !citem.SrcMinPort.IsNull() && !citem.SrcMinPort.IsUnknown() {
@@ -1449,10 +1519,12 @@ func (data ObjectGroup) addToBodyXML(ctx context.Context, config ObjectGroup, bo
 					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "udp-dst-port", citem.DstPort.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "udp-conf/udp/udp-src-range-dst-port-list-op/source", ccBody.Res())
+					UdpSrcRangeDstPortListOpFragments = append(UdpSrcRangeDstPortListOpFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "udp-conf/udp/udp-src-range-dst-port-list-op/source", UdpSrcRangeDstPortListOpFragments)
 			}
 			if len(item.UdpSrcRangeDstPortList) > 0 {
+				UdpSrcRangeDstPortListFragments := make([]string, 0, len(item.UdpSrcRangeDstPortList))
 				for _, citem := range item.UdpSrcRangeDstPortList {
 					ccBody := netconf.Body{}
 					if !citem.SrcMinPort.IsNull() && !citem.SrcMinPort.IsUnknown() {
@@ -1464,10 +1536,12 @@ func (data ObjectGroup) addToBodyXML(ctx context.Context, config ObjectGroup, bo
 					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "udp-dst-port", citem.DstPort.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "udp-conf/udp/udp-src-range-dst-port-list-no-op/source", ccBody.Res())
+					UdpSrcRangeDstPortListFragments = append(UdpSrcRangeDstPortListFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "udp-conf/udp/udp-src-range-dst-port-list-no-op/source", UdpSrcRangeDstPortListFragments)
 			}
 			if len(item.UdpSrcDstRangePortListOp) > 0 {
+				UdpSrcDstRangePortListOpFragments := make([]string, 0, len(item.UdpSrcDstRangePortListOp))
 				for _, citem := range item.UdpSrcDstRangePortListOp {
 					ccBody := netconf.Body{}
 					if !citem.Operator.IsNull() && !citem.Operator.IsUnknown() {
@@ -1482,10 +1556,12 @@ func (data ObjectGroup) addToBodyXML(ctx context.Context, config ObjectGroup, bo
 					if !citem.DstMaxPort.IsNull() && !citem.DstMaxPort.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "udp-dst-max-port", citem.DstMaxPort.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "udp-conf/udp/udp-src-dst-range-port-list-op/source", ccBody.Res())
+					UdpSrcDstRangePortListOpFragments = append(UdpSrcDstRangePortListOpFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "udp-conf/udp/udp-src-dst-range-port-list-op/source", UdpSrcDstRangePortListOpFragments)
 			}
 			if len(item.UdpSrcDstRangePortList) > 0 {
+				UdpSrcDstRangePortListFragments := make([]string, 0, len(item.UdpSrcDstRangePortList))
 				for _, citem := range item.UdpSrcDstRangePortList {
 					ccBody := netconf.Body{}
 					if !citem.SrcPort.IsNull() && !citem.SrcPort.IsUnknown() {
@@ -1497,10 +1573,12 @@ func (data ObjectGroup) addToBodyXML(ctx context.Context, config ObjectGroup, bo
 					if !citem.DstMaxPort.IsNull() && !citem.DstMaxPort.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "udp-dst-max-port", citem.DstMaxPort.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "udp-conf/udp/udp-src-dst-range-port-list-no-op/source", ccBody.Res())
+					UdpSrcDstRangePortListFragments = append(UdpSrcDstRangePortListFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "udp-conf/udp/udp-src-dst-range-port-list-no-op/source", UdpSrcDstRangePortListFragments)
 			}
 			if len(item.UdpSrcRangeDstRangePortList) > 0 {
+				UdpSrcRangeDstRangePortListFragments := make([]string, 0, len(item.UdpSrcRangeDstRangePortList))
 				for _, citem := range item.UdpSrcRangeDstRangePortList {
 					ccBody := netconf.Body{}
 					if !citem.SrcMinPort.IsNull() && !citem.SrcMinPort.IsUnknown() {
@@ -1515,10 +1593,12 @@ func (data ObjectGroup) addToBodyXML(ctx context.Context, config ObjectGroup, bo
 					if !citem.DstMaxPort.IsNull() && !citem.DstMaxPort.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "udp-dst-max-port", citem.DstMaxPort.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "udp-conf/udp/udp-src-range-dst-range-port-list/source", ccBody.Res())
+					UdpSrcRangeDstRangePortListFragments = append(UdpSrcRangeDstRangePortListFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "udp-conf/udp/udp-src-range-dst-range-port-list/source", UdpSrcRangeDstRangePortListFragments)
 			}
 			if len(item.TcpUdpDstPortListOp) > 0 {
+				TcpUdpDstPortListOpFragments := make([]string, 0, len(item.TcpUdpDstPortListOp))
 				for _, citem := range item.TcpUdpDstPortListOp {
 					ccBody := netconf.Body{}
 					if !citem.Operator.IsNull() && !citem.Operator.IsUnknown() {
@@ -1527,19 +1607,23 @@ func (data ObjectGroup) addToBodyXML(ctx context.Context, config ObjectGroup, bo
 					if !citem.Port.IsNull() && !citem.Port.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "tcp-udp-port", citem.Port.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "tcp-udp/tcp-udp-port-list-op", ccBody.Res())
+					TcpUdpDstPortListOpFragments = append(TcpUdpDstPortListOpFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "tcp-udp/tcp-udp-port-list-op", TcpUdpDstPortListOpFragments)
 			}
 			if len(item.TcpUdpDstPortList) > 0 {
+				TcpUdpDstPortListFragments := make([]string, 0, len(item.TcpUdpDstPortList))
 				for _, citem := range item.TcpUdpDstPortList {
 					ccBody := netconf.Body{}
 					if !citem.Port.IsNull() && !citem.Port.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "tcp-udp-port", citem.Port.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "tcp-udp/tcp-udp-port-list-no-op", ccBody.Res())
+					TcpUdpDstPortListFragments = append(TcpUdpDstPortListFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "tcp-udp/tcp-udp-port-list-no-op", TcpUdpDstPortListFragments)
 			}
 			if len(item.TcpUdpDstPortRanges) > 0 {
+				TcpUdpDstPortRangesFragments := make([]string, 0, len(item.TcpUdpDstPortRanges))
 				for _, citem := range item.TcpUdpDstPortRanges {
 					ccBody := netconf.Body{}
 					if !citem.MinPort.IsNull() && !citem.MinPort.IsUnknown() {
@@ -1548,10 +1632,12 @@ func (data ObjectGroup) addToBodyXML(ctx context.Context, config ObjectGroup, bo
 					if !citem.MaxPort.IsNull() && !citem.MaxPort.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "tcp-udp-max-port", citem.MaxPort.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "tcp-udp/tcp-udp-range-port-list/range", ccBody.Res())
+					TcpUdpDstPortRangesFragments = append(TcpUdpDstPortRangesFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "tcp-udp/tcp-udp-range-port-list/range", TcpUdpDstPortRangesFragments)
 			}
 			if len(item.TcpUdpSrcPortListOp) > 0 {
+				TcpUdpSrcPortListOpFragments := make([]string, 0, len(item.TcpUdpSrcPortListOp))
 				for _, citem := range item.TcpUdpSrcPortListOp {
 					ccBody := netconf.Body{}
 					if !citem.Operator.IsNull() && !citem.Operator.IsUnknown() {
@@ -1560,19 +1646,23 @@ func (data ObjectGroup) addToBodyXML(ctx context.Context, config ObjectGroup, bo
 					if !citem.Port.IsNull() && !citem.Port.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "tcp-udp-port", citem.Port.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "tcp-udp/tcp-udp-src-port-list-op/source", ccBody.Res())
+					TcpUdpSrcPortListOpFragments = append(TcpUdpSrcPortListOpFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "tcp-udp/tcp-udp-src-port-list-op/source", TcpUdpSrcPortListOpFragments)
 			}
 			if len(item.TcpUdpSrcPortList) > 0 {
+				TcpUdpSrcPortListFragments := make([]string, 0, len(item.TcpUdpSrcPortList))
 				for _, citem := range item.TcpUdpSrcPortList {
 					ccBody := netconf.Body{}
 					if !citem.Port.IsNull() && !citem.Port.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "tcp-udp-port", citem.Port.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "tcp-udp/tcp-udp-src-port-list-no-op/source", ccBody.Res())
+					TcpUdpSrcPortListFragments = append(TcpUdpSrcPortListFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "tcp-udp/tcp-udp-src-port-list-no-op/source", TcpUdpSrcPortListFragments)
 			}
 			if len(item.TcpUdpSrcPortRanges) > 0 {
+				TcpUdpSrcPortRangesFragments := make([]string, 0, len(item.TcpUdpSrcPortRanges))
 				for _, citem := range item.TcpUdpSrcPortRanges {
 					ccBody := netconf.Body{}
 					if !citem.MinPort.IsNull() && !citem.MinPort.IsUnknown() {
@@ -1581,10 +1671,12 @@ func (data ObjectGroup) addToBodyXML(ctx context.Context, config ObjectGroup, bo
 					if !citem.MaxPort.IsNull() && !citem.MaxPort.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "tcp-udp-max-port", citem.MaxPort.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "tcp-udp/tcp-udp-src-range-port-list/source/range", ccBody.Res())
+					TcpUdpSrcPortRangesFragments = append(TcpUdpSrcPortRangesFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "tcp-udp/tcp-udp-src-range-port-list/source/range", TcpUdpSrcPortRangesFragments)
 			}
 			if len(item.TcpUdpSrcDstPortListOp) > 0 {
+				TcpUdpSrcDstPortListOpFragments := make([]string, 0, len(item.TcpUdpSrcDstPortListOp))
 				for _, citem := range item.TcpUdpSrcDstPortListOp {
 					ccBody := netconf.Body{}
 					if !citem.SrcOperator.IsNull() && !citem.SrcOperator.IsUnknown() {
@@ -1599,10 +1691,12 @@ func (data ObjectGroup) addToBodyXML(ctx context.Context, config ObjectGroup, bo
 					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "tcp-udp-dst-port", citem.DstPort.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "tcp-udp/tcp-udp-src-dst-port-list-op/source", ccBody.Res())
+					TcpUdpSrcDstPortListOpFragments = append(TcpUdpSrcDstPortListOpFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "tcp-udp/tcp-udp-src-dst-port-list-op/source", TcpUdpSrcDstPortListOpFragments)
 			}
 			if len(item.TcpUdpSrcDstPortList) > 0 {
+				TcpUdpSrcDstPortListFragments := make([]string, 0, len(item.TcpUdpSrcDstPortList))
 				for _, citem := range item.TcpUdpSrcDstPortList {
 					ccBody := netconf.Body{}
 					if !citem.SrcPort.IsNull() && !citem.SrcPort.IsUnknown() {
@@ -1611,10 +1705,12 @@ func (data ObjectGroup) addToBodyXML(ctx context.Context, config ObjectGroup, bo
 					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "tcp-udp-dst-port", citem.DstPort.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "tcp-udp/tcp-udp-src-dst-port-list-no-op/source", ccBody.Res())
+					TcpUdpSrcDstPortListFragments = append(TcpUdpSrcDstPortListFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "tcp-udp/tcp-udp-src-dst-port-list-no-op/source", TcpUdpSrcDstPortListFragments)
 			}
 			if len(item.TcpUdpSrcDstPortListSrcOp) > 0 {
+				TcpUdpSrcDstPortListSrcOpFragments := make([]string, 0, len(item.TcpUdpSrcDstPortListSrcOp))
 				for _, citem := range item.TcpUdpSrcDstPortListSrcOp {
 					ccBody := netconf.Body{}
 					if !citem.SrcOperator.IsNull() && !citem.SrcOperator.IsUnknown() {
@@ -1626,10 +1722,12 @@ func (data ObjectGroup) addToBodyXML(ctx context.Context, config ObjectGroup, bo
 					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "tcp-udp-dst-port", citem.DstPort.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "tcp-udp/tcp-udp-src-dst-port-list-src-op/source", ccBody.Res())
+					TcpUdpSrcDstPortListSrcOpFragments = append(TcpUdpSrcDstPortListSrcOpFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "tcp-udp/tcp-udp-src-dst-port-list-src-op/source", TcpUdpSrcDstPortListSrcOpFragments)
 			}
 			if len(item.TcpUdpSrcDstPortListDstOp) > 0 {
+				TcpUdpSrcDstPortListDstOpFragments := make([]string, 0, len(item.TcpUdpSrcDstPortListDstOp))
 				for _, citem := range item.TcpUdpSrcDstPortListDstOp {
 					ccBody := netconf.Body{}
 					if !citem.SrcPort.IsNull() && !citem.SrcPort.IsUnknown() {
@@ -1641,10 +1739,12 @@ func (data ObjectGroup) addToBodyXML(ctx context.Context, config ObjectGroup, bo
 					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "tcp-udp-dst-port", citem.DstPort.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "tcp-udp/tcp-udp-src-dst-port-list-dst-op/source", ccBody.Res())
+					TcpUdpSrcDstPortListDstOpFragments = append(TcpUdpSrcDstPortListDstOpFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "tcp-udp/tcp-udp-src-dst-port-list-dst-op/source", TcpUdpSrcDstPortListDstOpFragments)
 			}
 			if len(item.TcpUdpSrcRangeDstPortListOp) > 0 {
+				TcpUdpSrcRangeDstPortListOpFragments := make([]string, 0, len(item.TcpUdpSrcRangeDstPortListOp))
 				for _, citem := range item.TcpUdpSrcRangeDstPortListOp {
 					ccBody := netconf.Body{}
 					if !citem.SrcMinPort.IsNull() && !citem.SrcMinPort.IsUnknown() {
@@ -1659,10 +1759,12 @@ func (data ObjectGroup) addToBodyXML(ctx context.Context, config ObjectGroup, bo
 					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "tcp-udp-dst-port", citem.DstPort.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "tcp-udp/tcp-udp-src-range-dst-port-list-op/source", ccBody.Res())
+					TcpUdpSrcRangeDstPortListOpFragments = append(TcpUdpSrcRangeDstPortListOpFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "tcp-udp/tcp-udp-src-range-dst-port-list-op/source", TcpUdpSrcRangeDstPortListOpFragments)
 			}
 			if len(item.TcpUdpSrcRangeDstPortList) > 0 {
+				TcpUdpSrcRangeDstPortListFragments := make([]string, 0, len(item.TcpUdpSrcRangeDstPortList))
 				for _, citem := range item.TcpUdpSrcRangeDstPortList {
 					ccBody := netconf.Body{}
 					if !citem.SrcMinPort.IsNull() && !citem.SrcMinPort.IsUnknown() {
@@ -1674,10 +1776,12 @@ func (data ObjectGroup) addToBodyXML(ctx context.Context, config ObjectGroup, bo
 					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "tcp-udp-dst-port", citem.DstPort.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "tcp-udp/tcp-udp-src-range-dst-port-list-no-op/source", ccBody.Res())
+					TcpUdpSrcRangeDstPortListFragments = append(TcpUdpSrcRangeDstPortListFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "tcp-udp/tcp-udp-src-range-dst-port-list-no-op/source", TcpUdpSrcRangeDstPortListFragments)
 			}
 			if len(item.TcpUdpSrcDstRangePortListOp) > 0 {
+				TcpUdpSrcDstRangePortListOpFragments := make([]string, 0, len(item.TcpUdpSrcDstRangePortListOp))
 				for _, citem := range item.TcpUdpSrcDstRangePortListOp {
 					ccBody := netconf.Body{}
 					if !citem.Operator.IsNull() && !citem.Operator.IsUnknown() {
@@ -1692,10 +1796,12 @@ func (data ObjectGroup) addToBodyXML(ctx context.Context, config ObjectGroup, bo
 					if !citem.DstMaxPort.IsNull() && !citem.DstMaxPort.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "tcp-udp-dst-max-port", citem.DstMaxPort.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "tcp-udp/tcp-udp-src-dst-range-port-list-op/source", ccBody.Res())
+					TcpUdpSrcDstRangePortListOpFragments = append(TcpUdpSrcDstRangePortListOpFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "tcp-udp/tcp-udp-src-dst-range-port-list-op/source", TcpUdpSrcDstRangePortListOpFragments)
 			}
 			if len(item.TcpUdpSrcDstRangePortList) > 0 {
+				TcpUdpSrcDstRangePortListFragments := make([]string, 0, len(item.TcpUdpSrcDstRangePortList))
 				for _, citem := range item.TcpUdpSrcDstRangePortList {
 					ccBody := netconf.Body{}
 					if !citem.SrcPort.IsNull() && !citem.SrcPort.IsUnknown() {
@@ -1707,10 +1813,12 @@ func (data ObjectGroup) addToBodyXML(ctx context.Context, config ObjectGroup, bo
 					if !citem.DstMaxPort.IsNull() && !citem.DstMaxPort.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "tcp-udp-dst-max-port", citem.DstMaxPort.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "tcp-udp/tcp-udp-src-dst-range-port-list-no-op/source", ccBody.Res())
+					TcpUdpSrcDstRangePortListFragments = append(TcpUdpSrcDstRangePortListFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "tcp-udp/tcp-udp-src-dst-range-port-list-no-op/source", TcpUdpSrcDstRangePortListFragments)
 			}
 			if len(item.TcpUdpSrcRangeDstRangePortList) > 0 {
+				TcpUdpSrcRangeDstRangePortListFragments := make([]string, 0, len(item.TcpUdpSrcRangeDstRangePortList))
 				for _, citem := range item.TcpUdpSrcRangeDstRangePortList {
 					ccBody := netconf.Body{}
 					if !citem.SrcMinPort.IsNull() && !citem.SrcMinPort.IsUnknown() {
@@ -1725,11 +1833,13 @@ func (data ObjectGroup) addToBodyXML(ctx context.Context, config ObjectGroup, bo
 					if !citem.DstMaxPort.IsNull() && !citem.DstMaxPort.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "tcp-udp-dst-max-port", citem.DstMaxPort.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "tcp-udp/tcp-udp-src-range-dst-range-port-list/source", ccBody.Res())
+					TcpUdpSrcRangeDstRangePortListFragments = append(TcpUdpSrcRangeDstRangePortListFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "tcp-udp/tcp-udp-src-range-dst-range-port-list/source", TcpUdpSrcRangeDstRangePortListFragments)
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-object-group:service", cBody.Res())
+			ServiceFragments = append(ServiceFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/Cisco-IOS-XE-object-group:service", ServiceFragments)
 	}
 	return body
 }
@@ -1739,29 +1849,12 @@ func (data ObjectGroup) addToBodyXML(ctx context.Context, config ObjectGroup, bo
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *ObjectGroup) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	FqdnParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	FqdnKeys := [...]string{"name"}
+	FqdnItems := helpers.CollectListItemsXML(FqdnParentScope.Raw, "Cisco-IOS-XE-object-group:fqdn", FqdnKeys[:])
 	for i := range data.Fqdn {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.Fqdn[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-object-group:fqdn").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		FqdnKeyValues := [...]string{data.Fqdn[i].Name.ValueString()}
+		r := FqdnItems[helpers.CompositeKey(FqdnKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.Fqdn[i].Name.IsNull() {
 			data.Fqdn[i].Name = types.StringValue(value.String())
 		} else {
@@ -1772,58 +1865,22 @@ func (data *ObjectGroup) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 		} else {
 			data.Fqdn[i].Description = types.StringNull()
 		}
+		GroupObjectsKeys := [...]string{"fqdn-group"}
+		GroupObjectsItems := helpers.CollectListItemsXML(r.Raw, "group-object", GroupObjectsKeys[:])
 		for ci := range data.Fqdn[i].GroupObjects {
-			keys := [...]string{"fqdn-group"}
-			keyValues := [...]string{data.Fqdn[i].GroupObjects[ci].GroupName.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "group-object").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			GroupObjectsKeyValues := [...]string{data.Fqdn[i].GroupObjects[ci].GroupName.ValueString()}
+			cr := GroupObjectsItems[helpers.CompositeKey(GroupObjectsKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "fqdn-group"); value.Exists() && !data.Fqdn[i].GroupObjects[ci].GroupName.IsNull() {
 				data.Fqdn[i].GroupObjects[ci].GroupName = types.StringValue(value.String())
 			} else {
 				data.Fqdn[i].GroupObjects[ci].GroupName = types.StringNull()
 			}
 		}
+		PatternsKeys := [...]string{"fqdn-pattern"}
+		PatternsItems := helpers.CollectListItemsXML(r.Raw, "pattern", PatternsKeys[:])
 		for ci := range data.Fqdn[i].Patterns {
-			keys := [...]string{"fqdn-pattern"}
-			keyValues := [...]string{data.Fqdn[i].Patterns[ci].FqdnPattern.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "pattern").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			PatternsKeyValues := [...]string{data.Fqdn[i].Patterns[ci].FqdnPattern.ValueString()}
+			cr := PatternsItems[helpers.CompositeKey(PatternsKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "fqdn-pattern"); value.Exists() && !data.Fqdn[i].Patterns[ci].FqdnPattern.IsNull() {
 				data.Fqdn[i].Patterns[ci].FqdnPattern = types.StringValue(value.String())
 			} else {
@@ -1831,29 +1888,12 @@ func (data *ObjectGroup) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 			}
 		}
 	}
+	NetworkParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	NetworkKeys := [...]string{"name"}
+	NetworkItems := helpers.CollectListItemsXML(NetworkParentScope.Raw, "Cisco-IOS-XE-object-group:network", NetworkKeys[:])
 	for i := range data.Network {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.Network[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-object-group:network").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		NetworkKeyValues := [...]string{data.Network[i].Name.ValueString()}
+		r := NetworkItems[helpers.CompositeKey(NetworkKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.Network[i].Name.IsNull() {
 			data.Network[i].Name = types.StringValue(value.String())
 		} else {
@@ -1864,58 +1904,22 @@ func (data *ObjectGroup) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 		} else {
 			data.Network[i].Description = types.StringNull()
 		}
+		HostsKeys := [...]string{"ipv4-host"}
+		HostsItems := helpers.CollectListItemsXML(r.Raw, "obj-Mode-config-network-group/host", HostsKeys[:])
 		for ci := range data.Network[i].Hosts {
-			keys := [...]string{"ipv4-host"}
-			keyValues := [...]string{data.Network[i].Hosts[ci].Ipv4Host.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "obj-Mode-config-network-group/host").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			HostsKeyValues := [...]string{data.Network[i].Hosts[ci].Ipv4Host.ValueString()}
+			cr := HostsItems[helpers.CompositeKey(HostsKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "ipv4-host"); value.Exists() && !data.Network[i].Hosts[ci].Ipv4Host.IsNull() {
 				data.Network[i].Hosts[ci].Ipv4Host = types.StringValue(value.String())
 			} else {
 				data.Network[i].Hosts[ci].Ipv4Host = types.StringNull()
 			}
 		}
+		NetworkAddressesKeys := [...]string{"ipv4_addr", "ipv4_mask"}
+		NetworkAddressesItems := helpers.CollectListItemsXML(r.Raw, "obj-Mode-config-network-group/network_address", NetworkAddressesKeys[:])
 		for ci := range data.Network[i].NetworkAddresses {
-			keys := [...]string{"ipv4_addr", "ipv4_mask"}
-			keyValues := [...]string{data.Network[i].NetworkAddresses[ci].Ipv4Address.ValueString(), data.Network[i].NetworkAddresses[ci].Ipv4Mask.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "obj-Mode-config-network-group/network_address").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			NetworkAddressesKeyValues := [...]string{data.Network[i].NetworkAddresses[ci].Ipv4Address.ValueString(), data.Network[i].NetworkAddresses[ci].Ipv4Mask.ValueString()}
+			cr := NetworkAddressesItems[helpers.CompositeKey(NetworkAddressesKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "ipv4_addr"); value.Exists() && !data.Network[i].NetworkAddresses[ci].Ipv4Address.IsNull() {
 				data.Network[i].NetworkAddresses[ci].Ipv4Address = types.StringValue(value.String())
 			} else {
@@ -1927,29 +1931,11 @@ func (data *ObjectGroup) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 				data.Network[i].NetworkAddresses[ci].Ipv4Mask = types.StringNull()
 			}
 		}
+		AddressRangesKeys := [...]string{"addr-range-start", "addr-range-end"}
+		AddressRangesItems := helpers.CollectListItemsXML(r.Raw, "obj-Mode-config-network-group/addr-ranges", AddressRangesKeys[:])
 		for ci := range data.Network[i].AddressRanges {
-			keys := [...]string{"addr-range-start", "addr-range-end"}
-			keyValues := [...]string{data.Network[i].AddressRanges[ci].Start.ValueString(), data.Network[i].AddressRanges[ci].End.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "obj-Mode-config-network-group/addr-ranges").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			AddressRangesKeyValues := [...]string{data.Network[i].AddressRanges[ci].Start.ValueString(), data.Network[i].AddressRanges[ci].End.ValueString()}
+			cr := AddressRangesItems[helpers.CompositeKey(AddressRangesKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "addr-range-start"); value.Exists() && !data.Network[i].AddressRanges[ci].Start.IsNull() {
 				data.Network[i].AddressRanges[ci].Start = types.StringValue(value.String())
 			} else {
@@ -1961,29 +1947,11 @@ func (data *ObjectGroup) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 				data.Network[i].AddressRanges[ci].End = types.StringNull()
 			}
 		}
+		GroupObjectsKeys := [...]string{"network-group"}
+		GroupObjectsItems := helpers.CollectListItemsXML(r.Raw, "obj-Mode-config-network-group/group-objects", GroupObjectsKeys[:])
 		for ci := range data.Network[i].GroupObjects {
-			keys := [...]string{"network-group"}
-			keyValues := [...]string{data.Network[i].GroupObjects[ci].GroupName.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "obj-Mode-config-network-group/group-objects").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			GroupObjectsKeyValues := [...]string{data.Network[i].GroupObjects[ci].GroupName.ValueString()}
+			cr := GroupObjectsItems[helpers.CompositeKey(GroupObjectsKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "network-group"); value.Exists() && !data.Network[i].GroupObjects[ci].GroupName.IsNull() {
 				data.Network[i].GroupObjects[ci].GroupName = types.StringValue(value.String())
 			} else {
@@ -1991,29 +1959,12 @@ func (data *ObjectGroup) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 			}
 		}
 	}
+	ServiceParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	ServiceKeys := [...]string{"name"}
+	ServiceItems := helpers.CollectListItemsXML(ServiceParentScope.Raw, "Cisco-IOS-XE-object-group:service", ServiceKeys[:])
 	for i := range data.Service {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.Service[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-object-group:service").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		ServiceKeyValues := [...]string{data.Service[i].Name.ValueString()}
+		r := ServiceItems[helpers.CompositeKey(ServiceKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.Service[i].Name.IsNull() {
 			data.Service[i].Name = types.StringValue(value.String())
 		} else {
@@ -2024,29 +1975,11 @@ func (data *ObjectGroup) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 		} else {
 			data.Service[i].Description = types.StringNull()
 		}
+		GroupObjectsKeys := [...]string{"service-group"}
+		GroupObjectsItems := helpers.CollectListItemsXML(r.Raw, "group-objects", GroupObjectsKeys[:])
 		for ci := range data.Service[i].GroupObjects {
-			keys := [...]string{"service-group"}
-			keyValues := [...]string{data.Service[i].GroupObjects[ci].GroupName.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "group-objects").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			GroupObjectsKeyValues := [...]string{data.Service[i].GroupObjects[ci].GroupName.ValueString()}
+			cr := GroupObjectsItems[helpers.CompositeKey(GroupObjectsKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "service-group"); value.Exists() && !data.Service[i].GroupObjects[ci].GroupName.IsNull() {
 				data.Service[i].GroupObjects[ci].GroupName = types.StringValue(value.String())
 			} else {
@@ -2360,29 +2293,11 @@ func (data *ObjectGroup) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 		} else {
 			data.Service[i].IcmpUnreachable = types.BoolNull()
 		}
+		TcpDstPortListOpKeys := [...]string{"operator", "tcp-port"}
+		TcpDstPortListOpItems := helpers.CollectListItemsXML(r.Raw, "tcp-conf/tcp/tcp-port-list-op", TcpDstPortListOpKeys[:])
 		for ci := range data.Service[i].TcpDstPortListOp {
-			keys := [...]string{"operator", "tcp-port"}
-			keyValues := [...]string{data.Service[i].TcpDstPortListOp[ci].Operator.ValueString(), data.Service[i].TcpDstPortListOp[ci].Port.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "tcp-conf/tcp/tcp-port-list-op").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			TcpDstPortListOpKeyValues := [...]string{data.Service[i].TcpDstPortListOp[ci].Operator.ValueString(), data.Service[i].TcpDstPortListOp[ci].Port.ValueString()}
+			cr := TcpDstPortListOpItems[helpers.CompositeKey(TcpDstPortListOpKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "operator"); value.Exists() && !data.Service[i].TcpDstPortListOp[ci].Operator.IsNull() {
 				data.Service[i].TcpDstPortListOp[ci].Operator = types.StringValue(value.String())
 			} else {
@@ -2394,58 +2309,22 @@ func (data *ObjectGroup) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 				data.Service[i].TcpDstPortListOp[ci].Port = types.StringNull()
 			}
 		}
+		TcpDstPortListKeys := [...]string{"tcp-port"}
+		TcpDstPortListItems := helpers.CollectListItemsXML(r.Raw, "tcp-conf/tcp/tcp-port-list-no-op", TcpDstPortListKeys[:])
 		for ci := range data.Service[i].TcpDstPortList {
-			keys := [...]string{"tcp-port"}
-			keyValues := [...]string{data.Service[i].TcpDstPortList[ci].Port.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "tcp-conf/tcp/tcp-port-list-no-op").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			TcpDstPortListKeyValues := [...]string{data.Service[i].TcpDstPortList[ci].Port.ValueString()}
+			cr := TcpDstPortListItems[helpers.CompositeKey(TcpDstPortListKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "tcp-port"); value.Exists() && !data.Service[i].TcpDstPortList[ci].Port.IsNull() {
 				data.Service[i].TcpDstPortList[ci].Port = types.StringValue(value.String())
 			} else {
 				data.Service[i].TcpDstPortList[ci].Port = types.StringNull()
 			}
 		}
+		TcpDstPortRangesKeys := [...]string{"tcp-min-port", "tcp-max-port"}
+		TcpDstPortRangesItems := helpers.CollectListItemsXML(r.Raw, "tcp-conf/tcp/tcp-range-port-list/range", TcpDstPortRangesKeys[:])
 		for ci := range data.Service[i].TcpDstPortRanges {
-			keys := [...]string{"tcp-min-port", "tcp-max-port"}
-			keyValues := [...]string{data.Service[i].TcpDstPortRanges[ci].MinPort.ValueString(), data.Service[i].TcpDstPortRanges[ci].MaxPort.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "tcp-conf/tcp/tcp-range-port-list/range").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			TcpDstPortRangesKeyValues := [...]string{data.Service[i].TcpDstPortRanges[ci].MinPort.ValueString(), data.Service[i].TcpDstPortRanges[ci].MaxPort.ValueString()}
+			cr := TcpDstPortRangesItems[helpers.CompositeKey(TcpDstPortRangesKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "tcp-min-port"); value.Exists() && !data.Service[i].TcpDstPortRanges[ci].MinPort.IsNull() {
 				data.Service[i].TcpDstPortRanges[ci].MinPort = types.StringValue(value.String())
 			} else {
@@ -2457,29 +2336,11 @@ func (data *ObjectGroup) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 				data.Service[i].TcpDstPortRanges[ci].MaxPort = types.StringNull()
 			}
 		}
+		TcpSrcPortListOpKeys := [...]string{"operator", "tcp-port"}
+		TcpSrcPortListOpItems := helpers.CollectListItemsXML(r.Raw, "tcp-conf/tcp/tcp-src-port-list-op/source", TcpSrcPortListOpKeys[:])
 		for ci := range data.Service[i].TcpSrcPortListOp {
-			keys := [...]string{"operator", "tcp-port"}
-			keyValues := [...]string{data.Service[i].TcpSrcPortListOp[ci].Operator.ValueString(), data.Service[i].TcpSrcPortListOp[ci].Port.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "tcp-conf/tcp/tcp-src-port-list-op/source").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			TcpSrcPortListOpKeyValues := [...]string{data.Service[i].TcpSrcPortListOp[ci].Operator.ValueString(), data.Service[i].TcpSrcPortListOp[ci].Port.ValueString()}
+			cr := TcpSrcPortListOpItems[helpers.CompositeKey(TcpSrcPortListOpKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "operator"); value.Exists() && !data.Service[i].TcpSrcPortListOp[ci].Operator.IsNull() {
 				data.Service[i].TcpSrcPortListOp[ci].Operator = types.StringValue(value.String())
 			} else {
@@ -2491,58 +2352,22 @@ func (data *ObjectGroup) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 				data.Service[i].TcpSrcPortListOp[ci].Port = types.StringNull()
 			}
 		}
+		TcpSrcPortListKeys := [...]string{"tcp-port"}
+		TcpSrcPortListItems := helpers.CollectListItemsXML(r.Raw, "tcp-conf/tcp/tcp-src-port-list-no-op/source", TcpSrcPortListKeys[:])
 		for ci := range data.Service[i].TcpSrcPortList {
-			keys := [...]string{"tcp-port"}
-			keyValues := [...]string{data.Service[i].TcpSrcPortList[ci].Port.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "tcp-conf/tcp/tcp-src-port-list-no-op/source").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			TcpSrcPortListKeyValues := [...]string{data.Service[i].TcpSrcPortList[ci].Port.ValueString()}
+			cr := TcpSrcPortListItems[helpers.CompositeKey(TcpSrcPortListKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "tcp-port"); value.Exists() && !data.Service[i].TcpSrcPortList[ci].Port.IsNull() {
 				data.Service[i].TcpSrcPortList[ci].Port = types.StringValue(value.String())
 			} else {
 				data.Service[i].TcpSrcPortList[ci].Port = types.StringNull()
 			}
 		}
+		TcpSrcPortRangesKeys := [...]string{"tcp-min-port", "tcp-max-port"}
+		TcpSrcPortRangesItems := helpers.CollectListItemsXML(r.Raw, "tcp-conf/tcp/tcp-src-range-port-list/source/range", TcpSrcPortRangesKeys[:])
 		for ci := range data.Service[i].TcpSrcPortRanges {
-			keys := [...]string{"tcp-min-port", "tcp-max-port"}
-			keyValues := [...]string{data.Service[i].TcpSrcPortRanges[ci].MinPort.ValueString(), data.Service[i].TcpSrcPortRanges[ci].MaxPort.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "tcp-conf/tcp/tcp-src-range-port-list/source/range").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			TcpSrcPortRangesKeyValues := [...]string{data.Service[i].TcpSrcPortRanges[ci].MinPort.ValueString(), data.Service[i].TcpSrcPortRanges[ci].MaxPort.ValueString()}
+			cr := TcpSrcPortRangesItems[helpers.CompositeKey(TcpSrcPortRangesKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "tcp-min-port"); value.Exists() && !data.Service[i].TcpSrcPortRanges[ci].MinPort.IsNull() {
 				data.Service[i].TcpSrcPortRanges[ci].MinPort = types.StringValue(value.String())
 			} else {
@@ -2554,29 +2379,11 @@ func (data *ObjectGroup) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 				data.Service[i].TcpSrcPortRanges[ci].MaxPort = types.StringNull()
 			}
 		}
+		TcpSrcDstPortListOpKeys := [...]string{"src-operator", "tcp-src-port", "dst-operator", "tcp-dst-port"}
+		TcpSrcDstPortListOpItems := helpers.CollectListItemsXML(r.Raw, "tcp-conf/tcp/tcp-src-dst-port-list-op/source", TcpSrcDstPortListOpKeys[:])
 		for ci := range data.Service[i].TcpSrcDstPortListOp {
-			keys := [...]string{"src-operator", "tcp-src-port", "dst-operator", "tcp-dst-port"}
-			keyValues := [...]string{data.Service[i].TcpSrcDstPortListOp[ci].SrcOperator.ValueString(), data.Service[i].TcpSrcDstPortListOp[ci].SrcPort.ValueString(), data.Service[i].TcpSrcDstPortListOp[ci].DstOperator.ValueString(), data.Service[i].TcpSrcDstPortListOp[ci].DstPort.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "tcp-conf/tcp/tcp-src-dst-port-list-op/source").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			TcpSrcDstPortListOpKeyValues := [...]string{data.Service[i].TcpSrcDstPortListOp[ci].SrcOperator.ValueString(), data.Service[i].TcpSrcDstPortListOp[ci].SrcPort.ValueString(), data.Service[i].TcpSrcDstPortListOp[ci].DstOperator.ValueString(), data.Service[i].TcpSrcDstPortListOp[ci].DstPort.ValueString()}
+			cr := TcpSrcDstPortListOpItems[helpers.CompositeKey(TcpSrcDstPortListOpKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "src-operator"); value.Exists() && !data.Service[i].TcpSrcDstPortListOp[ci].SrcOperator.IsNull() {
 				data.Service[i].TcpSrcDstPortListOp[ci].SrcOperator = types.StringValue(value.String())
 			} else {
@@ -2598,29 +2405,11 @@ func (data *ObjectGroup) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 				data.Service[i].TcpSrcDstPortListOp[ci].DstPort = types.StringNull()
 			}
 		}
+		TcpSrcDstPortListKeys := [...]string{"tcp-src-port", "tcp-dst-port"}
+		TcpSrcDstPortListItems := helpers.CollectListItemsXML(r.Raw, "tcp-conf/tcp/tcp-src-dst-port-list-no-op/source", TcpSrcDstPortListKeys[:])
 		for ci := range data.Service[i].TcpSrcDstPortList {
-			keys := [...]string{"tcp-src-port", "tcp-dst-port"}
-			keyValues := [...]string{data.Service[i].TcpSrcDstPortList[ci].SrcPort.ValueString(), data.Service[i].TcpSrcDstPortList[ci].DstPort.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "tcp-conf/tcp/tcp-src-dst-port-list-no-op/source").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			TcpSrcDstPortListKeyValues := [...]string{data.Service[i].TcpSrcDstPortList[ci].SrcPort.ValueString(), data.Service[i].TcpSrcDstPortList[ci].DstPort.ValueString()}
+			cr := TcpSrcDstPortListItems[helpers.CompositeKey(TcpSrcDstPortListKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "tcp-src-port"); value.Exists() && !data.Service[i].TcpSrcDstPortList[ci].SrcPort.IsNull() {
 				data.Service[i].TcpSrcDstPortList[ci].SrcPort = types.StringValue(value.String())
 			} else {
@@ -2632,29 +2421,11 @@ func (data *ObjectGroup) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 				data.Service[i].TcpSrcDstPortList[ci].DstPort = types.StringNull()
 			}
 		}
+		TcpSrcDstPortListSrcOpKeys := [...]string{"src-operator", "tcp-src-port", "tcp-dst-port"}
+		TcpSrcDstPortListSrcOpItems := helpers.CollectListItemsXML(r.Raw, "tcp-conf/tcp/tcp-src-dst-port-list-src-op/source", TcpSrcDstPortListSrcOpKeys[:])
 		for ci := range data.Service[i].TcpSrcDstPortListSrcOp {
-			keys := [...]string{"src-operator", "tcp-src-port", "tcp-dst-port"}
-			keyValues := [...]string{data.Service[i].TcpSrcDstPortListSrcOp[ci].SrcOperator.ValueString(), data.Service[i].TcpSrcDstPortListSrcOp[ci].SrcPort.ValueString(), data.Service[i].TcpSrcDstPortListSrcOp[ci].DstPort.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "tcp-conf/tcp/tcp-src-dst-port-list-src-op/source").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			TcpSrcDstPortListSrcOpKeyValues := [...]string{data.Service[i].TcpSrcDstPortListSrcOp[ci].SrcOperator.ValueString(), data.Service[i].TcpSrcDstPortListSrcOp[ci].SrcPort.ValueString(), data.Service[i].TcpSrcDstPortListSrcOp[ci].DstPort.ValueString()}
+			cr := TcpSrcDstPortListSrcOpItems[helpers.CompositeKey(TcpSrcDstPortListSrcOpKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "src-operator"); value.Exists() && !data.Service[i].TcpSrcDstPortListSrcOp[ci].SrcOperator.IsNull() {
 				data.Service[i].TcpSrcDstPortListSrcOp[ci].SrcOperator = types.StringValue(value.String())
 			} else {
@@ -2671,29 +2442,11 @@ func (data *ObjectGroup) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 				data.Service[i].TcpSrcDstPortListSrcOp[ci].DstPort = types.StringNull()
 			}
 		}
+		TcpSrcDstPortListDstOpKeys := [...]string{"tcp-src-port", "dst-operator", "tcp-dst-port"}
+		TcpSrcDstPortListDstOpItems := helpers.CollectListItemsXML(r.Raw, "tcp-conf/tcp/tcp-src-dst-port-list-dst-op/source", TcpSrcDstPortListDstOpKeys[:])
 		for ci := range data.Service[i].TcpSrcDstPortListDstOp {
-			keys := [...]string{"tcp-src-port", "dst-operator", "tcp-dst-port"}
-			keyValues := [...]string{data.Service[i].TcpSrcDstPortListDstOp[ci].SrcPort.ValueString(), data.Service[i].TcpSrcDstPortListDstOp[ci].DstOperator.ValueString(), data.Service[i].TcpSrcDstPortListDstOp[ci].DstPort.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "tcp-conf/tcp/tcp-src-dst-port-list-dst-op/source").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			TcpSrcDstPortListDstOpKeyValues := [...]string{data.Service[i].TcpSrcDstPortListDstOp[ci].SrcPort.ValueString(), data.Service[i].TcpSrcDstPortListDstOp[ci].DstOperator.ValueString(), data.Service[i].TcpSrcDstPortListDstOp[ci].DstPort.ValueString()}
+			cr := TcpSrcDstPortListDstOpItems[helpers.CompositeKey(TcpSrcDstPortListDstOpKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "tcp-src-port"); value.Exists() && !data.Service[i].TcpSrcDstPortListDstOp[ci].SrcPort.IsNull() {
 				data.Service[i].TcpSrcDstPortListDstOp[ci].SrcPort = types.StringValue(value.String())
 			} else {
@@ -2710,29 +2463,11 @@ func (data *ObjectGroup) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 				data.Service[i].TcpSrcDstPortListDstOp[ci].DstPort = types.StringNull()
 			}
 		}
+		TcpSrcRangeDstPortListOpKeys := [...]string{"tcp-src-min-port", "tcp-src-max-port", "operator", "tcp-dst-port"}
+		TcpSrcRangeDstPortListOpItems := helpers.CollectListItemsXML(r.Raw, "tcp-conf/tcp/tcp-src-range-dst-port-list-op/source", TcpSrcRangeDstPortListOpKeys[:])
 		for ci := range data.Service[i].TcpSrcRangeDstPortListOp {
-			keys := [...]string{"tcp-src-min-port", "tcp-src-max-port", "operator", "tcp-dst-port"}
-			keyValues := [...]string{data.Service[i].TcpSrcRangeDstPortListOp[ci].SrcMinPort.ValueString(), data.Service[i].TcpSrcRangeDstPortListOp[ci].SrcMaxPort.ValueString(), data.Service[i].TcpSrcRangeDstPortListOp[ci].Operator.ValueString(), data.Service[i].TcpSrcRangeDstPortListOp[ci].DstPort.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "tcp-conf/tcp/tcp-src-range-dst-port-list-op/source").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			TcpSrcRangeDstPortListOpKeyValues := [...]string{data.Service[i].TcpSrcRangeDstPortListOp[ci].SrcMinPort.ValueString(), data.Service[i].TcpSrcRangeDstPortListOp[ci].SrcMaxPort.ValueString(), data.Service[i].TcpSrcRangeDstPortListOp[ci].Operator.ValueString(), data.Service[i].TcpSrcRangeDstPortListOp[ci].DstPort.ValueString()}
+			cr := TcpSrcRangeDstPortListOpItems[helpers.CompositeKey(TcpSrcRangeDstPortListOpKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "tcp-src-min-port"); value.Exists() && !data.Service[i].TcpSrcRangeDstPortListOp[ci].SrcMinPort.IsNull() {
 				data.Service[i].TcpSrcRangeDstPortListOp[ci].SrcMinPort = types.StringValue(value.String())
 			} else {
@@ -2754,29 +2489,11 @@ func (data *ObjectGroup) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 				data.Service[i].TcpSrcRangeDstPortListOp[ci].DstPort = types.StringNull()
 			}
 		}
+		TcpSrcRangeDstPortListKeys := [...]string{"tcp-src-min-port", "tcp-src-max-port", "tcp-dst-port"}
+		TcpSrcRangeDstPortListItems := helpers.CollectListItemsXML(r.Raw, "tcp-conf/tcp/tcp-src-range-dst-port-list-no-op/source", TcpSrcRangeDstPortListKeys[:])
 		for ci := range data.Service[i].TcpSrcRangeDstPortList {
-			keys := [...]string{"tcp-src-min-port", "tcp-src-max-port", "tcp-dst-port"}
-			keyValues := [...]string{data.Service[i].TcpSrcRangeDstPortList[ci].SrcMinPort.ValueString(), data.Service[i].TcpSrcRangeDstPortList[ci].SrcMaxPort.ValueString(), data.Service[i].TcpSrcRangeDstPortList[ci].DstPort.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "tcp-conf/tcp/tcp-src-range-dst-port-list-no-op/source").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			TcpSrcRangeDstPortListKeyValues := [...]string{data.Service[i].TcpSrcRangeDstPortList[ci].SrcMinPort.ValueString(), data.Service[i].TcpSrcRangeDstPortList[ci].SrcMaxPort.ValueString(), data.Service[i].TcpSrcRangeDstPortList[ci].DstPort.ValueString()}
+			cr := TcpSrcRangeDstPortListItems[helpers.CompositeKey(TcpSrcRangeDstPortListKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "tcp-src-min-port"); value.Exists() && !data.Service[i].TcpSrcRangeDstPortList[ci].SrcMinPort.IsNull() {
 				data.Service[i].TcpSrcRangeDstPortList[ci].SrcMinPort = types.StringValue(value.String())
 			} else {
@@ -2793,29 +2510,11 @@ func (data *ObjectGroup) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 				data.Service[i].TcpSrcRangeDstPortList[ci].DstPort = types.StringNull()
 			}
 		}
+		TcpSrcDstRangePortListOpKeys := [...]string{"operator", "tcp-src-port", "tcp-dst-min-port", "tcp-dst-max-port"}
+		TcpSrcDstRangePortListOpItems := helpers.CollectListItemsXML(r.Raw, "tcp-conf/tcp/tcp-src-dst-range-port-list-op/source", TcpSrcDstRangePortListOpKeys[:])
 		for ci := range data.Service[i].TcpSrcDstRangePortListOp {
-			keys := [...]string{"operator", "tcp-src-port", "tcp-dst-min-port", "tcp-dst-max-port"}
-			keyValues := [...]string{data.Service[i].TcpSrcDstRangePortListOp[ci].Operator.ValueString(), data.Service[i].TcpSrcDstRangePortListOp[ci].SrcPort.ValueString(), data.Service[i].TcpSrcDstRangePortListOp[ci].DstMinPort.ValueString(), data.Service[i].TcpSrcDstRangePortListOp[ci].DstMaxPort.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "tcp-conf/tcp/tcp-src-dst-range-port-list-op/source").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			TcpSrcDstRangePortListOpKeyValues := [...]string{data.Service[i].TcpSrcDstRangePortListOp[ci].Operator.ValueString(), data.Service[i].TcpSrcDstRangePortListOp[ci].SrcPort.ValueString(), data.Service[i].TcpSrcDstRangePortListOp[ci].DstMinPort.ValueString(), data.Service[i].TcpSrcDstRangePortListOp[ci].DstMaxPort.ValueString()}
+			cr := TcpSrcDstRangePortListOpItems[helpers.CompositeKey(TcpSrcDstRangePortListOpKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "operator"); value.Exists() && !data.Service[i].TcpSrcDstRangePortListOp[ci].Operator.IsNull() {
 				data.Service[i].TcpSrcDstRangePortListOp[ci].Operator = types.StringValue(value.String())
 			} else {
@@ -2837,29 +2536,11 @@ func (data *ObjectGroup) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 				data.Service[i].TcpSrcDstRangePortListOp[ci].DstMaxPort = types.StringNull()
 			}
 		}
+		TcpSrcDstRangePortListKeys := [...]string{"tcp-src-port", "tcp-dst-min-port", "tcp-dst-max-port"}
+		TcpSrcDstRangePortListItems := helpers.CollectListItemsXML(r.Raw, "tcp-conf/tcp/tcp-src-dst-range-port-list-no-op/source", TcpSrcDstRangePortListKeys[:])
 		for ci := range data.Service[i].TcpSrcDstRangePortList {
-			keys := [...]string{"tcp-src-port", "tcp-dst-min-port", "tcp-dst-max-port"}
-			keyValues := [...]string{data.Service[i].TcpSrcDstRangePortList[ci].SrcPort.ValueString(), data.Service[i].TcpSrcDstRangePortList[ci].DstMinPort.ValueString(), data.Service[i].TcpSrcDstRangePortList[ci].DstMaxPort.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "tcp-conf/tcp/tcp-src-dst-range-port-list-no-op/source").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			TcpSrcDstRangePortListKeyValues := [...]string{data.Service[i].TcpSrcDstRangePortList[ci].SrcPort.ValueString(), data.Service[i].TcpSrcDstRangePortList[ci].DstMinPort.ValueString(), data.Service[i].TcpSrcDstRangePortList[ci].DstMaxPort.ValueString()}
+			cr := TcpSrcDstRangePortListItems[helpers.CompositeKey(TcpSrcDstRangePortListKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "tcp-src-port"); value.Exists() && !data.Service[i].TcpSrcDstRangePortList[ci].SrcPort.IsNull() {
 				data.Service[i].TcpSrcDstRangePortList[ci].SrcPort = types.StringValue(value.String())
 			} else {
@@ -2876,29 +2557,11 @@ func (data *ObjectGroup) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 				data.Service[i].TcpSrcDstRangePortList[ci].DstMaxPort = types.StringNull()
 			}
 		}
+		TcpSrcRangeDstRangePortListKeys := [...]string{"tcp-src-min-port", "tcp-src-max-port", "tcp-dst-min-port", "tcp-dst-max-port"}
+		TcpSrcRangeDstRangePortListItems := helpers.CollectListItemsXML(r.Raw, "tcp-conf/tcp/tcp-src-range-dst-range-port-list/source", TcpSrcRangeDstRangePortListKeys[:])
 		for ci := range data.Service[i].TcpSrcRangeDstRangePortList {
-			keys := [...]string{"tcp-src-min-port", "tcp-src-max-port", "tcp-dst-min-port", "tcp-dst-max-port"}
-			keyValues := [...]string{data.Service[i].TcpSrcRangeDstRangePortList[ci].SrcMinPort.ValueString(), data.Service[i].TcpSrcRangeDstRangePortList[ci].SrcMaxPort.ValueString(), data.Service[i].TcpSrcRangeDstRangePortList[ci].DstMinPort.ValueString(), data.Service[i].TcpSrcRangeDstRangePortList[ci].DstMaxPort.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "tcp-conf/tcp/tcp-src-range-dst-range-port-list/source").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			TcpSrcRangeDstRangePortListKeyValues := [...]string{data.Service[i].TcpSrcRangeDstRangePortList[ci].SrcMinPort.ValueString(), data.Service[i].TcpSrcRangeDstRangePortList[ci].SrcMaxPort.ValueString(), data.Service[i].TcpSrcRangeDstRangePortList[ci].DstMinPort.ValueString(), data.Service[i].TcpSrcRangeDstRangePortList[ci].DstMaxPort.ValueString()}
+			cr := TcpSrcRangeDstRangePortListItems[helpers.CompositeKey(TcpSrcRangeDstRangePortListKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "tcp-src-min-port"); value.Exists() && !data.Service[i].TcpSrcRangeDstRangePortList[ci].SrcMinPort.IsNull() {
 				data.Service[i].TcpSrcRangeDstRangePortList[ci].SrcMinPort = types.StringValue(value.String())
 			} else {
@@ -2920,29 +2583,11 @@ func (data *ObjectGroup) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 				data.Service[i].TcpSrcRangeDstRangePortList[ci].DstMaxPort = types.StringNull()
 			}
 		}
+		UdpDstPortListOpKeys := [...]string{"operator", "udp-port"}
+		UdpDstPortListOpItems := helpers.CollectListItemsXML(r.Raw, "udp-conf/udp/udp-port-list-op", UdpDstPortListOpKeys[:])
 		for ci := range data.Service[i].UdpDstPortListOp {
-			keys := [...]string{"operator", "udp-port"}
-			keyValues := [...]string{data.Service[i].UdpDstPortListOp[ci].Operator.ValueString(), data.Service[i].UdpDstPortListOp[ci].Port.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "udp-conf/udp/udp-port-list-op").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			UdpDstPortListOpKeyValues := [...]string{data.Service[i].UdpDstPortListOp[ci].Operator.ValueString(), data.Service[i].UdpDstPortListOp[ci].Port.ValueString()}
+			cr := UdpDstPortListOpItems[helpers.CompositeKey(UdpDstPortListOpKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "operator"); value.Exists() && !data.Service[i].UdpDstPortListOp[ci].Operator.IsNull() {
 				data.Service[i].UdpDstPortListOp[ci].Operator = types.StringValue(value.String())
 			} else {
@@ -2954,58 +2599,22 @@ func (data *ObjectGroup) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 				data.Service[i].UdpDstPortListOp[ci].Port = types.StringNull()
 			}
 		}
+		UdpDstPortListKeys := [...]string{"udp-port"}
+		UdpDstPortListItems := helpers.CollectListItemsXML(r.Raw, "udp-conf/udp/udp-port-list-no-op", UdpDstPortListKeys[:])
 		for ci := range data.Service[i].UdpDstPortList {
-			keys := [...]string{"udp-port"}
-			keyValues := [...]string{data.Service[i].UdpDstPortList[ci].Port.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "udp-conf/udp/udp-port-list-no-op").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			UdpDstPortListKeyValues := [...]string{data.Service[i].UdpDstPortList[ci].Port.ValueString()}
+			cr := UdpDstPortListItems[helpers.CompositeKey(UdpDstPortListKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "udp-port"); value.Exists() && !data.Service[i].UdpDstPortList[ci].Port.IsNull() {
 				data.Service[i].UdpDstPortList[ci].Port = types.StringValue(value.String())
 			} else {
 				data.Service[i].UdpDstPortList[ci].Port = types.StringNull()
 			}
 		}
+		UdpDstPortRangesKeys := [...]string{"udp-min-port", "udp-max-port"}
+		UdpDstPortRangesItems := helpers.CollectListItemsXML(r.Raw, "udp-conf/udp/udp-range-port-list/range", UdpDstPortRangesKeys[:])
 		for ci := range data.Service[i].UdpDstPortRanges {
-			keys := [...]string{"udp-min-port", "udp-max-port"}
-			keyValues := [...]string{data.Service[i].UdpDstPortRanges[ci].MinPort.ValueString(), data.Service[i].UdpDstPortRanges[ci].MaxPort.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "udp-conf/udp/udp-range-port-list/range").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			UdpDstPortRangesKeyValues := [...]string{data.Service[i].UdpDstPortRanges[ci].MinPort.ValueString(), data.Service[i].UdpDstPortRanges[ci].MaxPort.ValueString()}
+			cr := UdpDstPortRangesItems[helpers.CompositeKey(UdpDstPortRangesKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "udp-min-port"); value.Exists() && !data.Service[i].UdpDstPortRanges[ci].MinPort.IsNull() {
 				data.Service[i].UdpDstPortRanges[ci].MinPort = types.StringValue(value.String())
 			} else {
@@ -3017,29 +2626,11 @@ func (data *ObjectGroup) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 				data.Service[i].UdpDstPortRanges[ci].MaxPort = types.StringNull()
 			}
 		}
+		UdpSrcPortListOpKeys := [...]string{"operator", "udp-port"}
+		UdpSrcPortListOpItems := helpers.CollectListItemsXML(r.Raw, "udp-conf/udp/udp-src-port-list-op/source", UdpSrcPortListOpKeys[:])
 		for ci := range data.Service[i].UdpSrcPortListOp {
-			keys := [...]string{"operator", "udp-port"}
-			keyValues := [...]string{data.Service[i].UdpSrcPortListOp[ci].Operator.ValueString(), data.Service[i].UdpSrcPortListOp[ci].Port.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "udp-conf/udp/udp-src-port-list-op/source").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			UdpSrcPortListOpKeyValues := [...]string{data.Service[i].UdpSrcPortListOp[ci].Operator.ValueString(), data.Service[i].UdpSrcPortListOp[ci].Port.ValueString()}
+			cr := UdpSrcPortListOpItems[helpers.CompositeKey(UdpSrcPortListOpKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "operator"); value.Exists() && !data.Service[i].UdpSrcPortListOp[ci].Operator.IsNull() {
 				data.Service[i].UdpSrcPortListOp[ci].Operator = types.StringValue(value.String())
 			} else {
@@ -3051,58 +2642,22 @@ func (data *ObjectGroup) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 				data.Service[i].UdpSrcPortListOp[ci].Port = types.StringNull()
 			}
 		}
+		UdpSrcPortListKeys := [...]string{"udp-port"}
+		UdpSrcPortListItems := helpers.CollectListItemsXML(r.Raw, "udp-conf/udp/udp-src-port-list-no-op/source", UdpSrcPortListKeys[:])
 		for ci := range data.Service[i].UdpSrcPortList {
-			keys := [...]string{"udp-port"}
-			keyValues := [...]string{data.Service[i].UdpSrcPortList[ci].Port.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "udp-conf/udp/udp-src-port-list-no-op/source").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			UdpSrcPortListKeyValues := [...]string{data.Service[i].UdpSrcPortList[ci].Port.ValueString()}
+			cr := UdpSrcPortListItems[helpers.CompositeKey(UdpSrcPortListKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "udp-port"); value.Exists() && !data.Service[i].UdpSrcPortList[ci].Port.IsNull() {
 				data.Service[i].UdpSrcPortList[ci].Port = types.StringValue(value.String())
 			} else {
 				data.Service[i].UdpSrcPortList[ci].Port = types.StringNull()
 			}
 		}
+		UdpSrcPortRangesKeys := [...]string{"udp-min-port", "udp-max-port"}
+		UdpSrcPortRangesItems := helpers.CollectListItemsXML(r.Raw, "udp-conf/udp/udp-src-range-port-list/source/range", UdpSrcPortRangesKeys[:])
 		for ci := range data.Service[i].UdpSrcPortRanges {
-			keys := [...]string{"udp-min-port", "udp-max-port"}
-			keyValues := [...]string{data.Service[i].UdpSrcPortRanges[ci].MinPort.ValueString(), data.Service[i].UdpSrcPortRanges[ci].MaxPort.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "udp-conf/udp/udp-src-range-port-list/source/range").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			UdpSrcPortRangesKeyValues := [...]string{data.Service[i].UdpSrcPortRanges[ci].MinPort.ValueString(), data.Service[i].UdpSrcPortRanges[ci].MaxPort.ValueString()}
+			cr := UdpSrcPortRangesItems[helpers.CompositeKey(UdpSrcPortRangesKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "udp-min-port"); value.Exists() && !data.Service[i].UdpSrcPortRanges[ci].MinPort.IsNull() {
 				data.Service[i].UdpSrcPortRanges[ci].MinPort = types.StringValue(value.String())
 			} else {
@@ -3114,29 +2669,11 @@ func (data *ObjectGroup) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 				data.Service[i].UdpSrcPortRanges[ci].MaxPort = types.StringNull()
 			}
 		}
+		UdpSrcDstPortListOpKeys := [...]string{"src-operator", "udp-src-port", "dst-operator", "udp-dst-port"}
+		UdpSrcDstPortListOpItems := helpers.CollectListItemsXML(r.Raw, "udp-conf/udp/udp-src-dst-port-list-op/source", UdpSrcDstPortListOpKeys[:])
 		for ci := range data.Service[i].UdpSrcDstPortListOp {
-			keys := [...]string{"src-operator", "udp-src-port", "dst-operator", "udp-dst-port"}
-			keyValues := [...]string{data.Service[i].UdpSrcDstPortListOp[ci].SrcOperator.ValueString(), data.Service[i].UdpSrcDstPortListOp[ci].SrcPort.ValueString(), data.Service[i].UdpSrcDstPortListOp[ci].DstOperator.ValueString(), data.Service[i].UdpSrcDstPortListOp[ci].DstPort.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "udp-conf/udp/udp-src-dst-port-list-op/source").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			UdpSrcDstPortListOpKeyValues := [...]string{data.Service[i].UdpSrcDstPortListOp[ci].SrcOperator.ValueString(), data.Service[i].UdpSrcDstPortListOp[ci].SrcPort.ValueString(), data.Service[i].UdpSrcDstPortListOp[ci].DstOperator.ValueString(), data.Service[i].UdpSrcDstPortListOp[ci].DstPort.ValueString()}
+			cr := UdpSrcDstPortListOpItems[helpers.CompositeKey(UdpSrcDstPortListOpKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "src-operator"); value.Exists() && !data.Service[i].UdpSrcDstPortListOp[ci].SrcOperator.IsNull() {
 				data.Service[i].UdpSrcDstPortListOp[ci].SrcOperator = types.StringValue(value.String())
 			} else {
@@ -3158,29 +2695,11 @@ func (data *ObjectGroup) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 				data.Service[i].UdpSrcDstPortListOp[ci].DstPort = types.StringNull()
 			}
 		}
+		UdpSrcDstPortListKeys := [...]string{"udp-src-port", "udp-dst-port"}
+		UdpSrcDstPortListItems := helpers.CollectListItemsXML(r.Raw, "udp-conf/udp/udp-src-dst-port-list-no-op/source", UdpSrcDstPortListKeys[:])
 		for ci := range data.Service[i].UdpSrcDstPortList {
-			keys := [...]string{"udp-src-port", "udp-dst-port"}
-			keyValues := [...]string{data.Service[i].UdpSrcDstPortList[ci].SrcPort.ValueString(), data.Service[i].UdpSrcDstPortList[ci].DstPort.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "udp-conf/udp/udp-src-dst-port-list-no-op/source").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			UdpSrcDstPortListKeyValues := [...]string{data.Service[i].UdpSrcDstPortList[ci].SrcPort.ValueString(), data.Service[i].UdpSrcDstPortList[ci].DstPort.ValueString()}
+			cr := UdpSrcDstPortListItems[helpers.CompositeKey(UdpSrcDstPortListKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "udp-src-port"); value.Exists() && !data.Service[i].UdpSrcDstPortList[ci].SrcPort.IsNull() {
 				data.Service[i].UdpSrcDstPortList[ci].SrcPort = types.StringValue(value.String())
 			} else {
@@ -3192,29 +2711,11 @@ func (data *ObjectGroup) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 				data.Service[i].UdpSrcDstPortList[ci].DstPort = types.StringNull()
 			}
 		}
+		UdpSrcDstPortListSrcOpKeys := [...]string{"src-operator", "udp-src-port", "udp-dst-port"}
+		UdpSrcDstPortListSrcOpItems := helpers.CollectListItemsXML(r.Raw, "udp-conf/udp/udp-src-dst-port-list-src-op/source", UdpSrcDstPortListSrcOpKeys[:])
 		for ci := range data.Service[i].UdpSrcDstPortListSrcOp {
-			keys := [...]string{"src-operator", "udp-src-port", "udp-dst-port"}
-			keyValues := [...]string{data.Service[i].UdpSrcDstPortListSrcOp[ci].SrcOperator.ValueString(), data.Service[i].UdpSrcDstPortListSrcOp[ci].SrcPort.ValueString(), data.Service[i].UdpSrcDstPortListSrcOp[ci].DstPort.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "udp-conf/udp/udp-src-dst-port-list-src-op/source").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			UdpSrcDstPortListSrcOpKeyValues := [...]string{data.Service[i].UdpSrcDstPortListSrcOp[ci].SrcOperator.ValueString(), data.Service[i].UdpSrcDstPortListSrcOp[ci].SrcPort.ValueString(), data.Service[i].UdpSrcDstPortListSrcOp[ci].DstPort.ValueString()}
+			cr := UdpSrcDstPortListSrcOpItems[helpers.CompositeKey(UdpSrcDstPortListSrcOpKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "src-operator"); value.Exists() && !data.Service[i].UdpSrcDstPortListSrcOp[ci].SrcOperator.IsNull() {
 				data.Service[i].UdpSrcDstPortListSrcOp[ci].SrcOperator = types.StringValue(value.String())
 			} else {
@@ -3231,29 +2732,11 @@ func (data *ObjectGroup) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 				data.Service[i].UdpSrcDstPortListSrcOp[ci].DstPort = types.StringNull()
 			}
 		}
+		UdpSrcDstPortListDstOpKeys := [...]string{"udp-src-port", "dst-operator", "udp-dst-port"}
+		UdpSrcDstPortListDstOpItems := helpers.CollectListItemsXML(r.Raw, "udp-conf/udp/udp-src-dst-port-list-dst-op/source", UdpSrcDstPortListDstOpKeys[:])
 		for ci := range data.Service[i].UdpSrcDstPortListDstOp {
-			keys := [...]string{"udp-src-port", "dst-operator", "udp-dst-port"}
-			keyValues := [...]string{data.Service[i].UdpSrcDstPortListDstOp[ci].SrcPort.ValueString(), data.Service[i].UdpSrcDstPortListDstOp[ci].DstOperator.ValueString(), data.Service[i].UdpSrcDstPortListDstOp[ci].DstPort.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "udp-conf/udp/udp-src-dst-port-list-dst-op/source").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			UdpSrcDstPortListDstOpKeyValues := [...]string{data.Service[i].UdpSrcDstPortListDstOp[ci].SrcPort.ValueString(), data.Service[i].UdpSrcDstPortListDstOp[ci].DstOperator.ValueString(), data.Service[i].UdpSrcDstPortListDstOp[ci].DstPort.ValueString()}
+			cr := UdpSrcDstPortListDstOpItems[helpers.CompositeKey(UdpSrcDstPortListDstOpKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "udp-src-port"); value.Exists() && !data.Service[i].UdpSrcDstPortListDstOp[ci].SrcPort.IsNull() {
 				data.Service[i].UdpSrcDstPortListDstOp[ci].SrcPort = types.StringValue(value.String())
 			} else {
@@ -3270,29 +2753,11 @@ func (data *ObjectGroup) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 				data.Service[i].UdpSrcDstPortListDstOp[ci].DstPort = types.StringNull()
 			}
 		}
+		UdpSrcRangeDstPortListOpKeys := [...]string{"udp-src-min-port", "udp-src-max-port", "operator", "udp-dst-port"}
+		UdpSrcRangeDstPortListOpItems := helpers.CollectListItemsXML(r.Raw, "udp-conf/udp/udp-src-range-dst-port-list-op/source", UdpSrcRangeDstPortListOpKeys[:])
 		for ci := range data.Service[i].UdpSrcRangeDstPortListOp {
-			keys := [...]string{"udp-src-min-port", "udp-src-max-port", "operator", "udp-dst-port"}
-			keyValues := [...]string{data.Service[i].UdpSrcRangeDstPortListOp[ci].SrcMinPort.ValueString(), data.Service[i].UdpSrcRangeDstPortListOp[ci].SrcMaxPort.ValueString(), data.Service[i].UdpSrcRangeDstPortListOp[ci].Operator.ValueString(), data.Service[i].UdpSrcRangeDstPortListOp[ci].DstPort.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "udp-conf/udp/udp-src-range-dst-port-list-op/source").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			UdpSrcRangeDstPortListOpKeyValues := [...]string{data.Service[i].UdpSrcRangeDstPortListOp[ci].SrcMinPort.ValueString(), data.Service[i].UdpSrcRangeDstPortListOp[ci].SrcMaxPort.ValueString(), data.Service[i].UdpSrcRangeDstPortListOp[ci].Operator.ValueString(), data.Service[i].UdpSrcRangeDstPortListOp[ci].DstPort.ValueString()}
+			cr := UdpSrcRangeDstPortListOpItems[helpers.CompositeKey(UdpSrcRangeDstPortListOpKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "udp-src-min-port"); value.Exists() && !data.Service[i].UdpSrcRangeDstPortListOp[ci].SrcMinPort.IsNull() {
 				data.Service[i].UdpSrcRangeDstPortListOp[ci].SrcMinPort = types.StringValue(value.String())
 			} else {
@@ -3314,29 +2779,11 @@ func (data *ObjectGroup) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 				data.Service[i].UdpSrcRangeDstPortListOp[ci].DstPort = types.StringNull()
 			}
 		}
+		UdpSrcRangeDstPortListKeys := [...]string{"udp-src-min-port", "udp-src-max-port", "udp-dst-port"}
+		UdpSrcRangeDstPortListItems := helpers.CollectListItemsXML(r.Raw, "udp-conf/udp/udp-src-range-dst-port-list-no-op/source", UdpSrcRangeDstPortListKeys[:])
 		for ci := range data.Service[i].UdpSrcRangeDstPortList {
-			keys := [...]string{"udp-src-min-port", "udp-src-max-port", "udp-dst-port"}
-			keyValues := [...]string{data.Service[i].UdpSrcRangeDstPortList[ci].SrcMinPort.ValueString(), data.Service[i].UdpSrcRangeDstPortList[ci].SrcMaxPort.ValueString(), data.Service[i].UdpSrcRangeDstPortList[ci].DstPort.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "udp-conf/udp/udp-src-range-dst-port-list-no-op/source").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			UdpSrcRangeDstPortListKeyValues := [...]string{data.Service[i].UdpSrcRangeDstPortList[ci].SrcMinPort.ValueString(), data.Service[i].UdpSrcRangeDstPortList[ci].SrcMaxPort.ValueString(), data.Service[i].UdpSrcRangeDstPortList[ci].DstPort.ValueString()}
+			cr := UdpSrcRangeDstPortListItems[helpers.CompositeKey(UdpSrcRangeDstPortListKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "udp-src-min-port"); value.Exists() && !data.Service[i].UdpSrcRangeDstPortList[ci].SrcMinPort.IsNull() {
 				data.Service[i].UdpSrcRangeDstPortList[ci].SrcMinPort = types.StringValue(value.String())
 			} else {
@@ -3353,29 +2800,11 @@ func (data *ObjectGroup) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 				data.Service[i].UdpSrcRangeDstPortList[ci].DstPort = types.StringNull()
 			}
 		}
+		UdpSrcDstRangePortListOpKeys := [...]string{"operator", "udp-src-port", "udp-dst-min-port", "udp-dst-max-port"}
+		UdpSrcDstRangePortListOpItems := helpers.CollectListItemsXML(r.Raw, "udp-conf/udp/udp-src-dst-range-port-list-op/source", UdpSrcDstRangePortListOpKeys[:])
 		for ci := range data.Service[i].UdpSrcDstRangePortListOp {
-			keys := [...]string{"operator", "udp-src-port", "udp-dst-min-port", "udp-dst-max-port"}
-			keyValues := [...]string{data.Service[i].UdpSrcDstRangePortListOp[ci].Operator.ValueString(), data.Service[i].UdpSrcDstRangePortListOp[ci].SrcPort.ValueString(), data.Service[i].UdpSrcDstRangePortListOp[ci].DstMinPort.ValueString(), data.Service[i].UdpSrcDstRangePortListOp[ci].DstMaxPort.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "udp-conf/udp/udp-src-dst-range-port-list-op/source").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			UdpSrcDstRangePortListOpKeyValues := [...]string{data.Service[i].UdpSrcDstRangePortListOp[ci].Operator.ValueString(), data.Service[i].UdpSrcDstRangePortListOp[ci].SrcPort.ValueString(), data.Service[i].UdpSrcDstRangePortListOp[ci].DstMinPort.ValueString(), data.Service[i].UdpSrcDstRangePortListOp[ci].DstMaxPort.ValueString()}
+			cr := UdpSrcDstRangePortListOpItems[helpers.CompositeKey(UdpSrcDstRangePortListOpKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "operator"); value.Exists() && !data.Service[i].UdpSrcDstRangePortListOp[ci].Operator.IsNull() {
 				data.Service[i].UdpSrcDstRangePortListOp[ci].Operator = types.StringValue(value.String())
 			} else {
@@ -3397,29 +2826,11 @@ func (data *ObjectGroup) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 				data.Service[i].UdpSrcDstRangePortListOp[ci].DstMaxPort = types.StringNull()
 			}
 		}
+		UdpSrcDstRangePortListKeys := [...]string{"udp-src-port", "udp-dst-min-port", "udp-dst-max-port"}
+		UdpSrcDstRangePortListItems := helpers.CollectListItemsXML(r.Raw, "udp-conf/udp/udp-src-dst-range-port-list-no-op/source", UdpSrcDstRangePortListKeys[:])
 		for ci := range data.Service[i].UdpSrcDstRangePortList {
-			keys := [...]string{"udp-src-port", "udp-dst-min-port", "udp-dst-max-port"}
-			keyValues := [...]string{data.Service[i].UdpSrcDstRangePortList[ci].SrcPort.ValueString(), data.Service[i].UdpSrcDstRangePortList[ci].DstMinPort.ValueString(), data.Service[i].UdpSrcDstRangePortList[ci].DstMaxPort.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "udp-conf/udp/udp-src-dst-range-port-list-no-op/source").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			UdpSrcDstRangePortListKeyValues := [...]string{data.Service[i].UdpSrcDstRangePortList[ci].SrcPort.ValueString(), data.Service[i].UdpSrcDstRangePortList[ci].DstMinPort.ValueString(), data.Service[i].UdpSrcDstRangePortList[ci].DstMaxPort.ValueString()}
+			cr := UdpSrcDstRangePortListItems[helpers.CompositeKey(UdpSrcDstRangePortListKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "udp-src-port"); value.Exists() && !data.Service[i].UdpSrcDstRangePortList[ci].SrcPort.IsNull() {
 				data.Service[i].UdpSrcDstRangePortList[ci].SrcPort = types.StringValue(value.String())
 			} else {
@@ -3436,29 +2847,11 @@ func (data *ObjectGroup) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 				data.Service[i].UdpSrcDstRangePortList[ci].DstMaxPort = types.StringNull()
 			}
 		}
+		UdpSrcRangeDstRangePortListKeys := [...]string{"udp-src-min-port", "udp-src-max-port", "udp-dst-min-port", "udp-dst-max-port"}
+		UdpSrcRangeDstRangePortListItems := helpers.CollectListItemsXML(r.Raw, "udp-conf/udp/udp-src-range-dst-range-port-list/source", UdpSrcRangeDstRangePortListKeys[:])
 		for ci := range data.Service[i].UdpSrcRangeDstRangePortList {
-			keys := [...]string{"udp-src-min-port", "udp-src-max-port", "udp-dst-min-port", "udp-dst-max-port"}
-			keyValues := [...]string{data.Service[i].UdpSrcRangeDstRangePortList[ci].SrcMinPort.ValueString(), data.Service[i].UdpSrcRangeDstRangePortList[ci].SrcMaxPort.ValueString(), data.Service[i].UdpSrcRangeDstRangePortList[ci].DstMinPort.ValueString(), data.Service[i].UdpSrcRangeDstRangePortList[ci].DstMaxPort.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "udp-conf/udp/udp-src-range-dst-range-port-list/source").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			UdpSrcRangeDstRangePortListKeyValues := [...]string{data.Service[i].UdpSrcRangeDstRangePortList[ci].SrcMinPort.ValueString(), data.Service[i].UdpSrcRangeDstRangePortList[ci].SrcMaxPort.ValueString(), data.Service[i].UdpSrcRangeDstRangePortList[ci].DstMinPort.ValueString(), data.Service[i].UdpSrcRangeDstRangePortList[ci].DstMaxPort.ValueString()}
+			cr := UdpSrcRangeDstRangePortListItems[helpers.CompositeKey(UdpSrcRangeDstRangePortListKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "udp-src-min-port"); value.Exists() && !data.Service[i].UdpSrcRangeDstRangePortList[ci].SrcMinPort.IsNull() {
 				data.Service[i].UdpSrcRangeDstRangePortList[ci].SrcMinPort = types.StringValue(value.String())
 			} else {
@@ -3480,29 +2873,11 @@ func (data *ObjectGroup) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 				data.Service[i].UdpSrcRangeDstRangePortList[ci].DstMaxPort = types.StringNull()
 			}
 		}
+		TcpUdpDstPortListOpKeys := [...]string{"operator", "tcp-udp-port"}
+		TcpUdpDstPortListOpItems := helpers.CollectListItemsXML(r.Raw, "tcp-udp/tcp-udp-port-list-op", TcpUdpDstPortListOpKeys[:])
 		for ci := range data.Service[i].TcpUdpDstPortListOp {
-			keys := [...]string{"operator", "tcp-udp-port"}
-			keyValues := [...]string{data.Service[i].TcpUdpDstPortListOp[ci].Operator.ValueString(), data.Service[i].TcpUdpDstPortListOp[ci].Port.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "tcp-udp/tcp-udp-port-list-op").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			TcpUdpDstPortListOpKeyValues := [...]string{data.Service[i].TcpUdpDstPortListOp[ci].Operator.ValueString(), data.Service[i].TcpUdpDstPortListOp[ci].Port.ValueString()}
+			cr := TcpUdpDstPortListOpItems[helpers.CompositeKey(TcpUdpDstPortListOpKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "operator"); value.Exists() && !data.Service[i].TcpUdpDstPortListOp[ci].Operator.IsNull() {
 				data.Service[i].TcpUdpDstPortListOp[ci].Operator = types.StringValue(value.String())
 			} else {
@@ -3514,58 +2889,22 @@ func (data *ObjectGroup) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 				data.Service[i].TcpUdpDstPortListOp[ci].Port = types.StringNull()
 			}
 		}
+		TcpUdpDstPortListKeys := [...]string{"tcp-udp-port"}
+		TcpUdpDstPortListItems := helpers.CollectListItemsXML(r.Raw, "tcp-udp/tcp-udp-port-list-no-op", TcpUdpDstPortListKeys[:])
 		for ci := range data.Service[i].TcpUdpDstPortList {
-			keys := [...]string{"tcp-udp-port"}
-			keyValues := [...]string{data.Service[i].TcpUdpDstPortList[ci].Port.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "tcp-udp/tcp-udp-port-list-no-op").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			TcpUdpDstPortListKeyValues := [...]string{data.Service[i].TcpUdpDstPortList[ci].Port.ValueString()}
+			cr := TcpUdpDstPortListItems[helpers.CompositeKey(TcpUdpDstPortListKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "tcp-udp-port"); value.Exists() && !data.Service[i].TcpUdpDstPortList[ci].Port.IsNull() {
 				data.Service[i].TcpUdpDstPortList[ci].Port = types.StringValue(value.String())
 			} else {
 				data.Service[i].TcpUdpDstPortList[ci].Port = types.StringNull()
 			}
 		}
+		TcpUdpDstPortRangesKeys := [...]string{"tcp-udp-min-port", "tcp-udp-max-port"}
+		TcpUdpDstPortRangesItems := helpers.CollectListItemsXML(r.Raw, "tcp-udp/tcp-udp-range-port-list/range", TcpUdpDstPortRangesKeys[:])
 		for ci := range data.Service[i].TcpUdpDstPortRanges {
-			keys := [...]string{"tcp-udp-min-port", "tcp-udp-max-port"}
-			keyValues := [...]string{data.Service[i].TcpUdpDstPortRanges[ci].MinPort.ValueString(), data.Service[i].TcpUdpDstPortRanges[ci].MaxPort.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "tcp-udp/tcp-udp-range-port-list/range").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			TcpUdpDstPortRangesKeyValues := [...]string{data.Service[i].TcpUdpDstPortRanges[ci].MinPort.ValueString(), data.Service[i].TcpUdpDstPortRanges[ci].MaxPort.ValueString()}
+			cr := TcpUdpDstPortRangesItems[helpers.CompositeKey(TcpUdpDstPortRangesKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "tcp-udp-min-port"); value.Exists() && !data.Service[i].TcpUdpDstPortRanges[ci].MinPort.IsNull() {
 				data.Service[i].TcpUdpDstPortRanges[ci].MinPort = types.StringValue(value.String())
 			} else {
@@ -3577,29 +2916,11 @@ func (data *ObjectGroup) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 				data.Service[i].TcpUdpDstPortRanges[ci].MaxPort = types.StringNull()
 			}
 		}
+		TcpUdpSrcPortListOpKeys := [...]string{"operator", "tcp-udp-port"}
+		TcpUdpSrcPortListOpItems := helpers.CollectListItemsXML(r.Raw, "tcp-udp/tcp-udp-src-port-list-op/source", TcpUdpSrcPortListOpKeys[:])
 		for ci := range data.Service[i].TcpUdpSrcPortListOp {
-			keys := [...]string{"operator", "tcp-udp-port"}
-			keyValues := [...]string{data.Service[i].TcpUdpSrcPortListOp[ci].Operator.ValueString(), data.Service[i].TcpUdpSrcPortListOp[ci].Port.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "tcp-udp/tcp-udp-src-port-list-op/source").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			TcpUdpSrcPortListOpKeyValues := [...]string{data.Service[i].TcpUdpSrcPortListOp[ci].Operator.ValueString(), data.Service[i].TcpUdpSrcPortListOp[ci].Port.ValueString()}
+			cr := TcpUdpSrcPortListOpItems[helpers.CompositeKey(TcpUdpSrcPortListOpKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "operator"); value.Exists() && !data.Service[i].TcpUdpSrcPortListOp[ci].Operator.IsNull() {
 				data.Service[i].TcpUdpSrcPortListOp[ci].Operator = types.StringValue(value.String())
 			} else {
@@ -3611,58 +2932,22 @@ func (data *ObjectGroup) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 				data.Service[i].TcpUdpSrcPortListOp[ci].Port = types.StringNull()
 			}
 		}
+		TcpUdpSrcPortListKeys := [...]string{"tcp-udp-port"}
+		TcpUdpSrcPortListItems := helpers.CollectListItemsXML(r.Raw, "tcp-udp/tcp-udp-src-port-list-no-op/source", TcpUdpSrcPortListKeys[:])
 		for ci := range data.Service[i].TcpUdpSrcPortList {
-			keys := [...]string{"tcp-udp-port"}
-			keyValues := [...]string{data.Service[i].TcpUdpSrcPortList[ci].Port.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "tcp-udp/tcp-udp-src-port-list-no-op/source").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			TcpUdpSrcPortListKeyValues := [...]string{data.Service[i].TcpUdpSrcPortList[ci].Port.ValueString()}
+			cr := TcpUdpSrcPortListItems[helpers.CompositeKey(TcpUdpSrcPortListKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "tcp-udp-port"); value.Exists() && !data.Service[i].TcpUdpSrcPortList[ci].Port.IsNull() {
 				data.Service[i].TcpUdpSrcPortList[ci].Port = types.StringValue(value.String())
 			} else {
 				data.Service[i].TcpUdpSrcPortList[ci].Port = types.StringNull()
 			}
 		}
+		TcpUdpSrcPortRangesKeys := [...]string{"tcp-udp-min-port", "tcp-udp-max-port"}
+		TcpUdpSrcPortRangesItems := helpers.CollectListItemsXML(r.Raw, "tcp-udp/tcp-udp-src-range-port-list/source/range", TcpUdpSrcPortRangesKeys[:])
 		for ci := range data.Service[i].TcpUdpSrcPortRanges {
-			keys := [...]string{"tcp-udp-min-port", "tcp-udp-max-port"}
-			keyValues := [...]string{data.Service[i].TcpUdpSrcPortRanges[ci].MinPort.ValueString(), data.Service[i].TcpUdpSrcPortRanges[ci].MaxPort.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "tcp-udp/tcp-udp-src-range-port-list/source/range").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			TcpUdpSrcPortRangesKeyValues := [...]string{data.Service[i].TcpUdpSrcPortRanges[ci].MinPort.ValueString(), data.Service[i].TcpUdpSrcPortRanges[ci].MaxPort.ValueString()}
+			cr := TcpUdpSrcPortRangesItems[helpers.CompositeKey(TcpUdpSrcPortRangesKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "tcp-udp-min-port"); value.Exists() && !data.Service[i].TcpUdpSrcPortRanges[ci].MinPort.IsNull() {
 				data.Service[i].TcpUdpSrcPortRanges[ci].MinPort = types.StringValue(value.String())
 			} else {
@@ -3674,29 +2959,11 @@ func (data *ObjectGroup) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 				data.Service[i].TcpUdpSrcPortRanges[ci].MaxPort = types.StringNull()
 			}
 		}
+		TcpUdpSrcDstPortListOpKeys := [...]string{"src-operator", "tcp-udp-src-port", "dst-operator", "tcp-udp-dst-port"}
+		TcpUdpSrcDstPortListOpItems := helpers.CollectListItemsXML(r.Raw, "tcp-udp/tcp-udp-src-dst-port-list-op/source", TcpUdpSrcDstPortListOpKeys[:])
 		for ci := range data.Service[i].TcpUdpSrcDstPortListOp {
-			keys := [...]string{"src-operator", "tcp-udp-src-port", "dst-operator", "tcp-udp-dst-port"}
-			keyValues := [...]string{data.Service[i].TcpUdpSrcDstPortListOp[ci].SrcOperator.ValueString(), data.Service[i].TcpUdpSrcDstPortListOp[ci].SrcPort.ValueString(), data.Service[i].TcpUdpSrcDstPortListOp[ci].DstOperator.ValueString(), data.Service[i].TcpUdpSrcDstPortListOp[ci].DstPort.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "tcp-udp/tcp-udp-src-dst-port-list-op/source").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			TcpUdpSrcDstPortListOpKeyValues := [...]string{data.Service[i].TcpUdpSrcDstPortListOp[ci].SrcOperator.ValueString(), data.Service[i].TcpUdpSrcDstPortListOp[ci].SrcPort.ValueString(), data.Service[i].TcpUdpSrcDstPortListOp[ci].DstOperator.ValueString(), data.Service[i].TcpUdpSrcDstPortListOp[ci].DstPort.ValueString()}
+			cr := TcpUdpSrcDstPortListOpItems[helpers.CompositeKey(TcpUdpSrcDstPortListOpKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "src-operator"); value.Exists() && !data.Service[i].TcpUdpSrcDstPortListOp[ci].SrcOperator.IsNull() {
 				data.Service[i].TcpUdpSrcDstPortListOp[ci].SrcOperator = types.StringValue(value.String())
 			} else {
@@ -3718,29 +2985,11 @@ func (data *ObjectGroup) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 				data.Service[i].TcpUdpSrcDstPortListOp[ci].DstPort = types.StringNull()
 			}
 		}
+		TcpUdpSrcDstPortListKeys := [...]string{"tcp-udp-src-port", "tcp-udp-dst-port"}
+		TcpUdpSrcDstPortListItems := helpers.CollectListItemsXML(r.Raw, "tcp-udp/tcp-udp-src-dst-port-list-no-op/source", TcpUdpSrcDstPortListKeys[:])
 		for ci := range data.Service[i].TcpUdpSrcDstPortList {
-			keys := [...]string{"tcp-udp-src-port", "tcp-udp-dst-port"}
-			keyValues := [...]string{data.Service[i].TcpUdpSrcDstPortList[ci].SrcPort.ValueString(), data.Service[i].TcpUdpSrcDstPortList[ci].DstPort.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "tcp-udp/tcp-udp-src-dst-port-list-no-op/source").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			TcpUdpSrcDstPortListKeyValues := [...]string{data.Service[i].TcpUdpSrcDstPortList[ci].SrcPort.ValueString(), data.Service[i].TcpUdpSrcDstPortList[ci].DstPort.ValueString()}
+			cr := TcpUdpSrcDstPortListItems[helpers.CompositeKey(TcpUdpSrcDstPortListKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "tcp-udp-src-port"); value.Exists() && !data.Service[i].TcpUdpSrcDstPortList[ci].SrcPort.IsNull() {
 				data.Service[i].TcpUdpSrcDstPortList[ci].SrcPort = types.StringValue(value.String())
 			} else {
@@ -3752,29 +3001,11 @@ func (data *ObjectGroup) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 				data.Service[i].TcpUdpSrcDstPortList[ci].DstPort = types.StringNull()
 			}
 		}
+		TcpUdpSrcDstPortListSrcOpKeys := [...]string{"src-operator", "tcp-udp-src-port", "tcp-udp-dst-port"}
+		TcpUdpSrcDstPortListSrcOpItems := helpers.CollectListItemsXML(r.Raw, "tcp-udp/tcp-udp-src-dst-port-list-src-op/source", TcpUdpSrcDstPortListSrcOpKeys[:])
 		for ci := range data.Service[i].TcpUdpSrcDstPortListSrcOp {
-			keys := [...]string{"src-operator", "tcp-udp-src-port", "tcp-udp-dst-port"}
-			keyValues := [...]string{data.Service[i].TcpUdpSrcDstPortListSrcOp[ci].SrcOperator.ValueString(), data.Service[i].TcpUdpSrcDstPortListSrcOp[ci].SrcPort.ValueString(), data.Service[i].TcpUdpSrcDstPortListSrcOp[ci].DstPort.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "tcp-udp/tcp-udp-src-dst-port-list-src-op/source").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			TcpUdpSrcDstPortListSrcOpKeyValues := [...]string{data.Service[i].TcpUdpSrcDstPortListSrcOp[ci].SrcOperator.ValueString(), data.Service[i].TcpUdpSrcDstPortListSrcOp[ci].SrcPort.ValueString(), data.Service[i].TcpUdpSrcDstPortListSrcOp[ci].DstPort.ValueString()}
+			cr := TcpUdpSrcDstPortListSrcOpItems[helpers.CompositeKey(TcpUdpSrcDstPortListSrcOpKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "src-operator"); value.Exists() && !data.Service[i].TcpUdpSrcDstPortListSrcOp[ci].SrcOperator.IsNull() {
 				data.Service[i].TcpUdpSrcDstPortListSrcOp[ci].SrcOperator = types.StringValue(value.String())
 			} else {
@@ -3791,29 +3022,11 @@ func (data *ObjectGroup) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 				data.Service[i].TcpUdpSrcDstPortListSrcOp[ci].DstPort = types.StringNull()
 			}
 		}
+		TcpUdpSrcDstPortListDstOpKeys := [...]string{"tcp-udp-src-port", "dst-operator", "tcp-udp-dst-port"}
+		TcpUdpSrcDstPortListDstOpItems := helpers.CollectListItemsXML(r.Raw, "tcp-udp/tcp-udp-src-dst-port-list-dst-op/source", TcpUdpSrcDstPortListDstOpKeys[:])
 		for ci := range data.Service[i].TcpUdpSrcDstPortListDstOp {
-			keys := [...]string{"tcp-udp-src-port", "dst-operator", "tcp-udp-dst-port"}
-			keyValues := [...]string{data.Service[i].TcpUdpSrcDstPortListDstOp[ci].SrcPort.ValueString(), data.Service[i].TcpUdpSrcDstPortListDstOp[ci].DstOperator.ValueString(), data.Service[i].TcpUdpSrcDstPortListDstOp[ci].DstPort.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "tcp-udp/tcp-udp-src-dst-port-list-dst-op/source").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			TcpUdpSrcDstPortListDstOpKeyValues := [...]string{data.Service[i].TcpUdpSrcDstPortListDstOp[ci].SrcPort.ValueString(), data.Service[i].TcpUdpSrcDstPortListDstOp[ci].DstOperator.ValueString(), data.Service[i].TcpUdpSrcDstPortListDstOp[ci].DstPort.ValueString()}
+			cr := TcpUdpSrcDstPortListDstOpItems[helpers.CompositeKey(TcpUdpSrcDstPortListDstOpKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "tcp-udp-src-port"); value.Exists() && !data.Service[i].TcpUdpSrcDstPortListDstOp[ci].SrcPort.IsNull() {
 				data.Service[i].TcpUdpSrcDstPortListDstOp[ci].SrcPort = types.StringValue(value.String())
 			} else {
@@ -3830,29 +3043,11 @@ func (data *ObjectGroup) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 				data.Service[i].TcpUdpSrcDstPortListDstOp[ci].DstPort = types.StringNull()
 			}
 		}
+		TcpUdpSrcRangeDstPortListOpKeys := [...]string{"tcp-udp-src-min-port", "tcp-udp-src-max-port", "operator", "tcp-udp-dst-port"}
+		TcpUdpSrcRangeDstPortListOpItems := helpers.CollectListItemsXML(r.Raw, "tcp-udp/tcp-udp-src-range-dst-port-list-op/source", TcpUdpSrcRangeDstPortListOpKeys[:])
 		for ci := range data.Service[i].TcpUdpSrcRangeDstPortListOp {
-			keys := [...]string{"tcp-udp-src-min-port", "tcp-udp-src-max-port", "operator", "tcp-udp-dst-port"}
-			keyValues := [...]string{data.Service[i].TcpUdpSrcRangeDstPortListOp[ci].SrcMinPort.ValueString(), data.Service[i].TcpUdpSrcRangeDstPortListOp[ci].SrcMaxPort.ValueString(), data.Service[i].TcpUdpSrcRangeDstPortListOp[ci].Operator.ValueString(), data.Service[i].TcpUdpSrcRangeDstPortListOp[ci].DstPort.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "tcp-udp/tcp-udp-src-range-dst-port-list-op/source").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			TcpUdpSrcRangeDstPortListOpKeyValues := [...]string{data.Service[i].TcpUdpSrcRangeDstPortListOp[ci].SrcMinPort.ValueString(), data.Service[i].TcpUdpSrcRangeDstPortListOp[ci].SrcMaxPort.ValueString(), data.Service[i].TcpUdpSrcRangeDstPortListOp[ci].Operator.ValueString(), data.Service[i].TcpUdpSrcRangeDstPortListOp[ci].DstPort.ValueString()}
+			cr := TcpUdpSrcRangeDstPortListOpItems[helpers.CompositeKey(TcpUdpSrcRangeDstPortListOpKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "tcp-udp-src-min-port"); value.Exists() && !data.Service[i].TcpUdpSrcRangeDstPortListOp[ci].SrcMinPort.IsNull() {
 				data.Service[i].TcpUdpSrcRangeDstPortListOp[ci].SrcMinPort = types.StringValue(value.String())
 			} else {
@@ -3874,29 +3069,11 @@ func (data *ObjectGroup) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 				data.Service[i].TcpUdpSrcRangeDstPortListOp[ci].DstPort = types.StringNull()
 			}
 		}
+		TcpUdpSrcRangeDstPortListKeys := [...]string{"tcp-udp-src-min-port", "tcp-udp-src-max-port", "tcp-udp-dst-port"}
+		TcpUdpSrcRangeDstPortListItems := helpers.CollectListItemsXML(r.Raw, "tcp-udp/tcp-udp-src-range-dst-port-list-no-op/source", TcpUdpSrcRangeDstPortListKeys[:])
 		for ci := range data.Service[i].TcpUdpSrcRangeDstPortList {
-			keys := [...]string{"tcp-udp-src-min-port", "tcp-udp-src-max-port", "tcp-udp-dst-port"}
-			keyValues := [...]string{data.Service[i].TcpUdpSrcRangeDstPortList[ci].SrcMinPort.ValueString(), data.Service[i].TcpUdpSrcRangeDstPortList[ci].SrcMaxPort.ValueString(), data.Service[i].TcpUdpSrcRangeDstPortList[ci].DstPort.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "tcp-udp/tcp-udp-src-range-dst-port-list-no-op/source").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			TcpUdpSrcRangeDstPortListKeyValues := [...]string{data.Service[i].TcpUdpSrcRangeDstPortList[ci].SrcMinPort.ValueString(), data.Service[i].TcpUdpSrcRangeDstPortList[ci].SrcMaxPort.ValueString(), data.Service[i].TcpUdpSrcRangeDstPortList[ci].DstPort.ValueString()}
+			cr := TcpUdpSrcRangeDstPortListItems[helpers.CompositeKey(TcpUdpSrcRangeDstPortListKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "tcp-udp-src-min-port"); value.Exists() && !data.Service[i].TcpUdpSrcRangeDstPortList[ci].SrcMinPort.IsNull() {
 				data.Service[i].TcpUdpSrcRangeDstPortList[ci].SrcMinPort = types.StringValue(value.String())
 			} else {
@@ -3913,29 +3090,11 @@ func (data *ObjectGroup) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 				data.Service[i].TcpUdpSrcRangeDstPortList[ci].DstPort = types.StringNull()
 			}
 		}
+		TcpUdpSrcDstRangePortListOpKeys := [...]string{"operator", "tcp-udp-src-port", "tcp-udp-dst-min-port", "tcp-udp-dst-max-port"}
+		TcpUdpSrcDstRangePortListOpItems := helpers.CollectListItemsXML(r.Raw, "tcp-udp/tcp-udp-src-dst-range-port-list-op/source", TcpUdpSrcDstRangePortListOpKeys[:])
 		for ci := range data.Service[i].TcpUdpSrcDstRangePortListOp {
-			keys := [...]string{"operator", "tcp-udp-src-port", "tcp-udp-dst-min-port", "tcp-udp-dst-max-port"}
-			keyValues := [...]string{data.Service[i].TcpUdpSrcDstRangePortListOp[ci].Operator.ValueString(), data.Service[i].TcpUdpSrcDstRangePortListOp[ci].SrcPort.ValueString(), data.Service[i].TcpUdpSrcDstRangePortListOp[ci].DstMinPort.ValueString(), data.Service[i].TcpUdpSrcDstRangePortListOp[ci].DstMaxPort.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "tcp-udp/tcp-udp-src-dst-range-port-list-op/source").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			TcpUdpSrcDstRangePortListOpKeyValues := [...]string{data.Service[i].TcpUdpSrcDstRangePortListOp[ci].Operator.ValueString(), data.Service[i].TcpUdpSrcDstRangePortListOp[ci].SrcPort.ValueString(), data.Service[i].TcpUdpSrcDstRangePortListOp[ci].DstMinPort.ValueString(), data.Service[i].TcpUdpSrcDstRangePortListOp[ci].DstMaxPort.ValueString()}
+			cr := TcpUdpSrcDstRangePortListOpItems[helpers.CompositeKey(TcpUdpSrcDstRangePortListOpKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "operator"); value.Exists() && !data.Service[i].TcpUdpSrcDstRangePortListOp[ci].Operator.IsNull() {
 				data.Service[i].TcpUdpSrcDstRangePortListOp[ci].Operator = types.StringValue(value.String())
 			} else {
@@ -3957,29 +3116,11 @@ func (data *ObjectGroup) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 				data.Service[i].TcpUdpSrcDstRangePortListOp[ci].DstMaxPort = types.StringNull()
 			}
 		}
+		TcpUdpSrcDstRangePortListKeys := [...]string{"tcp-udp-src-port", "tcp-udp-dst-min-port", "tcp-udp-dst-max-port"}
+		TcpUdpSrcDstRangePortListItems := helpers.CollectListItemsXML(r.Raw, "tcp-udp/tcp-udp-src-dst-range-port-list-no-op/source", TcpUdpSrcDstRangePortListKeys[:])
 		for ci := range data.Service[i].TcpUdpSrcDstRangePortList {
-			keys := [...]string{"tcp-udp-src-port", "tcp-udp-dst-min-port", "tcp-udp-dst-max-port"}
-			keyValues := [...]string{data.Service[i].TcpUdpSrcDstRangePortList[ci].SrcPort.ValueString(), data.Service[i].TcpUdpSrcDstRangePortList[ci].DstMinPort.ValueString(), data.Service[i].TcpUdpSrcDstRangePortList[ci].DstMaxPort.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "tcp-udp/tcp-udp-src-dst-range-port-list-no-op/source").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			TcpUdpSrcDstRangePortListKeyValues := [...]string{data.Service[i].TcpUdpSrcDstRangePortList[ci].SrcPort.ValueString(), data.Service[i].TcpUdpSrcDstRangePortList[ci].DstMinPort.ValueString(), data.Service[i].TcpUdpSrcDstRangePortList[ci].DstMaxPort.ValueString()}
+			cr := TcpUdpSrcDstRangePortListItems[helpers.CompositeKey(TcpUdpSrcDstRangePortListKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "tcp-udp-src-port"); value.Exists() && !data.Service[i].TcpUdpSrcDstRangePortList[ci].SrcPort.IsNull() {
 				data.Service[i].TcpUdpSrcDstRangePortList[ci].SrcPort = types.StringValue(value.String())
 			} else {
@@ -3996,29 +3137,11 @@ func (data *ObjectGroup) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 				data.Service[i].TcpUdpSrcDstRangePortList[ci].DstMaxPort = types.StringNull()
 			}
 		}
+		TcpUdpSrcRangeDstRangePortListKeys := [...]string{"tcp-udp-src-min-port", "tcp-udp-src-max-port", "tcp-udp-dst-min-port", "tcp-udp-dst-max-port"}
+		TcpUdpSrcRangeDstRangePortListItems := helpers.CollectListItemsXML(r.Raw, "tcp-udp/tcp-udp-src-range-dst-range-port-list/source", TcpUdpSrcRangeDstRangePortListKeys[:])
 		for ci := range data.Service[i].TcpUdpSrcRangeDstRangePortList {
-			keys := [...]string{"tcp-udp-src-min-port", "tcp-udp-src-max-port", "tcp-udp-dst-min-port", "tcp-udp-dst-max-port"}
-			keyValues := [...]string{data.Service[i].TcpUdpSrcRangeDstRangePortList[ci].SrcMinPort.ValueString(), data.Service[i].TcpUdpSrcRangeDstRangePortList[ci].SrcMaxPort.ValueString(), data.Service[i].TcpUdpSrcRangeDstRangePortList[ci].DstMinPort.ValueString(), data.Service[i].TcpUdpSrcRangeDstRangePortList[ci].DstMaxPort.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "tcp-udp/tcp-udp-src-range-dst-range-port-list/source").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			TcpUdpSrcRangeDstRangePortListKeyValues := [...]string{data.Service[i].TcpUdpSrcRangeDstRangePortList[ci].SrcMinPort.ValueString(), data.Service[i].TcpUdpSrcRangeDstRangePortList[ci].SrcMaxPort.ValueString(), data.Service[i].TcpUdpSrcRangeDstRangePortList[ci].DstMinPort.ValueString(), data.Service[i].TcpUdpSrcRangeDstRangePortList[ci].DstMaxPort.ValueString()}
+			cr := TcpUdpSrcRangeDstRangePortListItems[helpers.CompositeKey(TcpUdpSrcRangeDstRangePortListKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "tcp-udp-src-min-port"); value.Exists() && !data.Service[i].TcpUdpSrcRangeDstRangePortList[ci].SrcMinPort.IsNull() {
 				data.Service[i].TcpUdpSrcRangeDstRangePortList[ci].SrcMinPort = types.StringValue(value.String())
 			} else {
