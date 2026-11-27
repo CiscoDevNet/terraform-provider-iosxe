@@ -75,6 +75,34 @@ attributes:
     # controller omits on read, and a PSK WLAN cannot use the non-default value.
     example: false
     exclude_test: true
+  - yang_name: auth-key-mgmt-suite-b
+    tf_name: security_wpa_akm_suite_b
+    description: Enable the SuiteB AKM (`security wpa akm suiteb`). The controller requires `security_wpa_wpa2_ciphers_gcmp128` with it, refuses it together with the PSK, SAE and SAE-EXT-KEY AKMs, and refuses FT, so set `security_ft` to `dot11r-disabled` (the device default is adaptive)
+    # Excluded from tests: the test value is the YANG default, which the
+    # controller omits on read, and a PSK WLAN cannot use the non-default value.
+    example: false
+    exclude_test: true
+  - yang_name: auth-key-mgmt-suite-b-192
+    tf_name: security_wpa_akm_suite_b_192
+    description: Enable the SuiteB-192 AKM (`security wpa akm suiteb-192`). The controller requires `security_wpa_wpa2_ciphers_gcmp256` with it, refuses it together with the PSK, SAE and SAE-EXT-KEY AKMs, and refuses FT, so set `security_ft` to `dot11r-disabled` (the device default is adaptive)
+    # Excluded from tests: the test value is the YANG default, which the
+    # controller omits on read, and a PSK WLAN cannot use the non-default value.
+    example: false
+    exclude_test: true
+  - yang_name: akm-sae-ext-key
+    tf_name: security_wpa_akm_sae_ext_key
+    description: Enable the SAE-EXT-KEY AKM (`security wpa akm sae ext-key`). It needs a PSK (`security_wpa_psk_key`) and allows `security_wpa_wpa2_ciphers_gcmp256`. On a WPA3-only WLAN the controller refuses FT adaptive, so set `security_ft` to `dot11r-disabled`
+    # Excluded from tests: the test value is the YANG default, which the
+    # controller omits on read, and a PSK WLAN cannot use the non-default value.
+    example: false
+    exclude_test: true
+  - yang_name: akm-ft-sae-ext-key
+    tf_name: security_wpa_akm_ft_sae_ext_key
+    description: Enable the FT-SAE-EXT-KEY AKM (`security wpa akm ft sae ext-key`). It needs a PSK (`security_wpa_psk_key`) and `security_ft` set to `dot11r-enabled`, and the controller refuses it together with FT-802.1X
+    # Excluded from tests: the test value is the YANG default, which the
+    # controller omits on read, and a PSK WLAN cannot use the non-default value.
+    example: false
+    exclude_test: true
   - yang_name: wpa2-aes
     tf_name: security_wpa_wpa2_ciphers_aes
     # Excluded from tests: the test value is the YANG default, which the

@@ -56,9 +56,13 @@ data "iosxe_wireless_wlan_profile" "example" {
 - `security_wpa_akm_ft_dot1x` (Boolean) Authentication key management type 802.11r dot1x
 - `security_wpa_akm_ft_psk` (Boolean) Authentication key management type 802.11r PSK
 - `security_wpa_akm_ft_sae` (Boolean) Authentication key management type FT-SAE
+- `security_wpa_akm_ft_sae_ext_key` (Boolean) Enable the FT-SAE-EXT-KEY AKM (`security wpa akm ft sae ext-key`). It needs a PSK (`security_wpa_psk_key`) and `security_ft` set to `dot11r-enabled`, and the controller refuses it together with FT-802.1X
 - `security_wpa_akm_owe` (Boolean) Enable OWE (`security wpa akm owe`). The controller refuses it while `security_wpa_wpa2` is true
 - `security_wpa_akm_psk` (Boolean) Authentication key management PSK
 - `security_wpa_akm_sae` (Boolean) Authentication key management type SAE
+- `security_wpa_akm_sae_ext_key` (Boolean) Enable the SAE-EXT-KEY AKM (`security wpa akm sae ext-key`). It needs a PSK (`security_wpa_psk_key`) and allows `security_wpa_wpa2_ciphers_gcmp256`. On a WPA3-only WLAN the controller refuses FT adaptive, so set `security_ft` to `dot11r-disabled`
+- `security_wpa_akm_suite_b` (Boolean) Enable the SuiteB AKM (`security wpa akm suiteb`). The controller requires `security_wpa_wpa2_ciphers_gcmp128` with it, refuses it together with the PSK, SAE and SAE-EXT-KEY AKMs, and refuses FT, so set `security_ft` to `dot11r-disabled` (the device default is adaptive)
+- `security_wpa_akm_suite_b_192` (Boolean) Enable the SuiteB-192 AKM (`security wpa akm suiteb-192`). The controller requires `security_wpa_wpa2_ciphers_gcmp256` with it, refuses it together with the PSK, SAE and SAE-EXT-KEY AKMs, and refuses FT, so set `security_ft` to `dot11r-disabled` (the device default is adaptive)
 - `security_wpa_psk_key` (String, Sensitive) Authentication pre-shared key. For hexadecimal key format, PSK length must be exactly 64 characters and for ASCII key format, PSK length must be in the range of 8 and 63
 - `security_wpa_psk_key_encryption` (String) Pre-shared key encryption type
 - `security_wpa_psk_key_format` (String) Authentication pre-shared key type ascii/hex
