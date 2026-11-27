@@ -74,6 +74,7 @@ type WirelessRFProfile struct {
 	TrapThresholdClients        types.Int64                           `tfsdk:"trap_threshold_clients"`
 	TrapThresholdInterference   types.Int64                           `tfsdk:"trap_threshold_interference"`
 	TrapThresholdNoise          types.Int64                           `tfsdk:"trap_threshold_noise"`
+	TrapThresholdUtilization    types.Int64                           `tfsdk:"trap_threshold_utilization"`
 }
 type WirelessRFProfileDcaAllowedChannels struct {
 	Channel types.Int64 `tfsdk:"channel"`
@@ -116,6 +117,7 @@ type WirelessRFProfileData struct {
 	TrapThresholdClients        types.Int64                               `tfsdk:"trap_threshold_clients"`
 	TrapThresholdInterference   types.Int64                               `tfsdk:"trap_threshold_interference"`
 	TrapThresholdNoise          types.Int64                               `tfsdk:"trap_threshold_noise"`
+	TrapThresholdUtilization    types.Int64                               `tfsdk:"trap_threshold_utilization"`
 }
 type WirelessRFProfileDcaAllowedChannelsData struct {
 	Channel types.Int64 `tfsdk:"channel"`
@@ -269,6 +271,9 @@ func (data WirelessRFProfile) addToBodyXML(ctx context.Context, config WirelessR
 	}
 	if !data.TrapThresholdNoise.IsNull() && !data.TrapThresholdNoise.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/trap-threshold-noise", strconv.FormatInt(data.TrapThresholdNoise.ValueInt64(), 10))
+	}
+	if !data.TrapThresholdUtilization.IsNull() && !data.TrapThresholdUtilization.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/trap-threshold-utilization", strconv.FormatInt(data.TrapThresholdUtilization.ValueInt64(), 10))
 	}
 	return body
 }
@@ -474,6 +479,11 @@ func (data *WirelessRFProfile) updateFromBodyXML(ctx context.Context, res xmldot
 	} else {
 		data.TrapThresholdNoise = types.Int64Null()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/trap-threshold-utilization"); value.Exists() && !data.TrapThresholdUtilization.IsNull() {
+		data.TrapThresholdUtilization = types.Int64Value(value.Int())
+	} else {
+		data.TrapThresholdUtilization = types.Int64Null()
+	}
 }
 
 // End of section. //template:end updateFromBodyXML
@@ -589,6 +599,9 @@ func (data *WirelessRFProfile) fromBodyXML(ctx context.Context, res xmldot.Resul
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/trap-threshold-noise"); value.Exists() {
 		data.TrapThresholdNoise = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/trap-threshold-utilization"); value.Exists() {
+		data.TrapThresholdUtilization = types.Int64Value(value.Int())
 	}
 }
 
@@ -706,6 +719,9 @@ func (data *WirelessRFProfileData) fromBodyXML(ctx context.Context, res xmldot.R
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/trap-threshold-noise"); value.Exists() {
 		data.TrapThresholdNoise = types.Int64Value(value.Int())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/trap-threshold-utilization"); value.Exists() {
+		data.TrapThresholdUtilization = types.Int64Value(value.Int())
+	}
 }
 
 // End of section. //template:end fromBodyDataXML
@@ -714,6 +730,9 @@ func (data *WirelessRFProfileData) fromBodyXML(ctx context.Context, res xmldot.R
 
 func (data *WirelessRFProfile) addDeletedItemsXML(ctx context.Context, state WirelessRFProfile, body string) string {
 	b := netconf.NewBody(body)
+	if !state.TrapThresholdUtilization.IsNull() && data.TrapThresholdUtilization.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/trap-threshold-utilization")
+	}
 	if !state.TrapThresholdNoise.IsNull() && data.TrapThresholdNoise.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/trap-threshold-noise")
 	}
@@ -851,6 +870,9 @@ func (data *WirelessRFProfile) addDeletedItemsXML(ctx context.Context, state Wir
 
 func (data *WirelessRFProfile) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	if !data.TrapThresholdUtilization.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/trap-threshold-utilization")
+	}
 	if !data.TrapThresholdNoise.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/trap-threshold-noise")
 	}
@@ -966,6 +988,9 @@ func (data *WirelessRFProfile) addDeletePathsXML(ctx context.Context, body strin
 // deleted: it skips attributes marked builtin_keep so destroying one never disables it.
 func (data *WirelessRFProfile) addBuiltinDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	if !data.TrapThresholdUtilization.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/trap-threshold-utilization")
+	}
 	if !data.TrapThresholdNoise.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/trap-threshold-noise")
 	}

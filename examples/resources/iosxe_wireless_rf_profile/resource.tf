@@ -36,4 +36,5 @@ resource "iosxe_wireless_rf_profile" "example" {
   trap_threshold_clients        = 20
   trap_threshold_interference   = 15
   trap_threshold_noise          = -60
+  trap_threshold_utilization    = 70
 }

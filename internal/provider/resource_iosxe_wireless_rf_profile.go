@@ -323,6 +323,13 @@ func (r *WirelessRFProfileResource) Schema(ctx context.Context, req resource.Sch
 					int64validator.Between(-127, 0),
 				},
 			},
+			"trap_threshold_utilization": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Configure threshold of bandwidth (%) being utilized by an access-point. Traps are sent when this value is exceeded").AddIntegerRangeDescription(0, 100).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 100),
+				},
+			},
 		},
 	}
 }
