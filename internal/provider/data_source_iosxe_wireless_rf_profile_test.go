@@ -68,6 +68,7 @@ func TestAccDataSourceIosxeWirelessRFProfile(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_rf_profile.test", "trap_threshold_clients", "20"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_rf_profile.test", "trap_threshold_interference", "15"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_rf_profile.test", "trap_threshold_noise", "-60"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_wireless_rf_profile.test", "trap_threshold_utilization", "70"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -124,6 +125,7 @@ func testAccDataSourceIosxeWirelessRFProfileConfig() string {
 	config += `	trap_threshold_clients = 20` + "\n"
 	config += `	trap_threshold_interference = 15` + "\n"
 	config += `	trap_threshold_noise = -60` + "\n"
+	config += `	trap_threshold_utilization = 70` + "\n"
 	config += `}` + "\n"
 
 	config += `

@@ -212,6 +212,10 @@ func (d *WirelessRFProfileDataSource) Schema(ctx context.Context, req datasource
 				MarkdownDescription: "Configure threshold number of noise threshold between -127 and 0 dBm.",
 				Computed:            true,
 			},
+			"trap_threshold_utilization": schema.Int64Attribute{
+				MarkdownDescription: "Configure threshold of bandwidth (%) being utilized by an access-point. Traps are sent when this value is exceeded",
+				Computed:            true,
+			},
 		},
 	}
 }

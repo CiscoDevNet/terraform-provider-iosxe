@@ -26,6 +26,7 @@ description: |-
 - Add `iosxe_wireless_ap_filter` resource and data source for C9800 AP filters (`ap filter name` with `ap name-regex` and `tag policy|site|rf`)
 - Add `iosxe_wireless_ap_filter_priority` resource and data source for C9800 AP filter priorities (`ap filter priority <0-1023> filter-name <name>`), backed by `ap-rule-priority-cfg-entries`. Destroy removes only the managed priorities
 - Add `iosxe_wireless_ap_tag_source_priority` resource and data source for the configurable C9800 AP tag source priorities 2 and 3 (`ap tag-source-priority <2-3> source <filter|ap>`). Priorities 0, 1 and 4 are fixed by the device and not exposed. Because the controller rejects any single edit that assigns one source to two priorities, swapping the two sources is applied in two edit-config operations (with a best-effort restore of the previous table if the second one fails), a duplicate priority or source is rejected at plan time, and destroy restores the factory order
+- Add `trap_threshold_utilization` attribute (`trap-threshold utilization`) to `iosxe_wireless_rf_profile` resource and data source
 
 ## 1.2.0
 

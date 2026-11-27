@@ -51,6 +51,7 @@ resource "iosxe_wireless_rf_profile" "example" {
   trap_threshold_clients        = 20
   trap_threshold_interference   = 15
   trap_threshold_noise          = -60
+  trap_threshold_utilization    = 70
 }
 ```
 
@@ -121,6 +122,8 @@ resource "iosxe_wireless_rf_profile" "example" {
   - Range: `0`-`100`
 - `trap_threshold_noise` (Number) Configure threshold number of noise threshold between -127 and 0 dBm.
   - Range: `-127`-`0`
+- `trap_threshold_utilization` (Number) Configure threshold of bandwidth (%) being utilized by an access-point. Traps are sent when this value is exceeded
+  - Range: `0`-`100`
 - `tx_power_max` (Number) Upper limit of transmit power in dBm. For an 802.11 network, the system will only accept this configuration if the Transmit Power Control(TPC) is in Auto or Run Once mode
   - Range: `-10`-`30`
 - `tx_power_min` (Number) Lower limit of transmit power in dBm. For an 802.11 network, the system will only accept this configuration if the Transmit Power Control(TPC) is in Auto or Run Once mode
