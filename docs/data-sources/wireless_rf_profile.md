@@ -62,6 +62,7 @@ data "iosxe_wireless_rf_profile" "example" {
 - `trap_threshold_clients` (Number) Configure threshold number of clients per Access-Point(AP) radio to trigger a trap. The trap ciscoLwappApClientThresholdNotify will be triggered once the count of clients on the AP radio reaches this limit. A value of zero indicates that the trap is disabled.
 - `trap_threshold_interference` (Number) Configure interference threshold in (%) traps are generated when interference exceeds this value .
 - `trap_threshold_noise` (Number) Configure threshold number of noise threshold between -127 and 0 dBm.
+- `trap_threshold_utilization` (Number) Configure threshold of bandwidth (%) being utilized by an access-point. Traps are sent when this value is exceeded
 - `tx_power_max` (Number) Upper limit of transmit power in dBm. For an 802.11 network, the system will only accept this configuration if the Transmit Power Control(TPC) is in Auto or Run Once mode
 - `tx_power_min` (Number) Lower limit of transmit power in dBm. For an 802.11 network, the system will only accept this configuration if the Transmit Power Control(TPC) is in Auto or Run Once mode
 - `tx_power_v1_threshold` (Number) Configure the transmit power control version 1 threshold for the radio resource management algorithm in dBm.

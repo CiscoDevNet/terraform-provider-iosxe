@@ -174,3 +174,7 @@ attributes:
     tf_name: trap_threshold_noise
     type: Int64
     example: -60
+  - yang_name: trap-threshold-utilization
+    tf_name: trap_threshold_utilization
+    type: Int64
+    example: 70
