@@ -1226,6 +1226,78 @@ func AppendFromXPath(body netconf.Body, xPath string, value any) netconf.Body {
 	return body
 }
 
+// xmlLocalName returns the element name of the tag text between "<" (or "</") and ">",
+// without attributes, a trailing "/" or a namespace prefix.
+func xmlLocalName(tag string) string {
+	tag = strings.TrimSuffix(strings.TrimSpace(tag), "/")
+	if idx := strings.IndexAny(tag, " \t\r\n"); idx != -1 {
+		tag = tag[:idx]
+	}
+	if idx := strings.Index(tag, ":"); idx != -1 {
+		tag = tag[idx+1:]
+	}
+	return tag
+}
+
+// findElementEnd returns the index just past the close tag of the element whose opening tag
+// ends at start in xml, or -1 if the element is not closed. It counts nested elements with
+// the same local name, so a list entry whose key leaf shares its name (for example
+// <host-name><host-name>a</host-name><ip-list>...</ip-list></host-name>) is not cut short at
+// the key leaf's close tag. Prefixed tags match by local name, self-closing tags do not
+// change the depth, and comments, CDATA sections and processing instructions are skipped.
+func findElementEnd(xml string, start int, localName string) int {
+	depth := 1
+	pos := start
+	for pos < len(xml) {
+		lt := strings.IndexByte(xml[pos:], '<')
+		if lt == -1 {
+			return -1
+		}
+		lt += pos
+		rest := xml[lt:]
+		switch {
+		case strings.HasPrefix(rest, "<!--"):
+			end := strings.Index(rest, "-->")
+			if end == -1 {
+				return -1
+			}
+			pos = lt + end + len("-->")
+			continue
+		case strings.HasPrefix(rest, "<![CDATA["):
+			end := strings.Index(rest, "]]>")
+			if end == -1 {
+				return -1
+			}
+			pos = lt + end + len("]]>")
+			continue
+		case strings.HasPrefix(rest, "<?"), strings.HasPrefix(rest, "<!"):
+			end := strings.IndexByte(rest, '>')
+			if end == -1 {
+				return -1
+			}
+			pos = lt + end + 1
+			continue
+		}
+		gt := strings.IndexByte(rest, '>')
+		if gt == -1 {
+			return -1
+		}
+		tag := rest[1:gt]
+		pos = lt + gt + 1
+		if strings.HasPrefix(tag, "/") {
+			if xmlLocalName(tag[1:]) == localName {
+				depth--
+				if depth == 0 {
+					return pos
+				}
+			}
+		} else if !strings.HasSuffix(tag, "/") && xmlLocalName(tag) == localName {
+			depth++
+		}
+	}
+	return -1
+}
+
 // extractAndReplaceElements parses root-level XML elements in order and replaces all instances
 // of targetElementName with replacementXML, preserving all other elements.
 // This is used when appending siblings with single-segment paths to preserve other root content.
@@ -1285,17 +1357,11 @@ func extractAndReplaceElements(xml, targetElementName, replacementXML string) st
 			if isSelfClosing {
 				remaining = remaining[endOfOpenTag+1:]
 			} else {
-				closingTag := "</" + elementName + ">"
-				closingIdx := strings.Index(remaining, closingTag)
-				if closingIdx == -1 {
-					// Malformed XML, try with original element name
-					closingTag = "</" + strings.Split(openTag, " ")[0] + ">"
-					closingIdx = strings.Index(remaining, closingTag)
-					if closingIdx == -1 {
-						break
-					}
+				elementEnd := findElementEnd(remaining, endOfOpenTag+1, elementName)
+				if elementEnd == -1 {
+					break
 				}
-				remaining = remaining[closingIdx+len(closingTag):]
+				remaining = remaining[elementEnd:]
 			}
 		} else {
 			// Keep this element as-is
@@ -1304,14 +1370,12 @@ func extractAndReplaceElements(xml, targetElementName, replacementXML string) st
 				result.WriteString(fullElement)
 				remaining = remaining[endOfOpenTag+1:]
 			} else {
-				closingTag := "</" + elementName + ">"
-				closingIdx := strings.Index(remaining, closingTag)
-				if closingIdx == -1 {
+				elementEnd := findElementEnd(remaining, endOfOpenTag+1, elementName)
+				if elementEnd == -1 {
 					break
 				}
-				fullElement := remaining[:closingIdx+len(closingTag)]
-				result.WriteString(fullElement)
-				remaining = remaining[closingIdx+len(closingTag):]
+				result.WriteString(remaining[:elementEnd])
+				remaining = remaining[elementEnd:]
 			}
 		}
 	}

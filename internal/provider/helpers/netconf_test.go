@@ -3154,3 +3154,70 @@ func TestTrimNetconfTrailingWhitespace_BannerScenarios(t *testing.T) {
 		})
 	}
 }
+
+// TestSetRawFromXPath_SelfNestedListAppend covers a list whose entry element and key leaf
+// share a name (ip host vrf <vrf> <host-name>: list host-name, key leaf host-name). Appending
+// a second entry must keep each entry's trailing leaves inside that entry (CiscoDevNet#632).
+func TestSetRawFromXPath_SelfNestedListAppend(t *testing.T) {
+	body := netconf.Body{}
+	body = SetFromXPath(body, "vrf-name", "IP_HOSTS_VRF")
+	body = SetRawFromXPath(body, "host-name", "<host-name>host-a</host-name><ip-list>10.10.10.10</ip-list>")
+	body = SetRawFromXPath(body, "host-name", "<host-name>host-b</host-name><ip-list>10.20.20.20</ip-list><ip-list>10.20.20.21</ip-list>")
+	body = SetRawFromXPath(body, "host-name", "<host-name>host-c</host-name><ip-list>10.30.30.30</ip-list>")
+
+	if err := body.Err(); err != nil {
+		t.Fatalf("SetRawFromXPath() returned error: %v", err)
+	}
+	got := body.Res()
+	want := "<vrf-name>IP_HOSTS_VRF</vrf-name>" +
+		"<host-name><host-name>host-a</host-name><ip-list>10.10.10.10</ip-list></host-name>" +
+		"<host-name><host-name>host-b</host-name><ip-list>10.20.20.20</ip-list><ip-list>10.20.20.21</ip-list></host-name>" +
+		"<host-name><host-name>host-c</host-name><ip-list>10.30.30.30</ip-list></host-name>"
+	if got != want {
+		t.Errorf("SetRawFromXPath() self-nested append\n got: %s\nwant: %s", got, want)
+	}
+}
+
+// TestExtractAndReplaceElements_Nesting checks that element boundaries are found by depth,
+// not by the first matching close tag.
+func TestExtractAndReplaceElements_Nesting(t *testing.T) {
+	tests := []struct {
+		name, xml, target, replacement, want string
+	}{
+		{
+			name:        "self-nested target",
+			xml:         "<k>v</k><a><a>x</a><b>1</b></a><c>2</c>",
+			target:      "a",
+			replacement: "<a>R</a>",
+			want:        "<k>v</k><a>R</a><c>2</c>",
+		},
+		{
+			name:        "self-nested sibling kept intact",
+			xml:         "<a><a>x</a><b>1</b></a><t>old</t>",
+			target:      "t",
+			replacement: "<t>new</t>",
+			want:        "<a><a>x</a><b>1</b></a><t>new</t>",
+		},
+		{
+			name:        "prefixed and self-closing descendants",
+			xml:         "<ios:a><a/><a>y</a><b>1</b></ios:a><c/>",
+			target:      "a",
+			replacement: "<a>R</a>",
+			want:        "<a>R</a><c/>",
+		},
+		{
+			name:        "target absent is appended",
+			xml:         "<k>v</k>",
+			target:      "a",
+			replacement: "<a>R</a>",
+			want:        "<k>v</k><a>R</a>",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := extractAndReplaceElements(tt.xml, tt.target, tt.replacement); got != tt.want {
+				t.Errorf("extractAndReplaceElements()\n got: %s\nwant: %s", got, tt.want)
+			}
+		})
+	}
+}
